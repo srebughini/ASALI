@@ -146,6 +146,7 @@ namespace ASALI
             Gtk::Box          vacuumPressBox_;
             Gtk::Box          vacuumLengthBox_;
             Gtk::Box          vacuumDiffBox_;
+            Gtk::Box          vacuumVelocityBox_;
 
             Gtk::ButtonBox    exitButtonBox_;
             Gtk::ButtonBox    discrimerButtonBox_;
@@ -170,6 +171,7 @@ namespace ASALI
             Gtk::Label        vacuumDiffLabel_;
             Gtk::Label        vacuumSpecieLabel_;
             Gtk::Label        vacuumKnudsenLabel_;
+            Gtk::Label        vacuumVelocityLabel_;
             Gtk::Label        reactorsTypeLabel_;
             Gtk::Label        reactorsTimeLabel_;
             Gtk::Label        reactorsReactionLabel_;
@@ -183,7 +185,7 @@ namespace ASALI
             Gtk::Label        finalStateLabel_;
             Gtk::Label*       vacuumKnuResults_;
             Gtk::Label*       vacuumDiffResults_;
-
+            Gtk::Label*       vacuumVelocityResults_;
 
             Gtk::Grid         grid_;
             Gtk::Grid         inputGrid_;
@@ -212,6 +214,7 @@ namespace ASALI
             Gtk::ComboBoxText vacuumLengthCombo_;
             Gtk::ComboBoxText vacuumTempCombo_;
             Gtk::ComboBoxText vacuumDiffCombo_;
+            Gtk::ComboBoxText vacuumVelocityCombo_;
             Gtk::ComboBoxText tempCombo_;
             Gtk::ComboBoxText pressCombo_;
             Gtk::ComboBoxText fractionCombo_;
@@ -273,6 +276,7 @@ namespace ASALI
             double         d_;
             double         Kn_;
             double         diffK_;
+            double         vK_;
             double         tau_;
             double         specieConverter_;
 

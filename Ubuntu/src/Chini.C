@@ -74,6 +74,7 @@ namespace ASALI
       vacuumPressBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumLengthBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumDiffBox_(Gtk::ORIENTATION_VERTICAL),
+      vacuumVelocityBox_(Gtk::ORIENTATION_VERTICAL),
       buttonsBox_(Gtk::ORIENTATION_VERTICAL),
       heading_("Author: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"
@@ -92,6 +93,7 @@ namespace ASALI
       vacuumDiffLabel_("Diffusivity"),
       vacuumSpecieLabel_("Specie"),
       vacuumKnudsenLabel_("Knudsen number"),
+      vacuumVelocityLabel_("Mean gas velocity"),
       reactorsTypeLabel_("Type"),
       reactorsTimeLabel_("Residence time"),
       reactorsReactionLabel_("Reactions"),
@@ -106,6 +108,7 @@ namespace ASALI
       reactionImage_("images/Reaction.tiff"),
       Kn_(-1),
       diffK_(-1),
+      vK_(-1),
       OP_(3),
       NS_(10),
       NR_(3)
@@ -656,14 +659,26 @@ namespace ASALI
             vacuumDiffCombo_.append("cm\u00b2/s");
             vacuumDiffCombo_.set_active(0);
             vacuumDiffCombo_.signal_changed().connect(sigc::mem_fun(*this,&Chini::vacuumRun));
-            
+
+            //Add velocity selector
+            vacuumGrid_.attach(vacuumVelocityBox_,5,0,1,1);
+            vacuumVelocityBox_.pack_start(vacuumVelocityLabel_, Gtk::PACK_SHRINK);
+            vacuumVelocityBox_.pack_start(vacuumVelocityCombo_, Gtk::PACK_SHRINK);
+            vacuumVelocityBox_.set_spacing(5);
+            vacuumVelocityBox_.set_halign(Gtk::ALIGN_CENTER);
+            vacuumVelocityCombo_.append("km/s");
+            vacuumVelocityCombo_.append("m/s");
+            vacuumVelocityCombo_.append("cm/s");
+            vacuumVelocityCombo_.set_active(1);
+            vacuumVelocityCombo_.signal_changed().connect(sigc::mem_fun(*this,&Chini::vacuumRun));
+
             //Add Knudsen number
-            vacuumGrid_.attach(vacuumKnudsenLabel_,5,0,1,1);
+            vacuumGrid_.attach(vacuumKnudsenLabel_,6,0,1,1);
             vacuumGrid_.attach(calculateButton_,1,3,1,1);
             vacuumGrid_.attach(vacuumSaveButton_,2,3,1,1);
             calculateButton_.signal_clicked().connect(sigc::mem_fun(*this,&Chini::vacuumRun));
             vacuumSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Chini::vacuumSave));
-            vacuumGrid_.attach(*exitButton_[8],5,3,1,1);
+            vacuumGrid_.attach(*exitButton_[8],6,3,1,1);
             vacuumGrid_.attach(*backButton_[8],0,3,1,1);
             exitButton_[8]->signal_clicked().connect(sigc::mem_fun(*this,&Chini::exit));
             backButton_[8]->signal_clicked().connect(sigc::mem_fun(*this,&Chini::backToMenu));
@@ -2072,6 +2087,11 @@ namespace ASALI
         {
             vacuumGrid_.remove(*vacuumKnuResults_);
         }
+        
+        if ( vK_ >= 0. )
+        {
+            vacuumGrid_.remove(*vacuumVelocityResults_);
+        }
 
         this->vacuumReader();
 
@@ -2101,12 +2121,28 @@ namespace ASALI
                     std::vector<std::vector<double> > diff = propertiesInterface_->diff();
                     diffK_ = diff[0][0];
                 }
+                
+                vK_ = vm[0];
             }
 
             if ( vacuumDiffCombo_.get_active_row_number() == 1 )
             {
                 diffK_ = diffK_*1e04; 
             }
+            
+            if ( vacuumVelocityCombo_.get_active_row_number() == 0 )
+            {
+                vK_ = vK_*1e-03;
+            }
+            else if ( vacuumVelocityCombo_.get_active_row_number() == 1 )
+            {
+                vK_ = vK_;
+            }
+            else if ( vacuumVelocityCombo_.get_active_row_number() == 2 )
+            {
+                vK_ = vK_*1e02;
+            }
+            
 
             {
                 std::stringstream diffK;
@@ -2120,8 +2156,15 @@ namespace ASALI
                 vacuumKnuResults_ = new Gtk::Label(Kn.str());
             }
 
+            {
+                std::stringstream vK;
+                vK << std::scientific << std::setprecision(OP_) << vK_;
+                vacuumVelocityResults_ = new Gtk::Label(vK.str());
+            }
+
             vacuumGrid_.attach(*vacuumDiffResults_,4,1,1,1);
-            vacuumGrid_.attach(*vacuumKnuResults_,5,1,1,1);
+            vacuumGrid_.attach(*vacuumVelocityResults_,5,1,1,1);
+            vacuumGrid_.attach(*vacuumKnuResults_,6,1,1,1);
 
             this->show_all_children();
         }
