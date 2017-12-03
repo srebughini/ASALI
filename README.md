@@ -27,3 +27,6 @@ To run ASALI-CHINI:
 
 ## 2. Windows Version
 To install ASALI-CHINI on Windows just **double click** on **Asali-Chini-Setup** and follow the instructions.
+
+## 3. Matlab/Octave Version
+To use ASALI-CHINI in MATLAB/Octave download **Asali.exe** and **Asali.m** and save them in your working folder.
