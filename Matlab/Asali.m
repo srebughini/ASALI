@@ -7,7 +7,7 @@ function [r] = Asali(type,T,p,x,n)
 % estimated. Available properties: 
 %     1/ diffusivity         [m2/s]
 %     2/ viscosity           [Pas]
-%     3/ molecularWeigth     [g/mol]
+%     3/ molecularWeight     [g/mol]
 %     4/ enthalpy            [J/kg]
 %     5/ entropy             [J/kg/K]
 %     6/ specificHeat        [J/kg/K]
