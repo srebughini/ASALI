@@ -36,15 +36,14 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Chini.h"
+#include "Asali.h"
+
 
 int main(int argc, char *argv[])
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CHINI");
+  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.KILA");
 
-  ASALI::Chini chini;
+  ASALI::Asali kila;
 
-  return app->run(chini);
-  
-  return 0;
+  return app->run(kila);
 }
