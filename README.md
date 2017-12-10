@@ -1,7 +1,7 @@
 ![logo](https://github.com/srebughini/ASALI/blob/master/Ubuntu/images/Logo.png)
 
 **ASALI** is an open-source software for solving gas thermodynamic and transport properties, catalytic reactors and chemical equilibrium calculations.
-**ASALI** is based on **CANTERA** open-source suite, **EIGEN** libraries and **GTKMM** libraries. **CANTERA** estimates the thermodynamic and transport properties based on the kinetic gas theory and NASA database, EIGEN libraries manage the complex numerical part of **ASALI** and **GTKMM** libraries handles the graphical interface.
+**ASALI** is based on **CANTERA** open-source suite, **EIGEN** libraries and **GTKMM** libraries. **CANTERA** estimates the thermodynamic and transport properties based on the kinetic gas theory and NASA database, **EIGEN** libraries manage the complex numerical part of **ASALI** and **GTKMM** libraries handles the graphical interface.
 
 ## 1. Ubuntu Version
 The installation of **ASALI** requires to install **CANTERA** and to download **EIGEN** and **GTKMM** libraries.
