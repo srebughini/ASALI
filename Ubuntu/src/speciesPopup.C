@@ -43,7 +43,7 @@ namespace ASALI
     speciesPopup::speciesPopup()
     : closeButton_("Close"),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
-      speciesImage_("images/names.tiff")
+      speciesImage_("database/names.tiff")
     {
         this->set_default_size(400,200);
         this->set_border_width(15);
