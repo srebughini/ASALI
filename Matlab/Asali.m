@@ -29,6 +29,10 @@ function [r] = Asali(type,T,p,x,n)
 
 NC = length(x);
 
+for i=1:NC
+    x(i) = max(x(i),1e-16);
+end
+
 input = strcat(string('Asali.exe '),string(type),string(' '),num2str(T),string(' '),num2str(p),string(' '),num2str(NC));
 
 for i=1:NC
