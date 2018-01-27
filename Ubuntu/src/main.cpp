@@ -41,9 +41,9 @@
 
 int main(int argc, char *argv[])
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.KILA");
+  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
 
-  ASALI::Asali kila;
+  ASALI::Asali asali;
 
-  return app->run(kila);
+  return app->run(asali);
 }

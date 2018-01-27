@@ -36,10 +36,10 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef IDEALREACTORS_H
-#define IDEALREACTORS_H
+#ifndef ASALIPROPERTIES_H
+#define ASALIPROPERTIES_H
 
-#include "odeSolver.h"
+#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -54,75 +54,89 @@
 
 namespace ASALI
 {
-    class IdealReactors: public ASALI::odeSolver
+    class asaliProperties : public Gtk::Window
     {
         public:
-
-            IdealReactors(unsigned int NC,
-                          unsigned int NR);
-
-            void set_T(const double T);
-            void set_p(const double p);
+            asaliProperties();
             
-            void set_k(const std::vector<double> k);
-            void set_Eatt(const std::vector<double> Eatt);
-            void set_n(const std::vector<double> n);
-            void set_a(const std::vector<double> a);
-            void set_b(const std::vector<double> b);
-            void set_index(const std::vector<unsigned int> index1,const std::vector<unsigned int> index2);
-            void set_MW(const std::vector<double> MW);
-            void set_stoich(const std::vector<std::vector<int> > stoich);
-            void set_converter(const double converter);
-            void set_reactor(const std::string reactor);
-            void set_residence_time(const double tau);
-            void set_inlet(const std::vector<double> rho0);
+            void destroy();
+            void build();
+            void savedMessage();
+            void set_type(const std::string type);
+            void set_n(const std::vector<std::string> n);
+            void set_reactions(const std::vector<std::vector<std::string> > name,
+                               const std::vector<std::vector<int> >         stoich);
+            void set_energy(const std::string energy);
+                               
 
-            void equations(std::vector<double> &dy, const std::vector<double> y,const double t);
+            void doneInput();
+            void convertToCaption(std::string& n);
+
+            std::vector<double>  get_MW()   {return MW_;};
+            std::vector<double>  get_Q()    {return Q_;};
             
-            void print(std::vector<double> &dy, const std::vector<double> y,const double t);
+            double               get_cp()   {return cp_;};
+            
+            std::vector<double>  get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
+            std::vector<double>  get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
+            double               get_MWmix(const std::vector<double> MW, const std::vector<double> x);
 
-            std::vector<double>               getTime()      {return t_;};
-            std::vector<std::vector<double> > getResults()   {return r_;};
 
-
-            virtual ~IdealReactors();
+            virtual ~asaliProperties();
             
         private:
         
-            unsigned int        NC_;
-            unsigned int        NR_;
-            unsigned int        iteration_;
+            std::string       getBeer();
+        
+            Gtk::Image        batchLogo_;
 
-            double              T_;
-            double              p_;
-            double              converter_;
-            double              tau_;
-            double              dt_;
+            Gtk::Box          mainBox_;
+            Gtk::Box          heatBox_;
 
-            std::vector<double> dy_;
-            std::vector<double> y_;
-            std::vector<double> k_;
-            std::vector<double> n_;
-            std::vector<double> Eatt_;
-            std::vector<double> a_;
-            std::vector<double> b_;
-            std::vector<double> MW_;
-            std::vector<double> R_;
-            std::vector<double> rho0_;
-            std::vector<double> t_;
-            
-            std::vector<std::string> names_;
-            
-            std::vector<std::vector<int> > stoich_;
-            
-            std::vector<unsigned int> index1_;
-            std::vector<unsigned int> index2_;
-            
-            std::vector<double> reactionRate(std::vector<double> rho);
+            Gtk::Grid         batchGrid_;
+            Gtk::Grid         cpGrid_;
 
-            std::string  reactor_;
+            Gtk::Label        nameLabel_;
+            Gtk::Label        mwLabel_;
+            Gtk::Label        reactionLabel_;
+            Gtk::Label        heatLabel_;
+            Gtk::Label        cpLabel_;
             
-            std::vector<std::vector<double> > r_;
+            Gtk::Button       doneButton_;
+            
+            Gtk::ComboBoxText heatCombo_;
+            Gtk::ComboBoxText cpCombo_;
+
+            Gtk::Entry          cpEntry_;
+            
+            std::vector<Gtk::Label *>   speciesNameLabel_;
+            std::vector<Gtk::Label *>   reactionNumberLabel_;
+
+            std::vector<Gtk::Entry *>   speciesMwEntry_;
+            std::vector<Gtk::Entry *>   speciesHeatEntry_;
+            
+            
+            unsigned int              NR_;
+            unsigned int              NC_;
+            
+            std::vector<std::string>  n_;
+            std::vector<std::string>  beer_;
+            std::vector<std::string>  small;
+            std::vector<std::string>  big;
+            
+            std::vector<double>       MW_;
+            std::vector<double>       Q_;
+            
+
+            std::string               type_;
+            std::string               energy_;
+            
+            double                    cp_;
+
+            std::vector<std::vector<std::string> > name_;
+            std::vector<std::vector<int> >         stoich_;
+
     };
 }
+
 #endif

@@ -129,3 +129,55 @@ void ConvertsToKelvin(double &v, std::string m)
     else if (m == "°F")
         v = (v + 459.67)*5./9.;
 }
+
+void ConvertsToCubeMeter(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "m\u00b3")
+        v=v;
+    else if(m == "mm\u00b3")
+        v*=1e-09;
+    else if(m == "cm\u00b3")
+        v*=1e-06;
+    else if(m == "dm\u00b3")
+        v*=1e-03;
+    else if(m == "l")
+        v*=1e-03;
+    else if(m == "cc")
+        v*=1e-06;
+}
+
+void ConvertsToSquareMeter(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "m\u00b2")
+        v=v;
+    else if(m == "mm\u00b2")
+        v*=1e-06;
+    else if(m == "cm\u00b2")
+        v*=1e-04;
+    else if(m == "dm\u00b2")
+        v*=1e-02;
+}
+
+void ConvertsToOneOverMeter(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "1/m")
+        v=v;
+    else if(m == "1/dm")
+        v*=1e01;
+    else if(m == "1/cm")
+        v*=1e02;
+    else if(m == "1/mm")
+        v*=1e03;
+}

@@ -21,7 +21,7 @@
 #                                                                                              #
 #   This file is part of ASALI.                                                                #
 #                                                                                              #
-#   ASALI is free software: you can redistribute it and/or modify                              #
+#   ASALI is free software you can redistribute it and/or modify                               #
 #   it under the terms of the GNU General Public License as published by                       #
 #   the Free Software Foundation, either version 3 of the License, or                          #
 #   (at your option) any later version.                                                        #
@@ -36,57 +36,37 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef ODESOLVER_H
-#define ODESOLVER_H
-
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <cfloat>
-#include <Eigen/Dense>
-
-namespace ASALI
+double MaxElement(const std::vector<double> v)
 {
-    class odeSolver
-    {
-        public:
-            odeSolver();
-
-            void setInitialConditions(const std::vector<double> y,const double t);
-
-            void solve(std::vector<double> &yEnd,const double tEnd);
-
-            virtual void equations(std::vector<double> &dy, const std::vector<double> y,const double t) = 0;
-            
-            virtual void print(std::vector<double> &dy, const std::vector<double> y,const double t) = 0;
-
-            virtual ~odeSolver();
-
-        protected:
-
-            unsigned int nEquations() {return NE_;};
-
-        private:
+    double max = 0.;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        max = std::max(v[i],max);
         
-
-            double eigenValue(const std::vector<double> y);
-       
-            double  t_;
-            double  h_;
-
-            unsigned int NE_;
-            
-            std::vector<double> y_;
-            std::vector<double> dy_;
-    };
+    return max;
 }
 
-#endif
+double MinElement(const std::vector<double> v)
+{
+    double min = 1e64;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        min = std::min(v[i],min);
+        
+    return min;
+}
+
+double SumElements(const std::vector<double> v)
+{
+    double sum = 0.;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        sum = sum + v[i];
+        
+    return sum;
+}
+
+double DotProduct(const std::vector<double> a,const std::vector<double> b)
+{
+    return std::inner_product(a.begin(), a.end(), b.begin(),0);
+}

@@ -1,10 +1,10 @@
 rm -f Asali*
 
-export CANTERA=/my/cantera/installation/
+export CANTERA=/usr/
 
-export EIGEN=/my/eigen/libraries/
+export EIGEN=$HOME/your/Eigen/folder/
 
 export ASALI_OS='-DASALI_ON_WINDOW=0'
 
-g++ -std=c++11 $ASALI_OS -pthread -w src/main.cpp src/odeSolver.C src/IdealReactors.C src/Asali.C src/canteraInterface.C src/speciesPopup.C -Isrc/ -I$EIGEN -I$CANTERA/include -L$CANTERA/lib `pkg-config gtkmm-3.0 --cflags --libs` -Wl,--start-group -lcantera -lblas -llapack -lcantera_fortran -Wl,--end-group -lgfortran -Wl,--no-as-needed -ldl -lpthread -lm -o Asali
+g++ -std=c++11 -Wall -Wextra  $ASALI_OS -pthread src/main.cpp src/Asali.C src/BatchInterface.C src/BatchEquations.C  src/canteraInterface.C src/speciesPopup.C src/asaliKinetic.C src/asaliProperties.C -Isrc/ -I$EIGEN -I$CANTERA/include -L$CANTERA/lib `pkg-config gtkmm-3.0 --cflags --libs` -Wl,--start-group -lcantera -lblas -llapack -lcantera_fortran -lsundials_ida -lsundials_cvodes -lsundials_nvecserial -Wl,--end-group -lgfortran -Wl,--no-as-needed -ldl -lpthread -lm -o Asali
 

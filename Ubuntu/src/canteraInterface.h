@@ -38,8 +38,10 @@
 
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
+#include "cantera/Interface.h"
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
+#include "cantera/kinetics.h"
 #include "cantera/transport/TransportData.h"
 #include <string>
 #include <iostream>
@@ -72,7 +74,8 @@ namespace ASALI
             void convertToCaption(std::string& n);
             
             double Temperature();
-            
+            double density();
+
             std::vector<int>  checkNames(std::vector<std::string>& name);
             
             

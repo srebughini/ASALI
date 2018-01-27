@@ -51,41 +51,47 @@ namespace ASALI
       thermoButton_("Thermodynamic properties"),
       allButton_("Thermodynamic & Transport properties"),
       equilibriumButton_("Themodynamic equilibrium (CANTERA)"),
-      reactorsButton_("Ideal reactors"),
+      reactorsButton_("Catalytic reactors"),
       vacuumButton_("Vacuum properties"),
       transportSaveButton_("Save"),
       thermoSaveButton_("Save"),
       allSaveButton_("Save"),
-      reactorSaveButton_("Save kinetic"),
       vacuumSaveButton_("Save"),
       equilibriumSaveButton_("Save"),
+      batchSaveButton_("Save"),
       calculateButton_("Calculate"),
       equationsButton_("Equations"),
-      runButton_("Run"),
+      batchRunButton_("Run"),
       startButton_("Start"),
-      loadKineticButton_("Load kinetic"),
       helpButton_("Available species"),
       defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
-      loadCanteraInputButton_("Load"),
+      loadCanteraInputButton_("Load CANTERA kinetic/properties file"),
+      noneInputButton_("User defined constant properties"),
+      batchAsaliPropertiesButton_("Properties"),
+      batchAsaliKineticButton_("Kinetics"),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       sBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
       condBox_(Gtk::ORIENTATION_VERTICAL),
       muBox_(Gtk::ORIENTATION_VERTICAL),
       diffBox_(Gtk::ORIENTATION_VERTICAL),
-      buttonsBox_(Gtk::ORIENTATION_VERTICAL),
-      chemistryButtonsBox_(Gtk::ORIENTATION_VERTICAL),
-      kBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumTempBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumPressBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumLengthBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumDiffBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumVelocityBox_(Gtk::ORIENTATION_VERTICAL),
       vacuumPathBox_(Gtk::ORIENTATION_VERTICAL),
-      EattBox_(Gtk::ORIENTATION_VERTICAL),
-      heading_("Author: Stefano Rebughini, PhD"
+      chemistryButtonsBox_(Gtk::ORIENTATION_VERTICAL),
+      batchMainBox_(Gtk::ORIENTATION_VERTICAL),
+      batchRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
+      batchRecapBox_(Gtk::ORIENTATION_VERTICAL),
+      coverageBox_(Gtk::ORIENTATION_VERTICAL),
+      buttonsBox_(Gtk::ORIENTATION_VERTICAL),
+      batchButtonBox_(Gtk::ORIENTATION_VERTICAL),
+      heading_("\nAuthor: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"
-               "\nhttps://github.com/srebughini"),
+               "\nhttps://github.com/srebughini/ASALI"
+               "\nhttps://sourceforge.net/projects/asali"),
       kineticLabel_("<b>Please, load your CANTERA kinetic/propeties file</b>"
                     "<b>\nor select the default one (database/data.xml)</b>"
                     "\n\nLoading might take several minutes, depending"
@@ -106,79 +112,100 @@ namespace ASALI
       vacuumKnudsenLabel_("Knudsen number"),
       vacuumVelocityLabel_("Mean gas velocity"),
       vacuumPathLabel_("Mean free path"),
-      reactorsTypeLabel_("Type"),
-      reactorsTimeLabel_("Residence time"),
-      reactorsReactionLabel_("Reactions"),
-      kLabel_("k"),
-      nLabel_("n"),
-      EattLabel_("Eatt"),
-      aLabel_("a"),
-      bLabel_("b"),
+      reactorsTypeLabel_("Reactor type"),
+      kineticTypeLabel_("Kinetic type"),
       initialStateLabel_("Initial state"),
       finalStateLabel_("Final state"),
+      batchVolumeLabel_("Volume"),
+      batchLoadLabel_("Catalyst load"),
+      batchTimeLabel_("Integration time"),
+      batchSaveLabel_("Save solution every "),
+      batchResolutionLabel_("Working at constant "),
+      batchEnergyLabel_("Energy"),
+      coverageLabel_("Please, insert the initial coverage composition"),
       bigLogo_("images/BigLogo.tiff"),
       chemistrySmallLogo_("images/SmallLogo.tiff"),
       smallLogo_("images/SmallLogo.tiff"),
-      equationsImage_("images/ReactorsEquations.tiff"),
-      reactionImage_("images/Reaction.tiff"),
+      batchLogo1_("images/BatchLogo.tiff"),
+      batchLogo2_("images/BatchLogo.tiff"),
       Kn_(-1),
       diffK_(-1),
       vK_(-1),
       lK_(-1),
       OP_(3),
       NS_(10),
-      NR_(3),
-      defaultKinetic_(false)
+      SURF_NS_(5),
+      kineticType_("zero"),
+      kineticTypeOld_("zero"),
+      coverage_("none")
     {
-        exitButton_.resize(11);
-        backButton_.resize(11);
-        nextButton_.resize(11);
+        #include "Beer.H"
+
+        batch_           = new ASALI::BatchEquations();
+        asaliKinetic_    = new ASALI::asaliKinetic();
+        asaliProperties_ = new ASALI::asaliProperties();
+
+        exitButton_.resize(15);
+        backButton_.resize(15);
+        nextButton_.resize(15);
+        mainMenuButton_.resize(15);
         for (unsigned int i=0;i<exitButton_.size();i++)
         {
             exitButton_[i] = new Gtk::Button("Exit");
             exitButton_[i]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
             backButton_[i] = new Gtk::Button("< Back");
             nextButton_[i] = new Gtk::Button("Next >");
+            mainMenuButton_[i] = new Gtk::Button("Menu");
+            mainMenuButton_[i]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::mainMenu));
         }
 
-        this->set_border_width(15);
-        this->set_title("ASALI");
-        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.tiff");
+        //First window
+        {
+            this->set_border_width(15);
+            this->set_title("ASALI");
+            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
+            this->set_icon_from_file("images/Icon.tiff");
 
-        //Add background grid
-        this->add(grid_);
+            //Add background grid
+            this->add(grid_);
 
-        //Adding the logo (position 1,0)
-        grid_.attach(logoEventBox_,1,0,1,1);
-        grid_.set_row_spacing(10);
-        logoEventBox_.add(bigLogo_);
-        logoEventBox_.set_events(Gdk::BUTTON_PRESS_MASK);
-        logoEventBox_.signal_button_press_event().connect(sigc::mem_fun(*this,&Asali::chemistryMenu1));
-        logoEventBox_.signal_realize().connect(sigc::mem_fun(*this,&Asali::changeCursor));
+            //Adding the logo (position 1,0)
+            grid_.attach(logoEventBox_,1,0,1,1);
+            grid_.set_row_spacing(10);
+            logoEventBox_.add(bigLogo_);
+            logoEventBox_.set_events(Gdk::BUTTON_PRESS_MASK);
+            logoEventBox_.signal_button_press_event().connect(sigc::mem_fun(*this,&Asali::chemistryMenu1));
+            logoEventBox_.signal_realize().connect(sigc::mem_fun(*this,&Asali::changeCursor));
 
-        //Adding the heading (position 1,1)
-        heading_.set_justify(Gtk::JUSTIFY_LEFT);
-        grid_.attach(heading_,1,1,1,1);
+            //Adding beer
+            beerLabel_.set_text(this->getBeer());
+            beerLabel_.set_use_markup(true);
+            beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
+            grid_.attach(beerLabel_,1,1,1,1);
 
-        //Adding starting button (position 1,2)
-        grid_.attach(startButtonBox_,1,2,1,1);
-        startButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
-        startButtonBox_.pack_start(startButton_, Gtk::PACK_SHRINK);
-        startButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
+            //Adding the heading (position 1,1)
+            heading_.set_justify(Gtk::JUSTIFY_LEFT);
+            grid_.attach(heading_,1,2,1,1);
 
-        //Adding discrimer button (position 0,2)
-        grid_.attach(discrimerButtonBox_,0,2,1,1);
-        discrimerButtonBox_.set_layout(Gtk::BUTTONBOX_START);
-        discrimerButtonBox_.pack_start(discrimerButton_, Gtk::PACK_SHRINK);
-        discrimerButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::discrimer));
+            //Adding starting button (position 1,2)
+            grid_.attach(startButtonBox_,1,3,1,1);
+            startButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
+            startButtonBox_.pack_start(startButton_, Gtk::PACK_SHRINK);
+            startButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
 
-        //Adding exit button (position 2,2)
-        grid_.attach(exitButtonBox_,2,2,1,1);
-        exitButtonBox_.set_layout(Gtk::BUTTONBOX_END);
-        exitButtonBox_.pack_start(*exitButton_[0], Gtk::PACK_SHRINK);
+            //Adding discrimer button (position 0,2)
+            grid_.attach(discrimerButtonBox_,0,3,1,1);
+            discrimerButtonBox_.set_layout(Gtk::BUTTONBOX_START);
+            discrimerButtonBox_.pack_start(discrimerButton_, Gtk::PACK_SHRINK);
+            discrimerButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::discrimer));
 
-        this->show_all_children();
+            //Adding exit button (position 2,2)
+            grid_.attach(exitButtonBox_,2,3,1,1);
+            exitButtonBox_.set_layout(Gtk::BUTTONBOX_END);
+            exitButtonBox_.pack_start(*exitButton_[0], Gtk::PACK_SHRINK);
+
+            this->show_all_children();
+        }
 
         //Chemistry menu
         {
@@ -197,7 +224,9 @@ namespace ASALI
             defaultCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::defaultCanteraInput));
             chemistryButtonsBox_.pack_start(loadCanteraInputButton_, Gtk::PACK_SHRINK);
             loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::loadCanteraInput));
-
+            chemistryButtonsBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
+            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::noneInput));
+            
             //Adding exit button
             chemistryButtonsBox_.pack_start(*exitButton_[10], Gtk::PACK_SHRINK);
         }
@@ -227,7 +256,7 @@ namespace ASALI
             buttonsBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
             equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::equilibriumMenu));
             buttonsBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
-            reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorsMenu1));
+            reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
 
             //Adding exit button
             buttonsBox_.pack_start(*exitButton_[1], Gtk::PACK_SHRINK);
@@ -298,241 +327,269 @@ namespace ASALI
             //Add back button
             inputGrid_.attach(*backButton_[0],0,13,1,1);
             backButton_[0]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::mainMenu));
+
             
             //Done buttons
             doneThermoButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermoResults));
             doneTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::transportResults));
             doneAllButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::allResults));
-            nextButton_[0]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorsMenu2));
             nextButton_[2]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::equilibriumResults));
+
+            //Go to batch recap (when ASALI kinetic is used)
+            nextButton_[11]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchRecap));
+
+            //Go to batch coverage (when CANTERA kinetic is used)
+            nextButton_[13]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchCoverage));
+            
+            //Go back to reactor input
+            backButton_[11]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[13]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
         }
 
-        //Reactors menu
+        //Coverage menu
+        {
+            coverageBox_.set_halign(Gtk::ALIGN_START);
+            coverageBox_.set_spacing(10);
+            coverageBox_.pack_start(coverageLabel_, Gtk::PACK_SHRINK);
+            coverageBox_.pack_start(coverageInputGrid_, Gtk::PACK_SHRINK);
+            
+            coverageInputGrid_.set_column_homogeneous(true);
+            coverageInputGrid_.set_column_spacing(10);
+            coverageInputGrid_.set_row_homogeneous(true);
+            coverageInputGrid_.set_row_spacing(10);
+
+            coverageNameEntry_.resize(SURF_NS_);
+            coverageFractionEntry_.resize(SURF_NS_);
+            for (unsigned int i=0;i<SURF_NS_;i++)
+            {
+                coverageNameEntry_[i]     = new Gtk::Entry();
+                coverageFractionEntry_[i] = new Gtk::Entry();
+
+                coverageInputGrid_.attach(*coverageNameEntry_[i],0,i,1,1);
+                coverageNameEntry_[i]->set_max_length(10);
+                coverageInputGrid_.attach(*coverageFractionEntry_[i],1,i,1,1);
+                coverageFractionEntry_[i]->set_max_length(10);
+                if ( i == 0 )
+                {
+                    coverageNameEntry_[i]->set_text("Pt(s)");
+                    coverageFractionEntry_[i]->set_text("1");
+                }
+            }
+
+            //Add back button for batch
+            backButton_[14]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchMenu));
+
+            //Add next button for batch
+            nextButton_[14]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchRecap));
+        }
+
+        //Reactors/kinetic menu
         {
             reactorsGrid_.set_column_spacing(10);
             reactorsGrid_.set_row_spacing(10);
+            reactorsGrid_.set_column_homogeneous(true);
 
-            reactorsGrid_.attach(reactorsDimensionGrid_,0,0,1,1);
-            
-            
-            reactorsDimensionGrid_.set_column_spacing(10);
-            reactorsDimensionGrid_.set_row_spacing(10);
-            reactorsDimensionGrid_.set_column_homogeneous(true);
-            
-            
-            //Reactor type selector
-            reactorsDimensionGrid_.attach(reactorsTypeLabel_,0,0,1,1);
-            reactorsDimensionGrid_.attach(reactorsTypeCombo_,1,0,1,1);
-            reactorsTypeCombo_.append("PFR");
-            reactorsTypeCombo_.append("CSTR");
-            reactorsTypeCombo_.append("BATCH");
+            reactorsGrid_.attach(reactorsTypeLabel_,0,0,1,1);
+            reactorsGrid_.attach(reactorsTypeCombo_,1,0,1,1);
+            reactorsTypeCombo_.append("1D Pseudo-homogeneous Plug Flow Reactor");
+            reactorsTypeCombo_.append("1D Heterogeneous Plug Flow Reactor");
+            reactorsTypeCombo_.append("2D Pseudo-homogeneous Plug Flow Reactor");
+            reactorsTypeCombo_.append("Batch Reactor");
             reactorsTypeCombo_.set_active(0);
+            
+            reactorsGrid_.attach(kineticTypeLabel_,0,1,1,1);
+            reactorsGrid_.attach(kineticTypeCombo_,1,1,1,1);
+            kineticTypeCombo_.append("CANTERA");
+            kineticTypeCombo_.append("ASALI");
+            kineticTypeCombo_.set_active(0);
 
-            //Add time selector
-            reactorsDimensionGrid_.attach(reactorsTimeLabel_,0,2,1,1);
-            reactorsDimensionGrid_.attach(reactorsTimeBox_,1,2,1,1);
-            reactorsTimeBox_.set_halign(Gtk::ALIGN_START);
-            reactorsTimeBox_.set_spacing(10);
-            reactorsTimeBox_.pack_start(reactorsTimeEntry_, Gtk::PACK_SHRINK);
-            reactorsTimeEntry_.set_max_length(10);
-            reactorsTimeEntry_.set_text("1");
-            reactorsTimeBox_.pack_start(reactorsTimeCombo_, Gtk::PACK_SHRINK);
-            reactorsTimeCombo_.append("s               ");
-            reactorsTimeCombo_.append("min             ");
-            reactorsTimeCombo_.append("h               ");
-            reactorsTimeCombo_.set_active(0);
-            
-            
-            reactorsGrid_.attach(reactionImage_,2,0,1,1);
-            
-            //Reaction label
-            reactorsGrid_.attach(reactorsReactionLabel_,0,1,1,1);
-            
-            //Reactions
-            reactorsReactionBox_.resize(NR_+1);
-            reactionNumbers_.resize(NR_);
-            stoichCombo_.resize(NR_);
-            reactionEntry_.resize(NR_);
-            reactionLabel_.resize(NR_);
-            for (unsigned int i=0;i<NR_;i++)
+            reactorsGrid_.attach(*backButton_[5],0,2,1,1);
+            reactorsGrid_.attach(*nextButton_[5],1,2,1,1);
+            backButton_[5]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::mainMenu));
+            nextButton_[5]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),false));
+        }
+        
+        //Batch reactor
+        {
+            batchMainBox_.set_halign(Gtk::ALIGN_START);
+            batchMainBox_.set_spacing(10);
+            batchMainBox_.pack_start(batchLogo1_, Gtk::PACK_SHRINK);
+            batchMainBox_.pack_start(batchBox_, Gtk::PACK_SHRINK);
+
+            batchBox_.set_halign(Gtk::ALIGN_START);
+            batchBox_.set_spacing(10);
+            batchBox_.pack_start(batchPropertiesGrid_, Gtk::PACK_SHRINK);
             {
-                reactorsReactionBox_[i] = new Gtk::Box();
-                reactorsGrid_.attach(*reactorsReactionBox_[i],0,2+i,1,1);
-                reactorsReactionBox_[i]->set_halign(Gtk::ALIGN_START);
-                reactorsReactionBox_[i]->set_spacing(10);
+                batchPropertiesGrid_.set_column_spacing(10);
+                batchPropertiesGrid_.set_row_spacing(10);
+                batchPropertiesGrid_.set_column_homogeneous(true);
+
+                //Volume
+                batchPropertiesGrid_.attach(batchVolumeLabel_,0,0,1,1);
+                batchPropertiesGrid_.attach(batchVolumeEntry_,1,0,1,1);
+                batchVolumeEntry_.set_text("1");
+                batchPropertiesGrid_.attach(batchVolumeCombo_,2,0,1,1);
+                batchVolumeCombo_.append("m\u00b3");
+                batchVolumeCombo_.append("dm\u00b3");
+                batchVolumeCombo_.append("cm\u00b3");
+                batchVolumeCombo_.append("mm\u00b3");
+                batchVolumeCombo_.append("cc");
+                batchVolumeCombo_.append("l");
+                batchVolumeCombo_.set_active(0);
+
+                //Catalytic load
+                batchPropertiesGrid_.attach(batchLoadLabel_,0,1,1,1);
+                batchPropertiesGrid_.attach(batchLoadEntry_,1,1,1,1);
+                batchLoadEntry_.set_text("1");
+                batchPropertiesGrid_.attach(batchLoadCombo_,2,1,1,1);
+                batchLoadCombo_.append("1/m");
+                batchLoadCombo_.append("1/dm");
+                batchLoadCombo_.append("1/cm");
+                batchLoadCombo_.append("1/mm");
+                batchLoadCombo_.set_active(0);
+
+                //Time
+                batchPropertiesGrid_.attach(batchTimeLabel_,0,2,1,1);
+                batchPropertiesGrid_.attach(batchTimeEntry_,1,2,1,1);
+                batchTimeEntry_.set_text("1");
+                batchPropertiesGrid_.attach(batchTimeCombo_,2,2,1,1);
+                batchTimeCombo_.append("s");
+                batchTimeCombo_.append("min");
+                batchTimeCombo_.append("h");
+                batchTimeCombo_.append("d");
+                batchTimeCombo_.set_active(0);
+
+                //Save options
+                batchPropertiesGrid_.attach(batchSaveLabel_,0,3,1,1);
+                batchPropertiesGrid_.attach(batchSaveEntry_,1,3,1,1);
+                batchSaveEntry_.set_text("0.1");
+                batchPropertiesGrid_.attach(batchSaveCombo_,2,3,1,1);
+                batchSaveCombo_.append("s");
+                batchSaveCombo_.append("min");
+                batchSaveCombo_.append("h");
+                batchSaveCombo_.append("d");
+                batchSaveCombo_.set_active(0);
+
+                //Resolution type
+                batchPropertiesGrid_.attach(batchResolutionLabel_,0,4,1,1);
+                batchPropertiesGrid_.attach(batchResolutionCombo_,1,4,1,1);
+                batchResolutionCombo_.append("volume");
+                batchResolutionCombo_.append("pressure");
+                batchResolutionCombo_.set_active(1);
+
+                //Energy
+                batchPropertiesGrid_.attach(batchEnergyLabel_,0,5,1,1);
+                batchPropertiesGrid_.attach(batchEnergyCombo_,1,5,1,1);
+                batchEnergyCombo_.append("on");
+                batchEnergyCombo_.append("off");
+                batchEnergyCombo_.set_active(1);
                 
-                reactionNumbers_[i]    = new Gtk::Label(Glib::Ascii::dtostr(i+1) + ":");
-                reactorsReactionBox_[i]->pack_start(*reactionNumbers_[i], Gtk::PACK_SHRINK);
-                
-                stoichCombo_[i].resize(4);
-                reactionEntry_[i].resize(4);
-                reactionLabel_[i].resize(3);
-                for (unsigned int j=0;j<4;j++)
+                //Buttons
+                batchPropertiesGrid_.attach(*backButton_[10],0,6,1,1);
+                batchPropertiesGrid_.attach(*mainMenuButton_[10],1,6,1,1);
+                batchPropertiesGrid_.attach(*nextButton_[10],2,6,1,1);
+                backButton_[10]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
+                nextButton_[10]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchMenu));
+            }
+
+            batchRecapMainBox_.set_halign(Gtk::ALIGN_START);
+            batchRecapMainBox_.set_spacing(10);
+            batchRecapMainBox_.pack_start(batchLogoBox_, Gtk::PACK_SHRINK);
+            {
+                batchLogoBox_.set_halign(Gtk::ALIGN_START);
+                batchLogoBox_.set_spacing(10);
+                batchLogoBox_.pack_start(batchLogo2_, Gtk::PACK_SHRINK);
+                batchLogoBox_.pack_start(batchButtonBox_, Gtk::PACK_SHRINK);
                 {
-                    stoichCombo_[i][j]  = new Gtk::ComboBoxText();
-                    reactionEntry_[i][j] = new Gtk::Entry();
+                    batchButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
+                    batchButtonBox_.set_spacing(10);
+                    batchButtonBox_.pack_start(batchRunButton_, Gtk::PACK_SHRINK);
+                    batchRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchRun));
+                    batchButtonBox_.pack_start(batchSaveButton_, Gtk::PACK_SHRINK);
+                    batchSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchSave));
                     
-                    for (unsigned int k=1;k<10;k++)
-                    {
-                        stoichCombo_[i][j]->append(Glib::Ascii::dtostr(k));
-                    }
-                    stoichCombo_[i][j]->set_active(0);
-                    reactionEntry_[i][j]->set_max_length(5);
-                    reactionEntry_[i][j]->set_width_chars(5);
-                    reactorsReactionBox_[i]->pack_start(*stoichCombo_[i][j], Gtk::PACK_SHRINK);
-                    reactorsReactionBox_[i]->pack_start(*reactionEntry_[i][j], Gtk::PACK_SHRINK);
-                    
-                    if ( j == 0 )
-                    {
-                        reactionLabel_[i][j] = new Gtk::Label("+");
-                        reactorsReactionBox_[i]->pack_start(*reactionLabel_[i][j], Gtk::PACK_SHRINK);
-                    }
-                    else if ( j == 1 )
-                    {
-                        reactionLabel_[i][j] = new Gtk::Label("---->");
-                        reactorsReactionBox_[i]->pack_start(*reactionLabel_[i][j], Gtk::PACK_SHRINK);
-                    }
-                    else if ( j == 2 )
-                    {
-                        reactionLabel_[i][j] = new Gtk::Label("+");
-                        reactorsReactionBox_[i]->pack_start(*reactionLabel_[i][j], Gtk::PACK_SHRINK);
-                    }
+                    batchAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
+                    batchAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
                 }
             }
-            
-            
-            {
-                stoichCombo_[0][0]->set_active(1);
-                reactionEntry_[0][0]->set_text("H2");
-                
-                stoichCombo_[0][1]->set_active(0);
-                reactionEntry_[0][1]->set_text("O2");
-                
-                stoichCombo_[0][2]->set_active(1);
-                reactionEntry_[0][2]->set_text("H2O");
-            }
 
-            //Reaction parameters
-            reactorsGrid_.attach(reactorsParameterGridLabels_,2,1,1,1);
+            batchRecapMainBox_.pack_start(batchRecapBox_, Gtk::PACK_SHRINK);
             {
-                reactorsParameterGridLabels_.set_column_homogeneous(true);
-                reactorsParameterGridLabels_.set_column_spacing(10);
-                reactorsParameterGridLabels_.set_row_homogeneous(true);
-                reactorsParameterGridLabels_.set_row_spacing(10);
-                reactorsParameterGridLabels_.attach(kBox_,0,0,1,1);
-                kBox_.set_spacing(10);
-                kBox_.pack_start(kLabel_,Gtk::PACK_SHRINK);
-                kBox_.pack_start(kCombo_, Gtk::PACK_SHRINK);
-                kCombo_.append("m\u00b3/s/K/mol");
-                kCombo_.append("L/s/K/mol");
-                kCombo_.append("cc/s/K/mol");
-                kCombo_.append("m\u00b3/s/K/kmol");
-                kCombo_.append("L/s/K/kmol");
-                kCombo_.append("cc/s/K/kmol");
-                kCombo_.set_active(0);
-
-                reactorsParameterGridLabels_.attach(nLabel_,1,0,1,1);
-                reactorsParameterGridLabels_.attach(EattBox_,2,0,1,1);
-                EattBox_.set_spacing(10);
-                EattBox_.pack_start(EattLabel_,Gtk::PACK_SHRINK);
-                EattBox_.pack_start(EattCombo_, Gtk::PACK_SHRINK);
-                EattCombo_.append("J/mol");
-                EattCombo_.append("J/kmol");
-                EattCombo_.append("cal/mol");
-                EattCombo_.append("cal/kmol");
-                EattCombo_.set_active(0);
-                reactorsParameterGridLabels_.attach(aLabel_,3,0,1,1);
-                reactorsParameterGridLabels_.attach(bLabel_,4,0,1,1);
-                
-                reactorsParameterGrid_.resize(NR_);
-                kEntry_.resize(NR_);
-                nEntry_.resize(NR_);
-                EattEntry_.resize(NR_);
-                aEntry_.resize(NR_);
-                bEntry_.resize(NR_);
-                for (unsigned int i=0;i<NR_;i++)
+                batchRecapBox_.set_halign(Gtk::ALIGN_START);
+                batchRecapBox_.set_spacing(10);
+                batchRecapBox_.pack_start(batchRecapGrid_, Gtk::PACK_SHRINK);
                 {
-                    reactorsParameterGrid_[i] = new Gtk::Grid();
-                    reactorsGrid_.attach(*reactorsParameterGrid_[i],2,2+i,1,1);
-                    reactorsParameterGrid_[i]->set_column_homogeneous(true);
-                    reactorsParameterGrid_[i]->set_column_spacing(10);
-                    reactorsParameterGrid_[i]->set_row_homogeneous(true);
-                    reactorsParameterGrid_[i]->set_row_spacing(10);
-                
-                    kEntry_[i]    = new Gtk::Entry();
-                    kEntry_[i]->set_max_length(10);
-                    kEntry_[i]->set_width_chars(8);
-                    nEntry_[i]    = new Gtk::Entry();
-                    nEntry_[i]->set_max_length(10);
-                    nEntry_[i]->set_width_chars(8);
-                    EattEntry_[i] = new Gtk::Entry();
-                    EattEntry_[i]->set_max_length(10);
-                    EattEntry_[i]->set_width_chars(8);
-                    aEntry_[i]    = new Gtk::Entry();
-                    aEntry_[i]->set_max_length(10);
-                    aEntry_[i]->set_width_chars(8);
-                    bEntry_[i]    = new Gtk::Entry();
-                    bEntry_[i]->set_max_length(10);
-                    bEntry_[i]->set_width_chars(8);
-
-                    reactorsParameterGrid_[i]->attach(*kEntry_[i]   ,0,0+i,1,1);
-                    reactorsParameterGrid_[i]->attach(*nEntry_[i]   ,1,0+i,1,1);
-                    reactorsParameterGrid_[i]->attach(*EattEntry_[i],2,0+i,1,1);
-                    reactorsParameterGrid_[i]->attach(*aEntry_[i]   ,3,0+i,1,1);
-                    reactorsParameterGrid_[i]->attach(*bEntry_[i]   ,4,0+i,1,1);
+                    batchRecapGrid_.set_column_spacing(10);
+                    batchRecapGrid_.set_row_spacing(10);
+                    batchRecapGrid_.set_column_homogeneous(true);
                     
-                    if ( i == 0 )
-                    {
-                        kEntry_[i]->set_text("100");
-                        nEntry_[i]->set_text("0");
-                        EattEntry_[i]->set_text("0");
-                        aEntry_[i]->set_text("1");
-                        bEntry_[i]->set_text("0");
-                    }
-                        
+                    //Volume
+                    batchRecapVolumeLabel_.set_text("Volume");
+                    batchRecapGrid_.attach(batchRecapVolumeLabel_,0,0,1,1);
+                    batchRecapVolumeUDLabel_.set_text("m\u00b3");
+                    batchRecapGrid_.attach(batchRecapVolumeUDLabel_,2,0,1,1);
+                    batchRecapGrid_.attach(batchRecapVolumeValueLabel_,1,0,1,1);
+                    
+                    //Temperature
+                    batchRecapTemperatureLabel_.set_text("Temperature");
+                    batchRecapGrid_.attach(batchRecapTemperatureLabel_,0,1,1,1);
+                    batchRecapTemperatureUDLabel_.set_text("K");
+                    batchRecapGrid_.attach(batchRecapTemperatureUDLabel_,2,1,1,1);
+                    batchRecapGrid_.attach(batchRecapTemperatureValueLabel_,1,1,1,1);
 
+                    //Pressure
+                    batchRecapPressureLabel_.set_text("Pressure");
+                    batchRecapGrid_.attach(batchRecapPressureLabel_,0,2,1,1);
+                    batchRecapPressureUDLabel_.set_text("Pa");
+                    batchRecapGrid_.attach(batchRecapPressureUDLabel_,2,2,1,1);
+                    batchRecapGrid_.attach(batchRecapPressureValueLabel_,1,2,1,1);
+
+                    //Mole/Mass fraction
+                    batchRecapGrid_.attach(batchRecapFractionLabel_,0,3,1,1);
+                    batchRecapGrid_.attach(batchRecapFractionNameLabel_,1,3,1,1);
+                    batchRecapGrid_.attach(batchRecapFractionValueLabel_,2,3,1,1);
+
+                    //Load
+                    batchRecapLoadLabel_.set_text("Catalyst load");
+                    batchRecapGrid_.attach(batchRecapLoadLabel_,0,4,1,1);
+                    batchRecapLoadUDLabel_.set_text("1/m");
+                    batchRecapGrid_.attach(batchRecapLoadUDLabel_,2,4,1,1);
+                    batchRecapGrid_.attach(batchRecapLoadValueLabel_,1,4,1,1);
+                    
+                    //Time
+                    batchRecapTimeLabel_.set_text("Integration time");
+                    batchRecapGrid_.attach(batchRecapTimeLabel_,0,5,1,1);
+                    batchRecapTimeUDLabel_.set_text("s");
+                    batchRecapGrid_.attach(batchRecapTimeUDLabel_,2,5,1,1);
+                    batchRecapGrid_.attach(batchRecapTimeValueLabel_,1,5,1,1);
+                    
+                    //Save
+                    batchRecapSaveLabel_.set_text("Save solution every");
+                    batchRecapGrid_.attach(batchRecapSaveLabel_,0,6,1,1);
+                    batchRecapSaveUDLabel_.set_text("s");
+                    batchRecapGrid_.attach(batchRecapSaveUDLabel_,2,6,1,1);
+                    batchRecapGrid_.attach(batchRecapSaveValueLabel_,1,6,1,1);
+                    
+                    //Resolution type
+                    batchRecapResolutionLabel_.set_text("Working at constant");
+                    batchRecapGrid_.attach(batchRecapResolutionLabel_,0,7,1,1);
+                    batchRecapGrid_.attach(batchRecapResolutionValueLabel_,1,7,1,1);
+
+                    //Energy type
+                    batchRecapEnergyLabel_.set_text("Energy balance is");
+                    batchRecapGrid_.attach(batchRecapEnergyLabel_,0,8,1,1);
+                    batchRecapGrid_.attach(batchRecapEnergyValueLabel_,1,8,1,1);
+
+                    //Kinetic type
+                    batchRecapKineticLabel_.set_text("Kinetic model from");
+                    batchRecapGrid_.attach(batchRecapKineticLabel_,0,9,1,1);
+                    batchRecapGrid_.attach(batchRecapKineticValueLabel_,1,9,1,1);
+                    //Buttons
+                    batchRecapGrid_.attach(*backButton_[12],0,10,1,1);
+                    batchRecapGrid_.attach(*mainMenuButton_[12],1,10,1,1);
+                    batchRecapGrid_.attach(*exitButton_[12],2,10,1,1);
+                    backButton_[12]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchMenu));
                 }
-            }
-            
-            //Buttons
-            {
-                reactorsButtonGrid_.resize(2);
-                for (unsigned int i=0;i<2;i++)
-                {
-                    reactorsButtonGrid_[i] = new Gtk::Grid();
-                    reactorsButtonGrid_[i]->set_column_homogeneous(true);
-                    reactorsButtonGrid_[i]->set_column_spacing(10);
-                    reactorsButtonGrid_[i]->set_row_homogeneous(true);
-                    reactorsButtonGrid_[i]->set_row_spacing(10);
-                }
-
-                reactorsGrid_.attach(*reactorsButtonGrid_[0],0,2+NR_,1,1);
-                reactorsGrid_.attach(*reactorsButtonGrid_[1],2,2+NR_,1,1);
-
-                reactorsButtonGrid_[0]->attach(*backButton_[5],0,0,1,1);
-                backButton_[5]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorsMenu1));
-                reactorsButtonGrid_[0]->attach(equationsButton_,1,0,1,1);
-                equationsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::equations));
-                reactorsButtonGrid_[0]->attach(loadKineticButton_,2,0,1,1);
-                loadKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::loadKineticInput));
-
-                for (unsigned int i=1;i<3;i++)
-                {
-                    empty_.push_back(new Gtk::Label(""));
-                    reactorsButtonGrid_[0]->attach(*empty_[empty_.size() - 1],1+i,0,1,1);
-                }
-                
-                for (unsigned int i=0;i<1;i++)
-                {
-                    empty_.push_back(new Gtk::Label(""));
-                    reactorsButtonGrid_[1]->attach(*empty_[empty_.size() - 1],i,NR_,1,1);
-                }
-
-                reactorsButtonGrid_[1]->attach(reactorSaveButton_,1,NR_,1,1);
-                reactorSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::saveKineticInput));
-                reactorsButtonGrid_[1]->attach(runButton_,2,NR_,1,1);
-                runButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::runReactors));
-                reactorsButtonGrid_[1]->attach(*exitButton_[7],3,NR_,1,1);
             }
         }
 
@@ -780,6 +837,11 @@ namespace ASALI
     {
     }
 
+    #include "PropertiesFunctions.H"
+    #include "ReactorsFunctions.H"
+    #include "VacuumFunctions.H"
+    #include "EquilibriumFunctions.H"
+
     void Asali::changeCursor()
     {
         logoEventBox_.get_window()->set_cursor(Gdk::Cursor::create(Gdk::HAND1));
@@ -832,1908 +894,10 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void Asali::transportMenu()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Transport properties");
-        
-        //Add thermo menu grid
-        this->add(inputGrid_);
-        
-        if ( window_ == "transport" )
-        {
-            transportGrid_.remove(*backButton_[2]);
-            transportGrid_.remove(*exitButton_[4]);
-            transportGrid_.remove(transportSaveButton_);
-            this->cleanTransport();
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "thermo" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "all" )
-        {
-            this->cleanAll();
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "transportMenu" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "allMenu" )
-        {
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "thermoMenu" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "reactorsMenu" )
-        {
-            inputGrid_.remove(*nextButton_[0]);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "equilibriumMenu" )
-        {
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else if ( window_ == "equilibrium" )
-        {
-            equilibriumGrid_.remove(*backButton_[8]);
-            equilibriumGrid_.remove(*exitButton_[8]);
-            equilibriumGrid_.remove(equilibriumSaveButton_);
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-        else
-        {
-            inputGrid_.attach(doneTransportButton_,2,13,1,1);
-            window_ = "transportMenu";
-        }
-
-        //Resize
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height ());
-        this->show_all_children();
-    }
-
-    void Asali::thermoMenu()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Thermodynamic properties");
-        
-        //Add thermo menu grid
-        this->add(inputGrid_);
-
-        if ( window_ == "thermo" )
-        {
-            thermoGrid_.remove(*backButton_[1]);
-            thermoGrid_.remove(*exitButton_[5]);
-            thermoGrid_.remove(thermoSaveButton_);
-            this->cleanThermo();
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "transport" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "all" )
-        {
-            this->cleanAll();
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "transportMenu" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "allMenu" )
-        {
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "thermoMenu" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "reactorsMenu" )
-        {
-            inputGrid_.remove(*nextButton_[0]);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "equilibriumMenu" )
-        {
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else if ( window_ == "equilibrium" )
-        {
-            equilibriumGrid_.remove(*backButton_[8]);
-            equilibriumGrid_.remove(*exitButton_[8]);
-            equilibriumGrid_.remove(equilibriumSaveButton_);
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-        else
-        {
-            inputGrid_.attach(doneThermoButton_,2,13,1,1);
-            window_ = "thermoMenu";
-        }
-
-        //Resize
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height ());
-        this->show_all_children();
-    }
-
-    void Asali::allMenu()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Thermodynamic & Transport properties");
-        
-        //Add thermo menu grid
-        this->add(inputGrid_);
-
-        if ( window_ == "all" )
-        {
-            allGrid_.remove(*backButton_[3]);
-            allGrid_.remove(*exitButton_[6]);
-            allGrid_.remove(allSaveButton_);
-            this->cleanAll();
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "transport" )
-        {
-            this->cleanTransport();
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "thermo" )
-        {
-            this->cleanThermo();
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "transportMenu" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "allMenu" )
-        {
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "thermoMenu" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "reactorsMenu" )
-        {
-            inputGrid_.remove(*nextButton_[0]);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "equilibriumMenu" )
-        {
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else if ( window_ == "equilibrium" )
-        {
-            equilibriumGrid_.remove(*backButton_[8]);
-            equilibriumGrid_.remove(*exitButton_[8]);
-            equilibriumGrid_.remove(equilibriumSaveButton_);
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-        else
-        {
-            inputGrid_.attach(doneAllButton_,2,13,1,1);
-            window_ = "allMenu";
-        }
-
-        //Resize
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height ());
-        this->show_all_children();
-    }
-
-    void Asali::vacuumMenu()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Vacuum properties");
-        
-        //Add thermo menu grid
-        this->add(vacuumGrid_);
-        
-        this->vacuumRun();
-        
-        //Resize
-        this->resize(vacuumGrid_.get_width(),vacuumGrid_.get_height ());
-        this->show_all_children();
-    }
-
-    void Asali::equilibriumMenu()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Thermodynamic equilibrium");
-        
-        //Add thermo menu grid
-        this->add(inputGrid_);
-        
-        if ( window_ == "transport" )
-        {
-            this->cleanTransport();
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "thermo" )
-        {
-            this->cleanThermo();
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "all" )
-        {
-            this->cleanAll();
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "transportMenu" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "allMenu" )
-        {
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "thermoMenu" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "equilibriumMenu" )
-        {
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else if ( window_ == "equilibrium" )
-        {
-            equilibriumGrid_.remove(*backButton_[8]);
-            equilibriumGrid_.remove(*exitButton_[8]);
-            equilibriumGrid_.remove(equilibriumSaveButton_);
-            inputGrid_.remove(*nextButton_[2]);
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-        else
-        {
-            inputGrid_.attach(*nextButton_[2],2,13,1,1);
-            window_ = "equilibriumMenu";
-        }
-
-        //Resize
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height ());
-        this->show_all_children();
-
-    }
-
-    void Asali::reactorsMenu1()
-    {
-        //Clean the window
-        this->remove();
-        this->set_title("ASALI: Ideal reactor");
-        
-        //Add thermo menu grid
-        this->add(inputGrid_);
-        
-        if ( window_ == "transport" )
-        {
-            this->cleanTransport();
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "thermo" )
-        {
-            this->cleanThermo();
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "all" )
-        {
-            this->cleanAll();
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "transportMenu" )
-        {
-            inputGrid_.remove(doneTransportButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "allMenu" )
-        {
-            inputGrid_.remove(doneAllButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "thermoMenu" )
-        {
-            inputGrid_.remove(doneThermoButton_);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else if ( window_ == "reactorsMenu" )
-        {
-            inputGrid_.remove(*nextButton_[0]);
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-        else
-        {
-            inputGrid_.attach(*nextButton_[0],2,13,1,1);
-            window_ = "reactorsMenu";
-        }
-
-        //Resize
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height ());
-        this->show_all_children();
-    }
-    
-    void Asali::cleanTransport()
-    {
-        transportGrid_.remove(condBox_);
-        if ( condVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<condVector_.size();i++)
-            {
-                transportGrid_.remove(*condVector_[i]);
-            }
-        }
-        transportGrid_.remove(muBox_);
-        if ( muVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<muVector_.size();i++)
-            {
-                transportGrid_.remove(*muVector_[i]);
-            }
-        }
-        transportGrid_.remove(diffBox_);
-        if ( diffBoxVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<diffBoxVector_.size();i++)
-            {
-                transportGrid_.remove(*diffBoxVector_[i]);
-            }
-        }
-    }
-
-    void Asali::cleanThermo()
-    {
-        thermoGrid_.remove(cpBox_);
-        if ( cpVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<cpVector_.size();i++)
-            {
-                thermoGrid_.remove(*cpVector_[i]);
-            }
-        }
-        thermoGrid_.remove(sBox_);
-        if ( sVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<sVector_.size();i++)
-            {
-                thermoGrid_.remove(*sVector_[i]);
-            }
-        }
-        thermoGrid_.remove(hBox_);
-        if ( hVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<hVector_.size();i++)
-            {
-                thermoGrid_.remove(*hVector_[i]);
-            }
-        }
-    }
-    
-    void Asali::cleanAll()
-    {
-        allGrid_.remove(cpBox_);
-        if ( cpVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<cpVector_.size();i++)
-            {
-                allGrid_.remove(*cpVector_[i]);
-            }
-        }
-        allGrid_.remove(sBox_);
-        if ( sVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<sVector_.size();i++)
-            {
-                allGrid_.remove(*sVector_[i]);
-            }
-        }
-        allGrid_.remove(hBox_);
-        if ( hVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<hVector_.size();i++)
-            {
-                allGrid_.remove(*hVector_[i]);
-            }
-        }
-        allGrid_.remove(condBox_);
-        if ( condVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<condVector_.size();i++)
-            {
-                allGrid_.remove(*condVector_[i]);
-            }
-        }
-        allGrid_.remove(muBox_);
-        if ( muVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<muVector_.size();i++)
-            {
-                allGrid_.remove(*muVector_[i]);
-            }
-        }
-        allGrid_.remove(diffBox_);
-        if ( diffBoxVector_.size() != 0)
-        {
-            for (unsigned int i=0;i<diffBoxVector_.size();i++)
-            {
-                allGrid_.remove(*diffBoxVector_[i]);
-            }
-        }
-    }
-
-    void Asali::reactorsMenu2()
-    {
-        //Read inlet composition
-        this->inputReader();
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-            //Clean the window
-            this->remove();
-            this->set_title("ASALI: Ideal reactor");
-            
-            //Add thermo menu grid
-            this->add(reactorsGrid_);
-            
-            //Resize
-            this->resize(reactorsGrid_.get_width(),reactorsGrid_.get_height ());
-            this->show_all_children();
-        }
-    }
-
-    void Asali::showAtomNames()
-    {
-        if ( window_ == "thermo" )
-        {
-            if ( thermoVector_.size() != 0)
-            {
-                for (unsigned int i=0;i<thermoVector_.size();i++)
-                {
-                    thermoGrid_.remove(*thermoVector_[i]);
-                }
-            }
-
-            thermoVector_.clear();
-            thermoVector_.resize(n_.size());
-
-            for (unsigned int i=0;i<n_.size();i++)
-            { 
-                thermoVector_[i] = new Gtk::Label(n_[i]);
-                thermoGrid_.attach(*thermoVector_[i],0,i+1,1,1);
-            }
-        }
-        else if ( window_ == "transport" )
-        {
-            if ( transportVector_.size() != 0)
-            {
-                for (unsigned int i=0;i<transportVector_.size();i++)
-                {
-                    transportGrid_.remove(*transportVector_[i]);
-                }
-            }
-
-            transportVector_.clear();
-            transportVector_.resize(n_.size());
-
-            for (unsigned int i=0;i<n_.size();i++)
-            { 
-                transportVector_[i] = new Gtk::Label(n_[i]);
-                transportGrid_.attach(*transportVector_[i],0,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            if ( allVector_.size() != 0)
-            {
-                for (unsigned int i=0;i<allVector_.size();i++)
-                {
-                    allGrid_.remove(*allVector_[i]);
-                }
-            }
-
-            allVector_.clear();
-            allVector_.resize(n_.size());
-
-            for (unsigned int i=0;i<n_.size();i++)
-            { 
-                allVector_[i] = new Gtk::Label(n_[i]);
-                allGrid_.attach(*allVector_[i],0,i+1,1,1);
-            }
-
-        }
-        else if ( window_ == "equilibrium" )
-        {
-            if ( equilibriumVector_.size() != 0)
-            {
-                for (unsigned int i=0;i<equilibriumVector_.size();i++)
-                {
-                    equilibriumGrid_.remove(*equilibriumVector_[i]);
-                }
-            }
-
-            equilibriumVector_.clear();
-            equilibriumVector_.resize(n_.size()+1);
-
-            for (unsigned int i=0;i<n_.size();i++)
-            { 
-                equilibriumVector_[i] = new Gtk::Label(n_[i]);
-                equilibriumGrid_.attach(*equilibriumVector_[i],0,i+2,1,1);
-            }
-            
-            equilibriumVector_[n_.size()]= new Gtk::Label("Temperature [K]");
-            equilibriumGrid_.attach(*equilibriumVector_[n_.size()],0,n_.size()+2,1,1);
-        }
-    }
-    
-    void Asali::cpUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "thermo" )
-            {
-                if ( cpVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<cpVector_.size();i++)
-                    {
-                        thermoGrid_.remove(*cpVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( cpVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<cpVector_.size();i++)
-                    {
-                        allGrid_.remove(*cpVector_[i]);
-                    }
-                }
-            }
-        }
-
-        cpVector_.clear();
-        cpVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if ( cpCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1.; //J/kmol/K
-            }
-        }
-        else if ( cpCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./1.e03; //J/mol/K
-            }
-        }
-        else if ( cpCombo_.get_active_row_number() == 2 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./MW_[i]; //J/kg/K
-            }
-        }
-        else if ( cpCombo_.get_active_row_number() == 3 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./4.186; //cal/kmol/K
-            }
-        }
-        else if ( cpCombo_.get_active_row_number() == 4 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(1.e03*4.186); //cal/mol/K
-            }
-        }
-        else if ( cpCombo_.get_active_row_number() == 5 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(MW_[i]*4.186); //cal/kg/K
-            }
-        }
-
-        if ( window_ == "thermo" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream cp;
-                cp << std::scientific << std::setprecision(OP_) << cp_[i]*converter[i];
-                cpVector_[i] = new Gtk::Label(cp.str());
-                thermoGrid_.attach(*cpVector_[i],1,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream cp;
-                cp << std::scientific << std::setprecision(OP_) << cp_[i]*converter[i];
-                cpVector_[i] = new Gtk::Label(cp.str());
-                allGrid_.attach(*cpVector_[i],1,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-
-    void Asali::hUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "thermo" )
-            {
-                if ( hVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<hVector_.size();i++)
-                    {
-                        thermoGrid_.remove(*hVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( hVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<hVector_.size();i++)
-                    {
-                        allGrid_.remove(*hVector_[i]);
-                    }
-                }
-            }
-        }
-
-        hVector_.clear();
-        hVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if ( hCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1.; //J/kmol
-            }
-        }
-        else if ( hCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./1.e03; //J/mol
-            }
-        }
-        else if ( hCombo_.get_active_row_number() == 2 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./MW_[i]; //J/kg
-            }
-        }
-        else if ( hCombo_.get_active_row_number() == 3 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./4.186; //cal/kmol
-            }
-        }
-        else if ( hCombo_.get_active_row_number() == 4 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(1.e03*4.186); //cal/mol
-            }
-        }
-        else if ( hCombo_.get_active_row_number() == 5 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(MW_[i]*4.186); //cal/kg
-            }
-        }
-
-        if ( window_ == "thermo" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream h;
-                h << std::scientific << std::setprecision(OP_) << h_[i]*converter[i];
-                hVector_[i] = new Gtk::Label(h.str());
-                thermoGrid_.attach(*hVector_[i],2,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream h;
-                h << std::scientific << std::setprecision(OP_) << h_[i]*converter[i];
-                hVector_[i] = new Gtk::Label(h.str());
-                allGrid_.attach(*hVector_[i],2,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-    
-    void Asali::sUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "thermo" )
-            {
-                if ( sVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<sVector_.size();i++)
-                    {
-                        thermoGrid_.remove(*sVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( sVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<sVector_.size();i++)
-                    {
-                        allGrid_.remove(*sVector_[i]);
-                    }
-                }
-            }
-        }
-
-        sVector_.clear();
-        sVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if ( sCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1.; //J/kmol/K
-            }
-        }
-        else if ( sCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./1.e03; //J/mol/K
-            }
-        }
-        else if ( sCombo_.get_active_row_number() == 2 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./MW_[i]; //J/kg/K
-            }
-        }
-        else if ( sCombo_.get_active_row_number() == 3 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./4.186; //cal/kmol/K
-            }
-        }
-        else if ( sCombo_.get_active_row_number() == 4 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(1.e03*4.186); //cal/mol/K
-            }
-        }
-        else if ( sCombo_.get_active_row_number() == 5 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./(MW_[i]*4.186); //cal/kg/K
-            }
-        }
-
-        if ( window_ == "thermo" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream s;
-                s << std::scientific << std::setprecision(OP_) << std::setprecision(OP_) << s_[i]*converter[i];
-                sVector_[i] = new Gtk::Label(s.str());
-                thermoGrid_.attach(*sVector_[i],3,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream s;
-                s << std::scientific << std::setprecision(OP_) << s_[i]*converter[i];
-                sVector_[i] = new Gtk::Label(s.str());
-                allGrid_.attach(*sVector_[i],3,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-
-    void Asali::condUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "transport" )
-            {
-                if ( condVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<condVector_.size();i++)
-                    {
-                        transportGrid_.remove(*condVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( condVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<condVector_.size();i++)
-                    {
-                        allGrid_.remove(*condVector_[i]);
-                    }
-                }
-            }
-        }
-
-        condVector_.clear();
-        condVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if ( condCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1.; //W/m/K
-            }
-        }
-        else if ( condCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1./4.186; //cal/m/s/K
-            }
-        }
-
-        if ( window_ == "transport" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream cond;
-                cond << std::scientific << std::setprecision(OP_) << cond_[i]*converter[i];
-                condVector_[i] = new Gtk::Label(cond.str());
-                transportGrid_.attach(*condVector_[i],1,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream cond;
-                cond << std::scientific << std::setprecision(OP_) << cond_[i]*converter[i];
-                condVector_[i] = new Gtk::Label(cond.str());
-                allGrid_.attach(*condVector_[i],4,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-
-    void Asali::muUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "transport" )
-            {
-                if ( muVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<muVector_.size();i++)
-                    {
-                        transportGrid_.remove(*muVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( muVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<muVector_.size();i++)
-                    {
-                        allGrid_.remove(*muVector_[i]);
-                    }
-                }
-            }
-        }
-
-        muVector_.clear();
-        muVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if ( muCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1.; //Pa
-            }
-        }
-        else if ( muCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                converter[i] = 1e03; //cP
-            }
-        }
-
-        if ( window_ == "transport" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mu;
-                mu << std::scientific << std::setprecision(OP_) << mu_[i]*converter[i];
-                muVector_[i] = new Gtk::Label(mu.str());
-                transportGrid_.attach(*muVector_[i],2,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mu;
-                mu << std::scientific << std::setprecision(OP_) << mu_[i]*converter[i];
-                muVector_[i] = new Gtk::Label(mu.str());
-                allGrid_.attach(*muVector_[i],5,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-
-    void Asali::diffUnitConversion(bool check)
-    {
-        if ( check == true )
-        {
-            if ( window_ == "transport" )
-            {
-                if ( diffBoxVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<diffBoxVector_.size();i++)
-                    {
-                        transportGrid_.remove(*diffBoxVector_[i]);
-                    }
-                }
-            }
-            else if ( window_ == "all" )
-            {
-                if ( diffBoxVector_.size() != 0)
-                {
-                    for (unsigned int i=0;i<diffBoxVector_.size();i++)
-                    {
-                        allGrid_.remove(*diffBoxVector_[i]);
-                    }
-                }
-            }
-        }
-        
-        speciesCombo_.clear();
-        diffBoxVector_.clear();
-        diffVector_.clear();
-        speciesCombo_.resize(n_.size());
-        diffBoxVector_.resize(n_.size());
-        diffVector_.resize(n_.size());
-
-        for (unsigned int i=0;i<n_.size();i++)
-        { 
-            speciesCombo_[i]  = new Gtk::ComboBoxText();
-            diffBoxVector_[i] = new Gtk::Box();
-            for (unsigned int j=0;j<n_.size();j++)
-            {
-                speciesCombo_[i]->append(n_[j]);
-                speciesCombo_[i]->set_active(j);
-            }
-            speciesCombo_[i]->signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this,&Asali::diffSpecies),i));
-            diffBoxVector_[i]->pack_end(*speciesCombo_[i]);
-        }
-
-
-        if ( window_ == "transport" )
-        { 
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                this->diffSpecies(i);
-                transportGrid_.attach(*diffBoxVector_[i],3,i+1,1,1);
-            }
-        }
-        else if ( window_ == "all" )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                this->diffSpecies(i);
-                allGrid_.attach(*diffBoxVector_[i],6,i+1,1,1);
-            }
-        }
-        
-        this->show_all_children();
-    }
-
-    void Asali::diffSpecies(unsigned int row)
-    {
-        double converter = 0.;
-        if ( diffCombo_.get_active_row_number() == 0 )
-        {
-            converter = 1.; //m2/s
-        }
-
-        for (unsigned int i=0;i<n_.size();i++)
-        {
-            if ( speciesCombo_[row]->get_active_row_number() == int(i) )
-            {
-                std::string diffstr = "";
-
-                if ( diff_[row][i] == -1 )
-                {
-                    diffstr = "n.a.";
-                    if ( diffBoxVector_[row]->get_children().size() == 1 )
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                    }
-                    else if ( diffBoxVector_[row]->get_children().size() == 2 )
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[1]);
-                    }
-                }
-                else
-                {
-                    std::stringstream diff;
-                    diff << std::scientific << std::setprecision(OP_) << diff_[row][i]*converter;
-                    diffstr = diffstr + diff.str() + " in ";
-
-                    if ( diffBoxVector_[row]->get_children().size() > 1 )
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                    }
-                }
-                
-
-                diffVector_[i] = new Gtk::Label(diffstr);
-                diffBoxVector_[row]->pack_start(*diffVector_[i]);
-
-                break;
-            }
-        }
-
-        this->show_all_children();
-    }
-
-    void Asali::thermoResults()
-    {
-        window_ = "thermo";
-        this->inputReader();
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
-            if ( fractionCombo_.get_active_row_number() == 0 )
-            {
-                canteraInterface_->setMoleFraction(x_,n_);
-            }
-            else if ( fractionCombo_.get_active_row_number() == 1 )
-            {
-                canteraInterface_->setMassFraction(x_,n_);
-            }
-
-            canteraInterface_->thermoCalculate();
-
-            x_.clear();
-            y_.clear();
-            x_.resize(n_.size());
-            y_.resize(n_.size());
-            {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
-                
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                    {
-                        if ( n_[i] == canteraInterface_->names()[j] )
-                        {
-                            x_[i] = x[j];
-                            y_[i] = y[j];
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if ( n_.size() > 1 )
-            {
-                n_.push_back("mix");
-            }
-
-            cp_.clear();
-            h_.clear();
-            s_.clear();
-            MW_.clear();
-            cp_.resize(n_.size());
-            s_.resize(n_.size());
-            h_.resize(n_.size());
-            MW_.resize(n_.size());
-            
-            
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                for (unsigned int j=0;j<canteraInterface_->names().size();j++)
-                {
-                    if ( n_[i] == canteraInterface_->names()[j] )
-                    {
-                        h_[i]  = canteraInterface_->h()[j];
-                        s_[i]  = canteraInterface_->s()[j];
-                        cp_[i] = canteraInterface_->cp()[j];
-                        MW_[i] = canteraInterface_->MW()[j];
-                        break;
-                    }
-                }
-            }
-
-            //Thermo grid menu
-            {
-                thermoGrid_.set_column_homogeneous(true);
-                thermoGrid_.set_column_spacing(10);
-                thermoGrid_.set_row_spacing(10);
-
-                //Add heading
-                thermoGrid_.attach(cpBox_,1,0,1,1);
-                thermoGrid_.attach(hBox_,2,0,1,1);
-                thermoGrid_.attach(sBox_,3,0,1,1);
-
-                //Add back button
-                thermoGrid_.attach(*backButton_[1],0,n_.size()+2,1,1);
-
-                //Add print on file
-                thermoGrid_.attach(thermoSaveButton_,1,n_.size()+2,1,1);
-
-                //Add exit button
-                thermoGrid_.attach(*exitButton_[5],3,n_.size()+2,1,1);
-            }
-
-            this->remove();
-            this->add(thermoGrid_);
-            this->resize(thermoGrid_.get_width(),thermoGrid_.get_height());
-            this->showAtomNames();
-            this->cpUnitConversion(false);
-            this->hUnitConversion(false);
-            this->sUnitConversion(false);
-        }
-    }
-
-    void Asali::transportResults()
-    {
-        window_ = "transport";
-        this->inputReader();
-
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
-            if ( fractionCombo_.get_active_row_number() == 0 )
-            {
-                canteraInterface_->setMoleFraction(x_,n_);
-            }
-            else if ( fractionCombo_.get_active_row_number() == 1 )
-            {
-                canteraInterface_->setMassFraction(x_,n_);
-            }
-            
-            canteraInterface_->transportCalculate();
-            x_.clear();
-            y_.clear();
-            x_.resize(n_.size());
-            y_.resize(n_.size());
-            {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
-                
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                    {
-                        if ( n_[i] == canteraInterface_->names()[j] )
-                        {
-                            x_[i] = x[j];
-                            y_[i] = y[j];
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if ( n_.size() > 1 )
-            {
-                n_.push_back("mix");
-            }
-
-            mu_.clear();
-            cond_.clear();
-            diff_.clear();
-            MW_.clear();
-            mu_.resize(n_.size());
-            cond_.resize(n_.size());
-            diff_.resize(n_.size());
-            MW_.resize(n_.size());
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                diff_[i].resize(n_.size());
-            }
-            
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                for (unsigned int j=0;j<canteraInterface_->names().size();j++)
-                {
-                    if ( n_[i] == canteraInterface_->names()[j] )
-                    {
-                        mu_[i]    = canteraInterface_->mu()[j];
-                        cond_[i]  = canteraInterface_->cond()[j];
-                        MW_[i]    = canteraInterface_->MW()[j];
-                        for (unsigned int k=0;k<n_.size();k++)
-                        {
-                            for (unsigned int h=0;h<canteraInterface_->names().size();h++)
-                            {
-                                if ( n_[k] == canteraInterface_->names()[h] )
-                                {
-                                    diff_[i][k] = canteraInterface_->diff()[j][h];
-                                    break;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-
-            //Transport grid menu
-            {
-                transportGrid_.set_column_homogeneous(true);
-                transportGrid_.set_column_spacing(10);
-                transportGrid_.set_row_spacing(10);
-                
-                //Add heading
-                transportGrid_.attach(condBox_,1,0,1,1);
-                transportGrid_.attach(muBox_,2,0,1,1);
-                transportGrid_.attach(diffBox_,3,0,1,1);
-
-                //Add back button
-                transportGrid_.attach(*backButton_[2],0,n_.size()+2,1,1);
-
-                //Add print on file
-                transportGrid_.attach(transportSaveButton_,1,n_.size()+2,1,1);
-
-                //Add exit button
-                transportGrid_.attach(*exitButton_[4],3,n_.size()+2,1,1);
-            }
-
-            this->remove();
-            this->add(transportGrid_);
-            this->resize(transportGrid_.get_width(),transportGrid_.get_height());
-            this->showAtomNames();
-            this->condUnitConversion(false);
-            this->muUnitConversion(false);
-            this->diffUnitConversion(false);
-        }
-    }
-
-    void Asali::allResults()
-    {
-        window_ = "all";
-        this->inputReader();
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
-            if ( fractionCombo_.get_active_row_number() == 0 )
-            {
-                canteraInterface_->setMoleFraction(x_,n_);
-            }
-            else if ( fractionCombo_.get_active_row_number() == 1 )
-            {
-                canteraInterface_->setMassFraction(x_,n_);
-            }
-
-            canteraInterface_->thermoCalculate();
-            canteraInterface_->transportCalculate();
-
-            x_.clear();
-            y_.clear();
-            x_.resize(n_.size());
-            y_.resize(n_.size());
-            {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
-                
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                    {
-                        if ( n_[i] == canteraInterface_->names()[j] )
-                        {
-                            x_[i] = x[j];
-                            y_[i] = y[j];
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if ( n_.size() > 1 )
-            {
-                n_.push_back("mix");
-            }
-
-
-            //Transport/Thermo
-            {
-                mu_.clear();
-                cond_.clear();
-                diff_.clear();
-                cp_.clear();
-                h_.clear();
-                s_.clear();
-                MW_.clear();
-
-                mu_.resize(n_.size());
-                cond_.resize(n_.size());
-                diff_.resize(n_.size());
-                cp_.resize(n_.size());
-                s_.resize(n_.size());
-                h_.resize(n_.size());
-                MW_.resize(n_.size());
-
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    diff_[i].resize(n_.size());
-                }
-                
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    for (unsigned int j=0;j<canteraInterface_->names().size();j++)
-                    {
-                        if ( n_[i] == canteraInterface_->names()[j] )
-                        {
-                            mu_[i]    = canteraInterface_->mu()[j];
-                            cond_[i]  = canteraInterface_->cond()[j];
-                            MW_[i]    = canteraInterface_->MW()[j];
-                            h_[i]     = canteraInterface_->h()[j];
-                            s_[i]     = canteraInterface_->s()[j];
-                            cp_[i]    = canteraInterface_->cp()[j];
-                            for (unsigned int k=0;k<n_.size();k++)
-                            {
-                                for (unsigned int h=0;h<canteraInterface_->names().size();h++)
-                                {
-                                    if ( n_[k] == canteraInterface_->names()[h] )
-                                    {
-                                        diff_[i][k] = canteraInterface_->diff()[j][h];
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-
-            //All grid menu
-            {
-                allGrid_.set_column_homogeneous(true);
-                allGrid_.set_column_spacing(10);
-                allGrid_.set_row_spacing(10);
-                
-                //Add heading
-                allGrid_.attach(cpBox_,1,0,1,1);
-                allGrid_.attach(hBox_,2,0,1,1);
-                allGrid_.attach(sBox_,3,0,1,1);
-                allGrid_.attach(condBox_,4,0,1,1);
-                allGrid_.attach(muBox_,5,0,1,1);
-                allGrid_.attach(diffBox_,6,0,1,1);
-
-
-                //Add back button
-                allGrid_.attach(*backButton_[3],0,n_.size()+2,1,1);
-
-                //Add print on file
-                allGrid_.attach(allSaveButton_,1,n_.size()+2,1,1);
-
-                //Add exit button
-                allGrid_.attach(*exitButton_[6],6,n_.size()+2,1,1);
-            }
-
-            this->remove();
-            this->add(allGrid_);
-            this->resize(allGrid_.get_width(),allGrid_.get_height());
-            this->showAtomNames();
-            this->condUnitConversion(false);
-            this->muUnitConversion(false);
-            this->diffUnitConversion(false);
-            this->cpUnitConversion(false);
-            this->sUnitConversion(false);
-            this->hUnitConversion(false);
-        }
-    }
-
-    void Asali::vacuumRun()
-    {
-        if ( diffK_ >= 0. )
-        {
-            vacuumGrid_.remove(*vacuumDiffResults_);
-        }
-
-        if ( Kn_ >= 0. )
-        {
-            vacuumGrid_.remove(*vacuumKnuResults_);
-        }
-        
-        if ( vK_ >= 0. )
-        {
-            vacuumGrid_.remove(*vacuumVelocityResults_);
-        }
-
-        if ( lK_ >= 0. )
-        {
-            vacuumGrid_.remove(*vacuumPathResults_);
-        }
-
-        this->vacuumReader();
-
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
-            canteraInterface_->setMoleFraction(x_,n_);
-            canteraInterface_->vacuumCalculate();
-            
-            {
-                std::vector<double> vm = canteraInterface_->vm();
-                std::vector<double> l  = canteraInterface_->l();
-
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                    {
-                        if ( n_[i] == canteraInterface_->names()[j] )
-                        {
-                            lK_ = l[j];
-                            vK_ = vm[j];
-                            break;
-                        }
-                    }
-                }
-
-                Kn_    = d_/lK_;
-
-                if ( Kn_ < 1. ) //molecular
-                {
-                    diffK_ = vK_*d_/3.;
-                }
-                else //viscous
-                {
-                    canteraInterface_->transportCalculate();
-                    for (unsigned int i=0;i<n_.size();i++)
-                    {
-                        for (unsigned int j=0;j<canteraInterface_->names().size();j++)
-                        {
-                            if ( n_[i] == canteraInterface_->names()[j] )
-                            {
-                                vK_    = vm[j];
-                                for (unsigned int k=0;k<n_.size();k++)
-                                {
-                                    for (unsigned int h=0;h<canteraInterface_->names().size();h++)
-                                    {
-                                        if ( n_[k] == canteraInterface_->names()[h] )
-                                        {
-                                            diffK_ = canteraInterface_->diff()[j][h];
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ( vacuumDiffCombo_.get_active_row_number() == 1 )
-            {
-                diffK_ = diffK_*1e04; 
-            }
-            
-            if ( vacuumVelocityCombo_.get_active_row_number() == 0 )
-            {
-                vK_ = vK_*1e-03;
-            }
-            else if ( vacuumVelocityCombo_.get_active_row_number() == 1 )
-            {
-                vK_ = vK_;
-            }
-            else if ( vacuumVelocityCombo_.get_active_row_number() == 2 )
-            {
-                vK_ = vK_*1e02;
-            }
-            
-
-            if ( vacuumPathCombo_.get_active_row_number() == 0 )
-            {
-                lK_ = lK_*1e-03;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 1 )
-            {
-                lK_ = lK_;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 2 )
-            {
-                lK_ = lK_*1e01;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 3 )
-            {
-                lK_ = lK_*1e02;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 4 )
-            {
-                lK_ = lK_*1e03;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 5 )
-            {
-                lK_ = lK_*1e06;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 6 )
-            {
-                lK_ = lK_*1e09;
-            }
-            else if ( vacuumPathCombo_.get_active_row_number() == 7 )
-            {
-                lK_ = lK_*1e12;
-            }
-
-
-            {
-                std::stringstream diffK;
-                diffK << std::scientific << std::setprecision(OP_) << diffK_;
-                vacuumDiffResults_ = new Gtk::Label(diffK.str());
-            }
-            
-            {
-                std::stringstream Kn;
-                Kn << std::scientific << std::setprecision(OP_) << 1./Kn_;
-                
-                if ( Kn_ < 1. )
-                {              
-                    vacuumKnuResults_ = new Gtk::Label(Kn.str()+" (molecular)");
-                }
-                else
-                {
-                    vacuumKnuResults_ = new Gtk::Label(Kn.str()+" (viscous)");
-                }
-            }
-
-            {
-                std::stringstream vK;
-                vK << std::scientific << std::setprecision(OP_) << vK_;
-                vacuumVelocityResults_ = new Gtk::Label(vK.str());
-            }
-
-            {
-                std::stringstream lK;
-                lK << std::scientific << std::setprecision(OP_) << lK_;
-                vacuumPathResults_ = new Gtk::Label(lK.str());
-            }
-
-            vacuumGrid_.attach(*vacuumDiffResults_,0,3,1,1);
-            vacuumGrid_.attach(*vacuumVelocityResults_,1,3,1,1);
-            vacuumGrid_.attach(*vacuumPathResults_,2,3,1,1);
-            vacuumGrid_.attach(*vacuumKnuResults_,3,3,1,1);
-
-            this->show_all_children();
-        }
-    }
-
-    void Asali::equilibriumResults()
-    {
-        window_ = "equilibrium";
-        this->inputReader();
-
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-        }
-        else
-        {
-           
-            this->equilibriumRun();
-
-            equilibriumGrid_.attach(*backButton_[8],0,n_.size()+3,1,1);
-            equilibriumGrid_.attach(equilibriumSaveButton_,1,n_.size()+3,1,1);
-            equilibriumGrid_.attach(*exitButton_[8],2,n_.size()+3,1,1);
-
-            this->remove();
-            this->add(equilibriumGrid_);
-            this->showAtomNames();
-            this->initialFractionUnitConversion();
-            this->finalFractionUnitConversion();
-            this->resize(equilibriumGrid_.get_width(),equilibriumGrid_.get_height());
-            this->show_all_children();
-        }
-    }
-
-    void Asali::equilibriumRun()
-    {
-        canteraInterface_->setTemperature(T_);
-        canteraInterface_->setPressure(p_);
-        if ( fractionCombo_.get_active_row_number() == 0 )
-        {
-            canteraInterface_->setMoleFraction(x_,n_);
-        }
-        else if ( fractionCombo_.get_active_row_number() == 1 )
-        {
-            canteraInterface_->setMassFraction(x_,n_);
-        }
-
-        x_.clear();
-        y_.clear();
-        x_.resize(n_.size());
-        y_.resize(n_.size());
-        {
-            std::vector<double> x = canteraInterface_->moleFractions();
-            std::vector<double> y = canteraInterface_->massFractions();
-            
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                {
-                    if ( n_[i] == canteraInterface_->names()[j] )
-                    {
-                        x_[i] = x[j];
-                        y_[i] = y[j];
-                        break;
-                    }
-                }
-            }
-        }
-
-        if ( equilibriumCombo_.get_active_row_number() == 0 )
-        {
-            canteraInterface_->equilibriumCalculate("TP");
-        }
-        else if ( equilibriumCombo_.get_active_row_number() == 1 )
-        {
-            canteraInterface_->equilibriumCalculate("HP");
-        }
-
-        xeq_.clear();
-        yeq_.clear();
-        xeq_.resize(n_.size());
-        yeq_.resize(n_.size());
-        {
-            std::vector<double> x = canteraInterface_->moleFractions();
-            std::vector<double> y = canteraInterface_->massFractions();
-            
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
-                {
-                    if ( n_[i] == canteraInterface_->names()[j] )
-                    {
-                        xeq_[i] = x[j];
-                        yeq_[i] = y[j];
-                        break;
-                    }
-                }
-            }
-        }
-
-        Teq_ = canteraInterface_->Temperature();
-
-        this->initialFractionUnitConversion();
-        this->finalFractionUnitConversion();
-        this->show_all_children();
-
-    }
-
-    void Asali::finalFractionUnitConversion()
-    {
-        if ( finalFractionVector_.size() != 0 )
-        {
-            for (unsigned int i=0;i<finalFractionVector_.size();i++)
-            {
-                equilibriumGrid_.remove(*finalFractionVector_[i]);
-            }
-        }
-        
-        finalFractionVector_.clear();
-        finalFractionVector_.resize(n_.size()+1);
- 
-        if ( finalFractionCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mole;
-                mole << std::scientific << std::setprecision(OP_) << xeq_[i];
-                finalFractionVector_[i] = new Gtk::Label(mole.str());
-                equilibriumGrid_.attach(*finalFractionVector_[i],2,i+2,1,1);
-            }
-        }
-        else if ( finalFractionCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mass;
-                mass << std::scientific << std::setprecision(OP_) << yeq_[i];
-                finalFractionVector_[i] = new Gtk::Label(mass.str());
-                equilibriumGrid_.attach(*finalFractionVector_[i],2,i+2,1,1);
-            }
-        }
-
-        std::stringstream T;
-        T << std::scientific << std::setprecision(OP_) << Teq_;
-        finalFractionVector_[n_.size()] = new Gtk::Label(T.str());
-        equilibriumGrid_.attach(*finalFractionVector_[n_.size()],2,n_.size()+2,1,1);
-        
-        this->show_all_children();
-    }
-
-    void Asali::initialFractionUnitConversion()
-    {
-        if ( initialFractionVector_.size() != 0 )
-        {
-            for (unsigned int i=0;i<initialFractionVector_.size();i++)
-            {
-                equilibriumGrid_.remove(*initialFractionVector_[i]);
-            }
-        }
-        
-        initialFractionVector_.clear();
-        initialFractionVector_.resize(n_.size()+1);
- 
-        if ( initialFractionCombo_.get_active_row_number() == 0 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mole;
-                mole << std::scientific << std::setprecision(OP_) << x_[i];
-                initialFractionVector_[i] = new Gtk::Label(mole.str());
-                equilibriumGrid_.attach(*initialFractionVector_[i],1,i+2,1,1);
-            }
-        }
-        else if ( initialFractionCombo_.get_active_row_number() == 1 )
-        {
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                std::stringstream mass;
-                mass << std::scientific << std::setprecision(OP_) << y_[i];
-                initialFractionVector_[i] = new Gtk::Label(mass.str());
-                equilibriumGrid_.attach(*initialFractionVector_[i],1,i+2,1,1);
-            }
-        }
-        
-        std::stringstream T;
-        T << std::scientific << std::setprecision(OP_) << T_;
-        initialFractionVector_[n_.size()] = new Gtk::Label(T.str());
-        equilibriumGrid_.attach(*initialFractionVector_[n_.size()] ,1,n_.size()+2,1,1);
-
-        this->show_all_children();
-    }
-
     void Asali::discrimer()
     {
-        Gtk::MessageDialog dialog(*this,"ASALI is open-source software.\n"
-                                        "You can redistribute it and/or modify it the terms of\n"
-                                        "the GNU General Public License as published by\n"
+        Gtk::MessageDialog dialog(*this,"ASALI is free software: You can redistribute it and/or modify\n"
+                                        " it the terms of the GNU General Public License as published by\n"
                                         "the Free Software Foundation, either version 3 of the License,\n"
                                         "or (at your option) any later version.\n"
                                         "\nASALI is distributed in the hope that it will be useful,\n"
@@ -2741,507 +905,98 @@ namespace ASALI
                                         "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
                                         "\nSee the GNU General Public License for more details.\n"
                                         "You should have received a copy of the GNU General Public License\n"
-                                        "along with ASALI. If not, see http://www.gnu.org/licenses/.\n"
-                                        "\nASALI transport/thermodynamic properties are estimated\n"
-                                        "by using the Cantera (http://www.cantera.org) open-source\n"
-                                        "software.",true,Gtk::MESSAGE_OTHER);
+                                        "along with ASALI. If not, see http://www.gnu.org/licenses/.\n",true,Gtk::MESSAGE_OTHER);
         dialog.run();
     }
     
     void Asali::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your file has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
+        dialog.set_secondary_text(this->getBeer(),true);
         dialog.run();
     }
 
-    void Asali::transportSave()
+    void Asali::noneInputError()
     {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
+        Gtk::MessageDialog dialog(*this,"This feauture is not available. To use it, please, select a CANTERA kinetic/properties file.",true,Gtk::MESSAGE_OTHER);
+        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.run();
+    }
 
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
+    void Asali::coverageReader()
+    {
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            case(Gtk::RESPONSE_OK):
+            std::vector<std::string>   n(SURF_NS_);
+            std::vector<Glib::ustring> x(SURF_NS_);
+            
+            for (unsigned int i=0;i<SURF_NS_;i++)
             {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
+                n[i] = coverageNameEntry_[i]->get_text().c_str();
+                x[i] = coverageFractionEntry_[i]->get_text().c_str();
+            }
 
-                output << "Temperature:     " << T_ << " K" << std::endl;
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(6);
-                output << "Species\t" << "x           \ty           \t\u03BB           \t\u03BC           \t\u0393           " << std::endl;
-                for (unsigned int i=0;i<n_.size();i++)
+            nc_.clear();
+            xc_.clear();
+            for (unsigned int i=0;i<SURF_NS_;i++)
+            {
+                if ( !n[i].empty() )
                 {
-                    for (unsigned int j=i;j<n_.size();j++)
+                    nc_.push_back(n[i]);
+                    xc_.push_back(Glib::Ascii::strtod(x[i]));
+                }
+            }
+
+            std::vector<int> check(nc_.size());
+            {
+                for (unsigned int i=0;i<nc_.size();i++)
+                {
+                    check[i] = 1;
+                    for (unsigned int j=0;j<surface_->nSpecies();j++)
                     {
-                        if ( i == n_.size() - 1 )
+                        if ( nc_[i] == surface_->speciesName(j) )
                         {
-                            output << n_[i] << " " << "  " << "\t" << "             " << "\t" << "             " << "\t" << cond_[i] << "\t" << mu_[i] << std::endl;
-                        }
-                        else
-                        {
-                            if ( j == i)
-                            {
-                                output << n_[i] << " " << n_[j] << "\t" << x_[i] << "\t" << y_[i] << "\t" << cond_[i] << "\t" << mu_[i] << "\t" << diff_[i][j] << std::endl;
-                            }
-                            else
-                            {
-                                output << n_[i] << " " << n_[j] << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << diff_[i][j] << std::endl;
-                            }
+                            check[i] = 0;
+                            break;
                         }
                     }
                 }
-                output << std::endl;
-                output << std::endl;
-                output << "x: mole fraction" << std::endl;
-                output << "y: mass fraction" << std::endl;
-                output << "\u03BB: thermal conductivity [W/m/K]" << std::endl;
-                output << "\u03BC: viscosity            [Pas]" << std::endl;
-                output << "\u0393: diffusivity          [m\u00b2/s]" << std::endl;
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
-        }
-    }
 
-    void Asali::allSave()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "Temperature:     " << T_ << " K" << std::endl;
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(6);
-
-                output << "Species\t" << "x            \ty            \tCp           \tH            \tS            \t\u03BB           \t\u03BC           \t\u0393           " << std::endl;
-                for (unsigned int i=0;i<n_.size();i++)
+                for (unsigned int i=0;i<check.size();i++)
                 {
-                    for (unsigned int j=i;j<n_.size();j++)
+                    if (check[i] == 1 )
                     {
-                        if ( i == n_.size() - 1 )
-                        {
-                            output << n_[i] << " " << "  " << "\t" << "             " << "\t" << "             " << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << "\t" << cond_[i] << "\t" << mu_[i] << "\t" << diff_[i][j] <<  std::endl;
-                        }
-                        else
-                        {
-                            if ( j == i)
-                            {
-                                output << n_[i] << " " << n_[j] << "\t" << x_[i] << "\t" << y_[i] << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << "\t" << cond_[i] << "\t" << mu_[i] << "\t" << diff_[i][j] <<  std::endl;
-                            }
-                            else
-                            {
-                                output << n_[i] << " " << n_[j] << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << "           " << "\t" << diff_[i][j] << std::endl;
-                            }
-                        }
-                    }
-                }
-                output << std::endl;
-                output << "x : mole fraction" << std::endl;
-                output << "y : mass fraction" << std::endl;
-                output << "Cp: specific heat        [J/mol/K]" << std::endl;
-                output << "H : enthalpy             [J/mol]" << std::endl;
-                output << "S : entropy              [J/mol/K]" << std::endl;
-                output << "\u03BB : thermal conductivity [W/m/K]" << std::endl;
-                output << "\u03BC : viscosity            [Pas]" << std::endl;
-                output << "\u0393 : diffusivity          [m\u00b2/s]" << std::endl;
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
-        }
-    }
-
-    void Asali::vacuumSave()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "Temperature:     " << T_ << " K" << std::endl;
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << "Species:         " << n_[0] << std::endl;
-                output << "Length:          " << d_ << " m" << std::endl;
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(3);
-                output << "Diffusivity:     " << diffK_ << " m\u00b2/s" << std::endl;
-                output << "Knudsen number:  " << Kn_ << std::endl;
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
-        }
-    }
-
-    void Asali::equilibriumSave()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(6);
-
-                output << "Mole fraction" << std::endl;
-                output << "Species\tInitial\tEquilibrium" << std::endl;
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    output << n_[i] << "\t" << x_[i] << "\t" << xeq_[i] << std::endl;
-                }
-                output << "Temperature[K]" << "\t" << T_ << "\t" << Teq_ << std::endl;
-                output << std::endl;
-                output << "Mass fraction" << std::endl;
-                output << "Species\tInitial\tEquilibrium" << std::endl;
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    output << n_[i] << "\t" << y_[i] << "\t" << yeq_[i] << std::endl;
-                }
-                output << "Temperature[K]" << "\t" << T_ << "\t" << Teq_ << std::endl;
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
-        }
-    }
-
-    void Asali::thermoSave()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "Temperature:     " << T_ << " K" << std::endl;
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(6);
-
-                output << "Species\t" << "x            \ty            \tCp           \tH            \tS            \t" << std::endl;
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    if ( i == n_.size() - 1)
-                    {
-                        output << n_[i] << "\t" << "           " << "\t" << "           " << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << std::endl;
+                        checkCoverage_.first  = i;
+                        checkCoverage_.second = false;
+                        break;
                     }
                     else
                     {
-                        output << n_[i] << "\t" << x_[i] << "\t" << y_[i] << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << std::endl;
+                        checkCoverage_.first  = i;
+                        checkCoverage_.second = true;
                     }
                 }
-                
-                output << std::endl;
-                output << "x : mole fraction" << std::endl;
-                output << "y : mass fraction" << std::endl;
-                output << "Cp: specific heat  [J/mol/K]" << std::endl;
-                output << "H : enthalpy       [J/mol]" << std::endl;
-                output << "S : entropy        [J/mol/K]" << std::endl;
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
+
+                {
+                    double sum = 0.;
+                    for(unsigned int i=0;i<xc_.size();i++)
+                    {
+                        sum = sum + xc_[i];
+                    }
+                    
+                    if ( sum != 1. )
+                    {
+                        checkCoverage_.first  = 4444;
+                        checkCoverage_.second = false;
+                    }
+                }
             }
         }
-    }
-
-    void Asali::reactorSave()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
+        else
         {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "Temperature:     " << T_ << " K" << std::endl;
-                output << "Pressure:        " << p_ << " Pa" << std::endl;
-                output << "Residence time:  " << tau_ << " s" << std::endl;
-                output << "Reactor type:    " << reactorsTypeCombo_.get_active_text() << std::endl;
-
-                std::vector<double>               z = reactors_->getTime();
-                std::vector<std::vector<double> > y = reactors_->getResults();
-                std::vector<std::vector<double> > x = reactors_->getResults();
-
-                for (unsigned int i=0;i<z.size();i++)
-                {
-                    std::vector<double> mole(n_.size());
-                    for (unsigned int j=0;j<n_.size();j++)
-                    {
-                        mole[j] = x[i][j]*8314.*T_/(p_*MW_[j]); //From rho to mole fraction
-                        x[i][j] = mole[j];
-                    }
-
-                    canteraInterface_->setTemperature(T_);
-                    canteraInterface_->setPressure(p_);
-                    canteraInterface_->setMoleFraction(mole,n_);
-
-                    for (unsigned int j=0;j<n_.size();j++)
-                    {
-                        for (unsigned int k=0;k<canteraInterface_->names().size();k++)
-                        {
-                            if ( n_[j] == canteraInterface_->names()[k] )
-                            {
-                                y[i][j] = canteraInterface_->massFractions()[k];
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                output << std::endl;
-                output.setf(std::ios::scientific);
-                output.precision(6);
-
-                output << "Mole fraction" << std::endl;
-                output << "Time [s]" << "\t";
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    output << n_[i] << "\t";
-                }
-                output << std::endl;
-                
-                for (unsigned int j=0;j<z.size();j++)
-                {
-                    output << z[j] << "\t";
-                    for (unsigned int i=0;i<(n_.size());i++)
-                    {
-                        output << x[j][i] << "\t";
-                    }
-                    output << std::endl;
-                }
-                output << std::endl;
-
-                output << "Mass fraction" << std::endl;
-                output << "Time [s]" << "\t";
-                for (unsigned int i=0;i<n_.size();i++)
-                {
-                    output << n_[i] << "\t";
-                }
-                output << std::endl;
-                
-                for (unsigned int j=0;j<z.size();j++)
-                {
-                    output << z[j] << "\t";
-                    for (unsigned int i=0;i<(n_.size());i++)
-                    {
-                        output << y[j][i] << "\t";
-                    }
-                    output << std::endl;
-                }
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
+            checkCoverage_.first  = 0;
+            checkCoverage_.second = true;
         }
-    }
-
-    void Asali::vacuumReader()
-    {
-        T_ = Glib::Ascii::strtod(vacuumTempEntry_.get_text());
-        p_ = Glib::Ascii::strtod(vacuumPressEntry_.get_text());
-        d_ = Glib::Ascii::strtod(vacuumLengthEntry_.get_text());
-
-        ConvertsToKelvin(T_,vacuumTempCombo_.get_active_text());
-        ConvertsToPascal(p_,vacuumPressCombo_.get_active_text());
-        ConvertsToMeter(d_,vacuumLengthCombo_.get_active_text());
-        
-        n_.resize(1);
-        x_.resize(1);
-        
-        n_[0] = vacuumSpecieEntry_.get_text().c_str();
-        x_[0] = 1.;
-
-        std::vector<int> check = canteraInterface_->checkNames(n_);
-
-        for (unsigned int i=0;i<check.size();i++)
-        {
-            if (check[i] == 1 )
-            {
-                checkInput_.first  = i;
-                checkInput_.second = false;
-                break;
-            }
-            else
-            {
-                checkInput_.first  = i;
-                checkInput_.second = true;
-            }
-        }
-        
-        {
-            double sum = 0.;
-            for(unsigned int i=0;i<x_.size();i++)
-            {
-                sum = sum + x_[i];
-            }
-            
-            if ( sum != 1. )
-            {
-                checkInput_.first  = 4444;
-                checkInput_.second = false;
-            }
-        }
-
-
     }
 
     void Asali::inputReader()
@@ -3272,617 +1027,77 @@ namespace ASALI
             }
         }
         
-        
-        std::vector<int> check = canteraInterface_->checkNames(n_);
-
-        for (unsigned int i=0;i<check.size();i++)
+        if ( kineticType_ == "default" ||
+             kineticType_ == "load" )
         {
-            if (check[i] == 1 )
+            std::vector<int> check = canteraInterface_->checkNames(n_);
+
+            for (unsigned int i=0;i<check.size();i++)
             {
-                checkInput_.first  = i;
-                checkInput_.second = false;
-                break;
+                if (check[i] == 1 )
+                {
+                    checkInput_.first  = i;
+                    checkInput_.second = false;
+                    break;
+                }
+                else
+                {
+                    checkInput_.first  = i;
+                    checkInput_.second = true;
+                }
             }
-            else
+
             {
-                checkInput_.first  = i;
-                checkInput_.second = true;
+                double sum = 0.;
+                for(unsigned int i=0;i<x_.size();i++)
+                {
+                    sum = sum + x_[i];
+                }
+                
+                if ( sum != 1. )
+                {
+                    checkInput_.first  = 4444;
+                    checkInput_.second = false;
+                }
             }
         }
-        
+        else
         {
-            double sum = 0.;
-            for(unsigned int i=0;i<x_.size();i++)
-            {
-                sum = sum + x_[i];
-            }
-            
-            if ( sum != 1. )
-            {
-                checkInput_.first  = 4444;
-                checkInput_.second = false;
-            }
+            checkInput_.first  = 0;
+            checkInput_.second = true;
         }
         
     }
-    
+
     void Asali::checkInput(unsigned int i)
     {
         if ( i == 4444 )
         {
-            Gtk::MessageDialog dialog(*this,"Plase, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
+            Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
         }
         else
         {
-            Gtk::MessageDialog dialog(*this,n_[i]+" is missing in ASALI database.\nYou can add it by modifying\ndatabase/data.xml",true,Gtk::MESSAGE_WARNING);
+            Gtk::MessageDialog dialog(*this,n_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
         }
     }
 
-    void Asali::equations()
+    void Asali::checkCoverage(unsigned int i)
     {
-        Gtk::MessageDialog dialog(*this,"",true,Gtk::MESSAGE_OTHER);
-        dialog.set_image(equationsImage_);
-        dialog.show_all();
-        dialog.run();
-    }
-    
-    void Asali::runReactors()
-    {
-        std::vector<bool> done = this->setReactors();
-        if (done[0] == true &&
-            done[1] == true)
+        if ( i == 4444 )
         {
-            //Solving
-            reactors_ = new ASALI::IdealReactors(n_.size(),nr_.size());
-
-            reactors_->set_T(T_);
-            reactors_->set_p(p_);
-
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(T_);
-
-            if ( fractionCombo_.get_active_row_number() == 0 )
-            {
-                canteraInterface_->setMoleFraction(x_,n_);
-            }
-            else if ( fractionCombo_.get_active_row_number() == 1 )
-            {
-                canteraInterface_->setMassFraction(x_,n_);
-            }
-
-            MW_.clear();
-            MW_.resize(n_.size());
-            x_.clear();
-            x_.resize(n_.size());
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                for (unsigned int j=0;j<canteraInterface_->names().size();j++)
-                {
-                    if ( n_[i] == canteraInterface_->names()[j] )
-                    {
-                        x_[i]  = canteraInterface_->moleFractions()[j];
-                        MW_[i] = canteraInterface_->MW()[j];
-                        break;
-                    }
-                }
-            }
-
-            std::vector<double> rho(n_.size() + 1.);
-            for (unsigned int i=0;i<n_.size();i++)
-            {
-                rho[i] = p_*x_[i]*MW_[i]/(8314.*T_); //Kg/m3
-            }
-            
-            rho[n_.size()] = T_;
-
-            reactors_->set_k(kr_);
-            reactors_->set_Eatt(Eattr_);
-            reactors_->set_n(nr_);
-            reactors_->set_a(ar_);
-            reactors_->set_b(br_);
-            reactors_->set_index(index1_,index2_);
-            reactors_->set_MW(MW_);
-            reactors_->set_stoich(stoich_);
-
-            reactors_->set_converter(specieConverter_);
-
-
-            reactors_->set_reactor(reactorsTypeCombo_.get_active_text());
-
-            {
-                tau_ = Glib::Ascii::strtod(reactorsTimeEntry_.get_text().c_str());
-                ConvertsToSecond(tau_,tempCombo_.get_active_text());
-                reactors_->set_residence_time(tau_);
-                reactors_->set_inlet(rho);
-
-                if ( reactorsTypeCombo_.get_active_text() == "CSTR")
-                {
-                    tau_ = tau_*4.;
-                }
-            }
-
-            reactors_->setInitialConditions(rho,0.);
-
-            rho.clear();
-            rho.resize(n_.size()+1);
-            std::cout << "\n\n" << std::endl;
-            reactors_->solve(rho,tau_);
-            std::cout << "\n" << std::endl;
-
-            this->reactorSave();
-        }
-        else if (done[1] == false)
-        {
-            Gtk::MessageDialog dialog(*this,"Plase fill all the parameter for\nthe reactions you are considering.",true,Gtk::MESSAGE_OTHER);
+            Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
-        }
-    }
-
-    std::vector<bool> Asali::setReactors()
-    {
-        //Get species names and initial composition
-        std::vector<bool> done(2);
-        done[0] = false;
-        done[1] = false;
-        
-        this->inputReader();
-        
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            for (unsigned int j=0;j<4;j++)
-            {
-                std::string name = reactionEntry_[i][j]->get_text().c_str();
-                canteraInterface_->convertToCaption(name);
-                if ( !name.empty() )
-                {
-                         done[1] = true;
-                    bool test    = false;
-                    for (unsigned int k=0;k<n_.size();k++)
-                    {
-                        if ( name == n_[k] )
-                        {
-                            test = true;
-                            break;
-                        }
-                    }
-
-                    if ( test == false )
-                    {
-                        n_.push_back(name);
-                        x_.push_back(0.0);
-                    }
-                    
-                    if ( j == 0 )
-                    {
-                        index1_.push_back(specieIndex(name,n_));
-                    }
-                    else if ( j == 1 )
-                    {
-                        index2_.push_back(specieIndex(name,n_));
-                    }
-                }
-            }
-        }
-
-        std::vector<int> check = canteraInterface_->checkNames(n_);
-
-        for (unsigned int i=0;i<check.size();i++)
-        {
-            if (check[i] == 1 )
-            {
-                checkInput_.first  = i;
-                checkInput_.second = false;
-                break;
-            }
-            else
-            {
-                checkInput_.first  = i;
-                checkInput_.second = true;
-            }
-        }
-
-        if ( checkInput_.second == false )
-        {
-            this->checkInput(checkInput_.first);
-            done[0] = false;
         }
         else
         {
-            done[0] = true;
-        }
-
-
-        //Get reaction parameter (k)
-        kr_.clear();
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            std::string value = kEntry_[i]->get_text().c_str();
-            if (!value.empty())
-            {
-                kr_.push_back(Glib::Ascii::strtod(value));
-            }
-        }
-        
-        //Get reaction parameter (n)
-        nr_.clear();
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            std::string value = nEntry_[i]->get_text().c_str();
-            if (!value.empty())
-            {
-                nr_.push_back(Glib::Ascii::strtod(value));
-            }
-        }
-        
-        //Get reaction parameter (Eatt)
-        Eattr_.clear();
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            std::string value = EattEntry_[i]->get_text().c_str();
-            if (!value.empty())
-            {
-                Eattr_.push_back(Glib::Ascii::strtod(value));
-            }
-        }
-            
-        //Get reaction parameter (a)
-        ar_.clear();
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            std::string value = aEntry_[i]->get_text().c_str();
-            if (!value.empty())
-            {
-                ar_.push_back(Glib::Ascii::strtod(value));
-            }
-        }
-
-        //Get reaction parameter (b)
-        br_.clear();
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            std::string value = bEntry_[i]->get_text().c_str();
-            if (!value.empty())
-            {
-                br_.push_back(Glib::Ascii::strtod(value));
-            }
-        }
-
-        //Check reaction input
-        done[1] = this->reactionInputCheck(done[1]);
-
-        if (done[1])
-        {
-            stoich_.clear();
-            stoich_.resize(kr_.size());
-            //Stoichiometric coefficients
-            for (unsigned int i=0;i<kr_.size();i++)
-            {
-                std::vector<int> S(n_.size());
-                
-                for (unsigned int k=0;k<n_.size();k++)
-                {
-                    S[k] = 0;
-                }
-
-                for (unsigned int j=0;j<4;j++)
-                {
-                    std::string name = reactionEntry_[i][j]->get_text().c_str();
-                    for (unsigned int k=0;k<n_.size();k++)
-                    {
-                        if (name == n_[k] && j < 2)
-                        {
-                            S[k] = stoichCombo_[i][j]->get_active_row_number()+1;
-                            S[k] = -S[k];
-                        }
-                        else if (name == n_[k] && j >= 2)
-                        {
-                            S[k] = stoichCombo_[i][j]->get_active_row_number()  + 1;
-                        }
-                    }
-                }
-                stoich_[i] = S;
-            }
-                
-            //Conversion of Eatt to J/Kmol
-            {
-                double converter = 1.;
-                if (EattCombo_.get_active_row_number() == 0)
-                {
-                    converter = 1./1e-03;
-                }
-                else if (EattCombo_.get_active_row_number() == 1)
-                {
-                    converter = 1.;
-                }
-                else if (EattCombo_.get_active_row_number() == 2)
-                {
-                    converter = 4186./1e-03;
-                }
-                else if (EattCombo_.get_active_row_number() == 3)
-                {
-                    converter = 4186.;
-                }
-
-                for (unsigned int i=0;i<Eattr_.size();i++)
-                {
-                    Eattr_[i] = Eattr_[i]*converter;
-                }
-            }
-
-            //Conversion of k
-            {
-                if (kCombo_.get_active_row_number() == 0)
-                {
-                    specieConverter_ = 1e03;
-                }
-                else if (kCombo_.get_active_row_number() == 1)
-                {
-                    specieConverter_ = 1e03/1e03;
-                }
-                else if (kCombo_.get_active_row_number() == 2)
-                {
-                    specieConverter_ = 1e03/1e06;
-                }
-                else if (kCombo_.get_active_row_number() == 3)
-                {
-                    specieConverter_ = 1.;
-                }
-                else if (kCombo_.get_active_row_number() == 4)
-                {
-                    specieConverter_ = 1./1e03;
-                }
-                else if (kCombo_.get_active_row_number() == 5)
-                {
-                    specieConverter_ = 1./1e06;
-                }
-            }
-        }
-
-        return done;
-    }
-
-    void Asali::saveKineticInput()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Save", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ofstream output;
-                const char *path = filename.c_str();
-                output.open(path,std::ios::out);
-                
-                output << "#Asali kinetic file" << std::endl;
-                for (unsigned int i=0;i<NR_;i++)
-                {
-                    output << "#Reaction " << i + 1 << std::endl;
-                    for (unsigned int j=0;j<4;j++)
-                    {
-                        std::string name = reactionEntry_[i][j]->get_text().c_str();
-                        if ( !name.empty() )
-                        {
-                            output << stoichCombo_[i][j]->get_active_row_number() << std::endl;
-                            output << reactionEntry_[i][j]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << 0. << std::endl;
-                            output << "none" << std::endl;
-                        }
-                    }
-
-                    //k
-                    {
-                        std::string value = kEntry_[i]->get_text().c_str();
-                        if (!value.empty())
-                        {
-                            output << kEntry_[i]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << "none" << std::endl;
-                        }
-                    }
-
-                    //n
-                    {
-                        std::string value = nEntry_[i]->get_text().c_str();
-                        if (!value.empty())
-                        {
-                            output << nEntry_[i]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << "none" << std::endl;
-                        }
-                    }
-
-                    //Eatt
-                    {
-                        std::string value = EattEntry_[i]->get_text().c_str();
-                        if (!value.empty())
-                        {
-                            output << EattEntry_[i]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << "none" << std::endl;
-                        }
-                    }
-
-                    //a
-                    {
-                        std::string value = aEntry_[i]->get_text().c_str();
-                        if (!value.empty())
-                        {
-                            output << aEntry_[i]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << "none" << std::endl;
-                        }
-                    }
-
-                    //b
-                    {
-                        std::string value = bEntry_[i]->get_text().c_str();
-                        if (!value.empty())
-                        {
-                            output << bEntry_[i]->get_text() << std::endl;
-                        }
-                        else
-                        {
-                            output << "none" << std::endl;
-                        }
-                    }
-                    
-                    output << kCombo_.get_active_row_number() << std::endl;
-                    output << EattCombo_.get_active_row_number() << std::endl;
-                }
-
-                output.close();
-                dialog.hide();
-                this->savedMessage();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
-        }
-    }
-
-    void Asali::loadKineticInput()
-    {
-        Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_OPEN);
-        dialog.set_transient_for(*this);
-
-        //Add response buttons
-        dialog.add_button("_Cancel", Gtk::RESPONSE_CANCEL);
-        dialog.add_button("_Open", Gtk::RESPONSE_OK);
-
-        //Show the dialog and wait for a user response
-        int result = dialog.run();
-
-        //Handle the response
-        switch(result)
-        {
-            case(Gtk::RESPONSE_OK):
-            {
-                std::string filename = dialog.get_filename();
-                std::ifstream input;
-                const char *path = filename.c_str();
-                input.open(path);
-
-                std::vector<std::string> readed;
-                
-                while (!input.eof()) 
-                {
-                    std::string line;
-                    getline(input,line);
-                    if (line.find("#"))
-                    {
-                        readed.push_back(line);
-                    }
-                }
-
-                unsigned int counter = 0;
-
-                for (unsigned int i=0;i<NR_;i++)
-                {
-                    for (unsigned int j=0;j<4;j++)
-                    {
-                        stoichCombo_[i][j]->set_active(Glib::Ascii::strtod(readed[counter++]));
-
-                        if ( readed[counter] != "none" )
-                        {
-                            reactionEntry_[i][j]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-
-                    //k
-                    {
-                        if ( readed[counter] != "none" )
-                        {
-                            kEntry_[i]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-
-                    //n
-                    {
-                        if ( readed[counter] != "none" )
-                        {
-                            nEntry_[i]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-
-                    //Eatt
-                    {
-                        if ( readed[counter] != "none" )
-                        {
-                            EattEntry_[i]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-
-                    //a
-                    {
-                        if ( readed[counter] != "none" )
-                        {
-                            aEntry_[i]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-
-                    //b
-                    {
-                        if ( readed[counter] != "none" )
-                        {
-                            bEntry_[i]->set_text(readed[counter]);
-                        }
-                        counter++;
-                    }
-                    
-                    kCombo_.set_active(Glib::Ascii::strtod(readed[counter++]));
-                    EattCombo_.set_active(Glib::Ascii::strtod(readed[counter++]));
-                }
-
-                dialog.hide();
-                this->reactorsMenu2();
-                break;
-            }
-            case(Gtk::RESPONSE_CANCEL):
-            {
-                dialog.hide();
-                break;
-            }
-            default:
-            {
-                std::cout << "Unexpected button clicked." << std::endl;
-                break;
-            }
+            Gtk::MessageDialog dialog(*this,nc_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.run();
         }
     }
 
@@ -3893,14 +1108,26 @@ namespace ASALI
         canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
         speciesNames_     = new ASALI::speciesPopup();
 
-        if ( defaultKinetic_ == true )
+        if ( kineticType_ == "default" )
         {
             inputGrid_.remove(helpButton_);
         }
 
         inputGrid_.attach(helpButton_,1,13,1,1);
 
-        defaultKinetic_ = true;
+        kineticType_ = "default";
+        this->mainMenu();
+    }
+    
+    void Asali::noneInput()
+    {
+        if ( kineticType_ == "default" )
+        {
+            inputGrid_.remove(helpButton_);
+        }
+
+        kineticType_ = "none";
+
         this->mainMenu();
     }
 
@@ -3930,6 +1157,7 @@ namespace ASALI
                 {
                     #if ASALI_ON_WINDOW == 1
                         Gtk::MessageDialog dialog(*this,"On WINDOWS you should use the xml version of CANTERA input file",true,Gtk::MESSAGE_WARNING);
+                        dialog.set_secondary_text(this->getBeer(),true);
                         dialog.run();
                     #else
                         std::vector<std::string> readed;
@@ -3937,15 +1165,16 @@ namespace ASALI
                         {
                             std::string line;
                             getline(input,line);
-                            
-                 
+
                             if (line.find("name")!=std::string::npos)
                             {
                                 readed.push_back(line);
                             }
                         }
                         
-                        std::string type = "none";
+                        std::vector<std::string> type(2);
+                        type[0] = "none";
+                        type[1] = "none";
                         for (unsigned int i=0;i<readed.size();i++)
                         {
                             std::string dummyString = readed[i];
@@ -3990,37 +1219,54 @@ namespace ASALI
                                     if (dummyVector[j] == "ideal_gas" &&
                                         dummyVector[j + 1] == "name"  )
                                     {
-                                        type = dummyVector[j+2];
-                                        type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
-                                        type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
-                                        break;
+                                        type[0] = dummyVector[j+2];
+                                        type[0].erase(std::remove(type[0].begin(), type[0].end(), '"'), type[0].end());
+                                        type[0].erase(std::remove(type[0].begin(), type[0].end(), ' '), type[0].end());
+                                    }
+                                    else if (dummyVector[j] == "ideal_interface" &&
+                                             dummyVector[j + 1] == "name"  )
+                                    {
+                                        type[1] = dummyVector[j+2];
+                                        type[1].erase(std::remove(type[1].begin(), type[1].end(), '"'), type[1].end());
+                                        type[1].erase(std::remove(type[1].begin(), type[1].end(), ' '), type[1].end());
                                     }
                                 }
                             }
                             
-                            if ( type != "none" )
+                            if ( type[0] != "none" && type[1] != "none")
                             {
                                 break;
                             }
                         }
                         
-                        if ( type == "none" )
+                        if ( type[0] == "none" ||
+                             type[1] == "none" )
                         {
                             Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                            dialog.set_secondary_text(this->getBeer(),true);
                             dialog.run();
                         }
                         else
                         {
-                            thermo_           = Cantera::newPhase(filename,type);
-                            transport_        = Cantera::newDefaultTransportMgr(thermo_);
+                            thermo_  = Cantera::newPhase(filename,type[0]);
+                            std::vector<Cantera::ThermoPhase*> phases{thermo_};
+                            for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                            {
+                                std::cout << thermo_->speciesName(i) << std::endl;
+                            }
+
+                            kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+                            surface_    = Cantera::importInterface(filename,type[1],phases);
+                            transport_  = Cantera::newDefaultTransportMgr(thermo_);
+
                             canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
 
-                            if ( defaultKinetic_ == true )
+                            if ( kineticType_ == "default" )
                             {
                                 inputGrid_.remove(helpButton_);
                             }
 
-                            defaultKinetic_ = false;
+                            kineticType_ = "load";
 
                             dialog.hide();
                             this->mainMenu();
@@ -4030,18 +1276,40 @@ namespace ASALI
                 }
                 else if (filename.find("xml")!=std::string::npos)
                 {
-                    std::vector<std::string> readed;
-                    while (!input.eof()) 
+                    std::vector<std::string> readed(2);
                     {
-                        std::string line;
-                        getline(input,line);
-                        if (line.find("<phase")!=std::string::npos)
+                        std::vector<std::string> a;
+                        std::vector<std::string> b;
+                        while (!input.eof()) 
                         {
-                            readed.push_back(line);
+                            std::string line;
+                            getline(input,line);
+                            if (line.find("<phase ")!=std::string::npos)
+                            {
+                                a.push_back(line);
+                            }
+                            else if (line.find("<kinetics ")!=std::string::npos)
+                            {
+                                b.push_back(line);
+                            }
+                        }
+                        
+                        for (unsigned int i=0;i<b.size();i++)
+                        {
+                            if (b[i].find("Interface")!=std::string::npos)
+                            {
+                                readed[1] = a[i];
+                            }
+                            else if (b[i].find("GasKinetics")!=std::string::npos)
+                            {
+                                readed[0] = a[i];
+                            }
                         }
                     }
                     
-                    std::string type = "none";
+                    std::vector<std::string> type(2);
+                    type[0] = "none";
+                    type[1] = "none";
                     for (unsigned int i=0;i<readed.size();i++)
                     {
                         std::string dummyString = readed[i];
@@ -4079,38 +1347,42 @@ namespace ASALI
                                     dummyVector[j + 1] == "dim" &&
                                     dummyVector[j + 3] == "id" )
                                 {
-                                    type = dummyVector[j+4];
-                                    type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
-                                    type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
-                                    break;
+                                    type[i] = dummyVector[j+4];
+                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
+                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
                                 }
                             }
                         }
                         
-                        if ( type != "none" )
+                        if ( type[0] != "none" && type[1] != "none")
                         {
                             break;
                         }
                     }
                     
-                    if ( type == "none" )
+                    if ( type[0] == "none" ||
+                         type[1] == "none" )
                     {
                         Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                        dialog.set_secondary_text(this->getBeer(),true);
                         dialog.run();
                     }
                     else
                     {
-
-                        thermo_           = Cantera::newPhase(filename,type);
-                        transport_        = Cantera::newDefaultTransportMgr(thermo_);
+                        thermo_     = Cantera::newPhase(filename,type[0]);
+                        std::vector<Cantera::ThermoPhase*>  phases{thermo_};
+                        surface_    = Cantera::importInterface(filename,type[1],phases);
+                        kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+                        transport_  = Cantera::newDefaultTransportMgr(thermo_);
+                        
                         canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
 
-                        if ( defaultKinetic_ == true )
+                        if ( kineticType_ == "default" )
                         {
                             inputGrid_.remove(helpButton_);
                         }
 
-                        defaultKinetic_ = false;
+                        kineticType_ = "load";
 
                         dialog.hide();
                         this->mainMenu();
@@ -4120,6 +1392,7 @@ namespace ASALI
                 else
                 {
                     Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                    dialog.set_secondary_text(this->getBeer(),true);
                     dialog.run();
                 }
             }
@@ -4138,6 +1411,7 @@ namespace ASALI
 
     void Asali::exit()
     {
+        std::cout << std::endl;
         this->hide();
     }
     
@@ -4155,35 +1429,16 @@ namespace ASALI
         return id;
     }
 
-    bool Asali::reactionInputCheck(bool test)
-    {
-        bool check = false;
-        
-        if (test)
-        {
-            if ( kr_.size() == Eattr_.size() )
-            {
-                if ( Eattr_.size() == nr_.size() )
-                {
-                    if ( nr_.size() == ar_.size() )
-                    {
-                        if ( ar_.size() == br_.size() )
-                        {
-                            if ( br_.size() != 0 )
-                            {
-                                check = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return check;
-    }
-
     void Asali::availableSpecies()
     {
         speciesNames_->show();
+    }
+
+    std::string Asali::getBeer()
+    {
+        srand(time(NULL));
+        int i = rand()%beer_.size();
+        return beer_[i];
     }
 
 }

@@ -204,6 +204,11 @@ namespace ASALI
     {
         return thermo_->temperature();
     }
+    
+    double canteraInterface::density()
+    {
+        return thermo_->density();
+    }
 
     void canteraInterface::vacuumCalculate()
     {
@@ -268,8 +273,8 @@ namespace ASALI
             }
             else
             {
-                n_[i]    = thermo_->speciesName(i);
-                mu_[i]   = mu[i];
+                n_[i]  = thermo_->speciesName(i);
+                mu_[i] = mu[i];
                 MW_[i] = thermo_->molecularWeight(i);
 
                 for (unsigned int j=0;j<(NS_+1);j++)

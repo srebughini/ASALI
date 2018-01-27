@@ -1,0 +1,27 @@
+SITE/Rh_surface/    SDEN/2.72E-9/
+    Rh(s)
+    H2O(s)
+    H(s)
+    OH(s)
+    O(s)
+END
+
+
+REACTIONS      MWOFF   KJOULES/MOLE      
+H2 + Rh(s) + Rh(s) => H(s) + H(s)             3.000E-02  0.000      0.000 
+    STICK 
+O2 + Rh(s) + Rh(s) => O(s) + O(s)             1.000E-02  0.000      0.000 
+    STICK 
+H2O + Rh(s) => H2O(s)                         1.000E-01  0.000      0.000 
+    STICK 
+H(s) + H(s) => Rh(s) + Rh(s) + H2             5.574E+19  0.239      59.691 
+O(s) + O(s) => Rh(s) + Rh(s) + O2             5.329E+22  -0.137     386.995 
+H2O(s) => Rh(s) + H2O                         6.858E+14  -0.280     44.993 
+O(s) + H(s) => OH(s) + Rh(s)                  8.826E+21  -0.048     73.365 
+OH(s) + Rh(s) => O(s) + H(s)                  1.000E+21  0.045      48.041 
+OH(s) + H(s) => H2O(s) + Rh(s)                1.743E+22  -0.127     41.731 
+H2O(s) + Rh(s) => OH(s) + H(s)                5.408E+22  0.129      98.220 
+OH(s) + OH(s) => O(s) + H2O(s)                5.736E+20  -0.081     121.594 
+O(s) + H2O(s) => OH(s) + OH(s)                1.570E+22  0.081      203.407 
+
+END
