@@ -45,7 +45,7 @@ namespace ASALI
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       speciesImage_("database/names.tiff")
     {
-        this->set_default_size(400,200);
+        this->set_default_size(600,400);
         this->set_border_width(15);
         this->set_title("ASALI: species names");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);

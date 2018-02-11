@@ -460,26 +460,33 @@ namespace ASALI
                     {
                         RfromSurface_ = this->reactionRate(omega_,rho_); //kmol/m3/s
 
-                        if ( userCheck_ == false )
+                        if ( energyEquation_ == true )
                         {
-                            double hArray[gas_->nSpecies()];
-                            gas_->getPartialMolarEnthalpies(hArray);
-                            
-                            for (unsigned int i=0;i<NC_;i++)
+                            if ( userCheck_ == false )
                             {
-                                h_[i] = hArray[canteraIndex_[i]];
-                            }
+                                double hArray[gas_->nSpecies()];
+                                gas_->getPartialMolarEnthalpies(hArray);
+                                
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    h_[i] = hArray[canteraIndex_[i]];
+                                }
 
-                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            }
+                            else
+                            {
+
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    h_[i] = 0.;
+                                }
+                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            }
                         }
                         else
                         {
-
-                            for (unsigned int i=0;i<NC_;i++)
-                            {
-                                h_[i] = 0.;
-                            }
-                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            QfromSurface_ = 0.;
                         }
                     }
                 }
@@ -667,26 +674,33 @@ namespace ASALI
                     {
                         RfromSurface_ = this->reactionRate(omega_,rho_); //kmol/m3/s
 
-                        if ( userCheck_ == false )
+                        if ( energyEquation_ == true )
                         {
-                            double hArray[gas_->nSpecies()];
-                            gas_->getPartialMolarEnthalpies(hArray);
-                            
-                            for (unsigned int i=0;i<NC_;i++)
+                            if ( userCheck_ == false )
                             {
-                                h_[i] = hArray[canteraIndex_[i]];
-                            }
+                                double hArray[gas_->nSpecies()];
+                                gas_->getPartialMolarEnthalpies(hArray);
+                                
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    h_[i] = hArray[canteraIndex_[i]];
+                                }
 
-                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            }
+                            else
+                            {
+
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    h_[i] = 0.;
+                                }
+                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            }
                         }
                         else
                         {
-
-                            for (unsigned int i=0;i<NC_;i++)
-                            {
-                                h_[i] = 0.;
-                            }
-                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                            QfromSurface_ = 0.;
                         }
                     }
                 }
@@ -711,6 +725,7 @@ namespace ASALI
 
             // Recovering residuals
             {
+
                 unsigned int counter=0;
             
                 // Gas phase species
@@ -718,7 +733,7 @@ namespace ASALI
                 {
                     dy[counter++] = MW_[i]*RfromGas_[i]/rho_ + (-omega_[i]*dm_over_dt + V_*alfa_*RfromSurface_[i]*MW_[i])/mass_;
                 }
-                
+
                 // Total mass
                 dy[counter++] = dm_over_dt;
 
@@ -765,7 +780,7 @@ namespace ASALI
         {
             MWmix = MWmix + omega[i]/MW[i];
         }
-        return MWmix;
+        return 1./MWmix;
     }
 
     void BatchEquations::printOnScreen(const double t)

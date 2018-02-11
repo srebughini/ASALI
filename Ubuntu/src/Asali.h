@@ -373,7 +373,8 @@ namespace ASALI
             std::vector<int>      index1_;
             std::vector<int>      index2_;
             std::vector<int>      canteraIndex_;
-            
+
+            std::vector<std::vector<int> >    stoich_;
             std::vector<std::vector<double> > diff_;
             
             std::vector<std::string> n_;

@@ -105,6 +105,25 @@ void Asali::kineticReader()
             canteraIndex_[i] = 0;
         }
 
+        stoich_.resize(asaliKinetic_->get_NR());
+        for (unsigned int i=0;i<asaliKinetic_->get_NR();i++)
+        {
+            stoich_[i].resize(n_.size());
+            for (unsigned int j=0;j<asaliKinetic_->get_stoich()[i].size();j++)
+            {
+                std::string name = asaliKinetic_->get_name()[i][j];
+                asaliProperties_->convertToCaption(name);
+                for (unsigned int k=0;k<n_.size();k++)
+                {
+                    asaliProperties_->convertToCaption(n_[k]);
+                    if ( name == n_[k] )
+                    {
+                        stoich_[i][k] = asaliKinetic_->get_stoich()[i][j];
+                        break;
+                    }
+                }
+            }
+        }
     }
     else
     {
@@ -170,6 +189,26 @@ void Asali::kineticReader()
             {
                 canteraIndex_[i] = thermo_->speciesIndex(n_[i]);
             }
+            
+            stoich_.resize(asaliKinetic_->get_NR());
+            for (unsigned int i=0;i<asaliKinetic_->get_NR();i++)
+            {
+                stoich_[i].resize(n_.size());
+                for (unsigned int j=0;j<asaliKinetic_->get_stoich()[i].size();j++)
+                {
+                    std::string name = asaliKinetic_->get_name()[i][j];
+                    asaliProperties_->convertToCaption(name);
+                    for (unsigned int k=0;k<n_.size();k++)
+                    {
+                        asaliProperties_->convertToCaption(n_[k]);
+                        if ( name == n_[k] )
+                        {
+                            stoich_[i][k] = asaliKinetic_->get_stoich()[i][j];
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -187,6 +226,16 @@ void Asali::propertiesShow()
         {
             asaliProperties_->destroy();
             asaliProperties_->set_type("batch");
+            asaliProperties_->set_energy(energy_);
+            asaliProperties_->set_n(n_);
+            asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
+            asaliProperties_->build();
+            asaliProperties_->show();
+        }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 0 )
+        {
+            asaliProperties_->destroy();
+            asaliProperties_->set_type("ph1d");
             asaliProperties_->set_energy(energy_);
             asaliProperties_->set_n(n_);
             asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
