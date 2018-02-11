@@ -464,6 +464,6 @@ namespace ASALI
             MWmix = MWmix  + y[i]/MW[i];
         }
 
-        return MWmix;
+        return 1./MWmix;
     }
 }

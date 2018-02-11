@@ -54,7 +54,7 @@ namespace ASALI
       bLabel_("b"),
       kBox_(Gtk::ORIENTATION_VERTICAL),
       EattBox_(Gtk::ORIENTATION_VERTICAL),
-      NR_(5)
+      NR_(6)
     {
         #include "Beer.H"
 
@@ -261,12 +261,12 @@ namespace ASALI
         {
             std::vector<int>         s(4);
             std::vector<std::string> n(4);
-            for (unsigned int j=0;j<4;j++)
+            for (unsigned int j=0;j<2;j++)
             {
                 std::string name = reactionEntry_[i][j]->get_text().c_str();
                 if ( !name.empty() )
                 {
-                    s[j] = stoichCombo_[i][j]->get_active_row_number();
+                    s[j] = -stoichCombo_[i][j]->get_active_row_number()-1;
                     n[j] = reactionEntry_[i][j]->get_text();
                 }
                 else
@@ -275,7 +275,21 @@ namespace ASALI
                     n[j] = "none";
                 }
             }
-
+            
+            for (unsigned int j=2;j<4;j++)
+            {
+                std::string name = reactionEntry_[i][j]->get_text().c_str();
+                if ( !name.empty() )
+                {
+                    s[j] = stoichCombo_[i][j]->get_active_row_number()+1;
+                    n[j] = reactionEntry_[i][j]->get_text();
+                }
+                else
+                {
+                    s[j] = 0;
+                    n[j] = "none";
+                }
+            }
             //stoich and names
             {
                 stoich_.push_back(s);

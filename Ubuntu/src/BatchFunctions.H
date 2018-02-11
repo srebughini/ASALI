@@ -808,7 +808,7 @@ void Asali::batchRun()
                                     index2_,
                                     canteraIndex_,
                                     asaliKinetic_->get_name(),
-                                    asaliKinetic_->get_stoich(),
+                                    stoich_,
                                     asaliKinetic_->get_converter());
             batch_->set_MW(asaliProperties_->get_MW());
             batch_->set_QfromSurface(asaliProperties_->get_Q());
@@ -829,7 +829,7 @@ void Asali::batchRun()
                                     index2_,
                                     canteraIndex_,
                                     asaliKinetic_->get_name(),
-                                    asaliKinetic_->get_stoich(),
+                                    stoich_,
                                     asaliKinetic_->get_converter());
         }
     }

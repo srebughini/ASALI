@@ -943,51 +943,63 @@ namespace ASALI
                 if ( !n[i].empty() )
                 {
                     nc_.push_back(n[i]);
-                    xc_.push_back(Glib::Ascii::strtod(x[i]));
                 }
-            }
-
-            std::vector<int> check(nc_.size());
-            {
-                for (unsigned int i=0;i<nc_.size();i++)
+                
+                if ( !x[i].empty() )
                 {
-                    check[i] = 1;
-                    for (unsigned int j=0;j<surface_->nSpecies();j++)
+                    xc_.push_back(Glib::Ascii::strtod(x[i]));
+                } 
+            }
+            
+            if ( xc_.size() != nc_.size() )
+            {
+                checkCoverage_.first  = 4445;
+                checkCoverage_.second = false;
+            }
+            else
+            {
+                std::vector<int> check(nc_.size());
+                {
+                    for (unsigned int i=0;i<nc_.size();i++)
                     {
-                        if ( nc_[i] == surface_->speciesName(j) )
+                        check[i] = 1;
+                        for (unsigned int j=0;j<surface_->nSpecies();j++)
                         {
-                            check[i] = 0;
-                            break;
+                            if ( nc_[i] == surface_->speciesName(j) )
+                            {
+                                check[i] = 0;
+                                break;
+                            }
                         }
                     }
-                }
 
-                for (unsigned int i=0;i<check.size();i++)
-                {
-                    if (check[i] == 1 )
+                    for (unsigned int i=0;i<check.size();i++)
                     {
-                        checkCoverage_.first  = i;
-                        checkCoverage_.second = false;
-                        break;
+                        if (check[i] == 1 )
+                        {
+                            checkCoverage_.first  = i;
+                            checkCoverage_.second = false;
+                            break;
+                        }
+                        else
+                        {
+                            checkCoverage_.first  = i;
+                            checkCoverage_.second = true;
+                        }
                     }
-                    else
-                    {
-                        checkCoverage_.first  = i;
-                        checkCoverage_.second = true;
-                    }
-                }
 
-                {
-                    double sum = 0.;
-                    for(unsigned int i=0;i<xc_.size();i++)
                     {
-                        sum = sum + xc_[i];
-                    }
-                    
-                    if ( sum != 1. )
-                    {
-                        checkCoverage_.first  = 4444;
-                        checkCoverage_.second = false;
+                        double sum = 0.;
+                        for(unsigned int i=0;i<xc_.size();i++)
+                        {
+                            sum = sum + xc_[i];
+                        }
+                        
+                        if ( sum != 1. )
+                        {
+                            checkCoverage_.first  = 4444;
+                            checkCoverage_.second = false;
+                        }
                     }
                 }
             }
@@ -1023,48 +1035,60 @@ namespace ASALI
             if ( !n[i].empty() )
             {
                 n_.push_back(n[i]);
+            }
+            
+            if ( !x[i].empty() )
+            {
                 x_.push_back(Glib::Ascii::strtod(x[i]));
             }
         }
         
-        if ( kineticType_ == "default" ||
-             kineticType_ == "load" )
+        if ( x_.size() != n_.size() )
         {
-            std::vector<int> check = canteraInterface_->checkNames(n_);
-
-            for (unsigned int i=0;i<check.size();i++)
-            {
-                if (check[i] == 1 )
-                {
-                    checkInput_.first  = i;
-                    checkInput_.second = false;
-                    break;
-                }
-                else
-                {
-                    checkInput_.first  = i;
-                    checkInput_.second = true;
-                }
-            }
-
-            {
-                double sum = 0.;
-                for(unsigned int i=0;i<x_.size();i++)
-                {
-                    sum = sum + x_[i];
-                }
-                
-                if ( sum != 1. )
-                {
-                    checkInput_.first  = 4444;
-                    checkInput_.second = false;
-                }
-            }
+            checkInput_.first  = 4445;
+            checkInput_.second = false;
         }
         else
         {
-            checkInput_.first  = 0;
-            checkInput_.second = true;
+            if ( kineticType_ == "default" ||
+                 kineticType_ == "load" )
+            {
+                std::vector<int> check = canteraInterface_->checkNames(n_);
+
+                for (unsigned int i=0;i<check.size();i++)
+                {
+                    if (check[i] == 1 )
+                    {
+                        checkInput_.first  = i;
+                        checkInput_.second = false;
+                        break;
+                    }
+                    else
+                    {
+                        checkInput_.first  = i;
+                        checkInput_.second = true;
+                    }
+                }
+
+                {
+                    double sum = 0.;
+                    for(unsigned int i=0;i<x_.size();i++)
+                    {
+                        sum = sum + x_[i];
+                    }
+                    
+                    if ( sum != 1. )
+                    {
+                        checkInput_.first  = 4444;
+                        checkInput_.second = false;
+                    }
+                }
+            }
+            else
+            {
+                checkInput_.first  = 0;
+                checkInput_.second = true;
+            }
         }
         
     }
@@ -1074,6 +1098,12 @@ namespace ASALI
         if ( i == 4444 )
         {
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.run();
+        }
+        else if ( i == 4445 )
+        {
+            Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
         }
@@ -1090,6 +1120,12 @@ namespace ASALI
         if ( i == 4444 )
         {
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.run();
+        }
+        else if ( i == 4445 )
+        {
+            Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
         }
