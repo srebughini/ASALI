@@ -852,7 +852,6 @@ void Asali::batchRun()
     batch_->setPressure(p_);
     batch_->setTemperature(T_);
     batch_->setCatalystLoad(alfa_);
-    batch_->setTimeSaving(dt_);
     batch_->setResolutionType(resolution_);
     
     ASALI::BatchInterface solver;
@@ -888,8 +887,6 @@ void Asali::batchRun()
         x0[x_.size()]     = p_*V_*MWmix/(8314.*T_);
         
         x0[x_.size() + 1] = T_;
-
-        solver.setInitialConditions(0.,x0);
     }
     else
     {
@@ -970,14 +967,43 @@ void Asali::batchRun()
 
             x0[thermo_->nSpecies() + surface_->nSpecies() + 1] = T_;
         }
-
-        solver.setInitialConditions(0.,x0);
     }
-
+    
+    
     yF_.resize(batch_->NumberOfEquations());
-    batch_->setIntegrationTime(tf_);
-    solver.solve(tf_,yF_);
+    this->batchBar(0.);
+    
+    //Start solving
+    {
+        double ti = 0.;
+        double tf = 0.;
+        for (int i=0;i<int(tf_/dt_);i++)
+        {
+            tf = ti + dt_;
+            batch_->setIntegrationTime(tf);
+            
+            solver.setInitialConditions(ti,x0);
+            solver.solve(tf,x0);
+
+            ti = tf;
+
+            this->batchBar(double(i+1)*dt_/tf_);
+            //Update solving bar
+            while( Gtk::Main::events_pending() )
+            {
+                Gtk::Main::iteration();
+            }
+        }
+    }
+    
+    batchBar_->exit();
     this->batchSave();
+}
+
+void Asali::batchBar(const double fraction)
+{
+    batchBar_->update(fraction);
+    batchBar_->show();
 }
 
 void Asali::batchReader()

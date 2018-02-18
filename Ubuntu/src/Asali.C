@@ -142,6 +142,7 @@ namespace ASALI
         #include "Beer.H"
 
         batch_           = new ASALI::BatchEquations();
+        batchBar_        = new ASALI::runBar();
         asaliKinetic_    = new ASALI::asaliKinetic();
         asaliProperties_ = new ASALI::asaliProperties();
 
