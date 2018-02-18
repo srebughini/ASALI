@@ -139,12 +139,6 @@ namespace ASALI
         V_ = V;
     }
 
-    void BatchEquations::setTimeSaving(const double dt)
-    {
-        dt_          = dt;
-        timeCounter_ = 0;
-    }
-    
     void BatchEquations::setIntegrationTime(const double tF)
     {
         tF_ = tF;
@@ -755,7 +749,7 @@ namespace ASALI
             }
         }
 
-        if ( (t/dt_) >= timeCounter_ )
+        if ( t >= tF_ )
         {
             Time_.push_back(t);
             Specie_.push_back(omega_);
@@ -766,8 +760,6 @@ namespace ASALI
             Mass_.push_back(mass_);
             timeCounter_++;
         }
-
-        this->printOnScreen(t);
 
         return 0;
     }
@@ -781,53 +773,5 @@ namespace ASALI
             MWmix = MWmix + omega[i]/MW[i];
         }
         return 1./MWmix;
-    }
-
-    void BatchEquations::printOnScreen(const double t)
-    {
-        if ( t/tF_ < 0.1 )
-        {
-            std::cout << "\r" << "|                              |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.1 && t/tF_ < 0.2 )
-        {
-            std::cout << "\r" << "|===                           |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.2 && t/tF_ < 0.3 )
-        {
-            std::cout << "\r" << "|======                        |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.3 && t/tF_ < 0.4 )
-        {
-            std::cout << "\r" << "|=========                     |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.4 && t/tF_ < 0.5 )
-        {
-            std::cout << "\r" << "|============                  |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.5 && t/tF_ < 0.6 )
-        {
-            std::cout << "\r" << "|===============               |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.6 && t/tF_ < 0.7 )
-        {
-            std::cout << "\r" << "|==================            |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.7 && t/tF_ < 0.8 )
-        {
-            std::cout << "\r" << "|=====================         |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.8 && t/tF_ < 0.9 )
-        {
-            std::cout << "\r" << "|========================      |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 0.9 && t/tF_ < 1.0 )
-        {
-            std::cout << "\r" << "|===========================   |" << int(t*100./tF_) << "%" << std::flush;
-        }
-        else if ( t/tF_ >= 1.0 )
-        {
-            std::cout << "\r" << "|==============================|" << "100%" << std::flush;
-        }
     }
 }

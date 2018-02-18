@@ -106,8 +106,6 @@ class BatchEquations
         
         void setCatalystLoad(const double alfa);
         
-        void setTimeSaving(const double dt);
-        
         void setResolutionType(const std::string resolution);
         
         void setKineticType(const std::string type);
@@ -203,9 +201,6 @@ class BatchEquations
         std::vector<double> reactionRate(const std::vector<double> omega,const double rho);
         double              heatOfReaction(const std::vector<double> omega,const double rho, const std::vector<double> h);
         double              meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW);
-        void                printOnScreen(const double t);
-
-
 
         std::vector<double> Time_;
         std::vector<double> Mass_;

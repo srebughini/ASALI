@@ -53,6 +53,7 @@
 #include "speciesPopup.h"
 #include "asaliKinetic.h"
 #include "asaliProperties.h"
+#include "runBar.h"
 #include "BatchInterface.h"
 #include "BatchEquations.h"
 
@@ -121,6 +122,7 @@ namespace ASALI
             void kineticReader();
             void kineticShow();
             void batchCoverage();
+            void batchBar(const double fraction);
             bool chemistryMenu1(GdkEventButton*);
             
             std::vector<bool> setReactors();
@@ -400,6 +402,7 @@ namespace ASALI
             ASALI::asaliKinetic         *asaliKinetic_;
             ASALI::asaliProperties      *asaliProperties_;
             ASALI::BatchEquations       *batch_;
+            ASALI::runBar               *batchBar_;
 
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
             
