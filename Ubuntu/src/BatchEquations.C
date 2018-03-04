@@ -118,7 +118,6 @@ namespace ASALI
             Specie_.clear();
             Site_.clear();
             Temperature_.clear();
-            Pressure_.clear();
             Volume_.clear();
             Mass_.clear();
         }
@@ -139,19 +138,9 @@ namespace ASALI
         V_ = V;
     }
 
-    void BatchEquations::setIntegrationTime(const double tF)
-    {
-        tF_ = tF;
-    }
-
     void BatchEquations::setCatalystLoad(const double alfa)
     {
         alfa_ = alfa;
-    }
-
-    void BatchEquations::setResolutionType(const std::string resolution)
-    {
-        resolution_ = resolution;
     }
 
     void BatchEquations::setAsaliKinetic(const unsigned int                           NR,
@@ -279,7 +268,6 @@ namespace ASALI
         }
         else
         {
-            double Q = 0.;
             for (unsigned int j=0;j<NR_;j++)
             {
                 double R = 0.;
@@ -306,7 +294,7 @@ namespace ASALI
                 Q = Q + R*Quser_[j]/converter_;
             }
         }
-        return Q;
+        return -Q;
     }
 
     int BatchEquations::Equations(double& t, std::vector<double>& y, std::vector<double>& dy)
@@ -325,446 +313,218 @@ namespace ASALI
 
             T_ = y[counter++];
         }
-        
-        if ( resolution_ == "volume" )
+
+        // Calculates the volume and the concentrations of species
+        if ( userCheck_ == false )
         {
-            // Calculates the pressure and the concentrations of species
-            if ( userCheck_ == false )
+            double canteraArray[gas_->nSpecies()];
+            memset(canteraArray,0.,sizeof(canteraArray));
+            for (unsigned int i=0;i<NC_;i++)
             {
-                double canteraArray[gas_->nSpecies()];
-                memset(canteraArray,0.,sizeof(canteraArray));
-                for (unsigned int i=0;i<NC_;i++)
-                {
-                    canteraArray[canteraIndex_[i]] = omega_[i];
-                }
+                canteraArray[canteraIndex_[i]] = omega_[i];
+            }
+            MWmix_ = gas_->meanMolecularWeight();
+            cTot_  = P_/(8314.*T_);
+            rho_   = cTot_*MWmix_;
+            V_     = mass_/rho_;
 
-                MWmix_ = gas_->meanMolecularWeight();
-                rho_   = mass_/V_;
-                cTot_  = rho_/MWmix_;
-                P_     = cTot_*8314.*T_;
+            gas_->setState_TPY(T_,P_,canteraArray);
 
+            for (unsigned int i=0;i<NC_;i++)
+            {
+                MW_[i] = gas_->molecularWeight(canteraIndex_[i]);
+            }
+
+            cp_ = gas_->cp_mass();
+        }
+        else
+        {
+            MWmix_ = this->meanMolecularWeight(omega_,MW_);
+            cTot_  = P_/(8314.*T_);
+            rho_   = cTot_*MWmix_;
+            V_     = mass_/rho_;
+        }
+
+        // Calculates homogeneous kinetics
+        {
+            //To be done
+            /*
+            if ( homogeneusReactions_ == true )
+            {
+                double* canteraArray = omega_.data();
                 gas_->setState_TPY(T_,P_,canteraArray);
-
-                for (unsigned int i=0;i<NC_;i++)
+                kinetic_.getNetProductionRates(canteraArray);
+                for (unsigned int j=0;j<NC_;j++)
                 {
-                    MW_[i] = gas_->molecularWeight(canteraIndex_[i]);
+                    RfromGas_[j] = canteraArray[j]; //kmol/m3/s
                 }
 
-                cp_ = gas_->cp_mass();
+                double reactionArray[kinetic_.nReactions()];
+                double enthalpyArray[kinetic_.nReactions()];
+                kinetic_.getNetRatesOfProgress(reactionArray);
+                kinetic_.getDeltaEnthalpy(enthalpyArray);
+                QfromGas_ = 0.;
+                for (unsigned int j=0;j<kinetic_.nReactions();j++)
+                {   
+                    QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
+                }
+                QfromGas_ = -QfromGas_;
             }
             else
             {
-                MWmix_ = this->meanMolecularWeight(omega_,MW_);
-                rho_   = mass_/V_;
-                cTot_  = rho_/MWmix_;
-                P_     = cTot_*8314.*T_;
-            }
-
-            // Calculates homogeneous kinetics
-            {
-                //TO BE IMPLEMENTED
-                /*
-                if ( homogeneusReactions_ == true )
-                {
-                    double* canteraArray = omega_.data();
-                    gas_->setState_TPY(T_,P_,canteraArray);
-                    kinetic_.getNetProductionRates(canteraArray);
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = canteraArray[j]; //kmol/m3/s
-                    }
-
-                    double reactionArray[kinetic_.nReactions()];
-                    double enthalpyArray[kinetic_.nReactions()];
-                    kinetic_.getNetRatesOfProgress(reactionArray);
-                    kinetic_.getDeltaEnthalpy(enthalpyArray);
-                    QfromGas_ = 0.;
-                    for (unsigned int j=0;j<kinetic_.nReactions();j++)
-                    {   
-                        QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
-                    }
-                    QfromGas_ = -QfromGas_;
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = 0.;
-                    }
-                    QfromGas_ = 0.;
-                }*/
-
                 for (unsigned int j=0;j<NC_;j++)
                 {
                     RfromGas_[j] = 0.;
                 }
                 QfromGas_ = 0.;
-            }
+            }*/
 
-            // Calculates heterogeneous kinetics
+            for (unsigned int j=0;j<NC_;j++)
             {
-                if ( heterogeneusReactions_ == true )
+                RfromGas_[j] = 0.;
+            }
+            QfromGas_ = 0.;
+
+        }
+
+        // Calculates heterogeneous kinetics
+        {
+            if ( heterogeneusReactions_ == true )
+            {
+                if ( type_ == "CANTERA" )
                 {
-                    if ( type_ == "CANTERA" )
                     {
+                        double* bulkArray     = omega_.data();
+                        double* coverageArray = Z_.data();
+                        double  reactionArray[NC_+SURF_NC_];
+
+                        gas_->setState_TPY(T_,P_,bulkArray);
+
+                        surface_->setTemperature(T_);
+                        surface_->setCoveragesNoNorm(coverageArray);
+                        surface_->getNetProductionRates(reactionArray);
+
+                        unsigned int rcounter = 0;
+                        for (unsigned int j=0;j<NC_;j++)
                         {
-                            double* bulkArray     = omega_.data();
-                            double* coverageArray = Z_.data();
-                            double reactionArray[NC_+SURF_NC_];
-
-                            gas_->setState_TPY(T_,P_,bulkArray);
-                            surface_->setTemperature(T_);
-                            surface_->setCoveragesNoNorm(coverageArray);
-                            surface_->getNetProductionRates(reactionArray);
-
-                            unsigned int rcounter = 0;
-                            for (unsigned int j=0;j<NC_;j++)
-                            {
-                                RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
-                            }
-
-                            for (unsigned int j=0;j<SURF_NC_;j++)
-                            {
-                                Rsurface_[j] = reactionArray[rcounter++];
-                            }
+                            RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
                         }
-                        
-                        if ( energyEquation_ == true )
+
+                        for (unsigned int j=0;j<SURF_NC_;j++)
                         {
-                            double reactionArray[surface_->nReactions()];
-                            double enthalpyArray[surface_->nReactions()];
-                            surface_->getNetRatesOfProgress(reactionArray);
-                            surface_->getDeltaEnthalpy(enthalpyArray);
-                            QfromSurface_ = 0.;
-                            for (unsigned int j=0;j<surface_->nReactions();j++)
-                            {
-                                QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/s
-                            }
-
-                            QfromSurface_ = -QfromSurface_;
-                            SD_ = surface_->siteDensity();
+                            Rsurface_[j] = reactionArray[rcounter++];
                         }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-                            SD_ = surface_->siteDensity();
-                        }
-                    }
-                    else if ( type_ == "ASALI" )
-                    {
-                        RfromSurface_ = this->reactionRate(omega_,rho_); //kmol/m3/s
-
-                        if ( energyEquation_ == true )
-                        {
-                            if ( userCheck_ == false )
-                            {
-                                double hArray[gas_->nSpecies()];
-                                gas_->getPartialMolarEnthalpies(hArray);
-                                
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = hArray[canteraIndex_[i]];
-                                }
-
-                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
-                            }
-                            else
-                            {
-
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = 0.;
-                                }
-                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
-                            }
-                        }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-                        }
-                    }
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromSurface_[j] = 0.;
-                    }
-
-                    for (unsigned int j=0;j<SURF_NC_;j++)
-                    {
-                        Rsurface_[j] = 0.;
                     }
                     
-                    QfromSurface_ = 0.;
+                    if ( energyEquation_ == true )
+                    {
+                        double reactionArray[surface_->nReactions()];
+                        double enthalpyArray[surface_->nReactions()];
+                        surface_->getNetRatesOfProgress(reactionArray);
+                        surface_->getDeltaEnthalpy(enthalpyArray);
+                        QfromSurface_ = 0.;
+                        for (unsigned int j=0;j<surface_->nReactions();j++)
+                        {
+                            QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/s
+                        }
+
+                        QfromSurface_ = -QfromSurface_;
+
+                        SD_ = surface_->siteDensity();
+                    }
+                    else
+                    {
+                        QfromSurface_ = 0.;
+
+                        SD_ = surface_->siteDensity();
+                    }
+                }
+                else if ( type_ == "ASALI" )
+                {
+                    RfromSurface_ = this->reactionRate(omega_,rho_); //kmol/m3/s
+
+                    if ( energyEquation_ == true )
+                    {
+                        if ( userCheck_ == false )
+                        {
+                            double hArray[gas_->nSpecies()];
+                            gas_->getPartialMolarEnthalpies(hArray);
+                            
+                            for (unsigned int i=0;i<NC_;i++)
+                            {
+                                h_[i] = hArray[canteraIndex_[i]];
+                            }
+
+                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                        }
+                        else
+                        {
+
+                            for (unsigned int i=0;i<NC_;i++)
+                            {
+                                h_[i] = 0.;
+                            }
+                            QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
+                        }
+                    }
+                    else
+                    {
+                        QfromSurface_ = 0.;
+                    }
                 }
             }
-
-            // Variation of gas mass in the reactor
-            const double dm_over_dt = V_*alfa_*DotProduct(RfromSurface_, MW_);
-
-            // Number of moles
-            const double moles = cTot_*V_;
-            const double sumMoleFormationRates = V_*SumElements(RfromGas_) + V_*alfa_*SumElements(RfromSurface_);
-            
-            // Recovering residuals
+            else
             {
-                unsigned int counter=0;
-            
-                // Gas phase species
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int j=0;j<NC_;j++)
                 {
-                    dy[counter++] = MW_[i]*RfromGas_[i]/rho_ + (-omega_[i]*dm_over_dt + V_*alfa_*RfromSurface_[i]*MW_[i])/mass_;
+                    RfromSurface_[j] = 0.;
+                }
+
+                for (unsigned int j=0;j<SURF_NC_;j++)
+                {
+                    Rsurface_[j] = 0.;
                 }
                 
-                // Total mass
-                dy[counter++] = dm_over_dt;
-
-                // Surface site species
-                for (unsigned int i=0;i<SURF_NC_;i++)    
-                {
-                    dy[counter++] = Rsurface_[i]/SD_;
-                }
-
-                // Energy equation
-                if (energyEquation_ == true)
-                {
-                    dy[counter++] = (V_*QfromGas_+ V_*alfa_*QfromSurface_ + 8314.*T_*sumMoleFormationRates)/(mass_*cp_ - 8314.*moles);
-                }
-                else
-                {
-                    dy[counter++] = 0.;
-                }
+                QfromSurface_ = 0.;
             }
         }
-        else if ( resolution_ == "pressure" )
+
+        // Variation of gas mass in the reactor
+        const double dm_over_dt = V_*alfa_*DotProduct(RfromSurface_, MW_);
+
+        // Recovering residuals
         {
-            // Calculates the volume and the concentrations of species
-            if ( userCheck_ == false )
+
+            unsigned int counter=0;
+        
+            // Gas phase species
+            for (unsigned int i=0;i<NC_;i++)
             {
-                double canteraArray[gas_->nSpecies()];
-                memset(canteraArray,0.,sizeof(canteraArray));
-                for (unsigned int i=0;i<NC_;i++)
-                {
-                    canteraArray[canteraIndex_[i]] = omega_[i];
-                }
-                MWmix_ = gas_->meanMolecularWeight();
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
-                V_     = mass_/rho_;
+                dy[counter++] = MW_[i]*RfromGas_[i]/rho_ + (-omega_[i]*dm_over_dt + V_*alfa_*RfromSurface_[i]*MW_[i])/mass_;
+            }
 
-                gas_->setState_TPY(T_,P_,canteraArray);
+            // Total mass
+            dy[counter++] = dm_over_dt;
 
-                for (unsigned int i=0;i<NC_;i++)
-                {
-                    MW_[i] = gas_->molecularWeight(canteraIndex_[i]);
-                }
+            // Surface site species
+            for (unsigned int i=0;i<SURF_NC_;i++)    
+            {
+                dy[counter++] = Rsurface_[i]/SD_;
+            }
 
-                cp_ = gas_->cp_mass();
+            // Energy equation
+            if (energyEquation_ == true)
+            {
+                dy[counter++] = (V_*QfromGas_+ V_*alfa_*QfromSurface_)/(mass_*cp_);
             }
             else
             {
-                MWmix_ = this->meanMolecularWeight(omega_,MW_);
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
-                V_     = mass_/rho_;
-            }
-
-            // Calculates homogeneous kinetics
-            {
-                //To be done
-                /*
-                if ( homogeneusReactions_ == true )
-                {
-                    double* canteraArray = omega_.data();
-                    gas_->setState_TPY(T_,P_,canteraArray);
-                    kinetic_.getNetProductionRates(canteraArray);
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = canteraArray[j]; //kmol/m3/s
-                    }
-
-                    double reactionArray[kinetic_.nReactions()];
-                    double enthalpyArray[kinetic_.nReactions()];
-                    kinetic_.getNetRatesOfProgress(reactionArray);
-                    kinetic_.getDeltaEnthalpy(enthalpyArray);
-                    QfromGas_ = 0.;
-                    for (unsigned int j=0;j<kinetic_.nReactions();j++)
-                    {   
-                        QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
-                    }
-                    QfromGas_ = -QfromGas_;
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = 0.;
-                    }
-                    QfromGas_ = 0.;
-                }*/
-
-                for (unsigned int j=0;j<NC_;j++)
-                {
-                    RfromGas_[j] = 0.;
-                }
-                QfromGas_ = 0.;
-
-            }
-
-            // Calculates heterogeneous kinetics
-            {
-                if ( heterogeneusReactions_ == true )
-                {
-                    if ( type_ == "CANTERA" )
-                    {
-                        {
-                            double* bulkArray     = omega_.data();
-                            double* coverageArray = Z_.data();
-                            double  reactionArray[NC_+SURF_NC_];
-
-                            gas_->setState_TPY(T_,P_,bulkArray);
-
-                            surface_->setTemperature(T_);
-                            surface_->setCoveragesNoNorm(coverageArray);
-                            surface_->getNetProductionRates(reactionArray);
-
-                            unsigned int rcounter = 0;
-                            for (unsigned int j=0;j<NC_;j++)
-                            {
-                                RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
-                            }
-
-                            for (unsigned int j=0;j<SURF_NC_;j++)
-                            {
-                                Rsurface_[j] = reactionArray[rcounter++];
-                            }
-                        }
-                        
-                        if ( energyEquation_ == true )
-                        {
-                            double reactionArray[surface_->nReactions()];
-                            double enthalpyArray[surface_->nReactions()];
-                            surface_->getNetRatesOfProgress(reactionArray);
-                            surface_->getDeltaEnthalpy(enthalpyArray);
-                            QfromSurface_ = 0.;
-                            for (unsigned int j=0;j<surface_->nReactions();j++)
-                            {
-                                QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/s
-                            }
-
-                            QfromSurface_ = -QfromSurface_;
-
-                            SD_ = surface_->siteDensity();
-                        }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-
-                            SD_ = surface_->siteDensity();
-                        }
-                    }
-                    else if ( type_ == "ASALI" )
-                    {
-                        RfromSurface_ = this->reactionRate(omega_,rho_); //kmol/m3/s
-
-                        if ( energyEquation_ == true )
-                        {
-                            if ( userCheck_ == false )
-                            {
-                                double hArray[gas_->nSpecies()];
-                                gas_->getPartialMolarEnthalpies(hArray);
-                                
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = hArray[canteraIndex_[i]];
-                                }
-
-                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
-                            }
-                            else
-                            {
-
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = 0.;
-                                }
-                                QfromSurface_ = this->heatOfReaction(omega_,rho_,h_); //W/m3
-                            }
-                        }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-                        }
-                    }
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromSurface_[j] = 0.;
-                    }
-
-                    for (unsigned int j=0;j<SURF_NC_;j++)
-                    {
-                        Rsurface_[j] = 0.;
-                    }
-                    
-                    QfromSurface_ = 0.;
-                }
-            }
-
-            // Variation of gas mass in the reactor
-            const double dm_over_dt = V_*alfa_*DotProduct(RfromSurface_, MW_);
-
-            // Recovering residuals
-            {
-
-                unsigned int counter=0;
-            
-                // Gas phase species
-                for (unsigned int i=0;i<NC_;i++)
-                {
-                    dy[counter++] = MW_[i]*RfromGas_[i]/rho_ + (-omega_[i]*dm_over_dt + V_*alfa_*RfromSurface_[i]*MW_[i])/mass_;
-                }
-
-                // Total mass
-                dy[counter++] = dm_over_dt;
-
-                // Surface site species
-                for (unsigned int i=0;i<SURF_NC_;i++)    
-                {
-                    dy[counter++] = Rsurface_[i]/SD_;
-                }
-
-                // Energy equation
-                if (energyEquation_ == true)
-                {
-                    dy[counter++] = (V_*QfromGas_+ V_*alfa_*QfromSurface_)/(mass_*cp_);
-                }
-                else
-                {
-                    dy[counter++] = 0.;
-                }
+                dy[counter++] = 0.;
             }
         }
-
-        if ( t >= tF_ )
-        {
-            Time_.push_back(t);
-            Specie_.push_back(omega_);
-            Site_.push_back(Z_);
-            Temperature_.push_back(T_);
-            Pressure_.push_back(P_);
-            Volume_.push_back(V_);
-            Mass_.push_back(mass_);
-            timeCounter_++;
-        }
-
         return 0;
     }
-    
-    
+
     double BatchEquations::meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW)
     {
         double MWmix = 0.;
@@ -773,5 +533,34 @@ namespace ASALI
             MWmix = MWmix + omega[i]/MW[i];
         }
         return 1./MWmix;
+    }
+    
+    
+    void BatchEquations::store(const double tf, const std::vector<double> xf)
+    {
+        // Recover unknowns
+        {
+            unsigned int counter=0;
+
+            for(unsigned int i=0;i<NC_;i++)
+                omega_[i] = xf[counter++];
+
+            mass_ = xf[counter++];
+
+            for(unsigned int i=0;i<SURF_NC_;i++)
+                Z_[i] = xf[counter++];
+
+            T_ = xf[counter++];
+        }
+
+        {
+            Time_.push_back(tf);
+            Specie_.push_back(omega_);
+            Site_.push_back(Z_);
+            Temperature_.push_back(T_);
+            Volume_.push_back(V_);
+            Mass_.push_back(mass_);
+        }
+
     }
 }

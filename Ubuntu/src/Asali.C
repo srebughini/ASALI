@@ -59,9 +59,11 @@ namespace ASALI
       vacuumSaveButton_("Save"),
       equilibriumSaveButton_("Save"),
       batchSaveButton_("Save"),
+      ph1dSaveButton_("Save"),
       calculateButton_("Calculate"),
       equationsButton_("Equations"),
       batchRunButton_("Run"),
+      ph1dRunButton_("Run"),
       startButton_("Start"),
       helpButton_("Available species"),
       defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
@@ -69,6 +71,8 @@ namespace ASALI
       noneInputButton_("User defined constant properties"),
       batchAsaliPropertiesButton_("Properties"),
       batchAsaliKineticButton_("Kinetics"),
+      ph1dAsaliPropertiesButton_("Properties"),
+      ph1dAsaliKineticButton_("Kinetics"),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       sBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
@@ -85,9 +89,13 @@ namespace ASALI
       batchMainBox_(Gtk::ORIENTATION_VERTICAL),
       batchRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
       batchRecapBox_(Gtk::ORIENTATION_VERTICAL),
+      ph1dMainBox_(Gtk::ORIENTATION_VERTICAL),
+      ph1dRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
+      ph1dRecapBox_(Gtk::ORIENTATION_VERTICAL),
       coverageBox_(Gtk::ORIENTATION_VERTICAL),
       buttonsBox_(Gtk::ORIENTATION_VERTICAL),
       batchButtonBox_(Gtk::ORIENTATION_VERTICAL),
+      ph1dButtonBox_(Gtk::ORIENTATION_VERTICAL),
       heading_("\nAuthor: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"
                "\nhttps://github.com/srebughini/ASALI"
@@ -120,14 +128,24 @@ namespace ASALI
       batchLoadLabel_("Catalyst load"),
       batchTimeLabel_("Integration time"),
       batchSaveLabel_("Save solution every "),
-      batchResolutionLabel_("Working at constant "),
       batchEnergyLabel_("Energy"),
       coverageLabel_("Please, insert the initial coverage composition"),
+      ph1dLengthLabel_("Length"),
+      ph1dVelocityLabel_("Velocity"),
+      ph1dLoadLabel_("Catalyst load"),
+      ph1dTimeLabel_("Integration time"),
+      ph1dSaveLabel_("Save solution every "),
+      ph1dResolutionLabel_("Solver type "),
+      ph1dEnergyLabel_("Energy"),
+      ph1dPointsLabel_("Number of points"),
+      ph1dInertLabel_("Inert species"),
       bigLogo_("images/BigLogo.tiff"),
       chemistrySmallLogo_("images/SmallLogo.tiff"),
       smallLogo_("images/SmallLogo.tiff"),
       batchLogo1_("images/BatchLogo.tiff"),
       batchLogo2_("images/BatchLogo.tiff"),
+      ph1dLogo1_("images/Ph1DLogo.tiff"),
+      ph1dLogo2_("images/Ph1DLogo.tiff"),
       Kn_(-1),
       diffK_(-1),
       vK_(-1),
@@ -137,19 +155,22 @@ namespace ASALI
       SURF_NS_(5),
       kineticType_("zero"),
       kineticTypeOld_("zero"),
-      coverage_("none")
+      coverage_("none"),
+      reactorTypeOld_("zero")
     {
         #include "Beer.H"
 
         batch_           = new ASALI::BatchEquations();
         batchBar_        = new ASALI::runBar();
+        ph1d_            = new ASALI::Ph1DEquations();
+        ph1dBar_         = new ASALI::runBar();
         asaliKinetic_    = new ASALI::asaliKinetic();
         asaliProperties_ = new ASALI::asaliProperties();
 
-        exitButton_.resize(15);
-        backButton_.resize(15);
-        nextButton_.resize(15);
-        mainMenuButton_.resize(15);
+        exitButton_.resize(20);
+        backButton_.resize(20);
+        nextButton_.resize(20);
+        mainMenuButton_.resize(20);
         for (unsigned int i=0;i<exitButton_.size();i++)
         {
             exitButton_[i] = new Gtk::Button("Exit");
@@ -341,10 +362,18 @@ namespace ASALI
 
             //Go to batch coverage (when CANTERA kinetic is used)
             nextButton_[13]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchCoverage));
-            
+
+            //Go to ph1d recap (when ASALI kinetic is used)
+            nextButton_[16]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dRecap));
+
+            //Go to ph1d coverage (when CANTERA kinetic is used)
+            nextButton_[17]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dCoverage));
+
             //Go back to reactor input
             backButton_[11]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[13]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[16]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[17]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
         }
 
         //Coverage menu
@@ -382,6 +411,13 @@ namespace ASALI
 
             //Add next button for batch
             nextButton_[14]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchRecap));
+ 
+            //Add back button for ph1d
+            backButton_[19]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dMenu));
+
+            //Add next button for ph1d
+            nextButton_[19]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dRecap));
+ 
         }
 
         //Reactors/kinetic menu
@@ -471,24 +507,17 @@ namespace ASALI
                 batchSaveCombo_.append("d");
                 batchSaveCombo_.set_active(0);
 
-                //Resolution type
-                batchPropertiesGrid_.attach(batchResolutionLabel_,0,4,1,1);
-                batchPropertiesGrid_.attach(batchResolutionCombo_,1,4,1,1);
-                batchResolutionCombo_.append("volume");
-                batchResolutionCombo_.append("pressure");
-                batchResolutionCombo_.set_active(1);
-
                 //Energy
-                batchPropertiesGrid_.attach(batchEnergyLabel_,0,5,1,1);
-                batchPropertiesGrid_.attach(batchEnergyCombo_,1,5,1,1);
+                batchPropertiesGrid_.attach(batchEnergyLabel_,0,4,1,1);
+                batchPropertiesGrid_.attach(batchEnergyCombo_,1,4,1,1);
                 batchEnergyCombo_.append("on");
                 batchEnergyCombo_.append("off");
                 batchEnergyCombo_.set_active(1);
                 
                 //Buttons
-                batchPropertiesGrid_.attach(*backButton_[10],0,6,1,1);
-                batchPropertiesGrid_.attach(*mainMenuButton_[10],1,6,1,1);
-                batchPropertiesGrid_.attach(*nextButton_[10],2,6,1,1);
+                batchPropertiesGrid_.attach(*backButton_[10],0,5,1,1);
+                batchPropertiesGrid_.attach(*mainMenuButton_[10],1,5,1,1);
+                batchPropertiesGrid_.attach(*nextButton_[10],2,5,1,1);
                 backButton_[10]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
                 nextButton_[10]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchMenu));
             }
@@ -571,25 +600,244 @@ namespace ASALI
                     batchRecapGrid_.attach(batchRecapSaveUDLabel_,2,6,1,1);
                     batchRecapGrid_.attach(batchRecapSaveValueLabel_,1,6,1,1);
                     
-                    //Resolution type
-                    batchRecapResolutionLabel_.set_text("Working at constant");
-                    batchRecapGrid_.attach(batchRecapResolutionLabel_,0,7,1,1);
-                    batchRecapGrid_.attach(batchRecapResolutionValueLabel_,1,7,1,1);
-
                     //Energy type
                     batchRecapEnergyLabel_.set_text("Energy balance is");
-                    batchRecapGrid_.attach(batchRecapEnergyLabel_,0,8,1,1);
-                    batchRecapGrid_.attach(batchRecapEnergyValueLabel_,1,8,1,1);
+                    batchRecapGrid_.attach(batchRecapEnergyLabel_,0,7,1,1);
+                    batchRecapGrid_.attach(batchRecapEnergyValueLabel_,1,7,1,1);
 
                     //Kinetic type
                     batchRecapKineticLabel_.set_text("Kinetic model from");
-                    batchRecapGrid_.attach(batchRecapKineticLabel_,0,9,1,1);
-                    batchRecapGrid_.attach(batchRecapKineticValueLabel_,1,9,1,1);
+                    batchRecapGrid_.attach(batchRecapKineticLabel_,0,8,1,1);
+                    batchRecapGrid_.attach(batchRecapKineticValueLabel_,1,8,1,1);
                     //Buttons
-                    batchRecapGrid_.attach(*backButton_[12],0,10,1,1);
-                    batchRecapGrid_.attach(*mainMenuButton_[12],1,10,1,1);
-                    batchRecapGrid_.attach(*exitButton_[12],2,10,1,1);
+                    batchRecapGrid_.attach(*backButton_[12],0,9,1,1);
+                    batchRecapGrid_.attach(*mainMenuButton_[12],1,9,1,1);
+                    batchRecapGrid_.attach(*exitButton_[12],2,9,1,1);
                     backButton_[12]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchMenu));
+                }
+            }
+        }
+
+        //1D pseudo-homogeneous reactors
+        {
+            ph1dMainBox_.set_halign(Gtk::ALIGN_START);
+            ph1dMainBox_.set_spacing(10);
+            ph1dMainBox_.pack_start(ph1dLogo1_, Gtk::PACK_SHRINK);
+            ph1dMainBox_.pack_start(ph1dBox_, Gtk::PACK_SHRINK);
+
+            ph1dBox_.set_halign(Gtk::ALIGN_START);
+            ph1dBox_.set_spacing(10);
+            ph1dBox_.pack_start(ph1dPropertiesGrid_, Gtk::PACK_SHRINK);
+            {
+                ph1dPropertiesGrid_.set_column_spacing(10);
+                ph1dPropertiesGrid_.set_row_spacing(10);
+                ph1dPropertiesGrid_.set_column_homogeneous(true);
+
+                //Length
+                ph1dPropertiesGrid_.attach(ph1dLengthLabel_,0,0,1,1);
+                ph1dPropertiesGrid_.attach(ph1dLengthEntry_,1,0,1,1);
+                ph1dLengthEntry_.set_text("1");
+                ph1dPropertiesGrid_.attach(ph1dLengthCombo_,2,0,1,1);
+                ph1dLengthCombo_.append("m");
+                ph1dLengthCombo_.append("dm");
+                ph1dLengthCombo_.append("cm");
+                ph1dLengthCombo_.append("mm");
+                ph1dLengthCombo_.set_active(0);
+
+                //Velocity
+                ph1dPropertiesGrid_.attach(ph1dVelocityLabel_,0,1,1,1);
+                ph1dPropertiesGrid_.attach(ph1dVelocityEntry_,1,1,1,1);
+                ph1dVelocityEntry_.set_text("1");
+                ph1dPropertiesGrid_.attach(ph1dVelocityCombo_,2,1,1,1);
+                ph1dVelocityCombo_.append("m/s");
+                ph1dVelocityCombo_.append("cm/s");
+                ph1dVelocityCombo_.append("m/min");
+                ph1dVelocityCombo_.append("cm/min");
+                ph1dVelocityCombo_.append("m/h");
+                ph1dVelocityCombo_.append("cm/h");
+                ph1dVelocityCombo_.set_active(0);
+                
+                //Catalytic load
+                ph1dPropertiesGrid_.attach(ph1dLoadLabel_,0,2,1,1);
+                ph1dPropertiesGrid_.attach(ph1dLoadEntry_,1,2,1,1);
+                ph1dLoadEntry_.set_text("1");
+                ph1dPropertiesGrid_.attach(ph1dLoadCombo_,2,2,1,1);
+                ph1dLoadCombo_.append("1/m");
+                ph1dLoadCombo_.append("1/dm");
+                ph1dLoadCombo_.append("1/cm");
+                ph1dLoadCombo_.append("1/mm");
+                ph1dLoadCombo_.set_active(0);
+
+                //Time
+                ph1dPropertiesGrid_.attach(ph1dTimeLabel_,0,3,1,1);
+                ph1dPropertiesGrid_.attach(ph1dTimeEntry_,1,3,1,1);
+                ph1dTimeEntry_.set_text("1");
+                ph1dPropertiesGrid_.attach(ph1dTimeCombo_,2,3,1,1);
+                ph1dTimeCombo_.append("s");
+                ph1dTimeCombo_.append("min");
+                ph1dTimeCombo_.append("h");
+                ph1dTimeCombo_.append("d");
+                ph1dTimeCombo_.set_active(0);
+
+                //Save options
+                ph1dPropertiesGrid_.attach(ph1dSaveLabel_,0,4,1,1);
+                ph1dPropertiesGrid_.attach(ph1dSaveEntry_,1,4,1,1);
+                ph1dSaveEntry_.set_text("0.1");
+                ph1dPropertiesGrid_.attach(ph1dSaveCombo_,2,4,1,1);
+                ph1dSaveCombo_.append("s");
+                ph1dSaveCombo_.append("min");
+                ph1dSaveCombo_.append("h");
+                ph1dSaveCombo_.append("d");
+                ph1dSaveCombo_.set_active(0);
+
+                //Number of points
+                ph1dPropertiesGrid_.attach(ph1dPointsLabel_,0,5,1,1);
+                ph1dPropertiesGrid_.attach(ph1dPointsEntry_,1,5,1,1);
+                ph1dPointsEntry_.set_text("10");
+
+                //Inert species
+                ph1dPropertiesGrid_.attach(ph1dInertLabel_,0,6,1,1);
+                ph1dPropertiesGrid_.attach(ph1dInertEntry_,1,6,1,1);
+                ph1dInertEntry_.set_text("AR");
+
+                //Resolution type
+                ph1dPropertiesGrid_.attach(ph1dResolutionLabel_,0,7,1,1);
+                ph1dPropertiesGrid_.attach(ph1dResolutionCombo_,1,7,1,1);
+                ph1dResolutionCombo_.append("steady state");
+                ph1dResolutionCombo_.append("transient");
+                ph1dResolutionCombo_.set_active(0);
+
+                //Energy
+                ph1dPropertiesGrid_.attach(ph1dEnergyLabel_,0,8,1,1);
+                ph1dPropertiesGrid_.attach(ph1dEnergyCombo_,1,8,1,1);
+                ph1dEnergyCombo_.append("on");
+                ph1dEnergyCombo_.append("off");
+                ph1dEnergyCombo_.set_active(1);
+
+                //Buttons
+                ph1dPropertiesGrid_.attach(*backButton_[15],0,9,1,1);
+                ph1dPropertiesGrid_.attach(*mainMenuButton_[15],1,9,1,1);
+                ph1dPropertiesGrid_.attach(*nextButton_[15],2,9,1,1);
+                backButton_[15]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
+                nextButton_[15]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dMenu));
+            }
+
+            ph1dRecapMainBox_.set_halign(Gtk::ALIGN_START);
+            ph1dRecapMainBox_.set_spacing(10);
+            ph1dRecapMainBox_.pack_start(ph1dLogoBox_, Gtk::PACK_SHRINK);
+            {
+                ph1dLogoBox_.set_halign(Gtk::ALIGN_START);
+                ph1dLogoBox_.set_spacing(10);
+                ph1dLogoBox_.pack_start(ph1dLogo2_, Gtk::PACK_SHRINK);
+                ph1dLogoBox_.pack_start(ph1dButtonBox_, Gtk::PACK_SHRINK);
+                {
+                    ph1dButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
+                    ph1dButtonBox_.set_spacing(10);
+                    ph1dButtonBox_.pack_start(ph1dRunButton_, Gtk::PACK_SHRINK);
+                    ph1dRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dRun));
+                    ph1dButtonBox_.pack_start(ph1dSaveButton_, Gtk::PACK_SHRINK);
+                    ph1dSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dSave));
+                    
+                    ph1dAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
+                    ph1dAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
+                }
+            }
+
+            ph1dRecapMainBox_.pack_start(ph1dRecapBox_, Gtk::PACK_SHRINK);
+            {
+                ph1dRecapBox_.set_halign(Gtk::ALIGN_START);
+                ph1dRecapBox_.set_spacing(10);
+                ph1dRecapBox_.pack_start(ph1dRecapGrid_, Gtk::PACK_SHRINK);
+                {
+                    ph1dRecapGrid_.set_column_spacing(10);
+                    ph1dRecapGrid_.set_row_spacing(10);
+                    ph1dRecapGrid_.set_column_homogeneous(true);
+                    
+                    //Length
+                    ph1dRecapLengthLabel_.set_text("Length");
+                    ph1dRecapGrid_.attach(ph1dRecapLengthLabel_,0,0,1,1);
+                    ph1dRecapLengthUDLabel_.set_text("m");
+                    ph1dRecapGrid_.attach(ph1dRecapLengthUDLabel_,2,0,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapLengthValueLabel_,1,0,1,1);
+
+                    //Velocity
+                    ph1dRecapVelocityLabel_.set_text("Velocity");
+                    ph1dRecapGrid_.attach(ph1dRecapVelocityLabel_,0,1,1,1);
+                    ph1dRecapVelocityUDLabel_.set_text("m/s");
+                    ph1dRecapGrid_.attach(ph1dRecapVelocityUDLabel_,2,1,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapVelocityValueLabel_,1,1,1,1);
+
+                    //Temperature
+                    ph1dRecapTemperatureLabel_.set_text("Temperature");
+                    ph1dRecapGrid_.attach(ph1dRecapTemperatureLabel_,0,2,1,1);
+                    ph1dRecapTemperatureUDLabel_.set_text("K");
+                    ph1dRecapGrid_.attach(ph1dRecapTemperatureUDLabel_,2,2,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapTemperatureValueLabel_,1,2,1,1);
+
+                    //Pressure
+                    ph1dRecapPressureLabel_.set_text("Pressure");
+                    ph1dRecapGrid_.attach(ph1dRecapPressureLabel_,0,3,1,1);
+                    ph1dRecapPressureUDLabel_.set_text("Pa");
+                    ph1dRecapGrid_.attach(ph1dRecapPressureUDLabel_,2,3,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapPressureValueLabel_,1,3,1,1);
+
+                    //Mole/Mass fraction
+                    ph1dRecapGrid_.attach(ph1dRecapFractionLabel_,0,4,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapFractionNameLabel_,1,4,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapFractionValueLabel_,2,4,1,1);
+
+                    //Load
+                    ph1dRecapLoadLabel_.set_text("Catalyst load");
+                    ph1dRecapGrid_.attach(ph1dRecapLoadLabel_,0,5,1,1);
+                    ph1dRecapLoadUDLabel_.set_text("1/m");
+                    ph1dRecapGrid_.attach(ph1dRecapLoadUDLabel_,2,5,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapLoadValueLabel_,1,5,1,1);
+
+                    //Time
+                    ph1dRecapTimeLabel_.set_text("Integration time");
+                    ph1dRecapGrid_.attach(ph1dRecapTimeLabel_,0,6,1,1);
+                    ph1dRecapTimeUDLabel_.set_text("s");
+                    ph1dRecapGrid_.attach(ph1dRecapTimeUDLabel_,2,6,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapTimeValueLabel_,1,6,1,1);
+                    
+                    //Save
+                    ph1dRecapSaveLabel_.set_text("Save solution every");
+                    ph1dRecapGrid_.attach(ph1dRecapSaveLabel_,0,7,1,1);
+                    ph1dRecapSaveUDLabel_.set_text("s");
+                    ph1dRecapGrid_.attach(ph1dRecapSaveUDLabel_,2,7,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapSaveValueLabel_,1,7,1,1);
+
+                    //Points
+                    ph1dRecapPointsLabel_.set_text("Solving with");
+                    ph1dRecapGrid_.attach(ph1dRecapPointsLabel_,0,8,1,1);
+                    ph1dRecapPointsUDLabel_.set_text("points");
+                    ph1dRecapGrid_.attach(ph1dRecapPointsUDLabel_,2,8,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapPointsValueLabel_,1,8,1,1);
+
+                    //Inert
+                    ph1dRecapInertLabel_.set_text("Inert species is");
+                    ph1dRecapGrid_.attach(ph1dRecapInertLabel_,0,9,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapInertValueLabel_,1,9,1,1);
+
+                    //Resolution type
+                    ph1dRecapResolutionLabel_.set_text("Solver type");
+                    ph1dRecapGrid_.attach(ph1dRecapResolutionLabel_,0,10,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapResolutionValueLabel_,1,10,1,1);
+
+                    //Energy type
+                    ph1dRecapEnergyLabel_.set_text("Energy balance is");
+                    ph1dRecapGrid_.attach(ph1dRecapEnergyLabel_,0,11,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapEnergyValueLabel_,1,11,1,1);
+
+                    //Kinetic type
+                    ph1dRecapKineticLabel_.set_text("Kinetic model from");
+                    ph1dRecapGrid_.attach(ph1dRecapKineticLabel_,0,12,1,1);
+                    ph1dRecapGrid_.attach(ph1dRecapKineticValueLabel_,1,12,1,1);
+                    //Buttons
+                    ph1dRecapGrid_.attach(*backButton_[18],0,13,1,1);
+                    ph1dRecapGrid_.attach(*mainMenuButton_[18],1,13,1,1);
+                    ph1dRecapGrid_.attach(*exitButton_[18],2,13,1,1);
+                    backButton_[18]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dMenu));
                 }
             }
         }

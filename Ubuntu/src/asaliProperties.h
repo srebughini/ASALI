@@ -73,9 +73,11 @@ namespace ASALI
             void convertToCaption(std::string& n);
 
             std::vector<double>  get_MW()   {return MW_;};
+            std::vector<double>  get_diff() {return diff_;};
             std::vector<double>  get_Q()    {return Q_;};
             
             double               get_cp()   {return cp_;};
+            double               get_cond() {return cond_;};
             
             std::vector<double>  get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
             std::vector<double>  get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
@@ -89,30 +91,39 @@ namespace ASALI
             std::string       getBeer();
         
             Gtk::Image        batchLogo_;
+            Gtk::Image        ph1dLogo_;
 
             Gtk::Box          mainBox_;
             Gtk::Box          heatBox_;
+            Gtk::Box          diffBox_;
 
-            Gtk::Grid         batchGrid_;
+            Gtk::Grid         mainGrid_;
             Gtk::Grid         cpGrid_;
+            Gtk::Grid         condGrid_;
 
             Gtk::Label        nameLabel_;
             Gtk::Label        mwLabel_;
+            Gtk::Label        diffLabel_;
             Gtk::Label        reactionLabel_;
             Gtk::Label        heatLabel_;
             Gtk::Label        cpLabel_;
+            Gtk::Label        condLabel_;
             
             Gtk::Button       doneButton_;
             
             Gtk::ComboBoxText heatCombo_;
             Gtk::ComboBoxText cpCombo_;
+            Gtk::ComboBoxText condCombo_;
+            Gtk::ComboBoxText diffCombo_;
 
             Gtk::Entry          cpEntry_;
+            Gtk::Entry          condEntry_;
             
             std::vector<Gtk::Label *>   speciesNameLabel_;
             std::vector<Gtk::Label *>   reactionNumberLabel_;
 
             std::vector<Gtk::Entry *>   speciesMwEntry_;
+            std::vector<Gtk::Entry *>   speciesDiffEntry_;
             std::vector<Gtk::Entry *>   speciesHeatEntry_;
             
             
@@ -125,6 +136,7 @@ namespace ASALI
             std::vector<std::string>  big;
             
             std::vector<double>       MW_;
+            std::vector<double>       diff_;
             std::vector<double>       Q_;
             
 
@@ -132,6 +144,7 @@ namespace ASALI
             std::string               energy_;
             
             double                    cp_;
+            double                    cond_;
 
             std::vector<std::vector<std::string> > name_;
             std::vector<std::vector<int> >         stoich_;

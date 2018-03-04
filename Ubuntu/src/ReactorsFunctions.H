@@ -39,6 +39,7 @@
 ##############################################################################################*/
 
 #include "BatchFunctions.H"
+#include "Ph1DFunctions.H"
 
 void Asali::kineticReader()
 {
@@ -273,6 +274,14 @@ void Asali::reactorsInput(const bool back)
             this->set_title("ASALI: Batch reactors");
             this->add(batchMainBox_);
             this->resize(batchMainBox_.get_width(),batchMainBox_.get_height());
+            this->show_all_children();
+        }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 0 )
+        {
+            this->remove();
+            this->set_title("ASALI: 1D PH reactors");
+            this->add(ph1dMainBox_);
+            this->resize(ph1dMainBox_.get_width(),ph1dMainBox_.get_height());
             this->show_all_children();
         }
         else

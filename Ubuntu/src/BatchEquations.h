@@ -106,8 +106,6 @@ class BatchEquations
         
         void setCatalystLoad(const double alfa);
         
-        void setResolutionType(const std::string resolution);
-        
         void setKineticType(const std::string type);
         
         void turnOnUserDefined(const bool check);
@@ -121,11 +119,12 @@ class BatchEquations
         void setIntegrationTime(const double tF);
         
         void resize();
+        
+        void store(const double tf, const std::vector<double> xf);
 
         std::vector<double> getTime()        const {return Time_;};
         std::vector<double> getMass()        const {return Mass_;};
         std::vector<double> getVolume()      const {return Volume_;};
-        std::vector<double> getPressure()    const {return Pressure_;};
         std::vector<double> getTemperature() const {return Temperature_;};
 
         std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
@@ -149,17 +148,13 @@ class BatchEquations
         double QfromSurface_;
         double SD_;
         double cp_;
-        double tF_;
         double dt_;
         
         unsigned int NC_;
         unsigned int SURF_NC_;
         unsigned int NE_;
-        
-        int timeCounter_;
+        unsigned int TC_;
 
-        
-        std::string resolution_;
         std::string type_;
 
         bool homogeneusReactions_ ;
@@ -205,7 +200,6 @@ class BatchEquations
         std::vector<double> Time_;
         std::vector<double> Mass_;
         std::vector<double> Volume_;
-        std::vector<double> Pressure_;
         std::vector<double> Temperature_;
         std::vector<std::vector<double> > Specie_;
         std::vector<std::vector<double> > Site_;

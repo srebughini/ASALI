@@ -141,6 +141,32 @@ void Asali::transportMenu()
             inputGrid_.attach(doneTransportButton_,2,13,1,1);
             window_ = "transportMenu";
         }
+        else if ( window_ == "ph1dMenuAsali" )
+        {
+            inputGrid_.remove(*backButton_[16]);
+            inputGrid_.remove(*nextButton_[16]);
+            inputGrid_.remove(*mainMenuButton_[16]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneTransportButton_,2,13,1,1);
+            window_ = "transportMenu";
+        }
+        else if ( window_ == "ph1dMenuCantera" )
+        {
+            inputGrid_.remove(*backButton_[17]);
+            inputGrid_.remove(*nextButton_[17]);
+            inputGrid_.remove(*mainMenuButton_[17]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneTransportButton_,2,13,1,1);
+            window_ = "transportMenu";
+        }
         else
         {
             inputGrid_.attach(doneTransportButton_,2,13,1,1);
