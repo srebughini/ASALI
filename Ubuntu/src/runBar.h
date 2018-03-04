@@ -67,15 +67,9 @@ namespace ASALI
         private:
         
 
-            
-            std::string getBeer();
-
             Gtk::Box                 mainBox_;
             Gtk::Label               solvingLabel_;
-            Gtk::Label               beerLabel_;
             Gtk::ProgressBar         runBar_;
-            
-            std::vector<std::string> beer_;
     };
 }
 

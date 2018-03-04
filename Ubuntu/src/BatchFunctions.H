@@ -128,12 +128,7 @@ void Asali::batchRecap()
             s << dt_;
             batchRecapSaveValueLabel_.set_text(s.str());
         }
-        
-        //Resolution
-        {
-            batchRecapResolutionValueLabel_.set_text(resolution_);
-        }
-        
+
         //Kinetic
         {
             batchRecapKineticValueLabel_.set_text(kineticTypeCombo_.get_active_text());
@@ -144,30 +139,53 @@ void Asali::batchRecap()
         }
 
         //Buttons
-        if ( kineticTypeOld_ == "none" )
+        if ( reactorTypeOld_ == "batch")
         {
-            batchButtonBox_.remove(batchAsaliKineticButton_);
-            batchButtonBox_.remove(batchAsaliPropertiesButton_);
+            if ( kineticTypeOld_ == "none" )
+            {
+                batchButtonBox_.remove(batchAsaliKineticButton_);
+                batchButtonBox_.remove(batchAsaliPropertiesButton_);
+            }
+            else if ( kineticTypeOld_ == "default" )
+            {
+                batchButtonBox_.remove(batchAsaliKineticButton_);
+            }
+            
+            if ( kineticType_ == "none" )
+            {
+                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                batchButtonBox_.pack_start(batchAsaliPropertiesButton_, Gtk::PACK_SHRINK);
+                kineticTypeOld_ = kineticType_;
+            }
+            else if ( kineticType_ == "default" )
+            {
+                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                kineticTypeOld_ = kineticType_;
+            }
+            else if ( kineticType_ == "load" )
+            {
+                kineticTypeOld_ = kineticType_;
+            }
+            reactorTypeOld_ = "batch";
         }
-        else if ( kineticTypeOld_ == "default" )
+        else
         {
-            batchButtonBox_.remove(batchAsaliKineticButton_);
-        }
-        
-        if ( kineticType_ == "none" )
-        {
-            batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
-            batchButtonBox_.pack_start(batchAsaliPropertiesButton_, Gtk::PACK_SHRINK);
-            kineticTypeOld_ = kineticType_;
-        }
-        else if ( kineticType_ == "default" )
-        {
-            batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
-            kineticTypeOld_ = kineticType_;
-        }
-        else if ( kineticType_ == "load" )
-        {
-            kineticTypeOld_ = kineticType_;
+            if ( kineticType_ == "none" )
+            {
+                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                batchButtonBox_.pack_start(batchAsaliPropertiesButton_, Gtk::PACK_SHRINK);
+                kineticTypeOld_ = kineticType_;
+            }
+            else if ( kineticType_ == "default" )
+            {
+                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                kineticTypeOld_ = kineticType_;
+            }
+            else if ( kineticType_ == "load" )
+            {
+                kineticTypeOld_ = kineticType_;
+            }
+            reactorTypeOld_ = "batch";
         }
 
         this->resize(batchRecapMainBox_.get_width(),batchRecapMainBox_.get_height ());
@@ -414,6 +432,46 @@ void Asali::batchMenu()
             window_ = "batchMenuAsali";
         }
     }
+    else if ( window_ == "ph1dMenuCantera" )
+    {
+        inputGrid_.remove(*backButton_[17]);
+        inputGrid_.remove(*mainMenuButton_[17]);
+        inputGrid_.remove(*nextButton_[17]);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[13],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
+            inputGrid_.attach(*nextButton_[13],2,13,1,1);
+            window_ = "batchMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[11],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
+            inputGrid_.attach(*nextButton_[11],2,13,1,1);
+            window_ = "batchMenuAsali";
+        }
+    }
+    else if ( window_ == "ph1dMenuAsali" )
+    {
+        inputGrid_.remove(*backButton_[16]);
+        inputGrid_.remove(*mainMenuButton_[16]);
+        inputGrid_.remove(*nextButton_[16]);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[13],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
+            inputGrid_.attach(*nextButton_[13],2,13,1,1);
+            window_ = "batchMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[11],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
+            inputGrid_.attach(*nextButton_[11],2,13,1,1);
+            window_ = "batchMenuAsali";
+        }
+    }
     else
     {
         inputGrid_.remove(*backButton_[0]);
@@ -469,300 +527,155 @@ void Asali::batchSave()
             
             output << "Residence time:     " << tf_ << " s" << std::endl;
             output << "Kinetic type:       " << kineticTypeCombo_.get_active_text() << std::endl;
-            output << "Working at constant " << resolution_ << std::endl;
-            
+            output << "Pressure:           " << p_ << " Pa" << std::endl;
+
             if ( kineticTypeCombo_.get_active_text() == "ASALI" )
             {
                 std::vector<double>               t = batch_->getTime();
                 std::vector<double>               T = batch_->getTemperature();
                 std::vector<std::vector<double> > y = batch_->getSpecie();
+                std::vector<double>               V = batch_->getVolume();
+
+                output << "Mass fraction" << std::endl;
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                for (unsigned int i=0;i<n_.size();i++)
+                {
+                    output << n_[i] << "\t";
+                }
+                output << std::endl;
                 
-                if ( resolution_ == "pressure" )
+                for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << "Pressure:           " << p_ << " Pa" << std::endl;
-                    std::vector<double> V = batch_->getVolume();
-
-                    output << "Mass fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
-                    for (unsigned int i=0;i<n_.size();i++)
+                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
+                    for (unsigned int i=0;i<(n_.size());i++)
                     {
-                        output << n_[i] << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
-                        for (unsigned int i=0;i<(n_.size());i++)
-                        {
-                            output << y[j][i] << "\t";
-                        }
-                        output << std::endl;
-                    }
-                    output << std::endl;
-                    
-                    output << "Mole fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
-                    for (unsigned int i=0;i<n_.size();i++)
-                    {
-                        output << n_[i] << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
-
-                        std::vector<double> mole(n_.size());
-                        if ( kineticType_ == "none" )
-                        {
-                            mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
-                        }
-                        else
-                        {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p_);
-                            canteraInterface_->setMassFraction(y[j],n_);
-
-                            for (unsigned int i=0;i<n_.size();i++)
-                            {
-                                for (unsigned int k=0;k<canteraInterface_->names().size();k++)
-                                {
-                                    if ( n_[i] == canteraInterface_->names()[k] )
-                                    {
-                                        mole[i] = canteraInterface_->moleFractions()[k];
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    
-                        for (unsigned int i=0;i<(n_.size());i++)
-                        {
-                            output << mole[i] << "\t";
-                        }
-                        output << std::endl;
+                        output << y[j][i] << "\t";
                     }
                     output << std::endl;
                 }
-                else if ( resolution_ == "volume" )
+                output << std::endl;
+                
+                output << "Mole fraction" << std::endl;
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                for (unsigned int i=0;i<n_.size();i++)
                 {
-                    output << "Volume:             " << V_ << " m\u00b3" << std::endl;
-                    std::vector<double> p = batch_->getPressure();
-                    
-                    output << "Mass fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Pressure [Pa]" << "\t";
-                    for (unsigned int i=0;i<n_.size();i++)
-                    {
-                        output << n_[i] << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << p[j] << "\t";
-                        for (unsigned int i=0;i<(n_.size());i++)
-                        {
-                            output << y[j][i] << "\t";
-                        }
-                        output << std::endl;
-                    }
-                    output << std::endl;
-                    
-                    output << "Mole fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Pressure [Pa]" << "\t";
-                    for (unsigned int i=0;i<n_.size();i++)
-                    {
-                        output << n_[i] << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << p[j] << "\t";
+                    output << n_[i] << "\t";
+                }
+                output << std::endl;
+                
+                for (unsigned int j=0;j<t.size();j++)
+                {
+                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
 
-                        std::vector<double> mole(n_.size());
-                        if ( kineticType_ == "none" )
+                    std::vector<double> mole(n_.size());
+                    if ( kineticType_ == "none" )
+                    {
+                        mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
+                    }
+                    else
+                    {
+                        canteraInterface_->setTemperature(T[j]);
+                        canteraInterface_->setPressure(p_);
+                        canteraInterface_->setMassFraction(y[j],n_);
+
+                        for (unsigned int i=0;i<n_.size();i++)
                         {
-                            mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
-                        }
-                        else
-                        {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p[j]);
-                            canteraInterface_->setMassFraction(y[j],n_);
-                            
-                            for (unsigned int i=0;i<n_.size();i++)
+                            for (unsigned int k=0;k<canteraInterface_->names().size();k++)
                             {
-                                for (unsigned int k=0;k<canteraInterface_->names().size();k++)
+                                if ( n_[i] == canteraInterface_->names()[k] )
                                 {
-                                    if ( n_[i] == canteraInterface_->names()[k] )
-                                    {
-                                        mole[i] = canteraInterface_->moleFractions()[k];
-                                        break;
-                                    }
+                                    mole[i] = canteraInterface_->moleFractions()[k];
+                                    break;
                                 }
                             }
                         }
-                    
-                        for (unsigned int i=0;i<(n_.size());i++)
-                        {
-                            output << mole[i] << "\t";
-                        }
-                        output << std::endl;
+                    }
+                
+                    for (unsigned int i=0;i<(n_.size());i++)
+                    {
+                        output << mole[i] << "\t";
                     }
                     output << std::endl;
                 }
+                output << std::endl;
             }
             else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
             {
                 std::vector<double>               t = batch_->getTime();
                 std::vector<double>               T = batch_->getTemperature();
+                std::vector<double>               V = batch_->getVolume();
                 std::vector<std::vector<double> > y = batch_->getSpecie();
                 std::vector<std::vector<double> > Z = batch_->getSite();
+
                 std::vector<std::string>          name(thermo_->nSpecies());
                 
                 for (unsigned int i=0;i<thermo_->nSpecies();i++)
                 {
                     name[i] = thermo_->speciesName(i);
                 }
+
+                output << "Mass fraction" << std::endl;
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                {
+                    output << thermo_->speciesName(i) << "\t";
+                }
+                for (unsigned int i=0;i<surface_->nSpecies();i++)
+                {
+                    output << surface_->speciesName(i) << "\t";
+                }
+                output << std::endl;
                 
-                if ( resolution_ == "pressure" )
+                for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << "Pressure:           " << p_ << " Pa" << std::endl;
-                    std::vector<double> V = batch_->getVolume();
-
-                    output << "Mass fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
                     for (unsigned int i=0;i<thermo_->nSpecies();i++)
                     {
-                        output << thermo_->speciesName(i) << "\t";
+                        output << y[j][i] << "\t";
                     }
                     for (unsigned int i=0;i<surface_->nSpecies();i++)
                     {
-                        output << surface_->speciesName(i) << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
-                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                        {
-                            output << y[j][i] << "\t";
-                        }
-                        for (unsigned int i=0;i<surface_->nSpecies();i++)
-                        {
-                            output << Z[j][i] << "\t";
-                        }
-                        output << std::endl;
-                    }
-                    output << std::endl;
-                    
-                    output << "Mole fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
-                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                    {
-                        output << thermo_->speciesName(i) << "\t";
-                    }
-                    for (unsigned int i=0;i<surface_->nSpecies();i++)
-                    {
-                        output << surface_->speciesName(i) << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
-
-                        std::vector<double> mole(thermo_->nSpecies());
-                        {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p_);
-                            canteraInterface_->setMassFraction(y[j],name);
-                            mole = canteraInterface_->moleFractions();
-                        }
-                    
-                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                        {
-                            output << mole[i] << "\t";
-                        }
-                        for (unsigned int i=0;i<surface_->nSpecies();i++)
-                        {
-                            output << Z[j][i] << "\t";
-                        }
-                        output << std::endl;
+                        output << Z[j][i] << "\t";
                     }
                     output << std::endl;
                 }
-                else if ( resolution_ == "volume" )
+                output << std::endl;
+                
+                output << "Mole fraction" << std::endl;
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                for (unsigned int i=0;i<thermo_->nSpecies();i++)
                 {
-                    output << "Volume:             " << V_ << " m\u00b3" << std::endl;
-                    std::vector<double> p = batch_->getPressure();
-                    
-                    output << "Mass fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Pressure [Pa]" << "\t";
-                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                    {
-                        output << thermo_->speciesName(i) << "\t";
-                    }
-                    for (unsigned int i=0;i<surface_->nSpecies();i++)
-                    {
-                        output << surface_->speciesName(i) << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << p[j] << "\t";
-                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                        {
-                            output << y[j][i] << "\t";
-                        }
-                        for (unsigned int i=0;i<surface_->nSpecies();i++)
-                        {
-                            output << Z[j][i] << "\t";
-                        }
-                        output << std::endl;
-                    }
-                    output << std::endl;
-                    
-                    output << "Mole fraction" << std::endl;
-                    output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Pressure [Pa]" << "\t";
-                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                    {
-                        output << thermo_->speciesName(i) << "\t";
-                    }
-                    for (unsigned int i=0;i<surface_->nSpecies();i++)
-                    {
-                        output << surface_->speciesName(i) << "\t";
-                    }
-                    output << std::endl;
-                    
-                    for (unsigned int j=0;j<t.size();j++)
-                    {
-                        output << t[j] << "\t" << T[j] << "\t" << p[j] << "\t";
+                    output << thermo_->speciesName(i) << "\t";
+                }
+                for (unsigned int i=0;i<surface_->nSpecies();i++)
+                {
+                    output << surface_->speciesName(i) << "\t";
+                }
+                output << std::endl;
+                
+                for (unsigned int j=0;j<t.size();j++)
+                {
+                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
 
-                        std::vector<double> mole(thermo_->nSpecies());
-                        {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p_);
-                            canteraInterface_->setMassFraction(y[j],name);
-                            mole = canteraInterface_->moleFractions();
-                        }
-                    
-                        for (unsigned int i=0;i<(thermo_->nSpecies());i++)
-                        {
-                            output << mole[i] << "\t";
-                        }
-                        for (unsigned int i=0;i<surface_->nSpecies();i++)
-                        {
-                            output << Z[j][i] << "\t";
-                        }
-                        output << std::endl;
+                    std::vector<double> mole(thermo_->nSpecies());
+                    {
+                        canteraInterface_->setTemperature(T[j]);
+                        canteraInterface_->setPressure(p_);
+                        canteraInterface_->setMassFraction(y[j],name);
+                        mole = canteraInterface_->moleFractions();
+                    }
+                
+                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                    {
+                        output << mole[i] << "\t";
+                    }
+                    for (unsigned int i=0;i<surface_->nSpecies();i++)
+                    {
+                        output << Z[j][i] << "\t";
                     }
                     output << std::endl;
                 }
+                output << std::endl;
             }
 
             output.close();
@@ -852,7 +765,6 @@ void Asali::batchRun()
     batch_->setPressure(p_);
     batch_->setTemperature(T_);
     batch_->setCatalystLoad(alfa_);
-    batch_->setResolutionType(resolution_);
     
     ASALI::BatchInterface solver;
     
@@ -977,22 +889,19 @@ void Asali::batchRun()
     {
         double ti = 0.;
         double tf = 0.;
+        batch_->store(0.,x0);
         for (int i=0;i<int(tf_/dt_);i++)
         {
             tf = ti + dt_;
-            batch_->setIntegrationTime(tf);
-            
+
             solver.setInitialConditions(ti,x0);
             solver.solve(tf,x0);
+            
+            batch_->store(tf,x0);
 
             ti = tf;
 
             this->batchBar(double(i+1)*dt_/tf_);
-            //Update solving bar
-            while( Gtk::Main::events_pending() )
-            {
-                Gtk::Main::iteration();
-            }
         }
     }
     
@@ -1002,8 +911,20 @@ void Asali::batchRun()
 
 void Asali::batchBar(const double fraction)
 {
+    //Update solving bar
+    while( Gtk::Main::events_pending() )
+    {
+        Gtk::Main::iteration();
+    }
+
     batchBar_->update(fraction);
     batchBar_->show();
+
+    //Update solving bar
+    while( Gtk::Main::events_pending() )
+    {
+        Gtk::Main::iteration();
+    }
 }
 
 void Asali::batchReader()
@@ -1018,7 +939,6 @@ void Asali::batchReader()
     ConvertsToSecond(tf_,batchTimeCombo_.get_active_text());
     ConvertsToSecond(dt_,batchSaveCombo_.get_active_text());
 
-    resolution_ = batchResolutionCombo_.get_active_text();
     energy_     = batchEnergyCombo_.get_active_text();
 }
 

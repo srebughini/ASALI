@@ -38,8 +38,8 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef BATCHEQUATIONS_H
-#define BATCHEQUATIONS_H
+#ifndef PH1DEQUATIONS_H
+#define PH1DEQUATIONS_H
 
 #include <gtkmm.h>
 #include <string>
@@ -62,15 +62,14 @@
 
 namespace ASALI
 {
-class BatchEquations
+class Ph1DEquations
 {
     public:
 
-        BatchEquations();
+        Ph1DEquations();
 
         #include "vector.H"
-        
-        
+
         void setCanteraThermo(Cantera::ThermoPhase*    gas);
         
         void setCanteraInterface(Cantera::Interface*   surface);
@@ -85,7 +84,9 @@ class BatchEquations
         
         void setEnergy(const bool flag)                 {energyEquation_        = flag;}
 
-        void setVolume(const double V);
+        void setLength(const double L);
+        
+        void setSpecificMassFlowRate(const double G);
         
         void setAsaliKinetic(const unsigned int                           NR,
                              const std::vector<double>                    k,
@@ -106,6 +107,8 @@ class BatchEquations
         
         void setCatalystLoad(const double alfa);
         
+        void setResolutionType(const std::string resolution);
+        
         void setKineticType(const std::string type);
         
         void turnOnUserDefined(const bool check);
@@ -114,25 +117,41 @@ class BatchEquations
         
         void set_MW(const std::vector<double> MW);
         
+        void set_diff(const std::vector<double> diff);
+        
         void set_cp(const double cp);
+        
+        void set_cond(const double cond);
+        
+        void setInletConditions(const std::vector<double> omega0, const double T0);
         
         void setIntegrationTime(const double tF);
         
+        void setNumberOfPoints(const double NP);
+        
         void resize();
         
-        void store(const double tf, const std::vector<double> xf);
+        void store(const double tf,const std::vector<double> xf);
 
+        std::vector<double> getLength()      const {return Length_;};
         std::vector<double> getTime()        const {return Time_;};
-        std::vector<double> getMass()        const {return Mass_;};
-        std::vector<double> getVolume()      const {return Volume_;};
+        std::vector<double> getPressure()    const {return Pressure_;};
         std::vector<double> getTemperature() const {return Temperature_;};
 
         std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
         std::vector<std::vector<double> > getSite()        const {return Site_;};
 
+        std::vector<std::vector<double> > getTemperatureTransient() const {return TemperatureTransient_;};
+
+        std::vector<std::vector<std::vector<double> > > getSpecieTransient()      const {return SpecieTransient_;};
+        std::vector<std::vector<std::vector<double> > > getSiteTransient()        const {return SiteTransient_;};
+
+
         unsigned int NumberOfEquations()     const {return NE_;};
 
         int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+        
+        std::vector<bool> AlgebraicEquations() const {return algb_;};
 
     private:
 
@@ -141,20 +160,23 @@ class BatchEquations
         double rho_;
         double P_;
         double T_;
-        double V_;
+        double L_;
+        double G_;
         double alfa_;
-        double mass_;
         double QfromGas_;
         double QfromSurface_;
         double SD_;
         double cp_;
-        double dt_;
+        double T0_;
+        double dz_;
+        double cond_;
         
         unsigned int NC_;
         unsigned int SURF_NC_;
         unsigned int NE_;
-        unsigned int TC_;
+        unsigned int NP_;
 
+        std::string resolution_;
         std::string type_;
 
         bool homogeneusReactions_ ;
@@ -177,7 +199,21 @@ class BatchEquations
         std::vector<double> dy_;
         std::vector<double> y_;
         std::vector<double> h_;
+        std::vector<double> diff_;
+        std::vector<double> omega0_;
+        std::vector<double> Tvector_;
+        std::vector<double> rhoVector_;
+        std::vector<double> cpVector_;
+        std::vector<double> condVector_;
+        std::vector<double> QfromGasVector_;
+        std::vector<double> QfromSurfaceVector_;
 
+        std::vector<std::vector<double> > omegaMatrix_;
+        std::vector<std::vector<double> > Zmatrix_;
+        std::vector<std::vector<double> > diffMatrix_;
+        std::vector<std::vector<double> > RfromGasMatrix_;
+        std::vector<std::vector<double> > RfromSurfaceMatrix_;
+        std::vector<std::vector<double> > RsurfaceMatrix_;
 
         unsigned int                           NR_;
         std::vector<double>                    k_;
@@ -197,12 +233,21 @@ class BatchEquations
         double              heatOfReaction(const std::vector<double> omega,const double rho, const std::vector<double> h);
         double              meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW);
 
+
+        std::vector<double> Length_;
         std::vector<double> Time_;
-        std::vector<double> Mass_;
-        std::vector<double> Volume_;
+        std::vector<double> Pressure_;
         std::vector<double> Temperature_;
         std::vector<std::vector<double> > Specie_;
         std::vector<std::vector<double> > Site_;
+
+        std::vector<std::vector<double> > TemperatureTransient_;
+        std::vector<std::vector<std::vector<double> > > SpecieTransient_;
+        std::vector<std::vector<std::vector<double> > > SiteTransient_;
+
+
+        
+        std::vector<bool>   algb_;
     };
 }
 

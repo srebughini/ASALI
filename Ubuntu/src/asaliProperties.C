@@ -42,12 +42,15 @@ namespace ASALI
 {
     asaliProperties::asaliProperties()
     : batchLogo_("images/BatchLogo.tiff"),
+      ph1dLogo_("images/Ph1DLogo.tiff"),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       nameLabel_("Name"),
       mwLabel_("Molecular weight"),
+      diffLabel_("Diffusion coefficient"),
       reactionLabel_("Reaction"),
       heatLabel_("Heat of reaction"),
-      cpLabel_("Mixture specific heat"),
+      cpLabel_("Specific heat"),
+      condLabel_("Thermal conductivity"),
       doneButton_("Done"),
       type_("zero")
     {
@@ -91,14 +94,15 @@ namespace ASALI
         small[24] = "y";    big[24] = "Y";
         small[25] = "z";    big[25] = "Z";
 
-        //Batch
         {
-            batchGrid_.set_row_spacing(10);
-            batchGrid_.set_column_spacing(10);
-            batchGrid_.set_column_homogeneous(true);
+            mainGrid_.set_row_spacing(10);
+            mainGrid_.set_column_spacing(10);
 
             heatBox_.set_halign(Gtk::ALIGN_CENTER);
             heatBox_.set_spacing(10);
+
+            diffBox_.set_halign(Gtk::ALIGN_CENTER);
+            diffBox_.set_spacing(10);
 
             heatCombo_.append("J/kmol");
             heatCombo_.append("J/mol");
@@ -112,8 +116,22 @@ namespace ASALI
             cpCombo_.append("kJ/kg/K");
             cpCombo_.set_active(0);
 
+            condCombo_.append("W/m/K");
+            condCombo_.append("kW/m/K");
+            condCombo_.set_active(0);
+
+            diffCombo_.append("m\u00b2/s");
+            diffCombo_.append("cm\u00b2/s");
+            diffCombo_.set_active(0);
+
             cpGrid_.set_row_spacing(10);
             cpGrid_.set_column_spacing(10);
+
+            condGrid_.set_row_spacing(10);
+            condGrid_.set_column_spacing(10);
+            
+            cpEntry_.set_text("1");
+            condEntry_.set_text("1");
         }
 
     }
@@ -137,6 +155,7 @@ namespace ASALI
         speciesMwEntry_.clear();
         speciesNameLabel_.resize(NC_);
         speciesMwEntry_.resize(NC_);
+        speciesDiffEntry_.resize(NC_);
     }
 
     void asaliProperties::set_reactions(const std::vector<std::vector<std::string> > name,
@@ -148,37 +167,89 @@ namespace ASALI
 
     void asaliProperties::destroy()
     {
-        if ( type_ == "batch" )
+        if ( type_ == "batch")
         {
             if ( energy_ == "on" )
             {
                 cpGrid_.remove(cpLabel_);
                 cpGrid_.remove(cpCombo_);
-                batchGrid_.remove(cpGrid_);
-                batchGrid_.remove(cpEntry_);
-                batchGrid_.remove(reactionLabel_);
+                mainGrid_.remove(cpGrid_);
+                mainGrid_.remove(cpEntry_);
+                mainGrid_.remove(reactionLabel_);
                 heatBox_.remove(heatCombo_);
                 heatBox_.remove(heatLabel_);
-                batchGrid_.remove(heatBox_);
+                mainGrid_.remove(heatBox_);
                 
                 for (unsigned int i=0;i<reactionNumberLabel_.size();i++)
                 {
-                    batchGrid_.remove(*reactionNumberLabel_[i]);
-                    batchGrid_.remove(*speciesHeatEntry_[i]);
+                    mainGrid_.remove(*reactionNumberLabel_[i]);
+                    mainGrid_.remove(*speciesHeatEntry_[i]);
                 }
+                
+                reactionNumberLabel_.clear();
+                speciesHeatEntry_.clear();
             }
 
-            batchGrid_.remove(nameLabel_);
-            batchGrid_.remove(mwLabel_);
+            mainGrid_.remove(nameLabel_);
+            mainGrid_.remove(mwLabel_);
+            
+            for (unsigned int i=0;i<speciesNameLabel_.size();i++)
+            {
+                mainGrid_.remove(*speciesNameLabel_[i]);
+                mainGrid_.remove(*speciesMwEntry_[i]);
+            }
+
+            speciesNameLabel_.clear();
+            speciesMwEntry_.clear();
+
+            mainBox_.remove(batchLogo_);
+            mainBox_.remove(mainGrid_);
+            mainBox_.remove(doneButton_);
+        }
+        else if ( type_ == "ph1d" )
+        {
+            if ( energy_ == "on" )
+            {
+                mainGrid_.remove(cpLabel_);
+                mainGrid_.remove(cpCombo_);
+                mainGrid_.remove(cpEntry_);
+                mainGrid_.remove(condLabel_);
+                mainGrid_.remove(condCombo_);
+                mainGrid_.remove(condEntry_);
+                mainGrid_.remove(reactionLabel_);
+                heatBox_.remove(heatCombo_);
+                heatBox_.remove(heatLabel_);
+                mainGrid_.remove(heatBox_);
+
+                for (unsigned int i=0;i<reactionNumberLabel_.size();i++)
+                {
+                    mainGrid_.remove(*reactionNumberLabel_[i]);
+                    mainGrid_.remove(*speciesHeatEntry_[i]);
+                }
+                
+                reactionNumberLabel_.clear();
+                speciesHeatEntry_.clear();
+            }
+
+            mainGrid_.remove(nameLabel_);
+            mainGrid_.remove(mwLabel_);
+            mainGrid_.remove(diffBox_);
+            diffBox_.remove(diffLabel_);
+            diffBox_.remove(diffCombo_);
 
             for (unsigned int i=0;i<speciesNameLabel_.size();i++)
             {
-                batchGrid_.remove(*speciesNameLabel_[i]);
-                batchGrid_.remove(*speciesMwEntry_[i]);
+                mainGrid_.remove(*speciesNameLabel_[i]);
+                mainGrid_.remove(*speciesMwEntry_[i]);
+                mainGrid_.remove(*speciesDiffEntry_[i]);
             }
 
-            mainBox_.remove(batchLogo_);
-            mainBox_.remove(batchGrid_);
+            speciesNameLabel_.clear();
+            speciesDiffEntry_.clear();
+            speciesMwEntry_.clear();
+
+            mainBox_.remove(ph1dLogo_);
+            mainBox_.remove(mainGrid_);
             mainBox_.remove(doneButton_);
         }
     }
@@ -188,18 +259,19 @@ namespace ASALI
         NR_ = 0;
         if ( type_ == "batch" )
         {
+            mainGrid_.set_column_homogeneous(true);
             mainBox_.pack_start(batchLogo_, Gtk::PACK_SHRINK);
-            mainBox_.pack_start(batchGrid_, Gtk::PACK_SHRINK);
+            mainBox_.pack_start(mainGrid_, Gtk::PACK_SHRINK);
 
-            batchGrid_.attach(nameLabel_,0,0,1,1);
-            batchGrid_.attach(mwLabel_,1,0,1,1);
+            mainGrid_.attach(nameLabel_,0,0,1,1);
+            mainGrid_.attach(mwLabel_,1,0,1,1);
 
             for (unsigned int i=0;i<NC_;i++)
             {
                 speciesNameLabel_[i] = new Gtk::Label(n_[i]);
-                batchGrid_.attach(*speciesNameLabel_[i],0,1+i,1,1);
+                mainGrid_.attach(*speciesNameLabel_[i],0,1+i,1,1);
                 speciesMwEntry_[i] = new Gtk::Entry();
-                batchGrid_.attach(*speciesMwEntry_[i],1,1+i,1,1);
+                mainGrid_.attach(*speciesMwEntry_[i],1,1+i,1,1);
                 
                 if ( MW_.size() != 0 )
                 {
@@ -207,18 +279,22 @@ namespace ASALI
                     s << MW_[i];
                     speciesMwEntry_[i]->set_text(s.str());
                 }
+                else
+                {
+                    speciesMwEntry_[i]->set_text("14");
+                }
             }
             
             if ( energy_ == "on" )
             {
-                batchGrid_.attach(cpGrid_,0,NC_+1,1,1);
+                mainGrid_.attach(cpGrid_,0,NC_+1,1,1);
                 cpGrid_.attach(cpLabel_,0,0,1,1);
                 cpGrid_.attach(cpCombo_,1,0,1,1);
                 
-                batchGrid_.attach(cpEntry_,1,NC_+1,1,1);
+                mainGrid_.attach(cpEntry_,1,NC_+1,1,1);
 
-                batchGrid_.attach(reactionLabel_,0,NC_+2,1,1);
-                batchGrid_.attach(heatBox_,1,NC_+2,1,1);
+                mainGrid_.attach(reactionLabel_,0,NC_+2,1,1);
+                mainGrid_.attach(heatBox_,1,NC_+2,1,1);
                 heatBox_.pack_start(heatLabel_, Gtk::PACK_SHRINK);
                 heatBox_.pack_start(heatCombo_, Gtk::PACK_SHRINK);
 
@@ -231,7 +307,7 @@ namespace ASALI
                     {
                         {
                             std::ostringstream s;
-                            s << stoich_[i][0]+1;
+                            s << std::fabs(stoich_[i][0]);
                             reaction = reaction + s.str();
                         }
                         
@@ -249,7 +325,7 @@ namespace ASALI
 
                         {
                             std::ostringstream s;
-                            s << stoich_[i][1]+1;
+                            s << std::fabs(stoich_[i][1]);
                             reaction = reaction + s.str();
                         }
 
@@ -268,7 +344,7 @@ namespace ASALI
                     {
                         {
                             std::ostringstream s;
-                            s << stoich_[i][2]+1;
+                            s << std::fabs(stoich_[i][2]);
                             reaction = reaction + s.str();
                         }
                         
@@ -286,7 +362,7 @@ namespace ASALI
 
                         {
                             std::ostringstream s;
-                            s << stoich_[i][3]+1;
+                            s << std::fabs(stoich_[i][3]);
                             reaction = reaction + s.str();
                         }
 
@@ -298,9 +374,10 @@ namespace ASALI
                     if ( reaction != "")
                     {
                         reactionNumberLabel_.push_back(new Gtk::Label(reaction));
-                        batchGrid_.attach(*reactionNumberLabel_[counter],0,NC_+3+counter,1,1);
+                        mainGrid_.attach(*reactionNumberLabel_[counter],0,NC_+3+counter,1,1);
                         speciesHeatEntry_.push_back(new Gtk::Entry());
-                        batchGrid_.attach(*speciesHeatEntry_[counter],1,NC_+3+counter,1,1);
+                        mainGrid_.attach(*speciesHeatEntry_[counter],1,NC_+3+counter,1,1);
+                        speciesHeatEntry_[counter]->set_text("1");
                         counter++;
                     }
                     NR_ = counter;
@@ -310,8 +387,158 @@ namespace ASALI
             {
                 NR_ = 0;
             }
+            mainBox_.pack_end(doneButton_,Gtk::PACK_SHRINK);
+            doneButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliProperties::doneInput));
+        }
+        else if ( type_ == "ph1d" )
+        {
+            mainGrid_.set_column_homogeneous(false);
+            mainBox_.pack_start(ph1dLogo_, Gtk::PACK_SHRINK);
+            mainBox_.pack_start(mainGrid_, Gtk::PACK_SHRINK);
 
+            mainGrid_.attach(nameLabel_,0,0,1,1);
+            mainGrid_.attach(mwLabel_,1,0,1,1);
+            mainGrid_.attach(diffBox_,2,0,1,1);
+            diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
+            diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
 
+            for (unsigned int i=0;i<NC_;i++)
+            {
+                speciesNameLabel_[i] = new Gtk::Label(n_[i]);
+                mainGrid_.attach(*speciesNameLabel_[i],0,1+i,1,1);
+                speciesMwEntry_[i] = new Gtk::Entry();
+                mainGrid_.attach(*speciesMwEntry_[i],1,1+i,1,1);
+                
+                if ( MW_.size() != 0 )
+                {
+                    std::ostringstream s;
+                    s << MW_[i];
+                    speciesMwEntry_[i]->set_text(s.str());
+                }
+                else
+                {
+                    speciesMwEntry_[i]->set_text("14");
+                }
+
+                speciesDiffEntry_[i] = new Gtk::Entry();
+                mainGrid_.attach(*speciesDiffEntry_[i],2,1+i,1,1);
+                
+                if ( diff_.size() != 0 )
+                {
+                    std::ostringstream s;
+                    s << diff_[i];
+                    speciesDiffEntry_[i]->set_text(s.str());
+                }
+                else
+                {
+                    speciesDiffEntry_[i]->set_text("1e-05");
+                }
+            }
+
+            if ( energy_ == "on" )
+            {
+                mainGrid_.attach(cpLabel_,0,NC_+1,1,1);
+                mainGrid_.attach(cpEntry_,1,NC_+1,1,1);
+                mainGrid_.attach(cpCombo_,2,NC_+1,1,1);
+
+                mainGrid_.attach(condLabel_,0,NC_+2,1,1);
+                mainGrid_.attach(condEntry_,1,NC_+2,1,1);
+                mainGrid_.attach(condCombo_,2,NC_+2,1,1);
+
+                mainGrid_.attach(reactionLabel_,0,NC_+3,1,1);
+                mainGrid_.attach(heatBox_,1,NC_+3,1,1);
+                heatBox_.pack_start(heatLabel_, Gtk::PACK_SHRINK);
+                heatBox_.pack_start(heatCombo_, Gtk::PACK_SHRINK);
+
+                unsigned int counter = 0;
+                for (unsigned int i=0;i<name_.size();i++)
+                {
+                    std::string reaction = "";
+                    
+                    if ( name_[i][0] != "none" )
+                    {
+                        {
+                            std::ostringstream s;
+                            s << std::fabs(stoich_[i][0]);
+                            reaction = reaction + s.str();
+                        }
+                        
+                        {
+                            reaction = reaction + " " + name_[i][0];
+                        }
+                    }
+                    
+                    if ( name_[i][1] != "none" )
+                    {
+                        {
+                            
+                            reaction = reaction + " + ";
+                        }
+
+                        {
+                            std::ostringstream s;
+                            s << std::fabs(stoich_[i][1]);
+                            reaction = reaction + s.str();
+                        }
+
+                        {
+                            reaction = reaction + " " + name_[i][1];
+                        }
+
+                    }
+
+                    if ( reaction != "")
+                    {
+                        reaction = reaction + " -> ";
+                    }
+                    
+                    if ( name_[i][2] != "none" )
+                    {
+                        {
+                            std::ostringstream s;
+                            s << std::fabs(stoich_[i][2]);
+                            reaction = reaction + s.str();
+                        }
+                        
+                        {
+                            reaction = reaction + " " + name_[i][2];
+                        }
+                    }
+                    
+                    if ( name_[i][3] != "none" )
+                    {
+                        {
+                            
+                            reaction = reaction + " + ";
+                        }
+
+                        {
+                            std::ostringstream s;
+                            s << std::fabs(stoich_[i][3]);
+                            reaction = reaction + s.str();
+                        }
+
+                        {
+                            reaction = reaction + " " + name_[i][3];
+                        }
+                    }
+                    
+                    if ( reaction != "")
+                    {
+                        reactionNumberLabel_.push_back(new Gtk::Label(reaction));
+                        mainGrid_.attach(*reactionNumberLabel_[counter],0,NC_+4+counter,1,1);
+                        speciesHeatEntry_.push_back(new Gtk::Entry());
+                        mainGrid_.attach(*speciesHeatEntry_[counter],1,NC_+4+counter,1,1);
+                        speciesHeatEntry_[counter]->set_text("1");
+                        counter++;
+                    }
+                    NR_ = counter;
+                }
+            }
+            else
+            {
+                NR_ = 0;
+            }
             mainBox_.pack_end(doneButton_,Gtk::PACK_SHRINK);
             doneButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliProperties::doneInput));
         }
@@ -395,6 +622,93 @@ namespace ASALI
             else
             {
                 cp_ = 1.;
+            }
+        }
+        else if ( type_ == "ph1d" )
+        {
+            MW_.clear();
+            diff_.clear();
+            MW_.resize(NC_);
+            diff_.resize(NC_);
+            for (unsigned int i=0;i<NC_;i++)
+            {
+                MW_[i]   = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
+                diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
+            }
+            
+            if ( diffCombo_.get_active_row_number() == 1 )
+            {
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    diff_[i] = diff_[i]*1.e-04; //cm2/s->m2
+                }
+            }
+
+            Q_.clear();
+            Q_.resize(NR_);
+
+            for (unsigned int i=0;i<NR_;i++)
+            {
+                Q_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+            }
+
+            if ( heatCombo_.get_active_row_number() == 1 )
+            {
+                for (unsigned int i=0;i<NR_;i++)
+                {
+                    Q_[i] = Q_[i]/1.e-03; //J/mol -> J/kmol
+                }
+            }
+            else if ( heatCombo_.get_active_row_number() == 2 )
+            {
+                for (unsigned int i=0;i<NR_;i++)
+                {
+                    Q_[i] = Q_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                }
+            }
+            else if ( heatCombo_.get_active_row_number() == 3 )
+            {
+                for (unsigned int i=0;i<NR_;i++)
+                {
+                    Q_[i] = Q_[i]*4.184; //cal/kmol -> J/kmol
+                }
+            }
+            else if ( heatCombo_.get_active_row_number() == 4 )
+            {
+                for (unsigned int i=0;i<NR_;i++)
+                {
+                    Q_[i] = Q_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                }
+            }
+            else if ( heatCombo_.get_active_row_number() == 5 )
+            {
+                for (unsigned int i=0;i<NR_;i++)
+                {
+                    Q_[i] = Q_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                }
+            }
+            
+
+            if ( energy_ == "on" )
+            {
+                cp_ = Glib::Ascii::strtod(cpEntry_.get_text());
+
+                if ( cpCombo_.get_active_row_number() == 1 )
+                {
+                    cp_ = cp_*1.e03; //kJ/kg/K -> J/kg/K
+                }
+
+                cond_ = Glib::Ascii::strtod(condEntry_.get_text());
+
+                if ( condCombo_.get_active_row_number() == 1 )
+                {
+                    cond_ = cond_*1.e03; //W/m/K -> kW/m/K
+                }
+            }
+            else
+            {
+                cp_   = 1.;
+                cond_ = 1.;
             }
         }
 

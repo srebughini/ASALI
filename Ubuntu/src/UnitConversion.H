@@ -181,3 +181,35 @@ void ConvertsToOneOverMeter(double &v, std::string m)
     else if(m == "1/mm")
         v*=1e03;
 }
+
+void ConvertsToMeterPerSecond(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "m/s")
+        v=v;
+    else if(m == "dm/s")
+        v*=1e-01;
+    else if(m == "cm/s")
+        v*=1e-02;
+    else if(m == "mm/s")
+        v*=1e-03;
+    else if(m == "m/min")
+        v*=1e-01/60;
+    else if(m == "dm/min")
+        v*=1e-01/60;
+    else if(m == "cm/min")
+        v*=1e-02/60;
+    else if(m == "mm/min")
+        v*=1e-03/60;
+    else if(m == "m/h")
+        v*=1e-01/3600;
+    else if(m == "dm/h")
+        v*=1e-01/3600;
+    else if(m == "cm/h")
+        v*=1e-02/3600;
+    else if(m == "mm/h")
+        v*=1e-03/3600;
+}
