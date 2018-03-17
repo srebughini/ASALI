@@ -53,6 +53,7 @@
 #include "speciesPopup.h"
 #include "asaliKinetic.h"
 #include "asaliProperties.h"
+#include "asaliPlot.h"
 #include "runBar.h"
 #include "BatchInterface.h"
 #include "BatchEquations.h"
@@ -123,10 +124,12 @@ namespace ASALI
             void batchMenu();
             void batchRecap();
             void batchRun();
+            void batchPlot();
             void batchBar(const double fraction);
             void ph1dMenu();
             void ph1dRecap();
             void ph1dRun();
+            void ph1dPlot();
             void ph1dBar(const double fraction);
             void propertiesShow();
             void kineticReader();
@@ -169,8 +172,10 @@ namespace ASALI
             Gtk::Button       noneInputButton_;
             Gtk::Button       batchAsaliPropertiesButton_;
             Gtk::Button       batchAsaliKineticButton_;
+            Gtk::Button       batchAsaliPlotButton_;
             Gtk::Button       ph1dAsaliPropertiesButton_;
             Gtk::Button       ph1dAsaliKineticButton_;
+            Gtk::Button       ph1dAsaliPlotButton_;
 
 
             Gtk::Box          menuBox_;
@@ -476,7 +481,9 @@ namespace ASALI
             std::string kineticTypeOld_;
             std::string coverage_;
             std::string inert_;
-            std::string reactorTypeOld_;
+
+            bool        batchBool_;
+            bool        ph1dBool_;
             
             Cantera::ThermoPhase        *thermo_;
             Cantera::Transport          *transport_;
@@ -486,6 +493,7 @@ namespace ASALI
             ASALI::speciesPopup         *speciesNames_;
             ASALI::asaliKinetic         *asaliKinetic_;
             ASALI::asaliProperties      *asaliProperties_;
+            ASALI::asaliPlot            *asaliPlot_;
             ASALI::BatchEquations       *batch_;
             ASALI::runBar               *batchBar_;
             ASALI::Ph1DEquations        *ph1d_;

@@ -139,7 +139,7 @@ void Asali::batchRecap()
         }
 
         //Buttons
-        if ( reactorTypeOld_ == "batch")
+        if (batchBool_)
         {
             if ( kineticTypeOld_ == "none" )
             {
@@ -164,9 +164,16 @@ void Asali::batchRecap()
             }
             else if ( kineticType_ == "load" )
             {
-                kineticTypeOld_ = kineticType_;
+                if ( kineticTypeCombo_.get_active_row_number() == 1 )
+                {
+                    batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    kineticTypeOld_ = "default";
+                }
+                else
+                {
+                    kineticTypeOld_ = kineticType_;
+                }
             }
-            reactorTypeOld_ = "batch";
         }
         else
         {
@@ -183,9 +190,17 @@ void Asali::batchRecap()
             }
             else if ( kineticType_ == "load" )
             {
-                kineticTypeOld_ = kineticType_;
+                if ( kineticTypeCombo_.get_active_row_number() == 1 )
+                {
+                    batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    kineticTypeOld_ = "default";
+                }
+                else
+                {
+                    kineticTypeOld_ = kineticType_;
+                }
             }
-            reactorTypeOld_ = "batch";
+            batchBool_ = true;
         }
 
         this->resize(batchRecapMainBox_.get_width(),batchRecapMainBox_.get_height ());
@@ -978,4 +993,98 @@ void Asali::batchCoverage()
 
         this->show_all_children();
     }
+}
+
+void Asali::batchPlot()
+{
+    asaliPlot_->setTime(batch_->getTime());
+    asaliPlot_->setTemperature(batch_->getTemperature());
+    asaliPlot_->setVolume(batch_->getVolume());
+
+    if ( kineticTypeCombo_.get_active_text() == "ASALI" )
+    {
+        std::vector<double>               t = batch_->getTime();
+        std::vector<double>               T = batch_->getTemperature();
+        std::vector<std::vector<double> > x = batch_->getSpecie();
+        std::vector<std::vector<double> > y = batch_->getSpecie();
+        
+        for (unsigned int j=0;j<t.size();j++)
+        {
+            std::vector<double> mole(n_.size());
+            if ( kineticType_ == "none" )
+            {
+                mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
+            }
+            else
+            {
+                canteraInterface_->setTemperature(T[j]);
+                canteraInterface_->setPressure(p_);
+                canteraInterface_->setMassFraction(y[j],n_);
+
+                for (unsigned int i=0;i<n_.size();i++)
+                {
+                    for (unsigned int k=0;k<canteraInterface_->names().size();k++)
+                    {
+                        if ( n_[i] == canteraInterface_->names()[k] )
+                        {
+                            mole[i] = canteraInterface_->moleFractions()[k];
+                            break;
+                        }
+                    }
+                }
+            }
+        
+            for (unsigned int i=0;i<(n_.size());i++)
+            {
+                x[j][i] = mole[i];
+            }
+        }
+        asaliPlot_->setSpecieNames(n_);
+        asaliPlot_->setSpecie(y,x);
+    }
+    else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
+    {
+        std::vector<double>               t = batch_->getTime();
+        std::vector<double>               T = batch_->getTemperature();
+        std::vector<std::vector<double> > y = batch_->getSpecie();
+        std::vector<std::vector<double> > x = batch_->getSpecie();
+
+        std::vector<std::string>          name(thermo_->nSpecies());
+        
+        for (unsigned int i=0;i<thermo_->nSpecies();i++)
+        {
+            name[i] = thermo_->speciesName(i);
+        }
+
+        for (unsigned int j=0;j<t.size();j++)
+        {
+            std::vector<double> mole(thermo_->nSpecies());
+            {
+                canteraInterface_->setTemperature(T[j]);
+                canteraInterface_->setPressure(p_);
+                canteraInterface_->setMassFraction(y[j],name);
+                mole = canteraInterface_->moleFractions();
+            }
+            for (unsigned int i=0;i<thermo_->nSpecies();i++)
+            {
+                x[j][i] = mole[i];
+            }
+        }
+
+        asaliPlot_->setSpecieNames(name);
+        asaliPlot_->setSpecie(y,x);
+
+        name.resize(surface_->nSpecies());
+        for (unsigned int i=0;i<surface_->nSpecies();i++)
+        {
+            name[i] = surface_->speciesName(i);
+        }
+        
+        asaliPlot_->setSiteNames(name);
+        asaliPlot_->setSite(batch_->getSite());
+    }
+
+    asaliPlot_->setType("batch");
+    asaliPlot_->build();
+    asaliPlot_->show();
 }

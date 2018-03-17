@@ -173,7 +173,7 @@ void Asali::ph1dRecap()
         }
 
         //Buttons
-        if ( reactorTypeOld_ == "ph1d" )
+        if (ph1dBool_)
         {
             if ( kineticTypeOld_ == "none" )
             {
@@ -198,9 +198,16 @@ void Asali::ph1dRecap()
             }
             else if ( kineticType_ == "load" )
             {
-                kineticTypeOld_ = kineticType_;
+                if ( kineticTypeCombo_.get_active_row_number() == 1 )
+                {
+                    ph1dButtonBox_.pack_start(ph1dAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    kineticTypeOld_ = "default";
+                }
+                else
+                {
+                    kineticTypeOld_ = kineticType_;
+                }
             }
-            reactorTypeOld_ = "ph1d";
         }
         else
         {
@@ -217,9 +224,17 @@ void Asali::ph1dRecap()
             }
             else if ( kineticType_ == "load" )
             {
-                kineticTypeOld_ = kineticType_;
+                if ( kineticTypeCombo_.get_active_row_number() == 1 )
+                {
+                    ph1dButtonBox_.pack_start(ph1dAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    kineticTypeOld_ = "default";
+                }
+                else
+                {
+                    kineticTypeOld_ = kineticType_;
+                }
             }
-            reactorTypeOld_ = "ph1d";
+            ph1dBool_ = true;
         }
 
 
@@ -1193,11 +1208,6 @@ void Asali::ph1dRun()
                 ti = tf;
 
                 this->ph1dBar(double(i+1)*(L_/100.)/L_);
-                //Update solving bar
-                while( Gtk::Main::events_pending() )
-                {
-                    Gtk::Main::iteration();
-                }
             }
         }
 
@@ -1607,4 +1617,228 @@ void Asali::ph1dCoverage()
 
         this->show_all_children();
     }
+}
+
+void Asali::ph1dPlot()
+{
+    if ( resolution_ == "steady state" )
+    {
+        asaliPlot_->setResolutionType(resolution_);
+        asaliPlot_->setLength(ph1d_->getLength());
+        asaliPlot_->setTemperature(ph1d_->getTemperature());
+
+        if ( kineticTypeCombo_.get_active_text() == "ASALI" )
+        {
+            std::vector<double>               L = ph1d_->getLength();
+            std::vector<double>               T = ph1d_->getTemperature();
+            std::vector<std::vector<double> > x = ph1d_->getSpecie();
+            std::vector<std::vector<double> > y = ph1d_->getSpecie();
+            
+            for (unsigned int j=0;j<L.size();j++)
+            {
+                std::vector<double> mole(n_.size());
+                if ( kineticType_ == "none" )
+                {
+                    mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
+                }
+                else
+                {
+                    canteraInterface_->setTemperature(T[j]);
+                    canteraInterface_->setPressure(p_);
+                    canteraInterface_->setMassFraction(y[j],n_);
+
+                    for (unsigned int i=0;i<n_.size();i++)
+                    {
+                        for (unsigned int k=0;k<canteraInterface_->names().size();k++)
+                        {
+                            if ( n_[i] == canteraInterface_->names()[k] )
+                            {
+                                mole[i] = canteraInterface_->moleFractions()[k];
+                                break;
+                            }
+                        }
+                    }
+                }
+            
+                for (unsigned int i=0;i<(n_.size());i++)
+                {
+                    x[j][i] = mole[i];
+                }
+            }
+            asaliPlot_->setSpecieNames(n_);
+            asaliPlot_->setSpecie(y,x);
+        }
+        else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
+        {
+            std::vector<double>               L = ph1d_->getLength();
+            std::vector<double>               T = ph1d_->getTemperature();
+            std::vector<std::vector<double> > y = ph1d_->getSpecie();
+            std::vector<std::vector<double> > x = ph1d_->getSpecie();
+
+            std::vector<std::string>          name(thermo_->nSpecies());
+            
+            for (unsigned int i=0;i<thermo_->nSpecies();i++)
+            {
+                name[i] = thermo_->speciesName(i);
+            }
+
+            for (unsigned int j=0;j<L.size();j++)
+            {
+                std::vector<double> mole(thermo_->nSpecies());
+                {
+                    canteraInterface_->setTemperature(T[j]);
+                    canteraInterface_->setPressure(p_);
+                    canteraInterface_->setMassFraction(y[j],name);
+                    mole = canteraInterface_->moleFractions();
+                }
+                for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                {
+                    x[j][i] = mole[i];
+                }
+            }
+
+            asaliPlot_->setSpecieNames(name);
+            asaliPlot_->setSpecie(y,x);
+
+            name.resize(surface_->nSpecies());
+            for (unsigned int i=0;i<surface_->nSpecies();i++)
+            {
+                name[i] = surface_->speciesName(i);
+            }
+            
+            asaliPlot_->setSiteNames(name);
+            asaliPlot_->setSite(ph1d_->getSite());
+        }
+    }
+    else if ( resolution_ == "transient" )
+    {
+        asaliPlot_->setResolutionType(resolution_);
+        asaliPlot_->setTime(ph1d_->getTime());
+        asaliPlot_->setTemperature(ph1d_->getTemperatureTransient());
+
+        if ( kineticTypeCombo_.get_active_text() == "ASALI" )
+        {
+            std::vector<double>                             t  = ph1d_->getTime();
+            std::vector<std::vector<double> >               T  = ph1d_->getTemperatureTransient();
+            std::vector<std::vector<std::vector<double> > > y  = ph1d_->getSpecieTransient();
+            std::vector<std::vector<std::vector<double> > > Z  = ph1d_->getSiteTransient();
+
+            //Conversion from mass to mole
+            std::vector<std::vector<std::vector<double> > > mole  = ph1d_->getSpecieTransient();
+            {
+                if ( kineticType_ == "none" )
+                {
+                    for (unsigned int j=0;j<t.size();j++)
+                    {
+                        for (unsigned int k=0;k<NP_;k++)
+                        {
+                            std::vector<double> x(n_.size());
+                            for (unsigned int i=0;i<n_.size();i++)
+                            {
+                                x[i] = y[j][k][i];
+                            }
+                            
+                            x = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),x);
+
+                            for (unsigned int i=0;i<n_.size();i++)
+                            {
+                                mole[j][k][i] = x[i];
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for (unsigned int j=0;j<t.size();j++)
+                    {
+                        for (unsigned int k=0;k<NP_;k++)
+                        {
+                            canteraInterface_->setTemperature(T[j][k]);
+                            canteraInterface_->setPressure(p_);
+                            std::vector<double> x(n_.size());
+                            for (unsigned int i=0;i<n_.size();i++)
+                            {
+                                x[i] = y[j][k][i];
+                            }
+                            canteraInterface_->setMassFraction(x,n_);
+                            x = canteraInterface_->moleFractions();
+
+                            for (unsigned int i=0;i<n_.size();i++)
+                            {
+                                mole[j][k][i] = x[i];
+                            }
+                        }
+                    }
+                }
+            }
+
+            asaliPlot_->setSpecieNames(n_);
+            asaliPlot_->setSpecie(y,mole);
+        }
+        else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
+        {
+            std::vector<double>                             t  = ph1d_->getTime();
+            std::vector<std::vector<double> >               T  = ph1d_->getTemperatureTransient();
+            std::vector<std::vector<std::vector<double> > > y  = ph1d_->getSpecieTransient();
+            std::vector<std::vector<std::vector<double> > > Z  = ph1d_->getSiteTransient();
+            
+            //Conversion from mass to mole
+            std::vector<std::vector<std::vector<double> > > mole  = ph1d_->getSpecieTransient();
+            std::vector<std::string> name(thermo_->nSpecies());
+            {
+
+                for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                {
+                    name[i] = thermo_->speciesName(i);
+                }
+                for (unsigned int j=0;j<t.size();j++)
+                {
+                    for (unsigned int k=0;k<NP_;k++)
+                    {
+                        canteraInterface_->setTemperature(T[j][k]);
+                        canteraInterface_->setPressure(p_);
+                        std::vector<double> x(thermo_->nSpecies());
+                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                        {
+                            x[i] = y[j][k][i];
+                        }
+                        canteraInterface_->setMassFraction(x,name);
+                        x = canteraInterface_->moleFractions();
+
+                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                        {
+                            mole[j][k][i] = x[i];
+                        }
+                    }
+                }
+
+            }
+            asaliPlot_->setSpecieNames(name);
+            asaliPlot_->setSpecie(y,mole);
+
+            name.resize(surface_->nSpecies());
+            for (unsigned int i=0;i<surface_->nSpecies();i++)
+            {
+                name[i] = surface_->speciesName(i);
+            }
+            asaliPlot_->setSiteNames(name);
+            asaliPlot_->setSite(ph1d_->getSiteTransient());
+        }
+        
+        
+        //Length
+        {
+            double dz = L_/double(NP_- 1); 
+            std::vector<double> l(NP_);
+            for (unsigned int k=0;k<NP_;k++)
+            {
+                l[k] = k*dz;
+            }
+            asaliPlot_->setLength(l);
+        }
+    }
+
+    asaliPlot_->setType("ph1d");
+    asaliPlot_->build();
+    asaliPlot_->show();
 }
