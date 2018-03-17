@@ -71,8 +71,10 @@ namespace ASALI
       noneInputButton_("User defined constant properties"),
       batchAsaliPropertiesButton_("Properties"),
       batchAsaliKineticButton_("Kinetics"),
+      batchAsaliPlotButton_("Plot"),
       ph1dAsaliPropertiesButton_("Properties"),
       ph1dAsaliKineticButton_("Kinetics"),
+      ph1dAsaliPlotButton_("Plot"),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       sBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
@@ -156,7 +158,8 @@ namespace ASALI
       kineticType_("zero"),
       kineticTypeOld_("zero"),
       coverage_("none"),
-      reactorTypeOld_("zero")
+      batchBool_(false),
+      ph1dBool_(false)
     {
         #include "Beer.H"
 
@@ -166,6 +169,7 @@ namespace ASALI
         ph1dBar_         = new ASALI::runBar();
         asaliKinetic_    = new ASALI::asaliKinetic();
         asaliProperties_ = new ASALI::asaliProperties();
+        asaliPlot_       = new ASALI::asaliPlot();
 
         exitButton_.resize(20);
         backButton_.resize(20);
@@ -537,6 +541,8 @@ namespace ASALI
                     batchRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchRun));
                     batchButtonBox_.pack_start(batchSaveButton_, Gtk::PACK_SHRINK);
                     batchSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchSave));
+                    batchButtonBox_.pack_start(batchAsaliPlotButton_, Gtk::PACK_SHRINK);
+                    batchAsaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batchPlot));
                     
                     batchAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
                     batchAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
@@ -609,6 +615,7 @@ namespace ASALI
                     batchRecapKineticLabel_.set_text("Kinetic model from");
                     batchRecapGrid_.attach(batchRecapKineticLabel_,0,8,1,1);
                     batchRecapGrid_.attach(batchRecapKineticValueLabel_,1,8,1,1);
+
                     //Buttons
                     batchRecapGrid_.attach(*backButton_[12],0,9,1,1);
                     batchRecapGrid_.attach(*mainMenuButton_[12],1,9,1,1);
@@ -737,7 +744,9 @@ namespace ASALI
                     ph1dRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dRun));
                     ph1dButtonBox_.pack_start(ph1dSaveButton_, Gtk::PACK_SHRINK);
                     ph1dSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dSave));
-                    
+                    ph1dButtonBox_.pack_start(ph1dAsaliPlotButton_, Gtk::PACK_SHRINK);
+                    ph1dAsaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dPlot));
+
                     ph1dAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
                     ph1dAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
                 }

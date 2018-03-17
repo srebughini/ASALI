@@ -100,6 +100,25 @@ void Asali::kineticReader()
             }
         }
 
+        if ( resolution_ == "transient" )
+        {
+            bool check = false;
+            for (unsigned int i=0;i<n_.size();i++)
+            {
+                if (n_[i] == inert_ )
+                {
+                    check = true;
+                    break;
+                }
+            }
+
+            if ( !check )
+            {
+                n_.push_back(inert_);
+                x_.push_back(0.0);
+            }
+        }
+
         canteraIndex_.resize(n_.size());
         for (unsigned int i=0;i<n_.size();i++)
         {
@@ -182,6 +201,25 @@ void Asali::kineticReader()
                             index2_.push_back(0);
                         }
                     }
+                }
+            }
+
+            if ( resolution_ == "transient" )
+            {
+                bool check = false;
+                for (unsigned int i=0;i<n_.size();i++)
+                {
+                    if (n_[i] == inert_ )
+                    {
+                        check = true;
+                        break;
+                    }
+                }
+
+                if ( !check )
+                {
+                    n_.push_back(inert_);
+                    x_.push_back(0.0);
                 }
             }
 

@@ -471,8 +471,6 @@ namespace ASALI
                 MWmix_ = this->meanMolecularWeight(omega_,MW_);
                 cTot_  = P_/(8314.*T_);
                 rho_   = cTot_*MWmix_;
-                
-                //cp from user
             }
 
             // Calculates homogeneous kinetics
