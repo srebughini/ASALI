@@ -1,6 +1,5 @@
 language: cpp
 sudo: required
-dust: xenial
 compiler:
 - g++
 os:
