@@ -11,7 +11,7 @@ before_install:
 - sudo apt-add-repository ppa:speth/cantera -y
 - sudo apt-get update
 - sudo apt-get install cantera-python cantera-python3 cantera-dev libgtkmm-3.0-dev gnuplot -y
-- git clone git@github.com:eigenteam/eigen-git-mirror.git
+- git clone https://github.com/eigenteam/eigen-git-mirror.git
 branches:
   only:
   - master
