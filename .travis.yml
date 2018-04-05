@@ -5,11 +5,11 @@ compiler:
 os:
 - linux
 before_install:
-  sudo apt-get update &
-  sudo apt-get install python-software-properties -y &
-  sudo apt-add-repository ppa:speth/cantera -y &
-  sudo apt-get install cantera-python cantera-python3 cantera-dev libgtkmm-3.0-dev gnuplot -y &
-  git clone git@github.com:eigenteam/eigen-git-mirror.git
+- sudo apt-get update
+- sudo apt-get install python-software-properties -y
+- sudo apt-add-repository ppa:speth/cantera -y
+- sudo apt-get install cantera-python cantera-python3 cantera-dev libgtkmm-3.0-dev gnuplot -y
+- git clone git@github.com:eigenteam/eigen-git-mirror.git
 branches:
   only:
   - master
