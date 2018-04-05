@@ -1,6 +1,5 @@
 language: cpp
 sudo: required
-dist: xenial
 compiler:
 - g++
 os:
@@ -10,10 +9,7 @@ before_install:
   sudo apt-get update &
   sudo apt-get install python-software-properties -y &
   sudo apt-add-repository ppa:speth/cantera -y &
-  sudo apt-get update &
-  sudo apt-get install cantera-python cantera-python3 cantera-dev -y &
-  sudo apt-get install libgtkmm-3.0-dev -y &
-  sudo apt-get install gnuplot -y
+  sudo apt-get install cantera-python cantera-python3 cantera-dev libgtkmm-3.0-dev gnuplot -y
 branches:
   only:
   - master
