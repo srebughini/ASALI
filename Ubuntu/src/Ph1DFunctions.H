@@ -522,6 +522,46 @@ void Asali::ph1dMenu()
             window_ = "ph1dMenuAsali";
         }
     }
+    else if ( window_ == "cstrMenuCantera" )
+    {
+        inputGrid_.remove(*backButton_[23]);
+        inputGrid_.remove(*mainMenuButton_[23]);
+        inputGrid_.remove(*nextButton_[23]);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[17],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[17],1,13,1,1);
+            inputGrid_.attach(*nextButton_[17],2,13,1,1);
+            window_ = "ph1dMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[16],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[16],1,13,1,1);
+            inputGrid_.attach(*nextButton_[16],2,13,1,1);
+            window_ = "ph1dMenuAsali";
+        }
+    }
+    else if ( window_ == "cstrMenuAsali" )
+    {
+        inputGrid_.remove(*backButton_[22]);
+        inputGrid_.remove(*mainMenuButton_[22]);
+        inputGrid_.remove(*nextButton_[22]);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[17],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[17],1,13,1,1);
+            inputGrid_.attach(*nextButton_[17],2,13,1,1);
+            window_ = "ph1dMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[16],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[16],1,13,1,1);
+            inputGrid_.attach(*nextButton_[16],2,13,1,1);
+            window_ = "ph1dMenuAsali";
+        }
+    }
     else
     {
         inputGrid_.remove(*backButton_[0]);

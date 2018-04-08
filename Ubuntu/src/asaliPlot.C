@@ -160,6 +160,11 @@ namespace ASALI
             otherButton_.push_back(new Gtk::CheckButton("Temperature"));
             otherGrid_.attach(*otherButton_[0],0,0,1,1);
         }
+        else if ( type_ == "cstr" )
+        {
+            otherButton_.push_back(new Gtk::CheckButton("Temperature"));
+            otherGrid_.attach(*otherButton_[0],0,0,1,1);
+        }
 
         this->resize(mainGrid_.get_width(),mainGrid_.get_height ());
         this->show_all_children();
@@ -375,9 +380,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<massNames.size();i++)
@@ -451,7 +456,6 @@ namespace ASALI
                             std::ofstream output;
                             const char *path = filename.c_str();
                             output.open(path,std::ios::out);
-                            
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 1" << std::endl;
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
@@ -476,9 +480,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<moleNames.size();i++)
@@ -577,9 +581,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<siteNames.size();i++)
@@ -653,7 +657,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "Volume.png'" << std::endl;
+                                output << "set output '" << foldername << "/Volume.png'" << std::endl;
                                 output << "set ylabel 'Volume [m3]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -673,7 +677,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "Temperature.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -749,9 +753,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<massNames.size();i++)
@@ -850,9 +854,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<moleNames.size();i++)
@@ -952,9 +956,9 @@ namespace ASALI
                                     output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
                                 }
                             }
-                            #endif
 
                             output << std::endl;
+                            #endif
                             output << "set terminal pngcairo" << std::endl;
                             output << "set output '" << foldername << "/";
                             for (unsigned int i=0;i<siteNames.size();i++)
@@ -1479,10 +1483,10 @@ namespace ASALI
                                 output << std::endl;
                                 #endif
 
-
                                 output << std::endl;
                                 output << "set terminal pngcairo font 'Helvetica,10' " << std::endl;
                                 output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Length [m]'" << std::endl;
                                 output << "unset key" << std::endl;;
@@ -1507,7 +1511,360 @@ namespace ASALI
                         }
                     }
                 }
+                else if ( type_ == "cstr" )
+                {
+                    if ( massButton_.size() != 0 )
+                    {
+                        //Make .dat for mass fraction
+                        {
+                            std::string filename = foldername + "/mass.dat";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            output.setf(std::ios::scientific);
+                            output.precision(6);
+                            for (unsigned int j=0;j<t_.size();j++)
+                            {
+                                output << t_[j] << "\t";
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    if ( massButton_[i]->get_active() )
+                                    {
+                                        output << std::max(0.,y_[j][i]) << "\t";
 
+                                        if ( j == 0 )
+                                        {
+                                            massNames.push_back(n_[i]);
+                                        }
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output.close();
+                        }
+
+                        //Make .gnuplot for mass fraction
+                        if ( massNames.size() != 0 )
+                        {
+                            std::string filename = foldername + "/mass.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 0" << std::endl;
+                            output << "set ylabel 'Mass fraction [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;;
+                            output << "set size square" << std::endl;
+
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                            }
+
+                            output << std::endl;
+                            #endif
+                            output << "set terminal pngcairo" << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                output << massNames[i] << "_";
+                            }
+                            output << "massFraction.png'" << std::endl;
+
+                            output << "set ylabel 'Mass fraction [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;
+                            output << "set size square" << std::endl;
+
+
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mass.dat" << "' u 1:" << i+2 << " w l title '" << massNames[i] << "'";
+                                }
+                            }
+
+                            output.close();
+                        }
+                    }
+
+                    if ( moleButton_.size() != 0 )
+                    {
+                        //Make .dat for mole fraction
+                        {
+                            std::string filename = foldername + "/mole.dat";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            output.setf(std::ios::scientific);
+                            output.precision(6);
+                            for (unsigned int j=0;j<t_.size();j++)
+                            {
+                                output << t_[j] << "\t";
+                                for (unsigned int i=0;i<NC_;i++)
+                                {
+                                    if ( moleButton_[i]->get_active() )
+                                    {
+                                        output << std::max(0.,x_[j][i]) << "\t";
+
+                                        if ( j == 0 )
+                                        {
+                                            moleNames.push_back(n_[i]);
+                                        }
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output.close();
+                        }
+
+                        //Make .gnuplot for mole fraction
+                        if ( moleNames.size() != 0 )
+                        {
+                            std::string filename = foldername + "/mole.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 1" << std::endl;
+                            output << "set ylabel 'Mole fraction [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;;
+                            output << "set size square" << std::endl;
+
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                            }
+
+                            output << std::endl;
+                            #endif
+                            output << "set terminal pngcairo" << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                output << moleNames[i] << "_";
+                            }
+                            output << "moleFraction.png'" << std::endl;
+
+                            output << "set ylabel 'Mole fraction [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;
+                            output << "set size square" << std::endl;
+
+
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/mole.dat" << "' u 1:" << i+2 << " w l title '" << moleNames[i] << "'";
+                                }
+                            }
+
+                            output.close();
+                        }
+                    }
+
+                    if ( siteButton_.size() != 0 )
+                    {
+                        //Make .dat for coverage
+                        {
+                            std::string filename = foldername + "/site.dat";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            output.setf(std::ios::scientific);
+                            output.precision(6);
+                            for (unsigned int j=0;j<t_.size();j++)
+                            {
+                                output << t_[j] << "\t";
+                                for (unsigned int i=0;i<SURF_NC_;i++)
+                                {
+                                    if ( siteButton_[i]->get_active() )
+                                    {
+                                        output << std::max(0.,z_[j][i]) << "\t";
+
+                                        if ( j == 0 )
+                                        {
+                                            siteNames.push_back(nc_[i]);
+                                        }
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output.close();
+                        }
+
+                        //Make .gnuplot for coverage
+                        if ( siteNames.size() != 0 )
+                        {
+                            std::string filename = foldername + "/site.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 2" << std::endl;
+                            output << "set ylabel 'Coverage [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;;
+                            output << "set size square" << std::endl;
+
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                            }
+
+                            output << std::endl;
+                            #endif
+                            output << "set terminal pngcairo" << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                output << siteNames[i] << "_";
+                            }
+                            output << "coverage.png'" << std::endl;
+
+                            output << "set ylabel 'Coverage [-]'" << std::endl;
+                            output << "set xlabel 'Time [s]'" << std::endl;
+                            output << "set key outside right center" << std::endl;
+                            output << "set size square" << std::endl;
+
+
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                if ( i == 0 )
+                                {
+                                    output << "plot '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                                else if ( i == (massNames.size() - 1) )
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                                else
+                                {
+                                    output << ",\\" << std::endl;
+                                    output << "     '" << foldername << "/site.dat" << "' u 1:" << i+2 << " w l title '" << siteNames[i] << "'";
+                                }
+                            }
+
+                            output.close();
+                        }
+                    }
+
+
+                    //Make .dat for other
+                    if ( otherButton_.size() != 0 )
+                    {
+                        {
+                            std::string filename = foldername + "/other.dat";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            output.setf(std::ios::scientific);
+                            output.precision(6);
+                            for (unsigned int j=0;j<t_.size();j++)
+                            {
+                                output << t_[j] << "\t" << T_[j] << std::endl;
+                            }
+                            output.close();
+                        }
+
+                        //Make .gnuplot for other
+                        {
+                            std::string filename = foldername + "/other.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+
+                            if ( otherButton_[0]->get_active() )
+                            {
+                                #if ASALI_ON_WINDOW == 0
+                                output << "set terminal wxt 4" << std::endl;
+                                output << "set ylabel 'Temperature [K]'" << std::endl;
+                                output << "set xlabel 'Time [s]'" << std::endl;
+                                output << "set key off" << std::endl;;
+                                output << "set size square" << std::endl;
+                                output << "plot '" << foldername << "/other.dat" << "' u 1:2 w l" << std::endl;
+                                #endif
+
+                                output << "set terminal pngcairo" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+                                output << "set ylabel 'Temperature [K]'" << std::endl;
+                                output << "set xlabel 'Time [s]'" << std::endl;
+                                output << "set key off" << std::endl;;
+                                output << "set size square" << std::endl;
+                                output << "plot '" << foldername << "/other.dat" << "' u 1:2 w l" << std::endl;
+                            }
+
+                            output.close();
+                        }
+                    }
+                }
                 dialog.hide();
                 break;
             }
@@ -1523,27 +1880,29 @@ namespace ASALI
             }
         }
 
-        if ( massNames.size() != 0 )
-        {   
+        if (bool(std::ifstream("mass.gnuplot")))
+        {
             #if ASALI_ON_WINDOW == 1
-              {
-                std::string run = "wgnuplot.exe " + foldername + "\\mass.gnuplot";
+            {
+                std::string run = "wgnuplot.exe " + foldername + "\\mass.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #else
-              {
+            {
                 std::string run = "gnuplot " + foldername + "/mass.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #endif
             {
                 std::string filename = foldername + "/mass.dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             for (unsigned int i=0;i<massNames.size();i++)
             {
                 std::string filename = foldername + "/mass." + massNames[i] + ".dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             {
                 std::string filename = foldername + "/mass.gnuplot";
@@ -1551,27 +1910,29 @@ namespace ASALI
             }
         }
   
-        if ( moleNames.size() != 0 )
+        if (bool(std::ifstream("mole.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
-              {
-                std::string run = "wgnuplot.exe " + foldername + "\\mole.gnuplot";
+            {
+                std::string run = "wgnuplot.exe " + foldername + "\\mole.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #else
-              {
+            {
                 std::string run = "gnuplot " + foldername + "/mole.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #endif
             {
                 std::string filename = foldername + "/mole.dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             for (unsigned int i=0;i<moleNames.size();i++)
             {
                 std::string filename = foldername + "/mole." + moleNames[i] + ".dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             {
                 std::string filename = foldername + "/mole.gnuplot";
@@ -1579,27 +1940,29 @@ namespace ASALI
             }
         }
 
-        if ( siteNames.size() != 0 )
+        if (bool(std::ifstream("site.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
-              {
-                std::string run = "wgnuplot.exe " + foldername + "\\site.gnuplot";
+            {
+                std::string run = "wgnuplot.exe " + foldername + "\\site.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #else
-              {
+            {
                 std::string run = "gnuplot " + foldername + "/site.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #endif
             {
                 std::string filename = foldername + "/site.dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             for (unsigned int i=0;i<siteNames.size();i++)
             {
                 std::string filename = foldername + "/site." + siteNames[i] + ".dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             {
                 std::string filename = foldername + "/site.gnuplot";
@@ -1608,22 +1971,23 @@ namespace ASALI
         }
 
 
-        if ( otherButton_.size() != 0 )
+        if (bool(std::ifstream("other.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
-              {
-                std::string run = "wgnuplot.exe " + foldername + "\\other.gnuplot";
+            {
+                std::string run = "wgnuplot.exe " + foldername + "\\other.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #else
-              {
+            {
                 std::string run = "gnuplot " + foldername + "/other.gnuplot -p";
                 system(run.c_str());
-              }
+            }
             #endif
             {
                 std::string filename = foldername + "/other.dat";
-                std::remove(filename.c_str());
+                if (bool(std::ifstream(filename)))
+                    std::remove(filename.c_str());
             }
             {
                 std::string filename = foldername + "/other.gnuplot";
@@ -1635,35 +1999,39 @@ namespace ASALI
     
     void asaliPlot::destroy()
     {
-        for (unsigned int i=0;i<NC_;i++)
+        if ( NC_ != 0 )
         {
-            moleGrid_.remove(*moleButton_[i]);
-            massGrid_.remove(*massButton_[i]);
-        }
-        
-        if ( SURF_NC_ == 0 )
-        {
-            mainGrid_.attach(siteLabel_,0,4,1,1);
-            mainGrid_.attach(siteGrid_,0,5,1,1);
-        }
-        else
-        {
-            for (unsigned int i=0;i<SURF_NC_;i++)
+            for (unsigned int i=0;i<NC_;i++)
             {
-                siteGrid_.remove(*siteButton_[i]);
+                moleGrid_.remove(*moleButton_[i]);
+                massGrid_.remove(*massButton_[i]);
             }
-        }
+            
+            if ( SURF_NC_ == 0 )
+            {
+                mainGrid_.attach(siteLabel_,0,4,1,1);
+                mainGrid_.attach(siteGrid_,0,5,1,1);
+            }
+            else
+            {
+                for (unsigned int i=0;i<SURF_NC_;i++)
+                {
+                    siteGrid_.remove(*siteButton_[i]);
+                }
+            }
 
-        for (unsigned int i=0;i<otherButton_.size();i++)
-        {
-            otherGrid_.remove(*otherButton_[i]);
+            for (unsigned int i=0;i<otherButton_.size();i++)
+            {
+                otherGrid_.remove(*otherButton_[i]);
+            }
+            
+            NC_      = 0;
+            SURF_NC_ = 0;
         }
-        
-        NC_      = 0;
-        SURF_NC_ = 0;
     }
 
     asaliPlot::~asaliPlot()
     {
     }
+ 
 }

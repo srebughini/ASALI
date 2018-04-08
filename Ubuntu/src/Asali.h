@@ -60,6 +60,8 @@
 #include "Ph1DodeInterface.h"
 #include "Ph1DbvpInterface.h"
 #include "Ph1DEquations.h"
+#include "CstrInterface.h"
+#include "CstrEquations.h"
 
 namespace ASALI
 {
@@ -81,6 +83,7 @@ namespace ASALI
             void vacuumReader();
             void batchReader();
             void ph1dReader();
+            void cstrReader();
             void showAtomNames();
             void transportMenu();
             void thermoMenu();
@@ -98,6 +101,7 @@ namespace ASALI
             void allSave();
             void batchSave();
             void ph1dSave();
+            void cstrSave();
             void vacuumSave();
             void equilibriumSave();
             void cpUnitConversion(bool check);
@@ -131,11 +135,17 @@ namespace ASALI
             void ph1dRun();
             void ph1dPlot();
             void ph1dBar(const double fraction);
+            void cstrMenu();
+            void cstrRecap();
+            void cstrRun();
+            void cstrPlot();
+            void cstrBar(const double fraction);
             void propertiesShow();
             void kineticReader();
             void kineticShow();
             void batchCoverage();
             void ph1dCoverage();
+            void cstrCoverage();
             bool chemistryMenu1(GdkEventButton*);
             
             std::vector<bool> setReactors();
@@ -161,10 +171,12 @@ namespace ASALI
             Gtk::Button       equilibriumSaveButton_;
             Gtk::Button       batchSaveButton_;
             Gtk::Button       ph1dSaveButton_;
+            Gtk::Button       cstrSaveButton_;
             Gtk::Button       calculateButton_;
             Gtk::Button       equationsButton_;
             Gtk::Button       batchRunButton_;
             Gtk::Button       ph1dRunButton_;
+            Gtk::Button       cstrRunButton_;
             Gtk::Button       startButton_;
             Gtk::Button       helpButton_;
             Gtk::Button       defaultCanteraInputButton_;
@@ -176,7 +188,9 @@ namespace ASALI
             Gtk::Button       ph1dAsaliPropertiesButton_;
             Gtk::Button       ph1dAsaliKineticButton_;
             Gtk::Button       ph1dAsaliPlotButton_;
-
+            Gtk::Button       cstrAsaliPropertiesButton_;
+            Gtk::Button       cstrAsaliKineticButton_;
+            Gtk::Button       cstrAsaliPlotButton_;
 
             Gtk::Box          menuBox_;
             Gtk::Box          transportBox_;
@@ -206,6 +220,11 @@ namespace ASALI
             Gtk::Box          ph1dBox_;
             Gtk::Box          ph1dRecapMainBox_;
             Gtk::Box          ph1dRecapBox_;
+            Gtk::Box          cstrMainBox_;
+            Gtk::Box          cstrLogoBox_;
+            Gtk::Box          cstrBox_;
+            Gtk::Box          cstrRecapMainBox_;
+            Gtk::Box          cstrRecapBox_;
             Gtk::Box          coverageBox_;
 
             Gtk::ButtonBox    exitButtonBox_;
@@ -214,7 +233,7 @@ namespace ASALI
             Gtk::ButtonBox    startButtonBox_;
             Gtk::ButtonBox    batchButtonBox_;
             Gtk::ButtonBox    ph1dButtonBox_;
-            
+            Gtk::ButtonBox    cstrButtonBox_;
             
             Gtk::EventBox     logoEventBox_;
 
@@ -317,6 +336,40 @@ namespace ASALI
             Gtk::Label        ph1dRecapEnergyValueLabel_;
             Gtk::Label        ph1dRecapKineticLabel_;
             Gtk::Label        ph1dRecapKineticValueLabel_;
+            Gtk::Label        cstrVolumeLabel_;
+            Gtk::Label        cstrFlowLabel_;
+            Gtk::Label        cstrLoadLabel_;
+            Gtk::Label        cstrTimeLabel_;
+            Gtk::Label        cstrSaveLabel_;
+            Gtk::Label        cstrEnergyLabel_;
+            Gtk::Label        cstrRecapVolumeLabel_;
+            Gtk::Label        cstrRecapVolumeUDLabel_;
+            Gtk::Label        cstrRecapVolumeValueLabel_;
+            Gtk::Label        cstrRecapFlowLabel_;
+            Gtk::Label        cstrRecapFlowUDLabel_;
+            Gtk::Label        cstrRecapFlowValueLabel_;
+            Gtk::Label        cstrRecapTemperatureLabel_;
+            Gtk::Label        cstrRecapTemperatureUDLabel_;
+            Gtk::Label        cstrRecapTemperatureValueLabel_;
+            Gtk::Label        cstrRecapPressureLabel_;
+            Gtk::Label        cstrRecapPressureUDLabel_;
+            Gtk::Label        cstrRecapPressureValueLabel_;
+            Gtk::Label        cstrRecapTimeLabel_;
+            Gtk::Label        cstrRecapTimeUDLabel_;
+            Gtk::Label        cstrRecapTimeValueLabel_;
+            Gtk::Label        cstrRecapLoadLabel_;
+            Gtk::Label        cstrRecapLoadUDLabel_;
+            Gtk::Label        cstrRecapLoadValueLabel_;
+            Gtk::Label        cstrRecapSaveLabel_;
+            Gtk::Label        cstrRecapSaveUDLabel_;
+            Gtk::Label        cstrRecapSaveValueLabel_;
+            Gtk::Label        cstrRecapFractionLabel_;
+            Gtk::Label        cstrRecapFractionNameLabel_;
+            Gtk::Label        cstrRecapFractionValueLabel_;
+            Gtk::Label        cstrRecapEnergyLabel_;
+            Gtk::Label        cstrRecapEnergyValueLabel_;
+            Gtk::Label        cstrRecapKineticLabel_;
+            Gtk::Label        cstrRecapKineticValueLabel_;
             Gtk::Label*       vacuumKnuResults_;
             Gtk::Label*       vacuumDiffResults_;
             Gtk::Label*       vacuumVelocityResults_;
@@ -334,6 +387,8 @@ namespace ASALI
             Gtk::Grid         batchRecapGrid_;
             Gtk::Grid         ph1dPropertiesGrid_;
             Gtk::Grid         ph1dRecapGrid_;
+            Gtk::Grid         cstrPropertiesGrid_;
+            Gtk::Grid         cstrRecapGrid_;
             Gtk::Grid         coverageInputGrid_;
             
             Gtk::Image        bigLogo_;
@@ -343,7 +398,9 @@ namespace ASALI
             Gtk::Image        batchLogo2_;
             Gtk::Image        ph1dLogo1_;
             Gtk::Image        ph1dLogo2_;
-
+            Gtk::Image        cstrLogo1_;
+            Gtk::Image        cstrLogo2_;
+            
             Gtk::Frame        batchOperatingConditionsFrame_;
             
             Gtk::Entry        tempEntry_;
@@ -363,7 +420,12 @@ namespace ASALI
             Gtk::Entry        ph1dSaveEntry_;
             Gtk::Entry        ph1dPointsEntry_;
             Gtk::Entry        ph1dInertEntry_;
-
+            Gtk::Entry        cstrVolumeEntry_;
+            Gtk::Entry        cstrFlowEntry_;
+            Gtk::Entry        cstrTimeEntry_;
+            Gtk::Entry        cstrLoadEntry_;
+            Gtk::Entry        cstrSaveEntry_;
+            
             Gtk::ComboBoxText vacuumPressCombo_;
             Gtk::ComboBoxText vacuumLengthCombo_;
             Gtk::ComboBoxText vacuumTempCombo_;
@@ -399,7 +461,13 @@ namespace ASALI
             Gtk::ComboBoxText ph1dEnergyCombo_;
             Gtk::ComboBoxText ph1dSaveCombo_;
             Gtk::ComboBoxText ph1dResolutionCombo_;
-
+            Gtk::ComboBoxText cstrVolumeCombo_;
+            Gtk::ComboBoxText cstrFlowCombo_;
+            Gtk::ComboBoxText cstrTimeCombo_;
+            Gtk::ComboBoxText cstrLoadCombo_;
+            Gtk::ComboBoxText cstrEnergyCombo_;
+            Gtk::ComboBoxText cstrSaveCombo_;
+            
             std::vector<Gtk::Label *>          transportVector_;
             std::vector<Gtk::Label *>          thermoVector_;
             std::vector<Gtk::Label *>          allVector_;
@@ -441,6 +509,7 @@ namespace ASALI
             double         dt_;
             double         QfromSurface_;
             double         NP_;
+            double         Q_;
 
 
             std::pair<unsigned int,bool>       checkInput_;
@@ -484,6 +553,7 @@ namespace ASALI
 
             bool        batchBool_;
             bool        ph1dBool_;
+            bool        cstrBool_;
             
             Cantera::ThermoPhase        *thermo_;
             Cantera::Transport          *transport_;
@@ -498,6 +568,8 @@ namespace ASALI
             ASALI::runBar               *batchBar_;
             ASALI::Ph1DEquations        *ph1d_;
             ASALI::runBar               *ph1dBar_;
+            ASALI::CstrEquations        *cstr_;
+            ASALI::runBar               *cstrBar_;
 
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
             
