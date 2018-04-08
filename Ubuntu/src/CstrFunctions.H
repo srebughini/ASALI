@@ -36,7 +36,7 @@
 #                                                                                              #
 ##############################################################################################*/
 
-void Asali::batchRecap()
+void Asali::cstrRecap()
 {
     this->inputReader();
     this->coverageReader();
@@ -50,46 +50,53 @@ void Asali::batchRecap()
     }
     else
     {
-        this->batchReader();
+        this->cstrReader();
         this->kineticReader();
         this->propertiesShow();
 
         //Clean the window
         this->remove();
-        this->set_title("ASALI: Batch reactors");
-        this->add(batchRecapMainBox_);
+        this->set_title("ASALI: CST reactors");
+        this->add(cstrRecapMainBox_);
 
         //Volume
         {
             std::ostringstream s;
             s << V_;
-            batchRecapVolumeValueLabel_.set_text(s.str());
+            cstrRecapVolumeValueLabel_.set_text(s.str());
+        }
+
+        //Flow rate
+        {
+            std::ostringstream s;
+            s << Q_;
+            cstrRecapFlowValueLabel_.set_text(s.str());
         }
 
         //Temperature
         {
             std::ostringstream s;
             s << T_;
-            batchRecapTemperatureValueLabel_.set_text(s.str());
+            cstrRecapTemperatureValueLabel_.set_text(s.str());
         }
         
         //Pressure
         {
             std::ostringstream s;
             s << p_;
-            batchRecapPressureValueLabel_.set_text(s.str());
+            cstrRecapPressureValueLabel_.set_text(s.str());
         }
         
         //Mole/mass fraction
         {
-            batchRecapFractionLabel_.set_text(fractionCombo_.get_active_text());
+            cstrRecapFractionLabel_.set_text(fractionCombo_.get_active_text());
             {
                 std::string s = n_[0];
                 for (unsigned int i=1;i<n_.size();i++)
                 {
                     s = s + "\n" + n_[i];
                 }
-                batchRecapFractionNameLabel_.set_text(s);
+                cstrRecapFractionNameLabel_.set_text(s);
             }
             {
                 std::string s;
@@ -104,7 +111,7 @@ void Asali::batchRecap()
                     so << x_[i];
                     s = s + "\n" + so.str();
                 }
-                batchRecapFractionValueLabel_.set_text(s);
+                cstrRecapFractionValueLabel_.set_text(s);
             }
         }
 
@@ -112,61 +119,61 @@ void Asali::batchRecap()
         {
             std::ostringstream s;
             s << alfa_;
-            batchRecapLoadValueLabel_.set_text(s.str());
+            cstrRecapLoadValueLabel_.set_text(s.str());
         }
 
         //Time
         {
             std::ostringstream s;
             s << tf_;
-            batchRecapTimeValueLabel_.set_text(s.str());
+            cstrRecapTimeValueLabel_.set_text(s.str());
         }
 
         //Save
         {
             std::ostringstream s;
             s << dt_;
-            batchRecapSaveValueLabel_.set_text(s.str());
+            cstrRecapSaveValueLabel_.set_text(s.str());
         }
 
         //Kinetic
         {
-            batchRecapKineticValueLabel_.set_text(kineticTypeCombo_.get_active_text());
+            cstrRecapKineticValueLabel_.set_text(kineticTypeCombo_.get_active_text());
         }
 
         {
-            batchRecapEnergyValueLabel_.set_text(energy_);
+            cstrRecapEnergyValueLabel_.set_text(energy_);
         }
 
         //Buttons
-        if (batchBool_)
+        if (cstrBool_)
         {
             if ( kineticTypeOld_ == "none" )
             {
-                batchButtonBox_.remove(batchAsaliKineticButton_);
-                batchButtonBox_.remove(batchAsaliPropertiesButton_);
+                cstrButtonBox_.remove(cstrAsaliKineticButton_);
+                cstrButtonBox_.remove(cstrAsaliPropertiesButton_);
             }
             else if ( kineticTypeOld_ == "default" )
             {
-                batchButtonBox_.remove(batchAsaliKineticButton_);
+                cstrButtonBox_.remove(cstrAsaliKineticButton_);
             }
             
             if ( kineticType_ == "none" )
             {
-                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
-                batchButtonBox_.pack_start(batchAsaliPropertiesButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliPropertiesButton_, Gtk::PACK_SHRINK);
                 kineticTypeOld_ = kineticType_;
             }
             else if ( kineticType_ == "default" )
             {
-                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
                 kineticTypeOld_ = kineticType_;
             }
             else if ( kineticType_ == "load" )
             {
                 if ( kineticTypeCombo_.get_active_row_number() == 1 )
                 {
-                    batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
                     kineticTypeOld_ = "default";
                 }
                 else
@@ -179,20 +186,20 @@ void Asali::batchRecap()
         {
             if ( kineticType_ == "none" )
             {
-                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
-                batchButtonBox_.pack_start(batchAsaliPropertiesButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliPropertiesButton_, Gtk::PACK_SHRINK);
                 kineticTypeOld_ = kineticType_;
             }
             else if ( kineticType_ == "default" )
             {
-                batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
                 kineticTypeOld_ = kineticType_;
             }
             else if ( kineticType_ == "load" )
             {
                 if ( kineticTypeCombo_.get_active_row_number() == 1 )
                 {
-                    batchButtonBox_.pack_start(batchAsaliKineticButton_, Gtk::PACK_SHRINK);
+                    cstrButtonBox_.pack_start(cstrAsaliKineticButton_, Gtk::PACK_SHRINK);
                     kineticTypeOld_ = "default";
                 }
                 else
@@ -200,19 +207,19 @@ void Asali::batchRecap()
                     kineticTypeOld_ = kineticType_;
                 }
             }
-            batchBool_ = true;
+            cstrBool_ = true;
         }
 
-        this->resize(batchRecapMainBox_.get_width(),batchRecapMainBox_.get_height ());
+        this->resize(cstrRecapMainBox_.get_width(),cstrRecapMainBox_.get_height ());
         this->show_all_children();
     }
 }
 
-void Asali::batchMenu()
+void Asali::cstrMenu()
 {
     //Clean the window
     this->remove();
-    this->set_title("ASALI: Batch reactors");
+    this->set_title("ASALI: CST reactors");
     
     //Add thermo menu grid
     this->add(inputGrid_);
@@ -228,17 +235,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "thermo" )
@@ -252,17 +259,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "all" )
@@ -276,17 +283,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "transportMenu" )
@@ -299,17 +306,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "allMenu" )
@@ -322,17 +329,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "thermoMenu" )
@@ -345,17 +352,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "equilibriumMenu" )
@@ -368,17 +375,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "equilibrium" )
@@ -394,17 +401,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "batchMenuCantera" )
@@ -414,17 +421,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[13]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "batchMenuAsali" )
@@ -434,17 +441,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[11]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "ph1dMenuCantera" )
@@ -454,17 +461,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[17]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "ph1dMenuAsali" )
@@ -474,17 +481,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[16]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "cstrMenuCantera" )
@@ -494,17 +501,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[23]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else if ( window_ == "cstrMenuAsali" )
@@ -514,17 +521,17 @@ void Asali::batchMenu()
         inputGrid_.remove(*nextButton_[22]);
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
     else
@@ -536,17 +543,17 @@ void Asali::batchMenu()
         }
         if ( kineticTypeCombo_.get_active_row_number() == 0 )
         {
-            inputGrid_.attach(*backButton_[13],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
-            inputGrid_.attach(*nextButton_[13],2,13,1,1);
-            window_ = "batchMenuCantera";
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
         }
         else if ( kineticTypeCombo_.get_active_row_number() == 1 )
         {
-            inputGrid_.attach(*backButton_[11],0,13,1,1);
-            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
-            inputGrid_.attach(*nextButton_[11],2,13,1,1);
-            window_ = "batchMenuAsali";
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
         }
     }
 
@@ -556,7 +563,7 @@ void Asali::batchMenu()
 
 }
 
-void Asali::batchSave()
+void Asali::cstrSave()
 {
     Gtk::FileChooserDialog dialog("",Gtk::FILE_CHOOSER_ACTION_SAVE);
     dialog.set_transient_for(*this);
@@ -580,19 +587,20 @@ void Asali::batchSave()
             output.setf(std::ios::scientific);
             output.precision(6);
             
-            output << "Residence time:     " << tf_ << " s" << std::endl;
             output << "Kinetic type:       " << kineticTypeCombo_.get_active_text() << std::endl;
             output << "Pressure:           " << p_ << " Pa" << std::endl;
+            output << "Flow rate:          " << Q_ << " m\u00b3/s" << std::endl;
+            output << "Volume:             " << V_ << " m\u00b3" << std::endl;
+            output << "Integration time:   " << tf_ << " s" << std::endl;
 
             if ( kineticTypeCombo_.get_active_text() == "ASALI" )
             {
-                std::vector<double>               t = batch_->getTime();
-                std::vector<double>               T = batch_->getTemperature();
-                std::vector<std::vector<double> > y = batch_->getSpecie();
-                std::vector<double>               V = batch_->getVolume();
+                std::vector<double>               t = cstr_->getTime();
+                std::vector<double>               T = cstr_->getTemperature();
+                std::vector<std::vector<double> > y = cstr_->getSpecie();
 
                 output << "Mass fraction" << std::endl;
-                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t";
                 for (unsigned int i=0;i<n_.size();i++)
                 {
                     output << n_[i] << "\t";
@@ -601,7 +609,7 @@ void Asali::batchSave()
                 
                 for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
+                    output << t[j] << "\t" << T[j] << "\t";
                     for (unsigned int i=0;i<(n_.size());i++)
                     {
                         output << y[j][i] << "\t";
@@ -611,7 +619,7 @@ void Asali::batchSave()
                 output << std::endl;
                 
                 output << "Mole fraction" << std::endl;
-                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t";
                 for (unsigned int i=0;i<n_.size();i++)
                 {
                     output << n_[i] << "\t";
@@ -620,7 +628,7 @@ void Asali::batchSave()
                 
                 for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
+                    output << t[j] << "\t" << T[j] << "\t";
 
                     std::vector<double> mole(n_.size());
                     if ( kineticType_ == "none" )
@@ -656,11 +664,10 @@ void Asali::batchSave()
             }
             else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
             {
-                std::vector<double>               t = batch_->getTime();
-                std::vector<double>               T = batch_->getTemperature();
-                std::vector<double>               V = batch_->getVolume();
-                std::vector<std::vector<double> > y = batch_->getSpecie();
-                std::vector<std::vector<double> > Z = batch_->getSite();
+                std::vector<double>               t = cstr_->getTime();
+                std::vector<double>               T = cstr_->getTemperature();
+                std::vector<std::vector<double> > y = cstr_->getSpecie();
+                std::vector<std::vector<double> > Z = cstr_->getSite();
 
                 std::vector<std::string>          name(thermo_->nSpecies());
                 
@@ -670,7 +677,7 @@ void Asali::batchSave()
                 }
 
                 output << "Mass fraction" << std::endl;
-                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t";
                 for (unsigned int i=0;i<thermo_->nSpecies();i++)
                 {
                     output << thermo_->speciesName(i) << "\t";
@@ -683,7 +690,7 @@ void Asali::batchSave()
                 
                 for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
+                    output << t[j] << "\t" << T[j] << "\t";
                     for (unsigned int i=0;i<thermo_->nSpecies();i++)
                     {
                         output << y[j][i] << "\t";
@@ -697,7 +704,7 @@ void Asali::batchSave()
                 output << std::endl;
                 
                 output << "Mole fraction" << std::endl;
-                output << "Time [s]" << "\t" << "Temperature [K]" << "\t" << "Volume [m\u00b3]" << "\t";
+                output << "Time [s]" << "\t" << "Temperature [K]" << "\t";
                 for (unsigned int i=0;i<thermo_->nSpecies();i++)
                 {
                     output << thermo_->speciesName(i) << "\t";
@@ -710,7 +717,7 @@ void Asali::batchSave()
                 
                 for (unsigned int j=0;j<t.size();j++)
                 {
-                    output << t[j] << "\t" << T[j] << "\t" << V[j] << "\t";
+                    output << t[j] << "\t" << T[j] << "\t";
 
                     std::vector<double> mole(thermo_->nSpecies());
                     {
@@ -751,22 +758,22 @@ void Asali::batchSave()
     }
 }
 
-void Asali::batchRun()
+void Asali::cstrRun()
 {
     if ( kineticTypeCombo_.get_active_row_number() == 0)
     {
-        batch_->setCanteraThermo(thermo_);
-        batch_->setCanteraTransport(transport_);
-        batch_->setCanteraInterface(surface_);
-        batch_->setCanteraKinetics(kinetic_);
-        batch_->turnOnUserDefined(false);
+        cstr_->setCanteraThermo(thermo_);
+        cstr_->setCanteraTransport(transport_);
+        cstr_->setCanteraInterface(surface_);
+        cstr_->setCanteraKinetics(kinetic_);
+        cstr_->turnOnUserDefined(false);
     }
     else if ( kineticTypeCombo_.get_active_row_number() == 1)
     {
         if ( kineticType_ == "none" )
         {
-            batch_->turnOnUserDefined(true);
-            batch_->setAsaliKinetic(asaliKinetic_->get_NR(),
+            cstr_->turnOnUserDefined(true);
+            cstr_->setAsaliKinetic(asaliKinetic_->get_NR(),
                                     asaliKinetic_->get_k(),
                                     asaliKinetic_->get_Eatt(),
                                     asaliKinetic_->get_n(),
@@ -778,16 +785,16 @@ void Asali::batchRun()
                                     asaliKinetic_->get_name(),
                                     stoich_,
                                     asaliKinetic_->get_converter());
-            batch_->set_MW(asaliProperties_->get_MW());
-            batch_->set_QfromSurface(asaliProperties_->get_Q());
-            batch_->set_cp(asaliProperties_->get_cp());
+            cstr_->set_MW(asaliProperties_->get_MW());
+            cstr_->set_QfromSurface(asaliProperties_->get_Q());
+            cstr_->set_cp(asaliProperties_->get_cp());
         }
         else
         {
-            batch_->setCanteraThermo(thermo_);
-            batch_->setCanteraTransport(transport_);
-            batch_->turnOnUserDefined(false);
-            batch_->setAsaliKinetic(asaliKinetic_->get_NR(),
+            cstr_->setCanteraThermo(thermo_);
+            cstr_->setCanteraTransport(transport_);
+            cstr_->turnOnUserDefined(false);
+            cstr_->setAsaliKinetic(asaliKinetic_->get_NR(),
                                     asaliKinetic_->get_k(),
                                     asaliKinetic_->get_Eatt(),
                                     asaliKinetic_->get_n(),
@@ -802,34 +809,34 @@ void Asali::batchRun()
         }
     }
 
-    batch_->setKineticType(kineticTypeCombo_.get_active_text());
-    batch_->resize();
-    batch_->setHomogeneusReactions(false);
-    batch_->setHeterogeneusReactions(true);
+    cstr_->setKineticType(kineticTypeCombo_.get_active_text());
+    cstr_->resize();
+    cstr_->setHomogeneusReactions(false);
+    cstr_->setHeterogeneusReactions(true);
     
     if ( energy_ == "on" )
     {
-        batch_->setEnergy(true);
+        cstr_->setEnergy(true);
     }
     else if ( energy_ == "off" )
     {
-        batch_->setEnergy(false);
+        cstr_->setEnergy(false);
     }
     
-    batch_->setVolume(V_);
-    batch_->setPressure(p_);
-    batch_->setTemperature(T_);
-    batch_->setCatalystLoad(alfa_);
+    cstr_->setVolume(V_);
+    cstr_->setFlow(Q_);
+    cstr_->setPressure(p_);
+    cstr_->setTemperature(T_);
+    cstr_->setCatalystLoad(alfa_);
     
-    ASALI::BatchInterface solver;
+    ASALI::CstrInterface solver;
     
-    solver.setEquations(batch_);
+    solver.setEquations(cstr_);
 
-    std::vector<double> x0(batch_->NumberOfEquations());
+    std::vector<double> x0(cstr_->NumberOfEquations());
 
     if ( kineticType_ == "none" )
     {
-        double MWmix = 0;
         if ( fractionCombo_.get_active_row_number() == 0 )
         {
             std::vector<double> y = asaliProperties_->get_mass_fraction(asaliProperties_->get_MW(),x_);
@@ -838,8 +845,7 @@ void Asali::batchRun()
             {
                 x0[i] = y[i];
             }
-            
-            MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),y);
+            cstr_->setInletConditions(y,T_);
         }
         else if ( fractionCombo_.get_active_row_number() == 1 )
         {
@@ -847,13 +853,10 @@ void Asali::batchRun()
             {
                 x0[i] = x_[i];
             }
-            
-            MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),x_);
+            cstr_->setInletConditions(x_,T_);
         }
 
-        x0[x_.size()]     = p_*V_*MWmix/(8314.*T_);
-        
-        x0[x_.size() + 1] = T_;
+        x0[x_.size()] = T_;
     }
     else
     {
@@ -872,6 +875,7 @@ void Asali::batchRun()
 
             {
                 std::vector<double> y = canteraInterface_->massFractions();
+                std::vector<double> y0(cstr_->NumberOfEquations()-1);
                 
                 for (unsigned int i=0;i<n_.size();i++)
                 {
@@ -880,15 +884,15 @@ void Asali::batchRun()
                         if ( n_[i] == canteraInterface_->names()[j] )
                         {
                             x0[i] = y[j];
+                            y0[i] = y[j];
                             break;
                         }
                     }
                 }
+                cstr_->setInletConditions(y0,T_);
             }
 
-            x0[x_.size()] = canteraInterface_->density()*V_;
-            
-            x0[x_.size() + 1] = T_;
+            x0[x_.size()] = T_;
         }
         else
         {
@@ -909,14 +913,13 @@ void Asali::batchRun()
                 {
                         x0[i] = y[i];
                 }
+                cstr_->setInletConditions(y,T_);
             }
-
-            x0[thermo_->nSpecies()] = canteraInterface_->density()*V_;
 
             {
                 for (unsigned int j=0;j<surface_->nSpecies();j++)
                 {
-                    x0[j+thermo_->nSpecies()+1] = 0.;
+                    x0[j+thermo_->nSpecies()] = 0.;
                 }
 
                 for (unsigned int i=0;i<nc_.size();i++)
@@ -925,26 +928,26 @@ void Asali::batchRun()
                     {
                         if ( nc_[i] == surface_->speciesName(j) )
                         {
-                            x0[j+thermo_->nSpecies()+1] = xc_[i];
+                            x0[j+thermo_->nSpecies()] = xc_[i];
                             break;
                         }
                     }
                 }
             }
 
-            x0[thermo_->nSpecies() + surface_->nSpecies() + 1] = T_;
+            x0[thermo_->nSpecies() + surface_->nSpecies()] = T_;
         }
     }
     
     
-    yF_.resize(batch_->NumberOfEquations());
-    this->batchBar(0.);
+    yF_.resize(cstr_->NumberOfEquations());
+    this->cstrBar(0.);
     
     //Start solving
     {
         double ti = 0.;
         double tf = 0.;
-        batch_->store(0.,x0);
+        cstr_->store(0.,x0);
         for (int i=0;i<int(tf_/dt_);i++)
         {
             tf = ti + dt_;
@@ -952,19 +955,19 @@ void Asali::batchRun()
             solver.setInitialConditions(ti,x0);
             solver.solve(tf,x0);
             
-            batch_->store(tf,x0);
+            cstr_->store(tf,x0);
 
             ti = tf;
 
-            this->batchBar(double(i+1)*dt_/tf_);
+            this->cstrBar(double(i+1)*dt_/tf_);
         }
     }
     
-    batchBar_->exit();
-    this->batchSave();
+    cstrBar_->exit();
+    this->cstrSave();
 }
 
-void Asali::batchBar(const double fraction)
+void Asali::cstrBar(const double fraction)
 {
     //Update solving bar
     while( Gtk::Main::events_pending() )
@@ -972,8 +975,8 @@ void Asali::batchBar(const double fraction)
         Gtk::Main::iteration();
     }
 
-    batchBar_->update(fraction);
-    batchBar_->show();
+    cstrBar_->update(fraction);
+    cstrBar_->show();
 
     //Update solving bar
     while( Gtk::Main::events_pending() )
@@ -982,22 +985,24 @@ void Asali::batchBar(const double fraction)
     }
 }
 
-void Asali::batchReader()
+void Asali::cstrReader()
 {
-    V_    = Glib::Ascii::strtod(batchVolumeEntry_.get_text());
-    alfa_ = Glib::Ascii::strtod(batchLoadEntry_.get_text());
-    tf_   = Glib::Ascii::strtod(batchTimeEntry_.get_text());
-    dt_   = Glib::Ascii::strtod(batchSaveEntry_.get_text());
+    V_    = Glib::Ascii::strtod(cstrVolumeEntry_.get_text());
+    Q_    = Glib::Ascii::strtod(cstrFlowEntry_.get_text());
+    alfa_ = Glib::Ascii::strtod(cstrLoadEntry_.get_text());
+    tf_   = Glib::Ascii::strtod(cstrTimeEntry_.get_text());
+    dt_   = Glib::Ascii::strtod(cstrSaveEntry_.get_text());
 
-    ConvertsToCubeMeter(V_,batchVolumeCombo_.get_active_text());
-    ConvertsToOneOverMeter(alfa_,batchLoadCombo_.get_active_text());
-    ConvertsToSecond(tf_,batchTimeCombo_.get_active_text());
-    ConvertsToSecond(dt_,batchSaveCombo_.get_active_text());
+    ConvertsToCubeMeter(V_,cstrVolumeCombo_.get_active_text());
+    ConvertsToCubeMeterPerSecond(Q_,cstrVolumeCombo_.get_active_text());
+    ConvertsToOneOverMeter(alfa_,cstrLoadCombo_.get_active_text());
+    ConvertsToSecond(tf_,cstrTimeCombo_.get_active_text());
+    ConvertsToSecond(dt_,cstrSaveCombo_.get_active_text());
 
-    energy_     = batchEnergyCombo_.get_active_text();
+    energy_     = cstrEnergyCombo_.get_active_text();
 }
 
-void Asali::batchCoverage()
+void Asali::cstrCoverage()
 {
     this->inputReader();
     if ( checkInput_.second == false )
@@ -1008,24 +1013,24 @@ void Asali::batchCoverage()
     {
         //Clean the window
         this->remove();
-        this->set_title("ASALI: Batch reactors");
+        this->set_title("ASALI: CST reactors");
         
         //Add thermo menu grid
         this->add(coverageBox_);
         
-        if ( coverage_ == "batch" )
+        if ( coverage_ == "cstr" )
         {
-            coverageInputGrid_.remove(*backButton_[14]);
-            coverageInputGrid_.remove(*nextButton_[14]);
-            coverageInputGrid_.attach(*backButton_[14],0,SURF_NS_,1,1);
-            coverageInputGrid_.attach(*nextButton_[14],1,SURF_NS_,1,1);
-            coverage_ = "batch";
+            coverageInputGrid_.remove(*backButton_[24]);
+            coverageInputGrid_.remove(*nextButton_[24]);
+            coverageInputGrid_.attach(*backButton_[24],0,SURF_NS_,1,1);
+            coverageInputGrid_.attach(*nextButton_[24],1,SURF_NS_,1,1);
+            coverage_ = "cstr";
         }
         else
         {
-            coverageInputGrid_.attach(*backButton_[14],0,SURF_NS_,1,1);
-            coverageInputGrid_.attach(*nextButton_[14],1,SURF_NS_,1,1);
-            coverage_ = "batch";
+            coverageInputGrid_.attach(*backButton_[24],0,SURF_NS_,1,1);
+            coverageInputGrid_.attach(*nextButton_[24],1,SURF_NS_,1,1);
+            coverage_ = "cstr";
         }
         
         //Resize
@@ -1035,18 +1040,18 @@ void Asali::batchCoverage()
     }
 }
 
-void Asali::batchPlot()
+void Asali::cstrPlot()
 {
-    asaliPlot_->setTime(batch_->getTime());
-    asaliPlot_->setTemperature(batch_->getTemperature());
-    asaliPlot_->setVolume(batch_->getVolume());
+    asaliPlot_->destroy();
+    asaliPlot_->setTime(cstr_->getTime());
+    asaliPlot_->setTemperature(cstr_->getTemperature());
 
     if ( kineticTypeCombo_.get_active_text() == "ASALI" )
     {
-        std::vector<double>               t = batch_->getTime();
-        std::vector<double>               T = batch_->getTemperature();
-        std::vector<std::vector<double> > x = batch_->getSpecie();
-        std::vector<std::vector<double> > y = batch_->getSpecie();
+        std::vector<double>               t = cstr_->getTime();
+        std::vector<double>               T = cstr_->getTemperature();
+        std::vector<std::vector<double> > x = cstr_->getSpecie();
+        std::vector<std::vector<double> > y = cstr_->getSpecie();
         
         for (unsigned int j=0;j<t.size();j++)
         {
@@ -1084,10 +1089,10 @@ void Asali::batchPlot()
     }
     else if ( kineticTypeCombo_.get_active_text() == "CANTERA" )
     {
-        std::vector<double>               t = batch_->getTime();
-        std::vector<double>               T = batch_->getTemperature();
-        std::vector<std::vector<double> > y = batch_->getSpecie();
-        std::vector<std::vector<double> > x = batch_->getSpecie();
+        std::vector<double>               t = cstr_->getTime();
+        std::vector<double>               T = cstr_->getTemperature();
+        std::vector<std::vector<double> > y = cstr_->getSpecie();
+        std::vector<std::vector<double> > x = cstr_->getSpecie();
 
         std::vector<std::string>          name(thermo_->nSpecies());
         
@@ -1121,10 +1126,11 @@ void Asali::batchPlot()
         }
         
         asaliPlot_->setSiteNames(name);
-        asaliPlot_->setSite(batch_->getSite());
+        asaliPlot_->setSite(cstr_->getSite());
     }
 
-    asaliPlot_->setType("batch");
+    asaliPlot_->setType("cstr");
     asaliPlot_->build();
     asaliPlot_->show();
 }
+

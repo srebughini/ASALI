@@ -213,3 +213,47 @@ void ConvertsToMeterPerSecond(double &v, std::string m)
     else if(m == "mm/h")
         v*=1e-03/3600;
 }
+
+void ConvertsToCubeMeterPerSecond(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "m\u00b3/s")
+        v=v;
+    else if(m == "mm\u00b3/s")
+        v*=1e-09;
+    else if(m == "cm\u00b3/s")
+        v*=1e-06;
+    else if(m == "dm\u00b3/s")
+        v*=1e-03;
+    else if(m == "l/s")
+        v*=1e-03;
+    else if(m == "cc/s")
+        v*=1e-06;
+    else if (m == "m\u00b3/min")
+        v=v/60.;
+    else if(m == "mm\u00b3/min")
+        v*=1e-09/60.;
+    else if(m == "cm\u00b3/min")
+        v*=1e-06/60.;
+    else if(m == "dm\u00b3/min")
+        v*=1e-03/60.;
+    else if(m == "l/min")
+        v*=1e-03/60.;
+    else if(m == "cc/min")
+        v*=1e-06/60.;
+    else if (m == "m\u00b3/h")
+        v=v/3600.;
+    else if(m == "mm\u00b3/h")
+        v*=1e-09/3600.;
+    else if(m == "cm\u00b3/h")
+        v*=1e-06/3600.;
+    else if(m == "dm\u00b3/h")
+        v*=1e-03/3600.;
+    else if(m == "l/h")
+        v*=1e-03/3600.;
+    else if(m == "cc/h")
+        v*=1e-06/3600.;
+}

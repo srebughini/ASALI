@@ -105,11 +105,76 @@ void Asali::equilibriumMenu()
             inputGrid_.attach(*nextButton_[2],2,13,1,1);
             window_ = "equilibriumMenu";
         }
-        else if ( window_ == "batchMenu" )
+        else if ( window_ == "batchMenuAsali" )
         {
             inputGrid_.remove(*backButton_[11]);
             inputGrid_.remove(*nextButton_[11]);
             inputGrid_.remove(*mainMenuButton_[11]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneAllButton_,2,13,1,1);
+            window_ = "equilibriumMenu";
+        }
+        else if ( window_ == "batchMenuCantera" )
+        {
+            inputGrid_.remove(*backButton_[13]);
+            inputGrid_.remove(*nextButton_[13]);
+            inputGrid_.remove(*mainMenuButton_[13]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneAllButton_,2,13,1,1);
+            window_ = "equilibriumMenu";
+        }
+        else if ( window_ == "ph1dMenuAsali" )
+        {
+            inputGrid_.remove(*backButton_[16]);
+            inputGrid_.remove(*nextButton_[16]);
+            inputGrid_.remove(*mainMenuButton_[16]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneAllButton_,2,13,1,1);
+            window_ = "equilibriumMenu";
+        }
+        else if ( window_ == "ph1dMenuCantera" )
+        {
+            inputGrid_.remove(*backButton_[17]);
+            inputGrid_.remove(*nextButton_[17]);
+            inputGrid_.remove(*mainMenuButton_[17]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneAllButton_,2,13,1,1);
+            window_ = "equilibriumMenu";
+        }
+        else if ( window_ == "cstrMenuCantera" )
+        {
+            inputGrid_.remove(*backButton_[23]);
+            inputGrid_.remove(*mainMenuButton_[23]);
+            inputGrid_.remove(*nextButton_[23]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneAllButton_,2,13,1,1);
+            window_ = "equilibriumMenu";
+        }
+        else if ( window_ == "cstrMenuAsali" )
+        {
+            inputGrid_.remove(*backButton_[22]);
+            inputGrid_.remove(*mainMenuButton_[22]);
+            inputGrid_.remove(*nextButton_[22]);
             inputGrid_.attach(*backButton_[0],0,13,1,1);
             if ( kineticType_ == "default" )
             {

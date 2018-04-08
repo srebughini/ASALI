@@ -52,10 +52,6 @@
 #include <algorithm>
 #include <limits>
 
-#if ASALI_ON_WINDOW == 1
-  #include <windows.h>
-#endif
-
 namespace ASALI
 {
     class asaliPlot : public Gtk::Window
@@ -82,13 +78,14 @@ namespace ASALI
             void setResolutionType(const std::string resolution);
             
             void build();
+            void destroy();
             void plot();
             void exit();
 
             virtual ~asaliPlot();
             
         private:
-            
+        
             Gtk::Button                       plotButton_;
             Gtk::Button                       exitButton_;
             
@@ -109,11 +106,10 @@ namespace ASALI
             std::vector<Gtk::CheckButton *>   massButton_;
             std::vector<Gtk::CheckButton *>   siteButton_;
             std::vector<Gtk::CheckButton *>   otherButton_;
-
+        
             unsigned int NC_;
             unsigned int SURF_NC_;
             unsigned int NP_;
-            
             
             std::string  type_;
             std::string  resolution_;
@@ -134,9 +130,6 @@ namespace ASALI
 
             std::vector<std::string> n_;
             std::vector<std::string> nc_;
-
-        
-            void destroy();
     };
 }
 

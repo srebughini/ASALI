@@ -60,10 +60,12 @@ namespace ASALI
       equilibriumSaveButton_("Save"),
       batchSaveButton_("Save"),
       ph1dSaveButton_("Save"),
+      cstrSaveButton_("Save"),
       calculateButton_("Calculate"),
       equationsButton_("Equations"),
       batchRunButton_("Run"),
       ph1dRunButton_("Run"),
+      cstrRunButton_("Run"),
       startButton_("Start"),
       helpButton_("Available species"),
       defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
@@ -75,6 +77,9 @@ namespace ASALI
       ph1dAsaliPropertiesButton_("Properties"),
       ph1dAsaliKineticButton_("Kinetics"),
       ph1dAsaliPlotButton_("Plot"),
+      cstrAsaliPropertiesButton_("Properties"),
+      cstrAsaliKineticButton_("Kinetics"),
+      cstrAsaliPlotButton_("Plot"),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       sBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
@@ -94,10 +99,14 @@ namespace ASALI
       ph1dMainBox_(Gtk::ORIENTATION_VERTICAL),
       ph1dRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
       ph1dRecapBox_(Gtk::ORIENTATION_VERTICAL),
+      cstrMainBox_(Gtk::ORIENTATION_VERTICAL),
+      cstrRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
+      cstrRecapBox_(Gtk::ORIENTATION_VERTICAL),
       coverageBox_(Gtk::ORIENTATION_VERTICAL),
       buttonsBox_(Gtk::ORIENTATION_VERTICAL),
       batchButtonBox_(Gtk::ORIENTATION_VERTICAL),
       ph1dButtonBox_(Gtk::ORIENTATION_VERTICAL),
+      cstrButtonBox_(Gtk::ORIENTATION_VERTICAL),
       heading_("\nAuthor: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"
                "\nhttps://github.com/srebughini/ASALI"
@@ -141,6 +150,12 @@ namespace ASALI
       ph1dEnergyLabel_("Energy"),
       ph1dPointsLabel_("Number of points"),
       ph1dInertLabel_("Inert species"),
+      cstrVolumeLabel_("Volume"),
+      cstrFlowLabel_("Flow rate"),
+      cstrLoadLabel_("Catalyst load"),
+      cstrTimeLabel_("Integration time"),
+      cstrSaveLabel_("Save solution every "),
+      cstrEnergyLabel_("Energy"),
       bigLogo_("images/BigLogo.tiff"),
       chemistrySmallLogo_("images/SmallLogo.tiff"),
       smallLogo_("images/SmallLogo.tiff"),
@@ -148,6 +163,8 @@ namespace ASALI
       batchLogo2_("images/BatchLogo.tiff"),
       ph1dLogo1_("images/Ph1DLogo.tiff"),
       ph1dLogo2_("images/Ph1DLogo.tiff"),
+      cstrLogo1_("images/CstrLogo.tiff"),
+      cstrLogo2_("images/CstrLogo.tiff"),
       Kn_(-1),
       diffK_(-1),
       vK_(-1),
@@ -159,7 +176,8 @@ namespace ASALI
       kineticTypeOld_("zero"),
       coverage_("none"),
       batchBool_(false),
-      ph1dBool_(false)
+      ph1dBool_(false),
+      cstrBool_(false)
     {
         #include "Beer.H"
 
@@ -167,14 +185,16 @@ namespace ASALI
         batchBar_        = new ASALI::runBar();
         ph1d_            = new ASALI::Ph1DEquations();
         ph1dBar_         = new ASALI::runBar();
+        cstr_            = new ASALI::CstrEquations();
+        cstrBar_         = new ASALI::runBar();
         asaliKinetic_    = new ASALI::asaliKinetic();
         asaliProperties_ = new ASALI::asaliProperties();
         asaliPlot_       = new ASALI::asaliPlot();
 
-        exitButton_.resize(20);
-        backButton_.resize(20);
-        nextButton_.resize(20);
-        mainMenuButton_.resize(20);
+        exitButton_.resize(25);
+        backButton_.resize(25);
+        nextButton_.resize(25);
+        mainMenuButton_.resize(25);
         for (unsigned int i=0;i<exitButton_.size();i++)
         {
             exitButton_[i] = new Gtk::Button("Exit");
@@ -373,11 +393,19 @@ namespace ASALI
             //Go to ph1d coverage (when CANTERA kinetic is used)
             nextButton_[17]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dCoverage));
 
+            //Go to cstr recap (when ASALI kinetic is used)
+            nextButton_[22]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrRecap));
+
+            //Go to cstr coverage (when CANTERA kinetic is used)
+            nextButton_[23]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrCoverage));
+
             //Go back to reactor input
             backButton_[11]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[13]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[16]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[17]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[22]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[23]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
         }
 
         //Coverage menu
@@ -422,6 +450,11 @@ namespace ASALI
             //Add next button for ph1d
             nextButton_[19]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1dRecap));
  
+             //Add back button for cstr
+            backButton_[24]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrMenu));
+
+            //Add next button for cstr
+            nextButton_[24]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrRecap));
         }
 
         //Reactors/kinetic menu
@@ -436,6 +469,7 @@ namespace ASALI
             reactorsTypeCombo_.append("1D Heterogeneous Plug Flow Reactor");
             reactorsTypeCombo_.append("2D Pseudo-homogeneous Plug Flow Reactor");
             reactorsTypeCombo_.append("Batch Reactor");
+            reactorsTypeCombo_.append("Continuous Stirred Tank Reactor");
             reactorsTypeCombo_.set_active(0);
             
             reactorsGrid_.attach(kineticTypeLabel_,0,1,1,1);
@@ -850,6 +884,206 @@ namespace ASALI
                 }
             }
         }
+
+        //Cstr reactor
+        {
+            cstrMainBox_.set_halign(Gtk::ALIGN_START);
+            cstrMainBox_.set_spacing(10);
+            cstrMainBox_.pack_start(cstrLogo1_, Gtk::PACK_SHRINK);
+            cstrMainBox_.pack_start(cstrBox_, Gtk::PACK_SHRINK);
+
+            cstrBox_.set_halign(Gtk::ALIGN_START);
+            cstrBox_.set_spacing(10);
+            cstrBox_.pack_start(cstrPropertiesGrid_, Gtk::PACK_SHRINK);
+            {
+                cstrPropertiesGrid_.set_column_spacing(10);
+                cstrPropertiesGrid_.set_row_spacing(10);
+                cstrPropertiesGrid_.set_column_homogeneous(true);
+
+                //Volume
+                cstrPropertiesGrid_.attach(cstrVolumeLabel_,0,0,1,1);
+                cstrPropertiesGrid_.attach(cstrVolumeEntry_,1,0,1,1);
+                cstrVolumeEntry_.set_text("1");
+                cstrPropertiesGrid_.attach(cstrVolumeCombo_,2,0,1,1);
+                cstrVolumeCombo_.append("m\u00b3");
+                cstrVolumeCombo_.append("dm\u00b3");
+                cstrVolumeCombo_.append("cm\u00b3");
+                cstrVolumeCombo_.append("mm\u00b3");
+                cstrVolumeCombo_.append("cc");
+                cstrVolumeCombo_.append("l");
+                cstrVolumeCombo_.set_active(0);
+
+
+                //Flow rate
+                cstrPropertiesGrid_.attach(cstrFlowLabel_,0,1,1,1);
+                cstrPropertiesGrid_.attach(cstrFlowEntry_,1,1,1,1);
+                cstrFlowEntry_.set_text("1");
+                cstrPropertiesGrid_.attach(cstrFlowCombo_,2,1,1,1);
+                cstrFlowCombo_.append("m\u00b3/s");
+                cstrFlowCombo_.append("l/s");
+                cstrFlowCombo_.append("cc/s");
+                cstrFlowCombo_.append("m\u00b3/min");
+                cstrFlowCombo_.append("l/min");
+                cstrFlowCombo_.append("cc/min");
+                cstrFlowCombo_.append("m\u00b3/h");
+                cstrFlowCombo_.append("l/h");
+                cstrFlowCombo_.append("cc/h");
+                cstrFlowCombo_.set_active(0);
+
+                //Catalytic load
+                cstrPropertiesGrid_.attach(cstrLoadLabel_,0,2,1,1);
+                cstrPropertiesGrid_.attach(cstrLoadEntry_,1,2,1,1);
+                cstrLoadEntry_.set_text("1");
+                cstrPropertiesGrid_.attach(cstrLoadCombo_,2,2,1,1);
+                cstrLoadCombo_.append("1/m");
+                cstrLoadCombo_.append("1/dm");
+                cstrLoadCombo_.append("1/cm");
+                cstrLoadCombo_.append("1/mm");
+                cstrLoadCombo_.set_active(0);
+
+                //Time
+                cstrPropertiesGrid_.attach(cstrTimeLabel_,0,3,1,1);
+                cstrPropertiesGrid_.attach(cstrTimeEntry_,1,3,1,1);
+                cstrTimeEntry_.set_text("1");
+                cstrPropertiesGrid_.attach(cstrTimeCombo_,2,3,1,1);
+                cstrTimeCombo_.append("s");
+                cstrTimeCombo_.append("min");
+                cstrTimeCombo_.append("h");
+                cstrTimeCombo_.append("d");
+                cstrTimeCombo_.set_active(0);
+
+                //Save options
+                cstrPropertiesGrid_.attach(cstrSaveLabel_,0,4,1,1);
+                cstrPropertiesGrid_.attach(cstrSaveEntry_,1,4,1,1);
+                cstrSaveEntry_.set_text("0.1");
+                cstrPropertiesGrid_.attach(cstrSaveCombo_,2,4,1,1);
+                cstrSaveCombo_.append("s");
+                cstrSaveCombo_.append("min");
+                cstrSaveCombo_.append("h");
+                cstrSaveCombo_.append("d");
+                cstrSaveCombo_.set_active(0);
+
+                //Energy
+                cstrPropertiesGrid_.attach(cstrEnergyLabel_,0,5,1,1);
+                cstrPropertiesGrid_.attach(cstrEnergyCombo_,1,5,1,1);
+                cstrEnergyCombo_.append("on");
+                cstrEnergyCombo_.append("off");
+                cstrEnergyCombo_.set_active(1);
+                
+                //Buttons
+                cstrPropertiesGrid_.attach(*backButton_[20],0,6,1,1);
+                cstrPropertiesGrid_.attach(*mainMenuButton_[20],1,6,1,1);
+                cstrPropertiesGrid_.attach(*nextButton_[20],2,6,1,1);
+                backButton_[20]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
+                nextButton_[20]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrMenu));
+            }
+
+            cstrRecapMainBox_.set_halign(Gtk::ALIGN_START);
+            cstrRecapMainBox_.set_spacing(10);
+            cstrRecapMainBox_.pack_start(cstrLogoBox_, Gtk::PACK_SHRINK);
+            {
+                cstrLogoBox_.set_halign(Gtk::ALIGN_START);
+                cstrLogoBox_.set_spacing(10);
+                cstrLogoBox_.pack_start(cstrLogo2_, Gtk::PACK_SHRINK);
+                cstrLogoBox_.pack_start(cstrButtonBox_, Gtk::PACK_SHRINK);
+                {
+                    cstrButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
+                    cstrButtonBox_.set_spacing(10);
+                    cstrButtonBox_.pack_start(cstrRunButton_, Gtk::PACK_SHRINK);
+                    cstrRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrRun));
+                    cstrButtonBox_.pack_start(cstrSaveButton_, Gtk::PACK_SHRINK);
+                    cstrSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrSave));
+                    cstrButtonBox_.pack_start(cstrAsaliPlotButton_, Gtk::PACK_SHRINK);
+                    cstrAsaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrPlot));
+                    
+                    cstrAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
+                    cstrAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
+                }
+            }
+
+            cstrRecapMainBox_.pack_start(cstrRecapBox_, Gtk::PACK_SHRINK);
+            {
+                cstrRecapBox_.set_halign(Gtk::ALIGN_START);
+                cstrRecapBox_.set_spacing(10);
+                cstrRecapBox_.pack_start(cstrRecapGrid_, Gtk::PACK_SHRINK);
+                {
+                    cstrRecapGrid_.set_column_spacing(10);
+                    cstrRecapGrid_.set_row_spacing(10);
+                    cstrRecapGrid_.set_column_homogeneous(true);
+                    
+                    //Volume
+                    cstrRecapVolumeLabel_.set_text("Volume");
+                    cstrRecapGrid_.attach(cstrRecapVolumeLabel_,0,0,1,1);
+                    cstrRecapVolumeUDLabel_.set_text("m\u00b3");
+                    cstrRecapGrid_.attach(cstrRecapVolumeUDLabel_,2,0,1,1);
+                    cstrRecapGrid_.attach(cstrRecapVolumeValueLabel_,1,0,1,1);
+                    
+                    //Temperature
+                    cstrRecapTemperatureLabel_.set_text("Temperature");
+                    cstrRecapGrid_.attach(cstrRecapTemperatureLabel_,0,1,1,1);
+                    cstrRecapTemperatureUDLabel_.set_text("K");
+                    cstrRecapGrid_.attach(cstrRecapTemperatureUDLabel_,2,1,1,1);
+                    cstrRecapGrid_.attach(cstrRecapTemperatureValueLabel_,1,1,1,1);
+
+                    //Pressure
+                    cstrRecapPressureLabel_.set_text("Pressure");
+                    cstrRecapGrid_.attach(cstrRecapPressureLabel_,0,2,1,1);
+                    cstrRecapPressureUDLabel_.set_text("Pa");
+                    cstrRecapGrid_.attach(cstrRecapPressureUDLabel_,2,2,1,1);
+                    cstrRecapGrid_.attach(cstrRecapPressureValueLabel_,1,2,1,1);
+
+                    //Volume
+                    cstrRecapFlowLabel_.set_text("Flow rate");
+                    cstrRecapGrid_.attach(cstrRecapFlowLabel_,0,3,1,1);
+                    cstrRecapVolumeUDLabel_.set_text("m\u00b3/s");
+                    cstrRecapGrid_.attach(cstrRecapFlowUDLabel_,2,3,1,1);
+                    cstrRecapGrid_.attach(cstrRecapFlowValueLabel_,1,3,1,1);
+
+                    //Mole/Mass fraction
+                    cstrRecapGrid_.attach(cstrRecapFractionLabel_,0,4,1,1);
+                    cstrRecapGrid_.attach(cstrRecapFractionNameLabel_,1,4,1,1);
+                    cstrRecapGrid_.attach(cstrRecapFractionValueLabel_,2,4,1,1);
+
+                    //Load
+                    cstrRecapLoadLabel_.set_text("Catalyst load");
+                    cstrRecapGrid_.attach(cstrRecapLoadLabel_,0,5,1,1);
+                    cstrRecapLoadUDLabel_.set_text("1/m");
+                    cstrRecapGrid_.attach(cstrRecapLoadUDLabel_,2,5,1,1);
+                    cstrRecapGrid_.attach(cstrRecapLoadValueLabel_,1,5,1,1);
+                    
+                    //Time
+                    cstrRecapTimeLabel_.set_text("Integration time");
+                    cstrRecapGrid_.attach(cstrRecapTimeLabel_,0,6,1,1);
+                    cstrRecapTimeUDLabel_.set_text("s");
+                    cstrRecapGrid_.attach(cstrRecapTimeUDLabel_,2,6,1,1);
+                    cstrRecapGrid_.attach(cstrRecapTimeValueLabel_,1,6,1,1);
+                    
+                    //Save
+                    cstrRecapSaveLabel_.set_text("Save solution every");
+                    cstrRecapGrid_.attach(cstrRecapSaveLabel_,0,7,1,1);
+                    cstrRecapSaveUDLabel_.set_text("s");
+                    cstrRecapGrid_.attach(cstrRecapSaveUDLabel_,2,7,1,1);
+                    cstrRecapGrid_.attach(cstrRecapSaveValueLabel_,1,7,1,1);
+                    
+                    //Energy type
+                    cstrRecapEnergyLabel_.set_text("Energy balance is");
+                    cstrRecapGrid_.attach(cstrRecapEnergyLabel_,0,8,1,1);
+                    cstrRecapGrid_.attach(cstrRecapEnergyValueLabel_,1,8,1,1);
+
+                    //Kinetic type
+                    cstrRecapKineticLabel_.set_text("Kinetic model from");
+                    cstrRecapGrid_.attach(cstrRecapKineticLabel_,0,9,1,1);
+                    cstrRecapGrid_.attach(cstrRecapKineticValueLabel_,1,9,1,1);
+
+                    //Buttons
+                    cstrRecapGrid_.attach(*backButton_[21],0,10,1,1);
+                    cstrRecapGrid_.attach(*mainMenuButton_[21],1,10,1,1);
+                    cstrRecapGrid_.attach(*exitButton_[21],2,10,1,1);
+                    backButton_[21]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrMenu));
+                }
+            }
+        }
+
 
         //Thermo results menu
         {

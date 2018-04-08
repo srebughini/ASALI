@@ -40,6 +40,7 @@
 
 #include "BatchFunctions.H"
 #include "Ph1DFunctions.H"
+#include "CstrFunctions.H"
 
 void Asali::kineticReader()
 {
@@ -261,7 +262,17 @@ void Asali::propertiesShow()
 {
     if ( kineticType_ == "none" )
     {
-        if ( reactorsTypeCombo_.get_active_row_number() == 3 )
+        if ( reactorsTypeCombo_.get_active_row_number() == 0 )
+        {
+            asaliProperties_->destroy();
+            asaliProperties_->set_type("ph1d");
+            asaliProperties_->set_energy(energy_);
+            asaliProperties_->set_n(n_);
+            asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
+            asaliProperties_->build();
+            asaliProperties_->show();
+        }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 3 )
         {
             asaliProperties_->destroy();
             asaliProperties_->set_type("batch");
@@ -271,10 +282,10 @@ void Asali::propertiesShow()
             asaliProperties_->build();
             asaliProperties_->show();
         }
-        else if ( reactorsTypeCombo_.get_active_row_number() == 0 )
+        else if ( reactorsTypeCombo_.get_active_row_number() == 4 )
         {
             asaliProperties_->destroy();
-            asaliProperties_->set_type("ph1d");
+            asaliProperties_->set_type("cstr");
             asaliProperties_->set_energy(energy_);
             asaliProperties_->set_n(n_);
             asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
@@ -306,7 +317,15 @@ void Asali::reactorsInput(const bool back)
             asaliKinetic_->show();
         }
 
-        if ( reactorsTypeCombo_.get_active_row_number() == 3 )
+        if ( reactorsTypeCombo_.get_active_row_number() == 0 )
+        {
+            this->remove();
+            this->set_title("ASALI: 1D PH reactors");
+            this->add(ph1dMainBox_);
+            this->resize(ph1dMainBox_.get_width(),ph1dMainBox_.get_height());
+            this->show_all_children();
+        }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 3 )
         { 
             this->remove();
             this->set_title("ASALI: Batch reactors");
@@ -314,12 +333,12 @@ void Asali::reactorsInput(const bool back)
             this->resize(batchMainBox_.get_width(),batchMainBox_.get_height());
             this->show_all_children();
         }
-        else if ( reactorsTypeCombo_.get_active_row_number() == 0 )
-        {
+        else if ( reactorsTypeCombo_.get_active_row_number() == 4 )
+        { 
             this->remove();
-            this->set_title("ASALI: 1D PH reactors");
-            this->add(ph1dMainBox_);
-            this->resize(ph1dMainBox_.get_width(),ph1dMainBox_.get_height());
+            this->set_title("ASALI: CST reactors");
+            this->add(cstrMainBox_);
+            this->resize(cstrMainBox_.get_width(),cstrMainBox_.get_height());
             this->show_all_children();
         }
         else
