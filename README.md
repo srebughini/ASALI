@@ -45,7 +45,7 @@ To install **ASALI** modify the make file as follow:
 
 Once you have changed the environmental variables, run the following commands:
 
-<code>./make.sh</code>
+<code>./compile-asali.sh</code>
 
 <code>sudo ln -s $HOME/your/asali/folder/Asali /usr/bin/Asali</code>
 
