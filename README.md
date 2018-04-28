@@ -58,5 +58,5 @@ To run **ASALI**:
 To install **ASALI** on Windows just **double click** on **Asali-Setup** and follow the instructions.
 
 ## 3. Matlab/Octave Version
-The Matlab/Octave version of **ASALI** is totally self-coded, so it is not based on **Cantera**, **Eigen** libraries and **Gtkmm** libraries.
-To use **ASALI** in MATLAB/Octave download **Asali.exe** and **Asali.m** and save them in your working folder.
+The Matlab/Octave version of **ASALI** is totally self-coded. To use **ASALI** in MATLAB/Octave download **database.mat** and **Asali.m** and save them in your working folder. 
+An example is shown in **example.m**.
