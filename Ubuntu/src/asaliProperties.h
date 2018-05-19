@@ -57,6 +57,9 @@ namespace ASALI
     class asaliProperties : public Gtk::Window
     {
         public:
+        
+            #include "UnitConversion.H"
+        
             asaliProperties();
             
             void destroy();
@@ -78,6 +81,7 @@ namespace ASALI
             
             double               get_cp()   {return cp_;};
             double               get_cond() {return cond_;};
+            double               get_mu()   {return mu_;};
             
             std::vector<double>  get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
             std::vector<double>  get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
@@ -92,6 +96,7 @@ namespace ASALI
         
             Gtk::Image        batchLogo_;
             Gtk::Image        ph1dLogo_;
+            Gtk::Image        het1dLogo_;
 
             Gtk::Box          mainBox_;
             Gtk::Box          heatBox_;
@@ -108,6 +113,7 @@ namespace ASALI
             Gtk::Label        heatLabel_;
             Gtk::Label        cpLabel_;
             Gtk::Label        condLabel_;
+            Gtk::Label        muLabel_;
             
             Gtk::Button       doneButton_;
             
@@ -115,9 +121,11 @@ namespace ASALI
             Gtk::ComboBoxText cpCombo_;
             Gtk::ComboBoxText condCombo_;
             Gtk::ComboBoxText diffCombo_;
+            Gtk::ComboBoxText muCombo_;
 
             Gtk::Entry          cpEntry_;
             Gtk::Entry          condEntry_;
+            Gtk::Entry          muEntry_;
             
             std::vector<Gtk::Label *>   speciesNameLabel_;
             std::vector<Gtk::Label *>   reactionNumberLabel_;
@@ -145,6 +153,7 @@ namespace ASALI
             
             double                    cp_;
             double                    cond_;
+            double                    mu_;
 
             std::vector<std::vector<std::string> > name_;
             std::vector<std::vector<int> >         stoich_;

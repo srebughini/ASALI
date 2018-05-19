@@ -37,19 +37,20 @@
 ##############################################################################################*/
 
 
-#include "CstrInterface.h"
+#include "Het1DbvpInterface.h"
 
 namespace ASALI
 {
-    CstrInterface::CstrInterface()
+    Het1DbvpInterface::Het1DbvpInterface()
     {
         #include "Beer.H"
 
-        yCVODE_       = NULL;
-        dyCVODE_      = NULL;
-        y0CVODE_      = NULL;
-        dy0CVODE_     = NULL;
-        cvode_mem_    = NULL;
+        yIDA_         = NULL;
+        dyIDA_        = NULL;
+        y0IDA_        = NULL;
+        dy0IDA_       = NULL;
+        algebraicIDA_ = NULL;
+        ida_mem_      = NULL;
         
         constraints_  = false;
         check_        = true;
@@ -61,54 +62,71 @@ namespace ASALI
         t0_           = 0.;
     }
 
-    void CstrInterface::setEquations(ASALI::CstrEquations* eq)
+    void Het1DbvpInterface::setEquations(ASALI::Het1DEquations* eq)
     {
         eq_  = eq;
         NEQ_ = eq_->NumberOfEquations();
 
-        y0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0))
+        y0IDA_ = N_VNew_Serial(NEQ_);
+        if (checkFlag((void *)y0IDA_, "N_VNew_Serial", 0))        
         {
             this->error();
-        }
+        }    
 
-        dy0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0))
+        dy0IDA_ = N_VNew_Serial(NEQ_);
+        if (checkFlag((void *)dy0IDA_, "N_VNew_Serial", 0))       
         {
             this->error();
-        }
+        }    
 
-        yCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0))
+        yIDA_ = N_VNew_Serial(NEQ_);
+        if (checkFlag((void *)yIDA_, "N_VNew_Serial", 0))         
         {
             this->error();
-        }
+        }    
 
-        dyCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0))
+        dyIDA_ = N_VNew_Serial(NEQ_);
+        if (checkFlag((void *)dyIDA_, "N_VNew_Serial", 0))        
         {
             this->error();
-        }
+        }    
+
+        algebraicIDA_ = N_VNew_Serial(NEQ_);
+        if (checkFlag((void *)algebraicIDA_, "N_VNew_Serial", 0)) 
+        {
+            this->error();
+        }    
+
+        algebraic_.resize(NEQ_);
     }
     
-    void CstrInterface::setBandDimensions(const double upperBand, const double lowerBand)
+    void Het1DbvpInterface::setBandDimensions(const double upperBand, const double lowerBand)
     {
         upperBand_ = upperBand;
         lowerBand_ = lowerBand;
     }
     
-    void CstrInterface::setTollerance(const double absTol, const double relTol)
+    void Het1DbvpInterface::setTollerance(const double absTol, const double relTol)
     {
         absTol_ = absTol;
         relTol_ = relTol;
     }
     
-    void CstrInterface::setConstraints(const bool constraints)
+    void Het1DbvpInterface::setConstraints(const bool constraints)
     {
         constraints_ = constraints;
     }
 
-    void CstrInterface::setInitialConditions(double t0, std::vector<double> y0)
+    void Het1DbvpInterface::setAlgebraic(const std::vector<bool> algebraic)
+    {
+        for (int i=0;i<NEQ_;i++)
+        {
+            NV_Ith_S(algebraicIDA_, i) = (algebraic[i] == true) ? 0.0 : 1.0;
+            algebraic_[i] = algebraic[i];
+        }
+    }
+
+    void Het1DbvpInterface::setInitialConditions(double t0, std::vector<double> y0)
     {
         std::vector<double> dy0(NEQ_);
 
@@ -118,19 +136,20 @@ namespace ASALI
 
         for (int i=0;i<NEQ_;i++)
         {
-            NV_Ith_S(dy0CVODE_, i) = dy0[i];
-            NV_Ith_S( y0CVODE_, i) =  y0[i];
+            NV_Ith_S(dy0IDA_, i) = dy0[i];
+            NV_Ith_S( y0IDA_, i) =  y0[i];
         }
     }
 
-    static int equationsCVODE(double t, N_Vector y, N_Vector f, void *user_data)
+    static int equationsIDA(double t, N_Vector y, N_Vector dy, N_Vector f, void *user_data)
     {
-        ASALI::CstrEquations *data;
-        data = (ASALI::CstrEquations*)user_data;
+        ASALI::Het1DEquations *data;
+        data = (ASALI::Het1DEquations*)user_data;
 
         unsigned int N = data->NumberOfEquations();
 
         double *ydata  = N_VGetArrayPointer_Serial(y);
+        double *dydata = N_VGetArrayPointer_Serial(dy);
         double *fdata  = N_VGetArrayPointer_Serial(f);
 
         std::vector<double> y_(N);
@@ -148,95 +167,114 @@ namespace ASALI
             fdata[i] = dy_[i];
         }
 
+        for(unsigned int i=0;i<N;i++)
+        {
+            if (data->AlgebraicEquations()[i] == false)
+            {
+                fdata[i] -= dydata[i];
+            }
+        }
+
         return(flag);
     }
 
-    int CstrInterface::solve(const double tf, std::vector<double>& yf)
+    int Het1DbvpInterface::solve(const double tf, std::vector<double>& yf)
     {
         int flag;
 
         /* Call IDACreate to create the solver memory and specify the 
         *  Backward Differentiation Formula and the use of a Newton iteration */
-        cvode_mem_ = CVodeCreate(CV_BDF, CV_NEWTON);
-        if (checkFlag((void *)cvode_mem_, "CVodeCreate", 0))
+        ida_mem_ = IDACreate();
+        if (checkFlag((void *)ida_mem_, "IDACreate", 0))
+        {
+            this->error();
+        }
+        
+        flag = IDASetMaxNumSteps(ida_mem_, 5000000);
+        if (checkFlag(&flag, "IDASetMaxNumSteps", 1))
         {
             this->error();
         }
 
-
-        flag = CVodeSetMaxNumSteps(cvode_mem_, 5000000);
-        if (checkFlag(&flag, "CVodeSetMaxNumSteps", 1))
+        flag = IDASetUserData(ida_mem_, eq_);
+        if(checkFlag(&flag, "IDASetUserData", 1))
         {
             this->error();
         }
 
-
-        flag = CVodeSetUserData(cvode_mem_, eq_);
-        if(checkFlag(&flag, "CVodeSetUserData", 1))exit(-1);
-
-        /* Call CVodeInit to initialize the integrator memory and specify the
-        * user's right hand side function in y'=f(t,y), the inital time t0, and
-        * the initial dependent variable vector y0Sundials_. */
-        flag = CVodeInit(cvode_mem_, equationsCVODE, t0_, y0CVODE_);
-        if (checkFlag(&flag, "CVodeInit", 1))
+        /* Call IDAInit to initialize the integrator memory and specify the
+        *  user's right hand side function in y'=f(t,y), the initial time t0, and
+        *  the initial dependent variable vector y0Sundials_. */
+        flag = IDAInit(ida_mem_, equationsIDA, t0_, y0IDA_, dy0IDA_);
+        if (checkFlag(&flag, "IDAInit", 1))
         {
             this->error();
         }
 
-
-        /* Call CVodeSStolerances to specify the scalar relative tolerance
+        /* Call IDASStolerances to specify the scalar relative tolerance
         * and scalar absolute tolerances */
-        flag = CVodeSStolerances(cvode_mem_, relTol_, absTol_);
-        if (checkFlag(&flag, "CVodeSVtolerances", 1))
+        flag = IDASStolerances(ida_mem_, relTol_, absTol_);
+        if (checkFlag(&flag, "IDASVtolerances", 1))
         {
             this->error();
         }
 
+        /* Set algebraic equations */
+        flag = IDASetId(ida_mem_, algebraicIDA_);
+        if (checkFlag(&flag, "IDASetId", 1))
+        {
+            this->error();
+        }
 
         /* Call Solver */
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
-            flag = CVDense(cvode_mem_, NEQ_);
-            if (checkFlag(&flag, "CVDense", 1))
+            flag = IDADense(ida_mem_, NEQ_);
+            if (checkFlag(&flag, "IDADense", 1))
             {
                 this->error();
             }
         }
         else
         {
-            flag = CVBand(cvode_mem_, NEQ_, upperBand_, lowerBand_);
-            if (checkFlag(&flag, "CVBand", 1))
+            flag = IDABand(ida_mem_, NEQ_, upperBand_, lowerBand_);
+            if (checkFlag(&flag, "IDABand", 1))
             {
                 this->error();
-            }
-        }
-
-        /* Solving */
-        flag = CVode(cvode_mem_,tf, yCVODE_, &t0_, CV_NORMAL);
-        if(checkFlag(&flag, "CVode", 1))exit(-1);
-
-        yf.clear();
-        yf.resize(NEQ_);
-        double *sol = N_VGetArrayPointer_Serial(yCVODE_);
-        if ( constraints_ == true )
-        {
-            for (int i=0;i<NEQ_;i++)
-            {
-                yf[i] = std::max(0.,sol[i]);
-            }
-        }
-        else
-        {
-            for (int i=0;i<NEQ_;i++)
-            {
-                yf[i] = sol[i];
             }
         }
         
+        if ( constraints_ == true )
+        {
+            N_Vector constraints = N_VNew_Serial(NEQ_);
+            N_VConst(1.0, constraints);
+            flag = IDASetConstraints(ida_mem_, constraints);
+            if(checkFlag(&flag, "IDASetConstraints", 1))
+            {
+                this->error();
+            }
+            N_VDestroy_Serial(constraints);
+        }
+
+        /* Solving */
+        flag = IDASolve(ida_mem_,tf, &t0_, yIDA_, dyIDA_, IDA_NORMAL);
+        if(checkFlag(&flag, "IDASolve", 1))
+        {
+            this->error();
+        }
+
+        yf.clear();
+        yf.resize(NEQ_);
+        double *sol = N_VGetArrayPointer_Serial(yIDA_);
+        for (int i=0;i<NEQ_;i++)
+        {
+            yf[i] = sol[i];
+        }
+
         return flag;
     }
 
-    int CstrInterface::checkFlag(void *flagvalue, const char *funcname, int opt)
+    int Het1DbvpInterface::checkFlag(void *flagvalue, const char *funcname, int opt)
     {
         /* 
          * Check function return value...
@@ -273,7 +311,7 @@ namespace ASALI
         return(0);
     }
 
-    void CstrInterface::error()
+    void Het1DbvpInterface::error()
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
@@ -281,19 +319,20 @@ namespace ASALI
         dialog.run();
     }
 
-    std::string CstrInterface::getBeer()
+    std::string Het1DbvpInterface::getBeer()
     {
         srand(time(NULL));
         int i = rand()%beer_.size();
         return beer_[i];
     }
 
-    CstrInterface::~CstrInterface(void)
+    Het1DbvpInterface::~Het1DbvpInterface(void)
     {
-        N_VDestroy_Serial(y0CVODE_);
-        N_VDestroy_Serial(dy0CVODE_);
-        N_VDestroy_Serial(yCVODE_);
-        N_VDestroy_Serial(dyCVODE_);
-        CVodeFree(&cvode_mem_);
+        N_VDestroy_Serial(y0IDA_);
+        N_VDestroy_Serial(dy0IDA_);
+        N_VDestroy_Serial(yIDA_);
+        N_VDestroy_Serial(dyIDA_);
+        N_VDestroy_Serial(algebraicIDA_);
+        IDAFree(&ida_mem_);
     }
 }

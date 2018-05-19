@@ -36,8 +36,8 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef CSTRINTERFACE_H
-#define CSTRINTERFACE_H
+#ifndef HET1DODEINTERFACE_H
+#define HET1DODEINTERFACE_H
 
 #include <gtkmm.h>
 #include <string>
@@ -58,21 +58,21 @@
 #include <sundials/sundials_dense.h>
 #include <sundials/sundials_types.h>
 
-#include "CstrEquations.h"
+#include "Het1DEquations.h"
 
 namespace ASALI
 {
     #define Ith(v,i)    NV_Ith_S(v,i-1)
 
-    class CstrInterface : public Gtk::Window
+    class Het1DodeInterface : public Gtk::Window
     {
         public:
 
-            CstrInterface();
+            Het1DodeInterface();
 
             int solve(const double tf, std::vector<double>& yf);
 
-            void setEquations(ASALI::CstrEquations* eq);
+            void setEquations(ASALI::Het1DEquations* eq);
 
             void setInitialConditions(double t0, std::vector<double> y0);
 
@@ -85,7 +85,7 @@ namespace ASALI
             bool check()            {return check_;};
             void start()            {check_ = true;};
 
-            ~CstrInterface(void);
+            ~Het1DodeInterface(void);
 
         private:
 
@@ -106,14 +106,16 @@ namespace ASALI
             N_Vector dyCVODE_;
             N_Vector y0CVODE_;
             N_Vector dy0CVODE_;
-
+            
             std::vector<std::string> beer_;
 
-            ASALI::CstrEquations* eq_;
+            ASALI::Het1DEquations* eq_;
 
-            int checkFlag(void *flagvalue, const char *funcname, int opt);
+            int         checkFlag(void *flagvalue, const char *funcname, int opt);
             void        error();
             std::string getBeer();
+            
+
     };
 }
 

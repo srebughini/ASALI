@@ -43,6 +43,8 @@ namespace ASALI
 {
     BatchInterface::BatchInterface()
     {
+        #include "Beer.H"
+
         yCVODE_       = NULL;
         dyCVODE_      = NULL;
         y0CVODE_      = NULL;
@@ -50,6 +52,7 @@ namespace ASALI
         cvode_mem_    = NULL;
         
         constraints_  = false;
+        check_        = true;
 
         upperBand_    = 0.;
         lowerBand_    = 0.;
@@ -64,16 +67,32 @@ namespace ASALI
         NEQ_ = eq_->NumberOfEquations();
 
         y0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0)) exit(-1);
+        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0))
+        {
+            this->error();
+        }
+
 
         dy0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0)) exit(-1);
+        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0))
+        {
+            this->error();
+        }
+
 
         yCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0)) exit(-1);
+        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0))
+        {
+            this->error();
+        }
+
 
         dyCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0)) exit(-1);
+        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0))
+        {
+            this->error();
+        }
+
     }
     
     void BatchInterface::setBandDimensions(const double upperBand, const double lowerBand)
@@ -143,10 +162,18 @@ namespace ASALI
         /* Call IDACreate to create the solver memory and specify the 
         *  Backward Differentiation Formula and the use of a Newton iteration */
         cvode_mem_ = CVodeCreate(CV_BDF, CV_NEWTON);
-        if (checkFlag((void *)cvode_mem_, "CVodeCreate", 0)) exit(-1);
+        if (checkFlag((void *)cvode_mem_, "CVodeCreate", 0))
+        {
+            this->error();
+        }
+
 
         flag = CVodeSetMaxNumSteps(cvode_mem_, 5000000);
-        if (checkFlag(&flag, "CVodeSetMaxNumSteps", 1)) exit(-1);
+        if (checkFlag(&flag, "CVodeSetMaxNumSteps", 1))
+        {
+            this->error();
+        }
+
 
         flag = CVodeSetUserData(cvode_mem_, eq_);
         if(checkFlag(&flag, "CVodeSetUserData", 1))exit(-1);
@@ -155,23 +182,37 @@ namespace ASALI
         * user's right hand side function in y'=f(t,y), the inital time t0, and
         * the initial dependent variable vector y0Sundials_. */
         flag = CVodeInit(cvode_mem_, equationsCVODE, t0_, y0CVODE_);
-        if (checkFlag(&flag, "CVodeInit", 1)) exit(-1);
+        if (checkFlag(&flag, "CVodeInit", 1))
+        {
+            this->error();
+        }
+
 
         /* Call CVodeSStolerances to specify the scalar relative tolerance
         * and scalar absolute tolerances */
         flag = CVodeSStolerances(cvode_mem_, relTol_, absTol_);
-        if (checkFlag(&flag, "CVodeSVtolerances", 1)) exit(-1);
+        if (checkFlag(&flag, "CVodeSVtolerances", 1))
+        {
+            this->error();
+        }
+
 
         /* Call Solver */
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
             flag = CVDense(cvode_mem_, NEQ_);
-            if (checkFlag(&flag, "CVDense", 1)) exit(-1);
+            if (checkFlag(&flag, "CVDense", 1))
+            {
+                this->error();
+            }
         }
         else
         {
             flag = CVBand(cvode_mem_, NEQ_, upperBand_, lowerBand_);
-            if (checkFlag(&flag, "CVBand", 1)) exit(-1);
+            if (checkFlag(&flag, "CVBand", 1))
+            {
+                this->error();
+            }
         }
 
         /* Solving */
@@ -216,7 +257,6 @@ namespace ASALI
         /* Check if SUNDIALS function returned NULL pointer - no memory allocated */
         if (opt == 0 && flagvalue == NULL)
         {
-            fprintf(stderr, "\nSUNDIALS_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
             return(1);
         }
         else if (opt == 1)
@@ -225,18 +265,31 @@ namespace ASALI
             errflag = (int *) flagvalue;
             if (*errflag < 0)
             {
-                fprintf(stderr,"\nSUNDIALS_ERROR: %s() failed with flag = %d\n\n", funcname, *errflag);
                 return(1); 
             }
         }
         else if (opt == 2 && flagvalue == NULL)
         {
             /* Check if function returned NULL pointer - no memory allocated */
-            fprintf(stderr, "\nMEMORY_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
             return(1);
         }
 
         return(0);
+    }
+
+    void BatchInterface::error()
+    {
+        check_ = false;
+        Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
+        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.run();
+    }
+
+    std::string BatchInterface::getBeer()
+    {
+        srand(time(NULL));
+        int i = rand()%beer_.size();
+        return beer_[i];
     }
 
     BatchInterface::~BatchInterface(void)

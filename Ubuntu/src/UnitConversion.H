@@ -73,6 +73,55 @@ void ConvertsToKg(double &v, std::string m)
         v*=1.e-06;
 }
 
+void ConvertsToWattPerMeterPerKelving(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "W/m/K")
+        v=v;
+    else if(m == "kW/m/K")
+        v*=1e03;
+}
+
+void ConvertsToKgPerCubeMeter(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "kg/m\u00b3")
+        v=v;
+    else if(m == "g/cc")
+        v*=1e03;
+}
+
+void ConvertsToJoulePerKgPerKelvin(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "J/kg/K")
+        v=v;
+    else if(m == "kJ/kg/K")
+        v*=1e03;
+}
+
+void ConvertsToPascalPerSecond(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "Pas")
+        v=v;
+    else if(m == "cP")
+        v*=0.001;
+    else if(m == "P")
+        v*=0.1;
+}
 
 void ConvertsToSecond(double &v, std::string m)
 {

@@ -37,11 +37,11 @@
 ##############################################################################################*/
 
 
-#include "CstrInterface.h"
+#include "Het1DodeInterface.h"
 
 namespace ASALI
 {
-    CstrInterface::CstrInterface()
+    Het1DodeInterface::Het1DodeInterface()
     {
         #include "Beer.H"
 
@@ -61,54 +61,54 @@ namespace ASALI
         t0_           = 0.;
     }
 
-    void CstrInterface::setEquations(ASALI::CstrEquations* eq)
+    void Het1DodeInterface::setEquations(ASALI::Het1DEquations* eq)
     {
         eq_  = eq;
         NEQ_ = eq_->NumberOfEquations();
 
         y0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0)) 
         {
             this->error();
-        }
+        }    
 
         dy0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0)) 
         {
             this->error();
-        }
+        }    
 
         yCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0)) 
         {
             this->error();
-        }
+        }    
 
         dyCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0)) 
         {
             this->error();
-        }
+        }    
     }
     
-    void CstrInterface::setBandDimensions(const double upperBand, const double lowerBand)
+    void Het1DodeInterface::setBandDimensions(const double upperBand, const double lowerBand)
     {
         upperBand_ = upperBand;
         lowerBand_ = lowerBand;
     }
     
-    void CstrInterface::setTollerance(const double absTol, const double relTol)
+    void Het1DodeInterface::setTollerance(const double absTol, const double relTol)
     {
         absTol_ = absTol;
         relTol_ = relTol;
     }
     
-    void CstrInterface::setConstraints(const bool constraints)
+    void Het1DodeInterface::setConstraints(const bool constraints)
     {
         constraints_ = constraints;
     }
 
-    void CstrInterface::setInitialConditions(double t0, std::vector<double> y0)
+    void Het1DodeInterface::setInitialConditions(double t0, std::vector<double> y0)
     {
         std::vector<double> dy0(NEQ_);
 
@@ -125,8 +125,8 @@ namespace ASALI
 
     static int equationsCVODE(double t, N_Vector y, N_Vector f, void *user_data)
     {
-        ASALI::CstrEquations *data;
-        data = (ASALI::CstrEquations*)user_data;
+        ASALI::Het1DEquations *data;
+        data = (ASALI::Het1DEquations*)user_data;
 
         unsigned int N = data->NumberOfEquations();
 
@@ -151,7 +151,7 @@ namespace ASALI
         return(flag);
     }
 
-    int CstrInterface::solve(const double tf, std::vector<double>& yf)
+    int Het1DodeInterface::solve(const double tf, std::vector<double>& yf)
     {
         int flag;
 
@@ -163,17 +163,18 @@ namespace ASALI
             this->error();
         }
 
-
         flag = CVodeSetMaxNumSteps(cvode_mem_, 5000000);
         if (checkFlag(&flag, "CVodeSetMaxNumSteps", 1))
         {
             this->error();
         }
-
-
+        
         flag = CVodeSetUserData(cvode_mem_, eq_);
-        if(checkFlag(&flag, "CVodeSetUserData", 1))exit(-1);
-
+        if(checkFlag(&flag, "CVodeSetUserData", 1))
+        {
+            this->error();
+        }
+        
         /* Call CVodeInit to initialize the integrator memory and specify the
         * user's right hand side function in y'=f(t,y), the inital time t0, and
         * the initial dependent variable vector y0Sundials_. */
@@ -182,8 +183,7 @@ namespace ASALI
         {
             this->error();
         }
-
-
+        
         /* Call CVodeSStolerances to specify the scalar relative tolerance
         * and scalar absolute tolerances */
         flag = CVodeSStolerances(cvode_mem_, relTol_, absTol_);
@@ -191,8 +191,7 @@ namespace ASALI
         {
             this->error();
         }
-
-
+        
         /* Call Solver */
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
@@ -213,7 +212,10 @@ namespace ASALI
 
         /* Solving */
         flag = CVode(cvode_mem_,tf, yCVODE_, &t0_, CV_NORMAL);
-        if(checkFlag(&flag, "CVode", 1))exit(-1);
+        if(checkFlag(&flag, "CVode", 1))
+        {
+            this->error();
+        }
 
         yf.clear();
         yf.resize(NEQ_);
@@ -236,7 +238,7 @@ namespace ASALI
         return flag;
     }
 
-    int CstrInterface::checkFlag(void *flagvalue, const char *funcname, int opt)
+    int Het1DodeInterface::checkFlag(void *flagvalue, const char *funcname, int opt)
     {
         /* 
          * Check function return value...
@@ -273,7 +275,7 @@ namespace ASALI
         return(0);
     }
 
-    void CstrInterface::error()
+    void Het1DodeInterface::error()
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
@@ -281,14 +283,14 @@ namespace ASALI
         dialog.run();
     }
 
-    std::string CstrInterface::getBeer()
+    std::string Het1DodeInterface::getBeer()
     {
         srand(time(NULL));
         int i = rand()%beer_.size();
         return beer_[i];
     }
 
-    CstrInterface::~CstrInterface(void)
+    Het1DodeInterface::~Het1DodeInterface(void)
     {
         N_VDestroy_Serial(y0CVODE_);
         N_VDestroy_Serial(dy0CVODE_);

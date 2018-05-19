@@ -63,16 +63,24 @@ namespace ASALI
             void setSiteNames(const std::vector<std::string> nc);
             
             void setTime(const std::vector<double> t);
-            void setTemperature(const std::vector<double> T);
             void setVolume(const std::vector<double> V);
             void setLength(const std::vector<double> t);
             
             void setSpecie(const std::vector<std::vector<double> > y,const std::vector<std::vector<double> > x);
-            void setSite(const std::vector<std::vector<double> > z);
-            void setTemperature(const std::vector<std::vector<double> > T);
+            void setSpecie(const std::vector<std::vector<std::vector<double> > > y, const std::vector<std::vector<std::vector<double>> > x);
+            void setSpecie(const std::vector<std::vector<std::vector<double> > > yb,const std::vector<std::vector<std::vector<double> > > xb,
+                           const std::vector<std::vector<std::vector<double> > > yw,const std::vector<std::vector<std::vector<double> > > xw);
 
-            void setSpecie(const std::vector<std::vector<std::vector<double> > > y,const std::vector<std::vector<std::vector<double>> > x);
+            void setSite(const std::vector<std::vector<double> > z);
             void setSite(const std::vector<std::vector<std::vector<double>> > z);
+            
+            void setTemperature(const std::vector<double> T);
+            void setTemperature(const std::vector<std::vector<double> > T);
+            void setTemperature(const std::vector<std::vector<double> > Tb,
+                                const std::vector<std::vector<double> > Tw);
+                                   
+            
+            
 
             void setType(const std::string type);
             void setResolutionType(const std::string resolution);
@@ -106,11 +114,11 @@ namespace ASALI
             std::vector<Gtk::CheckButton *>   massButton_;
             std::vector<Gtk::CheckButton *>   siteButton_;
             std::vector<Gtk::CheckButton *>   otherButton_;
-        
+
             unsigned int NC_;
             unsigned int SURF_NC_;
             unsigned int NP_;
-            
+
             std::string  type_;
             std::string  resolution_;
 
@@ -123,6 +131,8 @@ namespace ASALI
             std::vector<std::vector<double> > x_;
             std::vector<std::vector<double> > z_;
             std::vector<std::vector<double> > Tt_;
+            std::vector<std::vector<double> > Tb_;
+            std::vector<std::vector<double> > Tw_;
 
             std::vector<std::vector<std::vector<double> > > yt_;
             std::vector<std::vector<std::vector<double> > > xt_;
@@ -130,6 +140,8 @@ namespace ASALI
 
             std::vector<std::string> n_;
             std::vector<std::string> nc_;
+
+
     };
 }
 

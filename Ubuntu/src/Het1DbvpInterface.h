@@ -36,8 +36,8 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef CSTRINTERFACE_H
-#define CSTRINTERFACE_H
+#ifndef HET1DBVPINTERFACE_H
+#define HET1DBVPINTERFACE_H
 
 #include <gtkmm.h>
 #include <string>
@@ -50,46 +50,48 @@
 #include <vector>
 #include <algorithm>
 
-#include <cvode/cvode.h>
-#include <cvode/cvode_dense.h>
-#include <cvode/cvode_band.h>
+#include <ida/ida.h>
+#include <ida/ida_dense.h>
+#include <ida/ida_band.h>
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_math.h>
 #include <sundials/sundials_dense.h>
 #include <sundials/sundials_types.h>
 
-#include "CstrEquations.h"
+#include "Het1DEquations.h"
 
 namespace ASALI
 {
     #define Ith(v,i)    NV_Ith_S(v,i-1)
 
-    class CstrInterface : public Gtk::Window
+    class Het1DbvpInterface : public Gtk::Window
     {
         public:
 
-            CstrInterface();
+            Het1DbvpInterface();
 
             int solve(const double tf, std::vector<double>& yf);
 
-            void setEquations(ASALI::CstrEquations* eq);
+            void setEquations(ASALI::Het1DEquations* eq);
 
             void setInitialConditions(double t0, std::vector<double> y0);
+
+            void setAlgebraic(const std::vector<bool> algebraic);
 
             void setTollerance(const double absTol, const double relTol);
 
             void setBandDimensions(const double upperBand, const double lowerBand);
             
             void setConstraints(const bool constraints);
-
+            
             bool check()            {return check_;};
             void start()            {check_ = true;};
 
-            ~CstrInterface(void);
+            ~Het1DbvpInterface(void);
 
         private:
 
-            void *cvode_mem_;
+            void *ida_mem_;
 
             int NEQ_;
 
@@ -98,20 +100,24 @@ namespace ASALI
             double upperBand_;
             double lowerBand_;
             double t0_;
+            
+            bool   check_;
 
+            std::vector<bool>  algebraic_;
+            
             bool constraints_;
-            bool check_;
 
-            N_Vector yCVODE_;
-            N_Vector dyCVODE_;
-            N_Vector y0CVODE_;
-            N_Vector dy0CVODE_;
+            N_Vector yIDA_;
+            N_Vector dyIDA_;
+            N_Vector y0IDA_;
+            N_Vector dy0IDA_;
+            N_Vector algebraicIDA_;
 
             std::vector<std::string> beer_;
 
-            ASALI::CstrEquations* eq_;
+            ASALI::Het1DEquations* eq_;
 
-            int checkFlag(void *flagvalue, const char *funcname, int opt);
+            int         checkFlag(void *flagvalue, const char *funcname, int opt);
             void        error();
             std::string getBeer();
     };

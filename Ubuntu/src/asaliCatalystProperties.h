@@ -36,60 +36,76 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "runBar.h"
+#ifndef ASALICATALYSTPROPERTIES_H
+#define ASALICATALYSTPROPERTIES_H
+
+#include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
 
 namespace ASALI
 {
-    runBar::runBar()
-    : mainBox_(Gtk::ORIENTATION_VERTICAL),
-      closeButton_("Cancel"),
-      solvingLabel_("ASALI is solving...please wait!")
+    class asaliCatalystProperties : public Gtk::Window
     {
-        this->set_border_width(15);
-        this->set_title("ASALI");
-        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.tiff");
-        this->add(mainBox_);
-        mainBox_.set_spacing(10);
-        mainBox_.pack_start(solvingLabel_,Gtk::PACK_SHRINK);
-        mainBox_.pack_start(timeLabel_, Gtk::PACK_SHRINK);
-        mainBox_.pack_start(runBar_, Gtk::PACK_SHRINK);
-        mainBox_.pack_start(closeButton_, Gtk::PACK_SHRINK);
-        closeButton_.signal_clicked().connect(sigc::mem_fun(*this,&runBar::close));
-        this->resize(mainBox_.get_width(),mainBox_.get_height());
-        this->show_all_children();
-    }
-    
-    void runBar::update(const double fraction,const std::string tm)
-    {
-        if ( fraction == 0 )
-        {
-            close_ = true;
-        }
-        
-        runBar_.set_fraction(fraction);
-        {
-            std::ostringstream s;
-            s << fraction;
-            runBar_.set_text(s.str());
-        }
-        
-        timeLabel_.set_text(tm);
-    }
+        public:
+            asaliCatalystProperties();
+            
+            void doneInput();
+
+            #include "UnitConversion.H"
+            
+            double get_rho()  {return rho_;};
+            double get_cond() {return cond_;};
+            double get_cp()   {return cp_;};
+            double get_load() {return alfa_;};
+            double get_T()    {return T_;};
+
+            virtual ~asaliCatalystProperties();
+            
+        private:
+
+            Gtk::Image        het1dLogo_;
+
+            Gtk::Box          mainBox_;
+
+            Gtk::Grid         mainGrid_;
 
 
-    void runBar::close()
-    {
-        close_ = false;
-        this->hide();
-    }
+            Gtk::Label        rhoLabel_;
+            Gtk::Label        condLabel_;
+            Gtk::Label        cpLabel_;
+            Gtk::Label        loadLabel_;
+            Gtk::Label        TLabel_;
 
-    void runBar::exit()
-    {
-        this->hide();
-    }
+            Gtk::Button       doneButton_;
+            
+            Gtk::ComboBoxText rhoCombo_;
+            Gtk::ComboBoxText condCombo_;
+            Gtk::ComboBoxText cpCombo_;
+            Gtk::ComboBoxText loadCombo_;
+            Gtk::ComboBoxText TCombo_;
 
-    runBar::~runBar()
-    {
-    }
+            Gtk::Entry        rhoEntry_;
+            Gtk::Entry        condEntry_;
+            Gtk::Entry        cpEntry_;
+            Gtk::Entry        loadEntry_;
+            Gtk::Entry        TEntry_;
+
+            double rho_;
+            double cp_;
+            double cond_;
+            double alfa_;
+            double T_;
+    };
 }
+
+#endif

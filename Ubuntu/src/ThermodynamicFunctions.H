@@ -193,6 +193,32 @@ void Asali::thermoMenu()
             inputGrid_.attach(doneThermoButton_,2,13,1,1);
             window_ = "thermoMenu";
         }
+        else if ( window_ == "het1dMenuAsali" )
+        {
+            inputGrid_.remove(*backButton_[27]);
+            inputGrid_.remove(*nextButton_[27]);
+            inputGrid_.remove(*mainMenuButton_[27]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneThermoButton_,2,13,1,1);
+            window_ = "thermoMenu";
+        }
+        else if ( window_ == "het1dMenuCantera" )
+        {
+            inputGrid_.remove(*backButton_[28]);
+            inputGrid_.remove(*nextButton_[28]);
+            inputGrid_.remove(*mainMenuButton_[28]);
+            inputGrid_.attach(*backButton_[0],0,13,1,1);
+            if ( kineticType_ == "default" )
+            {
+                inputGrid_.attach(helpButton_,1,13,1,1);
+            }
+            inputGrid_.attach(doneThermoButton_,2,13,1,1);
+            window_ = "thermoMenu";
+        }
         else
         {
             inputGrid_.attach(doneThermoButton_,2,13,1,1);

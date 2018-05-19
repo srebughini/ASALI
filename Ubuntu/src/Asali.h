@@ -53,6 +53,7 @@
 #include "speciesPopup.h"
 #include "asaliKinetic.h"
 #include "asaliProperties.h"
+#include "asaliCatalystProperties.h"
 #include "asaliPlot.h"
 #include "runBar.h"
 #include "BatchInterface.h"
@@ -62,6 +63,9 @@
 #include "Ph1DEquations.h"
 #include "CstrInterface.h"
 #include "CstrEquations.h"
+#include "Het1DodeInterface.h"
+#include "Het1DbvpInterface.h"
+#include "Het1DEquations.h"
 
 namespace ASALI
 {
@@ -84,6 +88,7 @@ namespace ASALI
             void batchReader();
             void ph1dReader();
             void cstrReader();
+            void het1dReader();
             void showAtomNames();
             void transportMenu();
             void thermoMenu();
@@ -102,6 +107,7 @@ namespace ASALI
             void batchSave();
             void ph1dSave();
             void cstrSave();
+            void het1dSave();
             void vacuumSave();
             void equilibriumSave();
             void cpUnitConversion(bool check);
@@ -129,28 +135,38 @@ namespace ASALI
             void batchRecap();
             void batchRun();
             void batchPlot();
-            void batchBar(const double fraction);
+            void batchBar(const double fraction,const std::string);
             void ph1dMenu();
             void ph1dRecap();
             void ph1dRun();
             void ph1dPlot();
-            void ph1dBar(const double fraction);
+            void ph1dBar(const double fraction,const std::string);
             void cstrMenu();
             void cstrRecap();
             void cstrRun();
             void cstrPlot();
-            void cstrBar(const double fraction);
+            void cstrBar(const double fraction,const std::string tm);
+            void het1dMenu();
+            void het1dRecap();
+            void het1dRun();
+            void het1dPlot();
+            void het1dCleanRecap();
+            void het1dBar(const double fraction,const std::string);
+            void het1dReactorOptions(bool check);
             void propertiesShow();
+            void catalystPropertiesShow();
             void kineticReader();
             void kineticShow();
             void batchCoverage();
             void ph1dCoverage();
             void cstrCoverage();
+            void het1dCoverage();
             bool chemistryMenu1(GdkEventButton*);
             
             std::vector<bool> setReactors();
             
             std::string       getBeer();
+            std::string       getBeerShort();
 
             Gtk::Button       doneThermoButton_;
             Gtk::Button       doneTransportButton_;
@@ -172,11 +188,13 @@ namespace ASALI
             Gtk::Button       batchSaveButton_;
             Gtk::Button       ph1dSaveButton_;
             Gtk::Button       cstrSaveButton_;
+            Gtk::Button       het1dSaveButton_;
             Gtk::Button       calculateButton_;
             Gtk::Button       equationsButton_;
             Gtk::Button       batchRunButton_;
             Gtk::Button       ph1dRunButton_;
             Gtk::Button       cstrRunButton_;
+            Gtk::Button       het1dRunButton_;
             Gtk::Button       startButton_;
             Gtk::Button       helpButton_;
             Gtk::Button       defaultCanteraInputButton_;
@@ -191,7 +209,11 @@ namespace ASALI
             Gtk::Button       cstrAsaliPropertiesButton_;
             Gtk::Button       cstrAsaliKineticButton_;
             Gtk::Button       cstrAsaliPlotButton_;
-
+            Gtk::Button       het1dAsaliPropertiesButton_;
+            Gtk::Button       het1dAsaliCatalystPropertiesButton_;
+            Gtk::Button       het1dAsaliKineticButton_;
+            Gtk::Button       het1dAsaliPlotButton_;
+            
             Gtk::Box          menuBox_;
             Gtk::Box          transportBox_;
             Gtk::Box          thermoBox_;
@@ -225,8 +247,13 @@ namespace ASALI
             Gtk::Box          cstrBox_;
             Gtk::Box          cstrRecapMainBox_;
             Gtk::Box          cstrRecapBox_;
+            Gtk::Box          het1dMainBox_;
+            Gtk::Box          het1dLogoBox_;
+            Gtk::Box          het1dBox_;
+            Gtk::Box          het1dRecapMainBox_;
+            Gtk::Box          het1dRecapBox_;
             Gtk::Box          coverageBox_;
-
+            
             Gtk::ButtonBox    exitButtonBox_;
             Gtk::ButtonBox    discrimerButtonBox_;
             Gtk::ButtonBox    buttonsBox_;
@@ -234,6 +261,7 @@ namespace ASALI
             Gtk::ButtonBox    batchButtonBox_;
             Gtk::ButtonBox    ph1dButtonBox_;
             Gtk::ButtonBox    cstrButtonBox_;
+            Gtk::ButtonBox    het1dButtonBox_;
             
             Gtk::EventBox     logoEventBox_;
 
@@ -370,6 +398,80 @@ namespace ASALI
             Gtk::Label        cstrRecapEnergyValueLabel_;
             Gtk::Label        cstrRecapKineticLabel_;
             Gtk::Label        cstrRecapKineticValueLabel_;
+            Gtk::Label        het1dLengthLabel_;
+            Gtk::Label        het1dVelocityLabel_;
+            Gtk::Label        het1dTimeLabel_;
+            Gtk::Label        het1dSaveLabel_;
+            Gtk::Label        het1dEnergyLabel_;
+            Gtk::Label        het1dPointsLabel_;
+            Gtk::Label        het1dInertLabel_;
+            Gtk::Label        het1dReactorTypeLabel_;
+            Gtk::Label        het1dBeerLabel_;
+            Gtk::Label        het1dHoneyCombCPSILabel_;
+            Gtk::Label        het1dHoneyCombWallThicknessLabel_;
+            Gtk::Label        het1dHoneyCombDuctLabel_;
+            Gtk::Label        het1dPackedBedTubeLabel_;
+            Gtk::Label        het1dPackedBedVoidFractionLabel_;
+            Gtk::Label        het1dPackedBedParticleLabel_;
+            Gtk::Label        het1dTubularTubeLabel_;
+            Gtk::Label        het1dTubularDuctLabel_;
+            Gtk::Label        het1dTubularWallThicknessLabel_;
+            Gtk::Label        het1dRecapLengthLabel_;
+            Gtk::Label        het1dRecapLengthUDLabel_;
+            Gtk::Label        het1dRecapLengthValueLabel_;
+            Gtk::Label        het1dRecapVelocityLabel_;
+            Gtk::Label        het1dRecapVelocityUDLabel_;
+            Gtk::Label        het1dRecapVelocityValueLabel_;
+            Gtk::Label        het1dRecapTemperatureLabel_;
+            Gtk::Label        het1dRecapTemperatureUDLabel_;
+            Gtk::Label        het1dRecapTemperatureValueLabel_;
+            Gtk::Label        het1dRecapPressureLabel_;
+            Gtk::Label        het1dRecapPressureUDLabel_;
+            Gtk::Label        het1dRecapPressureValueLabel_;
+            Gtk::Label        het1dRecapTimeLabel_;
+            Gtk::Label        het1dRecapTimeUDLabel_;
+            Gtk::Label        het1dRecapTimeValueLabel_;
+            Gtk::Label        het1dRecapSaveLabel_;
+            Gtk::Label        het1dRecapSaveUDLabel_;
+            Gtk::Label        het1dRecapSaveValueLabel_;
+            Gtk::Label        het1dRecapPointsLabel_;
+            Gtk::Label        het1dRecapPointsUDLabel_;
+            Gtk::Label        het1dRecapPointsValueLabel_;
+            Gtk::Label        het1dRecapInertLabel_;
+            Gtk::Label        het1dRecapInertValueLabel_;
+            Gtk::Label        het1dRecapReactorTypeLabel_;
+            Gtk::Label        het1dRecapReactorTypeValueLabel_;
+            Gtk::Label        het1dRecapFractionLabel_;
+            Gtk::Label        het1dRecapFractionNameLabel_;
+            Gtk::Label        het1dRecapFractionValueLabel_;
+            Gtk::Label        het1dRecapEnergyLabel_;
+            Gtk::Label        het1dRecapEnergyValueLabel_;
+            Gtk::Label        het1dRecapKineticLabel_;
+            Gtk::Label        het1dRecapKineticValueLabel_;
+            Gtk::Label        het1dRecapTubularTubeLabel_;
+            Gtk::Label        het1dRecapTubularTubeUDLabel_;
+            Gtk::Label        het1dRecapTubularTubeValueLabel_;
+            Gtk::Label        het1dRecapTubularDuctLabel_;
+            Gtk::Label        het1dRecapTubularDuctValueLabel_;
+            Gtk::Label        het1dRecapTubularWallThicknessLabel_;
+            Gtk::Label        het1dRecapTubularWallThicknessUDLabel_;
+            Gtk::Label        het1dRecapTubularWallThicknessValueLabel_;
+            Gtk::Label        het1dRecapPackedBedTubeLabel_;
+            Gtk::Label        het1dRecapPackedBedTubeUDLabel_;
+            Gtk::Label        het1dRecapPackedBedTubeValueLabel_;
+            Gtk::Label        het1dRecapPackedBedVoidFractionLabel_;
+            Gtk::Label        het1dRecapPackedBedVoidFractionValueLabel_;
+            Gtk::Label        het1dRecapPackedBedParticleLabel_;
+            Gtk::Label        het1dRecapPackedBedParticleUDLabel_;
+            Gtk::Label        het1dRecapPackedBedParticleValueLabel_;
+            Gtk::Label        het1dRecapHoneyCombCPSILabel_;
+            Gtk::Label        het1dRecapHoneyCombCPSIValueLabel_;
+            Gtk::Label        het1dRecapHoneyCombWallThicknessLabel_;
+            Gtk::Label        het1dRecapHoneyCombWallThicknessUDLabel_;
+            Gtk::Label        het1dRecapHoneyCombWallThicknessValueLabel_;
+            Gtk::Label        het1dRecapHoneyCombDuctLabel_;
+            Gtk::Label        het1dRecapHoneyCombDuctValueLabel_;
+
             Gtk::Label*       vacuumKnuResults_;
             Gtk::Label*       vacuumDiffResults_;
             Gtk::Label*       vacuumVelocityResults_;
@@ -389,8 +491,11 @@ namespace ASALI
             Gtk::Grid         ph1dRecapGrid_;
             Gtk::Grid         cstrPropertiesGrid_;
             Gtk::Grid         cstrRecapGrid_;
+            Gtk::Grid         het1dPropertiesGrid_;
+            Gtk::Grid         het1dRecapGrid_;
             Gtk::Grid         coverageInputGrid_;
-            
+
+
             Gtk::Image        bigLogo_;
             Gtk::Image        chemistrySmallLogo_;
             Gtk::Image        smallLogo_;
@@ -400,6 +505,8 @@ namespace ASALI
             Gtk::Image        ph1dLogo2_;
             Gtk::Image        cstrLogo1_;
             Gtk::Image        cstrLogo2_;
+            Gtk::Image        het1dLogo1_;
+            Gtk::Image        het1dLogo2_;
             
             Gtk::Frame        batchOperatingConditionsFrame_;
             
@@ -425,7 +532,20 @@ namespace ASALI
             Gtk::Entry        cstrTimeEntry_;
             Gtk::Entry        cstrLoadEntry_;
             Gtk::Entry        cstrSaveEntry_;
-            
+            Gtk::Entry        het1dLengthEntry_;
+            Gtk::Entry        het1dVelocityEntry_;
+            Gtk::Entry        het1dTimeEntry_;
+            Gtk::Entry        het1dSaveEntry_;
+            Gtk::Entry        het1dPointsEntry_;
+            Gtk::Entry        het1dInertEntry_;
+            Gtk::Entry        het1dHoneyCombCPSIEntry_;
+            Gtk::Entry        het1dHoneyCombWallThicknessEntry_;
+            Gtk::Entry        het1dPackedBedTubeEntry_;
+            Gtk::Entry        het1dPackedBedVoidFractionEntry_;
+            Gtk::Entry        het1dPackedBedParticleEntry_;
+            Gtk::Entry        het1dTubularTubeEntry_;
+            Gtk::Entry        het1dTubularWallThicknessEntry_;
+
             Gtk::ComboBoxText vacuumPressCombo_;
             Gtk::ComboBoxText vacuumLengthCombo_;
             Gtk::ComboBoxText vacuumTempCombo_;
@@ -467,7 +587,20 @@ namespace ASALI
             Gtk::ComboBoxText cstrLoadCombo_;
             Gtk::ComboBoxText cstrEnergyCombo_;
             Gtk::ComboBoxText cstrSaveCombo_;
-            
+            Gtk::ComboBoxText het1dLengthCombo_;
+            Gtk::ComboBoxText het1dVelocityCombo_;
+            Gtk::ComboBoxText het1dTimeCombo_;
+            Gtk::ComboBoxText het1dEnergyCombo_;
+            Gtk::ComboBoxText het1dSaveCombo_;
+            Gtk::ComboBoxText het1dReactorTypeCombo_;
+            Gtk::ComboBoxText het1dHoneyCombWallThicknessCombo_;
+            Gtk::ComboBoxText het1dHoneyCombDuctCombo_;
+            Gtk::ComboBoxText het1dPackedBedTubeCombo_;
+            Gtk::ComboBoxText het1dPackedBedParticleCombo_;
+            Gtk::ComboBoxText het1dTubularTubeCombo_;
+            Gtk::ComboBoxText het1dTubularDuctCombo_;
+            Gtk::ComboBoxText het1dTubularWallThicknessCombo_;
+
             std::vector<Gtk::Label *>          transportVector_;
             std::vector<Gtk::Label *>          thermoVector_;
             std::vector<Gtk::Label *>          allVector_;
@@ -510,6 +643,11 @@ namespace ASALI
             double         QfromSurface_;
             double         NP_;
             double         Q_;
+            double         Dt_;
+            double         Dp_;
+            double         cpsi_;
+            double         tw_;
+            double         epsi_;
 
 
             std::pair<unsigned int,bool>       checkInput_;
@@ -526,7 +664,6 @@ namespace ASALI
             std::vector<double>      MW_;
             std::vector<double>      cond_;
             std::vector<double>      mu_;
-            std::vector<double>      yF_;
             
             std::vector<int>      index1_;
             std::vector<int>      index2_;
@@ -545,32 +682,42 @@ namespace ASALI
 
             std::string window_;
             std::string resolution_;
+            std::string reactorType_;
             std::string energy_;
             std::string kineticType_;
             std::string kineticTypeOld_;
             std::string coverage_;
             std::string inert_;
+            std::string section_;
+            std::string het1dReactor_;
 
             bool        batchBool_;
             bool        ph1dBool_;
             bool        cstrBool_;
-            
-            Cantera::ThermoPhase        *thermo_;
-            Cantera::Transport          *transport_;
-            Cantera::Kinetics           *kinetic_;
-            Cantera::Interface          *surface_;
-            ASALI::canteraInterface     *canteraInterface_;
-            ASALI::speciesPopup         *speciesNames_;
-            ASALI::asaliKinetic         *asaliKinetic_;
-            ASALI::asaliProperties      *asaliProperties_;
-            ASALI::asaliPlot            *asaliPlot_;
-            ASALI::BatchEquations       *batch_;
-            ASALI::runBar               *batchBar_;
-            ASALI::Ph1DEquations        *ph1d_;
-            ASALI::runBar               *ph1dBar_;
-            ASALI::CstrEquations        *cstr_;
-            ASALI::runBar               *cstrBar_;
+            bool        het1dBool_;
+            bool        het1dTubularBool_;
+            bool        het1dPackedBedBool_;
+            bool        het1dHoneyCombBool_;
 
+            Cantera::ThermoPhase           *thermo_;
+            Cantera::Transport             *transport_;
+            Cantera::Kinetics              *kinetic_;
+            Cantera::Interface             *surface_;
+            ASALI::canteraInterface        *canteraInterface_;
+            ASALI::speciesPopup            *speciesNames_;
+            ASALI::asaliKinetic            *asaliKinetic_;
+            ASALI::asaliProperties         *asaliProperties_;
+            ASALI::asaliCatalystProperties *asaliCatalystProperties_;
+            ASALI::asaliPlot               *asaliPlot_;
+            ASALI::BatchEquations          *batch_;
+            ASALI::runBar                  *batchBar_;
+            ASALI::Ph1DEquations           *ph1d_;
+            ASALI::runBar                  *ph1dBar_;
+            ASALI::CstrEquations           *cstr_;
+            ASALI::runBar                  *cstrBar_;
+            ASALI::Het1DEquations          *het1d_;
+            ASALI::runBar                  *het1dBar_;
+            
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
             
             void         checkInput(unsigned int i);
@@ -581,6 +728,7 @@ namespace ASALI
             void         cleanAll();
 
             std::vector<std::string> beer_;
+            std::vector<std::string> beerShort_;
 
     };
 }

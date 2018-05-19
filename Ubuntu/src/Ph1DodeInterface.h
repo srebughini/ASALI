@@ -39,6 +39,7 @@
 #ifndef PH1DODEINTERFACE_H
 #define PH1DODEINTERFACE_H
 
+#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -63,7 +64,7 @@ namespace ASALI
 {
     #define Ith(v,i)    NV_Ith_S(v,i-1)
 
-    class Ph1DodeInterface 
+    class Ph1DodeInterface  : public Gtk::Window
     {
         public:
 
@@ -81,6 +82,9 @@ namespace ASALI
             
             void setConstraints(const bool constraints);
 
+            bool check()            {return check_;};
+            void start()            {check_ = true;};
+
             ~Ph1DodeInterface(void);
 
         private:
@@ -96,16 +100,20 @@ namespace ASALI
             double t0_;
 
             bool constraints_;
+            bool   check_;
 
             N_Vector yCVODE_;
             N_Vector dyCVODE_;
             N_Vector y0CVODE_;
             N_Vector dy0CVODE_;
+            
+            std::vector<std::string> beer_;
 
             ASALI::Ph1DEquations* eq_;
 
             int checkFlag(void *flagvalue, const char *funcname, int opt);
-
+            void        error();
+            std::string getBeer();
     };
 }
 
