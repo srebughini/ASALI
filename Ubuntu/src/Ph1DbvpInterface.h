@@ -39,6 +39,7 @@
 #ifndef PH1DBVPINTERFACE_H
 #define PH1DBVPINTERFACE_H
 
+#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -63,7 +64,7 @@ namespace ASALI
 {
     #define Ith(v,i)    NV_Ith_S(v,i-1)
 
-    class Ph1DbvpInterface 
+    class Ph1DbvpInterface  : public Gtk::Window
     {
         public:
 
@@ -83,6 +84,9 @@ namespace ASALI
             
             void setConstraints(const bool constraints);
 
+            bool check()            {return check_;};
+            void start()            {check_ = true;};
+
             ~Ph1DbvpInterface(void);
 
         private:
@@ -100,17 +104,21 @@ namespace ASALI
             std::vector<bool>  algebraic_;
             
             bool constraints_;
+            bool   check_;
 
             N_Vector yIDA_;
             N_Vector dyIDA_;
             N_Vector y0IDA_;
             N_Vector dy0IDA_;
             N_Vector algebraicIDA_;
+            
+            std::vector<std::string> beer_;
 
             ASALI::Ph1DEquations* eq_;
 
             int checkFlag(void *flagvalue, const char *funcname, int opt);
-
+            void        error();
+            std::string getBeer();
     };
 }
 

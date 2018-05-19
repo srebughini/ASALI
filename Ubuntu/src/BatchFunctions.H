@@ -527,6 +527,48 @@ void Asali::batchMenu()
             window_ = "batchMenuAsali";
         }
     }
+    else if ( window_ == "het1dMenuAsali" )
+    {
+        inputGrid_.remove(*backButton_[27]);
+        inputGrid_.remove(*nextButton_[27]);
+        inputGrid_.remove(*mainMenuButton_[27]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[13],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
+            inputGrid_.attach(*nextButton_[13],2,13,1,1);
+            window_ = "batchMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[11],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
+            inputGrid_.attach(*nextButton_[11],2,13,1,1);
+            window_ = "batchMenuAsali";
+        }
+    }
+    else if ( window_ == "het1dMenuCantera" )
+    {
+        inputGrid_.remove(*backButton_[28]);
+        inputGrid_.remove(*nextButton_[28]);
+        inputGrid_.remove(*mainMenuButton_[28]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[13],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[13],1,13,1,1);
+            inputGrid_.attach(*nextButton_[13],2,13,1,1);
+            window_ = "batchMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[11],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[11],1,13,1,1);
+            inputGrid_.attach(*nextButton_[11],2,13,1,1);
+            window_ = "batchMenuAsali";
+        }
+    }
     else
     {
         inputGrid_.remove(*backButton_[0]);
@@ -824,6 +866,7 @@ void Asali::batchRun()
     ASALI::BatchInterface solver;
     
     solver.setEquations(batch_);
+    solver.start();
 
     std::vector<double> x0(batch_->NumberOfEquations());
 
@@ -937,34 +980,69 @@ void Asali::batchRun()
     }
     
     
-    yF_.resize(batch_->NumberOfEquations());
-    this->batchBar(0.);
+    this->batchBar(0.,"Starting...");
+    batch_->store(0.,x0);
     
     //Start solving
     {
-        double ti = 0.;
-        double tf = 0.;
-        batch_->store(0.,x0);
-        for (int i=0;i<int(tf_/dt_);i++)
+        clock_t t1   = std::clock();
+        double  ti   = 0.;
+        double  tf   = 0.;
+        double  dt   = dt_/100.;
+        double  td   = 0;
+        int     tm   = 0;
+        int     hour = 0;
+        int     min  = 0;
+        int     sec  = 0;
+        int     Nt = int(tf_/dt) + 1;
+        for (int i=0;i<Nt;i++)
         {
-            tf = ti + dt_;
+            tf = ti + dt;
 
             solver.setInitialConditions(ti,x0);
             solver.solve(tf,x0);
+
+            td += dt;
             
-            batch_->store(tf,x0);
+            if ( std::fabs(td - dt_) < dt*0.001 )
+            {
+                batch_->store(tf,x0);
+                td = 0.;
+            }
+
+            tm   = ((std::clock() - t1)/(double)CLOCKS_PER_SEC)*Nt/(i+1) - std::clock()/(double)CLOCKS_PER_SEC;
+            hour = tm/3600;
+            tm   = tm%3600;
+            min  = tm/60;
+            tm   = tm%60;
+            sec  = tm;
 
             ti = tf;
 
-            this->batchBar(double(i+1)*dt_/tf_);
+            this->batchBar(double(i+1)*dt/tf_,"Remaning time: " + std::to_string(std::abs(hour))
+                                                               + ":" 
+                                                               + std::to_string(std::abs(min)) 
+                                                               + ":" 
+                                                               + std::to_string(std::abs(sec)));
+                                                               
+                                                               
+            if (!batchBar_->check() ||
+                !solver.check())
+            {
+                break;
+            }
         }
     }
     
     batchBar_->exit();
-    this->batchSave();
+    if ( solver.check()     == true &&
+         batchBar_->check() == true)
+    {
+        this->batchSave();
+    }
 }
 
-void Asali::batchBar(const double fraction)
+void Asali::batchBar(const double fraction,const std::string tm)
 {
     //Update solving bar
     while( Gtk::Main::events_pending() )
@@ -972,7 +1050,7 @@ void Asali::batchBar(const double fraction)
         Gtk::Main::iteration();
     }
 
-    batchBar_->update(fraction);
+    batchBar_->update(fraction,tm);
     batchBar_->show();
 
     //Update solving bar

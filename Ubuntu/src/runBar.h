@@ -59,8 +59,11 @@ namespace ASALI
         public:
             runBar();
 
-            void update(const double fraction);
+            void update(const double fraction,const std::string tm);
             void exit();
+            void close();
+
+            bool check() {return close_;};
 
             virtual ~runBar();
             
@@ -68,8 +71,12 @@ namespace ASALI
         
 
             Gtk::Box                 mainBox_;
+            Gtk::Button              closeButton_;
             Gtk::Label               solvingLabel_;
+            Gtk::Label               timeLabel_;
             Gtk::ProgressBar         runBar_;
+            
+            bool                     close_;
     };
 }
 

@@ -150,12 +150,12 @@ namespace ASALI
             kBox_.set_spacing(10);
             kBox_.pack_start(kLabel_,Gtk::PACK_SHRINK);
             kBox_.pack_start(kCombo_, Gtk::PACK_SHRINK);
-            kCombo_.append("m\u00b3/s/K/mol");
-            kCombo_.append("L/s/K/mol");
-            kCombo_.append("cc/s/K/mol");
-            kCombo_.append("m\u00b3/s/K/kmol");
-            kCombo_.append("L/s/K/kmol");
-            kCombo_.append("cc/s/K/kmol");
+            kCombo_.append("m\u00b3,s,mol");
+            kCombo_.append("L,s,mol");
+            kCombo_.append("cc,s,,mol");
+            kCombo_.append("m\u00b3,s,kmol");
+            kCombo_.append("L,s,kmol");
+            kCombo_.append("cc,s,kmol");
             kCombo_.set_active(0);
 
             reactionParameterGridLabels_.attach(nLabel_,1,0,1,1);

@@ -61,11 +61,13 @@ namespace ASALI
       batchSaveButton_("Save"),
       ph1dSaveButton_("Save"),
       cstrSaveButton_("Save"),
+      het1dSaveButton_("Save"),
       calculateButton_("Calculate"),
       equationsButton_("Equations"),
       batchRunButton_("Run"),
       ph1dRunButton_("Run"),
       cstrRunButton_("Run"),
+      het1dRunButton_("Run"),
       startButton_("Start"),
       helpButton_("Available species"),
       defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
@@ -80,6 +82,10 @@ namespace ASALI
       cstrAsaliPropertiesButton_("Properties"),
       cstrAsaliKineticButton_("Kinetics"),
       cstrAsaliPlotButton_("Plot"),
+      het1dAsaliPropertiesButton_("Properties"),
+      het1dAsaliCatalystPropertiesButton_("Catalyst"),
+      het1dAsaliKineticButton_("Kinetics"),
+      het1dAsaliPlotButton_("Plot"),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       sBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
@@ -102,11 +108,15 @@ namespace ASALI
       cstrMainBox_(Gtk::ORIENTATION_VERTICAL),
       cstrRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
       cstrRecapBox_(Gtk::ORIENTATION_VERTICAL),
+      het1dMainBox_(Gtk::ORIENTATION_VERTICAL),
+      het1dRecapMainBox_(Gtk::ORIENTATION_VERTICAL),
+      het1dRecapBox_(Gtk::ORIENTATION_VERTICAL),
       coverageBox_(Gtk::ORIENTATION_VERTICAL),
       buttonsBox_(Gtk::ORIENTATION_VERTICAL),
       batchButtonBox_(Gtk::ORIENTATION_VERTICAL),
       ph1dButtonBox_(Gtk::ORIENTATION_VERTICAL),
       cstrButtonBox_(Gtk::ORIENTATION_VERTICAL),
+      het1dButtonBox_(Gtk::ORIENTATION_VERTICAL),
       heading_("\nAuthor: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"
                "\nhttps://github.com/srebughini/ASALI"
@@ -131,7 +141,7 @@ namespace ASALI
       vacuumKnudsenLabel_("Knudsen number"),
       vacuumVelocityLabel_("Mean gas velocity"),
       vacuumPathLabel_("Mean free path"),
-      reactorsTypeLabel_("Reactor type"),
+      reactorsTypeLabel_("Reactor model"),
       kineticTypeLabel_("Kinetic type"),
       initialStateLabel_("Initial state"),
       finalStateLabel_("Final state"),
@@ -156,6 +166,23 @@ namespace ASALI
       cstrTimeLabel_("Integration time"),
       cstrSaveLabel_("Save solution every "),
       cstrEnergyLabel_("Energy"),
+      het1dLengthLabel_("Length"),
+      het1dVelocityLabel_("Velocity"),
+      het1dTimeLabel_("Integration time"),
+      het1dSaveLabel_("Save solution every "),
+      het1dEnergyLabel_("Energy"),
+      het1dPointsLabel_("Number of points"),
+      het1dInertLabel_("Inert species"),
+      het1dReactorTypeLabel_("Reactor type"),
+      het1dHoneyCombCPSILabel_("CPSI"),
+      het1dHoneyCombWallThicknessLabel_("Wall thickness"),
+      het1dHoneyCombDuctLabel_("Duct section"),
+      het1dPackedBedTubeLabel_("Tube diameter"),
+      het1dPackedBedVoidFractionLabel_("Void fraction"),
+      het1dPackedBedParticleLabel_("Particle diameter"),
+      het1dTubularTubeLabel_("Tube diameter"),
+      het1dTubularDuctLabel_("Tube section"),
+      het1dTubularWallThicknessLabel_("Washcoat thickness"),
       bigLogo_("images/BigLogo.tiff"),
       chemistrySmallLogo_("images/SmallLogo.tiff"),
       smallLogo_("images/SmallLogo.tiff"),
@@ -165,6 +192,8 @@ namespace ASALI
       ph1dLogo2_("images/Ph1DLogo.tiff"),
       cstrLogo1_("images/CstrLogo.tiff"),
       cstrLogo2_("images/CstrLogo.tiff"),
+      het1dLogo1_("images/Het1DLogo.tiff"),
+      het1dLogo2_("images/Het1DLogo.tiff"),
       Kn_(-1),
       diffK_(-1),
       vK_(-1),
@@ -175,26 +204,35 @@ namespace ASALI
       kineticType_("zero"),
       kineticTypeOld_("zero"),
       coverage_("none"),
+      het1dReactor_("none"),
       batchBool_(false),
       ph1dBool_(false),
-      cstrBool_(false)
+      cstrBool_(false),
+      het1dBool_(false),
+      het1dTubularBool_(false),
+      het1dPackedBedBool_(false),
+      het1dHoneyCombBool_(false)
     {
         #include "Beer.H"
+        #include "BeerShort.H"
 
-        batch_           = new ASALI::BatchEquations();
-        batchBar_        = new ASALI::runBar();
-        ph1d_            = new ASALI::Ph1DEquations();
-        ph1dBar_         = new ASALI::runBar();
-        cstr_            = new ASALI::CstrEquations();
-        cstrBar_         = new ASALI::runBar();
-        asaliKinetic_    = new ASALI::asaliKinetic();
-        asaliProperties_ = new ASALI::asaliProperties();
-        asaliPlot_       = new ASALI::asaliPlot();
+        batch_                   = new ASALI::BatchEquations();
+        batchBar_                = new ASALI::runBar();
+        ph1d_                    = new ASALI::Ph1DEquations();
+        ph1dBar_                 = new ASALI::runBar();
+        cstr_                    = new ASALI::CstrEquations();
+        cstrBar_                 = new ASALI::runBar();
+        het1d_                   = new ASALI::Het1DEquations();
+        het1dBar_                = new ASALI::runBar();
+        asaliKinetic_            = new ASALI::asaliKinetic();
+        asaliProperties_         = new ASALI::asaliProperties();
+        asaliCatalystProperties_ = new ASALI::asaliCatalystProperties();
+        asaliPlot_               = new ASALI::asaliPlot();
 
-        exitButton_.resize(25);
-        backButton_.resize(25);
-        nextButton_.resize(25);
-        mainMenuButton_.resize(25);
+        exitButton_.resize(30);
+        backButton_.resize(30);
+        nextButton_.resize(30);
+        mainMenuButton_.resize(30);
         for (unsigned int i=0;i<exitButton_.size();i++)
         {
             exitButton_[i] = new Gtk::Button("Exit");
@@ -399,6 +437,13 @@ namespace ASALI
             //Go to cstr coverage (when CANTERA kinetic is used)
             nextButton_[23]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrCoverage));
 
+            //Go to het1d recap (when ASALI kinetic is used)
+            nextButton_[27]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dRecap));
+
+            //Go to het1d coverage (when CANTERA kinetic is used)
+            nextButton_[28]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dCoverage));
+
+
             //Go back to reactor input
             backButton_[11]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[13]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
@@ -406,6 +451,8 @@ namespace ASALI
             backButton_[17]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[22]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
             backButton_[23]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[27]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
+            backButton_[28]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),true));
         }
 
         //Coverage menu
@@ -455,6 +502,13 @@ namespace ASALI
 
             //Add next button for cstr
             nextButton_[24]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstrRecap));
+
+            //Add back button for het1d
+            backButton_[29]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dMenu));
+
+            //Add next button for het1d
+            nextButton_[29]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dRecap));
+
         }
 
         //Reactors/kinetic menu
@@ -483,7 +537,7 @@ namespace ASALI
             backButton_[5]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::mainMenu));
             nextButton_[5]->signal_clicked().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::reactorsInput),false));
         }
-        
+
         //Batch reactor
         {
             batchMainBox_.set_halign(Gtk::ALIGN_START);
@@ -1084,6 +1138,317 @@ namespace ASALI
             }
         }
 
+        //1D heterogeneous reactors
+        {
+            het1dMainBox_.set_halign(Gtk::ALIGN_START);
+            het1dMainBox_.set_spacing(10);
+            het1dMainBox_.pack_start(het1dLogo1_, Gtk::PACK_SHRINK);
+            het1dMainBox_.pack_start(het1dBox_, Gtk::PACK_SHRINK);
+            
+            het1dBox_.set_halign(Gtk::ALIGN_START);
+            het1dBox_.set_spacing(10);
+            het1dBox_.pack_start(het1dPropertiesGrid_, Gtk::PACK_SHRINK);
+            {
+                het1dPropertiesGrid_.set_column_spacing(10);
+                het1dPropertiesGrid_.set_row_spacing(10);
+                het1dPropertiesGrid_.set_column_homogeneous(true);
+
+                //Length
+                het1dPropertiesGrid_.attach(het1dLengthLabel_,0,0,1,1);
+                het1dPropertiesGrid_.attach(het1dLengthEntry_,1,0,1,1);
+                het1dLengthEntry_.set_text("1");
+                het1dPropertiesGrid_.attach(het1dLengthCombo_,2,0,1,1);
+                het1dLengthCombo_.append("m");
+                het1dLengthCombo_.append("dm");
+                het1dLengthCombo_.append("cm");
+                het1dLengthCombo_.append("mm");
+                het1dLengthCombo_.set_active(0);
+
+                //Velocity
+                het1dPropertiesGrid_.attach(het1dVelocityLabel_,0,1,1,1);
+                het1dPropertiesGrid_.attach(het1dVelocityEntry_,1,1,1,1);
+                het1dVelocityEntry_.set_text("1");
+                het1dPropertiesGrid_.attach(het1dVelocityCombo_,2,1,1,1);
+                het1dVelocityCombo_.append("m/s");
+                het1dVelocityCombo_.append("cm/s");
+                het1dVelocityCombo_.append("m/min");
+                het1dVelocityCombo_.append("cm/min");
+                het1dVelocityCombo_.append("m/h");
+                het1dVelocityCombo_.append("cm/h");
+                het1dVelocityCombo_.set_active(0);
+
+                //Time
+                het1dPropertiesGrid_.attach(het1dTimeLabel_,0,2,1,1);
+                het1dPropertiesGrid_.attach(het1dTimeEntry_,1,2,1,1);
+                het1dTimeEntry_.set_text("1");
+                het1dPropertiesGrid_.attach(het1dTimeCombo_,2,2,1,1);
+                het1dTimeCombo_.append("s");
+                het1dTimeCombo_.append("min");
+                het1dTimeCombo_.append("h");
+                het1dTimeCombo_.append("d");
+                het1dTimeCombo_.set_active(0);
+
+                //Save options
+                het1dPropertiesGrid_.attach(het1dSaveLabel_,0,3,1,1);
+                het1dPropertiesGrid_.attach(het1dSaveEntry_,1,3,1,1);
+                het1dSaveEntry_.set_text("0.1");
+                het1dPropertiesGrid_.attach(het1dSaveCombo_,2,3,1,1);
+                het1dSaveCombo_.append("s");
+                het1dSaveCombo_.append("min");
+                het1dSaveCombo_.append("h");
+                het1dSaveCombo_.append("d");
+                het1dSaveCombo_.set_active(0);
+
+                //Number of points
+                het1dPropertiesGrid_.attach(het1dPointsLabel_,3,0,1,1);
+                het1dPropertiesGrid_.attach(het1dPointsEntry_,4,0,1,1);
+                het1dPointsEntry_.set_text("10");
+
+                //Inert species
+                het1dPropertiesGrid_.attach(het1dInertLabel_,3,1,1,1);
+                het1dPropertiesGrid_.attach(het1dInertEntry_,4,1,1,1);
+                het1dInertEntry_.set_text("AR");
+
+                //Energy
+                het1dPropertiesGrid_.attach(het1dEnergyLabel_,3,2,1,1);
+                het1dPropertiesGrid_.attach(het1dEnergyCombo_,4,2,1,1);
+                het1dEnergyCombo_.append("on");
+                het1dEnergyCombo_.append("off");
+                het1dEnergyCombo_.set_active(1);
+
+                //Type
+                het1dPropertiesGrid_.attach(het1dReactorTypeLabel_,3,3,1,1);
+                het1dPropertiesGrid_.attach(het1dReactorTypeCombo_,4,3,1,1);
+                het1dReactorTypeCombo_.append("tubular");
+                het1dReactorTypeCombo_.append("packed bed");
+                het1dReactorTypeCombo_.append("honeycomb");
+                het1dReactorTypeCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this,&Asali::het1dReactorOptions),true));
+                het1dReactorTypeCombo_.set_active(0);
+
+                //Tubular
+                {
+                    het1dTubularTubeEntry_.set_text("1");
+
+                    het1dTubularTubeCombo_.append("m");
+                    het1dTubularTubeCombo_.append("dm");
+                    het1dTubularTubeCombo_.append("cm");
+                    het1dTubularTubeCombo_.append("mm");
+                    het1dTubularTubeCombo_.set_active(0);
+
+                    het1dTubularWallThicknessCombo_.append("cm");
+                    het1dTubularWallThicknessCombo_.append("mm");
+                    het1dTubularWallThicknessCombo_.append("\u03BCm");
+                    het1dTubularWallThicknessCombo_.set_active(2);
+                    
+                    het1dTubularWallThicknessEntry_.set_text("1");
+
+                    het1dTubularDuctCombo_.append("square");
+                    het1dTubularDuctCombo_.append("circle");
+                    het1dTubularDuctCombo_.append("triangle");
+                    het1dTubularDuctCombo_.set_active(1);
+                }
+
+                //Honeycomb
+                {
+                    het1dHoneyCombCPSIEntry_.set_text("400");
+
+                    het1dHoneyCombWallThicknessCombo_.append("cm");
+                    het1dHoneyCombWallThicknessCombo_.append("mm");
+                    het1dHoneyCombWallThicknessCombo_.append("\u03BCm");
+                    het1dHoneyCombWallThicknessCombo_.set_active(1);
+
+                    het1dHoneyCombWallThicknessEntry_.set_text("1");
+
+                    het1dHoneyCombDuctCombo_.append("square");
+                    het1dHoneyCombDuctCombo_.append("circle");
+                    het1dHoneyCombDuctCombo_.append("triangle");
+                    het1dHoneyCombDuctCombo_.set_active(1);
+                }
+                
+                //Packed bed
+                {
+                    het1dPackedBedTubeEntry_.set_text("1");
+
+                    het1dPackedBedTubeCombo_.append("m");
+                    het1dPackedBedTubeCombo_.append("dm");
+                    het1dPackedBedTubeCombo_.append("cm");
+                    het1dPackedBedTubeCombo_.append("mm");
+                    het1dPackedBedTubeCombo_.set_active(0);
+
+                    het1dPackedBedParticleEntry_.set_text("1");
+
+                    het1dPackedBedParticleCombo_.append("m");
+                    het1dPackedBedParticleCombo_.append("dm");
+                    het1dPackedBedParticleCombo_.append("cm");
+                    het1dPackedBedParticleCombo_.append("mm");
+                    het1dPackedBedParticleCombo_.set_active(0);
+                    
+                    het1dPackedBedVoidFractionEntry_.set_text("0.42");
+                }
+                
+                //Beer
+                {
+                    het1dBeerLabel_.set_text(this->getBeerShort());
+                    het1dBeerLabel_.set_use_markup(true);
+                    het1dBeerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
+                    het1dPropertiesGrid_.attach(het1dBeerLabel_,3,4,2,3);
+                }
+
+                //Buttons
+                {
+                    het1dPropertiesGrid_.attach(*backButton_[25],0,11,2,1);
+                    het1dPropertiesGrid_.attach(*mainMenuButton_[25],2,11,1,1);
+                    het1dPropertiesGrid_.attach(*nextButton_[25],3,11,2,1);
+                    backButton_[25]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactorKineticMenu));
+                    nextButton_[25]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dMenu));
+                }
+                
+                
+            }
+ 
+            het1dRecapMainBox_.set_halign(Gtk::ALIGN_CENTER);
+            het1dRecapMainBox_.set_spacing(10);
+            het1dRecapMainBox_.pack_start(het1dLogoBox_, Gtk::PACK_SHRINK);
+            {
+                het1dLogoBox_.set_halign(Gtk::ALIGN_CENTER);
+                het1dLogoBox_.set_spacing(10);
+                het1dLogoBox_.pack_start(het1dLogo2_, Gtk::PACK_SHRINK);
+                het1dLogoBox_.pack_start(het1dButtonBox_, Gtk::PACK_SHRINK);
+                {
+                    het1dButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
+                    het1dButtonBox_.set_spacing(10);
+                    het1dButtonBox_.pack_start(het1dRunButton_, Gtk::PACK_SHRINK);
+                    het1dRunButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dRun));
+                    het1dButtonBox_.pack_start(het1dSaveButton_, Gtk::PACK_SHRINK);
+                    het1dSaveButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dSave));
+                    het1dButtonBox_.pack_start(het1dAsaliPlotButton_, Gtk::PACK_SHRINK);
+                    het1dAsaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dPlot));
+                    het1dButtonBox_.pack_start(het1dAsaliCatalystPropertiesButton_, Gtk::PACK_SHRINK);
+                    het1dAsaliCatalystPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::catalystPropertiesShow));
+
+                    het1dAsaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticShow));
+                    het1dAsaliPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::propertiesShow));
+                }
+            }
+
+            het1dRecapMainBox_.pack_start(het1dRecapBox_, Gtk::PACK_SHRINK);
+            {
+                het1dRecapBox_.set_halign(Gtk::ALIGN_START);
+                het1dRecapBox_.set_spacing(10);
+                het1dRecapBox_.pack_start(het1dRecapGrid_, Gtk::PACK_SHRINK);
+                {
+                    het1dRecapGrid_.set_column_spacing(10);
+                    het1dRecapGrid_.set_row_spacing(10);
+                    het1dRecapGrid_.set_column_homogeneous(true);
+
+                    //Reactor type
+                    het1dRecapReactorTypeLabel_.set_text("Reactor type");
+                    het1dRecapGrid_.attach(het1dRecapReactorTypeLabel_,0,0,1,1);
+                    het1dRecapGrid_.attach(het1dRecapReactorTypeValueLabel_,1,0,1,1);
+
+                    //Energy type
+                    het1dRecapEnergyLabel_.set_text("Energy balance is");
+                    het1dRecapGrid_.attach(het1dRecapEnergyLabel_,0,1,1,1);
+                    het1dRecapGrid_.attach(het1dRecapEnergyValueLabel_,1,1,1,1);
+
+                    //Kinetic type
+                    het1dRecapKineticLabel_.set_text("Kinetic model from");
+                    het1dRecapGrid_.attach(het1dRecapKineticLabel_,0,2,1,1);
+                    het1dRecapGrid_.attach(het1dRecapKineticValueLabel_,1,2,1,1);
+
+                     //Time
+                    het1dRecapTimeLabel_.set_text("Integration time");
+                    het1dRecapTimeUDLabel_.set_text("s");
+                    het1dRecapGrid_.attach(het1dRecapTimeLabel_,0,3,1,1);
+                    het1dRecapGrid_.attach(het1dRecapTimeUDLabel_,2,3,1,1);
+                    het1dRecapGrid_.attach(het1dRecapTimeValueLabel_,1,3,1,1);
+            
+                    //Save
+                    het1dRecapSaveLabel_.set_text("Save solution every");
+                    het1dRecapSaveUDLabel_.set_text("s");
+                    het1dRecapGrid_.attach(het1dRecapSaveLabel_,0,4,1,1);
+                    het1dRecapGrid_.attach(het1dRecapSaveUDLabel_,2,4,1,1);
+                    het1dRecapGrid_.attach(het1dRecapSaveValueLabel_,1,4,1,1);
+
+                    //Points
+                    het1dRecapPointsLabel_.set_text("Solving with");
+                    het1dRecapPointsUDLabel_.set_text("points");
+                    het1dRecapGrid_.attach(het1dRecapPointsLabel_,0,5,1,1);
+                    het1dRecapGrid_.attach(het1dRecapPointsUDLabel_,2,5,1,1);
+                    het1dRecapGrid_.attach(het1dRecapPointsValueLabel_,1,5,1,1);
+
+                    //Inert
+                    het1dRecapInertLabel_.set_text("Inert species is");
+                    het1dRecapGrid_.attach(het1dRecapInertLabel_,0,6,1,1);
+                    het1dRecapGrid_.attach(het1dRecapInertValueLabel_,1,6,1,1);
+
+                    //Velocity
+                    het1dRecapVelocityLabel_.set_text("Velocity");
+                    het1dRecapGrid_.attach(het1dRecapVelocityLabel_,3,0,1,1);
+                    het1dRecapVelocityUDLabel_.set_text("m/s");
+                    het1dRecapGrid_.attach(het1dRecapVelocityUDLabel_,5,0,1,1);
+                    het1dRecapGrid_.attach(het1dRecapVelocityValueLabel_,4,0,1,1);
+
+                    //Temperature
+                    het1dRecapTemperatureLabel_.set_text("Temperature");
+                    het1dRecapGrid_.attach(het1dRecapTemperatureLabel_,3,1,1,1);
+                    het1dRecapTemperatureUDLabel_.set_text("K");
+                    het1dRecapGrid_.attach(het1dRecapTemperatureUDLabel_,5,1,1,1);
+                    het1dRecapGrid_.attach(het1dRecapTemperatureValueLabel_,4,1,1,1);
+
+                    //Pressure
+                    het1dRecapPressureLabel_.set_text("Pressure");
+                    het1dRecapGrid_.attach(het1dRecapPressureLabel_,3,2,1,1);
+                    het1dRecapPressureUDLabel_.set_text("Pa");
+                    het1dRecapGrid_.attach(het1dRecapPressureUDLabel_,5,2,1,1);
+                    het1dRecapGrid_.attach(het1dRecapPressureValueLabel_,4,2,1,1);
+
+                    //Mole/Mass fraction
+                    het1dRecapGrid_.attach(het1dRecapFractionLabel_,3,3,1,1);
+                    het1dRecapGrid_.attach(het1dRecapFractionNameLabel_,5,3,1,1);
+                    het1dRecapGrid_.attach(het1dRecapFractionValueLabel_,4,3,1,1);
+
+                    //Length
+                    het1dRecapLengthLabel_.set_text("Length");
+                    het1dRecapGrid_.attach(het1dRecapLengthLabel_,3,4,1,1);
+                    het1dRecapLengthUDLabel_.set_text("m");
+                    het1dRecapGrid_.attach(het1dRecapLengthUDLabel_,5,4,1,1);
+                    het1dRecapGrid_.attach(het1dRecapLengthValueLabel_,4,4,1,1);
+                    
+                    //Tubular
+                    {
+                        het1dRecapTubularTubeLabel_.set_text("Tube diameter");
+                        het1dRecapTubularTubeUDLabel_.set_text("m");
+                        het1dRecapTubularWallThicknessLabel_.set_text("Washcoat thickness");
+                        het1dRecapTubularWallThicknessUDLabel_.set_text("m");
+                        het1dRecapTubularDuctLabel_.set_text("Tube section");
+                    }
+                    
+                    //Honeycomb
+                    {
+                        het1dRecapHoneyCombCPSILabel_.set_text("CPSI");
+                        het1dRecapHoneyCombWallThicknessLabel_.set_text("Wall thickness");
+                        het1dRecapHoneyCombWallThicknessUDLabel_.set_text("m");
+                        het1dRecapHoneyCombDuctLabel_.set_text("Channel section");
+                    }
+                    
+                    //Packedbed
+                    {
+                        het1dRecapPackedBedTubeLabel_.set_text("Tube diameter");
+                        het1dRecapPackedBedTubeUDLabel_.set_text("m");
+                        het1dRecapPackedBedVoidFractionLabel_.set_text("Tube section");
+                        het1dRecapPackedBedParticleLabel_.set_text("Particle diameter");
+                        het1dRecapPackedBedParticleUDLabel_.set_text("m");
+                    }
+
+                    //Buttons
+                    het1dRecapGrid_.attach(*backButton_[26],0,13,2,1);
+                    het1dRecapGrid_.attach(*mainMenuButton_[26],2,13,2,1);
+                    het1dRecapGrid_.attach(*exitButton_[26],4,13,2,1);
+                    backButton_[26]->signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1dMenu));
+                }
+            }
+        }
 
         //Thermo results menu
         {
@@ -1404,7 +1769,7 @@ namespace ASALI
     void Asali::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your file has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.set_secondary_text(this->getBeerShort(),true);
         dialog.run();
     }
 
@@ -1590,19 +1955,19 @@ namespace ASALI
         if ( i == 4444 )
         {
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
         }
         else if ( i == 4445 )
         {
             Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this,n_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
         }
     }
@@ -1771,7 +2136,7 @@ namespace ASALI
                              type[1] == "none" )
                         {
                             Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                            dialog.set_secondary_text(this->getBeer(),true);
+                            dialog.set_secondary_text(this->getBeerShort(),true);
                             dialog.run();
                         }
                         else
@@ -1892,7 +2257,7 @@ namespace ASALI
                          type[1] == "none" )
                     {
                         Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                        dialog.set_secondary_text(this->getBeer(),true);
+                        dialog.set_secondary_text(this->getBeerShort(),true);
                         dialog.run();
                     }
                     else
@@ -1920,7 +2285,7 @@ namespace ASALI
                 else
                 {
                     Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                    dialog.set_secondary_text(this->getBeer(),true);
+                    dialog.set_secondary_text(this->getBeerShort(),true);
                     dialog.run();
                 }
             }
@@ -1945,7 +2310,7 @@ namespace ASALI
     
     unsigned int Asali::specieIndex(const std::string n, const std::vector<std::string> v)
     {
-        unsigned int id;
+        unsigned int id = 0;
         for(unsigned int i=0;i<v.size();i++)
         {
             if ( n == v[i] )
@@ -1967,6 +2332,13 @@ namespace ASALI
         srand(time(NULL));
         int i = rand()%beer_.size();
         return beer_[i];
+    }
+    
+    std::string Asali::getBeerShort()
+    {
+        srand(time(NULL));
+        int i = rand()%beerShort_.size();
+        return beerShort_[i];
     }
 
 }

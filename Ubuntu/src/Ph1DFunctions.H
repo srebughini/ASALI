@@ -562,6 +562,48 @@ void Asali::ph1dMenu()
             window_ = "ph1dMenuAsali";
         }
     }
+    else if ( window_ == "het1dMenuAsali" )
+    {
+        inputGrid_.remove(*backButton_[27]);
+        inputGrid_.remove(*nextButton_[27]);
+        inputGrid_.remove(*mainMenuButton_[27]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[17],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[17],1,13,1,1);
+            inputGrid_.attach(*nextButton_[17],2,13,1,1);
+            window_ = "ph1dMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[16],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[16],1,13,1,1);
+            inputGrid_.attach(*nextButton_[16],2,13,1,1);
+            window_ = "ph1dMenuAsali";
+        }
+    }
+    else if ( window_ == "het1dMenuCantera" )
+    {
+        inputGrid_.remove(*backButton_[28]);
+        inputGrid_.remove(*nextButton_[28]);
+        inputGrid_.remove(*mainMenuButton_[28]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[17],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[17],1,13,1,1);
+            inputGrid_.attach(*nextButton_[17],2,13,1,1);
+            window_ = "ph1dMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[16],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[16],1,13,1,1);
+            inputGrid_.attach(*nextButton_[16],2,13,1,1);
+            window_ = "ph1dMenuAsali";
+        }
+    }
     else
     {
         inputGrid_.remove(*backButton_[0]);
@@ -1113,8 +1155,8 @@ void Asali::ph1dRun()
         ph1d_->setCatalystLoad(alfa_);
 
         ASALI::Ph1DodeInterface solver;
-        
         solver.setEquations(ph1d_);
+        solver.start();
 
         std::vector<double> x0(ph1d_->NumberOfEquations());
 
@@ -1228,13 +1270,17 @@ void Asali::ph1dRun()
             }
 
         }
-        yF_.resize(ph1d_->NumberOfEquations());
-        
-        this->ph1dBar(0.);
+  
+        this->ph1dBar(0.,"Starting...");
         //Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
+            clock_t t1   = std::clock();
+            double  ti   = 0.;
+            double  tf   = 0.;
+            int     tm   = 0;
+            int     hour = 0;
+            int     min  = 0;
+            int     sec  = 0;
             ph1d_->store(0.,x0);
             for (unsigned int i=0;i<100;i++)
             {
@@ -1242,16 +1288,45 @@ void Asali::ph1dRun()
 
                 solver.setInitialConditions(ti,x0);
                 solver.solve(tf,x0);
-                
+
+
+                tm   = ((std::clock() - t1)/(double)CLOCKS_PER_SEC)*100./(i+1) - std::clock()/(double)CLOCKS_PER_SEC;
+                hour = tm/3600;
+                tm   = tm%3600;
+                min  = tm/60;
+                tm   = tm%60;
+                sec  = tm;
+
                 ph1d_->store(tf,x0);
 
                 ti = tf;
 
-                this->ph1dBar(double(i+1)*(L_/100.)/L_);
+                this->ph1dBar(double(i+1)*(L_/100.)/L_,"Remaning time: " + std::to_string(std::abs(hour))
+                                                                         + ":" 
+                                                                         + std::to_string(std::abs(min)) 
+                                                                         + ":" 
+                                                                         + std::to_string(std::abs(sec)));
+                                                                         
+                                                                         
+                if (!ph1dBar_->check())
+                {
+                    break;
+                }
+                
+                if (!solver.check())
+                {
+                    break;
+                }
             }
         }
 
         ph1dBar_->exit();
+
+        if (ph1dBar_->check() == true &&
+            solver.check()    == true)
+        {
+            this->ph1dSave();
+        }
     }
     else if ( resolution_ == "transient" )
     {
@@ -1415,7 +1490,7 @@ void Asali::ph1dRun()
                 std::vector<double> xInside(x_.size());
                 for (unsigned int i=0;i<x_.size();i++)
                 {
-                    if ( canteraInterface_->names()[i] == inert_ )
+                    if ( n_[i] == inert_ )
                     {
                         xInside[i] = 1.;
                     }
@@ -1489,9 +1564,6 @@ void Asali::ph1dRun()
                                 thetaInlet[j] = xc_[i];
                                 break;
                             }
-                            
-                            std::cout << thetaInlet[j] << std::endl;
-                            
                         }
                     }
                 }
@@ -1526,13 +1598,11 @@ void Asali::ph1dRun()
 
         }
 
-        yF_.resize(ph1d_->NumberOfEquations());
-
         ASALI::Ph1DodeInterface ode;
         ode.setEquations(ph1d_);
-
+        ode.start();
         ph1d_->setResolutionType("initial");
-        this->ph1dBar(0.);
+        this->ph1dBar(0.,"Starting...");
             
         for (unsigned int i=0;i<2;i++)
         {
@@ -1541,48 +1611,85 @@ void Asali::ph1dRun()
             {
                 ode.setInitialConditions(0.,x0);
                 ode.solve(1e-07,x0);
-                this->ph1dBar(0.);
+                this->ph1dBar(0.,"Starting...");
             }
             else if ( i == 1 )
             {
                 ode.setInitialConditions(1e-07,x0);
                 ode.solve(1e07,x0);
-                this->ph1dBar(1e-05);
+                this->ph1dBar(1e-05,"Starting...");
             }
         }
 
         ASALI::Ph1DbvpInterface bvp;
         bvp.setEquations(ph1d_);
+        bvp.start();
         ph1d_->setResolutionType(resolution_);
         ph1d_->store(0.,x0);
-        this->ph1dBar(1e-05);
+        this->ph1dBar(1e-05,"Starting...");
 
         //Start solving
         {
-            double       ti = 0.;
-            double       tf = 0.;
-            unsigned int Nt = tf_/dt_ + 1;
-            for (unsigned int i=0;i<Nt;i++)
+            clock_t t1   = std::clock();
+            double  ti   = 0.;
+            double  tf   = 0.;
+            double  dt   = dt_/100.;
+            double  td   = 0;
+            int     tm   = 0;
+            int     hour = 0;
+            int     min  = 0;
+            int     sec  = 0;
+            int     Nt = int(tf_/dt) + 1;
+            for (int i=0;i<Nt;i++)
             {
-                tf = ti + dt_;
+                tf = ti + dt;
 
                 bvp.setInitialConditions(ti,x0);
                 bvp.solve(tf,x0);
 
-                ph1d_->store(tf,x0);
+                td += dt;
+
+                if ( std::fabs(td - dt_) < dt*0.001 )
+                {
+                    ph1d_->store(tf,x0);
+                    td = 0.;
+                }
+
+                tm   = ((std::clock() - t1)/(double)CLOCKS_PER_SEC)*Nt/(i+1) - std::clock()/(double)CLOCKS_PER_SEC;
+                hour = tm/3600;
+                tm   = tm%3600;
+                min  = tm/60;
+                tm   = tm%60;
+                sec  = tm;
 
                 ti = tf;
 
-                this->ph1dBar(double(i+1)*dt_/tf_);
+                this->ph1dBar(double(i+1)*dt/tf_,"Remaning time: " + std::to_string(std::abs(hour))
+                                                                   + ":" 
+                                                                   + std::to_string(std::abs(min)) 
+                                                                   + ":" 
+                                                                   + std::to_string(std::abs(sec)));
+
+
+                if (!ph1dBar_->check() || !bvp.check() )
+                {
+                    break;
+                }
             }
         }
 
         ph1dBar_->exit();
+
+        if (ph1dBar_->check() == true &&
+            ode.check()       == true &&
+            bvp.check()       == true)
+        {
+            this->ph1dSave();
+        }
     }
-    this->ph1dSave();
 }
 
-void Asali::ph1dBar(const double fraction)
+void Asali::ph1dBar(const double fraction, const std::string tm)
 {
     //Update solving bar
     while( Gtk::Main::events_pending() )
@@ -1590,7 +1697,7 @@ void Asali::ph1dBar(const double fraction)
         Gtk::Main::iteration();
     }
 
-    ph1dBar_->update(fraction);
+    ph1dBar_->update(fraction,tm);
     ph1dBar_->show();
 
     //Update solving bar

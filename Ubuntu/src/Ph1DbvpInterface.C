@@ -43,6 +43,8 @@ namespace ASALI
 {
     Ph1DbvpInterface::Ph1DbvpInterface()
     {
+        #include "Beer.H"
+
         yIDA_         = NULL;
         dyIDA_        = NULL;
         y0IDA_        = NULL;
@@ -51,6 +53,7 @@ namespace ASALI
         ida_mem_      = NULL;
         
         constraints_  = false;
+        check_        = true;
 
         upperBand_    = 0.;
         lowerBand_    = 0.;
@@ -65,19 +68,34 @@ namespace ASALI
         NEQ_ = eq_->NumberOfEquations();
 
         y0IDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0IDA_, "N_VNew_Serial", 0))        exit(-1);
+        if (checkFlag((void *)y0IDA_, "N_VNew_Serial", 0))       
+        {
+            this->error();
+        }    
 
         dy0IDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0IDA_, "N_VNew_Serial", 0))       exit(-1);
+        if (checkFlag((void *)dy0IDA_, "N_VNew_Serial", 0))      
+        {
+            this->error();
+        }    
 
         yIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yIDA_, "N_VNew_Serial", 0))         exit(-1);
+        if (checkFlag((void *)yIDA_, "N_VNew_Serial", 0))        
+        {
+            this->error();
+        }    
 
         dyIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyIDA_, "N_VNew_Serial", 0))        exit(-1);
+        if (checkFlag((void *)dyIDA_, "N_VNew_Serial", 0))       
+        {
+            this->error();
+        }    
 
         algebraicIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)algebraicIDA_, "N_VNew_Serial", 0)) exit(-1);
+        if (checkFlag((void *)algebraicIDA_, "N_VNew_Serial", 0))
+        {
+            this->error();
+        }    
 
         algebraic_.resize(NEQ_);
     }
@@ -167,10 +185,16 @@ namespace ASALI
         /* Call IDACreate to create the solver memory and specify the 
         *  Backward Differentiation Formula and the use of a Newton iteration */
         ida_mem_ = IDACreate();
-        if (checkFlag((void *)ida_mem_, "IDACreate", 0)) exit(-1);
+        if (checkFlag((void *)ida_mem_, "IDACreate", 0))
+        {
+            this->error();
+        }    
 
         flag = IDASetMaxNumSteps(ida_mem_, 5000000);
-        if (checkFlag(&flag, "IDASetMaxNumSteps", 1)) exit(-1);
+        if (checkFlag(&flag, "IDASetMaxNumSteps", 1))
+        {
+            this->error();
+        }    
 
         flag = IDASetUserData(ida_mem_, eq_);
         if(checkFlag(&flag, "IDASetUserData", 1))exit(-1);
@@ -179,27 +203,42 @@ namespace ASALI
         *  user's right hand side function in y'=f(t,y), the initial time t0, and
         *  the initial dependent variable vector y0Sundials_. */
         flag = IDAInit(ida_mem_, equationsIDA, t0_, y0IDA_, dy0IDA_);
-        if (checkFlag(&flag, "IDAInit", 1)) exit(-1);
+        if (checkFlag(&flag, "IDAInit", 1))
+        {
+            this->error();
+        }    
 
         /* Call IDASStolerances to specify the scalar relative tolerance
         * and scalar absolute tolerances */
         flag = IDASStolerances(ida_mem_, relTol_, absTol_);
-        if (checkFlag(&flag, "IDASVtolerances", 1)) exit(-1);
+        if (checkFlag(&flag, "IDASVtolerances", 1))
+        {
+            this->error();
+        }    
 
         /* Set algebraic equations */
         flag = IDASetId(ida_mem_, algebraicIDA_);
-        if (checkFlag(&flag, "IDASetId", 1)) exit(-1);
+        if (checkFlag(&flag, "IDASetId", 1))
+        {
+            this->error();
+        }    
 
         /* Call Solver */
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
             flag = IDADense(ida_mem_, NEQ_);
-            if (checkFlag(&flag, "IDADense", 1)) exit(-1);
+            if (checkFlag(&flag, "IDADense", 1))
+            {
+                this->error();
+            }    
         }
         else
         {
             flag = IDABand(ida_mem_, NEQ_, upperBand_, lowerBand_);
-            if (checkFlag(&flag, "IDABand", 1)) exit(-1);
+            if (checkFlag(&flag, "IDABand", 1))
+            {
+                this->error();
+            }    
         }
         
         if ( constraints_ == true )
@@ -207,12 +246,12 @@ namespace ASALI
             N_Vector constraints = N_VNew_Serial(NEQ_);
             N_VConst(1.0, constraints);
             flag = IDASetConstraints(ida_mem_, constraints);
-            if(checkFlag(&flag, "IDASetConstraints", 1)) exit(-1);
+            if(checkFlag(&flag, "IDASetConstraints", 1))
+            {
+                this->error();
+            }
             N_VDestroy_Serial(constraints);
         }
-
-        //flag = IDACalcIC(ida_mem_, IDA_YA_YDP_INIT, (tf-t0_)/1.e12);
-        //if(checkFlag(&flag, "IDACalcIC", 1)) exit(-1);
 
         /* Solving */
         flag = IDASolve(ida_mem_,tf, &t0_, yIDA_, dyIDA_, IDA_NORMAL);
@@ -246,7 +285,6 @@ namespace ASALI
         /* Check if SUNDIALS function returned NULL pointer - no memory allocated */
         if (opt == 0 && flagvalue == NULL)
         {
-            fprintf(stderr, "\nSUNDIALS_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
             return(1);
         }
         else if (opt == 1)
@@ -255,18 +293,31 @@ namespace ASALI
             errflag = (int *) flagvalue;
             if (*errflag < 0)
             {
-                fprintf(stderr,"\nSUNDIALS_ERROR: %s() failed with flag = %d\n\n", funcname, *errflag);
                 return(1); 
             }
         }
         else if (opt == 2 && flagvalue == NULL)
         {
             /* Check if function returned NULL pointer - no memory allocated */
-            fprintf(stderr, "\nMEMORY_ERROR: %s() failed - returned NULL pointer\n\n", funcname);
             return(1);
         }
 
         return(0);
+    }
+
+    void Ph1DbvpInterface::error()
+    {
+        check_ = false;
+        Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
+        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.run();
+    }
+
+    std::string Ph1DbvpInterface::getBeer()
+    {
+        srand(time(NULL));
+        int i = rand()%beer_.size();
+        return beer_[i];
     }
 
     Ph1DbvpInterface::~Ph1DbvpInterface(void)

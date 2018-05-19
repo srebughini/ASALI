@@ -41,6 +41,7 @@
 #include "BatchFunctions.H"
 #include "Ph1DFunctions.H"
 #include "CstrFunctions.H"
+#include "Het1DFunctions.H"
 
 void Asali::kineticReader()
 {
@@ -101,7 +102,8 @@ void Asali::kineticReader()
             }
         }
 
-        if ( resolution_ == "transient" )
+
+        if ( resolution_ == "transient")
         {
             bool check = false;
             for (unsigned int i=0;i<n_.size();i++)
@@ -272,6 +274,16 @@ void Asali::propertiesShow()
             asaliProperties_->build();
             asaliProperties_->show();
         }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 1 )
+        {
+            asaliProperties_->destroy();
+            asaliProperties_->set_type("het1d");
+            asaliProperties_->set_energy(energy_);
+            asaliProperties_->set_n(n_);
+            asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
+            asaliProperties_->build();
+            asaliProperties_->show();
+        }
         else if ( reactorsTypeCombo_.get_active_row_number() == 3 )
         {
             asaliProperties_->destroy();
@@ -293,6 +305,11 @@ void Asali::propertiesShow()
             asaliProperties_->show();
         }
     }
+}
+
+void Asali::catalystPropertiesShow()
+{
+    asaliCatalystProperties_->show();
 }
 
 void Asali::reactorsInput(const bool back)
@@ -323,6 +340,15 @@ void Asali::reactorsInput(const bool back)
             this->set_title("ASALI: 1D PH reactors");
             this->add(ph1dMainBox_);
             this->resize(ph1dMainBox_.get_width(),ph1dMainBox_.get_height());
+            this->show_all_children();
+        }
+        else if ( reactorsTypeCombo_.get_active_row_number() == 1 )
+        {
+            resolution_ = "transient";
+            this->remove();
+            this->set_title("ASALI: 1D HET reactors");
+            this->add(het1dMainBox_);
+            this->resize(het1dMainBox_.get_width(),het1dMainBox_.get_height());
             this->show_all_children();
         }
         else if ( reactorsTypeCombo_.get_active_row_number() == 3 )

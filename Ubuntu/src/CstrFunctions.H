@@ -534,6 +534,48 @@ void Asali::cstrMenu()
             window_ = "cstrMenuAsali";
         }
     }
+    else if ( window_ == "het1dMenuAsali" )
+    {
+        inputGrid_.remove(*backButton_[27]);
+        inputGrid_.remove(*nextButton_[27]);
+        inputGrid_.remove(*mainMenuButton_[27]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
+        }
+    }
+    else if ( window_ == "het1dMenuCantera" )
+    {
+        inputGrid_.remove(*backButton_[28]);
+        inputGrid_.remove(*nextButton_[28]);
+        inputGrid_.remove(*mainMenuButton_[28]);
+        inputGrid_.attach(*backButton_[0],0,13,1,1);
+        if ( kineticTypeCombo_.get_active_row_number() == 0 )
+        {
+            inputGrid_.attach(*backButton_[23],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[23],1,13,1,1);
+            inputGrid_.attach(*nextButton_[23],2,13,1,1);
+            window_ = "cstrMenuCantera";
+        }
+        else if ( kineticTypeCombo_.get_active_row_number() == 1 )
+        {
+            inputGrid_.attach(*backButton_[22],0,13,1,1);
+            inputGrid_.attach(*mainMenuButton_[22],1,13,1,1);
+            inputGrid_.attach(*nextButton_[22],2,13,1,1);
+            window_ = "cstrMenuAsali";
+        }
+    }
     else
     {
         inputGrid_.remove(*backButton_[0]);
@@ -830,8 +872,8 @@ void Asali::cstrRun()
     cstr_->setCatalystLoad(alfa_);
     
     ASALI::CstrInterface solver;
-    
     solver.setEquations(cstr_);
+    solver.start();
 
     std::vector<double> x0(cstr_->NumberOfEquations());
 
@@ -938,36 +980,71 @@ void Asali::cstrRun()
             x0[thermo_->nSpecies() + surface_->nSpecies()] = T_;
         }
     }
-    
-    
-    yF_.resize(cstr_->NumberOfEquations());
-    this->cstrBar(0.);
+
+    this->cstrBar(0.,"Starting...");
+    cstr_->store(0.,x0);
     
     //Start solving
     {
-        double ti = 0.;
-        double tf = 0.;
-        cstr_->store(0.,x0);
-        for (int i=0;i<int(tf_/dt_);i++)
+        clock_t t1   = std::clock();
+        double  ti   = 0.;
+        double  tf   = 0.;
+        double  dt   = dt_/100.;
+        double  td   = 0;
+        int     tm   = 0;
+        int     hour = 0;
+        int     min  = 0;
+        int     sec  = 0;
+        int     Nt = int(tf_/dt) + 1;
+        for (int i=0;i<Nt;i++)
         {
-            tf = ti + dt_;
+            tf = ti + dt;
 
             solver.setInitialConditions(ti,x0);
             solver.solve(tf,x0);
+
+            td += dt;
             
-            cstr_->store(tf,x0);
+            if ( std::fabs(td - dt_) < dt*0.001 )
+            {
+                cstr_->store(tf,x0);
+                td = 0.;
+            }
+
+            tm   = ((std::clock() - t1)/(double)CLOCKS_PER_SEC)*Nt/(i+1) - std::clock()/(double)CLOCKS_PER_SEC;
+            hour = tm/3600;
+            tm   = tm%3600;
+            min  = tm/60;
+            tm   = tm%60;
+            sec  = tm;
 
             ti = tf;
 
-            this->cstrBar(double(i+1)*dt_/tf_);
+            this->cstrBar(double(i+1)*dt/tf_,"Remaning time: " + std::to_string(std::abs(hour))
+                                                               + ":" 
+                                                               + std::to_string(std::abs(min)) 
+                                                               + ":" 
+                                                               + std::to_string(std::abs(sec)));
+                                                               
+                                                               
+            if (!cstrBar_->check() ||
+                !solver.check())
+            {
+                break;
+            }
         }
     }
     
     cstrBar_->exit();
-    this->cstrSave();
+
+    if ( solver.check()    == true &&
+         cstrBar_->check() == true)
+    {
+        this->cstrSave();
+    }
 }
 
-void Asali::cstrBar(const double fraction)
+void Asali::cstrBar(const double fraction,const std::string tm)
 {
     //Update solving bar
     while( Gtk::Main::events_pending() )
@@ -975,7 +1052,7 @@ void Asali::cstrBar(const double fraction)
         Gtk::Main::iteration();
     }
 
-    cstrBar_->update(fraction);
+    cstrBar_->update(fraction,tm);
     cstrBar_->show();
 
     //Update solving bar
