@@ -36,129 +36,78 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef ASALIPROPERTIES_H
-#define ASALIPROPERTIES_H
 
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
+#ifndef THERMOTRANSPORTPROPERTIES_H
+#define THERMOTRANSPORTPROPERTIES_H
+
+#include "thermoProperties.h"
 
 namespace ASALI
 {
-    class asaliProperties : public Gtk::Window
+    class thermoTransportProperties : public ASALI::thermoProperties
     {
         public:
-        
-            #include "UnitConversion.H"
-        
-            asaliProperties();
+            thermoTransportProperties(ASALI::canteraInterface        *canteraInterface,
+                                      ASALI::speciesPopup            *speciesNames,
+                                      std::string                     kineticType);
             
-            void destroy();
-            void build();
-            void savedMessage();
-            void set_type(const std::string type);
-            void set_n(const std::vector<std::string> n);
-            void set_reactions(const std::vector<std::vector<std::string> > name,
-                               const std::vector<std::vector<int> >         stoich);
-            void set_energy(const std::string energy);
-                               
+            virtual ~thermoTransportProperties();
 
-            void doneInput();
-            void convertToCaption(std::string& n);
+            virtual void results();
+            virtual void save();
+            virtual void clean();
+            virtual void showAtomNames();
+            virtual void condUnitConversion(bool check);
+            virtual void muUnitConversion(bool check);
+            virtual void diffUnitConversion(bool check);
+            virtual void diffSpecies(unsigned int row);
+            virtual void cpUnitConversion(bool check);
+            virtual void hUnitConversion(bool check);
+            virtual void sUnitConversion(bool check);
 
-            std::vector<double>  get_MW()   {return MW_;};
-            std::vector<double>  get_diff() {return diff_;};
-            std::vector<double>  get_Q()    {return Q_;};
-            
-            double               get_cp()   {return cp_;};
-            double               get_cond() {return cond_;};
-            double               get_mu()   {return mu_;};
-            
-            std::vector<double>  get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
-            std::vector<double>  get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
-            double               get_MWmix(const std::vector<double> MW, const std::vector<double> x);
-            
-            std::string          get_type() {return type_;};
-
-
-            virtual ~asaliProperties();
-            
         private:
-        
-            std::string       getBeer();
-        
-            Gtk::Image        batchLogo_;
-            Gtk::Image        ph1dLogo_;
-            Gtk::Image        het1dLogo_;
 
-            Gtk::Box          mainBox_;
-            Gtk::Box          heatBox_;
+            Gtk::Box          condBox_;
+            Gtk::Box          muBox_;
             Gtk::Box          diffBox_;
+            Gtk::Box          cpBox_;
+            Gtk::Box          hBox_;
+            Gtk::Box          sBox_;
 
-            Gtk::Grid         mainGrid_;
-            Gtk::Grid         cpGrid_;
-            Gtk::Grid         condGrid_;
+            Gtk::Button       exitButton2_;
+            Gtk::Button       saveButton_;
+            Gtk::Button       backButton_;
+            
+            Gtk::Grid         resultsGrid_;
 
-            Gtk::Label        nameLabel_;
-            Gtk::Label        mwLabel_;
-            Gtk::Label        diffLabel_;
-            Gtk::Label        reactionLabel_;
-            Gtk::Label        heatLabel_;
-            Gtk::Label        cpLabel_;
             Gtk::Label        condLabel_;
             Gtk::Label        muLabel_;
-            
-            Gtk::Button       doneButton_;
-            
-            Gtk::ComboBoxText heatCombo_;
-            Gtk::ComboBoxText cpCombo_;
+            Gtk::Label        diffLabel_;
+            Gtk::Label        cpLabel_;
+            Gtk::Label        hLabel_;
+            Gtk::Label        sLabel_;
+
             Gtk::ComboBoxText condCombo_;
             Gtk::ComboBoxText diffCombo_;
             Gtk::ComboBoxText muCombo_;
+            Gtk::ComboBoxText cpCombo_;
+            Gtk::ComboBoxText hCombo_;
+            Gtk::ComboBoxText sCombo_;
 
-            Gtk::Entry          cpEntry_;
-            Gtk::Entry          condEntry_;
-            Gtk::Entry          muEntry_;
-            
-            std::vector<Gtk::Label *>   speciesNameLabel_;
-            std::vector<Gtk::Label *>   reactionNumberLabel_;
+            std::vector<Gtk::Label *>          nameVector_;
+            std::vector<Gtk::Label *>          condVector_;
+            std::vector<Gtk::Label *>          muVector_;
+            std::vector<Gtk::Label *>          diffVector_;
+            std::vector<Gtk::Label *>          cpVector_;
+            std::vector<Gtk::Label *>          hVector_;
+            std::vector<Gtk::Label *>          sVector_;
+            std::vector<Gtk::ComboBoxText *>   speciesCombo_;
+            std::vector<Gtk::Box *>            diffBoxVector_;
 
-            std::vector<Gtk::Entry *>   speciesMwEntry_;
-            std::vector<Gtk::Entry *>   speciesDiffEntry_;
-            std::vector<Gtk::Entry *>   speciesHeatEntry_;
-            
-            
-            unsigned int              NR_;
-            unsigned int              NC_;
-            
-            std::vector<std::string>  n_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  small;
-            std::vector<std::string>  big;
-            
-            std::vector<double>       MW_;
-            std::vector<double>       diff_;
-            std::vector<double>       Q_;
-            
+            std::string kineticType_;
 
-            std::string               type_;
-            std::string               energy_;
-            
-            double                    cp_;
-            double                    cond_;
-            double                    mu_;
-
-            std::vector<std::vector<std::string> > name_;
-            std::vector<std::vector<int> >         stoich_;
+            ASALI::canteraInterface        *canteraInterface_;
+            ASALI::speciesPopup            *speciesNames_;
 
     };
 }
