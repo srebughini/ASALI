@@ -86,6 +86,8 @@ namespace ASALI
             std::vector<double>  get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
             std::vector<double>  get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
             double               get_MWmix(const std::vector<double> MW, const std::vector<double> x);
+            
+            std::string          get_type() {return type_;};
 
 
             virtual ~asaliProperties();
