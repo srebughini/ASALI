@@ -49,6 +49,7 @@
 #include <algorithm>
 #include <limits>
 #include <thread>
+#include "chemkinConverter.h"
 #include "canteraInterface.h"
 #include "speciesPopup.h"
 #include "transportProperties.h"
@@ -82,6 +83,7 @@ namespace ASALI
             void loadCanteraInput();
             void defaultCanteraInput();
             void noneInput();
+            void chemkin();
             void chemistryMenu2();
             void transport();
             void thermo();
@@ -108,6 +110,7 @@ namespace ASALI
             Gtk::Button       defaultCanteraInputButton_;
             Gtk::Button       loadCanteraInputButton_;
             Gtk::Button       noneInputButton_;
+            Gtk::Button       conversionButton_;
             Gtk::Button       canteraInputButton_;
             Gtk::Button       transportButton_;
             Gtk::Button       thermoButton_;
@@ -160,6 +163,7 @@ namespace ASALI
             Cantera::Transport                *transport_;
             Cantera::Kinetics                 *kinetic_;
             Cantera::Interface                *surface_;
+            ASALI::chemkinConverter           *converter_;
             ASALI::canteraInterface           *canteraInterface_;
             ASALI::speciesPopup               *speciesNames_;
             ASALI::transportProperties        *transportMenu_;
