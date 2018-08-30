@@ -51,6 +51,7 @@ namespace ASALI
       defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
       loadCanteraInputButton_("Load CANTERA kinetic/properties file"),
       noneInputButton_("User defined constant properties"),
+      conversionButton_("CHEMKIN -> CANTERA converter"),
       canteraInputButton_("Select CANTERA kinetic/properties file"),
       transportButton_("Transport properties"),
       thermoButton_("Thermodynamic properties"),
@@ -159,7 +160,9 @@ namespace ASALI
             loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::loadCanteraInput));
             chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
             noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::noneInput));
-            
+            chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
+            conversionButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemkin));
+ 
             //Adding exit button
             chemistryButtonBox_.pack_start(exitButton2_, Gtk::PACK_SHRINK);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
@@ -309,6 +312,16 @@ namespace ASALI
     {
         kineticType_ = "none";
         this->mainMenu();
+    }
+
+    void Asali::chemkin()
+    {
+        if (!converter_)
+        {
+            delete converter_;
+        }
+        converter_ = new ASALI::chemkinConverter();
+        converter_->show();
     }
 
     void Asali::loadCanteraInput()
