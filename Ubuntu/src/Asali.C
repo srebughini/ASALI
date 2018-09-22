@@ -64,6 +64,7 @@ namespace ASALI
       cstrButton_("Continuous Stirred Tank Reactor"),
       ph1dButton_("1D Pseudo-homogeneous Plug Flow Reactor"),
       het1dButton_("1D Heterogeneous Plug Flow Reactor"),
+      dpButton_("Pressure drops"),
       linkButtonBox_(Gtk::ORIENTATION_VERTICAL),
       chemistryButtonBox_(Gtk::ORIENTATION_VERTICAL),
       menuButtonBox_(Gtk::ORIENTATION_VERTICAL),
@@ -223,7 +224,8 @@ namespace ASALI
             ph1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1d));
             reactorButtonBox_.pack_start(het1dButton_, Gtk::PACK_SHRINK);
             het1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1d));
-
+            reactorButtonBox_.pack_start(dpButton_, Gtk::PACK_SHRINK);
+            dpButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::dp));
 
             //Adding exit button
             reactorButtonBox_.pack_start(reactorButtonGrid_, Gtk::PACK_SHRINK);
@@ -725,6 +727,17 @@ namespace ASALI
         het1dMenu_ = new ASALI::het1dReactor(thermo_,transport_,kinetic_,surface_,kineticType_);
         het1dMenu_->show();
     }
+
+    void Asali::dp()
+    {
+        if (!dpMenu_)
+        {
+            delete dpMenu_;
+        }
+        dpMenu_ = new ASALI::pressureDrops(canteraInterface_,speciesNames_,kineticType_);
+        dpMenu_->show();
+    }
+
 
     void Asali::exit()
     {

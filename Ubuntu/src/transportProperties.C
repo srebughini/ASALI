@@ -640,6 +640,7 @@ namespace ASALI
 
     void transportProperties::exit()
     {
+		doneButton_.set_label("Done");
         this->hide();
     }
     
