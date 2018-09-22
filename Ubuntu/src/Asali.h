@@ -61,6 +61,7 @@
 #include "cstrReactor.h"
 #include "ph1dReactor.h"
 #include "het1dReactor.h"
+#include "pressureDrops.h"
 
 namespace ASALI
 {
@@ -95,6 +96,7 @@ namespace ASALI
             void cstr();
             void ph1d();
             void het1d();
+            void dp();
             bool chemistryMenu1(GdkEventButton*);
 
             std::string       getBeer();
@@ -123,6 +125,7 @@ namespace ASALI
             Gtk::Button       cstrButton_;
             Gtk::Button       ph1dButton_;
             Gtk::Button       het1dButton_;
+            Gtk::Button       dpButton_;
             
             Gtk::Box          menuBox_;
             Gtk::Box          chemistryBox_;
@@ -175,6 +178,7 @@ namespace ASALI
             ASALI::cstrReactor                *cstrMenu_;
             ASALI::ph1dReactor                *ph1dMenu_;
             ASALI::het1dReactor               *het1dMenu_;
+            ASALI::pressureDrops              *dpMenu_;
 
     };
 }

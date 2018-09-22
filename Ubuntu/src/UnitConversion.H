@@ -166,6 +166,21 @@ void ConvertsToPascal(double &v, std::string m)
         v=v*1.e05*1e-03;
 }
 
+void ConvertsFromPascal(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "Pa")
+        v=v;
+    else if(m == "bar")
+        v=v/1.e05;
+    else if(m == "atm")
+        v=v/101325.;
+    else if(m == "mmHg")
+        v=v*760./101325;
+    else if(m == "torr")
+        v=v*760./101325;
+}
 
 void ConvertsToKelvin(double &v, std::string m)
 {
