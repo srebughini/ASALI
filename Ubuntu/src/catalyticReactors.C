@@ -257,6 +257,10 @@ namespace ASALI
         {
             signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::kineticShow));
         }
+        else if ( kineticCombo_.get_active_text() == "ASALI" && kineticType_ == "nokinetic")
+        {
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::kineticShow));
+        }
         else if ( kineticCombo_.get_active_text() == "ASALI" && kineticType_ == "load")
         {
             signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::kineticShow));
@@ -267,7 +271,7 @@ namespace ASALI
         }
         else
         {
-            Gtk::MessageDialog dialog(*this,"No kinetic scheme implemented in database/data.xml,\nplease select ASALI kinetic type.",true,Gtk::MESSAGE_WARNING);
+            Gtk::MessageDialog dialog(*this,"No kinetic scheme implemented, please select ASALI kinetic type.",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeer(),true);
             dialog.run();
         }
@@ -372,7 +376,8 @@ namespace ASALI
         else
         {
             if ( kineticType_ == "default" ||
-                 kineticType_ == "load" )
+                 kineticType_ == "load"    ||
+                 kineticType_ == "nokinetic")
             {
                 std::vector<int> check = canteraInterface_->checkNames(n_);
 

@@ -47,6 +47,7 @@ namespace ASALI
       exitButton_("Exit"),
       saveButton_("Save"),
       calculateButton_("Calculate"),
+      helpButton_("Available species"),
       tempBox_(Gtk::ORIENTATION_VERTICAL),
       pressBox_(Gtk::ORIENTATION_VERTICAL),
       lengthBox_(Gtk::ORIENTATION_VERTICAL),
@@ -191,6 +192,13 @@ namespace ASALI
         grid_.attach(exitButton_,3,5,1,1);
         exitButton_.signal_clicked().connect(sigc::mem_fun(*this,&vacuumProperties::exit));
 
+        //Add help button
+        if ( kineticType_ == "default" )
+        {
+            grid_.attach(helpButton_,1,5,1,1);
+            helpButton_.signal_clicked().connect(sigc::mem_fun(*this,&vacuumProperties::availableSpecies));
+        }
+
         this->show_all_children();
     }
 
@@ -222,7 +230,8 @@ namespace ASALI
         else
         {
             if ( kineticType_ == "default" ||
-                 kineticType_ == "load" )
+                 kineticType_ == "load"    ||
+                 kineticType_ == "nokinetic")
             {
                 std::vector<int> check = canteraInterface_->checkNames(n_);
 

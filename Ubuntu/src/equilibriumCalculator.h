@@ -61,9 +61,9 @@ namespace ASALI
 
         private:
         
-			void clean();
-			void initialFractionUnitConversion();
-			void finalFractionUnitConversion();
+            void clean();
+            void initialFractionUnitConversion();
+            void finalFractionUnitConversion();
 
             Gtk::Button       exitButton2_;
             Gtk::Button       saveButton_;
@@ -80,7 +80,7 @@ namespace ASALI
             Gtk::ComboBoxText finalFractionCombo_;
 
 
-			std::vector<Gtk::Label *> nameVector_;
+            std::vector<Gtk::Label *> nameVector_;
             std::vector<Gtk::Label *> initialFractionVector_;
             std::vector<Gtk::Label *> finalFractionVector_;
 

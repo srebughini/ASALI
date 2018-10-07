@@ -37,13 +37,13 @@
 ##############################################################################################*/
 
 {
-	for (unsigned int i=0;i<beer_.size();i++)
-	{
-		if ( beer_[i].length() <= 75 )
-		{
-			beerShort_.push_back(beer_[i]);
-		}
-	}
+    for (unsigned int i=0;i<beer_.size();i++)
+    {
+        if ( beer_[i].length() <= 75 )
+        {
+            beerShort_.push_back(beer_[i]);
+        }
+    }
 }
 
 
