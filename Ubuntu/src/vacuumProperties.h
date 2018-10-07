@@ -67,6 +67,7 @@ namespace ASALI
             Gtk::Button exitButton_;
             Gtk::Button saveButton_;
             Gtk::Button calculateButton_;
+            Gtk::Button helpButton_;
 
             Gtk::Box tempBox_;
             Gtk::Box pressBox_;

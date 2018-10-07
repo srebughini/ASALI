@@ -215,6 +215,10 @@ namespace ASALI
                         {
                             recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
                         }
+                        else if ( kineticType_ == "nokinetic" )
+                        {
+                            recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
+                        }
                         else if ( kineticType_ == "load" )
                         {
                         }

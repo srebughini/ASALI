@@ -640,7 +640,7 @@ namespace ASALI
 
     void transportProperties::exit()
     {
-		doneButton_.set_label("Done");
+        doneButton_.set_label("Done");
         this->hide();
     }
     
@@ -698,7 +698,8 @@ namespace ASALI
         else
         {
             if ( kineticType_ == "default" ||
-                 kineticType_ == "load" )
+                 kineticType_ == "load"    ||
+                 kineticType_ == "nokinetic")
             {
                 std::vector<int> check = canteraInterface_->checkNames(n_);
 

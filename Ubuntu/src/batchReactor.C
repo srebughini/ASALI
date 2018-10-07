@@ -183,6 +183,10 @@ namespace ASALI
                         {
                             recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
                         }
+                        else if ( kineticType_ == "nokinetic" )
+                        {
+                            recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
+                        }
                         else if ( kineticType_ == "load" )
                         {
                         }
@@ -405,7 +409,6 @@ namespace ASALI
                 }
                 recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             }
-
         }
         this->resize(recapMainBox_.get_width(),recapMainBox_.get_height());
         this->show_all_children();

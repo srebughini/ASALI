@@ -351,122 +351,150 @@ namespace ASALI
                 if (filename.find("cti")!=std::string::npos)
                 {
                     #if ASALI_ON_WINDOW == 1
-                        Gtk::MessageDialog dialog(*this,"On WINDOWS you should use the xml version of CANTERA input file",true,Gtk::MESSAGE_WARNING);
-                        dialog.set_secondary_text(this->getBeer(),true);
-                        dialog.run();
+                    Gtk::MessageDialog errorDialog(*this,"On WINDOWS you should use the xml version of CANTERA input file",true,Gtk::MESSAGE_WARNING);
+                    errorDialog.set_secondary_text(this->getBeer(),true);
+                    errorDialog.run();
+                    dialog.hide();
+                    break;
                     #else
-                        std::vector<std::string> readed;
-                        while (!input.eof()) 
-                        {
-                            std::string line;
-                            getline(input,line);
+                    std::vector<std::string> readed;
+                    while (!input.eof()) 
+                    {
+                        std::string line;
+                        getline(input,line);
 
-                            if (line.find("name")!=std::string::npos)
+                        if (line.find("name")!=std::string::npos)
+                        {
+                            readed.push_back(line);
+                        }
+                    }
+
+                    std::vector<std::string> type(2);
+                    type[0] = "none";
+                    type[1] = "none";
+                    for (unsigned int i=0;i<readed.size();i++)
+                    {
+                        std::string dummyString = readed[i];
+
+                        for (std::size_t j=0;j<dummyString.size();j++)
+                        {
+                            if ( dummyString.substr(j,1) == "(" )
                             {
-                                readed.push_back(line);
+                                dummyString.replace(j,1," ");
+                            }
+                            else if ( dummyString.substr(j,1) == "\"" )
+                            {
+                                dummyString.replace(j,1," ");
+                            }
+                            else if ( dummyString.substr(j,1) == "=" )
+                            {
+                                dummyString.replace(j,1," ");
+                            }
+                            else if ( dummyString.substr(j,1) == "," )
+                            {
+                                dummyString.replace(j,1," ");
+                            }
+                            else if ( dummyString.substr(j,1) == "'" )
+                            {
+                                dummyString.replace(j,1," ");
+                            }
+                        }
+
+                        std::vector<std::string> dummyVector;
+                        dummyVector.clear();
+
+                        std::istringstream iss(dummyString);
+                        while (iss >> dummyString)
+                        {
+                            dummyVector.push_back(dummyString);
+                        }
+
+                        if ( dummyVector.size() > 2 )
+                        {
+                            for (unsigned int j=0;j<dummyVector.size()-1;j++)
+                            {
+                                if (dummyVector[j] == "ideal_gas" &&
+                                    dummyVector[j + 1] == "name"  )
+                                {
+                                    type[0] = dummyVector[j+2];
+                                    type[0].erase(std::remove(type[0].begin(), type[0].end(), '"'), type[0].end());
+                                    type[0].erase(std::remove(type[0].begin(), type[0].end(), ' '), type[0].end());
+                                }
+                                else if (dummyVector[j] == "ideal_interface" &&
+                                         dummyVector[j + 1] == "name"  )
+                                {
+                                    type[1] = dummyVector[j+2];
+                                    type[1].erase(std::remove(type[1].begin(), type[1].end(), '"'), type[1].end());
+                                    type[1].erase(std::remove(type[1].begin(), type[1].end(), ' '), type[1].end());
+                                }
                             }
                         }
                         
-                        std::vector<std::string> type(2);
-                        type[0] = "none";
-                        type[1] = "none";
-                        for (unsigned int i=0;i<readed.size();i++)
+                        if ( type[0] != "none" && type[1] != "none")
                         {
-                            std::string dummyString = readed[i];
+                            break;
+                        }
+                    }
 
-                            for (std::size_t j=0;j<dummyString.size();j++)
+                    if ( type[0] == "none" &&
+                         type[1] == "none" )
+                    {
+                        Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                        errorDialog.set_secondary_text(this->getBeerShort(),true);
+                        errorDialog.run();
+                        dialog.hide();
+                        break;
+                    }
+                    else if (  type[0] != "none" &&
+                               type[1] == "none" )
+                    {
+                        Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
+                        smallDialog.set_secondary_text(this->getBeerShort(),true);
+                        int  answer = smallDialog.run();
+
+                        //Handle the response:
+                        switch(answer)
+                        {
+                            case(Gtk::RESPONSE_YES):
                             {
-                                if ( dummyString.substr(j,1) == "(" )
-                                {
-                                    dummyString.replace(j,1," ");
-                                }
-                                else if ( dummyString.substr(j,1) == "\"" )
-                                {
-                                    dummyString.replace(j,1," ");
-                                }
-                                else if ( dummyString.substr(j,1) == "=" )
-                                {
-                                    dummyString.replace(j,1," ");
-                                }
-                                else if ( dummyString.substr(j,1) == "," )
-                                {
-                                    dummyString.replace(j,1," ");
-                                }
-                                else if ( dummyString.substr(j,1) == "'" )
-                                {
-                                    dummyString.replace(j,1," ");
-                                }
+                                thermo_           = Cantera::newPhase(filename,type[0]);
+                                transport_        = Cantera::newDefaultTransportMgr(thermo_);
+                                canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                                speciesNames_     = new ASALI::speciesPopup();
+                                kineticType_      = "nokinetic";
+                                smallDialog.hide();
+                                this->mainMenu();
+                                break;
                             }
-
-                            std::vector<std::string> dummyVector;
-                            dummyVector.clear();
-
-                            std::istringstream iss(dummyString);
-                            while (iss >> dummyString)
+                            default:
                             {
-                                dummyVector.push_back(dummyString);
-                            }
-
-                            if ( dummyVector.size() > 2 )
-                            {
-                                for (unsigned int j=0;j<dummyVector.size()-1;j++)
-                                {
-                                    if (dummyVector[j] == "ideal_gas" &&
-                                        dummyVector[j + 1] == "name"  )
-                                    {
-                                        type[0] = dummyVector[j+2];
-                                        type[0].erase(std::remove(type[0].begin(), type[0].end(), '"'), type[0].end());
-                                        type[0].erase(std::remove(type[0].begin(), type[0].end(), ' '), type[0].end());
-                                    }
-                                    else if (dummyVector[j] == "ideal_interface" &&
-                                             dummyVector[j + 1] == "name"  )
-                                    {
-                                        type[1] = dummyVector[j+2];
-                                        type[1].erase(std::remove(type[1].begin(), type[1].end(), '"'), type[1].end());
-                                        type[1].erase(std::remove(type[1].begin(), type[1].end(), ' '), type[1].end());
-                                    }
-                                }
-                            }
-                            
-                            if ( type[0] != "none" && type[1] != "none")
-                            {
+                                smallDialog.hide();
                                 break;
                             }
                         }
-                        
-                        if ( type[0] == "none" ||
-                             type[1] == "none" )
-                        {
-                            Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                            dialog.set_secondary_text(this->getBeerShort(),true);
-                            dialog.run();
-                        }
-                        else
-                        {
-                            thermo_  = Cantera::newPhase(filename,type[0]);
-                            std::vector<Cantera::ThermoPhase*> phases{thermo_};
-                            for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                            {
-                                std::cout << thermo_->speciesName(i) << std::endl;
-                            }
-
-                            kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-                            surface_    = Cantera::importInterface(filename,type[1],phases);
-                            transport_  = Cantera::newDefaultTransportMgr(thermo_);
-
-                            canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
-
-                            kineticType_ = "load";
-
-                            dialog.hide();
-                            this->mainMenu();
-                            break;
-                        }
+                        dialog.hide();
+                        break;
+                    }
+                    else
+                    {
+                        thermo_    = Cantera::newPhase(filename,type[0]);
+                        std::vector<Cantera::ThermoPhase*> phases{thermo_};
+                        kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+                        surface_    = Cantera::importInterface(filename,type[1],phases);
+                        transport_  = Cantera::newDefaultTransportMgr(thermo_);
+                        canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                        kineticType_ = "load";
+                        dialog.hide();
+                        this->mainMenu();
+                        break;
+                    }
                     #endif
                 }
                 else if (filename.find("xml")!=std::string::npos)
                 {
                     std::vector<std::string> readed(2);
+                    readed[0] = "none";
+                    readed[1] = "none";
                     {
                         std::vector<std::string> a;
                         std::vector<std::string> b;
@@ -483,7 +511,7 @@ namespace ASALI
                                 b.push_back(line);
                             }
                         }
-                        
+
                         for (unsigned int i=0;i<b.size();i++)
                         {
                             if (b[i].find("Interface")!=std::string::npos)
@@ -497,88 +525,182 @@ namespace ASALI
                         }
                     }
                     
-                    std::vector<std::string> type(2);
-                    type[0] = "none";
-                    type[1] = "none";
-                    for (unsigned int i=0;i<readed.size();i++)
+                    if ( readed[0] == "none" ||
+                         readed[1] == "none" )
                     {
-                        std::string dummyString = readed[i];
+                        Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
+                        smallDialog.set_secondary_text(this->getBeerShort(),true);
+                        int answer = smallDialog.run();
 
-                        for (std::size_t j=0;j<dummyString.size();j++)
+                        //Handle the response:
+                        switch(answer)
                         {
-                            if ( dummyString.substr(j,1) == ">" )
+                            case(Gtk::RESPONSE_YES):
                             {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "\"" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "=" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                        }
-
-                        std::vector<std::string> dummyVector;
-                        dummyVector.clear();
-
-                        std::istringstream iss(dummyString);
-                        while (iss >> dummyString)
-                        {
-                            dummyVector.push_back(dummyString);
-                        }
-
-                        if ( dummyVector.size() > 4 )
-                        {
-                            for (unsigned int j=0;j<dummyVector.size()-1;j++)
-                            {
-                                if (dummyVector[j] == "<phase"  &&
-                                    dummyVector[j + 1] == "dim" &&
-                                    dummyVector[j + 3] == "id" )
+                                std::string type = "none";
+                                for (unsigned int i=0;i<readed.size();i++)
                                 {
-                                    type[i] = dummyVector[j+4];
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
+                                    if ( readed[i] != "none" )
+                                    {
+                                        std::string dummyString = readed[i];
+
+                                        for (std::size_t j=0;j<dummyString.size();j++)
+                                        {
+                                            if ( dummyString.substr(j,1) == ">" )
+                                            {
+                                                dummyString.replace(j,1," ");
+                                            }
+                                            else if ( dummyString.substr(j,1) == "\"" )
+                                            {
+                                                dummyString.replace(j,1," ");
+                                            }
+                                            else if ( dummyString.substr(j,1) == "=" )
+                                            {
+                                                dummyString.replace(j,1," ");
+                                            }
+                                        }
+
+                                        std::vector<std::string> dummyVector;
+                                        dummyVector.clear();
+
+                                        std::istringstream iss(dummyString);
+                                        while (iss >> dummyString)
+                                        {
+                                            dummyVector.push_back(dummyString);
+                                        }
+
+                                        if ( dummyVector.size() > 4 )
+                                        {
+                                            for (unsigned int j=0;j<dummyVector.size()-1;j++)
+                                            {
+                                                if (dummyVector[j] == "<phase"  &&
+                                                    dummyVector[j + 1] == "dim" &&
+                                                    dummyVector[j + 3] == "id" )
+                                                {
+                                                    type = dummyVector[j+4];
+                                                    type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
+                                                    type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if ( type == "none")
+                                {
+                                    Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA input file.",true,Gtk::MESSAGE_WARNING);
+                                    errorDialog.set_secondary_text(this->getBeerShort(),true);
+                                    errorDialog.run();
+                                    smallDialog.hide();
+                                    break;
+                                }
+                                else
+                                {
+                                    thermo_           = Cantera::newPhase(filename,type);
+                                    transport_        = Cantera::newDefaultTransportMgr(thermo_);
+                                    canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                                    speciesNames_     = new ASALI::speciesPopup();
+                                    kineticType_      = "nokinetic";
+                                    smallDialog.hide();
+                                    this->mainMenu();
+                                    break;
                                 }
                             }
+                            default:
+                            {
+                                smallDialog.hide();
+                                break;
+                            }
                         }
-                        
-                        if ( type[0] != "none" && type[1] != "none")
-                        {
-                            break;
-                        }
-                    }
-                    
-                    if ( type[0] == "none" ||
-                         type[1] == "none" )
-                    {
-                        Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                        dialog.set_secondary_text(this->getBeerShort(),true);
-                        dialog.run();
+                        dialog.hide();
+                        break;
                     }
                     else
                     {
-                        thermo_     = Cantera::newPhase(filename,type[0]);
-                        std::vector<Cantera::ThermoPhase*>  phases{thermo_};
-                        surface_    = Cantera::importInterface(filename,type[1],phases);
-                        kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-                        transport_  = Cantera::newDefaultTransportMgr(thermo_);
-                        
-                        canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                        std::vector<std::string> type(2);
+                        type[0] = "none";
+                        type[1] = "none";
+                        for (unsigned int i=0;i<readed.size();i++)
+                        {
+                            std::string dummyString = readed[i];
 
-                        kineticType_ = "load";
+                            for (std::size_t j=0;j<dummyString.size();j++)
+                            {
+                                if ( dummyString.substr(j,1) == ">" )
+                                {
+                                    dummyString.replace(j,1," ");
+                                }
+                                else if ( dummyString.substr(j,1) == "\"" )
+                                {
+                                    dummyString.replace(j,1," ");
+                                }
+                                else if ( dummyString.substr(j,1) == "=" )
+                                {
+                                    dummyString.replace(j,1," ");
+                                }
+                            }
 
-                        dialog.hide();
-                        this->mainMenu();
-                        break;
+                            std::vector<std::string> dummyVector;
+                            dummyVector.clear();
+
+                            std::istringstream iss(dummyString);
+                            while (iss >> dummyString)
+                            {
+                                dummyVector.push_back(dummyString);
+                            }
+
+                            if ( dummyVector.size() > 4 )
+                            {
+                                for (unsigned int j=0;j<dummyVector.size()-1;j++)
+                                {
+                                    if (dummyVector[j] == "<phase"  &&
+                                        dummyVector[j + 1] == "dim" &&
+                                        dummyVector[j + 3] == "id" )
+                                    {
+                                        type[i] = dummyVector[j+4];
+                                        type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
+                                        type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
+                                    }
+                                }
+                            }
+
+                            if ( type[0] != "none" && type[1] != "none")
+                            {
+                                break;
+                            }
+                        }
+
+                        if ( type[0] == "none" ||
+                             type[1] == "none" )
+                        {
+                            Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                            errorDialog.set_secondary_text(this->getBeerShort(),true);
+                            errorDialog.run();
+                            dialog.hide();
+                            break;
+                        }
+                        else
+                        {
+                            thermo_     = Cantera::newPhase(filename,type[0]);
+                            std::vector<Cantera::ThermoPhase*>  phases{thermo_};
+                            surface_    = Cantera::importInterface(filename,type[1],phases);
+                            kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+                            transport_  = Cantera::newDefaultTransportMgr(thermo_);
+                            canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                            kineticType_ = "load";
+                            dialog.hide();
+                            this->mainMenu();
+                            break;
+                        }
                     }
                 }
                 else
                 {
-                    Gtk::MessageDialog dialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                    dialog.set_secondary_text(this->getBeerShort(),true);
-                    dialog.run();
+                    Gtk::MessageDialog smallDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
+                    smallDialog.set_secondary_text(this->getBeerShort(),true);
+                    smallDialog.run();
+                    dialog.hide();
+                    break;
                 }
             }
             case(Gtk::RESPONSE_CANCEL):
@@ -588,7 +710,7 @@ namespace ASALI
             }
             default:
             {
-                std::cout << "Unexpected button clicked." << std::endl;
+                dialog.hide();
                 break;
             }
         }
