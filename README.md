@@ -71,7 +71,7 @@ Details can be found at: http://gnuplot.info/
 
 ##### 2.1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
-`git clone https://github.com/Cantera/cantera.git`
+`git clone https://github.com/Cantera/cantera.git`   
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 `scons build system_sundials=n`   
 `sudo scons install`    
