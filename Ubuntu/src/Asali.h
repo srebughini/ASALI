@@ -120,7 +120,6 @@ namespace ASALI
             Gtk::Button       equilibriumButton_;
             Gtk::Button       reactorsButton_;
             Gtk::Button       vacuumButton_;
-            Gtk::Button       pelletButton_;
             Gtk::Button       batchButton_;
             Gtk::Button       cstrButton_;
             Gtk::Button       ph1dButton_;
@@ -179,6 +178,5 @@ namespace ASALI
             ASALI::ph1dReactor                *ph1dMenu_;
             ASALI::het1dReactor               *het1dMenu_;
             ASALI::pressureDrops              *dpMenu_;
-
     };
 }

@@ -59,12 +59,14 @@ namespace ASALI
         public:
             asaliPlot();
             
+            #include "UnitConversion.H"
+            
             void setSpecieNames(const std::vector<std::string> n);
             void setSiteNames(const std::vector<std::string> nc);
             
             void setTime(const std::vector<double> t);
             void setVolume(const std::vector<double> V);
-            void setLength(const std::vector<double> t);
+            void setLength(const std::vector<double> L, const std::string Lud);
             
             void setSpecie(const std::vector<std::vector<double> > y,const std::vector<std::vector<double> > x);
             void setSpecie(const std::vector<std::vector<std::vector<double> > > y, const std::vector<std::vector<std::vector<double>> > x);
@@ -121,6 +123,7 @@ namespace ASALI
 
             std::string  type_;
             std::string  resolution_;
+            std::string  Lud_;
 
             std::vector<double> t_;
             std::vector<double> T_;

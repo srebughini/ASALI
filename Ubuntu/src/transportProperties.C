@@ -677,7 +677,7 @@ namespace ASALI
 
         n_.clear();
         x_.clear();
-        for (unsigned int i=0;i<10;i++)
+        for (unsigned int i=0;i<NS_;i++)
         {
             if ( !n[i].empty() )
             {
@@ -719,13 +719,14 @@ namespace ASALI
                 }
 
                 {
-                    double sum = 0.;
+
+                    double sum = SumElements(x_);
                     for(unsigned int i=0;i<x_.size();i++)
                     {
-                        sum = sum + x_[i];
+                        x_[i] = x_[i]/sum;
                     }
                     
-                    if ( sum != 1. )
+                    if ( fabs(sum - 1.) > 1e-06 )
                     {
                         checkInput_.first  = 4444;
                         checkInput_.second = false;
@@ -738,7 +739,6 @@ namespace ASALI
                 checkInput_.second = true;
             }
         }
-        
     }
 
     void transportProperties::checkInput(unsigned int i)

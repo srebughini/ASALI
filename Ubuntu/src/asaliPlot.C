@@ -198,10 +198,16 @@ namespace ASALI
         t_ = t;
     }
 
-    void asaliPlot::setLength(const std::vector<double> L)
+    void asaliPlot::setLength(const std::vector<double> L,const std::string Lud)
     {
-        L_  = L;
-        NP_ = L.size(); 
+        L_   = L;
+        Lud_ = Lud;
+        NP_  = L.size();
+
+        for (unsigned int i=0;i<NP_;i++)
+        {
+            ConvertsFromMeter(L_[i],Lud_);
+        }
     }
 
     void asaliPlot::setTemperature(const std::vector<double> T)
@@ -783,7 +789,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0" << std::endl;
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;;
                             output << "set size square" << std::endl;
 
@@ -816,7 +822,7 @@ namespace ASALI
                             output << "massFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;
                             output << "set size square" << std::endl;
 
@@ -884,7 +890,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 1" << std::endl;
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;;
                             output << "set size square" << std::endl;
 
@@ -917,7 +923,7 @@ namespace ASALI
                             output << "moleFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;
                             output << "set size square" << std::endl;
 
@@ -986,7 +992,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 2" << std::endl;
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;;
                             output << "set size square" << std::endl;
 
@@ -1019,7 +1025,7 @@ namespace ASALI
                             output << "coverage.png'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "set key outside right center" << std::endl;
                             output << "set size square" << std::endl;
 
@@ -1155,7 +1161,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1194,7 +1200,7 @@ namespace ASALI
                             output << "massFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1283,7 +1289,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1322,7 +1328,7 @@ namespace ASALI
                             output << "moleFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1411,7 +1417,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1450,7 +1456,7 @@ namespace ASALI
                             output << "siteFraction.png'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -1516,7 +1522,7 @@ namespace ASALI
                                 #if ASALI_ON_WINDOW == 0
                                 output << "set terminal wxt 0 font 'Helvetica,10' "<< std::endl;
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;   
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -1539,7 +1545,7 @@ namespace ASALI
                                 output << "set output '" << foldername << "/Temperature.png'" << std::endl;
 
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;;
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -1975,7 +1981,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2014,7 +2020,7 @@ namespace ASALI
                             output << "massFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2103,7 +2109,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2142,7 +2148,7 @@ namespace ASALI
                             output << "moleFraction.png'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2231,7 +2237,7 @@ namespace ASALI
                             #if ASALI_ON_WINDOW == 0
                             output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;   
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2270,7 +2276,7 @@ namespace ASALI
                             output << "siteFraction.png'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
-                            output << "set xlabel 'Length [m]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
                             output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
 
@@ -2340,7 +2346,7 @@ namespace ASALI
                                 #if ASALI_ON_WINDOW == 0
                                 output << "set terminal wxt 0 font 'Helvetica,10' "<< std::endl;
                                 output << "set ylabel 'Bulk Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;   
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -2363,7 +2369,7 @@ namespace ASALI
                                 output << "set output '" << foldername << "/Temperature_bulk.png'" << std::endl;
 
                                 output << "set ylabel 'Bulk Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;;
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -2387,7 +2393,7 @@ namespace ASALI
                                 #if ASALI_ON_WINDOW == 0
                                 output << "set terminal wxt 0 font 'Helvetica,10' "<< std::endl;
                                 output << "set ylabel 'Wall Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;   
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -2408,9 +2414,8 @@ namespace ASALI
                                 output << std::endl;
                                 output << "set terminal pngcairo font 'Helvetica,10' " << std::endl;
                                 output << "set output '" << foldername << "/Temperature_wall.png'" << std::endl;
-
                                 output << "set ylabel 'Wall Temperature [K]'" << std::endl;
-                                output << "set xlabel 'Length [m]'" << std::endl;
+                                output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;;
 
                                 for (unsigned int k=0;k<t_.size();k++)
@@ -2433,6 +2438,389 @@ namespace ASALI
                         }
                     }
                 }
+                else if ( type_ == "pellet")
+                {
+                    if ( massButton_.size() != 0 )
+                    {
+                        //Make .dat for mass fraction
+                        for (unsigned int i=0;i<NC_;i++)
+                        {
+                            if ( massButton_[i]->get_active() )
+                            {
+                                massNames.push_back(n_[i]);
+
+                                std::string filename = foldername + "/mass." + n_[i] + ".dat";
+                                std::ofstream output;
+                                const char *path = filename.c_str();
+                                output.open(path,std::ios::out);
+                                output.setf(std::ios::scientific);
+                                output.precision(6);
+                                for (unsigned int j=0;j<L_.size();j++)
+                                {
+                                    output << L_[j] << "\t";
+                                    for (unsigned int k=0;k<t_.size();k++)
+                                    {
+                                        output << std::max(0.,yt_[k][j][i]) << "\t";
+                                    }
+                                    output << std::endl;
+                                }
+                                output.close();
+                            }
+                        }
+
+                        //Make .gnuplot for mass fraction
+                        if ( massNames.size() != 0 )
+                        {
+                            int Ncol = 3;
+                            int Nrow = std::round(massNames.size()/Ncol);
+
+                            if ( Nrow == 0 )
+                            {
+                                Ncol = massNames.size();
+                                Nrow = 1;
+                            }
+                            else
+                            {
+                                int diff = massNames.size() - Nrow*Ncol;
+                                
+                                if ( diff != 0 )
+                                {
+                                    Nrow++;
+                                }
+                            }
+
+                            std::string filename = foldername + "/mass.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set ylabel 'Mass fraction [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;   
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                output << "set title '" << massNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (massNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+                            #endif
+
+                            output << std::endl;
+                            output << "set terminal pngcairo font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                output << massNames[i] << "_";
+                            }
+                            output << "massFraction.png'" << std::endl;
+                            output << "set ylabel 'Mass fraction [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;;
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<massNames.size();i++)
+                            {
+                                output << "set title '" << massNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (massNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mass." << massNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+
+                            output.close();
+                        }
+                    }
+
+                    if ( moleButton_.size() != 0 )
+                    {
+                        //Make .dat for mole fraction
+                        for (unsigned int i=0;i<NC_;i++)
+                        {
+                            if ( moleButton_[i]->get_active() )
+                            {
+                                moleNames.push_back(n_[i]);
+
+                                std::string filename = foldername + "/mole." + n_[i] + ".dat";
+                                std::ofstream output;
+                                const char *path = filename.c_str();
+                                output.open(path,std::ios::out);
+                                output.setf(std::ios::scientific);
+                                output.precision(6);
+                                for (unsigned int j=0;j<L_.size();j++)
+                                {
+                                    output << L_[j] << "\t";
+                                    for (unsigned int k=0;k<t_.size();k++)
+                                    {
+                                        output << std::max(0.,xt_[k][j][i]) << "\t";
+                                    }
+                                    output << std::endl;
+                                }
+                                output.close();
+                            }
+                        }
+
+                        //Make .gnuplot for mole fraction
+                        if ( moleNames.size() != 0 )
+                        {
+                            int Ncol = 3;
+                            int Nrow = std::round(moleNames.size()/Ncol);
+
+                            if ( Nrow == 0 )
+                            {
+                                Ncol = moleNames.size();
+                                Nrow = 1;
+                            }
+                            else
+                            {
+                                int diff = moleNames.size() - Nrow*Ncol;
+                                
+                                if ( diff != 0 )
+                                {
+                                    Nrow++;
+                                }
+                            }
+
+                            std::string filename = foldername + "/mole.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set ylabel 'Mole fraction [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;   
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                output << "set title '" << moleNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (moleNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+                            #endif
+
+                            output << std::endl;
+                            output << "set terminal pngcairo font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                output << moleNames[i] << "_";
+                            }
+                            output << "moleFraction.png'" << std::endl;
+                            output << "set ylabel 'Mole fraction [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;;
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<moleNames.size();i++)
+                            {
+                                output << "set title '" << moleNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (moleNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/mole." << moleNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+
+                            output.close();
+                        }
+                    }
+
+                    if ( siteButton_.size() != 0 )
+                    {
+                        //Make .dat for coverage
+                        for (unsigned int i=0;i<SURF_NC_;i++)
+                        {
+                            if ( siteButton_[i]->get_active() )
+                            {
+                                siteNames.push_back(nc_[i]);
+
+                                std::string filename = foldername + "/site." + nc_[i] + ".dat";
+                                std::ofstream output;
+                                const char *path = filename.c_str();
+                                output.open(path,std::ios::out);
+                                output.setf(std::ios::scientific);
+                                output.precision(6);
+                                for (unsigned int j=0;j<L_.size();j++)
+                                {
+                                    output << L_[j] << "\t";
+                                    for (unsigned int k=0;k<t_.size();k++)
+                                    {
+                                        output << std::max(0.,zt_[k][j][i]) << "\t";
+                                    }
+                                    output << std::endl;
+                                }
+                                output.close();
+                            }
+                        }
+                        
+                        //Make .gnuplot for coverage
+                        if ( siteNames.size() != 0 )
+                        {
+                            int Ncol = 3;
+                            int Nrow = std::round(siteNames.size()/Ncol);
+
+                            if ( Nrow == 0 )
+                            {
+                                Ncol = siteNames.size();
+                                Nrow = 1;
+                            }
+                            else
+                            {
+                                int diff = siteNames.size() - Nrow*Ncol;
+                                
+                                if ( diff != 0 )
+                                {
+                                    Nrow++;
+                                }
+                            }
+
+                            std::string filename = foldername + "/site.gnuplot";
+                            std::ofstream output;
+                            const char *path = filename.c_str();
+                            output.open(path,std::ios::out);
+                            
+                            #if ASALI_ON_WINDOW == 0
+                            output << "set terminal wxt 0 font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set ylabel 'Coverage [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;   
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                output << "set title '" << siteNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (siteNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+                            #endif
+
+                            output << std::endl;
+                            output << "set terminal pngcairo font 'Helvetica,10' size " << 320*Ncol << "," << 320*Nrow << std::endl;
+                            output << "set output '" << foldername << "/";
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                output << siteNames[i] << "_";
+                            }
+                            output << "siteFraction.png'" << std::endl;
+                            output << "set ylabel 'Coverage [-]'" << std::endl;
+                            output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
+                            output << "unset key" << std::endl;;
+                            output << "set multiplot layout " << Nrow << "," << Ncol << std::endl;
+
+                            for (unsigned int i=0;i<siteNames.size();i++)
+                            {
+                                output << "set title '" << siteNames[i] << "'" << std::endl;
+                                for (unsigned int k=0;k<t_.size();k++)
+                                {
+                                    if ( k == 0 )
+                                    {
+                                        output << "plot '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else if ( i == (siteNames.size() - 1) )
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                    else
+                                    {
+                                        output << ",\\" << std::endl;
+                                        output << "     '" << foldername << "/site." << siteNames[i] << ".dat" << "' u 1:" << k+2 << " w l";
+                                    }
+                                }
+                                output << std::endl;
+                            }
+                            output << "unset multiplot " << std::endl;
+
+                            output.close();
+                        }
+                    }
+                }
                 dialog.hide();
                 break;
             }
@@ -2443,12 +2831,11 @@ namespace ASALI
             }
             default:
             {
-                std::cout << "Unexpected button clicked." << std::endl;
                 break;
             }
         }
 
-        if (bool(std::ifstream("mass.gnuplot")))
+        if (bool(std::ifstream(foldername + "/mass.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
             {
@@ -2478,7 +2865,7 @@ namespace ASALI
             }
         }
   
-        if (bool(std::ifstream("mole.gnuplot")))
+        if (bool(std::ifstream(foldername + "/mole.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
             {
@@ -2508,7 +2895,7 @@ namespace ASALI
             }
         }
 
-        if (bool(std::ifstream("site.gnuplot")))
+        if (bool(std::ifstream(foldername + "/site.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
             {
@@ -2538,7 +2925,7 @@ namespace ASALI
             }
         }
 
-        if (bool(std::ifstream("other.gnuplot")))
+        if (bool(std::ifstream(foldername + "/other.gnuplot")))
         {
             #if ASALI_ON_WINDOW == 1
             {

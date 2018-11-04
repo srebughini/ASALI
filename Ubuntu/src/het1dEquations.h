@@ -78,7 +78,7 @@ class het1dEquations
         
         void setCanteraTransport(Cantera::Transport*   transport);
 
-        void setHomogeneusReactions(const bool flag)    {homogeneusReactions_   = flag;}
+        void setHomogeneousReactions(const bool flag)   {homogeneousReactions_  = flag;}
 
         void setHeterogeneusReactions(const bool flag)  {heterogeneusReactions_ = flag;}
         
@@ -198,7 +198,7 @@ class het1dEquations
         std::string reactorType_;
         std::string resolution_;
 
-        bool homogeneusReactions_ ;
+        bool homogeneousReactions_;
         bool heterogeneusReactions_;
         bool energyEquation_;
         bool userCheck_;

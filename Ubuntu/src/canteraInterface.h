@@ -75,8 +75,10 @@ namespace ASALI
             
             double Temperature();
             double density();
+            double specieProperty(std::string p,std::string n);
 
             std::vector<int>  checkNames(std::vector<std::string>& name);
+            int               checkNames(std::string name);
             
             
             inline std::vector<double> h()                      {return h_;};
@@ -94,7 +96,8 @@ namespace ASALI
             inline std::vector<std::string> names()             {return n_;};
             
             inline unsigned int nSpecies()                      {return NS_;};
-            
+
+
             virtual ~canteraInterface();
             
         private:

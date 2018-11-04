@@ -54,10 +54,30 @@ void ConvertsToMeter(double &v, std::string m)
         v*=0.1;
     else if(m == "nm")
         v*=1e-09;
-    else if(m == "pm")
-        v*=1e-09;
     else if(m == "km")
         v*=1000.;
+}
+
+void ConvertsFromMeter(double &v, std::string m)
+{
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
+
+    if (m == "m")
+        v=v;
+    else if(m == "\u03BCm")
+        v=v/0.000001;
+    else if(m == "mm")
+        v=v/0.001;
+    else if(m == "cm")
+        v=v/0.01;
+    else if(m == "dm")
+        v=v/0.1;
+    else if(m == "nm")
+        v=v/1e-09;
+    else if(m == "km")
+        v=v/1000.;
 }
 
 

@@ -50,7 +50,7 @@
     beer_.push_back("<i>Good people drink good beer.</i>\n[H. S. Thompson]");
     beer_.push_back("<i>Fermentation equals civilisation.</i>\n[J. Ciardi]");
     beer_.push_back("<i>Stay with the beer. Beer is continuous blood. A continuous lover.</i>\n[C. Bukowski]");
-    beer_.push_back("<i>The drink you like the best should be be the drink you drink the most.</i>\n[J. B. Burgess]");
+    beer_.push_back("<i>The drink you like the best should be the drink you drink the most.</i>\n[J. B. Burgess]");
     beer_.push_back("<i>All is fair in love and beer.</i>\n[Anonymous]");
     beer_.push_back("<i>Nothing ever tasted better than a cold beer on a beautifull afternoon\nwith nothing to look forward to than more of the same.</i>\n[H. Hood]");
     beer_.push_back("<i>When I drink, I think; and when I think, I drink.</i>\n[F. Rabelais]");

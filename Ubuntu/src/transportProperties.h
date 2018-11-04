@@ -77,6 +77,7 @@ namespace ASALI
             virtual void diffSpecies(unsigned int row);
 
             #include "UnitConversion.H"
+            #include "Vector.H"
 
             void exit();
             void availableSpecies();

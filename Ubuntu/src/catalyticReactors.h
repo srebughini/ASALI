@@ -73,10 +73,12 @@ namespace ASALI
                               std::string           kineticType);
 
             #include "UnitConversion.H"
+            #include "Vector.H"
 
             virtual ~catalyticReactors();
 
             virtual void input();
+            virtual void read();
             virtual void recap();
             virtual void propertiesShow();
             virtual void catalystPropertiesShow();
@@ -95,7 +97,7 @@ namespace ASALI
             void checkCoverage(unsigned int i);
             void kineticShow();
             void kineticReader();
-            
+            void switchTo();
             
             void bar(const double fraction,const std::string tm);
             
@@ -184,8 +186,7 @@ namespace ASALI
             sigc::connection signal;
 
         private:
-        
-            void switchTo();
+
 
     };
 }

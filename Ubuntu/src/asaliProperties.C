@@ -44,6 +44,7 @@ namespace ASALI
     : batchLogo_("images/BatchLogo.tiff"),
       ph1dLogo_("images/Ph1DLogo.tiff"),
       het1dLogo_("images/Het1DLogo.tiff"),
+      pelletLogo_("images/PelletLogo.tiff"),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       nameLabel_("Name"),
       mwLabel_("Molecular weight"),
@@ -306,6 +307,29 @@ namespace ASALI
             speciesMwEntry_.clear();
 
             mainBox_.remove(het1dLogo_);
+            mainBox_.remove(mainGrid_);
+            mainBox_.remove(doneButton_);
+        }
+        else if ( type_ == "pellet" )
+        {
+            mainGrid_.remove(nameLabel_);
+            mainGrid_.remove(mwLabel_);
+            mainGrid_.remove(diffBox_);
+            diffBox_.remove(diffLabel_);
+            diffBox_.remove(diffCombo_);
+
+            for (unsigned int i=0;i<speciesNameLabel_.size();i++)
+            {
+                mainGrid_.remove(*speciesNameLabel_[i]);
+                mainGrid_.remove(*speciesMwEntry_[i]);
+                mainGrid_.remove(*speciesDiffEntry_[i]);
+            }
+
+            speciesNameLabel_.clear();
+            speciesDiffEntry_.clear();
+            speciesMwEntry_.clear();
+
+            mainBox_.remove(pelletLogo_);
             mainBox_.remove(mainGrid_);
             mainBox_.remove(doneButton_);
         }
@@ -748,13 +772,58 @@ namespace ASALI
                     NR_ = counter;
                 }
             }
-            else
+        }
+        else if ( type_ == "pellet" )
+        {
+            mainGrid_.set_column_homogeneous(false);
+            mainBox_.pack_start(pelletLogo_, Gtk::PACK_SHRINK);
+            mainBox_.pack_start(mainGrid_, Gtk::PACK_SHRINK);
+
+            mainGrid_.attach(nameLabel_,0,0,1,1);
+            mainGrid_.attach(mwLabel_,1,0,1,1);
+            mainGrid_.attach(diffBox_,2,0,1,1);
+            diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
+            diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
+
+            for (unsigned int i=0;i<NC_;i++)
             {
-                NR_ = 0;
+                speciesNameLabel_[i] = new Gtk::Label(n_[i]);
+                mainGrid_.attach(*speciesNameLabel_[i],0,1+i,1,1);
+                speciesMwEntry_[i] = new Gtk::Entry();
+                mainGrid_.attach(*speciesMwEntry_[i],1,1+i,1,1);
+                
+                if ( MW_.size() != 0 )
+                {
+                    std::ostringstream s;
+                    s << MW_[i];
+                    speciesMwEntry_[i]->set_text(s.str());
+                }
+                else
+                {
+                    speciesMwEntry_[i]->set_text("14");
+                }
+
+                speciesDiffEntry_[i] = new Gtk::Entry();
+                mainGrid_.attach(*speciesDiffEntry_[i],2,1+i,1,1);
+                
+                if ( diff_.size() != 0 )
+                {
+                    std::ostringstream s;
+                    s << diff_[i];
+                    speciesDiffEntry_[i]->set_text(s.str());
+                }
+                else
+                {
+                    speciesDiffEntry_[i]->set_text("1e-05");
+                }
             }
+
+            NR_ = 0;
+
             mainBox_.pack_end(doneButton_,Gtk::PACK_SHRINK);
             doneButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliProperties::doneInput));
         }
+
         this->resize(mainBox_.get_width(),mainBox_.get_height ());
         this->show_all_children();
     }
@@ -1012,6 +1081,26 @@ namespace ASALI
                 cond_ = 1.;
             }
         }
+        else if ( type_ == "pellet" )
+        {
+            MW_.clear();
+            diff_.clear();
+            MW_.resize(NC_);
+            diff_.resize(NC_);
+            for (unsigned int i=0;i<NC_;i++)
+            {
+                MW_[i]   = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
+                diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
+            }
+            
+            if ( diffCombo_.get_active_row_number() == 1 )
+            {
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    diff_[i] = diff_[i]*1.e-04; //cm2/s->m2
+                }
+            }
+        }
         this->hide();
     }
  
@@ -1043,7 +1132,7 @@ namespace ASALI
         {
             MWmix = MWmix  + x[i]*MW[i];
         }
-        
+
         for (unsigned int i=0;i<x.size();i++)
         {
             y[i] = x[i]*MW[i]/MWmix;

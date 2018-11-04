@@ -59,7 +59,8 @@ namespace ASALI
       saveLabel_("Save solution every"),
       energyLabel_("Energy"),
       logo1_("images/BatchLogo.tiff"),
-      logo2_("images/BatchLogo.tiff")
+      logo2_("images/BatchLogo.tiff"),
+      plotButtonBool_(false)
     {
 
         eq_ = new ASALI::batchEquations();
@@ -167,7 +168,6 @@ namespace ASALI
                     runButton_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::run));
                     recapButtonBox_.pack_start(saveButton_, Gtk::PACK_SHRINK);
                     saveButton_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::save));
-                    recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
                     asaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::plot));
                     
                     asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::kineticShow));
@@ -302,6 +302,15 @@ namespace ASALI
         this->resize(mainBox_.get_width(),mainBox_.get_height());
         this->show_all_children();
     }
+    
+    void batchReactor::clean()
+    {
+        if ( plotButtonBool_ )
+        {
+            recapButtonBox_.remove(asaliPlotButton_);
+            plotButtonBool_ = false;
+        }
+    }
 
     void batchReactor::recap()
     {
@@ -320,6 +329,7 @@ namespace ASALI
             this->read();
             this->kineticReader();
             this->remove();
+            this->clean();
             this->add(recapMainBox_);
 
             //Volume
@@ -423,6 +433,7 @@ namespace ASALI
             eq_->setCanteraInterface(surface_);
             eq_->setCanteraKinetics(kinetic_);
             eq_->turnOnUserDefined(false);
+            eq_->setHomogeneousReactions(false);
         }
         else if ( kineticCombo_.get_active_text() == "ASALI")
         {
@@ -446,6 +457,7 @@ namespace ASALI
                 eq_->set_MW(asaliProperties_->get_MW());
                 eq_->set_QfromSurface(asaliProperties_->get_Q());
                 eq_->set_cp(asaliProperties_->get_cp());
+                eq_->setHomogeneousReactions(false);
             }
             else
             {
@@ -466,12 +478,12 @@ namespace ASALI
                                      asaliKinetic_->get_name(),
                                      stoich_,
                                      asaliKinetic_->get_converter());
+                eq_->setHomogeneousReactions(false);
             }
         }
 
         eq_->setKineticType(kineticCombo_.get_active_text());
         eq_->resize();
-        eq_->setHomogeneusReactions(false);
         eq_->setHeterogeneusReactions(true);
         
         if ( energy_ == "on" )
@@ -488,7 +500,7 @@ namespace ASALI
         eq_->setTemperature(T_);
         eq_->setCatalystLoad(alfa_);
         
-        ASALI::batchInterface solver;
+        ASALI::odeInterface<ASALI::batchEquations> solver;
 
         solver.setEquations(eq_);
         solver.start();
@@ -611,9 +623,20 @@ namespace ASALI
         {
             double  ti    = 0.;
             double  tf    = 0.;
-            double  dt    = dt_/100.;
+            double  dt    = 0.;
+            
+            if ( alfa_ != 0. )
+            {
+                dt = dt_/(eq_->NumberOfEquations()*5.);
+            }
+            else
+            {
+                dt = dt_/100.;
+            }
+
             double  td    = 0;
             double  time0 = double(std::clock()/CLOCKS_PER_SEC);
+            double  timef = 0.;
             double  tm    = 0;
             int     Nt    = int(tf_/dt) + 1;
             for (int i=0;i<Nt;i++)
@@ -631,10 +654,8 @@ namespace ASALI
                     td = 0.;
                 }
 
-                {
-                    double timef = double(std::clock()/CLOCKS_PER_SEC);
-                           tm    = (timef-time0)*Nt/(i+1) - timef;
-                }
+                timef = double(std::clock()/CLOCKS_PER_SEC);
+                tm    = (timef-time0)*(Nt-i+1)/(i+1);
 
                 ti = tf;
 
@@ -652,6 +673,12 @@ namespace ASALI
         if ( solver.check() == true &&
              bar_->check()  == true)
         {
+            //Add plot button
+            {
+                recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
+                plotButtonBool_ = true;
+                this->show_all_children();
+            }
             this->save();
         }
     }
@@ -863,7 +890,7 @@ namespace ASALI
             }
             default:
             {
-                std::cout << "Unexpected button clicked." << std::endl;
+                dialog.hide();
                 break;
             }
         }
@@ -871,6 +898,12 @@ namespace ASALI
 
     void batchReactor::plot()
     {
+        if (!asaliPlot_)
+        {
+            delete asaliPlot_;
+        }
+
+        asaliPlot_ = new ASALI::asaliPlot();
         asaliPlot_->setTime(eq_->getTime());
         asaliPlot_->setTemperature(eq_->getTemperature());
         asaliPlot_->setVolume(eq_->getVolume());

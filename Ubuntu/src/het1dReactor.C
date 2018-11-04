@@ -77,7 +77,8 @@ namespace ASALI
       reactorType_("none"),
       tubularBool_(false),
       honeyCombBool_(false),
-      packedBedBool_(false)
+      packedBedBool_(false),
+      plotButtonBool_(false)
     {
 
         eq_ = new ASALI::het1dEquations();
@@ -277,7 +278,6 @@ namespace ASALI
                     saveButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::save));
                     recapButtonBox_.pack_start(catalystPropertiesButton_, Gtk::PACK_SHRINK);
                     catalystPropertiesButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::catalystPropertiesShow));
-                    recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
                     asaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::plot));
                     
                     asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::kineticShow));
@@ -534,6 +534,12 @@ namespace ASALI
         recapGrid_.remove(recapLengthLabel_);
         recapGrid_.remove(recapLengthUDLabel_);
         recapGrid_.remove(recapLengthValueLabel_);
+
+        if ( plotButtonBool_ )
+        {
+            recapButtonBox_.remove(asaliPlotButton_);
+            plotButtonBool_ = false;
+        }
 
         if (tubularBool_)
         {
@@ -876,6 +882,7 @@ namespace ASALI
             eq_->setCanteraInterface(surface_);
             eq_->setCanteraKinetics(kinetic_);
             eq_->turnOnUserDefined(false);
+            eq_->setHomogeneousReactions(false);
         }
         else if ( kineticCombo_.get_active_text() == "ASALI")
         {
@@ -901,6 +908,7 @@ namespace ASALI
                 eq_->set_cp(asaliProperties_->get_cp());
                 eq_->set_cond(asaliProperties_->get_cond());
                 eq_->set_diff(asaliProperties_->get_diff());
+                eq_->setHomogeneousReactions(false);
             }
             else
             {
@@ -921,11 +929,9 @@ namespace ASALI
                                      asaliKinetic_->get_name(),
                                      stoich_,
                                      asaliKinetic_->get_converter());
+                eq_->setHomogeneousReactions(false);
             }
         }
-
-        ASALI::het1dOdeInterface ode;
-        ASALI::het1dBvpInterface bvp;
 
         eq_->setKineticType(kineticCombo_.get_active_text());
         eq_->setNumberOfPoints(NP_);
@@ -946,7 +952,6 @@ namespace ASALI
         }
 
         eq_->resize();
-        eq_->setHomogeneusReactions(false);
         eq_->setHeterogeneusReactions(true);
             
         if ( energy_ == "on" )
@@ -960,9 +965,9 @@ namespace ASALI
             
         eq_->setPressure(p_);
         eq_->setCatalystProperties(asaliCatalystProperties_->get_load(),
-                                      asaliCatalystProperties_->get_rho(),
-                                      asaliCatalystProperties_->get_cp(),
-                                      asaliCatalystProperties_->get_cond());
+                                   asaliCatalystProperties_->get_rho(),
+                                   asaliCatalystProperties_->get_cp(),
+                                   asaliCatalystProperties_->get_cond());
 
         std::vector<double> x0(eq_->NumberOfEquations());
         if ( kineticType_ == "none" )
@@ -1189,7 +1194,10 @@ namespace ASALI
                 eq_->setInletConditions(xInlet,T_);
             }
         }
-        
+
+        ASALI::odeInterface<ASALI::het1dEquations> ode;
+        ASALI::bvpInterface<ASALI::het1dEquations> bvp;
+
         eq_->setResolutionType("initial");
         this->bar(0.,"Starting...");
         ode.setEquations(eq_);
@@ -1207,9 +1215,20 @@ namespace ASALI
         {
             double  ti    = 0.;
             double  tf    = 0.;
-            double  dt    = dt_/100.;
+            double  dt    = 0.;
+            
+            if ( alfa_ != 0. )
+            {
+                dt = dt_/(eq_->NumberOfEquations()*5.);
+            }
+            else
+            {
+                dt = dt_/100.;
+            }
+            
             double  td    = 0;
             double  time0 = double(std::clock()/CLOCKS_PER_SEC);
+            double  timef = 0.;
             double  tm    = 0;
             int     Nt    = int(tf_/dt) + 1;
             for (int i=0;i<Nt;i++)
@@ -1227,11 +1246,8 @@ namespace ASALI
                     td = 0.;
                 }
 
-                if ( i%5 == 0 )
-                {
-                    double timef = double(std::clock()/CLOCKS_PER_SEC);
-                           tm    = (timef-time0)*Nt/(i+1) - timef;
-                }
+                timef = double(std::clock()/CLOCKS_PER_SEC);
+                tm    = (timef-time0)*(Nt-i+1)/(i+1);
 
                 ti = tf;
 
@@ -1250,6 +1266,12 @@ namespace ASALI
              bvp.check()   == true &&
              bar_->check() == true)
         {
+            //Add plot button
+            {
+                recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
+                plotButtonBool_ = true;
+                this->show_all_children();
+            }
             this->save();
         }
     }
@@ -1280,7 +1302,6 @@ namespace ASALI
             run_ = runButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::run));
         }
     }
-
 
     void het1dReactor::save()
     {
@@ -1366,12 +1387,19 @@ namespace ASALI
                                         {
                                             x[i] = yb[j][k][i];
                                         }
+                                        
                                         canteraInterface_->setMassFraction(x,n_);
-                                        x = canteraInterface_->moleFractions();
-
+                                        
                                         for (unsigned int i=0;i<n_.size();i++)
                                         {
-                                            moleb[j][k][i] = x[i];
+                                            for (unsigned int q=0;q<canteraInterface_->names().size();q++)
+                                            {
+                                                if ( n_[i] == canteraInterface_->names()[q] )
+                                                {
+                                                    moleb[j][k][i] = canteraInterface_->moleFractions()[q];
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
 
@@ -1384,15 +1412,21 @@ namespace ASALI
                                         {
                                             x[i] = yw[j][k][i];
                                         }
+                                        
                                         canteraInterface_->setMassFraction(x,n_);
-                                        x = canteraInterface_->moleFractions();
-
+                                        
                                         for (unsigned int i=0;i<n_.size();i++)
                                         {
-                                            molew[j][k][i] = x[i];
+                                            for (unsigned int q=0;q<canteraInterface_->names().size();q++)
+                                            {
+                                                if ( n_[i] == canteraInterface_->names()[q] )
+                                                {
+                                                    molew[j][k][i] = canteraInterface_->moleFractions()[q];
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
-
                                 }
                             }
                         }
@@ -1737,7 +1771,6 @@ namespace ASALI
             }
             default:
             {
-                std::cout << "Unexpected button clicked." << std::endl;
                 break;
             }
         }
@@ -1745,6 +1778,12 @@ namespace ASALI
 
     void het1dReactor::plot()
     {
+        if (!asaliPlot_)
+        {
+            delete asaliPlot_;
+        }
+
+        asaliPlot_ = new ASALI::asaliPlot();
         asaliPlot_->setTime(eq_->getTime());
 
         if ( kineticCombo_.get_active_text() == "ASALI" )
@@ -1800,11 +1839,16 @@ namespace ASALI
                                     x[i] = yb[j][k][i];
                                 }
                                 canteraInterface_->setMassFraction(x,n_);
-                                x = canteraInterface_->moleFractions();
-
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
-                                    moleb[j][k][i] = x[i];
+                                    for (unsigned int q=0;q<canteraInterface_->names().size();q++)
+                                    {
+                                        if ( n_[i] == canteraInterface_->names()[q] )
+                                        {
+                                            moleb[j][k][i] = canteraInterface_->moleFractions()[q];
+                                            break;
+                                        }
+                                    }
                                 }
                             }
 
@@ -1818,11 +1862,16 @@ namespace ASALI
                                     x[i] = yw[j][k][i];
                                 }
                                 canteraInterface_->setMassFraction(x,n_);
-                                x = canteraInterface_->moleFractions();
-
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
-                                    molew[j][k][i] = x[i];
+                                    for (unsigned int q=0;q<canteraInterface_->names().size();q++)
+                                    {
+                                        if ( n_[i] == canteraInterface_->names()[q] )
+                                        {
+                                            molew[j][k][i] = canteraInterface_->moleFractions()[q];
+                                            break;
+                                        }
+                                    }
                                 }
                             }
 
@@ -1937,7 +1986,7 @@ namespace ASALI
             {
                 l[k] = k*dz;
             }
-            asaliPlot_->setLength(l);
+            asaliPlot_->setLength(l,lengthCombo_.get_active_text());
         }
 
         asaliPlot_->setType("het1d");

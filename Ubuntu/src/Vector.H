@@ -66,7 +66,22 @@ double SumElements(const std::vector<double> v)
     return sum;
 }
 
+double MeanValue(const std::vector<double> v)
+{
+    return SumElements(v)/v.size();
+}
+
 double DotProduct(const std::vector<double> a,const std::vector<double> b)
 {
     return std::inner_product(a.begin(), a.end(), b.begin(),0);
+}
+
+std::vector<double> ElementByElementProduct(const std::vector<double> a,const std::vector<double> b)
+{
+    std::vector<double> c(a.size());
+
+    for (unsigned int i=0;i<a.size();i++)
+        c[i] = a[i]*b[i];
+
+    return c;
 }
