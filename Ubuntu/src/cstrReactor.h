@@ -41,7 +41,7 @@
 #define CSTRREACTORS_H
 
 #include "catalyticReactors.h"
-#include "cstrInterface.h"
+#include "odeInterface.h"
 #include "cstrEquations.h"
 
 namespace ASALI
@@ -59,6 +59,7 @@ namespace ASALI
             virtual ~cstrReactor();
 
             virtual void input();
+            virtual void read();
             virtual void recap();
             virtual void propertiesShow();
             virtual void run();
@@ -67,7 +68,7 @@ namespace ASALI
 
         private:
 
-            void read();
+            void clean();
 
             Gtk::Box          mainBox_;
             Gtk::Box          secondBox_;
@@ -144,6 +145,8 @@ namespace ASALI
             double Q_;
             
             std::string energy_;
+            
+            bool        plotButtonBool_;
 
             ASALI::cstrEquations *eq_;
 

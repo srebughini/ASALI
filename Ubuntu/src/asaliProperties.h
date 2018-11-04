@@ -99,6 +99,7 @@ namespace ASALI
             Gtk::Image        batchLogo_;
             Gtk::Image        ph1dLogo_;
             Gtk::Image        het1dLogo_;
+            Gtk::Image        pelletLogo_;
 
             Gtk::Box          mainBox_;
             Gtk::Box          heatBox_;

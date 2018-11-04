@@ -41,7 +41,7 @@
 #define BATCHREACTORS_H
 
 #include "catalyticReactors.h"
-#include "batchInterface.h"
+#include "odeInterface.h"
 #include "batchEquations.h"
 
 namespace ASALI
@@ -59,6 +59,7 @@ namespace ASALI
             virtual ~batchReactor();
 
             virtual void input();
+            virtual void read();
             virtual void recap();
             virtual void propertiesShow();
             virtual void run();
@@ -67,7 +68,7 @@ namespace ASALI
 
         private:
 
-            void read();
+            void clean();
 
             Gtk::Box          mainBox_;
             Gtk::Box          secondBox_;
@@ -137,6 +138,8 @@ namespace ASALI
             double alfa_;
             
             std::string energy_;
+            
+            bool        plotButtonBool_;
 
             ASALI::batchEquations *eq_;
 

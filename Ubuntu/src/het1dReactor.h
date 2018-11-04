@@ -41,8 +41,8 @@
 #define HET1DREACTORS_H
 
 #include "catalyticReactors.h"
-#include "het1dOdeInterface.h"
-#include "het1dBvpInterface.h"
+#include "odeInterface.h"
+#include "bvpInterface.h"
 #include "het1dEquations.h"
 
 namespace ASALI
@@ -60,6 +60,7 @@ namespace ASALI
             virtual ~het1dReactor();
 
             virtual void input();
+            virtual void read();
             virtual void recap();
             virtual void propertiesShow();
             virtual void catalystPropertiesShow();
@@ -69,7 +70,6 @@ namespace ASALI
 
         private:
 
-            void read();
             void options();
             void clean();
 
@@ -219,6 +219,7 @@ namespace ASALI
             bool tubularBool_;
             bool honeyCombBool_;
             bool packedBedBool_;
+            bool plotButtonBool_;
             
             ASALI::het1dEquations *eq_;
             

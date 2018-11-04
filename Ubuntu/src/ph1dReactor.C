@@ -63,7 +63,8 @@ namespace ASALI
       inertLabel_("Inert specie"),
       resolutionLabel_("Resolution type"),
       logo1_("images/Ph1DLogo.tiff"),
-      logo2_("images/Ph1DLogo.tiff")
+      logo2_("images/Ph1DLogo.tiff"),
+      plotButtonBool_(false)
     {
 
         eq_ = new ASALI::ph1dEquations();
@@ -199,7 +200,6 @@ namespace ASALI
                     runButton_.signal_clicked().connect(sigc::mem_fun(*this,&ph1dReactor::run));
                     recapButtonBox_.pack_start(saveButton_, Gtk::PACK_SHRINK);
                     saveButton_.signal_clicked().connect(sigc::mem_fun(*this,&ph1dReactor::save));
-                    recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
                     asaliPlotButton_.signal_clicked().connect(sigc::mem_fun(*this,&ph1dReactor::plot));
                     
                     asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&ph1dReactor::kineticShow));
@@ -365,6 +365,15 @@ namespace ASALI
         this->show_all_children();
     }
 
+    void ph1dReactor::clean()
+    {
+        if ( plotButtonBool_ )
+        {
+            recapButtonBox_.remove(asaliPlotButton_);
+            plotButtonBool_ = false;
+        }
+    }
+
     void ph1dReactor::recap()
     {
         this->compositionReader();
@@ -382,6 +391,7 @@ namespace ASALI
             this->read();
             this->kineticReader();
             this->remove();
+            this->clean();
             this->add(recapMainBox_);
 
             //Length
@@ -520,6 +530,7 @@ namespace ASALI
             eq_->setCanteraInterface(surface_);
             eq_->setCanteraKinetics(kinetic_);
             eq_->turnOnUserDefined(false);
+            eq_->setHomogeneousReactions(false);
         }
         else if ( kineticCombo_.get_active_text() == "ASALI")
         {
@@ -545,6 +556,7 @@ namespace ASALI
                 eq_->set_cp(asaliProperties_->get_cp());
                 eq_->set_cond(asaliProperties_->get_cond());
                 eq_->set_diff(asaliProperties_->get_diff());
+                eq_->setHomogeneousReactions(false);
             }
             else
             {
@@ -565,16 +577,15 @@ namespace ASALI
                                      asaliKinetic_->get_name(),
                                      stoich_,
                                      asaliKinetic_->get_converter());
+                eq_->setHomogeneousReactions(false);
             }
         }
 
         if ( resolution_ == "steady state" )
         {
-            ASALI::ph1dOdeInterface ode;
             eq_->setKineticType(kineticCombo_.get_active_text());
             eq_->setResolutionType(resolution_);
             eq_->resize();
-            eq_->setHomogeneusReactions(false);
             eq_->setHeterogeneusReactions(true);
             
             if ( energy_ == "on" )
@@ -589,9 +600,6 @@ namespace ASALI
             eq_->setPressure(p_);
             eq_->setTemperature(T_);
             eq_->setCatalystLoad(alfa_);
-
-            ode.setEquations(eq_);
-            ode.start();
 
             std::vector<double> x0(eq_->NumberOfEquations());
 
@@ -705,6 +713,10 @@ namespace ASALI
                 }
             }
 
+            ASALI::odeInterface<ASALI::ph1dEquations> ode;
+            ode.setEquations(eq_);
+            ode.start();
+
             this->bar(0.,"Starting...");
             eq_->store(0.,x0);
 
@@ -712,7 +724,8 @@ namespace ASALI
             {
                 double  ti    = 0.;
                 double  tf    = 0.;
-                double  tm    = 0;
+                double  tm    = 0.;
+                double  timef = 0.;
                 double  time0 = double(std::clock()/CLOCKS_PER_SEC);
                 for (unsigned int i=0;i<100;i++)
                 {
@@ -723,11 +736,8 @@ namespace ASALI
 
                     eq_->store(tf,x0);
                     
-                    if ( i%5 == 0 )
-                    {
-                        double timef = double(std::clock()/CLOCKS_PER_SEC);
-                               tm    = (timef-time0)*100./(i+1) - timef;
-                    }
+                    timef = double(std::clock()/CLOCKS_PER_SEC);
+                    tm    = (timef-time0)*(100.-i+1)/(i+1);
 
                     ti = tf;
 
@@ -746,19 +756,22 @@ namespace ASALI
             if (bar_->check() == true &&
                 ode.check()   == true)
             {
+                //Add plot button
+                {
+                    recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
+                    plotButtonBool_ = true;
+                    this->show_all_children();
+                }
                 this->save();
             }
         }
         else
         {
-            ASALI::ph1dOdeInterface ode;
-            ASALI::ph1dBvpInterface bvp;
             eq_->setKineticType(kineticCombo_.get_active_text());
             eq_->setResolutionType(resolution_);
             eq_->setNumberOfPoints(NP_);
             eq_->setLength(L_);
             eq_->resize();
-            eq_->setHomogeneusReactions(false);
             eq_->setHeterogeneusReactions(true);
             
             if ( energy_ == "on" )
@@ -969,6 +982,9 @@ namespace ASALI
                 }
             }
 
+            ASALI::odeInterface<ASALI::ph1dEquations> ode;
+            ASALI::odeInterface<ASALI::ph1dEquations> bvp;
+
             ode.setEquations(eq_);
             ode.start();
             eq_->setResolutionType("initial");
@@ -986,8 +1002,19 @@ namespace ASALI
             {
                 double  ti    = 0.;
                 double  tf    = 0.;
-                double  dt    = dt_/100.;
+                double  dt    = 0.;
+                
+                if ( alfa_ != 0. )
+                {
+                    dt = dt_/(eq_->NumberOfEquations()*5.);
+                }
+                else
+                {
+                    dt = dt_/100.;
+                }
+            
                 double  td    = 0;
+                double  timef = 0.;
                 double  time0 = double(std::clock()/CLOCKS_PER_SEC);
                 double  tm    = 0;
                 int     Nt    = int(tf_/dt) + 1;
@@ -1006,11 +1033,8 @@ namespace ASALI
                         td = 0.;
                     }
                     
-                    if ( i%5 == 0 )
-                    {
-                        double timef = double(std::clock()/CLOCKS_PER_SEC);
-                               tm    = (timef-time0)*Nt/(i+1) - timef;
-                    }
+                    timef = double(std::clock()/CLOCKS_PER_SEC);
+                    tm    = (timef-time0)*(Nt-i+1)/(i+1);
 
                     ti = tf;
 
@@ -1030,6 +1054,12 @@ namespace ASALI
                 ode.check()   == true &&
                 bvp.check()   == true)
             {
+                //Add plot button
+                {
+                    recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
+                    plotButtonBool_ = true;
+                    this->show_all_children();
+                }
                 this->save();
             }
         }
@@ -1503,10 +1533,17 @@ namespace ASALI
 
     void ph1dReactor::plot()
     {
+        if (!asaliPlot_)
+        {
+            delete asaliPlot_;
+        }
+
+        asaliPlot_ = new ASALI::asaliPlot();
+
         if ( resolution_ == "steady state" )
         {
             asaliPlot_->setResolutionType(resolution_);
-            asaliPlot_->setLength(eq_->getLength());
+            asaliPlot_->setLength(eq_->getLength(),lengthCombo_.get_active_text());
             asaliPlot_->setTemperature(eq_->getTemperature());
 
             if ( kineticCombo_.get_active_text() == "ASALI" )
@@ -1716,7 +1753,7 @@ namespace ASALI
                 {
                     l[k] = k*dz;
                 }
-                asaliPlot_->setLength(l);
+                asaliPlot_->setLength(l,lengthCombo_.get_active_text());
             }
         }
 

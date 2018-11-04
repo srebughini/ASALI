@@ -41,8 +41,8 @@
 #define PH1DREACTORS_H
 
 #include "catalyticReactors.h"
-#include "ph1dOdeInterface.h"
-#include "ph1dBvpInterface.h"
+#include "odeInterface.h"
+#include "bvpInterface.h"
 #include "ph1dEquations.h"
 
 namespace ASALI
@@ -60,6 +60,7 @@ namespace ASALI
             virtual ~ph1dReactor();
 
             virtual void input();
+            virtual void read();
             virtual void recap();
             virtual void propertiesShow();
             virtual void run();
@@ -68,7 +69,7 @@ namespace ASALI
 
         private:
 
-            void read();
+            void clean();
 
             Gtk::Box          mainBox_;
             Gtk::Box          secondBox_;
@@ -161,6 +162,8 @@ namespace ASALI
             
             std::string energy_;
             std::string resolution_;
+            
+            bool        plotButtonBool_;
 
             ASALI::ph1dEquations *eq_;
 

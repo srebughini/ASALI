@@ -36,12 +36,98 @@
 #                                                                                              #
 ##############################################################################################*/
 
+#ifndef ODEINTERFACE_H
+#define ODEINTERFACE_H
 
-#include "batchInterface.h"
+#include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+
+#include <cvodes/cvodes.h>
+#include <sunmatrix/sunmatrix_dense.h>
+#include <cvodes/cvodes_direct.h>
+#include <nvector/nvector_serial.h>
+
+#include <sunlinsol/sunlinsol_dense.h>
+#include <sunlinsol/sunlinsol_band.h>
+#include <sundials/sundials_dense.h>
+#include <sundials/sundials_types.h>
 
 namespace ASALI
 {
-    batchInterface::batchInterface()
+    #define Ith(v,i)    NV_Ith_S(v,i-1)
+    #define IJth(A,i,j) DENSE_ELEM(A,i-1,j-1)
+
+    template<typename T>
+    class odeInterface : public Gtk::Window
+    {
+        public:
+
+            odeInterface();
+
+            int solve(const double tf, std::vector<double>& yf);
+
+            void setEquations(T* eq);
+
+            void setInitialConditions(double t0, std::vector<double> y0);
+
+            void setTollerance(const double absTol, const double relTol);
+
+            void setBandDimensions(const double upperBand, const double lowerBand);
+            
+            void setConstraints(const bool constraints);
+
+            bool check()            {return check_;};
+            void start()            {check_ = true;};
+
+            ~odeInterface(void);
+
+        private:
+
+            void *cvode_mem_;
+            
+            T *eq_;
+
+            int NEQ_;
+
+            double relTol_;
+            double absTol_;
+            double upperBand_;
+            double lowerBand_;
+            double t0_;
+            
+            bool constraints_;
+            bool check_;
+
+            N_Vector yCVODE_;
+            N_Vector dyCVODE_;
+            N_Vector y0CVODE_;
+            N_Vector dy0CVODE_;
+
+            SUNMatrix A_;
+
+            SUNLinearSolver LS_;
+            
+            std::vector<double> y0_;
+            std::vector<double> dy0_;
+
+            std::vector<std::string> beer_;
+
+            int         checkFlag(void *flagvalue, int opt);
+
+            void        error();
+            std::string getBeer();
+    };
+
+    template<typename T>
+    odeInterface<T>::odeInterface()
     {
         #include "Beer.H"
 
@@ -60,82 +146,81 @@ namespace ASALI
         absTol_       = 1.e-12;
         t0_           = 0.;
     }
-
-    void batchInterface::setEquations(ASALI::batchEquations* eq)
+    
+    template<typename T>
+    void odeInterface<T>::setEquations(T* eq)
     {
         eq_  = eq;
         NEQ_ = eq_->NumberOfEquations();
 
         y0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0CVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)y0CVODE_, 0)) 
         {
             this->error();
         }
-
+        
 
         dy0CVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0CVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)dy0CVODE_, 0)) 
         {
             this->error();
         }
-
 
         yCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yCVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)yCVODE_, 0)) 
         {
             this->error();
-        }
-
+        }    
 
         dyCVODE_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyCVODE_, "N_VNew_Serial", 0))
+        if (checkFlag((void *)dyCVODE_, 0)) 
         {
             this->error();
         }
-
+        
+        y0_.resize(NEQ_);
+        dy0_.resize(NEQ_);
     }
-    
-    void batchInterface::setBandDimensions(const double upperBand, const double lowerBand)
+
+    template<typename T>
+    void odeInterface<T>::setBandDimensions(const double upperBand, const double lowerBand)
     {
         upperBand_ = upperBand;
         lowerBand_ = lowerBand;
     }
     
-    void batchInterface::setTollerance(const double absTol, const double relTol)
+    template<typename T>
+    void odeInterface<T>::setTollerance(const double absTol, const double relTol)
     {
         absTol_ = absTol;
         relTol_ = relTol;
     }
     
-    void batchInterface::setConstraints(const bool constraints)
+    template<typename T>
+    void odeInterface<T>::setConstraints(const bool constraints)
     {
         constraints_ = constraints;
     }
 
-    void batchInterface::setInitialConditions(double t0, std::vector<double> y0)
+    template<typename T>
+    void odeInterface<T>::setInitialConditions(double t0, std::vector<double> y0)
     {
-        std::vector<double> dy0(NEQ_);
-
-        eq_->Equations(t0,y0,dy0);
+        eq_->Equations(t0,y0,dy0_);
 
         t0_ = t0;
-
-        for (int i=0;i<NEQ_;i++)
-        {
-            NV_Ith_S(dy0CVODE_, i) = dy0[i];
-            NV_Ith_S( y0CVODE_, i) =  y0[i];
-        }
+        y0_ = y0;
     }
-
-    static int equationsCVODE(double t, N_Vector y, N_Vector f, void *user_data)
+    
+    template<typename T>
+    int equations(double t, N_Vector y, N_Vector f,void* user_data)
     {
-        ASALI::batchEquations *data;
-        data = (ASALI::batchEquations*)user_data;
-
-        unsigned int N = data->NumberOfEquations();
+        T* data;
+        data = (T*)user_data;
 
         double *ydata  = N_VGetArrayPointer_Serial(y);
         double *fdata  = N_VGetArrayPointer_Serial(f);
+
+        unsigned int N = data->NumberOfEquations();
 
         std::vector<double> y_(N);
         std::vector<double> dy_(N);
@@ -155,69 +240,90 @@ namespace ASALI
         return(flag);
     }
 
-    int batchInterface::solve(const double tf, std::vector<double>& yf)
+    template<typename T>
+    int odeInterface<T>::solve(const double tf, std::vector<double>& yf)
     {
         int flag;
 
-        /* Call IDACreate to create the solver memory and specify the 
-        *  Backward Differentiation Formula and the use of a Newton iteration */
+        N_VSetArrayPointer_Serial(&dy0_[0],dy0CVODE_);
+        N_VSetArrayPointer_Serial(&y0_[0],y0CVODE_);
+
         cvode_mem_ = CVodeCreate(CV_BDF, CV_NEWTON);
-        if (checkFlag((void *)cvode_mem_, "CVodeCreate", 0))
+        if (checkFlag((void *)cvode_mem_, 0))
         {
             this->error();
         }
-
-
+        
         flag = CVodeSetMaxNumSteps(cvode_mem_, 5000000);
-        if (checkFlag(&flag, "CVodeSetMaxNumSteps", 1))
+        if (checkFlag(&flag, 1))
         {
             this->error();
         }
-
 
         flag = CVodeSetUserData(cvode_mem_, eq_);
-        if(checkFlag(&flag, "CVodeSetUserData", 1))exit(-1);
-
-        /* Call CVodeInit to initialize the integrator memory and specify the
-        * user's right hand side function in y'=f(t,y), the inital time t0, and
-        * the initial dependent variable vector y0Sundials_. */
-        flag = CVodeInit(cvode_mem_, equationsCVODE, t0_, y0CVODE_);
-        if (checkFlag(&flag, "CVodeInit", 1))
+        if(checkFlag(&flag, 1))
         {
             this->error();
         }
 
+        flag = CVodeInit(cvode_mem_, equations<T>, t0_, y0CVODE_);
+        if (checkFlag(&flag, 1))
+        {
+            this->error();
+        }
 
-        /* Call CVodeSStolerances to specify the scalar relative tolerance
-        * and scalar absolute tolerances */
         flag = CVodeSStolerances(cvode_mem_, relTol_, absTol_);
-        if (checkFlag(&flag, "CVodeSVtolerances", 1))
+        if (checkFlag(&flag, 1))
         {
             this->error();
         }
 
-
-        /* Call Solver */
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
-            flag = CVDense(cvode_mem_, NEQ_);
-            if (checkFlag(&flag, "CVDense", 1))
+            A_ = SUNDenseMatrix(NEQ_,NEQ_);
+            if (checkFlag((void *)A_, 0)) 
+            {
+                this->error();
+            }
+        
+            LS_ = SUNDenseLinearSolver(yCVODE_, A_);
+            if (checkFlag((void *)LS_, 0)) 
+            {
+                this->error();
+            }
+            
+            flag = CVDlsSetLinearSolver(cvode_mem_, LS_, A_);
+            if(checkFlag(&flag, 1))
             {
                 this->error();
             }
         }
         else
         {
-            flag = CVBand(cvode_mem_, NEQ_, upperBand_, lowerBand_);
-            if (checkFlag(&flag, "CVBand", 1))
+            A_ = SUNBandMatrix(NEQ_, upperBand_, lowerBand_, (upperBand_+lowerBand_) );
+            if (checkFlag((void *)A_, 0)) 
+            {
+                this->error();
+            }
+
+            LS_ = SUNBandLinearSolver(yCVODE_, A_);
+            if (checkFlag((void *)LS_, 0)) 
+            {
+                this->error();
+            }
+
+            flag = CVDlsSetLinearSolver(cvode_mem_, LS_, A_);
+            if(checkFlag(&flag, 1))
             {
                 this->error();
             }
         }
 
-        /* Solving */
         flag = CVode(cvode_mem_,tf, yCVODE_, &t0_, CV_NORMAL);
-        if(checkFlag(&flag, "CVode", 1))exit(-1);
+        if(checkFlag(&flag, 1))
+        {
+            this->error();
+        }
 
         yf.clear();
         yf.resize(NEQ_);
@@ -236,32 +342,21 @@ namespace ASALI
                 yf[i] = sol[i];
             }
         }
-        
+
         return flag;
     }
 
-    int batchInterface::checkFlag(void *flagvalue, const char *funcname, int opt)
+    template<typename T>
+    int odeInterface<T>::checkFlag(void *flagvalue, int opt)
     {
-        /* 
-         * Check function return value...
-         *   opt == 0 means SUNDIALS function allocates memory so check if
-         *            returned NULL pointer
-         *   opt == 1 means SUNDIALS function returns a flag so check if
-         *            flag >= 0
-         *   opt == 2 means function allocates memory so check if returned
-         *            NULL pointer 
-         */
-
         int *errflag;
 
-        /* Check if SUNDIALS function returned NULL pointer - no memory allocated */
         if (opt == 0 && flagvalue == NULL)
         {
             return(1);
         }
         else if (opt == 1)
         {
-            /* Check if flag < 0 */
             errflag = (int *) flagvalue;
             if (*errflag < 0)
             {
@@ -270,14 +365,14 @@ namespace ASALI
         }
         else if (opt == 2 && flagvalue == NULL)
         {
-            /* Check if function returned NULL pointer - no memory allocated */
             return(1);
         }
 
         return(0);
     }
 
-    void batchInterface::error()
+    template<typename T>
+    void odeInterface<T>::error()
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
@@ -285,19 +380,22 @@ namespace ASALI
         dialog.run();
     }
 
-    std::string batchInterface::getBeer()
+    template<typename T>
+    std::string odeInterface<T>::getBeer()
     {
         srand(time(NULL));
         int i = rand()%beer_.size();
         return beer_[i];
     }
 
-    batchInterface::~batchInterface(void)
+    template<typename T>
+    odeInterface<T>::~odeInterface(void)
     {
-        N_VDestroy_Serial(y0CVODE_);
-        N_VDestroy_Serial(dy0CVODE_);
         N_VDestroy_Serial(yCVODE_);
         N_VDestroy_Serial(dyCVODE_);
         CVodeFree(&cvode_mem_);
     }
+
 }
+
+#endif

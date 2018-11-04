@@ -79,7 +79,7 @@ class batchEquations
         
         void setCanteraTransport(Cantera::Transport*    transport);
 
-        void setHomogeneusReactions(const bool flag)    {homogeneusReactions_   = flag;}
+        void setHomogeneousReactions(const bool flag)   {homogeneousReactions_  = flag;}
 
         void setHeterogeneusReactions(const bool flag)  {heterogeneusReactions_ = flag;}
         
@@ -157,7 +157,7 @@ class batchEquations
 
         std::string type_;
 
-        bool homogeneusReactions_ ;
+        bool homogeneousReactions_ ;
         bool heterogeneusReactions_;
         bool energyEquation_;
         bool userCheck_;

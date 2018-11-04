@@ -105,7 +105,14 @@ namespace ASALI
             inputGrid_.attach(kineticCombo_,1,0,1,1);
             kineticCombo_.append("ASALI");
             kineticCombo_.append("CANTERA");
-            kineticCombo_.set_active(0);
+            if ( kineticType_ == "load" )
+            {
+                kineticCombo_.set_active(1);
+            }
+            else
+            {
+                kineticCombo_.set_active(0);
+            }
             kineticCombo_.signal_changed().connect(sigc::mem_fun(*this,&catalyticReactors::switchTo));
 
             //Add temperature selector
@@ -171,8 +178,14 @@ namespace ASALI
             backButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::input));
 
             inputGrid_.attach(nextButton1_,2,NS_+5,1,1);
-            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::kineticShow));
-
+            if ( kineticType_ == "load" )
+            {
+                signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::coverage));
+            }
+            else
+            {
+                signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::kineticShow));
+            }
         }
 
         //Coverage input menu
@@ -240,10 +253,20 @@ namespace ASALI
 
     void catalyticReactors::composition()
     {
-        this->remove();
-        this->add(inputGrid_);
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height());
-        this->show_all_children();
+        this->read();
+        if ( kineticType_ != "none" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
+        {
+            Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
+            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.run();
+        }
+        else
+        {
+            this->remove();
+            this->add(inputGrid_);
+            this->resize(inputGrid_.get_width(),inputGrid_.get_height());
+            this->show_all_children();
+        }
     }
 
     void catalyticReactors::switchTo()
@@ -303,33 +326,33 @@ namespace ASALI
         std::string ts;
         {
             std::ostringstream strs;
-            strs << std::max(0.,h);
+            strs << h; //std::max(0.,h);
             ts = strs.str() + ":";
         }
 
         if (m > 9)
         {
             std::ostringstream strs;
-            strs << std::max(0.,m);
+            strs << m; //std::max(0.,m);
             ts = ts + strs.str() + ":";
         }
         else
         {
             std::ostringstream strs;
-            strs << std::max(0.,m);
+            strs << m; //std::max(0.,m);
             ts = ts + "0" + strs.str() + ":";
         }
         
         if (s > 9)
         {
             std::ostringstream strs;
-            strs << std::max(0.,s);
+            strs << s; //std::max(0.,s);
             ts = ts + strs.str();
         }
         else
         {
             std::ostringstream strs;
-            strs << std::max(0.,s);
+            strs << s; //std::max(0.,s);
             ts = ts + "0" + strs.str();
         }
         
@@ -355,7 +378,7 @@ namespace ASALI
 
         n_.clear();
         x_.clear();
-        for (unsigned int i=0;i<10;i++)
+        for (unsigned int i=0;i<NS_;i++)
         {
             if ( !n[i].empty() )
             {
@@ -397,13 +420,13 @@ namespace ASALI
                 }
 
                 {
-                    double sum = 0.;
+                    double sum = SumElements(x_);
                     for(unsigned int i=0;i<x_.size();i++)
                     {
-                        sum = sum + x_[i];
+                        x_[i] = x_[i]/sum;
                     }
                     
-                    if ( sum != 1. )
+                    if ( fabs(sum - 1.) > 1e-06 )
                     {
                         checkComposition_.first  = 4444;
                         checkComposition_.second = false;
@@ -485,13 +508,13 @@ namespace ASALI
                     }
 
                     {
-                        double sum = 0.;
+                        double sum = SumElements(xc_);
                         for(unsigned int i=0;i<xc_.size();i++)
                         {
-                            sum = sum + xc_[i];
+                            xc_[i] = xc_[i]/sum;
                         }
                         
-                        if ( sum != 1. )
+                        if ( fabs(sum - 1.) > 1e-06 )
                         {
                             checkCoverage_.first  = 4444;
                             checkCoverage_.second = false;
@@ -511,6 +534,7 @@ namespace ASALI
     {
         if ( i == 4444 )
         {
+            std::cout << i << std::endl;
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
@@ -717,7 +741,6 @@ namespace ASALI
             Gtk::Main::iteration();
         }
 
-
         bar_->update(fraction,tm);
 
         bar_->show();
@@ -735,6 +758,8 @@ namespace ASALI
     }
 
     void catalyticReactors::input() {}
+    
+    void catalyticReactors::read() {}
     
     void catalyticReactors::recap() {}
 

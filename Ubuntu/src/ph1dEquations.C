@@ -475,49 +475,45 @@ namespace ASALI
 
             // Calculates homogeneous kinetics
             {
-                //To be done
-                /*
-                if ( homogeneusReactions_ == true )
+                if ( homogeneousReactions_ == true )
                 {
-                    double* canteraArray = omega_.data();
-                    gas_->setState_TPY(T_,P_,canteraArray);
-                    kinetic_.getNetProductionRates(canteraArray);
+                    double* bulkArray = omega_.data();
+                    double  canteraArray[NC_];
+
+                    gas_->setState_TPY(T_,P_,bulkArray);
+                    kinetic_->getNetProductionRates(canteraArray);
+
                     for (unsigned int j=0;j<NC_;j++)
                     {
-                        RfromGas_[j] = canteraArray[j]; //kmol/m3/s
+                        RfromGas_[j] = canteraArray[j]; //kmol/m2/s
                     }
 
-                    double reactionArray[kinetic_.nReactions()];
-                    double enthalpyArray[kinetic_.nReactions()];
-                    kinetic_.getNetRatesOfProgress(reactionArray);
-                    kinetic_.getDeltaEnthalpy(enthalpyArray);
+                    double reactionArray[kinetic_->nReactions()];
+                    double enthalpyArray[kinetic_->nReactions()];
+                    kinetic_->getNetRatesOfProgress(reactionArray);
+                    kinetic_->getDeltaEnthalpy(enthalpyArray);
                     QfromGas_ = 0.;
-                    for (unsigned int j=0;j<kinetic_.nReactions();j++)
+                    for (unsigned int j=0;j<kinetic_->nReactions();j++)
                     {   
                         QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
                     }
                     QfromGas_ = -QfromGas_;
+
                 }
                 else
                 {
                     for (unsigned int j=0;j<NC_;j++)
                     {
-                        RfromGas_[j] = 0.;
+                        RfromGas_[j] = 0.; //kmol/m2/s
                     }
                     QfromGas_ = 0.;
-                }*/
-
-                for (unsigned int j=0;j<NC_;j++)
-                {
-                    RfromGas_[j] = 0.;
                 }
-                QfromGas_ = 0.;
-
             }
+
 
             // Calculates heterogeneous kinetics
             {
-                if ( heterogeneusReactions_ == true )
+                if ( heterogeneusReactions_ == true && alfa_ != 0.)
                 {
                     if ( type_ == "CANTERA" )
                     {
@@ -717,48 +713,45 @@ namespace ASALI
 
                 // Calculates homogeneous kinetics
                 {
-                    //To be done
-                    /*
-                    if ( homogeneusReactions_ == true )
+                    if ( homogeneousReactions_ == true )
                     {
-                        double* canteraArray = omega_.data();
-                        gas_->setState_TPY(T_,P_,canteraArray);
-                        kinetic_.getNetProductionRates(canteraArray);
+                        double* bulkArray = omega_.data();
+                        double  canteraArray[NC_];
+
+                        gas_->setState_TPY(T_,P_,bulkArray);
+                        kinetic_->getNetProductionRates(canteraArray);
+
                         for (unsigned int j=0;j<NC_;j++)
                         {
-                            RfromGas_[j] = canteraArray[j]; //kmol/m3/s
+                            RfromGas_[j] = canteraArray[j]; //kmol/m2/s
                         }
 
-                        double reactionArray[kinetic_.nReactions()];
-                        double enthalpyArray[kinetic_.nReactions()];
-                        kinetic_.getNetRatesOfProgress(reactionArray);
-                        kinetic_.getDeltaEnthalpy(enthalpyArray);
+                        double reactionArray[kinetic_->nReactions()];
+                        double enthalpyArray[kinetic_->nReactions()];
+                        kinetic_->getNetRatesOfProgress(reactionArray);
+                        kinetic_->getDeltaEnthalpy(enthalpyArray);
                         QfromGas_ = 0.;
-                        for (unsigned int j=0;j<kinetic_.nReactions();j++)
+                        for (unsigned int j=0;j<kinetic_->nReactions();j++)
                         {   
                             QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
                         }
                         QfromGas_ = -QfromGas_;
+
                     }
                     else
                     {
                         for (unsigned int j=0;j<NC_;j++)
                         {
-                            RfromGas_[j] = 0.;
+                            RfromGas_[j] = 0.; //kmol/m2/s
                         }
                         QfromGas_ = 0.;
-                    }*/
-
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = 0.;
                     }
-                    QfromGas_ = 0.;
                 }
+
 
                 // Calculates heterogeneous kinetics
                 {
-                    if ( heterogeneusReactions_ == true )
+                    if ( heterogeneusReactions_ == true && alfa_ != 0.)
                     {
                         if ( type_ == "CANTERA" )
                         {
@@ -776,7 +769,7 @@ namespace ASALI
                                 unsigned int rcounter = 0;
                                 for (unsigned int j=0;j<NC_;j++)
                                 {
-                                    RfromSurface_[j] = reactionArray[rcounter++]*MW_[j]; //kg/m2/s
+                                    RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
                                 }
 
                                 for (unsigned int j=0;j<SURF_NC_;j++)
@@ -922,7 +915,7 @@ namespace ASALI
                         dy[counter]    = -(G_/rhoVector_[i])*(omegaMatrix_[i][j] - omegaMatrix_[i-1][j])/dz_
                                          + diffMatrix_[i][j]*(omegaMatrix_[i+1][j] -2.*omegaMatrix_[i][j] + omegaMatrix_[i-1][j])/(dz_*dz_)
                                          + RfromGasMatrix_[i][j]/rhoVector_[i]
-                                         + alfa_*RfromSurfaceMatrix_[i][j]/rhoVector_[i];
+                                         + alfa_*RfromSurfaceMatrix_[i][j]*MW_[j]/rhoVector_[i];
                         algb_[counter] = false;
                         counter++;
                     }

@@ -304,12 +304,16 @@ namespace ASALI
             unsigned int counter=0;
 
             for(unsigned int i=0;i<NC_;i++)
+            {
                 omega_[i] = y[counter++];
+            }
 
             mass_ = y[counter++];
 
             for(unsigned int i=0;i<SURF_NC_;i++)
+            {
                 Z_[i] = y[counter++];
+            }
 
             T_ = y[counter++];
         }
@@ -348,49 +352,44 @@ namespace ASALI
 
         // Calculates homogeneous kinetics
         {
-            //To be done
-            /*
-            if ( homogeneusReactions_ == true )
+            if ( homogeneousReactions_ == true )
             {
-                double* canteraArray = omega_.data();
-                gas_->setState_TPY(T_,P_,canteraArray);
-                kinetic_.getNetProductionRates(canteraArray);
+                double* bulkArray = omega_.data();
+                double  canteraArray[NC_];
+
+                gas_->setState_TPY(T_,P_,bulkArray);
+                kinetic_->getNetProductionRates(canteraArray);
+
                 for (unsigned int j=0;j<NC_;j++)
                 {
-                    RfromGas_[j] = canteraArray[j]; //kmol/m3/s
+                    RfromGas_[j] = canteraArray[j]; //kmol/m2/s
                 }
 
-                double reactionArray[kinetic_.nReactions()];
-                double enthalpyArray[kinetic_.nReactions()];
-                kinetic_.getNetRatesOfProgress(reactionArray);
-                kinetic_.getDeltaEnthalpy(enthalpyArray);
+                double reactionArray[kinetic_->nReactions()];
+                double enthalpyArray[kinetic_->nReactions()];
+                kinetic_->getNetRatesOfProgress(reactionArray);
+                kinetic_->getDeltaEnthalpy(enthalpyArray);
                 QfromGas_ = 0.;
-                for (unsigned int j=0;j<kinetic_.nReactions();j++)
+                for (unsigned int j=0;j<kinetic_->nReactions();j++)
                 {   
                     QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
                 }
                 QfromGas_ = -QfromGas_;
+
             }
             else
             {
                 for (unsigned int j=0;j<NC_;j++)
                 {
-                    RfromGas_[j] = 0.;
+                    RfromGas_[j] = 0.; //kmol/m2/s
                 }
                 QfromGas_ = 0.;
-            }*/
-
-            for (unsigned int j=0;j<NC_;j++)
-            {
-                RfromGas_[j] = 0.;
             }
-            QfromGas_ = 0.;
-
         }
 
         // Calculates heterogeneous kinetics
         {
-            if ( heterogeneusReactions_ == true )
+            if ( heterogeneusReactions_ == true && alfa_ != 0.)
             {
                 if ( type_ == "CANTERA" )
                 {

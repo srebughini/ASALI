@@ -121,7 +121,24 @@ namespace ASALI
         return check;
     }
     
-    
+
+    int  canteraInterface::checkNames(std::string name)
+    {
+        int check = 1;
+
+        this->convertToCaption(name);
+        for (unsigned int j=0;j<NS_;j++)
+        {
+            if ( name == thermo_->speciesName(j) )
+            {
+                check = 0;
+                break;
+            }
+        }
+
+        return check;
+    }
+
     void canteraInterface::setTemperature(const double T)
     {
         T_ = T;
@@ -322,6 +339,98 @@ namespace ASALI
         }
     }
 
+    double canteraInterface::specieProperty(std::string p,std::string n)
+    {
+        if ( n != "mix" )
+        {
+            for(unsigned int i=0;i<26;i++)
+            {
+                std::replace(n.begin(),n.end(),*small[i].c_str(),*big[i].c_str());
+            }
+        }
+
+        double r = 0;
+        
+        if ( p == "h" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = h_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "s" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = s_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "cp" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = cp_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "cond" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = cond_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "mu" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = mu_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "mw" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = MW_[i];
+                    break;
+                }
+            }
+        }
+        else if ( p == "diff" )
+        {
+            for (unsigned int i=0;i<=NS_;i++)
+            {
+                if ( n_[i] == n )
+                {
+                    r = diff_[i][NS_];
+                    break;
+                }
+            }
+        }
+        
+        return r;
+    }
 
     canteraInterface::~canteraInterface()
     {

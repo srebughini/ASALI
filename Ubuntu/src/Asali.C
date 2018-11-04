@@ -59,7 +59,6 @@ namespace ASALI
       equilibriumButton_("Themodynamic equilibrium (CANTERA)"),
       reactorsButton_("Catalytic reactors"),
       vacuumButton_("Vacuum properties"),
-      pelletButton_("Catalytic pellets"),
       batchButton_("Batch Reactor"),
       cstrButton_("Continuous Stirred Tank Reactor"),
       ph1dButton_("1D Pseudo-homogeneous Plug Flow Reactor"),
@@ -185,18 +184,22 @@ namespace ASALI
             canteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
             menuButtonBox_.pack_start(transportButton_, Gtk::PACK_SHRINK);
             transportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::transport));
+            transportButton_.set_tooltip_text("Estimation of transport properties at assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(thermoButton_, Gtk::PACK_SHRINK);
             thermoButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermo));
+            thermoButton_.set_tooltip_text("Estimation of thermodynamic properties at assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(thermoTransportButton_, Gtk::PACK_SHRINK);
             thermoTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermoTransport));
+            thermoTransportButton_.set_tooltip_text("Estimation of thermodynamic & transport properties\nat assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(vacuumButton_, Gtk::PACK_SHRINK);
             vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::vacuum));
+            vacuumButton_.set_tooltip_text("Estimation of specie vacuum properties at assigned Temperture and Pressure");
             menuButtonBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
             equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::equilibrium));
+            equilibriumButton_.set_tooltip_text("Estimation of chemical equilibrium based on CANTERA");
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
             reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactors));
-            //menuButtonBox_.pack_start(pelletButton_, Gtk::PACK_SHRINK);
-            //pelletButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::pelletMenu));
+            reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
 
             //Adding exit button
             menuButtonBox_.pack_start(exitButton3_, Gtk::PACK_SHRINK);
@@ -350,145 +353,11 @@ namespace ASALI
 
                 if (filename.find("cti")!=std::string::npos)
                 {
-                    #if ASALI_ON_WINDOW == 1
-                    Gtk::MessageDialog errorDialog(*this,"On WINDOWS you should use the xml version of CANTERA input file",true,Gtk::MESSAGE_WARNING);
+                    Gtk::MessageDialog errorDialog(*this,"Sorry, ASALI use only the xml version of CANTERA input file\nTo convert .cti to .xml use ctml_writer command",true,Gtk::MESSAGE_WARNING);
                     errorDialog.set_secondary_text(this->getBeer(),true);
                     errorDialog.run();
                     dialog.hide();
                     break;
-                    #else
-                    std::vector<std::string> readed;
-                    while (!input.eof()) 
-                    {
-                        std::string line;
-                        getline(input,line);
-
-                        if (line.find("name")!=std::string::npos)
-                        {
-                            readed.push_back(line);
-                        }
-                    }
-
-                    std::vector<std::string> type(2);
-                    type[0] = "none";
-                    type[1] = "none";
-                    for (unsigned int i=0;i<readed.size();i++)
-                    {
-                        std::string dummyString = readed[i];
-
-                        for (std::size_t j=0;j<dummyString.size();j++)
-                        {
-                            if ( dummyString.substr(j,1) == "(" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "\"" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "=" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "," )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                            else if ( dummyString.substr(j,1) == "'" )
-                            {
-                                dummyString.replace(j,1," ");
-                            }
-                        }
-
-                        std::vector<std::string> dummyVector;
-                        dummyVector.clear();
-
-                        std::istringstream iss(dummyString);
-                        while (iss >> dummyString)
-                        {
-                            dummyVector.push_back(dummyString);
-                        }
-
-                        if ( dummyVector.size() > 2 )
-                        {
-                            for (unsigned int j=0;j<dummyVector.size()-1;j++)
-                            {
-                                if (dummyVector[j] == "ideal_gas" &&
-                                    dummyVector[j + 1] == "name"  )
-                                {
-                                    type[0] = dummyVector[j+2];
-                                    type[0].erase(std::remove(type[0].begin(), type[0].end(), '"'), type[0].end());
-                                    type[0].erase(std::remove(type[0].begin(), type[0].end(), ' '), type[0].end());
-                                }
-                                else if (dummyVector[j] == "ideal_interface" &&
-                                         dummyVector[j + 1] == "name"  )
-                                {
-                                    type[1] = dummyVector[j+2];
-                                    type[1].erase(std::remove(type[1].begin(), type[1].end(), '"'), type[1].end());
-                                    type[1].erase(std::remove(type[1].begin(), type[1].end(), ' '), type[1].end());
-                                }
-                            }
-                        }
-                        
-                        if ( type[0] != "none" && type[1] != "none")
-                        {
-                            break;
-                        }
-                    }
-
-                    if ( type[0] == "none" &&
-                         type[1] == "none" )
-                    {
-                        Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                        errorDialog.set_secondary_text(this->getBeerShort(),true);
-                        errorDialog.run();
-                        dialog.hide();
-                        break;
-                    }
-                    else if (  type[0] != "none" &&
-                               type[1] == "none" )
-                    {
-                        Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                        smallDialog.set_secondary_text(this->getBeerShort(),true);
-                        int  answer = smallDialog.run();
-
-                        //Handle the response:
-                        switch(answer)
-                        {
-                            case(Gtk::RESPONSE_YES):
-                            {
-                                thermo_           = Cantera::newPhase(filename,type[0]);
-                                transport_        = Cantera::newDefaultTransportMgr(thermo_);
-                                canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
-                                speciesNames_     = new ASALI::speciesPopup();
-                                kineticType_      = "nokinetic";
-                                smallDialog.hide();
-                                this->mainMenu();
-                                break;
-                            }
-                            default:
-                            {
-                                smallDialog.hide();
-                                break;
-                            }
-                        }
-                        dialog.hide();
-                        break;
-                    }
-                    else
-                    {
-                        thermo_    = Cantera::newPhase(filename,type[0]);
-                        std::vector<Cantera::ThermoPhase*> phases{thermo_};
-                        kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-                        surface_    = Cantera::importInterface(filename,type[1],phases);
-                        transport_  = Cantera::newDefaultTransportMgr(thermo_);
-                        canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
-                        kineticType_ = "load";
-                        dialog.hide();
-                        this->mainMenu();
-                        break;
-                    }
-                    #endif
                 }
                 else if (filename.find("xml")!=std::string::npos)
                 {
@@ -859,7 +728,6 @@ namespace ASALI
         dpMenu_ = new ASALI::pressureDrops(canteraInterface_,speciesNames_,kineticType_);
         dpMenu_->show();
     }
-
 
     void Asali::exit()
     {
