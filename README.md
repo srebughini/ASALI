@@ -1,7 +1,6 @@
 
 ![Travis (.org)](https://img.shields.io/travis/srebughini/ASALI.svg?style=popout-square)
 ![SourceForge](https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square)
-![GitHub All Releases](https://img.shields.io/github/downloads/srebughini/ASALI/total.svg?style=popout-square)
 ![Twitter Follow](https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square)
 [![GitHub stars](https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/stargazers)
 [![GitHub license](https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/blob/master/LICENSE)
