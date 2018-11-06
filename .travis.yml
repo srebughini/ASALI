@@ -1,0 +1,55 @@
+language: cpp
+sudo: required
+dist: xenial
+compiler:
+- g++
+os:
+- linux
+before_install:
+- sudo apt-get update
+- sudo apt-get install git - g++ -Os -s gfortran python scons libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools cython python3 python3-dev python3-setuptools python3-numpy python-software-properties
+- sudo apt-get install libgtkmm-3.0-dev
+- sudo apt-get install gnuplot
+- git clone https://github.com/Cantera/cantera.git
+branches:
+  only:
+  - master
+env:
+  global:
+  - CANTERA=/usr/local
+  - ASALI_OS='-DASALI_ON_WINDOW=0'
+script:
+- cd cantera
+- scons build system_sundials=n
+- sudo scons install
+- cd ..
+- cd Ubuntu
+- rm -rf obj
+- mkdir obj
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/catalyticReactors.C -o obj/catalyticReactors.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/batchEquations.C -o obj/batchEquations.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/batchReactor.C -o obj/batchReactor.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/cstrEquations.C -o obj/cstrEquations.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/cstrReactor.C -o obj/cstrReactor.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/ph1dEquations.C -o obj/ph1dEquations.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/ph1dReactor.C -o obj/ph1dReactor.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/het1dEquations.C -o obj/het1dEquations.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/het1dReactor.C -o obj/het1dReactor.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/transportProperties.C -o obj/transportProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/thermoProperties.C -o obj/thermoProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/thermoTransportProperties.C -o obj/thermoTransportProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/vacuumProperties.C -o obj/vacuumProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/equilibriumCalculator.C -o obj/equilibriumCalculator.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/canteraInterface.C -o obj/canteraInterface.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/speciesPopup.C -o obj/speciesPopup.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/asaliProperties.C -o obj/asaliProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/asaliCatalystProperties.C -o obj/asaliCatalystProperties.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/runBar.C -o obj/runBar.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/asaliPlot.C -o obj/asaliPlot.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/asaliKinetic.C -o obj/asaliKinetic.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/chemkinConverter.C -o obj/chemkinConverter.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/pressureDrops.C -o obj/pressureDrops.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/Asali.C -o obj/Asali.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/main.cpp -o obj/main.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
+- g++ -Os -s -std=c++11 -Wall -Wextra obj/Asali.o obj/main.o obj/transportProperties.o obj/thermoProperties.o obj/thermoTransportProperties.o obj/vacuumProperties.o obj/equilibriumCalculator.o obj/catalyticReactors.o obj/batchEquations.o obj/batchReactor.o obj/ph1dEquations.o obj/ph1dReactor.o obj/het1dEquations.o obj/het1dReactor.o obj/cstrEquations.o obj/cstrReactor.o obj/canteraInterface.o obj/speciesPopup.o obj/asaliKinetic.o obj/asaliProperties.o obj/asaliCatalystProperties.o obj/runBar.o obj/asaliPlot.o obj/chemkinConverter.o obj/pressureDrops.o -o Asali -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` -Wl,--start-group -lcantera -lblas -llapack -lcantera_fortran -Wl,--end-group -lgfortran -Wl,--no-as-needed -ldl -lpthread -lm
+
