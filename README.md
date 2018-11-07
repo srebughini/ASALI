@@ -4,6 +4,7 @@
 ![Twitter Follow](https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square)
 [![GitHub stars](https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/stargazers)
 [![GitHub license](https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/issues)
 
 # **ASALI: Modeling and beyond**
 Asali is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. From one side, thanks to its user-friendly interface, Asali is very helpful for those approaching the modeling of gas phase mixture for the first time. On the other side, the deep interaction with [Cantera](https://cantera.org/)  allows more expert users in performing detailed simulations without losing time in coding their own models.
