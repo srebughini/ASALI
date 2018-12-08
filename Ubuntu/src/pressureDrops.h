@@ -83,11 +83,9 @@ namespace ASALI
             Gtk::Label        packedBedParticleLabel_;
             Gtk::Label        packedBedVoidFractionLabel_;
             Gtk::Label        tubularTubeLabel_;
-            Gtk::Label        tubularDuctLabel_;
             Gtk::Label        tubularWallThicknessLabel_;
             Gtk::Label        honeyCombCPSILabel_;
             Gtk::Label        honeyCombWallThicknessLabel_;
-            Gtk::Label        honeyCombDuctLabel_;
             Gtk::Label        tubularDpLabel_;
             Gtk::Label        tubularDpValueLabel_;
             Gtk::Label        honeyCombDpLabel_;
@@ -113,9 +111,7 @@ namespace ASALI
             Gtk::ComboBoxText reactorTypeCombo_;
             Gtk::ComboBoxText tubularTubeCombo_;
             Gtk::ComboBoxText tubularWallThicknessCombo_;
-            Gtk::ComboBoxText tubularDuctCombo_;
             Gtk::ComboBoxText honeyCombWallThicknessCombo_;
-            Gtk::ComboBoxText honeyCombDuctCombo_;
             Gtk::ComboBoxText packedBedTubeCombo_;
             Gtk::ComboBoxText packedBedParticleCombo_;
             Gtk::ComboBoxText tubularDpCombo_;
@@ -134,7 +130,6 @@ namespace ASALI
             double dpTubular_;
             double dpHoneyComb_;
 
-            std::string section_;
             std::string reactorType_;
             
             bool tubularBool_;

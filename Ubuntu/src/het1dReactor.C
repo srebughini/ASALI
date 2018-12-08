@@ -273,7 +273,6 @@ namespace ASALI
                     recapButtonBox_.set_spacing(10);
                     recapButtonBox_.set_homogeneous(true);
                     recapButtonBox_.pack_start(runButton_, Gtk::PACK_SHRINK);
-                    run_ = runButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::catalystPropertiesShow));
                     recapButtonBox_.pack_start(saveButton_, Gtk::PACK_SHRINK);
                     saveButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::save));
                     recapButtonBox_.pack_start(catalystPropertiesButton_, Gtk::PACK_SHRINK);
@@ -628,9 +627,10 @@ namespace ASALI
     void het1dReactor::input()
     {
         {
-            signal.disconnect();
-            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::kineticShow));
+            run_.disconnect();
+            run_ = runButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::catalystPropertiesShow));
         }
+        this->switchTo();
         this->remove();
         this->options();
         this->add(mainBox_);

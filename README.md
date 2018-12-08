@@ -62,13 +62,13 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [Gnuplot](http://www.gnuplot.info/): command-line driven graphing utility
 
-Asali has been tested on Ubunut 16.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
 
 ### 2.1 Linux OS
 ##### 2.1.1 Pre-requisites installation
 The Linux based external libraries can be installed by typing these commands:  
 `sudo apt-get update`  
-`sudo apt-get install git g++ gfortran python scons libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools cython python3 python3-dev python3-setuptools python3-numpy python-software-properties`  
+`sudo apt-get install git g++ gfortran python scons libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools cython python3 python3-dev python3-setuptools python3-numpy`  
 
 ##### 2.1.2 How to install Gtkmm libraries
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
