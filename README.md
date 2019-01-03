@@ -91,10 +91,9 @@ More details can be found at: https://cantera.org/install/compiling-install.html
 ##### 2.1.5 How to install ASALI
 To install Asali modify the `compiled.sh` file by changing the environmental variable `CANTERA` with the path of you [Cantera](https://cantera.org/) installation (usually `/usr/local/`). Once you have changed the environmental variable, run the following commands:  
 `./compile.sh`  
-To create a symbolic link:  
-`sudo ln -s $HOME/your/asali/folder/Asali /usr/bin/Asali`  
 To run Asali:  
-`Asali`  
+`./Asali`  
+
 ### 2.2 Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.  
 
