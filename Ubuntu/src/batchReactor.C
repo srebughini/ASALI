@@ -293,7 +293,10 @@ namespace ASALI
 
     void batchReactor::input()
     {
-        this->switchTo();
+        {
+            signal.disconnect();
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::kineticShow));
+        }
         this->remove();
         this->add(mainBox_);
         this->resize(mainBox_.get_width(),mainBox_.get_height());

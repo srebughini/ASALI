@@ -319,7 +319,10 @@ namespace ASALI
 
     void cstrReactor::input()
     {
-        this->switchTo();
+        {
+            signal.disconnect();
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&cstrReactor::kineticShow));
+        }
         this->remove();
         this->add(mainBox_);
         this->resize(mainBox_.get_width(),mainBox_.get_height());

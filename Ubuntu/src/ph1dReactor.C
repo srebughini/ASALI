@@ -355,7 +355,10 @@ namespace ASALI
 
     void ph1dReactor::input()
     {
-        this->switchTo();
+        {
+            signal.disconnect();
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&ph1dReactor::kineticShow));
+        }
         this->remove();
         this->add(mainBox_);
         this->resize(mainBox_.get_width(),mainBox_.get_height());

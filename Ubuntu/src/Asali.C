@@ -57,6 +57,7 @@ namespace ASALI
       thermoButton_("Thermodynamic properties"),
       thermoTransportButton_("Thermodynamic & Transport properties"),
       equilibriumButton_("Themodynamic equilibrium (CANTERA)"),
+      linearRegressionButton_("Linear Regression of gas properties"),
       reactorsButton_("Catalytic reactors"),
       vacuumButton_("Vacuum properties"),
       batchButton_("Batch Reactor"),
@@ -197,6 +198,9 @@ namespace ASALI
             menuButtonBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
             equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::equilibrium));
             equilibriumButton_.set_tooltip_text("Estimation of chemical equilibrium based on CANTERA");
+            menuButtonBox_.pack_start(linearRegressionButton_, Gtk::PACK_SHRINK);
+            linearRegressionButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::linearRegression));
+            linearRegressionButton_.set_tooltip_text("Estimaion of linear equations for thermodynamic and transport properties\nof a gas mixture as a function of Temperature");
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
             reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactors));
             reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
@@ -667,6 +671,23 @@ namespace ASALI
             }
             equilibriumMenu_ = new ASALI::equilibriumCalculator(canteraInterface_,speciesNames_,kineticType_);
             equilibriumMenu_->show();
+        }
+    }
+
+    void Asali::linearRegression()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!linearRegressionMenu_)
+            {
+                delete linearRegressionMenu_;
+            }
+            linearRegressionMenu_ = new ASALI::linearRegression(canteraInterface_,speciesNames_,kineticType_);
+            linearRegressionMenu_->show();
         }
     }
 

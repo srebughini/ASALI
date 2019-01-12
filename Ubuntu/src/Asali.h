@@ -62,6 +62,7 @@
 #include "ph1dReactor.h"
 #include "het1dReactor.h"
 #include "pressureDrops.h"
+#include "linearRegression.h"
 
 namespace ASALI
 {
@@ -91,6 +92,7 @@ namespace ASALI
             void thermoTransport();
             void vacuum();
             void equilibrium();
+            void linearRegression();
             void reactors();
             void batch();
             void cstr();
@@ -118,6 +120,7 @@ namespace ASALI
             Gtk::Button       thermoButton_;
             Gtk::Button       thermoTransportButton_;
             Gtk::Button       equilibriumButton_;
+            Gtk::Button       linearRegressionButton_;
             Gtk::Button       reactorsButton_;
             Gtk::Button       vacuumButton_;
             Gtk::Button       batchButton_;
@@ -173,6 +176,7 @@ namespace ASALI
             ASALI::thermoTransportProperties  *thermoTransportMenu_;
             ASALI::vacuumProperties           *vacuumMenu_;
             ASALI::equilibriumCalculator      *equilibriumMenu_;
+            ASALI::linearRegression           *linearRegressionMenu_;
             ASALI::batchReactor               *batchMenu_;
             ASALI::cstrReactor                *cstrMenu_;
             ASALI::ph1dReactor                *ph1dMenu_;

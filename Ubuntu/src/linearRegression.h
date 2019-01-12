@@ -37,122 +37,83 @@
 ##############################################################################################*/
 
 
-#ifndef PRESSUREDROPS_H
-#define PRESSUREDROPS_H
+#ifndef LINEARREGRESSION_H
+#define LINEARREGRESSION_H
 
-#include "transportProperties.h"
+#include "thermoProperties.h"
 
 namespace ASALI
 {
-    class pressureDrops : public ASALI::transportProperties
+    class linearRegression : public ASALI::thermoProperties
     {
         public:
-
-            pressureDrops(ASALI::canteraInterface        *canteraInterface,
-                          ASALI::speciesPopup            *speciesNames,
-                          std::string                     kineticType);
+            linearRegression(ASALI::canteraInterface        *canteraInterface,
+                             ASALI::speciesPopup            *speciesNames,
+                             std::string                     kineticType);
             
-            virtual ~pressureDrops();
+            #include "Vector.H"
+            
+            virtual ~linearRegression();
 
             virtual void results();
 
         private:
-
-            void read();
+        
+        
+            void cleanInput();
+            void uploadLayout();
             void run();
-            void main();
-            void options();
-            void dpConversion(unsigned int i);
+            void leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2);
+            void condUnitDimensions(double &p);
+            void muUnitDimensions(double &p);
+            void cpUnitDimensions(double &p);
+            void sUnitDimensions(double &p);
+            void hUnitDimensions(double &p);
+            void diffUnitDimensions(double &p);
 
-            Gtk::Box          mainBox_;
-            Gtk::Box          secondBox_;
-            Gtk::Box          logoBox_;
+            Gtk::Box          tempBox_;
 
+            Gtk::Button       exitButton2_;
+            Gtk::Button       backButton_;
             Gtk::Button       calculateButton_;
-            Gtk::Button       backButton3_;
-            Gtk::Button       exitButton3_;
-
-            Gtk::Grid         propertiesGrid_;
-
-            Gtk::Label        lengthLabel_;
-            Gtk::Label        velocityLabel_;
-            Gtk::Label        pressureLabel_;
-            Gtk::Label        beerLabel_;
-            Gtk::Label        reactorTypeLabel_;
-            Gtk::Label        packedBedTubeLabel_;
-            Gtk::Label        packedBedParticleLabel_;
-            Gtk::Label        packedBedVoidFractionLabel_;
-            Gtk::Label        tubularTubeLabel_;
-            Gtk::Label        tubularDuctLabel_;
-            Gtk::Label        tubularWallThicknessLabel_;
-            Gtk::Label        honeyCombCPSILabel_;
-            Gtk::Label        honeyCombWallThicknessLabel_;
-            Gtk::Label        honeyCombDuctLabel_;
-            Gtk::Label        tubularDpLabel_;
-            Gtk::Label        tubularDpValueLabel_;
-            Gtk::Label        honeyCombDpLabel_;
-            Gtk::Label        honeyCombDpValueLabel_;
-
-            Gtk::Entry        lengthEntry_;
-            Gtk::Entry        velocityEntry_;
-            Gtk::Entry        timeEntry_;
-            Gtk::Entry        loadEntry_;
-            Gtk::Entry        saveEntry_;
-            Gtk::Entry        pointsEntry_;
-            Gtk::Entry        inertEntry_;
-            Gtk::Entry        tubularTubeEntry_;
-            Gtk::Entry        tubularWallThicknessEntry_;
-            Gtk::Entry        honeyCombCPSIEntry_;
-            Gtk::Entry        honeyCombWallThicknessEntry_;
-            Gtk::Entry        packedBedTubeEntry_;
-            Gtk::Entry        packedBedParticleEntry_;
-            Gtk::Entry        packedBedVoidFractionEntry_;
             
-            Gtk::ComboBoxText lengthCombo_;
-            Gtk::ComboBoxText velocityCombo_;
-            Gtk::ComboBoxText reactorTypeCombo_;
-            Gtk::ComboBoxText tubularTubeCombo_;
-            Gtk::ComboBoxText tubularWallThicknessCombo_;
-            Gtk::ComboBoxText tubularDuctCombo_;
-            Gtk::ComboBoxText honeyCombWallThicknessCombo_;
-            Gtk::ComboBoxText honeyCombDuctCombo_;
-            Gtk::ComboBoxText packedBedTubeCombo_;
-            Gtk::ComboBoxText packedBedParticleCombo_;
-            Gtk::ComboBoxText tubularDpCombo_;
-            Gtk::ComboBoxText honeyCombDpCombo_;
+            Gtk::Grid         resultsGrid_;
+
+            Gtk::Label        tempRangeLabel_;
+            Gtk::Label        propertyLabel_;
+            Gtk::Label        mLabel_;
+            Gtk::Label        mValueLabel_;
+            Gtk::Label        qLabel_;
+            Gtk::Label        qValueLabel_;
+            Gtk::Label        rLabel_;
+            Gtk::Label        rValueLabel_;
             
-            Gtk::Image        logo1_;
-            Gtk::Image        logo2_;
+            Gtk::Entry        tempEntry1_;
+            Gtk::Entry        tempEntry2_;
 
-            double L_;
-            double v_;
-            double cpsi_;
-            double tw_;
-            double Dt_;
-            double Dp_;
-            double epsi_;
-            double dpTubular_;
-            double dpHoneyComb_;
+            Gtk::ComboBoxText tempRangeCombo_;
+            Gtk::ComboBoxText propertyCombo_;
+            Gtk::ComboBoxText unitDimensionCombo_;
+            Gtk::ComboBoxText specieCombo_;
 
-            std::string section_;
-            std::string reactorType_;
+            Gtk::Image        logo_;
+            Gtk::Image        regressionImage_;
             
-            bool tubularBool_;
-            bool honeyCombBool_;
-            bool packedBedBool_;
-            bool tubularDpBool_;
-            bool honeyCombDpBool_;
-            bool packedBedDpBool_;
+            std::vector<double> Tv_;
+            std::vector<double> pv_;
+
+            std::string kineticType_;
+            std::string name_;
             
-            unsigned int Ndp_;
+            double      m_;
+            double      q_;
+            double      r2_;
 
-            std::vector<double>             dpPackedBed_;
-            std::vector<Gtk::Label*>        packedBedDpLabel_;
-            std::vector<Gtk::Label*>        packedBedDpValueLabel_;
-            std::vector<Gtk::ComboBoxText*> packedBedDpCombo_;
-
+            bool        diffCheck_;
 
             ASALI::canteraInterface        *canteraInterface_;
+            ASALI::speciesPopup            *speciesNames_;
+
     };
 }
 
