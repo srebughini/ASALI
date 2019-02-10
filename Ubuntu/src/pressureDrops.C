@@ -56,11 +56,9 @@ namespace ASALI
       packedBedParticleLabel_("Particle diameter"),
       packedBedVoidFractionLabel_("Void fraction"),
       tubularTubeLabel_("Tube diameter"),
-      tubularDuctLabel_("Tube section"),
       tubularWallThicknessLabel_("Washcoat thickness"),
       honeyCombCPSILabel_("CPSI"),
       honeyCombWallThicknessLabel_("Wall thickness"),
-      honeyCombDuctLabel_("Duct section"),
       tubularDpLabel_("Bird R. B. et al. (1960)"),
       honeyCombDpLabel_("Bird R. B. et al. (1960)"),
       logo1_("images/PressureLogo.tiff"),
@@ -129,7 +127,6 @@ namespace ASALI
                 reactorTypeCombo_.signal_changed().connect(sigc::mem_fun(*this,&pressureDrops::options));
                 reactorTypeCombo_.set_active(0);
 
-
                 //Length
                 propertiesGrid_.attach(lengthLabel_,0,1,1,1);
                 propertiesGrid_.attach(lengthEntry_,1,1,1,1);
@@ -171,12 +168,6 @@ namespace ASALI
                     tubularWallThicknessCombo_.append("\u03BCm");
                     tubularWallThicknessCombo_.set_active(2);
                     
-
-                    tubularDuctCombo_.append("square");
-                    tubularDuctCombo_.append("circle");
-                    tubularDuctCombo_.append("triangle");
-                    tubularDuctCombo_.set_active(1);
-                    
                     tubularDpCombo_.append("Pa");
                     tubularDpCombo_.append("bar");
                     tubularDpCombo_.append("mmHg");
@@ -196,11 +187,6 @@ namespace ASALI
                     honeyCombWallThicknessCombo_.set_active(1);
 
                     honeyCombWallThicknessEntry_.set_text("1");
-
-                    honeyCombDuctCombo_.append("square");
-                    honeyCombDuctCombo_.append("circle");
-                    honeyCombDuctCombo_.append("triangle");
-                    honeyCombDuctCombo_.set_active(1);
 
                     honeyCombDpCombo_.append("Pa");
                     honeyCombDpCombo_.append("bar");
@@ -269,18 +255,12 @@ namespace ASALI
             propertiesGrid_.remove(honeyCombWallThicknessLabel_);
             propertiesGrid_.remove(honeyCombWallThicknessEntry_);
             propertiesGrid_.remove(honeyCombWallThicknessCombo_);
-            propertiesGrid_.remove(honeyCombDuctLabel_);
-            propertiesGrid_.remove(honeyCombDuctCombo_);
         }
         else if ( reactorType_ == "tubular" )
         {
             propertiesGrid_.remove(tubularTubeLabel_);
             propertiesGrid_.remove(tubularTubeEntry_);
             propertiesGrid_.remove(tubularTubeCombo_);
-
-            propertiesGrid_.remove(tubularDuctLabel_);
-            propertiesGrid_.remove(tubularDuctCombo_);
-            
             propertiesGrid_.remove(tubularWallThicknessLabel_);
             propertiesGrid_.remove(tubularWallThicknessEntry_);
             propertiesGrid_.remove(tubularWallThicknessCombo_);
@@ -307,10 +287,6 @@ namespace ASALI
             propertiesGrid_.attach(tubularWallThicknessLabel_,0,5,1,1);
             propertiesGrid_.attach(tubularWallThicknessEntry_,1,5,1,1);
             propertiesGrid_.attach(tubularWallThicknessCombo_,2,5,1,1);
-
-
-            propertiesGrid_.attach(tubularDuctLabel_,0,6,1,1);
-            propertiesGrid_.attach(tubularDuctCombo_,1,6,1,1);
 
             reactorType_ = "tubular";
         }
@@ -339,9 +315,6 @@ namespace ASALI
             propertiesGrid_.attach(honeyCombWallThicknessEntry_,1,5,1,1);
             propertiesGrid_.attach(honeyCombWallThicknessCombo_,2,5,1,1);
 
-            propertiesGrid_.attach(honeyCombDuctLabel_,0,6,1,1);
-            propertiesGrid_.attach(honeyCombDuctCombo_,1,6,1,1);
-
             reactorType_ = "honeycomb";
         }
         
@@ -365,8 +338,6 @@ namespace ASALI
 
             ConvertsToMeter(Dt_,tubularTubeCombo_.get_active_text());
 
-            section_ = tubularDuctCombo_.get_active_text();
-            
             tw_      = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
 
             ConvertsToMeter(tw_,tubularWallThicknessCombo_.get_active_text());
@@ -386,8 +357,6 @@ namespace ASALI
             tw_      = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
             ConvertsToMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
-
-            section_ = honeyCombDuctCombo_.get_active_text();
         }
     }
 

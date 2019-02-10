@@ -293,10 +293,7 @@ namespace ASALI
 
     void batchReactor::input()
     {
-        {
-            signal.disconnect();
-            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&batchReactor::kineticShow));
-        }
+        this->switchTo();
         this->remove();
         this->add(mainBox_);
         this->resize(mainBox_.get_width(),mainBox_.get_height());
@@ -433,7 +430,40 @@ namespace ASALI
             eq_->setCanteraInterface(surface_);
             eq_->setCanteraKinetics(kinetic_);
             eq_->turnOnUserDefined(false);
-            eq_->setHomogeneousReactions(false);
+
+            if ( kinetic_->nReactions() != 0. )
+            {
+                Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
+                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                int answer = smallDialog.run();
+
+                //Handle the response:
+                switch(answer)
+                {
+                    case(Gtk::RESPONSE_YES):
+                    {
+                        eq_->setHomogeneousReactions(true);
+                        smallDialog.hide();
+                        break;
+                    }
+                    case(Gtk::RESPONSE_NO):
+                    {
+                        eq_->setHomogeneousReactions(false);
+                        smallDialog.hide();
+                        break;
+                    }
+                    default:
+                    {
+                        smallDialog.hide();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                eq_->setHomogeneousReactions(false);
+            }
+
         }
         else if ( kineticCombo_.get_active_text() == "ASALI")
         {
