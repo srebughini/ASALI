@@ -64,6 +64,10 @@ g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/pressureDrops.C -
 # Linear regression
 g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/linearRegression.C -o obj/linearRegression.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
 
+# Catalytic Pellet
+g++ -Os -s -std=c++11 $ASALI_OS -pthread -c src/catalyticPellet.C -o obj/catalyticPellet.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs`
+g++ -Os -s -std=c++11 $ASALI_OS -pthread -c src/catalyticPelletEquations.C -o obj/catalyticPelletEquations.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs`
+
 # Asali
 g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/Asali.C -o obj/Asali.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
 
@@ -71,7 +75,7 @@ g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/Asali.C -o obj/As
 g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/main.cpp -o obj/main.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` 
 
 # Make all
-g++ -Os -s -std=c++11 -Wall -Wextra obj/Asali.o obj/main.o obj/transportProperties.o obj/thermoProperties.o obj/thermoTransportProperties.o obj/vacuumProperties.o obj/equilibriumCalculator.o obj/catalyticReactors.o obj/batchEquations.o obj/batchReactor.o obj/ph1dEquations.o obj/ph1dReactor.o obj/het1dEquations.o obj/het1dReactor.o obj/cstrEquations.o obj/cstrReactor.o obj/canteraInterface.o obj/speciesPopup.o obj/asaliKinetic.o obj/asaliProperties.o obj/asaliCatalystProperties.o obj/runBar.o obj/asaliPlot.o obj/chemkinConverter.o obj/pressureDrops.o obj/linearRegression.o -o Asali -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` -Wl,--start-group -lcantera -lcantera_fortran -Wl,--end-group -lgfortran -Wl,--no-as-needed -ldl -lpthread -lm
+g++ -Os -s -std=c++11 -Wall -Wextra obj/Asali.o obj/main.o obj/transportProperties.o obj/thermoProperties.o obj/thermoTransportProperties.o obj/vacuumProperties.o obj/equilibriumCalculator.o obj/catalyticReactors.o obj/batchEquations.o obj/batchReactor.o obj/ph1dEquations.o obj/ph1dReactor.o obj/het1dEquations.o obj/het1dReactor.o obj/cstrEquations.o obj/cstrReactor.o obj/canteraInterface.o obj/speciesPopup.o obj/asaliKinetic.o obj/asaliProperties.o obj/asaliCatalystProperties.o obj/runBar.o obj/asaliPlot.o obj/chemkinConverter.o obj/pressureDrops.o obj/linearRegression.o obj/catalyticPellet.o obj/catalyticPelletEquations.o -o Asali -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs` -Wl,--start-group -lcantera -lcantera_fortran -Wl,--end-group -lgfortran -Wl,--no-as-needed -ldl -lpthread -lm
 
 
 

@@ -60,6 +60,7 @@ namespace ASALI
       linearRegressionButton_("Linear Regression of gas properties"),
       reactorsButton_("Catalytic reactors"),
       vacuumButton_("Vacuum properties"),
+      pelletButton_("Catalytic pellets"),
       batchButton_("Batch Reactor"),
       cstrButton_("Continuous Stirred Tank Reactor"),
       ph1dButton_("1D Pseudo-homogeneous Plug Flow Reactor"),
@@ -204,6 +205,9 @@ namespace ASALI
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
             reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactors));
             reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
+            menuButtonBox_.pack_start(pelletButton_, Gtk::PACK_SHRINK);
+            pelletButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::pellets));
+            pelletButton_.set_tooltip_text("Solvers for different catalytic pellet geometries");
 
             //Adding exit button
             menuButtonBox_.pack_start(exitButton3_, Gtk::PACK_SHRINK);
@@ -689,6 +693,16 @@ namespace ASALI
             linearRegressionMenu_ = new ASALI::linearRegression(canteraInterface_,speciesNames_,kineticType_);
             linearRegressionMenu_->show();
         }
+    }
+
+    void Asali::pellets()
+    {
+        if (!pelletMenu_)
+        {
+            delete pelletMenu_;
+        }
+        pelletMenu_ = new ASALI::catalyticPellet(thermo_,transport_,kinetic_,surface_,kineticType_);
+        pelletMenu_->show();
     }
 
     void Asali::reactors()
