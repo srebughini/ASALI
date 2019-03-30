@@ -45,31 +45,6 @@ namespace ASALI
     catalyticPelletEquations::catalyticPelletEquations()
     {}
 
-    void catalyticPelletEquations::setCanteraThermo(Cantera::ThermoPhase* gas)
-    {
-        gas_ = gas;
-    }
-    
-    void catalyticPelletEquations::setCanteraInterface(Cantera::Interface* surface)
-    {
-        surface_ = surface;
-    }
-
-    void catalyticPelletEquations::setCanteraKinetics(Cantera::Kinetics* kinetic)
-    {
-        kinetic_ = kinetic;
-    }
-
-    void catalyticPelletEquations::setCanteraTransport(Cantera::Transport* transport)
-    {
-        transport_ = transport;
-    }
-
-    void catalyticPelletEquations::setKineticType(const std::string type)
-    {
-        type_ = type;
-    }
-
     void catalyticPelletEquations::resize()
     {
         if ( type_ == "CANTERA" )
@@ -126,10 +101,22 @@ namespace ASALI
                 Zmatrix_[i].resize(SURF_NC_);
                 RsurfaceMatrix_[i].resize(SURF_NC_);
             }
+            
+            diffBinaryMatrix_.resize(NP_);
+            for (unsigned int i=0;i<NP_;i++)
+            {
+                diffBinaryMatrix_[i].resize(NC_);
+                for (unsigned int j=0;j<NC_;j++)
+                {
+                    diffBinaryMatrix_[i][j].resize(NC_);
+                }
+            }
 
             algb_.resize(NE_);
 
             SD_ = 1.;
+            
+            energyEquation_ = false;
         }
 
         {
@@ -218,49 +205,9 @@ namespace ASALI
         epsi_  = epsi;
     }
     
-    void catalyticPelletEquations::setReductionCoefficient(const double rc)
+    void catalyticPelletEquations::setPoreDiameter(const double dp)
     {
-        rc_ = rc;
-    }
-
-    void catalyticPelletEquations::setAsaliKinetic(const unsigned int                           NR,
-                                                   const std::vector<double>                    k,
-                                                   const std::vector<double>                    Eatt,
-                                                   const std::vector<double>                    n,
-                                                   const std::vector<double>                    a,
-                                                   const std::vector<double>                    b,
-                                                   const std::vector<int>                       index1,
-                                                   const std::vector<int>                       index2,
-                                                   const std::vector<int>                       canteraIndex,
-                                                   const std::vector<std::vector<std::string> > name,
-                                                   const std::vector<std::vector<int> >         stoich,
-                                                   const double converter)
-    {
-        NR_           = NR;
-        k_            = k;
-        Eatt_         = Eatt;
-        n_            = n;
-        a_            = a;
-        b_            = b;
-        index1_       = index1;
-        index2_       = index2;
-        canteraIndex_ = canteraIndex;
-        
-        stoich_.resize(NR_);
-        name_.resize(NR_);
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            stoich_[i] = stoich[i];
-            name_[i]   = name[i];
-        }
-
-        converter_ = converter;
-    }
-    
-    
-    void catalyticPelletEquations::turnOnUserDefined(const bool check)
-    {
-        userCheck_ = check;
+        dp_ = dp;
     }
     
     void catalyticPelletEquations::setInert(const unsigned int inertIndex)
@@ -268,53 +215,9 @@ namespace ASALI
         inertIndex_ = inertIndex;
     }
     
-    void catalyticPelletEquations::set_MW(const std::vector<double> MW)
-    {
-        MW_ = MW;
-    }
-
-    void catalyticPelletEquations::set_diff(const std::vector<double> diff)
-    {
-        diff_ = diff;
-    }
-
     void catalyticPelletEquations::setInletConditions(const std::vector<double> omega0)
     {
         omega0_ = omega0;
-    }
-
-    std::vector<double> catalyticPelletEquations::reactionRate(const double T, const std::vector<double> omega,const double rho)
-    {
-        std::vector<double> R(NC_);
-        for (unsigned int i=0;i<NC_;i++)
-        {
-            R[i] = 0.;
-            for (unsigned int j=0;j<NR_;j++)
-            {
-                if ( name_[j][0] != "none" &&
-                     name_[j][1] == "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j]);
-                }
-                else if ( name_[j][0] == "none" &&
-                          name_[j][1] != "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                
-                }
-                else if ( name_[j][0] != "none" &&
-                          name_[j][1] != "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j])*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                }
-                else
-                {
-                    R[i] = R[i] + 0.;
-                }
-            }
-            R[i] = R[i]/converter_;
-        }
-        return R;
     }
 
     std::vector<std::vector<double> > catalyticPelletEquations::epsi_tau_model(const std::vector<std::vector<double> > diff,const std::vector<std::vector<double> > omega)
@@ -341,25 +244,78 @@ namespace ASALI
         return N;
     }
 
-    std::vector<std::vector<double> > catalyticPelletEquations::reduction_coefficient_model(const std::vector<std::vector<double> > diff,const std::vector<std::vector<double> > omega)
+    std::vector<std::vector<double> > catalyticPelletEquations::dusty_gas_model(const std::vector<std::vector<std::vector<double> > > diff,
+                                                                                const std::vector<std::vector<double> > omega,
+                                                                                const std::vector<std::vector<double> > MW)
     {
-        std::vector<std::vector<double> > N = diff;
+        std::vector<std::vector<double> > x = omega;
+        std::vector<std::vector<double> > N = omega;
+
+        Eigen::MatrixXd B(NC_,NC_);
+        Eigen::MatrixXd db(NC_,NC_);
+        Eigen::MatrixXd sum(NC_,NC_);
+        Eigen::VectorXd gradx(NC_);
+        Eigen::VectorXd dk(NC_);
+        Eigen::VectorXd Nv(NC_);
+
         for (unsigned int i=0;i<NP_;i++)
         {
+            for (unsigned int j=0;j<NC_;j++)
+            {
+                dk(j) = (dp_/3.)*(epsi_/tau_)*std::sqrt(8.*8.314*T_/(3.14*MW[i][j]*1e-03));
+                for (unsigned int k=0;k<NC_;k++)
+                {
+                    db(j,k) = (epsi_/tau_)*diff[i][j][k];
+                }
+            }
+
+            x[i] = this->moleFraction(omega[i],MW[i],this->meanMolecularWeight(omega[i],MW[i]));
+
             if ( i == 0 )
             {
+                x[i+1] = this->moleFraction(omega[i+1],MW[i+1],this->meanMolecularWeight(omega[i+1],MW[i+1]));
+
                 for (unsigned int j=0;j<NC_;j++)
                 {
-                    N[i][j] = rc_*(diff[i+1][j]*omega[i+1][j] - diff[i][j]*omega[i][j])/dz_;
+                    gradx(j)  = (x[i+1][j] - x[i][j])/dz_;
                 }
             }
             else
             {
                 for (unsigned int j=0;j<NC_;j++)
                 {
-                    N[i][j] = rc_*(diff[i][j]*omega[i][j] - diff[i-1][j]*omega[i-1][j])/dz_;
+                    gradx(j)  = (x[i][j] - x[i-1][j])/dz_;
                 }
             }
+            
+            sum.setZero();
+            for (unsigned int j=0;j<NC_;j++)
+            {
+                for (unsigned int k=0;k<NC_;k++)
+                {
+                    if ( j != k )
+                    {
+                        B(j,k) = -x[i][j]/db(j,k);
+                        sum(j) = sum(j) + x[i][k]/db(j,k);
+                    }
+                    else
+                    {
+                        B(j,k) = 1./dk(j);
+                    }
+                }
+            }
+
+            for (unsigned int j=0;j<NC_;j++)
+            {
+                B(j,j) = B(j,j) + sum(j);
+            }
+
+            Nv = B.colPivHouseholderQr().solve(gradx);
+
+            for (unsigned int j=0;j<NC_;j++)
+            {
+                N[i][j] = Nv(j);
+            } 
         }
 
         return N;
@@ -399,31 +355,6 @@ namespace ASALI
             }
         }
         return 0;
-    }
-    
-    double catalyticPelletEquations::meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW)
-    {
-        double MWmix = 0.;
-        for (unsigned int i=0;i<omega.size();i++)
-        {
-            MWmix = MWmix + omega[i]/MW[i];
-        }
-        return 1./MWmix;
-    }
-    
-    std::vector<double> catalyticPelletEquations::fromMassToMoleFraction(const std::vector<double> omega,const std::vector<double> MW)
-    {
-        std::vector<double> x = omega;
-        
-        double MWmix = meanMolecularWeight(omega,MW);
-        
-        
-        for (unsigned int i=0;i<omega.size();i++)
-        {
-            x[i] = omega[i]*MWmix/MW[i];
-        }
-        
-        return x;
     }
 
     void catalyticPelletEquations::properties(std::vector<double>& y)
@@ -471,9 +402,12 @@ namespace ASALI
 
                 gas_->setState_TPY(T_,P_,canteraArray);
 
+                gas_->getMoleFractions(canteraArray);
+
                 for (unsigned int j=0;j<NC_;j++)
                 {
                     MW_[j] = gas_->molecularWeight(canteraIndex_[j]);
+                    x_[j]  = canteraArray[canteraIndex_[j]];
                 }
 
                 transport_->getMixDiffCoeffs(canteraArray);
@@ -482,85 +416,51 @@ namespace ASALI
                 {
                     diff_[j] = canteraArray[canteraIndex_[j]];
                 }
+                
+                if ( modelType_ == "Dusty Gas Model" )
+                {
+                    double canteraMatrix[gas_->nSpecies()*gas_->nSpecies()];
+                    transport_->getBinaryDiffCoeffs(gas_->nSpecies(),canteraMatrix);
+
+                    std::vector<std::vector<double> > diffM(gas_->nSpecies());
+
+                    unsigned int counter = 0;
+                    for (unsigned int j=0;j<gas_->nSpecies();j++)
+                    {
+                        diffM[j].resize(gas_->nSpecies());
+                        for (unsigned int k=0;k<gas_->nSpecies();k++)
+                        {
+                            diffM[j][k] = canteraMatrix[counter++];
+                        }
+                    }
+
+                    for (unsigned int j=0;j<NC_;j++)
+                    {
+                        for (unsigned int k=0;k<NC_;k++)
+                        {
+                            diffBinaryMatrix_[i][j][k] = diffM[canteraIndex_[j]][canteraIndex_[k]];
+                        }
+                    }
+                }
+
             }
             else
             {
                 MWmix_ = this->meanMolecularWeight(omega_,MW_);
+                x_     = this->moleFraction(omega_,MW_,MWmix_);
                 cTot_  = P_/(8314.*T_);
                 rho_   = cTot_*MWmix_;
                 
             }
 
-            // Calculates heterogeneous kinetics
-            {
-                if ( heterogeneusReactions_ == true && alfa_ != 0.)
-                {
-                    if ( type_ == "CANTERA" )
-                    {
-                        double* bulkArray     = omega_.data();
-                        double* coverageArray = Z_.data();
-                        double  reactionArray[NC_+SURF_NC_];
-
-                        gas_->setState_TPY(T_,P_,bulkArray);
-
-                        surface_->setTemperature(T_);
-                        surface_->setCoveragesNoNorm(coverageArray);
-                        surface_->getNetProductionRates(reactionArray);
-
-                        unsigned int rcounter = 0;
-                        for (unsigned int j=0;j<NC_;j++)
-                        {
-                            RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
-                        }
-
-                        for (unsigned int j=0;j<SURF_NC_;j++)
-                        {
-                            Rsurface_[j] = reactionArray[rcounter++];
-                        }
-
-                        SD_ = surface_->siteDensity();
-                    }
-                    else if ( type_ == "ASALI" )
-                    {
-                        RfromSurface_ = this->reactionRate(T_,omega_,rho_); //kmol/m3/s
-                    }
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromSurface_[j] = 0.;
-                    }
-
-                    for (unsigned int j=0;j<SURF_NC_;j++)
-                    {
-                        Rsurface_[j] = 0.;
-                    }
-                }
-            }
-            
             // Calculates homogeneous kinetics
             {
-                if ( homogeneousReactions_ == true )
-                {
-                    double* bulkArray = omega_.data();
-                    double  reactionArray[NC_];
+                #include "shared/HomogeneousReactions.H"
+            }
 
-                    gas_->setState_TPY(T_,P_,bulkArray);
-                    kinetic_->getNetProductionRates(reactionArray);
-
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = reactionArray[j]; //kmol/m2/s
-                    }
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = 0.; //kmol/m2/s
-                    }
-                }
+            // Calculates heterogeneous kinetics
+            {
+                #include "shared/HeterogeneousReactions.H"
             }
 
             rhoVector_[i]          = rho_;
@@ -580,9 +480,9 @@ namespace ASALI
         {
             fluxMatrix_ = epsi_tau_model(diffMatrix_,omegaMatrix_);
         }
-        else if ( modelType_ =="Reduction coefficient" )
+        else if ( modelType_ =="Dusty Gas Model" )
         {
-            fluxMatrix_ = reduction_coefficient_model(diffMatrix_,omegaMatrix_);
+            fluxMatrix_ = dusty_gas_model(diffBinaryMatrix_,omegaMatrix_,MwMatrix_);
         }
     }
 

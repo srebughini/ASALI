@@ -319,7 +319,10 @@ namespace ASALI
 
     void cstrReactor::input()
     {
-        this->switchTo();
+        {
+            signal.disconnect();
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&cstrReactor::kineticShow));
+        }
         this->remove();
         this->add(mainBox_);
         this->resize(mainBox_.get_width(),mainBox_.get_height());
@@ -505,22 +508,12 @@ namespace ASALI
                 this->compositionReader();
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
-                eq_->setAsaliKinetic(asaliKinetic_->get_NR(),
-                                     asaliKinetic_->get_k(),
-                                     asaliKinetic_->get_Eatt(),
-                                     asaliKinetic_->get_n(),
-                                     asaliKinetic_->get_a(),
-                                     asaliKinetic_->get_b(),
-                                     index1_,
-                                     index2_,
-                                     canteraIndex_,
-                                     asaliKinetic_->get_name(),
-                                     stoich_,
-                                     asaliKinetic_->get_converter());
+                eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
                 eq_->set_MW(asaliProperties_->get_MW());
-                eq_->set_QfromSurface(asaliProperties_->get_Q());
+                eq_->set_QfromSurface(asaliProperties_->get_Qhet());
+                eq_->set_QfromGas(asaliProperties_->get_Qhom());
                 eq_->set_cp(asaliProperties_->get_cp());
-                eq_->setHomogeneousReactions(false);
+                eq_->setHomogeneousReactions(true);
             }
             else
             {
@@ -529,19 +522,8 @@ namespace ASALI
                 eq_->setCanteraThermo(thermo_);
                 eq_->setCanteraTransport(transport_);
                 eq_->turnOnUserDefined(false);
-                eq_->setAsaliKinetic(asaliKinetic_->get_NR(),
-                                     asaliKinetic_->get_k(),
-                                     asaliKinetic_->get_Eatt(),
-                                     asaliKinetic_->get_n(),
-                                     asaliKinetic_->get_a(),
-                                     asaliKinetic_->get_b(),
-                                     index1_,
-                                     index2_,
-                                     canteraIndex_,
-                                     asaliKinetic_->get_name(),
-                                     stoich_,
-                                     asaliKinetic_->get_converter());
-                eq_->setHomogeneousReactions(false);
+                eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
+                eq_->setHomogeneousReactions(true);
             }
         }
 
@@ -732,7 +714,7 @@ namespace ASALI
         if ( solver.check() == true &&
              bar_->check()  == true)
         {
-            //Add plot button
+            if ( !plotButtonBool_ )
             {
                 recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
                 plotButtonBool_ = true;
@@ -747,13 +729,12 @@ namespace ASALI
         this->compositionReader();
         this->kineticReader();
         asaliProperties_->destroy();
-        asaliProperties_->set_type("cstr");
+        asaliProperties_->set_type("batch");
         asaliProperties_->set_energy(energy_);
         asaliProperties_->set_n(n_);
-        asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
+        asaliProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
         asaliProperties_->build();
         asaliProperties_->show();
-
         {
             signal.disconnect();
             signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&cstrReactor::recap));

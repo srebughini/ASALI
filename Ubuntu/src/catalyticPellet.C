@@ -62,7 +62,7 @@ namespace ASALI
       tauLabel_("Tortuosity"),
       pelletTypeLabel_("Pellet shape"),
       modelTypeLabel_("Diffusion model"),
-      reductionCoefficientLabel_("Reduction coefficient"),
+      poreLabel_("Pore diameter"),
       logo1_("images/PelletLogo.tiff"),
       logo2_("images/PelletLogo.tiff"),
       pelletType_("none"),
@@ -150,7 +150,7 @@ namespace ASALI
                 propertiesGrid_.attach(modelTypeLabel_,3,2,1,1);
                 propertiesGrid_.attach(modelTypeCombo_,4,2,1,1);
                 modelTypeCombo_.append("\u03B5-\u03C4 model");
-                modelTypeCombo_.append("Reduction coefficient model");
+                modelTypeCombo_.append("Dusty Gas Model");
                 modelTypeCombo_.signal_changed().connect(sigc::mem_fun(*this,&catalyticPellet::modelOptions));
                 modelTypeCombo_.set_active(0);
 
@@ -186,9 +186,13 @@ namespace ASALI
                 lengthCombo_.append("\u03BCm");
                 lengthCombo_.set_active(2);
 
-                //Reduction coefficient
-                reductionCoefficientEntry_.set_text("0.5");
-                
+                //Pore
+                poreEntry_.set_text("1");
+                poreCombo_.append("cm");
+                poreCombo_.append("mm");
+                poreCombo_.append("\u03BCm");
+                poreCombo_.set_active(2);
+
                 //Buttons
                 propertiesGrid_.attach(exitButton3_,0,11,2,1);
                 exitButton3_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticPellet::exit));
@@ -311,7 +315,8 @@ namespace ASALI
                     recapModelTypeLabel_.set_text("Diffusion model");
                     recapGrid_.attach(recapModelTypeLabel_,0,9,1,1);
                     recapGrid_.attach(recapModelTypeValueLabel_,1,9,1,1);
-                    recapReductionCoefficientLabel_.set_text("Reduction coefficient");
+                    recapPoreLabel_.set_text("Pore diameter");
+                    recapPoreUDLabel_.set_text("m");
 
                     //Temperature
                     recapTemperatureLabel_.set_text("Temperature");
@@ -389,9 +394,9 @@ namespace ASALI
         
         if (modelBool_)
         {
-            propertiesGrid_.remove(reductionCoefficientLabel_);
-            propertiesGrid_.remove(reductionCoefficientEntry_);
-            propertiesGrid_.remove(beerLabel_);
+            propertiesGrid_.remove(poreLabel_);
+            propertiesGrid_.remove(poreEntry_);
+            propertiesGrid_.remove(poreCombo_);
         }
         else
         {
@@ -405,9 +410,9 @@ namespace ASALI
         }
         else if ( modelTypeCombo_.get_active_row_number() == 1 )
         {
-            propertiesGrid_.attach(reductionCoefficientLabel_,0,4,1,1);
-            propertiesGrid_.attach(reductionCoefficientEntry_,1,4,1,1);
-            propertiesGrid_.attach(beerLabel_,0,5,3,1);
+            propertiesGrid_.attach(poreLabel_,0,4,1,1);
+            propertiesGrid_.attach(poreEntry_,1,4,1,1);
+            propertiesGrid_.attach(poreCombo_,2,4,1,1);
             modelBool_ = true;
         } 
 
@@ -423,15 +428,9 @@ namespace ASALI
         
         if (recapModelBool_)
         {
-            recapGrid_.remove(recapReductionCoefficientLabel_);
-            recapGrid_.remove(recapReductionCoefficientValueLabel_);
-        }
-        else
-        {
-            recapGrid_.remove(recapEpsiLabel_);
-            recapGrid_.remove(recapEpsiValueLabel_);
-            recapGrid_.remove(recapTauLabel_);
-            recapGrid_.remove(recapTauValueLabel_);
+            recapGrid_.remove(recapPoreLabel_);
+            recapGrid_.remove(recapPoreUDLabel_);
+            recapGrid_.remove(recapPoreValueLabel_);
         }
         
         if ( plotButtonBool_ )
@@ -464,16 +463,21 @@ namespace ASALI
 
         if ( modelTypeCombo_.get_active_row_number() == 0 )
         {
-            rc_ = 0.;
+            dp_ = 0.;
         }
         else if ( modelTypeCombo_.get_active_row_number() == 1 )
         {
-            rc_ = Glib::Ascii::strtod(reductionCoefficientEntry_.get_text());
+            dp_ = Glib::Ascii::strtod(poreEntry_.get_text());
+            ConvertsToMeter(dp_,poreCombo_.get_active_text());
         }
     }
 
     void catalyticPellet::input()
     {
+        {
+            signal.disconnect();
+            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticPellet::kineticShow));
+        }
         this->switchTo();
         this->remove();
         this->add(mainBox_);
@@ -513,28 +517,6 @@ namespace ASALI
             
             if ( modelTypeCombo_.get_active_row_number() == 0 )
             {
-                //Epsi
-                {
-                    std::ostringstream s;
-                    s << epsi_;
-                    recapEpsiValueLabel_.set_text(s.str());
-                }
-                
-                //Tau
-                {
-                    std::ostringstream s;
-                    s << tau_;
-                    recapTauValueLabel_.set_text(s.str());
-                }
-
-                //Epsi
-                recapGrid_.attach(recapEpsiLabel_,0,7,1,1);
-                recapGrid_.attach(recapEpsiValueLabel_,1,7,1,1);
-                
-                //Tau
-                recapGrid_.attach(recapTauLabel_,0,8,1,1);
-                recapGrid_.attach(recapTauValueLabel_,1,8,1,1);
-
                 recapModelBool_ = false;
             }
             else if ( modelTypeCombo_.get_active_row_number() == 1 )
@@ -542,11 +524,12 @@ namespace ASALI
                 //Temperature
                 {
                     std::ostringstream s;
-                    s << rc_;
-                    recapReductionCoefficientValueLabel_.set_text(s.str());
+                    s << dp_;
+                    recapPoreValueLabel_.set_text(s.str());
                 }
-                recapGrid_.attach(recapReductionCoefficientLabel_,0,10,1,1);
-                recapGrid_.attach(recapReductionCoefficientValueLabel_,1,10,1,1);
+                recapGrid_.attach(recapPoreLabel_,0,10,1,1);
+                recapGrid_.attach(recapPoreUDLabel_,2,10,1,1);
+                recapGrid_.attach(recapPoreValueLabel_,1,10,1,1);
                 recapModelBool_ = true;
             }
 
@@ -629,6 +612,20 @@ namespace ASALI
                 std::ostringstream s;
                 s << alfa_;
                 recapLoadValueLabel_.set_text(s.str());
+            }
+
+            //Epsi
+            {
+                std::ostringstream s;
+                s << epsi_;
+                recapEpsiValueLabel_.set_text(s.str());
+            }
+            
+            //Tau
+            {
+                std::ostringstream s;
+                s << tau_;
+                recapTauValueLabel_.set_text(s.str());
             }
 
             if ( pelletType_ == "slab" )
@@ -734,20 +731,9 @@ namespace ASALI
                 this->compositionReader();
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
-                eq_->setAsaliKinetic(asaliKinetic_->get_NR(),
-                                     asaliKinetic_->get_k(),
-                                     asaliKinetic_->get_Eatt(),
-                                     asaliKinetic_->get_n(),
-                                     asaliKinetic_->get_a(),
-                                     asaliKinetic_->get_b(),
-                                     index1_,
-                                     index2_,
-                                     canteraIndex_,
-                                     asaliKinetic_->get_name(),
-                                     stoich_,
-                                     asaliKinetic_->get_converter());
+                eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
                 eq_->set_MW(asaliProperties_->get_MW());
-                eq_->set_diff(asaliProperties_->get_diff());
+                eq_->setHomogeneousReactions(true);
             }
             else
             {
@@ -756,20 +742,9 @@ namespace ASALI
                 eq_->setCanteraThermo(thermo_);
                 eq_->setCanteraTransport(transport_);
                 eq_->turnOnUserDefined(false);
-                eq_->setAsaliKinetic(asaliKinetic_->get_NR(),
-                                     asaliKinetic_->get_k(),
-                                     asaliKinetic_->get_Eatt(),
-                                     asaliKinetic_->get_n(),
-                                     asaliKinetic_->get_a(),
-                                     asaliKinetic_->get_b(),
-                                     index1_,
-                                     index2_,
-                                     canteraIndex_,
-                                     asaliKinetic_->get_name(),
-                                     stoich_,
-                                     asaliKinetic_->get_converter());
+                eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
+                eq_->setHomogeneousReactions(true);
             }
-            eq_->setHomogeneousReactions(false);
         }
 
         eq_->setKineticType(kineticCombo_.get_active_text());
@@ -795,7 +770,7 @@ namespace ASALI
         eq_->setPressure(p_);
         eq_->setTemperature(T_);
         eq_->setCatalystProperties(alfa_,tau_,epsi_);
-        eq_->setReductionCoefficient(rc_);
+        eq_->setPoreDiameter(dp_);
 
         std::vector<double> x0(eq_->NumberOfEquations());
         if ( kineticType_ == "none" )
@@ -1091,7 +1066,7 @@ namespace ASALI
              bvp.check()   == true &&
              bar_->check() == true)
         {
-            //Add plot button
+            if ( !plotButtonBool_ )
             {
                 recapButtonBox_.pack_start(asaliPlotButton_, Gtk::PACK_SHRINK);
                 plotButtonBool_ = true;
@@ -1111,7 +1086,7 @@ namespace ASALI
         asaliProperties_->set_type("pellet");
         asaliProperties_->set_energy("off");
         asaliProperties_->set_n(n_);
-        asaliProperties_->set_reactions(asaliKinetic_->get_name(),asaliKinetic_->get_stoich());
+        asaliProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
         asaliProperties_->build();
         asaliProperties_->show();
 
@@ -1147,7 +1122,7 @@ namespace ASALI
                 
                 output << "Kinetic type:     " << kineticCombo_.get_active_text() << std::endl;
                 output << "Model   type:     " << std::string(modelTypeCombo_.get_active_text()) << std::endl;
-                output << "Pellet shape:     " << pelletTypeCombo_.get_active_text() << std::endl;
+                output << "Pellet shape:     " << std::string(pelletTypeCombo_.get_active_text()) << std::endl;
                 output << "Pressure:         " << p_  << " Pa" << std::endl;
                 output << "Temperature:      " << T_  << " K" << std::endl;
                 output << "Integration time: " << tf_ << " s" << std::endl;

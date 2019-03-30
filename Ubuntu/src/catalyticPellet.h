@@ -100,7 +100,7 @@ namespace ASALI
             Gtk::Label        modelTypeLabel_;
             Gtk::Label        beerLabel_;
             Gtk::Label        lengthLabel_;
-            Gtk::Label        reductionCoefficientLabel_;
+            Gtk::Label        poreLabel_;
             Gtk::Label        recapTemperatureLabel_;
             Gtk::Label        recapTemperatureUDLabel_;
             Gtk::Label        recapTemperatureValueLabel_;
@@ -137,8 +137,9 @@ namespace ASALI
             Gtk::Label        recapLengthLabel_;
             Gtk::Label        recapLengthUDLabel_;
             Gtk::Label        recapLengthValueLabel_;
-            Gtk::Label        recapReductionCoefficientLabel_;
-            Gtk::Label        recapReductionCoefficientValueLabel_;
+            Gtk::Label        recapPoreLabel_;
+            Gtk::Label        recapPoreUDLabel_;
+            Gtk::Label        recapPoreValueLabel_;
 
             Gtk::Entry        timeEntry_;
             Gtk::Entry        loadEntry_;
@@ -148,7 +149,7 @@ namespace ASALI
             Gtk::Entry        epsiEntry_;
             Gtk::Entry        tauEntry_;
             Gtk::Entry        lengthEntry_;
-            Gtk::Entry        reductionCoefficientEntry_;
+            Gtk::Entry        poreEntry_;
 
             Gtk::ComboBoxText timeCombo_;
             Gtk::ComboBoxText loadCombo_;
@@ -167,7 +168,7 @@ namespace ASALI
             double L_;
             double epsi_;
             double tau_;
-            double rc_;
+            double dp_;
             
             unsigned int NP_;
             

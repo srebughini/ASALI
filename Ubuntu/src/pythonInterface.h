@@ -36,10 +36,10 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef ASALIKINETIC_H
-#define ASALIKINETIC_H
+#ifndef PYTHONINTERFACE_H
+#define PYTHONINTERFACE_H
 
-#include <gtkmm.h>
+#include <Python.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -52,93 +52,88 @@
 #include <algorithm>
 #include <limits>
 
+
 namespace ASALI
 {
-    class asaliKinetic : public Gtk::Window
+    class pythonInterface
     {
         public:
-            asaliKinetic();
-            
-            void exit();
-            void saveKineticInput();
-            void loadKineticInput();
-            void doneKineticInput();
-            void savedMessage();
 
-            std::vector<double>  get_k()    {return kr_;};
-            std::vector<double>  get_n()    {return nr_;};
-            std::vector<double>  get_Eatt() {return Eattr_;};
-            std::vector<double>  get_a()    {return ar_;};
-            std::vector<double>  get_b()    {return br_;};
-            
-            std::vector<std::vector<int> >         get_stoich()  {return stoich_;};
-            std::vector<std::vector<std::string> > get_name()    {return name_;};
-            
-            unsigned int         get_NR()        {return NR_;};
-            
-            double               get_converter() {return specieConverter_;};
+            pythonInterface();
 
-            virtual ~asaliKinetic();
+            void setTemperature(const double T);
+            void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
+            void convertToCaption(std::string& n);
+
+            std::string initialize(const std::string function, const std::string path);
+            
+            void run();
+            void runHomogeneous();
+            void runHeterogeneous();
+            void runAllHomogeneous();
+            void runAllHeterogeneous();
+            void runNetHomogeneous();
+            void runNetHeterogeneous();
+            void close();
+
+            std::vector<double>      getHetReactionRate()  {return Rhet_;};
+            std::vector<double>      getHomReactionRate()  {return Rhom_;};
+            std::vector<double>      getHetNetRate()       {return RhetNet_;};
+            std::vector<double>      getHomNetRate()       {return RhomNet_;};
+            
+            std::vector<std::string> getSpeciesName()      {return n_;};
+
+            int                      checkNames(std::string name);
+            
+            std::vector<int>         checkNames(std::vector<std::string> &name);
+            
+            unsigned int             getNumberOfHomReactions() {return Nhom_;};
+            unsigned int             getNumberOfHetReactions() {return Nhet_;};
+            unsigned int             getNumberOfReactions()    {return (Nhet_+Nhom_);};
+
+            std::vector<std::vector<double> >  getAllHetReactionRate()  {return RallHet_;};
+            std::vector<std::vector<double> >  getAllHomReactionRate()  {return RallHom_;};
+
+            virtual ~pythonInterface();
             
         private:
-        
-            std::string       getBeer();
 
-            bool              reactionInputCheck(bool test);
+            std::vector<double> Rhet_;
+            std::vector<double> Rhom_;
+            std::vector<double> RhetNet_;
+            std::vector<double> RhomNet_;
+            
+            std::vector<std::string> n_;
+            std::vector<std::string> small;
+            std::vector<std::string> big;
+            
+            unsigned int Nhet_;
+            unsigned int Nhom_;
+            
+            std::vector<std::vector<double> > RallHet_;
+            std::vector<std::vector<double> > RallHom_;
 
-            Gtk::Image        smallLogo_;
-            Gtk::Image        reactionImage_;
-
-            Gtk::Button       saveButton_;
-            Gtk::Button       loadButton_;
-            Gtk::Button       doneButton_;
-            
-            Gtk::Label        reactionTitleLabel_;
-            Gtk::Label        kLabel_;
-            Gtk::Label        nLabel_;
-            Gtk::Label        EattLabel_;
-            Gtk::Label        aLabel_;
-            Gtk::Label        bLabel_; 
-
-            Gtk::Box          kBox_;
-            Gtk::Box          EattBox_;
-
-            Gtk::Grid         mainGrid_;
-            Gtk::Grid         reactionParameterGridLabels_;
- 
-            Gtk::ComboBoxText  kCombo_;
-            Gtk::ComboBoxText  EattCombo_;
-
-            std::vector<Gtk::Box *>          reactionBox_;
-            std::vector<Gtk::Label *>        reactionNumbers_;
-            std::vector<Gtk::Grid *>         reactionParameterGrid_;
-            std::vector<Gtk::Grid *>         buttonGrid_;
-            std::vector<Gtk::Entry *>        kEntry_;
-            std::vector<Gtk::Entry *>        nEntry_;
-            std::vector<Gtk::Entry *>        EattEntry_;
-            std::vector<Gtk::Entry *>        aEntry_;
-            std::vector<Gtk::Entry *>        bEntry_; 
-
-            std::vector<std::vector<Gtk::ComboBoxText *> >  stoichCombo_;
-            std::vector<std::vector<Gtk::Label *> >         reactionLabel_;
-            std::vector<std::vector<Gtk::Entry *> >         reactionEntry_;
-            
-            
-            unsigned int             NR_;
-            
-            std::vector<double>      kr_;
-            std::vector<double>      nr_;
-            std::vector<double>      Eattr_;
-            std::vector<double>      ar_;
-            std::vector<double>      br_;
-            
-            std::vector<std::vector<int> >         stoich_;
-            std::vector<std::vector<std::string> > name_;
-            
-            std::vector<std::string>               beer_;
-            
-            
-            double                   specieConverter_;
+            PyObject *pModule;
+            PyObject *pClass;
+            PyObject *pInstance;
+            PyObject *pName;
+            PyObject *pNhom;
+            PyObject *pNhet;
+            PyObject *pHomReaction;
+            PyObject *pHetReaction;
+            PyObject *pAllHomReaction;
+            PyObject *pAllHetReaction;
+            PyObject *pHomNet;
+            PyObject *pHetNet;
+            PyObject *pArgs;
+            PyObject *pTemperature;
+            PyObject *pMassFraction;
+            PyObject *pHomReactionRate;
+            PyObject *pHetReactionRate;
+            PyObject *pAllHomReactionRate;
+            PyObject *pAllHetReactionRate;
+            PyObject *pHomNetRate;
+            PyObject *pHetNetRate;
     };
 }
 

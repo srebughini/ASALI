@@ -58,7 +58,7 @@ namespace ASALI
     {
         public:
         
-            #include "UnitConversion.H"
+            #include "shared/UnitConversion.H"
         
             asaliProperties();
             
@@ -67,8 +67,7 @@ namespace ASALI
             void savedMessage();
             void set_type(const std::string type);
             void set_n(const std::vector<std::string> n);
-            void set_reactions(const std::vector<std::vector<std::string> > name,
-                               const std::vector<std::vector<int> >         stoich);
+            void set_reactions(const unsigned int Nhom, const unsigned int Nhet);
             void set_energy(const std::string energy);
                                
 
@@ -77,7 +76,8 @@ namespace ASALI
 
             std::vector<double>  get_MW()   {return MW_;};
             std::vector<double>  get_diff() {return diff_;};
-            std::vector<double>  get_Q()    {return Q_;};
+            std::vector<double>  get_Qhom() {return Qhom_;};
+            std::vector<double>  get_Qhet() {return Qhet_;};
             
             double               get_cp()   {return cp_;};
             double               get_cond() {return cond_;};
@@ -139,6 +139,8 @@ namespace ASALI
             
             
             unsigned int              NR_;
+            unsigned int              Nhom_;
+            unsigned int              Nhet_;
             unsigned int              NC_;
             
             std::vector<std::string>  n_;
@@ -148,7 +150,8 @@ namespace ASALI
             
             std::vector<double>       MW_;
             std::vector<double>       diff_;
-            std::vector<double>       Q_;
+            std::vector<double>       Qhom_;
+            std::vector<double>       Qhet_;
             
 
             std::string               type_;
@@ -157,10 +160,6 @@ namespace ASALI
             double                    cp_;
             double                    cond_;
             double                    mu_;
-
-            std::vector<std::vector<std::string> > name_;
-            std::vector<std::vector<int> >         stoich_;
-
     };
 }
 

@@ -21,7 +21,7 @@
 #                                                                                              #
 #   This file is part of ASALI.                                                                #
 #                                                                                              #
-#   ASALI is free software: you can redistribute it and/or modify                              #
+#   ASALI is free software you can redistribute it and/or modify                               #
 #   it under the terms of the GNU General Public License as published by                       #
 #   the Free Software Foundation, either version 3 of the License, or                          #
 #   (at your option) any later version.                                                        #
@@ -36,85 +36,62 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
-#ifndef LINEARREGRESSION_H
-#define LINEARREGRESSION_H
-
-#include "thermoProperties.h"
-
-namespace ASALI
+double MaxElement(const std::vector<double> v)
 {
-    class linearRegression : public ASALI::thermoProperties
-    {
-        public:
-            linearRegression(ASALI::canteraInterface        *canteraInterface,
-                             ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            #include "shared/Vector.H"
-            
-            virtual ~linearRegression();
-
-            virtual void results();
-
-        private:
+    double max = 0.;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        max = std::max(v[i],max);
         
-        
-            void cleanInput();
-            void uploadLayout();
-            void run();
-            void leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2);
-            void condUnitDimensions(double &p);
-            void muUnitDimensions(double &p);
-            void cpUnitDimensions(double &p);
-            void sUnitDimensions(double &p);
-            void hUnitDimensions(double &p);
-            void diffUnitDimensions(double &p);
-
-            Gtk::Box          tempBox_;
-
-            Gtk::Button       exitButton2_;
-            Gtk::Button       backButton_;
-            Gtk::Button       calculateButton_;
-            
-            Gtk::Grid         resultsGrid_;
-
-            Gtk::Label        tempRangeLabel_;
-            Gtk::Label        propertyLabel_;
-            Gtk::Label        mLabel_;
-            Gtk::Label        mValueLabel_;
-            Gtk::Label        qLabel_;
-            Gtk::Label        qValueLabel_;
-            Gtk::Label        rLabel_;
-            Gtk::Label        rValueLabel_;
-            
-            Gtk::Entry        tempEntry1_;
-            Gtk::Entry        tempEntry2_;
-
-            Gtk::ComboBoxText tempRangeCombo_;
-            Gtk::ComboBoxText propertyCombo_;
-            Gtk::ComboBoxText unitDimensionCombo_;
-            Gtk::ComboBoxText specieCombo_;
-
-            Gtk::Image        logo_;
-            Gtk::Image        regressionImage_;
-            
-            std::vector<double> Tv_;
-            std::vector<double> pv_;
-
-            std::string kineticType_;
-            std::string name_;
-            
-            double      m_;
-            double      q_;
-            double      r2_;
-
-            bool        diffCheck_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
-    };
+    return max;
 }
 
-#endif
+int MaxElement(const std::vector<int> v)
+{
+    int max = 0.;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        max = std::max(v[i],max);
+        
+    return max;
+}
+
+double MinElement(const std::vector<double> v)
+{
+    double min = 1e64;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        min = std::min(v[i],min);
+        
+    return min;
+}
+
+double SumElements(const std::vector<double> v)
+{
+    double sum = 0.;
+    
+    for (unsigned int i=0;i<v.size();i++)
+        sum = sum + v[i];
+        
+    return sum;
+}
+
+double MeanValue(const std::vector<double> v)
+{
+    return SumElements(v)/v.size();
+}
+
+double DotProduct(const std::vector<double> a,const std::vector<double> b)
+{
+    return std::inner_product(a.begin(), a.end(), b.begin(),0);
+}
+
+std::vector<double> ElementByElementProduct(const std::vector<double> a,const std::vector<double> b)
+{
+    std::vector<double> c(a.size());
+
+    for (unsigned int i=0;i<a.size();i++)
+        c[i] = a[i]*b[i];
+
+    return c;
+}

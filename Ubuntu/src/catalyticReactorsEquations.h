@@ -13,7 +13,9 @@
 #    #    #   #    #     #             #     #    #   #    #     #             #     #    #    #
 #     ####     ####       #############       ####     ####       #############       ####     #
 #                                                                                              #
-#   Author: Stefano Rebughini <ste.rebu@outlook.it>                                            #
+#   Department of Energy                                                                       #
+#   Politecnico di Milano                                                                      #
+#   Author: Stefano Rebughini <stefano.rebughini@polimi.it>                                    #
 #                                                                                              #
 ################################################################################################
 #                                                                                              #
@@ -36,83 +38,102 @@
 #                                                                                              #
 ##############################################################################################*/
 
+#ifndef CATALYTICREACTORSEQUATIONS_H
+#define CATALYTICREACTORSEQUATIONS_H
 
-#ifndef LINEARREGRESSION_H
-#define LINEARREGRESSION_H
+#include "pythonInterface.h"
+#include <gtkmm.h>
 
-#include "thermoProperties.h"
+// Cantera
+#include "cantera/Interface.h"
+#include "cantera/thermo.h"
+#include "cantera/transport.h"
+#include "cantera/kinetics.h"
 
 namespace ASALI
 {
-    class linearRegression : public ASALI::thermoProperties
-    {
-        public:
-            linearRegression(ASALI::canteraInterface        *canteraInterface,
-                             ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            #include "shared/Vector.H"
-            
-            virtual ~linearRegression();
+class catalyticReactorsEquations
+{
+    public:
 
-            virtual void results();
+        catalyticReactorsEquations();
 
-        private:
+        #include "shared/Vector.H"
+
+        void setCanteraThermo(Cantera::ThermoPhase*    gas);
         
+        void setCanteraInterface(Cantera::Interface*   surface);
         
-            void cleanInput();
-            void uploadLayout();
-            void run();
-            void leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2);
-            void condUnitDimensions(double &p);
-            void muUnitDimensions(double &p);
-            void cpUnitDimensions(double &p);
-            void sUnitDimensions(double &p);
-            void hUnitDimensions(double &p);
-            void diffUnitDimensions(double &p);
+        void setCanteraKinetics(Cantera::Kinetics*    kinetic);
+        
+        void setCanteraTransport(Cantera::Transport*    transport);
 
-            Gtk::Box          tempBox_;
+        void setHomogeneousReactions(const bool flag)   {homogeneousReactions_  = flag;}
 
-            Gtk::Button       exitButton2_;
-            Gtk::Button       backButton_;
-            Gtk::Button       calculateButton_;
-            
-            Gtk::Grid         resultsGrid_;
+        void setHeterogeneusReactions(const bool flag)  {heterogeneusReactions_ = flag;}
 
-            Gtk::Label        tempRangeLabel_;
-            Gtk::Label        propertyLabel_;
-            Gtk::Label        mLabel_;
-            Gtk::Label        mValueLabel_;
-            Gtk::Label        qLabel_;
-            Gtk::Label        qValueLabel_;
-            Gtk::Label        rLabel_;
-            Gtk::Label        rValueLabel_;
-            
-            Gtk::Entry        tempEntry1_;
-            Gtk::Entry        tempEntry2_;
+        void setAsaliKinetic(ASALI::pythonInterface* pi, const std::vector<int> canteraIndex, const std::vector<std::string> n);
 
-            Gtk::ComboBoxText tempRangeCombo_;
-            Gtk::ComboBoxText propertyCombo_;
-            Gtk::ComboBoxText unitDimensionCombo_;
-            Gtk::ComboBoxText specieCombo_;
+        void setKineticType(const std::string type);
+        
+        void turnOnUserDefined(const bool check);
 
-            Gtk::Image        logo_;
-            Gtk::Image        regressionImage_;
-            
-            std::vector<double> Tv_;
-            std::vector<double> pv_;
+        void set_QfromSurface(const std::vector<double> Q);
+        
+        void set_QfromGas(const std::vector<double> Q);
+        
+        void set_MW(const std::vector<double> MW);
+        
+        void set_diff(const std::vector<double> diff);
+        
+        void set_cp(const double cp);
+        
+        void set_cond(const double cond);
+        
+        void set_mu(const double mu);
 
-            std::string kineticType_;
-            std::string name_;
-            
-            double      m_;
-            double      q_;
-            double      r2_;
+        unsigned int NumberOfEquations()     const {return NE_;};
 
-            bool        diffCheck_;
+        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+        
+        virtual void resize();
+        
+        virtual void store(const double tf,const std::vector<double> xf);
 
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
+        double cp_;
+        double mu_;
+        double cond_;
+
+        unsigned int NE_;
+        unsigned int NC_;
+        
+        std::string type_;
+
+        bool homogeneousReactions_ ;
+        bool heterogeneusReactions_;
+        bool userCheck_;
+
+        Cantera::ThermoPhase*   gas_;
+        Cantera::Interface*     surface_;
+        Cantera::Kinetics*      kinetic_;
+        Cantera::Transport*     transport_;
+        ASALI::pythonInterface* pi_;
+
+        std::vector<double>      QuserHom_;
+        std::vector<double>      QuserHet_;
+        std::vector<double>      MW_;
+        std::vector<double>      diff_;
+        
+        std::vector<int>         canteraIndex_;
+        
+        std::vector<std::string> n_;
+
+        std::vector<double> reactionRate(const std::vector<double> omega,const double T, const std::string type);
+        std::vector<double> moleFraction(const std::vector<double> omega,const std::vector<double> MW, double MWmix);
+        double              heatOfReaction(const std::vector<double> omega,const double T, const std::vector<double> h, const std::string type);
+        double              meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW);
+
+    private:
 
     };
 }

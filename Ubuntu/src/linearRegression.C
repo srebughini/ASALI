@@ -496,7 +496,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("mw",name_); //J/kg/K
+            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg/K
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -508,7 +508,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("mw",name_)*4.186); //cal/kg/K
+            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
         }
     }
 
@@ -524,7 +524,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("mw",name_); //J/kg
+            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -537,7 +537,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("mw",name_)*4.186); //cal/kg
+            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg
         }
     }
 
@@ -553,7 +553,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("mw",name_); //J/kg/K
+            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg/K
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -565,7 +565,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("mw",name_)*4.186); //cal/kg/K
+            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
         }
     }
  

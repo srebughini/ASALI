@@ -13,7 +13,9 @@
 #    #    #   #    #     #             #     #    #   #    #     #             #     #    #    #
 #     ####     ####       #############       ####     ####       #############       ####     #
 #                                                                                              #
-#   Author: Stefano Rebughini <ste.rebu@outlook.it>                                            #
+#   Department of Energy                                                                       #
+#   Politecnico di Milano                                                                      #
+#   Author: Stefano Rebughini <stefano.rebughini@polimi.it>                                    #
 #                                                                                              #
 ################################################################################################
 #                                                                                              #
@@ -36,85 +38,72 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
-#ifndef LINEARREGRESSION_H
-#define LINEARREGRESSION_H
-
-#include "thermoProperties.h"
-
-namespace ASALI
+if ( homogeneousReactions_ == true )
 {
-    class linearRegression : public ASALI::thermoProperties
+    if ( type_ == "CANTERA" )
     {
-        public:
-            linearRegression(ASALI::canteraInterface        *canteraInterface,
-                             ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            #include "shared/Vector.H"
-            
-            virtual ~linearRegression();
+        double* bulkArray = omega_.data();
+        double  canteraArray[NC_];
 
-            virtual void results();
+        gas_->setState_TPY(T_,P_,bulkArray);
+        kinetic_->getNetProductionRates(canteraArray);
 
-        private:
-        
-        
-            void cleanInput();
-            void uploadLayout();
-            void run();
-            void leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2);
-            void condUnitDimensions(double &p);
-            void muUnitDimensions(double &p);
-            void cpUnitDimensions(double &p);
-            void sUnitDimensions(double &p);
-            void hUnitDimensions(double &p);
-            void diffUnitDimensions(double &p);
+        for (unsigned int j=0;j<NC_;j++)
+        {
+            RfromGas_[j] = canteraArray[j]; //kmol/m2/s
+        }
 
-            Gtk::Box          tempBox_;
+        double reactionArray[kinetic_->nReactions()];
+        double enthalpyArray[kinetic_->nReactions()];
+        kinetic_->getNetRatesOfProgress(reactionArray);
+        kinetic_->getDeltaEnthalpy(enthalpyArray);
+        QfromGas_ = 0.;
+        for (unsigned int j=0;j<kinetic_->nReactions();j++)
+        {   
+            QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
+        }
+        QfromGas_ = -QfromGas_;
+    }
+    else if ( type_ == "ASALI" )
+    {
+        RfromGas_ = this->reactionRate(x_,T_,"homogeneous"); //kmol/m3/s
 
-            Gtk::Button       exitButton2_;
-            Gtk::Button       backButton_;
-            Gtk::Button       calculateButton_;
-            
-            Gtk::Grid         resultsGrid_;
+        if ( energyEquation_ == true )
+        {
+            if ( userCheck_ == false )
+            {
+                double hArray[gas_->nSpecies()];
+                gas_->getPartialMolarEnthalpies(hArray);
+                
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    h_[i] = hArray[canteraIndex_[i]];
+                }
 
-            Gtk::Label        tempRangeLabel_;
-            Gtk::Label        propertyLabel_;
-            Gtk::Label        mLabel_;
-            Gtk::Label        mValueLabel_;
-            Gtk::Label        qLabel_;
-            Gtk::Label        qValueLabel_;
-            Gtk::Label        rLabel_;
-            Gtk::Label        rValueLabel_;
-            
-            Gtk::Entry        tempEntry1_;
-            Gtk::Entry        tempEntry2_;
+                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+            }
+            else
+            {
 
-            Gtk::ComboBoxText tempRangeCombo_;
-            Gtk::ComboBoxText propertyCombo_;
-            Gtk::ComboBoxText unitDimensionCombo_;
-            Gtk::ComboBoxText specieCombo_;
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    h_[i] = 0.;
+                }
+                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+            }
+        }
+        else
+        {
+            QfromGas_ = 0.;
+        }
+    }
 
-            Gtk::Image        logo_;
-            Gtk::Image        regressionImage_;
-            
-            std::vector<double> Tv_;
-            std::vector<double> pv_;
-
-            std::string kineticType_;
-            std::string name_;
-            
-            double      m_;
-            double      q_;
-            double      r2_;
-
-            bool        diffCheck_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
-    };
 }
-
-#endif
+else
+{
+    for (unsigned int j=0;j<NC_;j++)
+    {
+        RfromGas_[j] = 0.; //kmol/m2/s
+    }
+    QfromGas_ = 0.;
+}

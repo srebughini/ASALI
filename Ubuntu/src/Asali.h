@@ -36,19 +36,7 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
+#include "pythonInterface.h"
 #include "chemkinConverter.h"
 #include "canteraInterface.h"
 #include "speciesPopup.h"
@@ -64,6 +52,8 @@
 #include "pressureDrops.h"
 #include "linearRegression.h"
 #include "catalyticPellet.h"
+#include "asaliKineticMaker.h"
+
 
 namespace ASALI
 {
@@ -74,7 +64,7 @@ namespace ASALI
             
             virtual ~Asali();
             
-            #include "UnitConversion.H"
+            #include "shared/UnitConversion.H"
             
         private:
 
@@ -87,6 +77,9 @@ namespace ASALI
             void defaultCanteraInput();
             void noneInput();
             void chemkin();
+            void kineticAsali();
+            void kineticMake();
+            void kineticCheck();
             void chemistryMenu2();
             void transport();
             void thermo();
@@ -105,13 +98,17 @@ namespace ASALI
 
             std::string       getBeer();
             std::string       getBeerShort();
+            
+            std::vector<std::string> splitString(const std::string txt, std::string ch);
 
             Gtk::Button       discrimerButton_;
             Gtk::Button       exitButton1_;
             Gtk::Button       exitButton2_;
             Gtk::Button       exitButton3_;
             Gtk::Button       exitButton4_;
-            Gtk::Button       backButton_;
+            Gtk::Button       exitButton5_;
+            Gtk::Button       backButton1_;
+            Gtk::Button       backButton2_;
             Gtk::Button       startButton_;
             Gtk::Button       defaultCanteraInputButton_;
             Gtk::Button       loadCanteraInputButton_;
@@ -131,10 +128,14 @@ namespace ASALI
             Gtk::Button       ph1dButton_;
             Gtk::Button       het1dButton_;
             Gtk::Button       dpButton_;
+            Gtk::Button       asaliKineticButton_;
+            Gtk::Button       asaliKineticMakeButton_;
+            Gtk::Button       asaliKineticCheckButton_;
             
             Gtk::Box          menuBox_;
             Gtk::Box          chemistryBox_;
             Gtk::Box          reactorBox_;
+            Gtk::Box          kineticBox_;
 
             
             Gtk::ButtonBox    linkButtonBox_;
@@ -144,6 +145,7 @@ namespace ASALI
             Gtk::ButtonBox    chemistryButtonBox_;
             Gtk::ButtonBox    menuButtonBox_;
             Gtk::ButtonBox    reactorButtonBox_;
+            Gtk::ButtonBox    kineticButtonBox_;
 
             Gtk::EventBox     logoEventBox_;
 
@@ -153,11 +155,13 @@ namespace ASALI
 
             Gtk::Grid         grid_;
             Gtk::Grid         reactorButtonGrid_;
+            Gtk::Grid         kineticButtonGrid_;
 
             Gtk::Image        bigLogo_;
             Gtk::Image        smallLogo1_;
             Gtk::Image        smallLogo2_;
             Gtk::Image        smallLogo3_;
+            Gtk::Image        smallLogo4_;
             
             Gtk::LinkButton   gitButton_;
             Gtk::LinkButton   forgeButton_;
@@ -186,6 +190,7 @@ namespace ASALI
             ASALI::het1dReactor               *het1dMenu_;
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
+            ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
 
     };
 }

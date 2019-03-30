@@ -40,22 +40,9 @@
 #ifndef CATALYTICREACTORS_H
 #define CATALYTICREACTORS_H
 
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
+#include "pythonInterface.h"
 #include "canteraInterface.h"
 #include "speciesPopup.h"
-#include "asaliKinetic.h"
 #include "asaliProperties.h"
 #include "asaliCatalystProperties.h"
 #include "asaliPlot.h"
@@ -72,8 +59,8 @@ namespace ASALI
                               Cantera::Interface   *surface,
                               std::string           kineticType);
 
-            #include "UnitConversion.H"
-            #include "Vector.H"
+            #include "shared/UnitConversion.H"
+            #include "shared/Vector.H"
 
             virtual ~catalyticReactors();
 
@@ -106,6 +93,8 @@ namespace ASALI
             std::string getBeer();
             std::string getBeerShort();
             std::string convertToTimeFormat(double t);
+            
+            std::vector<std::string> splitString(const std::string txt, std::string ch);
             
             Gtk::Box          coverageBox_;
             
@@ -169,11 +158,11 @@ namespace ASALI
 
             ASALI::canteraInterface        *canteraInterface_;
             ASALI::speciesPopup            *speciesNames_;
-            ASALI::asaliKinetic            *asaliKinetic_;
             ASALI::asaliProperties         *asaliProperties_;
             ASALI::asaliCatalystProperties *asaliCatalystProperties_;
             ASALI::asaliPlot               *asaliPlot_;
             ASALI::runBar                  *bar_;
+            ASALI::pythonInterface         *pi_;
             
             Cantera::ThermoPhase     *thermo_;
             Cantera::Transport       *transport_;

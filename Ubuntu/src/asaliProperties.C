@@ -57,7 +57,7 @@ namespace ASALI
       doneButton_("Done"),
       type_("zero")
     {
-        #include "Beer.H"
+        #include "shared/Beer.H"
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
@@ -167,11 +167,10 @@ namespace ASALI
         speciesDiffEntry_.resize(NC_);
     }
 
-    void asaliProperties::set_reactions(const std::vector<std::vector<std::string> > name,
-                                        const std::vector<std::vector<int> >         stoich)
+    void asaliProperties::set_reactions(const unsigned int Nhom, const unsigned int Nhet)
     {
-        name_    = name;
-        stoich_ = stoich;
+        Nhom_ = Nhom;
+        Nhet_ = Nhet;
     }
 
     void asaliProperties::destroy()
@@ -379,89 +378,41 @@ namespace ASALI
                 heatBox_.pack_start(heatLabel_, Gtk::PACK_SHRINK);
                 heatBox_.pack_start(heatCombo_, Gtk::PACK_SHRINK);
 
-                unsigned int counter = 0;
-                for (unsigned int i=0;i<name_.size();i++)
+
+                NR_ = Nhom_ + Nhet_;
+                reactionNumberLabel_.clear();
+                speciesHeatEntry_.clear();
+                reactionNumberLabel_.resize(NR_);
+                speciesHeatEntry_.resize(NR_);
+                
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    std::string reaction = "";
-                    
-                    if ( name_[i][0] != "none" )
+                    std::string reaction;
                     {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][0]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][0];
-                        }
+                        std::ostringstream s;
+                        s << double(i+1);
+                        reaction = s.str() + " (homogeneous)";
                     }
-                    
-                    if ( name_[i][1] != "none" )
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();    
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
+                }
+
+                for (unsigned int i=Nhom_;i<NR_;i++)
+                {
+                    std::string reaction;
                     {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][1]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][1];
-                        }
-
+                        std::ostringstream s;
+                        s << double(i+1-Nhom_);
+                        reaction = s.str() + " (heterogeneous)";
                     }
-
-                    if ( reaction != "")
-                    {
-                        reaction = reaction + " -> ";
-                    }
-                    
-                    if ( name_[i][2] != "none" )
-                    {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][2]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][2];
-                        }
-                    }
-                    
-                    if ( name_[i][3] != "none" )
-                    {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][3]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][3];
-                        }
-                    }
-                    
-                    if ( reaction != "")
-                    {
-                        reactionNumberLabel_.push_back(new Gtk::Label(reaction));
-                        mainGrid_.attach(*reactionNumberLabel_[counter],0,NC_+3+counter,1,1);
-                        speciesHeatEntry_.push_back(new Gtk::Entry());
-                        mainGrid_.attach(*speciesHeatEntry_[counter],1,NC_+3+counter,1,1);
-                        speciesHeatEntry_[counter]->set_text("1");
-                        counter++;
-                    }
-                    NR_ = counter;
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();    
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
                 }
             }
             else
@@ -531,89 +482,40 @@ namespace ASALI
                 heatBox_.pack_start(heatLabel_, Gtk::PACK_SHRINK);
                 heatBox_.pack_start(heatCombo_, Gtk::PACK_SHRINK);
 
-                unsigned int counter = 0;
-                for (unsigned int i=0;i<name_.size();i++)
+                NR_ = Nhom_ + Nhet_;
+                reactionNumberLabel_.clear();
+                speciesHeatEntry_.clear();
+                reactionNumberLabel_.resize(NR_);
+                speciesHeatEntry_.resize(NR_);
+                
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    std::string reaction = "";
-                    
-                    if ( name_[i][0] != "none" )
+                    std::string reaction;
                     {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][0]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][0];
-                        }
+                        std::ostringstream s;
+                        s << double(i+1);
+                        reaction = s.str() + " (homogeneous)";
                     }
-                    
-                    if ( name_[i][1] != "none" )
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();    
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
+                }
+                
+                for (unsigned int i=Nhom_;i<NR_;i++)
+                {
+                    std::string reaction;
                     {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][1]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][1];
-                        }
-
+                        std::ostringstream s;
+                        s << double(i+1-Nhom_);
+                        reaction = s.str() + " (heterogeneous)";
                     }
-
-                    if ( reaction != "")
-                    {
-                        reaction = reaction + " -> ";
-                    }
-                    
-                    if ( name_[i][2] != "none" )
-                    {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][2]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][2];
-                        }
-                    }
-                    
-                    if ( name_[i][3] != "none" )
-                    {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][3]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][3];
-                        }
-                    }
-                    
-                    if ( reaction != "")
-                    {
-                        reactionNumberLabel_.push_back(new Gtk::Label(reaction));
-                        mainGrid_.attach(*reactionNumberLabel_[counter],0,NC_+4+counter,1,1);
-                        speciesHeatEntry_.push_back(new Gtk::Entry());
-                        mainGrid_.attach(*speciesHeatEntry_[counter],1,NC_+4+counter,1,1);
-                        speciesHeatEntry_[counter]->set_text("1");
-                        counter++;
-                    }
-                    NR_ = counter;
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();    
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
                 }
             }
             else
@@ -687,91 +589,44 @@ namespace ASALI
                 heatBox_.pack_start(heatLabel_, Gtk::PACK_SHRINK);
                 heatBox_.pack_start(heatCombo_, Gtk::PACK_SHRINK);
 
-                unsigned int counter = 0;
-                for (unsigned int i=0;i<name_.size();i++)
+                NR_ = Nhom_ + Nhet_;
+                reactionNumberLabel_.clear();
+                speciesHeatEntry_.clear();
+                reactionNumberLabel_.resize(NR_);
+                speciesHeatEntry_.resize(NR_);
+                
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    std::string reaction = "";
-                    
-                    if ( name_[i][0] != "none" )
+                    std::string reaction;
                     {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][0]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][0];
-                        }
+                        std::ostringstream s;
+                        s << double(i+1);
+                        reaction = s.str() + " (homogeneous)";
                     }
-                    
-                    if ( name_[i][1] != "none" )
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
+                }
+                
+                for (unsigned int i=Nhom_;i<NR_;i++)
+                {
+                    std::string reaction;
                     {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][1]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][1];
-                        }
-
+                        std::ostringstream s;
+                        s << double(i+1-Nhom_);
+                        reaction = s.str() + " (heterogeneous)";
                     }
-
-                    if ( reaction != "")
-                    {
-                        reaction = reaction + " -> ";
-                    }
-                    
-                    if ( name_[i][2] != "none" )
-                    {
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][2]);
-                            reaction = reaction + s.str();
-                        }
-                        
-                        {
-                            reaction = reaction + " " + name_[i][2];
-                        }
-                    }
-                    
-                    if ( name_[i][3] != "none" )
-                    {
-                        {
-                            
-                            reaction = reaction + " + ";
-                        }
-
-                        {
-                            std::ostringstream s;
-                            s << std::fabs(stoich_[i][3]);
-                            reaction = reaction + s.str();
-                        }
-
-                        {
-                            reaction = reaction + " " + name_[i][3];
-                        }
-                    }
-                    
-                    if ( reaction != "")
-                    {
-                        reactionNumberLabel_.push_back(new Gtk::Label(reaction));
-                        mainGrid_.attach(*reactionNumberLabel_[counter],0,NC_+5+counter,1,1);
-                        speciesHeatEntry_.push_back(new Gtk::Entry());
-                        mainGrid_.attach(*speciesHeatEntry_[counter],1,NC_+5+counter,1,1);
-                        speciesHeatEntry_[counter]->set_text("1");
-                        counter++;
-                    }
-                    NR_ = counter;
+                    reactionNumberLabel_[i] = new Gtk::Label(reaction);
+                    mainGrid_.attach(*reactionNumberLabel_[i],0,NC_+3+i,1,1);
+                    speciesHeatEntry_[i] = new Gtk::Entry();    
+                    mainGrid_.attach(*speciesHeatEntry_[i],1,NC_+3+i,1,1);
+                    speciesHeatEntry_[i]->set_text("1");
                 }
             }
+            mainBox_.pack_end(doneButton_,Gtk::PACK_SHRINK);
+            doneButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliProperties::doneInput));
         }
         else if ( type_ == "pellet" )
         {
@@ -846,50 +701,78 @@ namespace ASALI
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
             }
 
-            Q_.clear();
-            Q_.resize(NR_);
+            Qhom_.clear();
+            Qhom_.resize(Nhom_);
 
-            for (unsigned int i=0;i<NR_;i++)
+            for (unsigned int i=0;i<Nhom_;i++)
             {
-                Q_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+            }
+
+            Qhet_.clear();
+            Qhet_.resize(Nhet_);
+
+            for (unsigned int i=Nhom_;i<NR_;i++)
+            {
+                Qhet_[i-Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
             }
 
             if ( heatCombo_.get_active_row_number() == 1 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]/1.e-03; //J/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]/1.e-03; //J/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]/1.e-03; //J/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 2 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 3 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184; //cal/kmol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184; //cal/kmol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184; //cal/kmol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 4 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184/1.e-03; //cal/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 5 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
                 }
             }
-            
+
 
             if ( energy_ == "on" )
             {
@@ -925,47 +808,75 @@ namespace ASALI
                 }
             }
 
-            Q_.clear();
-            Q_.resize(NR_);
+            Qhom_.clear();
+            Qhom_.resize(Nhom_);
 
-            for (unsigned int i=0;i<NR_;i++)
+            for (unsigned int i=0;i<Nhom_;i++)
             {
-                Q_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+            }
+
+            Qhet_.clear();
+            Qhet_.resize(Nhet_);
+
+            for (unsigned int i=Nhom_;i<NR_;i++)
+            {
+                Qhet_[i-Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
             }
 
             if ( heatCombo_.get_active_row_number() == 1 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]/1.e-03; //J/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]/1.e-03; //J/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]/1.e-03; //J/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 2 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 3 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184; //cal/kmol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184; //cal/kmol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184; //cal/kmol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 4 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184/1.e-03; //cal/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 5 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
                 }
             }
             
@@ -1012,47 +923,75 @@ namespace ASALI
                 }
             }
 
-            Q_.clear();
-            Q_.resize(NR_);
+            Qhom_.clear();
+            Qhom_.resize(Nhom_);
 
-            for (unsigned int i=0;i<NR_;i++)
+            for (unsigned int i=0;i<Nhom_;i++)
             {
-                Q_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+            }
+
+            Qhet_.clear();
+            Qhet_.resize(Nhet_);
+
+            for (unsigned int i=Nhom_;i<NR_;i++)
+            {
+                Qhet_[i-Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
             }
 
             if ( heatCombo_.get_active_row_number() == 1 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]/1.e-03; //J/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]/1.e-03; //J/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]/1.e-03; //J/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 2 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03/1.e-03; //kJ/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 3 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184; //cal/kmol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184; //cal/kmol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184; //cal/kmol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 4 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*4.184/1.e-03; //cal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*4.184/1.e-03; //cal/mol -> J/kmol
                 }
             }
             else if ( heatCombo_.get_active_row_number() == 5 )
             {
-                for (unsigned int i=0;i<NR_;i++)
+                for (unsigned int i=0;i<Nhom_;i++)
                 {
-                    Q_[i] = Q_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                    Qhom_[i] = Qhom_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
+                }
+                for (unsigned int i=0;i<Nhet_;i++)
+                {
+                    Qhet_[i] = Qhet_[i]*1.e03*4.184/1.e-03; //kcal/mol -> J/kmol
                 }
             }
 

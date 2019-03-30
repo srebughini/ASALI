@@ -63,8 +63,8 @@ namespace ASALI
       canteraInterface_(canteraInterface),
       speciesNames_(speciesNames)
     {
-        #include "Beer.H"
-        #include "BeerShort.H"
+        #include "shared/Beer.H"
+        #include "shared/BeerShort.H"
 
         //Input menu
         {

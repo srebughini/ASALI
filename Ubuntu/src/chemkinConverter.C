@@ -48,8 +48,8 @@ namespace ASALI
       logo_("images/SmallLogo.tiff")
     {
 
-        #include "Beer.H"
-        #include "BeerShort.H"
+        #include "shared/Beer.H"
+        #include "shared/BeerShort.H"
 
         files_.resize(5);
 

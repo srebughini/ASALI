@@ -137,7 +137,7 @@ namespace ASALI
     template<typename T>
     bvpInterface<T>::bvpInterface()
     {
-        #include "Beer.H"
+        #include "shared/Beer.H"
 
         yIDA_         = NULL;
         dyIDA_        = NULL;

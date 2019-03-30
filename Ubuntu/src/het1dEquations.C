@@ -45,31 +45,6 @@ namespace ASALI
     het1dEquations::het1dEquations()
     {}
 
-    void het1dEquations::setCanteraThermo(Cantera::ThermoPhase* gas)
-    {
-        gas_ = gas;
-    }
-    
-    void het1dEquations::setCanteraInterface(Cantera::Interface* surface)
-    {
-        surface_ = surface;
-    }
-
-    void het1dEquations::setCanteraKinetics(Cantera::Kinetics* kinetic)
-    {
-        kinetic_ = kinetic;
-    }
-
-    void het1dEquations::setCanteraTransport(Cantera::Transport* transport)
-    {
-        transport_ = transport;
-    }
-
-    void het1dEquations::setKineticType(const std::string type)
-    {
-        type_ = type;
-    }
-
     void het1dEquations::resize()
     {
         if ( type_ == "CANTERA" )
@@ -248,184 +223,16 @@ namespace ASALI
         conds_ = conds;
     }
 
-    void het1dEquations::setAsaliKinetic(const unsigned int                           NR,
-                                         const std::vector<double>                    k,
-                                         const std::vector<double>                    Eatt,
-                                         const std::vector<double>                    n,
-                                         const std::vector<double>                    a,
-                                         const std::vector<double>                    b,
-                                         const std::vector<int>                       index1,
-                                         const std::vector<int>                       index2,
-                                         const std::vector<int>                       canteraIndex,
-                                         const std::vector<std::vector<std::string> > name,
-                                         const std::vector<std::vector<int> >         stoich,
-                                         const double converter)
-    {
-        NR_           = NR;
-        k_            = k;
-        Eatt_         = Eatt;
-        n_            = n;
-        a_            = a;
-        b_            = b;
-        index1_       = index1;
-        index2_       = index2;
-        canteraIndex_ = canteraIndex;
-        
-        stoich_.resize(NR_);
-        name_.resize(NR_);
-        for (unsigned int i=0;i<NR_;i++)
-        {
-            stoich_[i] = stoich[i];
-            name_[i]   = name[i];
-        }
-
-        converter_ = converter;
-    }
-    
-    
-    void het1dEquations::turnOnUserDefined(const bool check)
-    {
-        userCheck_ = check;
-    }
-    
+   
     void het1dEquations::setInert(const unsigned int inertIndex)
     {
         inertIndex_ = inertIndex;
-    }
-    
-    void het1dEquations::set_MW(const std::vector<double> MW)
-    {
-        MW_ = MW;
-    }
-
-    void het1dEquations::set_diff(const std::vector<double> diff)
-    {
-        diff_ = diff;
-    }
-
-    void het1dEquations::set_QfromSurface(const std::vector<double> Q)
-    {
-        Quser_ = Q;
-    }
-
-    void het1dEquations::set_cp(const double cp)
-    {
-        cp_ = cp;
-    }
-
-    void het1dEquations::set_mu(const double mu)
-    {
-        mu_ = mu;
-    }
-
-    void het1dEquations::set_cond(const double cond)
-    {
-        cond_ = cond;
     }
 
     void het1dEquations::setInletConditions(const std::vector<double> omega0, const double T0)
     {
         omega0_ = omega0;
         T0_     = T0;
-    }
-
-    std::vector<double> het1dEquations::reactionRate(const double T, const std::vector<double> omega,const double rho)
-    {
-        std::vector<double> R(NC_);
-        for (unsigned int i=0;i<NC_;i++)
-        {
-            R[i] = 0.;
-            for (unsigned int j=0;j<NR_;j++)
-            {
-                if ( name_[j][0] != "none" &&
-                     name_[j][1] == "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j]);
-                }
-                else if ( name_[j][0] == "none" &&
-                          name_[j][1] != "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                
-                }
-                else if ( name_[j][0] != "none" &&
-                          name_[j][1] != "none")
-                {
-                    R[i] = R[i] + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j])*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                }
-                else
-                {
-                    R[i] = R[i] + 0.;
-                }
-            }
-            R[i] = R[i]/converter_;
-        }
-        return R;
-    }
-
-    double het1dEquations::heatOfReaction(const double T, const std::vector<double> omega,const double rho, const std::vector<double> h)
-    {
-        double Q = 0.;
-        if ( userCheck_ == false )
-        {
-            for (unsigned int i=0;i<NC_;i++)
-            {
-                double R = 0.;
-                for (unsigned int j=0;j<NR_;j++)
-                {
-                    if ( name_[j][0] != "none" &&
-                         name_[j][1] == "none")
-                    {
-                        R = R + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j]);
-                    }
-                    else if ( name_[j][0] == "none" &&
-                              name_[j][1] != "none")
-                    {
-                        R = R + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                    
-                    }
-                    else if ( name_[j][0] != "none" &&
-                              name_[j][1] != "none")
-                    {
-                        R = R + stoich_[j][i]*k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j])*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                    }
-                    else
-                    {
-                        R = R + 0.;
-                    }
-                }
-                Q = Q + R*h[i]/converter_;
-            }
-        }
-        else
-        {
-            for (unsigned int j=0;j<NR_;j++)
-            {
-                double R = 0.;
-                if ( name_[j][0] != "none" &&
-                     name_[j][1] == "none")
-                {
-                    R = k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j]);
-                }
-                else if ( name_[j][0] == "none" &&
-                          name_[j][1] != "none")
-                {
-                    R = k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                
-                }
-                else if ( name_[j][0] != "none" &&
-                          name_[j][1] != "none")
-                {
-                    R = k_[j]*std::pow(T,n_[j])*std::exp(-Eatt_[j]/(8314*T))*std::pow(rho*omega[index1_[j]]*converter_/MW_[index1_[j]],a_[j])*std::pow(rho*omega[index2_[j]]*converter_/MW_[index2_[j]],b_[j]);
-                }
-                else
-                {
-                    R = 0.;
-                }
-                Q = Q + R*Quser_[j]/converter_;
-            }
-        }
-        return -Q;
     }
 
     int het1dEquations::Equations(double& t, std::vector<double>& y, std::vector<double>& dy)
@@ -475,10 +282,13 @@ namespace ASALI
                 rho_   = cTot_*MWmix_;
 
                 gas_->setState_TPY(T_,P_,canteraArray);
+                
+                gas_->getMoleFractions(canteraArray);
 
                 for (unsigned int j=0;j<NC_;j++)
                 {
                     MW_[j] = gas_->molecularWeight(canteraIndex_[j]);
+                    x_[j]  = canteraArray[canteraIndex_[j]];
                 }
 
                 transport_->getMixDiffCoeffs(canteraArray);
@@ -495,45 +305,14 @@ namespace ASALI
             else
             {
                 MWmix_ = this->meanMolecularWeight(omega_,MW_);
+                x_     = this->moleFraction(omega_,MW_,MWmix_);
                 cTot_  = P_/(8314.*T_);
                 rho_   = cTot_*MWmix_;
             }
 
             // Calculates homogeneous kinetics
             {
-                if ( homogeneousReactions_ == true )
-                {
-                    double* bulkArray = omega_.data();
-                    double  canteraArray[NC_];
-
-                    gas_->setState_TPY(T_,P_,bulkArray);
-                    kinetic_->getNetProductionRates(canteraArray);
-
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = canteraArray[j]; //kmol/m2/s
-                    }
-
-                    double reactionArray[kinetic_->nReactions()];
-                    double enthalpyArray[kinetic_->nReactions()];
-                    kinetic_->getNetRatesOfProgress(reactionArray);
-                    kinetic_->getDeltaEnthalpy(enthalpyArray);
-                    QfromGas_ = 0.;
-                    for (unsigned int j=0;j<kinetic_->nReactions();j++)
-                    {   
-                        QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
-                    }
-                    QfromGas_ = -QfromGas_;
-
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromGas_[j] = 0.; //kmol/m2/s
-                    }
-                    QfromGas_ = 0.;
-                }
+                #include "shared/HomogeneousReactions.H"
             }
 
             omega_ = omegaWMatrix_[i];
@@ -546,105 +325,9 @@ namespace ASALI
 
             // Calculates heterogeneous kinetics
             {
-                if ( heterogeneusReactions_ == true && alfa_ != 0.)
-                {
-                    if ( type_ == "CANTERA" )
-                    {
-                        {
-                            double* bulkArray     = omega_.data();
-                            double* coverageArray = Z_.data();
-                            double  reactionArray[NC_+SURF_NC_];
-
-                            gas_->setState_TPY(T_,P_,bulkArray);
-
-                            surface_->setTemperature(T_);
-                            surface_->setCoveragesNoNorm(coverageArray);
-                            surface_->getNetProductionRates(reactionArray);
-
-                            unsigned int rcounter = 0;
-                            for (unsigned int j=0;j<NC_;j++)
-                            {
-                                RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
-                            }
-
-                            for (unsigned int j=0;j<SURF_NC_;j++)
-                            {
-                                Rsurface_[j] = reactionArray[rcounter++];
-                            }
-                        }
-                        
-                        if ( energyEquation_ == true )
-                        {
-                            double reactionArray[surface_->nReactions()];
-                            double enthalpyArray[surface_->nReactions()];
-                            surface_->getNetRatesOfProgress(reactionArray);
-                            surface_->getDeltaEnthalpy(enthalpyArray);
-                            QfromSurface_ = 0.;
-                            for (unsigned int j=0;j<surface_->nReactions();j++)
-                            {
-                                QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //W/m3
-                            }
-
-                            QfromSurface_ = -QfromSurface_;
-
-                            SD_ = surface_->siteDensity();
-                        }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-
-                            SD_ = surface_->siteDensity();
-                        }
-                    }
-                    else if ( type_ == "ASALI" )
-                    {
-                        RfromSurface_ = this->reactionRate(T_,omega_,rho_); //kmol/m3/s
-
-                        if ( energyEquation_ == true )
-                        {
-                            if ( userCheck_ == false )
-                            {
-                                double hArray[gas_->nSpecies()];
-                                gas_->getPartialMolarEnthalpies(hArray);
-                                
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = hArray[canteraIndex_[i]];
-                                }
-
-                                QfromSurface_ = this->heatOfReaction(T_,omega_,rho_,h_); //W/m3
-                            }
-                            else
-                            {
-
-                                for (unsigned int i=0;i<NC_;i++)
-                                {
-                                    h_[i] = 0.;
-                                }
-                                QfromSurface_ = this->heatOfReaction(T_,omega_,rho_,h_); //W/m3
-                            }
-                        }
-                        else
-                        {
-                            QfromSurface_ = 0.;
-                        }
-                    }
-                }
-                else
-                {
-                    for (unsigned int j=0;j<NC_;j++)
-                    {
-                        RfromSurface_[j] = 0.;
-                    }
-
-                    for (unsigned int j=0;j<SURF_NC_;j++)
-                    {
-                        Rsurface_[j] = 0.;
-                    }
-                    
-                    QfromSurface_ = 0.;
-                }
+                #include "shared/HeterogeneousReactions.H"
             }
+
 
             //Calculate transport properties
             {
@@ -1067,19 +750,7 @@ namespace ASALI
         }
         return 0;
     }
-    
-    
-    double het1dEquations::meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW)
-    {
-        double MWmix = 0.;
-        for (unsigned int i=0;i<NC_;i++)
-        {
-            MWmix = MWmix + omega[i]/MW[i];
-        }
-        return 1./MWmix;
-    }
-    
-    
+
     void het1dEquations::store(const double tf,const std::vector<double> xf)
     {
         // Recover unknowns

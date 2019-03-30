@@ -129,7 +129,7 @@ namespace ASALI
     template<typename T>
     odeInterface<T>::odeInterface()
     {
-        #include "Beer.H"
+        #include "shared/Beer.H"
 
         yCVODE_       = NULL;
         dyCVODE_      = NULL;

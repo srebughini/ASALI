@@ -2848,22 +2848,24 @@ namespace ASALI
                 system(run.c_str());
             }
             #endif
-            {
-                std::string filename = foldername + "/mass.dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            for (unsigned int i=0;i<massNames.size();i++)
-            {
-                std::string filename = foldername + "/mass." + massNames[i] + ".dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            {
+           {
                 std::string filename = foldername + "/mass.gnuplot";
                 std::remove(filename.c_str());
             }
         }
+
+        {
+            std::string filename = foldername + "/mass.dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
+        }
+        for (unsigned int i=0;i<massNames.size();i++)
+        {
+            std::string filename = foldername + "/mass." + massNames[i] + ".dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
+        }
+
   
         if (bool(std::ifstream(foldername + "/mole.gnuplot")))
         {
@@ -2879,20 +2881,20 @@ namespace ASALI
             }
             #endif
             {
-                std::string filename = foldername + "/mole.dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            for (unsigned int i=0;i<moleNames.size();i++)
-            {
-                std::string filename = foldername + "/mole." + moleNames[i] + ".dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            {
                 std::string filename = foldername + "/mole.gnuplot";
                 std::remove(filename.c_str());
             }
+        }
+        {
+            std::string filename = foldername + "/mole.dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
+        }
+        for (unsigned int i=0;i<moleNames.size();i++)
+        {
+            std::string filename = foldername + "/mole." + moleNames[i] + ".dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
         }
 
         if (bool(std::ifstream(foldername + "/site.gnuplot")))
@@ -2909,20 +2911,20 @@ namespace ASALI
             }
             #endif
             {
-                std::string filename = foldername + "/site.dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            for (unsigned int i=0;i<siteNames.size();i++)
-            {
-                std::string filename = foldername + "/site." + siteNames[i] + ".dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            {
                 std::string filename = foldername + "/site.gnuplot";
                 std::remove(filename.c_str());
             }
+        }
+        {
+            std::string filename = foldername + "/site.dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
+        }
+        for (unsigned int i=0;i<siteNames.size();i++)
+        {
+            std::string filename = foldername + "/site." + siteNames[i] + ".dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
         }
 
         if (bool(std::ifstream(foldername + "/other.gnuplot")))
@@ -2939,14 +2941,14 @@ namespace ASALI
             }
             #endif
             {
-                std::string filename = foldername + "/other.dat";
-                if (bool(std::ifstream(filename)))
-                    std::remove(filename.c_str());
-            }
-            {
                 std::string filename = foldername + "/other.gnuplot";
                 std::remove(filename.c_str());
             }
+        }
+        {
+            std::string filename = foldername + "/other.dat";
+            if (bool(std::ifstream(filename)))
+                std::remove(filename.c_str());
         }
     }
 
