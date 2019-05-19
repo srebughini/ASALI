@@ -53,7 +53,7 @@ script:
 - g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/catalyticPelletEquations.C -o obj/catalyticPelletEquations.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs`  `python-config --cflags`
 - g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/Asali.C -o obj/Asali.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs`  `python-config --cflags`
 - g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/main.cpp -o obj/main.o -Isrc/ -I$CANTERA/include/cantera/ext/ -I$CANTERA/include  -L$CANTERA/lib   `pkg-config gtkmm-3.0 --cflags --libs`  `python-config --cflags`
-- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/pythonInterface.C -o obj/pythonInterface.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs` `python-config --cflags
+- g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/pythonInterface.C -o obj/pythonInterface.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs` `python-config --cflags`
 - g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/catalyticReactors.C -o obj/catalyticReactors.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs` `python-config --cflags`
 - g++ -Os -s -std=c++11 -Wall -Wextra  $ASALI_OS -pthread -c src/catalyticReactorsEquations.C -o obj/catalyticReactorsEquations.o -Isrc/ -I$CANTERA/include/cantera/ext -I$CANTERA/include -L$CANTERA/lib  `pkg-config gtkmm-3.0 --cflags --libs` `python-config --cflags`
 
