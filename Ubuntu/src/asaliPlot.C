@@ -446,7 +446,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -546,7 +546,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -647,7 +647,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "coverage.png'" << std::endl;
+                            output << "coverage.tiff'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -714,7 +714,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "/Volume.png'" << std::endl;
+                                output << "set output '" << foldername << "/Volume.tiff'" << std::endl;
                                 output << "set ylabel 'Volume [m3]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -734,7 +734,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.tiff'" << std::endl;
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -819,7 +819,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -920,7 +920,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1022,7 +1022,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "coverage.png'" << std::endl;
+                            output << "coverage.tiff'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1090,7 +1090,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.tiff'" << std::endl;
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -1197,7 +1197,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1325,7 +1325,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1453,7 +1453,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "siteFraction.png'" << std::endl;
+                            output << "siteFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1542,7 +1542,7 @@ namespace ASALI
 
                                 output << std::endl;
                                 output << "set terminal pngcairo font 'Helvetica,10' " << std::endl;
-                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.tiff'" << std::endl;
 
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -1641,7 +1641,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -1742,7 +1742,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -1843,7 +1843,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "coverage.png'" << std::endl;
+                            output << "coverage.tiff'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Time [s]'" << std::endl;
@@ -1910,7 +1910,7 @@ namespace ASALI
                                 #endif
 
                                 output << "set terminal pngcairo" << std::endl;
-                                output << "set output '" << foldername << "/Temperature.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature.tiff'" << std::endl;
                                 output << "set ylabel 'Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Time [s]'" << std::endl;
                                 output << "set key off" << std::endl;;
@@ -2017,7 +2017,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -2145,7 +2145,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -2273,7 +2273,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "siteFraction.png'" << std::endl;
+                            output << "siteFraction.tiff'" << std::endl;
 
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -2366,7 +2366,7 @@ namespace ASALI
 
                                 output << std::endl;
                                 output << "set terminal pngcairo font 'Helvetica,10' " << std::endl;
-                                output << "set output '" << foldername << "/Temperature_bulk.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature_bulk.tiff'" << std::endl;
 
                                 output << "set ylabel 'Bulk Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
@@ -2413,7 +2413,7 @@ namespace ASALI
 
                                 output << std::endl;
                                 output << "set terminal pngcairo font 'Helvetica,10' " << std::endl;
-                                output << "set output '" << foldername << "/Temperature_wall.png'" << std::endl;
+                                output << "set output '" << foldername << "/Temperature_wall.tiff'" << std::endl;
                                 output << "set ylabel 'Wall Temperature [K]'" << std::endl;
                                 output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                                 output << "unset key" << std::endl;;
@@ -2533,7 +2533,7 @@ namespace ASALI
                             {
                                 output << massNames[i] << "_";
                             }
-                            output << "massFraction.png'" << std::endl;
+                            output << "massFraction.tiff'" << std::endl;
                             output << "set ylabel 'Mass fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
@@ -2660,7 +2660,7 @@ namespace ASALI
                             {
                                 output << moleNames[i] << "_";
                             }
-                            output << "moleFraction.png'" << std::endl;
+                            output << "moleFraction.tiff'" << std::endl;
                             output << "set ylabel 'Mole fraction [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
@@ -2787,7 +2787,7 @@ namespace ASALI
                             {
                                 output << siteNames[i] << "_";
                             }
-                            output << "siteFraction.png'" << std::endl;
+                            output << "siteFraction.tiff'" << std::endl;
                             output << "set ylabel 'Coverage [-]'" << std::endl;
                             output << "set xlabel 'Length [" << Lud_ << "]'" << std::endl;
                             output << "unset key" << std::endl;;
@@ -2839,7 +2839,7 @@ namespace ASALI
         {
             #if ASALI_ON_WINDOW == 1
             {
-                std::string run = "wgnuplot.exe " + foldername + "\\mass.gnuplot -p";
+                std::string run = "bin\\gnuplot.exe " + foldername + "\\mass.gnuplot -p";
                 system(run.c_str());
             }
             #else
@@ -2871,7 +2871,7 @@ namespace ASALI
         {
             #if ASALI_ON_WINDOW == 1
             {
-                std::string run = "wgnuplot.exe " + foldername + "\\mole.gnuplot -p";
+                std::string run = "bin\\gnuplot.exe " + foldername + "\\mole.gnuplot -p";
                 system(run.c_str());
             }
             #else
@@ -2901,7 +2901,7 @@ namespace ASALI
         {
             #if ASALI_ON_WINDOW == 1
             {
-                std::string run = "wgnuplot.exe " + foldername + "\\site.gnuplot -p";
+                std::string run = "bin\\gnuplot.exe " + foldername + "\\site.gnuplot -p";
                 system(run.c_str());
             }
             #else
@@ -2931,7 +2931,7 @@ namespace ASALI
         {
             #if ASALI_ON_WINDOW == 1
             {
-                std::string run = "wgnuplot.exe " + foldername + "\\other.gnuplot -p";
+                std::string run = "bin\\gnuplot.exe " + foldername + "\\other.gnuplot -p";
                 system(run.c_str());
             }
             #else

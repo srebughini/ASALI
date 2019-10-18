@@ -144,7 +144,10 @@ namespace ASALI
     {
         #if ASALI_ON_WINDOW == 1
         _putenv_s("PYTHONPATH",path.c_str());
-        Py_SetPythonHome("python/");
+		std::string python_path = "python/";
+		size_t python_path_size = strlen(python_path.c_str());
+		const wchar_t* python_path_char = Py_DecodeLocale(python_path.c_str(),&python_path_size);
+		Py_SetPythonHome(python_path_char);
         #else
         setenv("PYTHONPATH",path.c_str(), 1);
         #endif
@@ -155,30 +158,30 @@ namespace ASALI
         {
             if ( (pClass = PyObject_GetAttrString(pModule, "kinetic")) )
             {
-                if ( (pInstance = PyInstance_New(pClass, NULL, NULL) ))
+                if ( (pInstance = PyObject_CallObject(pClass, NULL) ))
                 {
                     if ( (pName = PyObject_CallMethod(pInstance,(char*)"name", NULL)) )
                     {
-                        if ( (pHetReaction = PyString_FromString("heterogeneous")) )
+                        if ( (pHetReaction = PyUnicode_FromString("heterogeneous")) )
                         {
-                            if ( (pHomReaction = PyString_FromString("homogeneous")) )
+                            if ( (pHomReaction = PyUnicode_FromString("homogeneous")) )
                             {
                                 if ( (pNhom = PyObject_CallMethod(pInstance,(char*)"NRhom", NULL)) )
                                 {
                                     if ( (pNhet = PyObject_CallMethod(pInstance,(char*)"NRhet", NULL)) )
                                     {
-                                        if ( (pAllHomReaction = PyString_FromString("allHomogeneous")) )
+                                        if ( (pAllHomReaction = PyUnicode_FromString("allHomogeneous")) )
                                         {
-                                            if ( (pAllHetReaction = PyString_FromString("allHeterogeneous")) )
+                                            if ( (pAllHetReaction = PyUnicode_FromString("allHeterogeneous")) )
                                             {
-                                                if ( (pHomNet = PyString_FromString("netHom")) )
+                                                if ( (pHomNet = PyUnicode_FromString("netHom")) )
                                                 {
-                                                    if ( (pHetNet = PyString_FromString("netHet")) )
+                                                    if ( (pHetNet = PyUnicode_FromString("netHet")) )
                                                     {
                                                         n_.clear();
                                                         for (unsigned int i=0;i<PyList_Size(pName);i++)
                                                         {
-                                                            n_.push_back(PyString_AsString(PyList_GetItem(pName,i)));
+                                                            n_.push_back(std::string(PyUnicode_AsUTF8(PyList_GetItem(pName,i))));
                                                         }
                                                         Nhom_ = (unsigned int) PyFloat_AsDouble(pNhom);
                                                         Nhet_ = (unsigned int) PyFloat_AsDouble(pNhet);

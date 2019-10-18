@@ -155,7 +155,10 @@ namespace ASALI
             {
                 case(Gtk::RESPONSE_OK):
                 {
-                    std::string filename = dialog.get_filename()+".cti";
+                    std::string dialogname = dialog.get_filename();
+                    this->eraseSubString(dialogname,".xml");
+                    this->eraseSubString(dialogname,".cti");
+                    std::string filename = dialogname +".cti";
                     {
                         #if ASALI_ON_WINDOW == 1
                           files_[4] = "--output=\""+filename+"\"";
@@ -167,7 +170,7 @@ namespace ASALI
                     #if ASALI_ON_WINDOW == 1
                     {
                         dialog.hide();
-                        std::string cmd = "ck2cti.exe "
+                        std::string cmd = "bin/ck2cti-asali.exe "
                                         + files_[0] + " "
                                         + files_[1] + " "
                                         + files_[2] + " "
@@ -198,7 +201,6 @@ namespace ASALI
                             CloseHandle( processInformation.hProcess );
                             CloseHandle( processInformation.hThread ); 
                         }
-                    
                     }
                     #else
                     {
@@ -218,7 +220,8 @@ namespace ASALI
                         {
                             #if ASALI_ON_WINDOW == 1
                             {
-                                std::string cmd = "ctml_writer.exe " + filename + " " + dialog.get_filename()+".xml";
+                          
+                                std::string cmd = "bin/ctml_writer-asali.exe " + filename + " " + dialogname + ".xml";
 
                                 // Declare and initialize process blocks
                                 PROCESS_INFORMATION processInformation;
@@ -244,15 +247,28 @@ namespace ASALI
                                     CloseHandle( processInformation.hProcess );
                                     CloseHandle( processInformation.hThread ); 
                                 }
+                                
+                                dialogname = dialogname + ".xml";                                
+                                if (this->checkConvertedFile(dialogname))
+                                {
+                                  std::remove(filename.c_str());
+                                  this->savedMessage();
+                                }
+                                else
+                                {
+                                  std::remove(filename.c_str());
+                                  std::remove(dialogname.c_str());
+                                  this->notSavedMessage();
+                                }                                
                             }
                             #else
                             {
-                                std::string cmd = "ctml_writer " + filename + " " + dialog.get_filename()+".xml";
+                                std::string cmd = "ctml_writer " + filename + " " + dialogname +".xml";
                                 system(cmd.c_str());
+                                std::remove(filename.c_str());
+                                this->savedMessage();
                             }
                             #endif
-                            std::remove(filename.c_str());
-                            this->savedMessage();
                         }
                         else
                         {
@@ -384,6 +400,198 @@ namespace ASALI
           dialog.set_secondary_text(this->getBeerShort(),true);
           dialog.run(); 
         #endif
+    }
+    
+    bool chemkinConverter::checkConvertedFile(std::string filename)
+    {
+        std::ifstream input;
+        const char *path = filename.c_str();
+        input.open(path);
+        std::vector<std::string> readed(2);
+        readed[0] = "none";
+        readed[1] = "none";
+        {
+            std::vector<std::string> a;
+            std::vector<std::string> b;
+            while (!input.eof()) 
+            {
+                std::string line;
+                getline(input,line);
+                if (line.find("<phase ")!=std::string::npos)
+                {
+                    a.push_back(line);
+                }
+                else if (line.find("<kinetics ")!=std::string::npos)
+                {
+                    b.push_back(line);
+                }
+            }
+
+            for (unsigned int i=0;i<b.size();i++)
+            {
+                if (b[i].find("Interface")!=std::string::npos)
+                {
+                    readed[1] = a[i];
+                }
+                else if (b[i].find("GasKinetics")!=std::string::npos)
+                {
+                    readed[0] = a[i];
+                }
+            }
+        }
+
+        if ( readed[0] == "none" ||
+             readed[1] == "none" )
+        {
+          std::string type = "none";
+          for (unsigned int i=0;i<readed.size();i++)
+          {
+              if ( readed[i] != "none" )
+              {
+                  std::string dummyString = readed[i];
+  
+                  for (std::size_t j=0;j<dummyString.size();j++)
+                  {
+                      if ( dummyString.substr(j,1) == ">" )
+                      {
+                          dummyString.replace(j,1," ");
+                      }
+                      else if ( dummyString.substr(j,1) == "\"" )
+                      {
+                          dummyString.replace(j,1," ");
+                      }
+                      else if ( dummyString.substr(j,1) == "=" )
+                      {
+                          dummyString.replace(j,1," ");
+                      }
+                  }
+  
+                  std::vector<std::string> dummyVector;
+                  dummyVector.clear();
+  
+                  std::istringstream iss(dummyString);
+                  while (iss >> dummyString)
+                  {
+                      dummyVector.push_back(dummyString);
+                  }
+  
+                  if ( dummyVector.size() > 4 )
+                  {
+                      for (unsigned int j=0;j<dummyVector.size()-1;j++)
+                      {
+                          if (dummyVector[j] == "<phase"  &&
+                              dummyVector[j + 1] == "dim" &&
+                              dummyVector[j + 3] == "id" )
+                          {
+                              type = dummyVector[j+4];
+                              type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
+                              type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
+                          }
+                          else if (dummyVector[j] == "<phase"  &&
+                                   dummyVector[j + 1] == "id" &&
+                                   dummyVector[j + 3] == "dim" )
+                          {
+                              type = dummyVector[j+2];
+                              type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
+                              type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
+                           }
+                      }
+                  }
+              }
+          }
+          if ( type == "none")
+          {
+              return false;
+          }
+          else
+          {
+            return true;
+          }        
+        }
+        else
+        {
+          std::vector<std::string> type(2);
+          type[0] = "none";
+          type[1] = "none";
+          for (unsigned int i=0;i<readed.size();i++)
+          {
+              std::string dummyString = readed[i];
+  
+              for (std::size_t j=0;j<dummyString.size();j++)
+              {
+                  if ( dummyString.substr(j,1) == ">" )
+                  {
+                      dummyString.replace(j,1," ");
+                  }
+                  else if ( dummyString.substr(j,1) == "\"" )
+                  {
+                      dummyString.replace(j,1," ");
+                  }
+                  else if ( dummyString.substr(j,1) == "=" )
+                  {
+                      dummyString.replace(j,1," ");
+                  }
+              }
+  
+              std::vector<std::string> dummyVector;
+              dummyVector.clear();
+  
+              std::istringstream iss(dummyString);
+              while (iss >> dummyString)
+              {
+                  dummyVector.push_back(dummyString);
+              }
+  
+              if ( dummyVector.size() > 4 )
+              {
+                  for (unsigned int j=0;j<dummyVector.size()-1;j++)
+                  {
+                      if (dummyVector[j] == "<phase"  &&
+                          dummyVector[j + 1] == "dim" &&
+                          dummyVector[j + 3] == "id" )
+                      {
+                          type[i] = dummyVector[j+4];
+                          type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
+                          type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
+                      }
+                      else if (dummyVector[j] == "<phase"  &&
+                               dummyVector[j + 1] == "id" &&
+                               dummyVector[j + 3] == "dim" )
+                      {
+                          type[i] = dummyVector[j+2];
+                          type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
+                          type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
+                      }
+                  }
+              }
+  
+              if ( type[0] != "none" && type[1] != "none")
+              {
+                  break;
+              }
+          }
+  
+          if ( type[0] == "none" ||
+               type[1] == "none" )
+          {
+              return false;
+          }
+          else
+          {
+            return true;
+          }
+        }
+    }
+    
+    
+    void chemkinConverter::eraseSubString(std::string &mainStr, const std::string toErase)
+    {
+	   size_t pos = std::string::npos;
+ 
+	   while ((pos  = mainStr.find(toErase) )!= std::string::npos)
+	   {
+		  mainStr.erase(pos, toErase.length());
+	   }
     }
 
     std::string chemkinConverter::getBeer()

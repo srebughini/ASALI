@@ -56,7 +56,7 @@ namespace ASALI
       qValueLabel_("n.a."),
       rLabel_("R\u00b2:\t"),
       rValueLabel_("n.a."),
-      logo_("images/RegressionLogo.tiff"),
+      logo_("images/RegressionLogo.png"),
       kineticType_(kineticType),
       diffCheck_(false),
       canteraInterface_(canteraInterface)
@@ -72,7 +72,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Linear regression");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
             this->cleanInput();
         }
         
@@ -184,7 +184,7 @@ namespace ASALI
         {
             unitDimensionCombo_.append("W/m/K");
             unitDimensionCombo_.append("cal/m/s/k");
-            regressionImage_.set("images/RegressionExponential.tiff");
+            regressionImage_.set("images/RegressionExponential.png");
             
             if (diffCheck_)
             {
@@ -196,7 +196,7 @@ namespace ASALI
         {
             unitDimensionCombo_.append("Pas");
             unitDimensionCombo_.append("cP");
-            regressionImage_.set("images/RegressionExponential.tiff");
+            regressionImage_.set("images/RegressionExponential.png");
             
             if (diffCheck_)
             {
@@ -212,7 +212,7 @@ namespace ASALI
             unitDimensionCombo_.append("cal/mol/K");
             unitDimensionCombo_.append("cal/kmol/K");
             unitDimensionCombo_.append("cal/kg/K");
-            regressionImage_.set("images/RegressionLinear.tiff");
+            regressionImage_.set("images/RegressionLinear.png");
             
             if (diffCheck_)
             {
@@ -228,7 +228,7 @@ namespace ASALI
             unitDimensionCombo_.append("cal/kmol");
             unitDimensionCombo_.append("cal/mol");
             unitDimensionCombo_.append("cal/kg");
-            regressionImage_.set("images/RegressionLinear.tiff");
+            regressionImage_.set("images/RegressionLinear.png");
             
             if (diffCheck_)
             {
@@ -244,7 +244,7 @@ namespace ASALI
             unitDimensionCombo_.append("cal/mol/K");
             unitDimensionCombo_.append("cal/kmol/K");
             unitDimensionCombo_.append("cal/kg/K");
-            regressionImage_.set("images/RegressionExponential.tiff");
+            regressionImage_.set("images/RegressionExponential.png");
             
             if (diffCheck_)
             {
@@ -255,7 +255,7 @@ namespace ASALI
         else if (propertyCombo_.get_active_row_number() == 5 )
         {
             unitDimensionCombo_.append("m\u00b2/s");
-            regressionImage_.set("images/RegressionExponential.tiff");
+            regressionImage_.set("images/RegressionExponential.png");
 
             if (diffCheck_)
             {

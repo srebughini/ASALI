@@ -75,6 +75,8 @@ namespace ASALI
             void run();
             void help();
             void error(std::string type);
+            void eraseSubString(std::string &mainStr, const std::string toErase);
+            bool checkConvertedFile(std::string filename);
 
             std::string getBeer();
             std::string getBeerShort();

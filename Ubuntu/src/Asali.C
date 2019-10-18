@@ -589,6 +589,14 @@ namespace ASALI
                                                     type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
                                                     type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
                                                 }
+                                                else if (dummyVector[j] == "<phase"  &&
+                                                         dummyVector[j + 1] == "id" &&
+                                                         dummyVector[j + 3] == "dim" )
+                                                {
+                                                    type = dummyVector[j+2];
+                                                    type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
+                                                    type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
+                                                 }
                                             }
                                         }
                                     }
@@ -666,6 +674,14 @@ namespace ASALI
                                         dummyVector[j + 3] == "id" )
                                     {
                                         type[i] = dummyVector[j+4];
+                                        type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
+                                        type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
+                                    }
+                                    else if (dummyVector[j] == "<phase"  &&
+                                             dummyVector[j + 1] == "id" &&
+                                             dummyVector[j + 3] == "dim" )
+                                    {
+                                        type[i] = dummyVector[j+2];
                                         type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
                                         type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
                                     }
