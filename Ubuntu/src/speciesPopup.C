@@ -49,7 +49,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: species names");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.tiff");
+        this->set_icon_from_file("images/Icon.png");
         this->add(mainBox_);
         mainBox_.pack_start(scrolledWindow_);
         scrolledWindow_.add(speciesImage_);

@@ -61,8 +61,8 @@ namespace ASALI
       honeyCombWallThicknessLabel_("Wall thickness"),
       tubularDpLabel_("Bird R. B. et al. (1960)"),
       honeyCombDpLabel_("Bird R. B. et al. (1960)"),
-      logo1_("images/PressureLogo.tiff"),
-      logo2_("images/PressureLogo.tiff"),
+      logo1_("images/PressureLogo.png"),
+      logo2_("images/PressureLogo.png"),
       reactorType_("none"),
       tubularBool_(false),
       honeyCombBool_(false),
@@ -98,7 +98,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Pressure drops");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
             doneButton_.set_label("Next");
             this->input();
         }

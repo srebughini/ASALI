@@ -62,8 +62,8 @@ namespace ASALI
       pointsLabel_("Number of points"),
       inertLabel_("Inert specie"),
       resolutionLabel_("Resolution type"),
-      logo1_("images/Ph1DLogo.png"),
-      logo2_("images/Ph1DLogo.png"),
+      logo1_("images/Ph1DLogo.tiff"),
+      logo2_("images/Ph1DLogo.tiff"),
       plotButtonBool_(false)
     {
 

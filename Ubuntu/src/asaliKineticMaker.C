@@ -68,11 +68,11 @@ namespace ASALI
       typeLabel1_("Type"),  
       recapSpeciesLabel_("Species"),  
       recapReactionLabel_("Reactions"),  
-      logo1_("images/KineticSchemeLogo.tiff"),
-      logo2_("images/KineticSchemeLogo.tiff"),
-      logo3_("images/KineticSchemeLogo.tiff"),
-      logo4_("images/KineticSchemeLogo.tiff"),
-      logo5_("images/KineticSchemeLogo.tiff"),
+      logo1_("images/KineticSchemeLogo.png"),
+      logo2_("images/KineticSchemeLogo.png"),
+      logo3_("images/KineticSchemeLogo.png"),
+      logo4_("images/KineticSchemeLogo.png"),
+      logo5_("images/KineticSchemeLogo.png"),
       NR_(0),
       NC_(0),
       restart_(true)
@@ -96,7 +96,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Kinetic scheme");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(reactionNumberBox_);

@@ -72,8 +72,8 @@ namespace ASALI
       honeyCombCPSILabel_("CPSI"),
       honeyCombWallThicknessLabel_("Wall thickness"),
       honeyCombDuctLabel_("Duct section"),
-      logo1_("images/Het1DLogo.tiff"),
-      logo2_("images/Het1DLogo.tiff"),
+      logo1_("images/Het1DLogo.png"),
+      logo2_("images/Het1DLogo.png"),
       reactorType_("none"),
       tubularBool_(false),
       honeyCombBool_(false),
@@ -88,7 +88,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: 1D HET reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(mainBox_);

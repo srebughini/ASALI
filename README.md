@@ -79,7 +79,8 @@ Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows
 ##### 2.1.1 Pre-requisites installation
 The Linux based external libraries can be installed by typing these commands:  
 `sudo apt-get update`  
-`sudo apt-get install git g++ gfortran python scons libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools cython python3 python3-dev python3-setuptools python3-numpy`  
+`sudo apt-get install scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3`  
+`sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1`  
 
 ##### 2.1.2 How to install Gtkmm libraries
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  

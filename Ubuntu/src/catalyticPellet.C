@@ -63,8 +63,8 @@ namespace ASALI
       pelletTypeLabel_("Pellet shape"),
       modelTypeLabel_("Diffusion model"),
       poreLabel_("Pore diameter"),
-      logo1_("images/PelletLogo.tiff"),
-      logo2_("images/PelletLogo.tiff"),
+      logo1_("images/PelletLogo.png"),
+      logo2_("images/PelletLogo.png"),
       pelletType_("none"),
       modelType_("none"),
       modelBool_(false),
@@ -79,7 +79,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Catalytic pellets");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(mainBox_);

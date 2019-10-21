@@ -59,8 +59,8 @@ namespace ASALI
       timeLabel_("Integration time"),
       saveLabel_("Save solution every"),
       energyLabel_("Energy"),
-      logo1_("images/CstrLogo.tiff"),
-      logo2_("images/CstrLogo.tiff"),
+      logo1_("images/CstrLogo.png"),
+      logo2_("images/CstrLogo.png"),
       plotButtonBool_(false)
     {
 
@@ -71,7 +71,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: CST reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(mainBox_);

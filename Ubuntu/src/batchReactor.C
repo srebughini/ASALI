@@ -58,8 +58,8 @@ namespace ASALI
       timeLabel_("Integration time"),
       saveLabel_("Save solution every"),
       energyLabel_("Energy"),
-      logo1_("images/BatchLogo.tiff"),
-      logo2_("images/BatchLogo.tiff"),
+      logo1_("images/BatchLogo.png"),
+      logo2_("images/BatchLogo.png"),
       plotButtonBool_(false)
     {
 
@@ -70,7 +70,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Batch reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(mainBox_);

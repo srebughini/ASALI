@@ -82,11 +82,11 @@ namespace ASALI
                     "<b>\nor select the default one (database/data.xml)</b>"
                     "\n\nLoading might take several minutes, depending"
                     "\non your system performances."),
-      bigLogo_("images/BigLogo.tiff"),
-      smallLogo1_("images/SmallLogo.tiff"),
-      smallLogo2_("images/SmallLogo.tiff"),
-      smallLogo3_("images/SmallLogo.tiff"),
-      smallLogo4_("images/SmallLogo.tiff")
+      bigLogo_("images/BigLogo.png"),
+      smallLogo1_("images/SmallLogo.png"),
+      smallLogo2_("images/SmallLogo.png"),
+      smallLogo3_("images/SmallLogo.png"),
+      smallLogo4_("images/SmallLogo.png")
     {
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
@@ -96,7 +96,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.tiff");
+            this->set_icon_from_file("images/Icon.png");
 
             //Add background grid
             this->add(grid_);
