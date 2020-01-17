@@ -1,5 +1,7 @@
 # **ASALI: Modeling and beyond**
-The Asali version with **Application Programming Interface** is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. This version of Asali is very helpful for those who need a reliable, simple and perfoming library for the estimation of thermodynamic and transport properties of ideal gas mixture. 
+The Asali version with **Application Programming Interface** is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. This version of Asali is very helpful for those who need a reliable, simple and perfoming library for the estimation of thermodynamic and transport properties of ideal gas mixture.  
+If you are looking for something more advance and with higher performance, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
+
 ## **1. Thermodynamic and transport properties**
 Let's go straight to the point! Asali library can estimate:
 * Thermal conductivity
@@ -28,11 +30,13 @@ cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
 ## **3. Fortran version**
-The Fortran version requires the [Lapack](http://www.netlib.org/lapack/) and it can be compiled with the following commands:
-`sudo apt-get install liblapack-dev`
-`./compile.sh`
-This version can be included in your code as follow:
-```Fortran
+The Fortran version requires the [Lapack libraries](http://www.netlib.org/lapack/) and it can be compiled with the following commands:  
+
+`sudo apt-get install liblapack-dev`  
+`./compile.sh`  
+
+This version can be included in your code as follow:  
+```fortran
 !Include library
 include "Asali.f90"
 
@@ -63,5 +67,6 @@ program example
     !Properties evaluation
     p = get_species_mass_specific_heat()
 ```
-To convert the Asali database into Fortran code run:
+To convert the Asali database into Fortran code run:  
+
 `./database-generator`
