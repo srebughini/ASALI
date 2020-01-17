@@ -30,7 +30,7 @@ cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
 ## **3. Fortran version**
-The Fortran version requires the [Lapack libraries](http://www.netlib.org/lapack/) and it can be compiled with the following commands:  
+The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) and it can be compiled with the following commands:  
 
 `sudo apt-get install liblapack-dev`  
 `./compile.sh`  
