@@ -44,5 +44,5 @@ script: |
     scons build system_sundials=n
     sudo scons install
     cd ..
-    cd Ubuntu
+    cd GUI/Ubuntu
     ./compile.sh
