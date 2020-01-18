@@ -342,7 +342,8 @@ namespace ASALI
         }
         else
         {
-            A_ = SUNBandMatrix(NEQ_, upperBand_, lowerBand_, (upperBand_+lowerBand_) );
+            //A_ = SUNBandMatrix(upperBand_, lowerBand_, (upperBand_+lowerBand_) );
+            A_ = SUNBandMatrix(NEQ_, upperBand_, lowerBand_);
             if (checkFlag((void *)A_, 0)) 
             {
                 this->error();

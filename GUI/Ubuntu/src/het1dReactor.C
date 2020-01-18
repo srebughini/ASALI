@@ -1214,7 +1214,7 @@ namespace ASALI
         ode.solve(1e07,x0);
 
         bvp.setEquations(eq_);
-        bvp.setBandDimensions(eq_->NumberOfEquations()/NP_ + 1,eq_->NumberOfEquations()/NP_ + 1);
+        //bvp.setBandDimensions(eq_->NumberOfEquations()/NP_ + 1,eq_->NumberOfEquations()/NP_ + 1);
 
         eq_->setResolutionType("model");
         eq_->store(0.,x0);

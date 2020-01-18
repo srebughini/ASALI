@@ -248,7 +248,7 @@ namespace ASALI
         N_VSetArrayPointer_Serial(&dy0_[0],dy0CVODE_);
         N_VSetArrayPointer_Serial(&y0_[0],y0CVODE_);
 
-        cvode_mem_ = CVodeCreate(CV_BDF, CV_NEWTON);
+        cvode_mem_ = CVodeCreate(CV_BDF);
         if (checkFlag((void *)cvode_mem_, 0))
         {
             this->error();
@@ -300,7 +300,7 @@ namespace ASALI
         }
         else
         {
-            A_ = SUNBandMatrix(NEQ_, upperBand_, lowerBand_, (upperBand_+lowerBand_) );
+            A_ = SUNBandMatrix(upperBand_, lowerBand_, (upperBand_+lowerBand_) );
             if (checkFlag((void *)A_, 0)) 
             {
                 this->error();
