@@ -18,7 +18,7 @@ before_script: |
     else
         sudo apt-get install scons git python3-ruamel.yaml python3-yaml
     fi
-    sudo apt-get install libgtkmm-3.0-dev gnuplot g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 
+    sudo apt-get install build-essential libgtkmm-3.0-dev g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 python3-matplotlib
     sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
     git clone https://github.com/Cantera/cantera.git
 
@@ -27,7 +27,6 @@ branches:
   - master
 env:
   global:
-  - CANTERA=/usr/local
   - ASALI_OS='-DASALI_ON_WINDOW=0'
 script: |
     if [[ "$TRAVIS_DIST" == "xenial" ]]; then
@@ -45,4 +44,5 @@ script: |
     sudo scons install
     cd ..
     cd GUI/Ubuntu
-    ./compile.sh
+    make clean
+    make all CANTERA_PREFIX=/usr/local/
