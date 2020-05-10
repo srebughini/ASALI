@@ -36,13 +36,82 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
 
-int main(int argc, char *argv[])
+#ifndef VACUUMPROPERTIES_H
+#define VACUUMPROPERTIES_H
+
+#include "transportProperties.hpp"
+
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class vacuumProperties : public ASALI::transportProperties
+    {
+        public:
 
-  ASALI::Asali asali;
+            vacuumProperties(ASALI::canteraInterface        *canteraInterface,
+                             ASALI::speciesPopup            *speciesNames,
+                             std::string                     kineticType);
+            
+            virtual ~vacuumProperties();
+            
+            virtual void save();
 
-  return app->run(asali);
+        private:
+        
+            void run();
+            void read();
+
+            Gtk::Grid grid_;
+            
+            Gtk::Button exitButton_;
+            Gtk::Button saveButton_;
+            Gtk::Button calculateButton_;
+            Gtk::Button helpButton_;
+
+            Gtk::Box tempBox_;
+            Gtk::Box pressBox_;
+            Gtk::Box lengthBox_;
+            Gtk::Box diffBox_;
+            Gtk::Box velocityBox_;
+            Gtk::Box pathBox_;
+
+            Gtk::Label tempLabel_;
+            Gtk::Label pressLabel_;
+            Gtk::Label lengthLabel_;
+            Gtk::Label diffLabel_;
+            Gtk::Label specieLabel_;
+            Gtk::Label knudsenLabel_;
+            Gtk::Label velocityLabel_;
+            Gtk::Label pathLabel_;
+            Gtk::Label diffResults_;
+            Gtk::Label velocityResults_;
+            Gtk::Label pathResults_;
+            Gtk::Label knudsenResults_;
+        
+            Gtk::ComboBoxText pressCombo_;
+            Gtk::ComboBoxText lengthCombo_;
+            Gtk::ComboBoxText tempCombo_;
+            Gtk::ComboBoxText diffCombo_;
+            Gtk::ComboBoxText velocityCombo_;
+            Gtk::ComboBoxText pathCombo_;
+
+            Gtk::Entry specieEntry_;
+            Gtk::Entry tempEntry_;
+            Gtk::Entry pressEntry_;
+            Gtk::Entry lengthEntry_;
+
+            std::string kineticType_;
+
+            double Kn_;
+            double diffK_;
+            double vK_;
+            double d_;
+            double lK_;
+
+            ASALI::canteraInterface        *canteraInterface_;
+            ASALI::speciesPopup            *speciesNames_;
+
+    };
 }
+
+#endif

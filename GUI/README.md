@@ -59,7 +59,7 @@ Asali is based on different open-source codes:
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
 * [Sundials libraries](https://computation.llnl.gov/projects/sundials): IDA and CVODE solvers for Ordinay Differentional Equation (ODE) and Differential and Algebraic Equation (DAE) systems
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
-* [Gnuplot](http://www.gnuplot.info/): command-line driven graphing utility
+* [Matplotlib](https://matplotlib.org/): a comprehensive library for creating static, animated, and interactive visualizations in Python
 
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
 
@@ -67,7 +67,7 @@ Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows
 ##### 2.1.1 Pre-requisites installation
 The Linux based external libraries can be installed by typing these commands:  
 `sudo apt-get update`  
-`sudo apt-get install scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3`  
+`sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3`  
 `sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1`  
 
 ##### 2.1.2 How to install Gtkmm libraries
@@ -75,9 +75,9 @@ The Linux based external libraries can be installed by typing these commands:
 `sudo apt-get install libgtkmm-3.0-dev`  
 More details can be found at: https://www.gtkmm.org/en/  
 
-##### 2.1.3 How to install Gnuplot
-[Gnuplot](http://www.gnuplot.info/) can be installed with the following command:  
-`sudo apt-get install gnuplot`  
+##### 2.1.3 How to install Matplotlib
+[Matplotlib](https://matplotlib.org/) can be installed with the following command:  
+`sudo apt-get install  python3-matplotlib`  
 Details can be found at: http://gnuplot.info/  
 
 ##### 2.1.4 How to install Cantera
@@ -89,8 +89,8 @@ To install [Cantera](https://cantera.org/) type the following commands from the 
 More details can be found at: https://cantera.org/install/compiling-install.html 
 
 ##### 2.1.5 How to install ASALI
-To install Asali modify the `compiled.sh` file by changing the environmental variable `CANTERA` with the path of you [Cantera](https://cantera.org/) installation (usually `/usr/local/`). Once you have changed the environmental variable, run the following commands:  
-`./compile.sh`  
+To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
+`make all CANTERA_PREFIX=/usr/local/`  
 To run Asali:  
 `./Asali`  
 

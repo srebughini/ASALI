@@ -36,13 +36,72 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
-
-int main(int argc, char *argv[])
+if ( homogeneousReactions_ == true )
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    if ( type_ == "CANTERA" )
+    {
+        double* bulkArray = omega_.data();
+        double  canteraArray[NC_];
 
-  ASALI::Asali asali;
+        gas_->setState_TPY(T_,P_,bulkArray);
+        kinetic_->getNetProductionRates(canteraArray);
 
-  return app->run(asali);
+        for (unsigned int j=0;j<NC_;j++)
+        {
+            RfromGas_[j] = canteraArray[j]; //kmol/m2/s
+        }
+
+        double reactionArray[kinetic_->nReactions()];
+        double enthalpyArray[kinetic_->nReactions()];
+        kinetic_->getNetRatesOfProgress(reactionArray);
+        kinetic_->getDeltaEnthalpy(enthalpyArray);
+        QfromGas_ = 0.;
+        for (unsigned int j=0;j<kinetic_->nReactions();j++)
+        {   
+            QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
+        }
+        QfromGas_ = -QfromGas_;
+    }
+    else if ( type_ == "ASALI" )
+    {
+        RfromGas_ = this->reactionRate(x_,T_,"homogeneous"); //kmol/m3/s
+
+        if ( energyEquation_ == true )
+        {
+            if ( userCheck_ == false )
+            {
+                double hArray[gas_->nSpecies()];
+                gas_->getPartialMolarEnthalpies(hArray);
+                
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    h_[i] = hArray[canteraIndex_[i]];
+                }
+
+                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+            }
+            else
+            {
+
+                for (unsigned int i=0;i<NC_;i++)
+                {
+                    h_[i] = 0.;
+                }
+                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+            }
+        }
+        else
+        {
+            QfromGas_ = 0.;
+        }
+    }
+
+}
+else
+{
+    for (unsigned int j=0;j<NC_;j++)
+    {
+        RfromGas_[j] = 0.; //kmol/m2/s
+    }
+    QfromGas_ = 0.;
 }

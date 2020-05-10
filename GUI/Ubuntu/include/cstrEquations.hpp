@@ -36,13 +36,86 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#ifndef CSTREQUATIONS_H
+#define CSTREQUATIONS_H
 
-int main(int argc, char *argv[])
+#include "catalyticReactorsEquations.hpp"
+
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+class cstrEquations : public ASALI::catalyticReactorsEquations
+{
+    public:
 
-  ASALI::Asali asali;
+        cstrEquations();
 
-  return app->run(asali);
+       
+        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+
+        void setVolume(const double V);
+        
+        void setFlow(const double Q);
+
+        void setPressure(const double P);
+
+        void setTemperature(const double T);
+        
+        void setCatalystLoad(const double alfa);
+
+        void setIntegrationTime(const double tF);
+        
+        void setInletConditions(const std::vector<double> omega0, const double T0);
+
+        std::vector<double> getTime()        const {return Time_;};
+        std::vector<double> getTemperature() const {return Temperature_;};
+
+        std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
+        std::vector<std::vector<double> > getSite()        const {return Site_;};
+
+        virtual void store(const double tf, const std::vector<double> xf);
+
+        virtual void resize();
+
+        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+
+    private:
+
+        double MWmix_;
+        double cTot_;
+        double rho_;
+        double P_;
+        double T_;
+        double T0_;
+        double V_;
+        double alfa_;
+        double mass_;
+        double QfromGas_;
+        double Q_;
+        double QfromSurface_;
+        double SD_;
+        double dt_;
+        
+        unsigned int SURF_NC_;
+        unsigned int TC_;
+
+        bool energyEquation_;
+
+        std::vector<double> omega_;
+        std::vector<double> x_;
+        std::vector<double> RfromGas_;
+        std::vector<double> RfromSurface_;
+        std::vector<double> Z_;
+        std::vector<double> Rsurface_;
+        std::vector<double> dy_;
+        std::vector<double> y_;
+        std::vector<double> h_;
+        std::vector<double> omega0_;
+
+        std::vector<double> Time_;
+        std::vector<double> Temperature_;
+        std::vector<std::vector<double> > Specie_;
+        std::vector<std::vector<double> > Site_;
+    };
 }
+
+#endif
