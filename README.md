@@ -6,6 +6,7 @@
 [![GitHub license](https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/issues)
 [![GitHub release](https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/releases)
+[![CodeFactor](https://www.codefactor.io/repository/github/srebughini/asali/badge/master)](https://www.codefactor.io/repository/github/srebughini/asali/overview/master)
 
 
 
