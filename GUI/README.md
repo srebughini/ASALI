@@ -77,8 +77,8 @@ More details can be found at: https://www.gtkmm.org/en/
 
 ##### 2.1.3 How to install Matplotlib
 [Matplotlib](https://matplotlib.org/) can be installed with the following command:  
-`sudo apt-get install  python3-matplotlib`  
-Details can be found at: http://gnuplot.info/  
+`sudo apt-get install python3-matplotlib`  
+Details can be found at: https://matplotlib.org/
 
 ##### 2.1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
