@@ -205,8 +205,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,3,n_.size()+2,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&transportProperties::exit));
         }
-
-
     }
 
     transportProperties::~transportProperties()
@@ -693,7 +691,6 @@ namespace ASALI
                 }
 
                 {
-
                     double sum = SumElements(x_);
                     for(unsigned int i=0;i<x_.size();i++)
                     {

@@ -47,7 +47,6 @@ namespace ASALI
       exit_("Exit"),
       logo_("images/SmallLogo.png")
     {
-
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
 
