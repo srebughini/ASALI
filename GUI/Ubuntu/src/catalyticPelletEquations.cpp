@@ -56,7 +56,6 @@ namespace ASALI
             {
                 canteraIndex_[i] = i;
             }
-
         }
         else if ( type_ == "ASALI" )
         {
@@ -371,7 +370,6 @@ namespace ASALI
                 {
                     Zmatrix_[i][j] = y[counter++];
                 }
-
             }
         }
 
@@ -440,15 +438,13 @@ namespace ASALI
                         }
                     }
                 }
-
             }
             else
             {
                 MWmix_ = this->meanMolecularWeight(omega_,MW_);
                 x_     = this->moleFraction(omega_,MW_,MWmix_);
                 cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
-                
+                rho_   = cTot_*MWmix_;                
             }
 
             // Calculates homogeneous kinetics
@@ -471,7 +467,6 @@ namespace ASALI
             {
                 RsurfaceMatrix_[i] = Rsurface_;
             }
-
         }
 
         if ( modelType_ == "\u03B5-\u03C4 model" )
@@ -507,7 +502,6 @@ namespace ASALI
                 {
                     dy[counter++] = 0.;
                 }
-
             }
             else if ( i == (NP_ - 1) )
             {
@@ -573,7 +567,6 @@ namespace ASALI
                 {
                     dy[counter++] = 0.;
                 }
-
             }
             else if ( i == (NP_ - 1) )
             {
