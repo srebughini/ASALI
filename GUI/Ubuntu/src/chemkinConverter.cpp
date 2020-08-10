@@ -541,14 +541,14 @@ namespace ASALI
     std::string chemkinConverter::getBeer()
     {
         srand(time(NULL));
-        int i = rand()%beer_.size();
+        int i = rand_r()%beer_.size();
         return beer_[i];
     }
 
     std::string chemkinConverter::getBeerShort()
     {
         srand(time(NULL));
-        int i = rand()%beerShort_.size();
+        int i = rand_r()%beerShort_.size();
         return beerShort_[i];
     }
 
