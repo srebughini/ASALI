@@ -126,7 +126,6 @@ namespace ASALI
                 exitButton1_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::exit));
                 reactionNumberGrid_.attach(nextButton1_,1,1,1,1);
                 nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::species));
-
             }
             this->show_all_children();
         }

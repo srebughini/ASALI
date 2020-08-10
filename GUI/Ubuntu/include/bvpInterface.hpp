@@ -428,7 +428,7 @@ namespace ASALI
     std::string bvpInterface<T>::getBeer()
     {
         srand(time(NULL));
-        int i = rand()%beer_.size();
+        int i = rand_r()%beer_.size();
         return beer_[i];
     }
 
