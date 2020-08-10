@@ -128,7 +128,6 @@ namespace ASALI
                 nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::species));
 
             }
-
             this->show_all_children();
         }
         
@@ -164,7 +163,6 @@ namespace ASALI
                 backButton1_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::reactionNumber));
                 speciesGrid_.attach(nextButton2_,3,5,1,1);
                 nextButton2_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::reaction));
-
             }
         }
 
@@ -194,7 +192,6 @@ namespace ASALI
             reactionLabel_.clear();
             reactionCombo_.clear();
             reactionEntry_.clear();
-
         }
 
         //Equation
@@ -221,7 +218,6 @@ namespace ASALI
 
             equationLabel_.clear();
             equationEntry_.clear();
-
         }
 
         //Recap
@@ -1014,14 +1010,14 @@ namespace ASALI
     std::string asaliKineticMaker::getBeer()
     {
         srand(time(NULL));
-        int i = rand()%beer_.size();
+        int i = rand_r()%beer_.size();
         return beer_[i];
     }
 
     std::string asaliKineticMaker::getBeerShort()
     {
         srand(time(NULL));
-        int i = rand()%beerShort_.size();
+        int i = rand_r()%beerShort_.size();
         return beerShort_[i];
     }
 
