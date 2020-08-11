@@ -383,8 +383,8 @@ namespace ASALI
     template<typename T>
     std::string odeInterface<T>::getBeer()
     {
-        srand(time(NULL));
-        int i = rand_r()%beer_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 
