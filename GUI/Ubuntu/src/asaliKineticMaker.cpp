@@ -1008,15 +1008,15 @@ namespace ASALI
 
     std::string asaliKineticMaker::getBeer()
     {
-        srand(time(NULL));
-        int i = rand_r()%beer_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 
     std::string asaliKineticMaker::getBeerShort()
     {
-        srand(time(NULL));
-        int i = rand_r()%beerShort_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beerShort_.size();
         return beerShort_[i];
     }
 
