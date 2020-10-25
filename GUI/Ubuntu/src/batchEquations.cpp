@@ -67,7 +67,6 @@ namespace ASALI
             {
                 canteraIndex_[i] = i;
             }
-            
         }
         else if ( type_ == "ASALI" )
         {
@@ -188,7 +187,6 @@ namespace ASALI
 
         // Recovering residuals
         {
-
             unsigned int counter=0;
         
             // Gas phase species

@@ -82,7 +82,6 @@ if ( homogeneousReactions_ == true )
             }
             else
             {
-
                 for (unsigned int i=0;i<NC_;i++)
                 {
                     h_[i] = 0.;
@@ -95,7 +94,6 @@ if ( homogeneousReactions_ == true )
             QfromGas_ = 0.;
         }
     }
-
 }
 else
 {

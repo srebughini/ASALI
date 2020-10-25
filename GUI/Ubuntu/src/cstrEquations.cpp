@@ -68,7 +68,6 @@ namespace ASALI
             {
                 canteraIndex_[i] = i;
             }
-            
         }
         else if ( type_ == "ASALI" )
         {
@@ -187,7 +186,6 @@ namespace ASALI
 
         // Recovering residuals
         {
-
             unsigned int counter=0;
         
             // Gas phase species
@@ -236,6 +234,5 @@ namespace ASALI
             Site_.push_back(Z_);
             Temperature_.push_back(T_);
         }
-
     }
 }
