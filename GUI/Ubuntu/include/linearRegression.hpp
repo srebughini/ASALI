@@ -56,8 +56,6 @@ namespace ASALI
             virtual void results();
 
         private:
-        
-        
             void cleanInput();
             void uploadLayout();
             void run();
