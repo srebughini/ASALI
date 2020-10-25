@@ -256,7 +256,6 @@ namespace ASALI
             propertiesGrid_.remove(tubularWallThicknessLabel_);
             propertiesGrid_.remove(tubularWallThicknessEntry_);
             propertiesGrid_.remove(tubularWallThicknessCombo_);
-
         }
         else if ( reactorType_ == "packed bed" )
         {

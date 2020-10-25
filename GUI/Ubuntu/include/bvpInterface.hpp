@@ -437,7 +437,6 @@ namespace ASALI
         N_VDestroy_Serial(dyIDA_);
         IDAFree(&ida_mem_);
     }
-
 }
 
 #endif

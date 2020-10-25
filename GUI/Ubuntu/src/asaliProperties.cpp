@@ -142,7 +142,6 @@ namespace ASALI
             condEntry_.set_text("1");
             muEntry_.set_text("1e-05");
         }
-
     }
     
     void asaliProperties::set_energy(const std::string energy)

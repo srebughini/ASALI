@@ -249,7 +249,6 @@ namespace ASALI
                 }
 
                 {
-
                     double sum = SumElements(x_);
                     for(unsigned int i=0;i<x_.size();i++)
                     {

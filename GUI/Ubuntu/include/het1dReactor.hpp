@@ -222,8 +222,6 @@ namespace ASALI
             ASALI::het1dEquations *eq_;
             
             sigc::connection run_;
-
-
     };
 }
 

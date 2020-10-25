@@ -192,7 +192,6 @@ namespace ASALI
             reactionLabel_.clear();
             reactionCombo_.clear();
             reactionEntry_.clear();
-
         }
 
         //Equation
@@ -219,7 +218,6 @@ namespace ASALI
 
             equationLabel_.clear();
             equationEntry_.clear();
-
         }
 
         //Recap

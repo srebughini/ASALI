@@ -147,8 +147,6 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::cstrEquations *eq_;
-
-
     };
 }
 

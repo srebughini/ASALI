@@ -178,8 +178,6 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::catalyticPelletEquations *eq_;
-
-
     };
 }
 

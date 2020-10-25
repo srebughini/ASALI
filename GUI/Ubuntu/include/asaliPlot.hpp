@@ -152,8 +152,6 @@ namespace ASALI
             void setPythonPath();
 
             bool isChecked(std::vector<Gtk::CheckButton *> button);
-
-
     };
 }
 

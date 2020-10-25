@@ -68,8 +68,6 @@ namespace ASALI
             Gtk::ScrolledWindow      scrolledWindow_;
             Gtk::Box                 mainBox_;
             Gtk::Image               speciesImage_;
-            
-        
     };
 }
 

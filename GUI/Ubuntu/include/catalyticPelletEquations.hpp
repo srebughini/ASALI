@@ -156,7 +156,6 @@ class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
         void                              cylinderOde(std::vector<double>& dy);
         void                              cylinder(std::vector<double>& dy);
 
-
         std::vector<double> Length_;
         std::vector<double> Time_;
         std::vector<std::vector<std::vector<double> > > Specie_;

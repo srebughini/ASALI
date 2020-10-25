@@ -393,7 +393,6 @@ namespace ASALI
         N_VDestroy_Serial(dyCVODE_);
         CVodeFree(&cvode_mem_);
     }
-
 }
 
 #endif

@@ -95,13 +95,11 @@ namespace ASALI
             Gtk::Button      help_;
             Gtk::Button      exit_;
            
-            
             Gtk::Image       logo_;
             
             std::vector<std::string>  files_;
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
-        
     };
 }
 

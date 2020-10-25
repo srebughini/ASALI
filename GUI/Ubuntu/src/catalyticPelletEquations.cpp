@@ -567,7 +567,6 @@ namespace ASALI
                 {
                     dy[counter++] = 0.;
                 }
-
             }
             else if ( i == (NP_ - 1) )
             {

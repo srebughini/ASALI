@@ -164,8 +164,6 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::ph1dEquations *eq_;
-
-
     };
 }
 

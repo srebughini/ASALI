@@ -221,7 +221,6 @@ namespace ASALI
                 //Packed bed
                 {
                     packedBedTubeEntry_.set_text("1");
-
                     packedBedTubeCombo_.append("m");
                     packedBedTubeCombo_.append("dm");
                     packedBedTubeCombo_.append("cm");

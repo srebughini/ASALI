@@ -292,7 +292,6 @@ namespace ASALI
                     resultsGrid_.remove(*cpVector_[i]);
                 }
             }
-
         }
 
         cpVector_.clear();
