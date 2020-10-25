@@ -46,7 +46,6 @@ namespace ASALI
 class cstrEquations : public ASALI::catalyticReactorsEquations
 {
     public:
-
         cstrEquations();
 
        
@@ -79,7 +78,6 @@ class cstrEquations : public ASALI::catalyticReactorsEquations
         virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;

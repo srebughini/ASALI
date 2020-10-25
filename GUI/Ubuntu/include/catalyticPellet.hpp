@@ -50,7 +50,6 @@ namespace ASALI
     class catalyticPellet : public ASALI::catalyticReactors
     {
         public:
-
             catalyticPellet(Cantera::ThermoPhase *thermo,
                             Cantera::Transport   *transport,
                             Cantera::Kinetics    *kinetic,
@@ -68,7 +67,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void pelletOptions();
             void modelOptions();
             void clean();

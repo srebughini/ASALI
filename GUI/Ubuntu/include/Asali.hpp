@@ -69,7 +69,6 @@ namespace ASALI
             #include "shared/FileManager.H"
             
         private:
-
             void exit();
             void discrimer();
             void mainMenu();
@@ -196,6 +195,5 @@ namespace ASALI
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
             ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
-
     };
 }

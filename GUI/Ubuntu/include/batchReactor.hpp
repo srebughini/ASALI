@@ -49,7 +49,6 @@ namespace ASALI
     class batchReactor : public ASALI::catalyticReactors
     {
         public:
-
             batchReactor(Cantera::ThermoPhase *thermo,
                          Cantera::Transport   *transport,
                          Cantera::Kinetics    *kinetic,
@@ -67,7 +66,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void clean();
 
             Gtk::Box          mainBox_;
@@ -80,7 +78,6 @@ namespace ASALI
             Gtk::Button       exitButton4_;
             Gtk::Button       nextButton3_;
             Gtk::Button       backButton3_;
-
 
             Gtk::ButtonBox    recapButtonBox_;
 
@@ -142,8 +139,6 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::batchEquations *eq_;
-
-
     };
 }
 

@@ -72,13 +72,11 @@ namespace ASALI
             virtual ~asaliCatalystProperties();
             
         private:
-
             Gtk::Image        het1dLogo_;
 
             Gtk::Box          mainBox_;
 
             Gtk::Grid         mainGrid_;
-
 
             Gtk::Label        rhoLabel_;
             Gtk::Label        condLabel_;

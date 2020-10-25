@@ -46,7 +46,6 @@ namespace ASALI
 class ph1dEquations : public ASALI::catalyticReactorsEquations
 {
     public:
-
         ph1dEquations();
 
        
@@ -93,7 +92,6 @@ class ph1dEquations : public ASALI::catalyticReactorsEquations
         std::vector<bool> AlgebraicEquations() const {return algb_;};
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;

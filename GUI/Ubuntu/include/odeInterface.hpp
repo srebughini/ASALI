@@ -69,7 +69,6 @@ namespace ASALI
     class odeInterface : public Gtk::Window
     {
         public:
-
             odeInterface();
 
             int solve(const double tf, std::vector<double>& yf);
@@ -90,7 +89,6 @@ namespace ASALI
             ~odeInterface(void);
 
         private:
-
             void *cvode_mem_;
             
             T *eq_;
@@ -383,8 +381,8 @@ namespace ASALI
     template<typename T>
     std::string odeInterface<T>::getBeer()
     {
-        srand(time(NULL));
-        int i = rand()%beer_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 

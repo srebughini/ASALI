@@ -60,7 +60,6 @@ namespace ASALI
       hLabel_("Enthalpy"),
       sLabel_("Entropy")
     {
-
         //Input menu
         {
             this->title("ASALI: Thermodynamic and transport properties");
@@ -164,8 +163,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,6,n_.size()+2,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&thermoTransportProperties::exit));
         }
-
-
     }
 
     thermoTransportProperties::~thermoTransportProperties()
@@ -226,7 +223,6 @@ namespace ASALI
                 resultsGrid_.remove(*diffBoxVector_[i]);
             }
         }
-
     }
 
     void thermoTransportProperties::results()
@@ -565,7 +561,6 @@ namespace ASALI
                     resultsGrid_.remove(*cpVector_[i]);
                 }
             }
-
         }
 
         cpVector_.clear();

@@ -173,7 +173,6 @@ namespace ASALI
             n_[i]    = thermo_->speciesName(i);
             MW_[i]   = thermo_->molecularWeight(i);
         }
-
     }
 
     void canteraInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name)

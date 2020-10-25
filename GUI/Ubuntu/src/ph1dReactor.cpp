@@ -66,7 +66,6 @@ namespace ASALI
       logo2_("images/Ph1DLogo.png"),
       plotButtonBool_(false)
     {
-
         eq_ = new ASALI::ph1dEquations();
 
         //Input
@@ -223,7 +222,6 @@ namespace ASALI
                         {
                         }
                     }
-
                 }
             }
 
@@ -484,7 +482,6 @@ namespace ASALI
                 {
                     recapInertValueLabel_.set_text(inert_);
                 }
-
             }
             else
             {
@@ -515,7 +512,6 @@ namespace ASALI
                 }
                 recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             }
-
         }
         this->resize(recapMainBox_.get_width(),recapMainBox_.get_height());
         this->show_all_children();
@@ -1688,7 +1684,6 @@ namespace ASALI
                 std::vector<std::vector<std::vector<double> > > mole  = eq_->getSpecieTransient();
                 std::vector<std::string> name(thermo_->nSpecies());
                 {
-
                     for (unsigned int i=0;i<thermo_->nSpecies();i++)
                     {
                         name[i] = thermo_->speciesName(i);
@@ -1713,7 +1708,6 @@ namespace ASALI
                             }
                         }
                     }
-
                 }
                 asaliPlot_->setSpecieNames(name);
                 asaliPlot_->setSpecie(y,mole);

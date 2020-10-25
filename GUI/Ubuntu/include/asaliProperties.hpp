@@ -57,7 +57,6 @@ namespace ASALI
     class asaliProperties : public Gtk::Window
     {
         public:
-        
             #include "shared/UnitConversion.H"
         
             asaliProperties();
@@ -93,7 +92,6 @@ namespace ASALI
             virtual ~asaliProperties();
             
         private:
-        
             std::string       getBeer();
         
             Gtk::Image        batchLogo_;

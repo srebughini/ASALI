@@ -66,7 +66,6 @@ namespace ASALI
             std::vector<double>      s_;
             
         private:
-
             Gtk::Box          cpBox_;
             Gtk::Box          hBox_;
             Gtk::Box          sBox_;

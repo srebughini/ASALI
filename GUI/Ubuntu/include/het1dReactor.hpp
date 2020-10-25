@@ -50,7 +50,6 @@ namespace ASALI
     class het1dReactor : public ASALI::catalyticReactors
     {
         public:
-
             het1dReactor(Cantera::ThermoPhase *thermo,
                          Cantera::Transport   *transport,
                          Cantera::Kinetics    *kinetic,
@@ -69,7 +68,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void options();
             void clean();
 

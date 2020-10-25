@@ -176,15 +176,15 @@ namespace ASALI
     
     std::string basicProperties::getBeer()
     {
-        srand(time(NULL));
-        int i = rand()%beer_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 
     std::string basicProperties::getBeerShort()
     {
-        srand(time(NULL));
-        int i = rand()%beerShort_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beerShort_.size();
         return beerShort_[i];
     }
 

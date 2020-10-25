@@ -96,7 +96,6 @@ namespace ASALI
             virtual ~asaliPlot();
             
         private:
-        
             Gtk::Button                       plotButton_;
             Gtk::Button                       exitButton_;
             

@@ -46,7 +46,6 @@ namespace ASALI
 class batchEquations : public ASALI::catalyticReactorsEquations
 {
     public:
-
         batchEquations();
 
         void setEnergy(const bool flag)                 {energyEquation_        = flag;}
@@ -76,7 +75,6 @@ class batchEquations : public ASALI::catalyticReactorsEquations
         virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;

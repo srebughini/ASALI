@@ -70,7 +70,6 @@ namespace ASALI
             std::vector<std::vector<double> > diff_;
 
         private:
-
             Gtk::Box          condBox_;
             Gtk::Box          muBox_;
             Gtk::Box          diffBox_;

@@ -59,7 +59,6 @@ namespace ASALI
       logo_("images/RegressionLogo.png"),
       diffCheck_(false)
     {
-
         {
             Tv_.resize(10);
             pv_.resize(10);
@@ -124,8 +123,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,3,6,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&linearRegression::exit));
         }
-
-
     }
 
     linearRegression::~linearRegression()
@@ -452,7 +449,6 @@ namespace ASALI
         }
 
         r2 = 1. - rss/tss;
-
     }
     
     void linearRegression::condUnitDimensions(double &p)
@@ -527,7 +523,6 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 4 )
         {
-
             p = p/(1.e03*4.186); //cal/mol
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )

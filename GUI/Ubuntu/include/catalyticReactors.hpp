@@ -174,10 +174,6 @@ namespace ASALI
             std::string inert_;
 
             sigc::connection signal;
-
-        private:
-
-
     };
 }
 

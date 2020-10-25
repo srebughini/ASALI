@@ -66,7 +66,6 @@ namespace ASALI
             virtual void sUnitConversion(bool check);
 
         private:
-
             Gtk::Box          condBox_;
             Gtk::Box          muBox_;
             Gtk::Box          diffBox_;

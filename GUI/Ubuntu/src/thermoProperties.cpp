@@ -54,7 +54,6 @@ namespace ASALI
       hLabel_("Enthalpy"),
       sLabel_("Entropy")
     {
-
         //Input menu
         {
             this->title("ASALI: Thermodynamic properties");
@@ -127,8 +126,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,3,n_.size()+2,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&thermoProperties::exit));
         }
-
-
     }
 
     thermoProperties::~thermoProperties()

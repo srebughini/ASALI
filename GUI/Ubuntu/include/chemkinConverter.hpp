@@ -68,7 +68,6 @@ namespace ASALI
             virtual ~chemkinConverter();
             
         private:
-        
             void exit();
             void clean();
             void load(int index);

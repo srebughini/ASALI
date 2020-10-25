@@ -72,7 +72,6 @@ namespace ASALI
       packedBedDpBool_(false),
       Ndp_(3)
     {
-
         //Set up packed bed
         {
             dpPackedBed_.resize(Ndp_);
@@ -89,7 +88,6 @@ namespace ASALI
             packedBedDpLabel_[0] = new Gtk::Label("Ergun S. et al.   (1949)");
             packedBedDpLabel_[1] = new Gtk::Label("Tallmadge J. A.   (1970)");
             packedBedDpLabel_[2] = new Gtk::Label("Eisfeld B. et al. (2001)");
-
         }
 
         //Input composition
@@ -223,8 +221,6 @@ namespace ASALI
                         packedBedDpCombo_[i]->set_active(0);
                         packedBedDpCombo_[i]->signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this,&pressureDrops::dpConversion),i));
                     }
-                    
-                    
                 }
 
                 //Buttons
@@ -303,7 +299,6 @@ namespace ASALI
         }
         else if ( reactorTypeCombo_.get_active_row_number() == 2 )
         {
-
             propertiesGrid_.attach(honeyCombCPSILabel_,0,4,1,1);
             propertiesGrid_.attach(honeyCombCPSIEntry_,1,4,1,1);
 

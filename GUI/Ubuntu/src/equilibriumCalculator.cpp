@@ -50,7 +50,6 @@ namespace ASALI
       initialStateLabel_("Initial state"),
       finalStateLabel_("Final state")
     {
-
         //Input
         {
             this->remove();
@@ -99,7 +98,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,2,n_.size()+3,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&equilibriumCalculator::exit));
         }
-        
     }
 
     equilibriumCalculator::~equilibriumCalculator()

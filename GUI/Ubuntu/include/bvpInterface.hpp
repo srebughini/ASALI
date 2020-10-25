@@ -70,7 +70,6 @@ namespace ASALI
     class bvpInterface : public Gtk::Window
     {
         public:
-
             bvpInterface();
 
             int solve(const double tf, std::vector<double>& yf);
@@ -93,7 +92,6 @@ namespace ASALI
             ~bvpInterface(void);
 
         private:
-
             void *ida_mem_;
 
             T* eq_;
@@ -427,8 +425,8 @@ namespace ASALI
     template<typename T>
     std::string bvpInterface<T>::getBeer()
     {
-        srand(time(NULL));
-        int i = rand()%beer_.size();
+        unsigned int seed = time(NULL);
+        int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 

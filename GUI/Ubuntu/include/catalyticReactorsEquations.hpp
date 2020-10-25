@@ -51,7 +51,6 @@ namespace ASALI
 class catalyticReactorsEquations
 {
     public:
-
         catalyticReactorsEquations();
 
         #include "shared/Vector.H"
@@ -128,9 +127,6 @@ class catalyticReactorsEquations
         std::vector<double> moleFraction(const std::vector<double> omega,const std::vector<double> MW, double MWmix);
         double              heatOfReaction(const std::vector<double> omega,const double T, const std::vector<double> h, const std::string type);
         double              meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW);
-
-    private:
-
     };
 }
 

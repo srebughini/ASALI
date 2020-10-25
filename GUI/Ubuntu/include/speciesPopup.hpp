@@ -62,7 +62,6 @@ namespace ASALI
             virtual ~speciesPopup();
             
         private:
-        
             void exit();
 
             Gtk::Button              closeButton_;

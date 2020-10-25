@@ -47,7 +47,6 @@ namespace ASALI
     class asaliKineticMaker : public Gtk::Window
     {
         public:
-
             asaliKineticMaker();
             
             #include "shared/FileManager.H"
@@ -69,7 +68,6 @@ namespace ASALI
             virtual ~asaliKineticMaker();
             
         private:
-        
             Gtk::Box          reactionNumberBox_;
             Gtk::Box          speciesBox_;
             Gtk::Box          reactionBox_;
@@ -170,7 +168,6 @@ namespace ASALI
             std::vector<std::string> splitString(const std::string txt, std::string ch);
 
             int getSpecieIndex(std::string n, std::vector<std::string> nv);
-
     };
 }
 

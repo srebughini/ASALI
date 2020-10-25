@@ -62,7 +62,6 @@ namespace ASALI
       logo2_("images/BatchLogo.png"),
       plotButtonBool_(false)
     {
-
         eq_ = new ASALI::batchEquations();
 
         //Input
@@ -191,7 +190,6 @@ namespace ASALI
                         {
                         }
                     }
-
                 }
             }
 
@@ -466,7 +464,6 @@ namespace ASALI
             {
                 eq_->setHomogeneousReactions(false);
             }
-
         }
         else if ( kineticCombo_.get_active_text() == "ASALI")
         {

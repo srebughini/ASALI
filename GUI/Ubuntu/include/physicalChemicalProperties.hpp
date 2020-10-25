@@ -64,7 +64,6 @@ namespace ASALI
             std::vector<double>      rho_;
 
         private:
-
             Gtk::Box          rhoBox_;
             Gtk::Box          mwBox_;
 
