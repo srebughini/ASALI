@@ -58,17 +58,12 @@ namespace ASALI
       diffLabel_("Diffusivity"),
       cpLabel_("Specific Heat"),
       hLabel_("Enthalpy"),
-      sLabel_("Entropy"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      sLabel_("Entropy")
     {
+
         //Input menu
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Thermodynamic and transport properties");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Thermodynamic and transport properties");
             this->input();
         }
         
@@ -169,6 +164,8 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,6,n_.size()+2,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&thermoTransportProperties::exit));
         }
+
+
     }
 
     thermoTransportProperties::~thermoTransportProperties()
@@ -229,6 +226,7 @@ namespace ASALI
                 resultsGrid_.remove(*diffBoxVector_[i]);
             }
         }
+
     }
 
     void thermoTransportProperties::results()
@@ -567,6 +565,7 @@ namespace ASALI
                     resultsGrid_.remove(*cpVector_[i]);
                 }
             }
+
         }
 
         cpVector_.clear();

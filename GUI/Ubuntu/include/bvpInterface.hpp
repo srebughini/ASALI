@@ -427,8 +427,8 @@ namespace ASALI
     template<typename T>
     std::string bvpInterface<T>::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        srand(time(NULL));
+        int i = rand()%beer_.size();
         return beer_[i];
     }
 

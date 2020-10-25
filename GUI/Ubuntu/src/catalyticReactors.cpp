@@ -225,6 +225,9 @@ namespace ASALI
             coverageGrid_.attach(nextButton2_,1,SURF_NS_+5,1,1);
             nextButton2_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::recap));
         }
+
+
+
     }
 
     catalyticReactors::~catalyticReactors()
@@ -310,15 +313,15 @@ namespace ASALI
 
     std::string catalyticReactors::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        srand(time(NULL));
+        int i = rand()%beer_.size();
         return beer_[i];
     }
 
     std::string catalyticReactors::getBeerShort()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
+        srand(time(NULL));
+        int i = rand()%beerShort_.size();
         return beerShort_[i];
     }
 
@@ -444,7 +447,8 @@ namespace ASALI
                     checkComposition_.second = false;
                 }
             }
-        }        
+        }
+        
     }
     
     void catalyticReactors::coverageReader()

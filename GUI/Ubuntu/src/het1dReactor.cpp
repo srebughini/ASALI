@@ -80,6 +80,7 @@ namespace ASALI
       packedBedBool_(false),
       plotButtonBool_(false)
     {
+
         eq_ = new ASALI::het1dEquations();
 
         //Input
@@ -300,6 +301,7 @@ namespace ASALI
                         {
                         }
                     }
+
                 }
             }
 
@@ -455,6 +457,7 @@ namespace ASALI
             propertiesGrid_.remove(tubularWallThicknessLabel_);
             propertiesGrid_.remove(tubularWallThicknessEntry_);
             propertiesGrid_.remove(tubularWallThicknessCombo_);
+
         }
         else if ( reactorType_ == "packed bed" )
         {
@@ -505,6 +508,7 @@ namespace ASALI
         }
         else if ( reactorTypeCombo_.get_active_row_number() == 2 )
         {
+
             propertiesGrid_.attach(honeyCombCPSILabel_,0,4,1,1);
             propertiesGrid_.attach(honeyCombCPSIEntry_,1,4,1,1);
 
@@ -863,6 +867,7 @@ namespace ASALI
                 }
                 recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             }
+
         }
         this->resize(recapMainBox_.get_width(),recapMainBox_.get_height());
         this->show_all_children();
@@ -1853,6 +1858,7 @@ namespace ASALI
                                     }
                                 }
                             }
+
                         }
                     }
                 }

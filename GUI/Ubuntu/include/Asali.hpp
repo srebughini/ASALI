@@ -43,6 +43,7 @@
 #include "transportProperties.hpp"
 #include "thermoProperties.hpp"
 #include "thermoTransportProperties.hpp"
+#include "physicalChemicalProperties.hpp"
 #include "vacuumProperties.hpp"
 #include "equilibriumCalculator.hpp"
 #include "batchReactor.hpp"
@@ -85,6 +86,7 @@ namespace ASALI
             void transport();
             void thermo();
             void thermoTransport();
+            void physicalChemical();
             void vacuum();
             void equilibrium();
             void linearRegression();
@@ -119,6 +121,7 @@ namespace ASALI
             Gtk::Button       transportButton_;
             Gtk::Button       thermoButton_;
             Gtk::Button       thermoTransportButton_;
+            Gtk::Button       physicalChemicalButton_;
             Gtk::Button       equilibriumButton_;
             Gtk::Button       linearRegressionButton_;
             Gtk::Button       reactorsButton_;
@@ -182,6 +185,7 @@ namespace ASALI
             ASALI::transportProperties        *transportMenu_;
             ASALI::thermoProperties           *thermoMenu_;
             ASALI::thermoTransportProperties  *thermoTransportMenu_;
+            ASALI::physicalChemicalProperties *physicalChemicalMenu_;
             ASALI::vacuumProperties           *vacuumMenu_;
             ASALI::equilibriumCalculator      *equilibriumMenu_;
             ASALI::linearRegression           *linearRegressionMenu_;

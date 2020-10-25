@@ -56,6 +56,7 @@ namespace ASALI
             {
                 canteraIndex_[i] = i;
             }
+
         }
         else if ( type_ == "ASALI" )
         {

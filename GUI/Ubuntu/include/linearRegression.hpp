@@ -51,8 +51,6 @@ namespace ASALI
                              ASALI::speciesPopup            *speciesNames,
                              std::string                     kineticType);
             
-            #include "shared/Vector.H"
-            
             virtual ~linearRegression();
 
             virtual void results();
@@ -102,7 +100,6 @@ namespace ASALI
             std::vector<double> Tv_;
             std::vector<double> pv_;
 
-            std::string kineticType_;
             std::string name_;
             
             double      m_;
@@ -110,10 +107,6 @@ namespace ASALI
             double      r2_;
 
             bool        diffCheck_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

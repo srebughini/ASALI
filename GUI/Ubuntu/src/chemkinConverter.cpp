@@ -47,6 +47,7 @@ namespace ASALI
       exit_("Exit"),
       logo_("images/SmallLogo.png")
     {
+
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
 
@@ -539,15 +540,15 @@ namespace ASALI
 
     std::string chemkinConverter::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        srand(time(NULL));
+        int i = rand()%beer_.size();
         return beer_[i];
     }
 
     std::string chemkinConverter::getBeerShort()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
+        srand(time(NULL));
+        int i = rand()%beerShort_.size();
         return beerShort_[i];
     }
 

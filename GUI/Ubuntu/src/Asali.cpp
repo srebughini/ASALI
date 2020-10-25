@@ -58,6 +58,7 @@ namespace ASALI
       transportButton_("Transport properties"),
       thermoButton_("Thermodynamic properties"),
       thermoTransportButton_("Thermodynamic & Transport properties"),
+      physicalChemicalButton_("Physical & Chemical properties"),
       equilibriumButton_("Themodynamic equilibrium (CANTERA)"),
       linearRegressionButton_("Linear Regression of gas properties"),
       reactorsButton_("Catalytic reactors"),
@@ -76,7 +77,7 @@ namespace ASALI
       menuButtonBox_(Gtk::ORIENTATION_VERTICAL),
       reactorButtonBox_(Gtk::ORIENTATION_VERTICAL),
       kineticButtonBox_(Gtk::ORIENTATION_VERTICAL),
-      heading_("\nAuthor: Stefano Rebughini, PhD"
+      heading_("\nAuthor: Stefano Rebughini, Ph.D."
                "\nE-mail: ste.rebu@outlook.it"),
       kineticLabel_("<b>Please, load your CANTERA kinetic/propeties file</b>"
                     "<b>\nor select the default one (database/data.xml)</b>"
@@ -238,6 +239,9 @@ namespace ASALI
             menuButtonBox_.pack_start(thermoTransportButton_, Gtk::PACK_SHRINK);
             thermoTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermoTransport));
             thermoTransportButton_.set_tooltip_text("Estimation of thermodynamic & transport properties\nat assigned Temperture, Pressure and Composition");
+            menuButtonBox_.pack_start(physicalChemicalButton_, Gtk::PACK_SHRINK);
+            physicalChemicalButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::physicalChemical));
+            physicalChemicalButton_.set_tooltip_text("Estimation of physical & chemical properties\nat assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(vacuumButton_, Gtk::PACK_SHRINK);
             vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::vacuum));
             vacuumButton_.set_tooltip_text("Estimation of specie vacuum properties at assigned Temperture and Pressure");
@@ -734,6 +738,23 @@ namespace ASALI
             thermoTransportMenu_->show();
         }
     }
+    
+    void Asali::physicalChemical()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!physicalChemicalMenu_)
+            {
+                delete physicalChemicalMenu_;
+            }
+            physicalChemicalMenu_ = new ASALI::physicalChemicalProperties(canteraInterface_,speciesNames_,kineticType_);
+            physicalChemicalMenu_->show();
+        }
+    }
 
     void Asali::vacuum()
     {
@@ -862,15 +883,15 @@ namespace ASALI
     
     std::string Asali::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        srand(time(NULL));
+        int i = rand()%beer_.size();
         return beer_[i];
     }
 
     std::string Asali::getBeerShort()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
+        srand(time(NULL));
+        int i = rand()%beerShort_.size();
         return beerShort_[i];
     }
 

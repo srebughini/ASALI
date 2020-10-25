@@ -48,19 +48,13 @@ namespace ASALI
       saveButton_("Save"),
       backButton_("Back"),
       initialStateLabel_("Initial state"),
-      finalStateLabel_("Final state"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      finalStateLabel_("Final state")
     {
 
         //Input
         {
             this->remove();
-            this->set_border_width(15);
-            this->set_title("ASALI: Equilibrium calculator");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Equilibrium calculator");
             this->input();
         }
 

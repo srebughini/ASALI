@@ -100,17 +100,11 @@ namespace ASALI
             Gtk::Entry pressEntry_;
             Gtk::Entry lengthEntry_;
 
-            std::string kineticType_;
-
             double Kn_;
             double diffK_;
             double vK_;
             double d_;
             double lK_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

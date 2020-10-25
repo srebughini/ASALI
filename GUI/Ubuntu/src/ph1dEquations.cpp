@@ -68,7 +68,8 @@ namespace ASALI
                 for (unsigned int i=0;i<NC_;i++)
                 {
                     canteraIndex_[i] = i;
-                }                
+                }
+                
             }
             else if ( type_ == "ASALI" )
             {
@@ -138,7 +139,8 @@ namespace ASALI
                 for (unsigned int i=0;i<NC_;i++)
                 {
                     canteraIndex_[i] = i;
-                }                
+                }
+                
             }
             else if ( type_ == "ASALI" )
             {

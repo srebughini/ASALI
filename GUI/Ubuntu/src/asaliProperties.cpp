@@ -142,6 +142,7 @@ namespace ASALI
             condEntry_.set_text("1");
             muEntry_.set_text("1e-05");
         }
+
     }
     
     void asaliProperties::set_energy(const std::string energy)
@@ -1048,8 +1049,8 @@ namespace ASALI
  
     std::string asaliProperties::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        srand(time(NULL));
+        int i = rand()%beer_.size();
         return beer_[i];
     }
 

@@ -111,6 +111,7 @@ struct _interpreter {
     }
 
 private:
+
 #ifndef WITHOUT_NUMPY
 #  if PY_MAJOR_VERSION >= 3
 
@@ -129,6 +130,7 @@ private:
 #endif
 
     _interpreter() {
+
         // optional but recommended
 #if PY_MAJOR_VERSION >= 3
         wchar_t name[] = L"plotting";
@@ -551,6 +553,7 @@ template< typename Numeric>
 bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b",
           double alpha=1.0, bool cumulative=false)
 {
+
     PyObject* yarray = get_array(y);
 
     PyObject* kwargs = PyDict_New();
@@ -726,6 +729,7 @@ bool bar(const std::vector<Numeric> &               y,
 
 inline bool subplots_adjust(const std::map<std::string, double>& keywords = {})
 {
+
     PyObject* kwargs = PyDict_New();
     for (std::map<std::string, double>::const_iterator it =
             keywords.begin(); it != keywords.end(); ++it) {
@@ -1789,6 +1793,7 @@ public:
     // default initialization with plot label, some data and format
     template<typename Numeric>
     Plot(const std::string& name, const std::vector<Numeric>& x, const std::vector<Numeric>& y, const std::string& format = "") {
+
         assert(x.size() == y.size());
 
         PyObject* kwargs = PyDict_New();
@@ -1867,12 +1872,14 @@ public:
         decref();
     }
 private:
+
     void decref() {
         if(line)
             Py_DECREF(line);
         if(set_data_fct)
             Py_DECREF(set_data_fct);
     }
+
 
     PyObject* line = nullptr;
     PyObject* set_data_fct = nullptr;

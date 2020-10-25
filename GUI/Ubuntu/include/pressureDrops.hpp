@@ -145,9 +145,6 @@ namespace ASALI
             std::vector<Gtk::Label*>        packedBedDpLabel_;
             std::vector<Gtk::Label*>        packedBedDpValueLabel_;
             std::vector<Gtk::ComboBoxText*> packedBedDpCombo_;
-
-
-            ASALI::canteraInterface        *canteraInterface_;
     };
 }
 

@@ -65,17 +65,11 @@ namespace ASALI
       diffResults_("?"),
       velocityResults_("?"),
       pathResults_("?"),
-      knudsenResults_("?"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      knudsenResults_("?")
     {
         this->remove();
-        this->set_border_width(15);
-        this->set_title("ASALI: Vacuum properties");
-        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.png");
-        
+        this->title("ASALI: Vacuum properties");
+
         this->add(grid_);
 
         grid_.set_column_homogeneous(true);

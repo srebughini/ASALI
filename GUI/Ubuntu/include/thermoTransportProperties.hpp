@@ -103,12 +103,6 @@ namespace ASALI
             std::vector<Gtk::Label *>          sVector_;
             std::vector<Gtk::ComboBoxText *>   speciesCombo_;
             std::vector<Gtk::Box *>            diffBoxVector_;
-
-            std::string kineticType_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

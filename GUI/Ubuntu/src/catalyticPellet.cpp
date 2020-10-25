@@ -243,6 +243,7 @@ namespace ASALI
                         {
                         }
                     }
+
                 }
             }
 
@@ -435,7 +436,8 @@ namespace ASALI
         {
             recapButtonBox_.remove(asaliPlotButton_);
             plotButtonBool_ = false;
-        }        
+        }
+        
     }
 
     void catalyticPellet::read()
@@ -1071,6 +1073,7 @@ namespace ASALI
             }
             this->save();
         }
+
     }
 
     void catalyticPellet::propertiesShow()
@@ -1442,4 +1445,5 @@ namespace ASALI
         asaliPlot_->build();
         asaliPlot_->show();
     }
+
 }

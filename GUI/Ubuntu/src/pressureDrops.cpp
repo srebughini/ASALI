@@ -70,8 +70,7 @@ namespace ASALI
       tubularDpBool_(false),
       honeyCombDpBool_(false),
       packedBedDpBool_(false),
-      Ndp_(3),
-      canteraInterface_(canteraInterface)
+      Ndp_(3)
     {
 
         //Set up packed bed
@@ -95,10 +94,7 @@ namespace ASALI
 
         //Input composition
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Pressure drops");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Pressure drops");
             doneButton_.set_label("Next");
             this->input();
         }

@@ -57,9 +57,7 @@ namespace ASALI
       rLabel_("R\u00b2:\t"),
       rValueLabel_("n.a."),
       logo_("images/RegressionLogo.png"),
-      kineticType_(kineticType),
-      diffCheck_(false),
-      canteraInterface_(canteraInterface)
+      diffCheck_(false)
     {
 
         {
@@ -69,10 +67,7 @@ namespace ASALI
 
         //Input menu
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Linear regression");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Linear regression");
             this->cleanInput();
         }
         

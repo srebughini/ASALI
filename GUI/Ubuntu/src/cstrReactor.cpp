@@ -63,6 +63,7 @@ namespace ASALI
       logo2_("images/CstrLogo.png"),
       plotButtonBool_(false)
     {
+
         eq_ = new ASALI::cstrEquations();
 
         //Input
@@ -207,6 +208,7 @@ namespace ASALI
                         {
                         }
                     }
+
                 }
             }
 
@@ -450,6 +452,7 @@ namespace ASALI
                 }
                 recapButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             }
+
         }
         this->resize(recapMainBox_.get_width(),recapMainBox_.get_height());
         this->show_all_children();
