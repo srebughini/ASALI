@@ -30,10 +30,9 @@ cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
 ## **3. Fortran version**
-The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) and it can be compiled with the following commands:  
+The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
 
 `sudo apt-get install liblapack-dev`  
-`./compile.sh`  
 
 This version can be included in your code as follow:  
 ```fortran
@@ -67,14 +66,14 @@ program example
     !Properties evaluation
     cp = get_species_mass_specific_heat()
 ```
-To convert the Asali database into Fortran code run:  
 
-`./database-generator`
+Example and database generator can be compiled by typing `./compile.sh`
+To convert the Asali database into Fortran code run `./database-generator`
+
 ## **4. C version**
-The C API requires the [Lapack libraries](http://www.netlib.org/lapack/) and it can be compiled with the following commands:  
+The C API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
 
 `sudo apt-get install liblapack-dev`  
-`./compile.sh`  
 
 This version can be included in your code as follow:  
 ```c
@@ -113,6 +112,6 @@ int main()
     return 0;
 }
 ```
-To convert the Asali database into Fortran code run:  
+Example and database generator can be compiled by typing `./compile.sh`
 
-`./database-generator`
+To convert the Asali database into C code run `./database-generator`
