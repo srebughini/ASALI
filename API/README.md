@@ -68,6 +68,7 @@ program example
 ```
 
 Example and database generator can be compiled by typing `./compile.sh`
+
 To convert the Asali database into Fortran code run `./database-generator`
 
 ## **4. C version**
