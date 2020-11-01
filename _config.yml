@@ -10,7 +10,7 @@ git_edit_address: https://github.com/srebughini/ASALI/blob/gh-pages
 
 # theme options from https://bootswatch.com/3/
 # comment out this to use default Bootstrap
-bootwatch: paper # cerulean cosmo custom cyborg darkly flatly journal lumen readable sandstone simplex slate solar spacelab superhero united yeti
+bootwatch: slate # cerulean cosmo custom cyborg darkly flatly journal lumen readable sandstone simplex slate solar spacelab superhero united yeti
 
 # Build settings
 markdown: kramdown
