@@ -1,5 +1,13 @@
 plugins:
   - jekyll-include-cache
 remote_theme: "mmistakes/minimal-mistakes"
-theme: minimal-mistakes-jekyll
 minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "default", "dirt", "neon", "mint", "plum", "sunrise"
+
+# Site Settings
+locale                   : "en-US"
+title                    : "ASALI: Modeling and beyond"
+name                     : "Stefano Rebughini"
+description              : "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
+url                      : "https://srebughini.github.io/ASALI/"
+repository               : "srebughini/ASALI"
+logo                     : "/assets/images/logo.png"
