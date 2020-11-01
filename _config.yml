@@ -13,23 +13,23 @@ repository               : "srebughini/ASALI"
 logo                     : "/assets/img/logo.png"
 
 # Site Author
-author:
-  name             : "ASALI"
-  avatar           : "/assets/img/logo.png"
-  bio              : "Things are only impossible until they are not. [Jean-Luc Picard]"
-  links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:ste.rebu@outlook.it"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/ASALIcode"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      url: "https://it-it.facebook.com/ASALIcode/"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/srebughini/ASALI"
+# author:
+#   name             : "ASALI"
+#   avatar           : "/assets/img/logo.png"
+#   bio              : "Things are only impossible until they are not. [Jean-Luc Picard]"
+#   links:
+#     - label: "Email"
+#       icon: "fas fa-fw fa-envelope-square"
+#       url: "mailto:ste.rebu@outlook.it"
+#     - label: "Twitter"
+#       icon: "fab fa-fw fa-twitter-square"
+#       url: "https://twitter.com/ASALIcode"
+#     - label: "Facebook"
+#       icon: "fab fa-fw fa-facebook-square"
+#       url: "https://it-it.facebook.com/ASALIcode/"
+#     - label: "GitHub"
+#       icon: "fab fa-fw fa-github"
+#       url: "https://github.com/srebughini/ASALI"
 
 # Site Footer
 footer:
@@ -42,4 +42,10 @@ footer:
       url: "https://it-it.facebook.com/ASALIcode/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
+      url: "https://github.com/srebughini/ASALI"
+    - label: "Reddit"
+      icon: "fab fa-fw fa-reddit-square"
+      url: "https://github.com/srebughini/ASALI"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin-square"
       url: "https://github.com/srebughini/ASALI"
