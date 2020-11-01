@@ -1,6 +1,6 @@
 # Site settings
-title: "ASALI: Modeling and beyond"
-email: ste.rebu@outlook.it
+title: "ASALI"
+# email: ste.rebu@outlook.it
 lang: en-US
 
 baseurl: "/ASALI" # the subpath of your site, e.g. /blog/
