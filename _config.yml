@@ -2,5 +2,5 @@ theme: jekyll-theme-minimal
 show_downloads: true
 title: "ASALI: Modeling and beyond"
 logo: /assets/img/logo.png
-description: "ASALI is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. From one side, thanks to its user-friendly interface, ASALI is very helpful for those approaching the modeling of gas phase mixture for the first time. On the other side, it allows more expert users in performing detailed simulations without losing time in coding their own models. Latest release: 31th October, 2020"
+description: "Latest release: 31th October, 2020"
 google_analytics:
