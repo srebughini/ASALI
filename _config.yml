@@ -10,4 +10,36 @@ name                     : "Stefano Rebughini"
 description              : "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
 url                      : "https://srebughini.github.io/ASALI/"
 repository               : "srebughini/ASALI"
-logo                     : "/assets/images/logo.png"
+logo                     : "/assets/img/logo.png"
+
+# Site Author
+author:
+  name             : "ASALI"
+  avatar           : "/assets/img/logo.png"
+  bio              : "Things are only impossible until they are not. [Jean-Luc Picard]"
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:ste.rebu@outlook.it"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/ASALIcode"
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://it-it.facebook.com/ASALIcode/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/srebughini/ASALI"
+
+# Site Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/ASALIcode"
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://it-it.facebook.com/ASALIcode/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/srebughini/ASALI"
