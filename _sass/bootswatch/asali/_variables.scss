@@ -13,7 +13,7 @@ $gray-darker:            lighten($gray-base, 13.5%) !default; // #222
 $gray-dark:              #7b8a8b !default;   // #333
 $gray:                   #95a5a6 !default; // #555
 $gray-light:             #b4bcc2 !default;   // #999
-$gray-lighter:           #ecf0f1 !default; // #eee
+$gray-lighter:           #DCE6F2 !default; // #eee
 
 $brand-primary:         #10253F !default;
 $brand-success:         #DCE6F2 !default;
@@ -32,7 +32,7 @@ $body-bg:               #DCE6F2 !default;
 $text-color:            $brand-primary !default;
 
 //** Global textual link color.
-$link-color:            $brand-success !default;
+$link-color:            $brand-info !default;
 //** Link hover color set via `darken()` function.
 $link-hover-color:      $link-color !default;
 //** Link hover decoration.
