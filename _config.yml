@@ -13,14 +13,14 @@ repository               : "srebughini/ASALI"
 logo                     : "/assets/img/logo.png"
 
 # Add side bar to all pages
-defaults:
+#defaults:
   # _docs
-  - scope:
-      path: ""
-      type: docs
-    values:
-      sidebar:
-        nav: "docs"
+#  - scope:
+#      path: ""
+#      type: docs
+#    values:
+#      sidebar:
+#        nav: "docs"
 
 
 # Site Author
