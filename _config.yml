@@ -1,62 +1,60 @@
+# Site settings
+title: "ASALI: Modeling and beyond"
+email: ste.rebu@outlook.it
+description: "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
+lang: en-US
+
+baseurl: "/ASALI" # the subpath of your site, e.g. /blog/
+
+url: https://srebughini.github.io/ASALI/ # the base hostname & protocol for your site
+
+git_address: https://github.com/srebughini/ASALI
+
+git_edit_address: https://github.com/srebughini/ASALI/blob/gh-pages
+
+# theme options from https://bootswatch.com/3/
+# comment out this to use default Bootstrap
+
+bootwatch: slate # cerulean cosmo custom cyborg darkly flatly journal lumen readable sandstone simplex slate solar spacelab superhero united yeti
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+# Plugins (previously gems:)
 plugins:
-  - jekyll-include-cache
-remote_theme: "mmistakes/minimal-mistakes"
-minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "default", "dirt", "neon", "mint", "plum", "sunrise"
+  - jekyll-feed
+  - jekyll-redirect-from
+  - jekyll-seo-tag
+  - jekyll-sitemap
 
-# Site Settings
-locale                   : "en-US"
-title                    : "ASALI: Modeling and beyond"
-name                     : "Stefano Rebughini"
-description              : "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
-url                      : "https://srebughini.github.io/ASALI/"
-repository               : "srebughini/ASALI"
-logo                     : "/assets/img/logo.png"
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .idea/
+  - .gitignore
+  - README.md
+timezone: Europe/Berlin
+defaults:
+#- scope:
+#    path: _posts
+#    type: posts
+à  values:
+#    layout: post
+#    sectionid: blog
 
-# Add side bar to all pages
-#defaults:
-  # _docs
-#  - scope:
-#      path: ""
-#      type: docs
-#    values:
-#      sidebar:
-#        nav: "docs"
+#- scope:
+#    path: _docs
+#    type: docs
+#  values:
+#    layout: docs
+#    sectionid: docs
+#    seo:
+#      type: "WebPage"
 
-
-# Site Author
-# author:
-#   name             : "ASALI"
-#   avatar           : "/assets/img/logo.png"
-#   bio              : "Things are only impossible until they are not. [Jean-Luc Picard]"
-#   links:
-#     - label: "Email"
-#       icon: "fas fa-fw fa-envelope-square"
-#       url: "mailto:ste.rebu@outlook.it"
-#     - label: "Twitter"
-#       icon: "fab fa-fw fa-twitter-square"
-#       url: "https://twitter.com/ASALIcode"
-#     - label: "Facebook"
-#       icon: "fab fa-fw fa-facebook-square"
-#       url: "https://it-it.facebook.com/ASALIcode/"
-#     - label: "GitHub"
-#       icon: "fab fa-fw fa-github"
-#       url: "https://github.com/srebughini/ASALI"
-
-# Site Footer
-footer:
-  links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/ASALIcode"
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      url: "https://it-it.facebook.com/ASALIcode/"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/srebughini/ASALI"
-    - label: "Reddit"
-      icon: "fab fa-fw fa-reddit-square"
-      url: "https://www.reddit.com/user/ASALIcode/"
-    - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin"
-      url: "https://www.linkedin.com/company/asalicode"
+#collections:
+#  docs:
+#    permalink: /:collection/:path/
+#    output: true
+#  posts:
+#    permalink: /blog/:year/:month/:day/:title/
+#    output: true
