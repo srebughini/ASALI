@@ -1,21 +1,19 @@
 # Site settings
-title: "ASALI: Modeling and beyond"
+title: ASALI
 email: ste.rebu@outlook.it
-description: "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
+description: >
+  Jekyll Template for Project Websites
+  providing documentation and blog post pages.
 lang: en-US
 
-baseurl: /ASALI # the subpath of your site, e.g. /blog/
-
-url: https://srebughini.github.io/ASALI/ # the base hostname & protocol for your site
-
+baseurl: "/ASALI" # the subpath of your site, e.g. /blog/
+url: https://srebughini.github.io/ASALI # the base hostname & protocol for your site
 git_address: https://github.com/srebughini/ASALI
-
 git_edit_address: https://github.com/srebughini/ASALI/blob/gh-pages
 
 # theme options from https://bootswatch.com/3/
 # comment out this to use default Bootstrap
-
-bootwatch: slate # cerulean cosmo custom cyborg darkly flatly journal lumen readable sandstone simplex slate solar spacelab superhero united yeti
+bootwatch: paper # cerulean cosmo custom cyborg darkly flatly journal lumen readable sandstone simplex slate solar spacelab superhero united yeti
 
 # Build settings
 markdown: kramdown
