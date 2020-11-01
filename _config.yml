@@ -4,7 +4,7 @@ email: ste.rebu@outlook.it
 description: "Open-source code for engineers, chemists and students working on the modeling of gas phase mixture"
 lang: en-US
 
-baseurl: "/ASALI" # the subpath of your site, e.g. /blog/
+baseurl: /ASALI # the subpath of your site, e.g. /blog/
 
 url: https://srebughini.github.io/ASALI/ # the base hostname & protocol for your site
 
@@ -34,11 +34,11 @@ exclude:
   - .gitignore
   - README.md
 timezone: Europe/Berlin
-defaults:
+#defaults:
 #- scope:
 #    path: _posts
 #    type: posts
-à  values:
+#  values:
 #    layout: post
 #    sectionid: blog
 
