@@ -1,9 +1,6 @@
 # Site settings
-title: ASALI
+title: "ASALI: Modeling and beyond"
 email: ste.rebu@outlook.it
-description: >
-  Jekyll Template for Project Websites
-  providing documentation and blog post pages.
 lang: en-US
 
 baseurl: "/ASALI" # the subpath of your site, e.g. /blog/
