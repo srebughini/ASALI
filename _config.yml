@@ -1,7 +1,7 @@
 plugins:
   - jekyll-include-cache
 remote_theme: "mmistakes/minimal-mistakes"
-minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "default", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -11,6 +11,17 @@ description              : "Open-source code for engineers, chemists and student
 url                      : "https://srebughini.github.io/ASALI/"
 repository               : "srebughini/ASALI"
 logo                     : "/assets/img/logo.png"
+
+# Add side bar to all pages
+defaults:
+  # _docs
+  - scope:
+      path: ""
+      type: docs
+    values:
+      sidebar:
+        nav: "docs"
+
 
 # Site Author
 # author:
