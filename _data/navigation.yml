@@ -1,6 +1,6 @@
 main:
   - title: "CatalyticFOAM"
-    url: https://www.catalyticfoam.polimi.it
+    url: http://www.catalyticfoam.polimi.it/
   - title: "GUI"
     url: /gui/
   - title: "API"
