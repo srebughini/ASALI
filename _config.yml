@@ -1,7 +1,7 @@
 plugins:
   - jekyll-include-cache
 remote_theme: "mmistakes/minimal-mistakes"
-minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "default", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -45,7 +45,7 @@ footer:
       url: "https://github.com/srebughini/ASALI"
     - label: "Reddit"
       icon: "fab fa-fw fa-reddit-square"
-      url: "https://github.com/srebughini/ASALI"
+      url: "https://www.reddit.com/user/ASALIcode/"
     - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin-square"
-      url: "https://github.com/srebughini/ASALI"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/company/asalicode"
