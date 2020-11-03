@@ -1,8 +1,8 @@
-- title: Getting Started
+- title: Graphical User Interface
   docs:
-  - home
-  - themes
-  - customization
+  - gui/welcome
+  - gui/introduction
+  - gui/installation
 
 - title: Examples
   docs:
