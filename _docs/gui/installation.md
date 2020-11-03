@@ -1,5 +1,5 @@
 ---
-permalink: /docs/gui/installation/
+permalink: /docs/gui-installation/
 redirect_from: /docs/index.html
 ---
 # **Installation instructions**

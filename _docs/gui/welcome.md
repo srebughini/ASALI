@@ -1,6 +1,6 @@
 ---
 title: Graphical User Interface
-permalink: /docs/gui/welcome/
+permalink: /docs/gui-welcome/
 redirect_from: /docs/index.html
 ---
 

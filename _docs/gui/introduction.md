@@ -1,5 +1,5 @@
 ---
-permalink: /docs/gui/introduction/
+permalink: /docs/gui-introduction/
 redirect_from: /docs/index.html
 ---
 
