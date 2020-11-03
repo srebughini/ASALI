@@ -13,20 +13,22 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
+                <li><a href="http://www.catalyticfoam.polimi.it/">CatalyticFoam</a></li>
                 <li {% if page.sectionid=='docs' %} class="active" {% endif %}><a href="{{ "/docs/home/" | relative_url }}">Docs</a></li>
                 <li {% if page.sectionid=='blog' %} class="active" {% endif %}><a href="{{ site.posts.first.url | relative_url }}">Blog</a></li>
+                <li><a href="mailto:ste.rebu@outlook.it">Contacs</a></li>
             </ul>
-            <div class="navbar-right">
+            <!--<div class="navbar-right">
                 <form class="navbar-form navbar-left">
                     <div class="form-group has-feedback">
-                        <input id="search-box" type="search" class="form-control" placeholder="Search...">
+                        <input id="search-box" type="search" class="form-control" placeholder="Search...">s
                         <i class="fa fa-search form-control-feedback"></i>
                     </div>
                 </form>
                 <ul class="nav navbar-nav">
                     <li><a href="{{ site.git_address }}"><i class="fa fa-github" aria-hidden="true"></i></a></li>
                 </ul>
-            </div>
+            </div>-->
         </div>
     </div>
 </nav>
