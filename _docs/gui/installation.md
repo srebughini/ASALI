@@ -23,17 +23,23 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 ##### How to install Gtkmm libraries
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
-`sudo apt-get install libgtkmm-3.0-dev`  
+```
+sudo apt-get install libgtkmm-3.0-dev
+```  
 More details can be found at: https://www.gtkmm.org/en/  
 
 ##### How to install Matplotlib
 [Matplotlib](https://matplotlib.org/) can be installed with the following command:  
-`sudo apt-get install python3-matplotlib`  
+```
+sudo apt-get install python3-matplotlib  
+```
 Details can be found at: https://matplotlib.org/
 
 ##### How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
-`git clone https://github.com/Cantera/cantera.git`   
+```
+git clone https://github.com/Cantera/cantera.git
+```  
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```
 scons build system_sundials=n   
@@ -43,9 +49,10 @@ More details can be found at: https://cantera.org/install/compiling-install.html
 
 ##### How to install ASALI
 To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
-`make all CANTERA_PREFIX=/usr/local/`  
-To run Asali:  
-`./Asali`  
+```
+make all CANTERA_PREFIX=/usr/local/
+./Asali
+```  
 
 ### Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.

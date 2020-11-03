@@ -3,8 +3,9 @@
   - gui-introduction
   - gui-installation
 
-- title: Examples
+- title: Application Programming Interface
   docs:
-  - cheatsheet
-  - font-awesome
-  - bootstrap
+  - api-introduction
+  - api-matlab
+  - api-fortran
+  - api-c
