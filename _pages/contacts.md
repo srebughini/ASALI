@@ -16,7 +16,7 @@ redirect_from: /docs/index.html
 </div>-->
 
 <!--<div class="col-md-6 text-center">-->
-  <form action="https://formspree.io/f/mdopzvpj" method="POST" style="background-image: url('/assest/img/bg.png');">
+  <form action="https://formspree.io/f/mdopzvpj" method="POST">
     <p>Your email:</p>
     <p>
       <input type="text" style="width:75%; border:thin; border-style:solid; padding-left:1%" placeholder="your.email@example.com" name="_replyto">
