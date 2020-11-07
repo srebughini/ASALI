@@ -9,7 +9,6 @@ The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) w
 ```
 sudo apt-get install liblapack-dev
 ``` 
-### How to include ASALI library into your code
 This version can be included in your code as follow:  
 ```fortran
 !Include library
@@ -52,27 +51,71 @@ To convert the Asali database into Fortran code run:
 ```
 ./database-generator
 ```
-### Available thermodynamic and transport properties
+## Available thermodynamic and transport properties
 ASALI estimates different thermodynamic and transport properties with the following functions:
-* `get_density()` : Mixture density in kg/m3. The return value is a `real`.
-* `get_mixture_molecular_weight()` : Mixture molecular weight in g/mol. The return value is a `real`.
-* `get_mixture_thermal_conductivity()` : Mixture thermal conductivity in W/m/K. The return value is a `real`.
-* `get_mixture_viscosity()` : Mixture viscosity in Pas*s. The return value is a `real`.
-* `get_mixture_molar_specific_heat()` : Mixture specific heat in J/kmol/K. The return value is a `real`.
-* `get_mixture_mass_specific_heat()` : Mixture specific heat in J/kg/K. The return value is a `real`.
-* `get_mixture_molar_enthalpy()` : Mixture enthalpy in J/kmol. The return value is a `real`.
-* `get_mixture_mass_enthalpy()` : Mixture enthalpy in J/kg. The return value is a `real`.
-* `get_mixture_molar_entropy()` : Mixture entropy in J/kmol/K. The return value is a `real`.
-* `get_mixture_mass_entropy()` : Mixture entropy in J/kg/K. The return value is a `real`.
-* `get_mixture_diffusion()` : Mixture diffusivity in m2/s. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_thermal_conductivity()` : Single species viscosity in W/m/K. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_viscosity()` : Single species viscosity in Pa*s. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_molar_specific_heat()` : Single species specific heat in J/kmol/K. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_mass_specific_heat()` : Single species specific heat in J/kg/K. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_molar_enthalpy()` : Single species enthalpy in J/kmol. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_mass_enthalpy()` : Single species enthalpy in J/kg. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_molar_entropy()` : Single species entropy in J/kmol/K. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_species_mass_entropy()` : Single species entropy in J/kg/K. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_aritmetic_mean_gas_velocity()` : Single gas velocity in m/s. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_mean_free_path()` : Single species mean free path in m. The return value is a `real, dimension(N)`, where `N` is the number of species.
-* `get_binary_diffusion()` : Single species binary diffusion in m2/s. The return value is a `real, dimension(N,N)`, where `N` is the number of species.
+* `get_density()`
+    * Mixture density in kg/m3
+    * The return value is a `real`.
+* `get_mixture_molecular_weight()`
+    * Mixture molecular weight in g/mol
+    * The return value is a `real`.
+* `get_mixture_thermal_conductivity()`
+    * Mixture thermal conductivity in W/m/K
+    * The return value is a `real`.
+* `get_mixture_viscosity()`
+    * Mixture viscosity in Pas*s.
+    * The return value is a `real`.
+* `get_mixture_molar_specific_heat()`
+    * Mixture specific heat in J/kmol/K.
+    * The return value is a `real`.
+* `get_mixture_mass_specific_heat()`
+    * Mixture specific heat in J/kg/K.
+    * The return value is a `real`.
+* `get_mixture_molar_enthalpy()`
+    * Mixture enthalpy in J/kmol.
+    * The return value is a `real`.
+* `get_mixture_mass_enthalpy()`
+    * Mixture enthalpy in J/kg.
+    * The return value is a `real`.
+* `get_mixture_molar_entropy()`
+    * Mixture entropy in J/kmol/K.
+    * The return value is a `real`.
+* `get_mixture_mass_entropy()`
+    * Mixture entropy in J/kg/K.
+    * The return value is a `real`.
+* `get_mixture_diffusion()`
+    * Mixture diffusivity in m2/s. 
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_thermal_conductivity()`
+    * Single species viscosity in W/m/K
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_viscosity()`
+    * Single species viscosity in Pa*s.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_molar_specific_heat()`
+    * Single species specific heat in J/kmol/K.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_mass_specific_heat()`
+    * Single species specific heat in J/kg/K.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_molar_enthalpy()`
+    * Single species enthalpy in J/kmol.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_mass_enthalpy()`
+    * Single species enthalpy in J/kg. 
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_molar_entropy()`
+    * Single species entropy in J/kmol/K.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_species_mass_entropy()`
+    * Single species entropy in J/kg/K.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_aritmetic_mean_gas_velocity()`
+    * Single gas velocity in m/s. 
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_mean_free_path()`
+    * Single species mean free path in m.
+    * The return value is a `real, dimension(N)`, where `N` is the number of species.
+* `get_binary_diffusion()`
+    * Single species binary diffusion in m2/s.
+    * The return value is a `real, dimension(N,N)`, where `N` is the number of species.
