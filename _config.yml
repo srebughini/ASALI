@@ -59,6 +59,9 @@ collections:
   docs:
     permalink: /:collection/:path/
     output: true
+  docs:
+    permalink: /:collection/:path/
+    output: true
   posts:
     permalink: /blog/:year/:month/:day/:title/
     output: true
