@@ -55,13 +55,10 @@ To convert the Asali database into Fortran code run:
 ASALI estimates different thermodynamic and transport properties with the following functions:
 * `get_density()`
     * Mixture density in kg/m3
-    * The return value is a `real`.
-  
+    * The return value is a `real`.  
 * `get_mixture_molecular_weight()`
     * Mixture molecular weight in g/mol
-    * The return value is a `real`.
-
-
+    * The return value is a `real`.  
 * `get_mixture_thermal_conductivity()`
     * Mixture thermal conductivity in W/m/K
     * The return value is a `real`.
