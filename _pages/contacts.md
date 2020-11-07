@@ -3,7 +3,7 @@ permalink: /pages/contacts/
 redirect_from: /docs/index.html
 ---
 
-<div class="col-md-6 text-center">
+<!--<div class="col-md-6 text-center">
   <h2>Social media/E-mail</h2>
   <p>Feel free to contact us with social media:
   <br>
@@ -13,20 +13,18 @@ redirect_from: /docs/index.html
   <br>
   or send an e-mail to<a href="mailto:ste.rebu@outlook.it">ste.rebu@outlook.it</a>
   </p>
-</div>
+</div>-->
+# **Contact us**
 
-<div class="col-md-6 text-center">
-  <h2>Direct contact</h2>
-  <p>Looking for something easier? 
-  <br>Compile the format below and we will get back you as soon as possible:</p>
+<div class="col-md-8 text-center">
   <form action="https://formspree.io/f/mdopzvpj" method="POST">
     <h4>Your email:</h4>
     <p>
-      <input type="text" name="_replyto">
+      <input type="text" style="width:100%" placeholder="asali@code.com" name="_replyto">
     </p>
     <h4>Your message:</h4>
     <p>
-      <textarea placeholder="Write something.." style="height:200px" name="message"></textarea>
+      <textarea placeholder="Write something..." style="height:200px; width:100%" name="message"></textarea>
     </p>
     <button class="btn btn-primary btn-lg" type="submit">Send</button>
   </form>
