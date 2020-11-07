@@ -17,13 +17,13 @@ redirect_from: /docs/index.html
 
 <!--<div class="col-md-6 text-center">-->
   <form action="https://formspree.io/f/mdopzvpj" method="POST">
-    <h4>Your email:</h4>
+    <h3>Your email:</h3>
     <p>
-      <input type="text" style="width:75%" placeholder="asali@code.com" name="_replyto">
+      <input type="text" style="width:75%; border:none" placeholder="asali@code.com" name="_replyto">
     </p>
-    <h4>Your message:</h4>
+    <h3>Your message:</h3>
     <p>
-      <textarea placeholder="Write something..." style="height:200px; width:75%" name="message"></textarea>
+      <textarea placeholder="Write something..." style="height:200px; width:75%; border:none" name="message"></textarea>
     </p>
     <button class="btn btn-primary btn-lg" type="submit">Send</button>
   </form>
