@@ -59,7 +59,7 @@ collections:
   docs:
     permalink: /:collection/:path/
     output: true
-  docs:
+  pages:
     permalink: /:collection/:path/
     output: true
   posts:
