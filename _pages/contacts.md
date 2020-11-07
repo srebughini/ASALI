@@ -19,11 +19,11 @@ redirect_from: /docs/index.html
   <form action="https://formspree.io/f/mdopzvpj" method="POST">
     <h3>Your email:</h3>
     <p>
-      <input type="text" style="width:75%; padding-left:1%" placeholder="your.email@example.com" name="_replyto">
+      <input type="text" style="width:75%; border:thin; border-style:solid; padding-left:1%" placeholder="your.email@example.com" name="_replyto">
     </p>
     <h3>Your message:</h3>
     <p>
-      <textarea placeholder="Write something..." style="height:200px; width:75%; padding-left:1%" name="message"></textarea>
+      <textarea placeholder="Write something..." style="height:200px; width:75%; border:thin; border-style:solid; padding-left:1%" name="message"></textarea>
     </p>
     <button class="btn btn-primary btn-lg" type="submit">Send</button>
   </form>
