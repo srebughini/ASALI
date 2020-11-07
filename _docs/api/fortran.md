@@ -56,8 +56,7 @@ ASALI estimates different thermodynamic and transport properties with the follow
 * `get_density()`
     * Mixture density in kg/m3
     * The return value is a `real`.
-
-
+  
 * `get_mixture_molecular_weight()`
     * Mixture molecular weight in g/mol
     * The return value is a `real`.
