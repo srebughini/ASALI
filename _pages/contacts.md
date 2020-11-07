@@ -1,5 +1,6 @@
 ---
 permalink: /pages/contacts/
+redirect_from: /docs/index.html
 ---
 # **Contacts**
 <form action="https://formspree.io/f/mdopzvpj" method="POST">

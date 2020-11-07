@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="http://www.catalyticfoam.polimi.it/">CatalyticFoam</a></li>
                 <li {% if page.sectionid=='docs' %} class="active" {% endif %}><a href="{{ "/docs/gui-introduction/" | relative_url }}">Documentation</a></li>
-                <li><a href="{{ "/pages/contacts/" | relative_url }}">Contacts</a></li>
+                <li {% if page.sectionid=='pages' %} class="active" {% endif %}><a href="{{ "/pages/contacts" | relative_url }}">Contacts</a></li>
             </ul>
             <div class="navbar-right">
                 <!--<form class="navbar-form navbar-left">
