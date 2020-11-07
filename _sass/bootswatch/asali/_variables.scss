@@ -30,6 +30,8 @@ $brand-danger:          #E74C3C !default;
 $body-bg:               #DCE6F2 !default;
 //** Global text color on `<body>`.
 $text-color:            $brand-primary !default;
+//** Global text border on `<body>`.
+$text-border-color:     $brand-primary !default;
 
 //** Global textual link color.
 $link-color:            $brand-info !default;
@@ -189,7 +191,7 @@ $input-bg-disabled:              $gray-lighter !default;
 //** Text color for `<input>`s
 $input-color:                    $text-color !default;
 //** `<input>` border color
-$input-border:                   #dce4ec !default;
+$input-border:                   $text-border-color !default;
 
 // TODO: Rename `$input-border-radius` to `$input-border-radius-base` in v4
 //** Default `.form-control` border radius
