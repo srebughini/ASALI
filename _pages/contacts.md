@@ -4,20 +4,21 @@ redirect_from: /docs/index.html
 ---
 
 <div class="col-md-6 text-center">
-  ## **Social media/E-mail**
-  Feel free to contact us with social media:
-  <p>
-      <a class="btn btn-primary btn-lg" href="https://twitter.com/ASALIcode" role="button"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-      <a class="btn btn-primary btn-lg" href="https://www.facebook.com/ASALIcode/" role="button"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-      <a class="btn btn-primary btn-lg" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+  <h2>Social media/E-mail</h2>
+  <p>Feel free to contact us with social media:
+  <br>
+      <a class="btn btn-primary" href="https://twitter.com/ASALIcode" role="button"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+      <a class="btn btn-primary" href="https://www.facebook.com/ASALIcode/" role="button"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+      <a class="btn btn-primary" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+  <br>
+  or send an e-mail to<a href="mailto:ste.rebu@outlook.it">ste.rebu@outlook.it</a>
   </p>
-  or send an e-mail to [ste.rebu@outlook.it](mailto:ste.rebu@outlook.it)
 </div>
 
 <div class="col-md-6 text-center">
-  ## **Direct contact**
-  Looking for something easier? 
-  Compile the format below and we will get back you as soon as possible:
+  <h2>Direct contact</h2>
+  <p>Looking for something easier? 
+  <br>Compile the format below and we will get back you as soon as possible:</p>
   <form action="https://formspree.io/f/mdopzvpj" method="POST">
     <h4>Your email:</h4>
     <p>
