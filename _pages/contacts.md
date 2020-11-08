@@ -25,6 +25,8 @@ redirect_from: /docs/index.html
     <p>
       <textarea placeholder="Write something..." style="height:200px; width:75%; border:thin; border-style:solid; padding-left:1%" name="message"></textarea>
     </p>
+    <p>
     <button class="btn btn-primary btn-lg" type="submit">Send</button>
+    </p>
   </form>
 <!--</div>-->
