@@ -14,7 +14,7 @@ Let's go straight to the point! Asali main features are:
 * Matlab and Octave interface for thermodynamic and transport properties
 
 If you are interested in  more details regarding models implemented in Asali have a look at the following paragraph; if not, jump to section number 2 for the installation instructions.
-## Thermodynamic and transport properties
+## Thermodynamic/Transport properties
 The thermodynamic and transport properties evaluated by Asali are:
 * Thermal conductivity
 * Viscosity
