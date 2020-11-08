@@ -4,8 +4,8 @@
 
 // Centered container element
 @mixin container-fixed($gutter: $grid-gutter-width) {
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 10%;
+  margin-left: 10%;
   padding-left:  floor(($gutter / 2));
   padding-right: ceil(($gutter / 2));
   @include clearfix;
