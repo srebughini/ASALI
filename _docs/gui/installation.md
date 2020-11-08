@@ -26,14 +26,14 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 ```
 sudo apt-get install libgtkmm-3.0-dev
 ```  
-More details can be found at: https://www.gtkmm.org/en/  
+More details can be found at: [https://www.gtkmm.org/en/](https://www.gtkmm.org/en/) 
 
 ##### How to install Matplotlib
 [Matplotlib](https://matplotlib.org/) can be installed with the following command:  
 ```
 sudo apt-get install python3-matplotlib  
 ```
-Details can be found at: https://matplotlib.org/
+Details can be found at: [https://matplotlib.org/](https://matplotlib.org/)
 
 ##### How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
@@ -45,7 +45,7 @@ To install [Cantera](https://cantera.org/) type the following commands from the 
 scons build system_sundials=n   
 sudo scons install
 ```    
-More details can be found at: https://cantera.org/install/compiling-install.html 
+More details can be found at: [https://cantera.org/install/compiling-install.html](https://cantera.org/install/compiling-install.html) 
 
 ##### How to install ASALI
 To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
