@@ -1,5 +1,5 @@
 ---
-permalink: /pages/contacts/
+permalink: /pages/partner/
 redirect_from: /docs/index.html
 ---
 

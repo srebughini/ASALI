@@ -14,6 +14,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li {% if page.sectionid=='docs' %} class="active" {% endif %}><a href="{{ "/docs/gui-introduction/" | relative_url }}">Documentation</a></li>
+                <li {% if page.sectionid=='pages' %} class="active" {% endif %}><a href="{{ "/pages/partner" | relative_url }}">Partner</a></li>
                 <li {% if page.sectionid=='pages' %} class="active" {% endif %}><a href="{{ "/pages/contacts" | relative_url }}">Contacts</a></li>
                 <!--<li><a href="http://www.catalyticfoam.polimi.it/">CatalyticFoam</a></li>-->
             </ul>
