@@ -3,7 +3,7 @@ permalink: /docs/api-introduction/
 redirect_from: /docs/index.html
 ---
 
-## **Thermodynamic and transport properties**
+# **Thermodynamic and transport properties**
 Let's go straight to the point! Asali library can estimate:
 * Thermal conductivity
 * Viscosity

@@ -12,7 +12,7 @@ Asali is based on different open-source codes:
 
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
 
-## Linux OS
+## **Linux OS**
 ### Pre-requisites installation
 The Linux based external libraries can be installed by typing these commands:  
 ```
@@ -54,5 +54,5 @@ make all CANTERA_PREFIX=/usr/local/
 ./Asali
 ```  
 
-## Windows OS
+## **Windows OS**
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
