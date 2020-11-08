@@ -17,8 +17,7 @@ redirect_from: /docs/index.html
 
 <div class="row">
   <!--<div class = "col-md-8 text-center">-->
-    <h1 class="text-center"><i class="fa fa-cogs" aria-hidden="true"></i></h1>
-    <h3 class="text-center"><a href="http://www.catalyticfoam.polimi.it/">CatalyticFOAM</a><br></h3>
+    <h3 class="text-center"><i class="fa fa-spinner" aria-hidden="true"></i>CatalyticFOAM</a><br></h3>
     <p>ASALI has a partnership with <a href="http://www.catalyticfoam.polimi.it/">CatalyticFOAM</a>. 
         An <a href="https://openfoam.org/">OpenFOAM</a> solver that allows for the solution of Navier-Stokes equations for complex and general 
         geometries for reacting flows at surfaces, based on microkinetic descriptions of the surface reactivity. 
@@ -28,8 +27,8 @@ redirect_from: /docs/index.html
     </p>
   <!--</div>
   <div class = "col-md-2 text-center">-->
-    <p>
-        <a class="btn btn-primary btn-lg" href="http://www.catalyticfoam.polimi.it/" role="button"><i class="fa fa-cogs" aria-hidden="true"></i>    Learn more</a>
+    <p class="text-center">
+        <a class="btn btn-primary btn-lg" href="http://www.catalyticfoam.polimi.it/" role="button"><i class="fa fa-spinner" aria-hidden="true"></i>    Learn more</a>
     </p>
   <!--</div>-->
 </div>
