@@ -57,8 +57,10 @@ h6, .h6 { font-size: $font-size-h6; }
 
 p {
   //margin: 0 0 ($line-height-computed / 2);
-  margin-top: ($line-height-computed / 2);
+  margin-top: 0;
+  margin-right: 1%;
   margin-bottom: ($line-height-computed / 2);
+  margin-left: 1%;
 }
 
 .lead {
