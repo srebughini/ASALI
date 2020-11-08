@@ -3,7 +3,7 @@ permalink: /docs/api-fortran/
 redirect_from: /docs/index.html
 ---
 
-## **Fortran version**
+# **Fortran version**
 The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
 
 ```

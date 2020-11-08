@@ -3,7 +3,7 @@ permalink: /docs/api-c/
 redirect_from: /docs/index.html
 ---
 
-## **C version**
+# **C version**
 The C API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
 
 ```
