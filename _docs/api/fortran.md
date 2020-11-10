@@ -52,92 +52,115 @@ To convert the Asali database into Fortran code run:
 ./database-generator
 ```
 ## Available thermodynamic and transport properties
-ASALI estimates different thermodynamic and transport properties:
-<p>&nbsp;</p>
-* `get_density()`
-    * Mixture density in kg/m3
-    * The return value is a `real`.
-<p>&nbsp;</p>
-* `get_mixture_molecular_weight()`
-    * Mixture molecular weight in g/mol
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_thermal_conductivity()`
-    * Mixture thermal conductivity in W/m/K
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_viscosity()`
-    * Mixture viscosity in Pa*s.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_molar_specific_heat()`
-    * Mixture specific heat in J/kmol/K.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_mass_specific_heat()`
-    * Mixture specific heat in J/kg/K.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_molar_enthalpy()`
-    * Mixture enthalpy in J/kmol.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_mass_enthalpy()`
-    * Mixture enthalpy in J/kg.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_molar_entropy()`
-    * Mixture entropy in J/kmol/K.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_mass_entropy()`
-    * Mixture entropy in J/kg/K.
-    * The return value is a `real`.  
-<p>&nbsp;</p>
-* `get_mixture_diffusion()`
-    * Mixture diffusivity in m2/s. 
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_thermal_conductivity()`
-    * Single species viscosity in W/m/K
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_viscosity()`
-    * Single species viscosity in Pa*s.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_molar_specific_heat()`
-    * Single species specific heat in J/kmol/K.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_mass_specific_heat()`
-    * Single species specific heat in J/kg/K.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_molar_enthalpy()`
-    * Single species enthalpy in J/kmol.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_mass_enthalpy()`
-    * Single species enthalpy in J/kg. 
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_molar_entropy()`
-    * Single species entropy in J/kmol/K.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_species_mass_entropy()`
-    * Single species entropy in J/kg/K.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_aritmetic_mean_gas_velocity()`
-    * Single gas velocity in m/s. 
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_mean_free_path()`
-    * Single species mean free path in m.
-    * The return value is a `real, dimension(N)`, where `N` is the number of species.  
-<p>&nbsp;</p>
-* `get_binary_diffusion()`
-    * Single species binary diffusion in m2/s.
-    * The return value is a `real, dimension(N,N)`, where `N` is the number of species.
+ASALI estimates different thermodynamic and transport properties (`N` is the number of species):
+| | |
+|:-|:-|
+| **`get_density()`** | |
+| *Estimated property*|Mixture density|
+| *Return type*       |`real`|
+| *Unit dimensions*   |kg/m<sup>3</sup>|
+| | |
+| **`get_mixture_molecular_weight()`** | |
+| *Estimated property*|Mixture molecular weight |
+| *Return type*       |`real`|
+| *Unit dimensions*   |g/mol|
+| | |
+| **`get_mixture_thermal_conductivity()`** | |
+| *Estimated property*|Mixture thermal conductivity |
+| *Return type*       |`real`|
+| *Unit dimensions*   |W/m/K|
+| | |
+| **`get_mixture_viscosity()`** | |
+| *Estimated property*|Mixture viscosity |
+| *Return type*       |`real`|
+| *Unit dimensions*   |Pa*s|
+| | |
+| **`get_mixture_molar_specific_heat()`** | |
+| *Estimated property*|Mixture specific heat |
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kmol/K|
+ | | |
+| **`get_mixture_mass_specific_heat()`** | |
+| *Estimated property*|Mixture specific heat |
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kg/K|
+| | |
+| **`get_mixture_molar_enthalpy()`** | |
+| *Estimated property*|Mixture enthalpy|
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kmol|
+| | |
+| **`get_mixture_mass_enthalpy()`** | |
+| *Estimated property*|Mixture enthalpy|
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kg|
+| | |
+| **`get_mixture_molar_entropy()`** | |
+| *Estimated property*|Mixture entropy|
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kmol/K|
+| | |
+| **`get_mixture_mass_entropy()`** | |
+| *Estimated property*|Mixture entropy|
+| *Return type*       |`real`|
+| *Unit dimensions*   |J/kg/K|
+| | |
+| **`get_mixture_diffusion()`** | |
+| *Estimated property*|Mixture diffusivity|
+| *Return type*       |`real`|
+| *Unit dimensions*   |m<sup>2</sup>/s|
+| | |
+| **`get_species_thermal_conductivity()`** | |
+| *Estimated property*|Single specie thermal conductivity|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |W/m/K|
+| | |
+| **`get_species_viscosity()`** | |
+| *Estimated property*|Single specie viscosity|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |Pa*s|
+| | |
+| **``get_species_molar_specific_heat()`** | |
+| *Estimated property*|Single specie specific heat|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kmol/K|
+| | |
+| **`get_species_mass_specific_heat()`** | |
+| *Estimated property*|Single specie specific heat|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kg/K|
+| | |
+| **`get_species_molar_enthalpy()`** | |
+| *Estimated property*|Single specie enthalpy|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kmol|
+| | |
+| **`get_species_mass_enthalpy()`** | |
+| *Estimated property*|Single specie enthalpy|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kg|
+| | |
+| **`get_species_molar_entropy()`** | |
+| *Estimated property*|Single specie entropy|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kmol/K|
+| | |
+| **`get_species_mass_entropy()`** | |
+| *Estimated property*|Single specie entropy|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |J/kg/K|
+| | |
+| **`get_aritmetic_mean_gas_velocity()`** | |
+| *Estimated property*|Single gas velocity|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |m/s|
+| | |
+| **`get_mean_free_path()`** | |
+| *Estimated property*|Single mean free path|
+| *Return type*       |`real, dimension(N)`|
+| *Unit dimensions*   |m|
+| | |
+| **`get_binary_diffusion()`** | |
+| *Estimated property*|Single binary diffusion|
+| *Return type*       |`real, dimension(N,N)`|
+| *Unit dimensions*   |m<sup>2</sup>/s|
