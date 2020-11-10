@@ -22,11 +22,16 @@ To create the file *database.mat* run the file `database-generator.m`
 ## Available thermodynamic and transport properties
 ASALI estimates different thermodynamic and transport properties (`p` is the Asali object):
 
-| `p.Density` | |
-|:----------- |-|
-| **Estimated property**| Mixture density|
-| **Return type**       |`float`         |
-| **Unit dimensions**   |kg/m<sup>3</sup>|
+| | |
+|:-|:-|
+| **`p.Density`** | |
+| *Estimated property*| Mixture density|
+| *Return type*       |`float`         |
+| *Unit dimensions*   |kg/m<sup>3</sup>|
+| **`p.MixtureMolecularWeight`** | |
+| *Estimated property*|Mixture molecular weight |
+| *Return type*       |`float`         |
+| *Unit dimensions*   |g/mo|
 
 * `p.MixtureMolecularWeight`
     * Mixture molecular weight in g/mol
