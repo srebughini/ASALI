@@ -25,13 +25,19 @@ ASALI estimates different thermodynamic and transport properties (`p` is the Asa
 | | |
 |:-|:-|
 | **`p.Density`** | |
-| *Estimated property*| Mixture density|
-| *Return type*       |`float`         |
+| *Estimated property*|Mixture density|
+| *Return type*       |`float`|
 | *Unit dimensions*   |kg/m<sup>3</sup>|
+| | |
 | **`p.MixtureMolecularWeight`** | |
 | *Estimated property*|Mixture molecular weight |
-| *Return type*       |`float`         |
-| *Unit dimensions*   |g/mo|
+| *Return type*       |`float`|
+| *Unit dimensions*   |g/mol|
+| | |
+| **`p.MixtureThermalConductivity`** | |
+| *Estimated property*|Mixture thermal conductivity |
+| *Return type*       |`float`|
+| *Unit dimensions*   |W/m/K|
 
 * `p.MixtureMolecularWeight`
     * Mixture molecular weight in g/mol
