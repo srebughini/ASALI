@@ -21,6 +21,14 @@ cp = p.SpeciesMassSpecificHeat;
 To create the file *database.mat* run the file `database-generator.m`
 ## Available thermodynamic and transport properties
 ASALI estimates different thermodynamic and transport properties (`p` is the Asali object):
+
+
+|         | Estimated property   | Function name                | Return type | Unit dimensions |
+| :----:  | :--------------------| :----------------------------| :-----------| :---------------|
+| Mixture | Density              | p.Density                    | float       | kg/m<sup>3</sup>|
+| Mixture | Molecular weight     | p.MixtureMolecularWeight     | float       | g/mol           |
+| Mixture | Thermal conductivity | p.MixtureThermalConductivity | float       | W/m/K           |
+
 <p>&nbsp;</p>
 * `p.Density`
     * Mixture density in kg/m3
