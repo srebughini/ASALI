@@ -62,9 +62,9 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 | | |
 |:-|:-|
 | **`get_density(&asali)`** | |
-| *Estimated property*: Mixture density|
-| *Return type*:       `double`|
-| *Unit dimensions*:   kg/m<sup>3</sup>|
+| *Estimated property*:  Mixture density|
+| *Return type*:        `double`|
+| *Unit dimensions*:     kg/m<sup>3</sup>|
 | | |
 | **`get_mixture_molecular_weight(&asali)`** | |
 | *Estimated property*|Mixture molecular weight |
