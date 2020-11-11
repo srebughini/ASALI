@@ -59,12 +59,13 @@ To convert the Asali database into C code run:
 ## Available thermodynamic and transport properties
 ASALI estimates different thermodynamic and transport (`asali` is the library object):
 
+<div class="col-md-4 text-justify">
 | | |
 |:-|:-|
 | **`get_density(&asali)`** | |
-| *Estimated property*:  Mixture density|
-| *Return type*:        `double`|
-| *Unit dimensions*:     kg/m<sup>3</sup>|
+| *Estimated property*|Mixture density|
+| *Return type*       |`double`|
+| *Unit dimensions*   |kg/m<sup>3</sup>|
 | | |
 | **`get_mixture_molecular_weight(&asali)`** | |
 | *Estimated property*|Mixture molecular weight |
@@ -170,3 +171,4 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 | *Estimated property*|Single binary diffusion|
 | *Return type*       |`AsaliMatrix`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
+</div>
