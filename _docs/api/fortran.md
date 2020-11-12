@@ -54,19 +54,14 @@ To convert the Asali database into Fortran code run:
 ## Available thermodynamic and transport properties
 ASALI estimates different thermodynamic and transport properties (`N` is the number of species):
 
-**`get_density()`**
-
 | | |
 |:-|:-|
+| **`get_density()`** | |
 | *Estimated property*|Mixture density|
 | *Return type*       |`real`|
 | *Unit dimensions*   |kg/m<sup>3</sup>|
 | | |
-
-**`get_mixture_molecular_weight()`**
-
-| | |
-|:-|:-|
+| **`get_mixture_molecular_weight()`** | |
 | *Estimated property*|Mixture molecular weight |
 | *Return type*       |`real`|
 | *Unit dimensions*   |g/mol|
