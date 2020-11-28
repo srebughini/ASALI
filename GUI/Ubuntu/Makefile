@@ -7,7 +7,7 @@ SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
-            $(shell python3-config --cflags)\
+            $(shell python3-config --embed --cflags)\
             -I$(CANTERA_PREFIX)include\
             -I$(CANTERA_PREFIX)include/cantera/ext\
             -Iinclude
@@ -15,7 +15,7 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
 CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=0
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
-          $(shell python3-config --libs)\
+          $(shell python3-config --embed --libs)\
           -lcantera\
           -lcantera_fortran\
           -lgfortran\

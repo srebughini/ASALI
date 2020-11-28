@@ -1,8 +1,10 @@
 language: cpp
-dist: bionic
+dist:
+  - xenial 
+  - bionic
+  - focal
 matrix:
   include:
-  - #dist: bionic
     compiler: g++
     os: linux
     sudo: required
