@@ -1,8 +1,5 @@
 language: cpp
-dist:
-  - xenial 
-  - bionic
-  - focal
+dist: focal
 matrix:
   include:
     compiler: g++
