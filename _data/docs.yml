@@ -1,5 +1,6 @@
 - title: Graphical User Interface
   docs:
+  - gui-demo
   - gui-introduction
   - gui-installation
 
