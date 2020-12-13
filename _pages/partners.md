@@ -11,3 +11,11 @@ redirect_from: /docs/index.html
         <a class="btn btn-primary btn" href="http://www.catalyticfoam.polimi.it/" role="button">Learn more</a>
     </p>
 </div>
+<div class="row">
+    <h3 class="text-center">JaSali<br></h3>
+    <p class="text-center"><a href="https://github.com/srebughini/JASALI">JaSali</a> is a JavaScript library to estimate thermodynamic and transport properties of gas mixtures and pure gas species. Due to its efficient implementation, it enables the calculation both on the client-side and on the server-side. It is available as <a href="https://www.npmjs.com/package/jasali">npm package</a> allowing JavaScript developers to easily include it in their own projects. 
+    </p>
+    <p class="text-center">
+        <a class="btn btn-primary btn" href="https://github.com/srebughini/JASALI" role="button">Learn more</a>
+    </p>
+</div>

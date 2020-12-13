@@ -60,8 +60,8 @@ let viscosity = mixture.getViscosity()
 
 ## **Available thermodynamic and transport properties**
 **J**a**S**ali objects estimate different thermodynamic and transport properties. Different objects share the same method to extract the same property. The following list reports all the available methods and the related objects:
-
 ### `GasSpecie` methods
+
 | | |
 |:-|:-|
 | **`getName()`** | |
@@ -85,6 +85,7 @@ let viscosity = mixture.getViscosity()
 | *Unit dimensions*   |m<sup>2</sup>/s|
 
 ### `GasMixture` methods
+
 | | |
 |:-|:-|
 | **`getSpecies()`** | |
@@ -111,6 +112,7 @@ let viscosity = mixture.getViscosity()
 | *Unit dimensions*   |m<sup>2</sup>/s|
 
 ### `GasMixture` and `GasSpecie` methods
+
 | | |
 |:-|:-|
 | **`getMolecularWeight()`** | |
