@@ -65,107 +65,86 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 | *Estimated property*|Mixture density|
 | *Return type*       |`double`|
 | *Unit dimensions*   |kg/m<sup>3</sup>|
-| | |
 | **`get_mixture_molecular_weight(&asali)`** | |
 | *Estimated property*|Mixture molecular weight |
 | *Return type*       |`double`|
 | *Unit dimensions*   |g/mol|
-| | |
 | **`get_mixture_thermal_conductivity(&asali)`** | |
 | *Estimated property*|Mixture thermal conductivity |
 | *Return type*       |`double`|
 | *Unit dimensions*   |W/m/K|
-| | |
 | **`get_mixture_viscosity(&asali)`** | |
 | *Estimated property*|Mixture viscosity |
 | *Return type*       |`double`|
 | *Unit dimensions*   |Pa*s|
-| | |
 | **`get_mixture_molar_specific_heat(&asali)`** | |
 | *Estimated property*|Mixture specific heat |
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`get_mixture_mass_specific_heat(&asali)`** | |
 | *Estimated property*|Mixture specific heat |
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`get_mixture_molar_enthalpy(&asali)`** | |
 | *Estimated property*|Mixture enthalpy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol|
-| | |
 | **`get_mixture_mass_enthalpy(&asali)`** | |
 | *Estimated property*|Mixture enthalpy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg|
-| | |
 | **`get_mixture_molar_entropy(&asali)`** | |
 | *Estimated property*|Mixture entropy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`get_mixture_mass_entropy(&asali)`** | |
 | *Estimated property*|Mixture entropy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`get_mixture_diffusion(&asali)`** | |
 | *Estimated property*|Mixture diffusivity|
 | *Return type*       |`double`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
-| | |
 | **`get_species_thermal_conductivity(&asali)`** | |
 | *Estimated property*|Single specie thermal conductivity|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |W/m/K|
-| | |
 | **`get_species_viscosity(&asali)`** | |
 | *Estimated property*|Single specie viscosity|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |Pa*s|
-| | |
 | **`get_species_molar_specific_heat(&asali)`** | |
 | *Estimated property*|Single specie specific heat|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`get_species_mass_specific_heat(&asali)`** | |
 | *Estimated property*|Single specie specific heat|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`get_species_molar_enthalpy(&asali)`** | |
 | *Estimated property*|Single specie enthalpy|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kmol|
-| | |
 | **`get_species_mass_enthalpy(&asali)`** | |
 | *Estimated property*|Single specie enthalpy|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kg|
-| | |
 | **`get_species_molar_entropy(&asali)`** | |
 | *Estimated property*|Single specie entropy|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`get_species_mass_entropy(&asali)`** | |
 | *Estimated property*|Single specie entropy|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`get_aritmetic_mean_gas_velocity(&asali)`** | |
 | *Estimated property*|Single gas velocity|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |m/s|
-| | |
 | **`get_mean_free_path(&asali)`** | |
 | *Estimated property*|Single mean free path|
 | *Return type*       |`AsaliVector`|
 | *Unit dimensions*   |m|
-| | |
 | **`get_binary_diffusion(&asali)`** | |
 | *Estimated property*|Single binary diffusion|
 | *Return type*       |`AsaliMatrix`|
