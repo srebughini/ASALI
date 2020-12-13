@@ -60,6 +60,7 @@ let viscosity = mixture.getViscosity()
 
 ## **Available thermodynamic and transport properties**
 **J**a**S**ali objects estimate different thermodynamic and transport properties. Different objects share the same method to extract the same property. The following list reports all the available methods and the related objects:
+
 ### `GasSpecie` methods
 
 | | |
@@ -68,21 +69,19 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Specie name|
 | *Method of*         |`GasSpecie`|
 | *Unit dimensions*   |n.a|
-| | |
 | **`getArithmeticMeanGasVelocity()`** | |
 | *Estimated property*|Mean gas velocity|
 | *Method of*         |`GasSpecie`|
 | *Unit dimensions*   |m/s|
-| | |
 | **`getMeanFreePath()`** | |
 | *Estimated property*|Mean free path|
 | *Method of*         |`GasSpecie`|
 | *Unit dimensions*   |m|
-| | |
 | **`getDiffusion()`** | |
 | *Estimated property*|Binary diffusivity|
 | *Method of*         |`GasSpecie`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
+| | |
 
 ### `GasMixture` methods
 
@@ -92,12 +91,10 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Species in the mixture|
 | *Method of*         |`GasMixture`|
 | *Unit dimensions*   |n.a|
-| | |
 | **`getMassFraction()`** | |
 | *Estimated property*|Mass fraction|
 | *Method of*         |`GasMixture`|
 | *Unit dimensions*   |n.a|
-| | |
 | **`getMoleFraction()`** | |
 | *Estimated property*|Mole fraction|
 | *Method of*         |`GasMixture`|
@@ -110,6 +107,7 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Mixture diffusivity|
 | *Method of*         |`GasMixture`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
+| | |
 
 ### `GasMixture` and `GasSpecie` methods
 
@@ -119,48 +117,40 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Molecular weight|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |g/mol|
-| | |
 | **`getDensity()`** | |
 | *Estimated property*|Density|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |kg/m<sup>3</sup>|
-| | |
 | **`getMolarSpecificHeat()`** | |
 | *Estimated property*|Specific heat|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`getMassSpecificHeat()`** | |
 | *Estimated property*|Specific heat|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`getMolarEnthalpy()`** | |
 | *Estimated property*|Enthalpy|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kmol|
-| | |
 | **`getMassEnthalpy()`** | |
 | *Estimated property*|Enthalpy|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kg|
-| | |
 | **`getMolarEntropy()`** | |
 | *Estimated property*|Entropy|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kmol/K|
-| | |
 | **`getMassEntropy()`** | |
 | *Estimated property*|Entropy|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kg/K|
-| | |
 | **`getViscosity()`** | |
 | *Estimated property*|Viscosity|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |Pa*s|
-| | |
 | **`getThermalConductivity()`** | |
 | *Estimated property*|Thermal conductivity|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |W/m/K|
+| | |
