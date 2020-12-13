@@ -4,7 +4,7 @@ redirect_from: /docs/index.html
 ---
 
 # **JavaScript version**
-The JavaScript API version of ASALI is called [**J**a**S**ali](https://github.com/srebughini/JASALI) and its [**npm package**](https://www.npmjs.com/package/jasali) can be installed as follow:
+The JavaScript API version of ASALI is called [**J**a**S**ali](https://github.com/srebughini/JASALI) and its [npm package](https://www.npmjs.com/package/jasali) can be installed as follow:
 
 ```
 npm i jasali
