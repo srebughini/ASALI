@@ -19,7 +19,7 @@ p.MoleFraction = [0.1 0.2 0.7];
 cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
-## Available thermodynamic and transport properties
+## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport properties (`p` is the Asali object):
 
 | | |

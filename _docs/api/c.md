@@ -56,7 +56,7 @@ To convert the Asali database into C code run:
 ```
 ./database-generator
 ```
-## Available thermodynamic and transport properties
+## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport (`asali` is the library object):
 
 | | |
