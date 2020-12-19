@@ -51,7 +51,7 @@ To convert the Asali database into Fortran code run:
 ```
 ./database-generator
 ```
-## Available thermodynamic and transport properties
+## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport properties (`N` is the number of species):
 
 | | |
