@@ -142,11 +142,8 @@ int main()
     asali.setMoleFraction(x);
 
     //Properties evaluation
-    std::vector<double> cp;
-    std::vector<std::vector<double>> diff;
-
-    diff = asali.binaryDiffusion();
-    cp = asali.speciesMassCp();
+    std::vector<std::vector<double>> diff = asali.binaryDiffusion();
+    std::vector<double>              cp   = asali.speciesMassCp();
     return 0;
 }
 ```
