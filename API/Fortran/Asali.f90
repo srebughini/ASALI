@@ -71,7 +71,6 @@ module asali
     logical :: hmole_mix_update_  = .FALSE.
     logical :: hmass_mix_update_  = .FALSE.
     logical :: smole_mix_update_  = .FALSE.
-    logical :: smass_mix_update_  = .FALSE.
 
     contains      
     include "transport_subroutine.f90"
@@ -99,7 +98,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_temperature
     
@@ -124,7 +122,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_pressure
     
@@ -184,7 +181,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_species_names
     
@@ -225,7 +221,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_mass_fraction
 
@@ -264,7 +259,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_mole_fraction
     
@@ -493,7 +487,7 @@ module asali
                               + thermo_(index_(i))%high(7)
                 end if
                 
-                smole_(i) = smole_(i)*8314.  !J/Kmol/K
+                smole_(i) = 8314.*(smole_(i) - log(P_*x_(i)/1.e05)) !J/Kmol/K
                 smass_(i) = smole_(i)/MW_(i) !J/Kg/K
             end do
             s_update_ = .TRUE.
@@ -737,7 +731,7 @@ module asali
             call species_s_()
             smole_mix_ = 0.
             do i=1,NC_
-                smole_mix_ = smole_mix_ + x_(i)*smole_(i);
+                smole_mix_ = smole_mix_ + x_(i)*smole_(i)
             end do
             smole_mix_update_ = .TRUE.
         end if
@@ -748,14 +742,15 @@ module asali
     function get_mixture_mass_entropy()
         real    :: get_mixture_mass_entropy
         integer :: i
-        if ( smass_mix_update_ .EQV. .FALSE. ) then
+        if ( smole_mix_update_ .EQV. .FALSE. ) then
             call species_s_()
-            smass_mix_ = 0.
+            smole_mix_ = 0.
             do i=1,NC_
-                smass_mix_ = smass_mix_ + y_(i)*smass_(i);
+                smole_mix_ = smole_mix_ + x_(i)*smole_(i)
             end do
-            smass_mix_update_ = .TRUE.
+            smole_mix_update_ = .TRUE.
         end if
+        smass_mix_ = smole_mix_/MWmix_
         get_mixture_mass_entropy = smass_mix_
         return
     end function get_mixture_mass_entropy

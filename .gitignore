@@ -6,3 +6,4 @@ API/C/example
 API/C/database-generator
 API/Fortran/example
 API/Fortran/database-generator
+API/Fortran/*.mod

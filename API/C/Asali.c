@@ -64,7 +64,6 @@ void set_temperature(Asali* asali_, double T)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
     }
 }
 
@@ -90,7 +89,6 @@ void set_pressure(Asali* asali_, double P)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
     }
 }
 
@@ -116,7 +114,6 @@ void set_number_of_species(Asali* asali_,int NC)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
         resize(asali_,NC);
     }
 }
@@ -161,7 +158,6 @@ void set_species_names(Asali* asali_,AsaliVector names)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
     }
     else
     {
@@ -203,7 +199,6 @@ void set_mass_fraction(Asali* asali_,AsaliVector y)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
     }
     else
     {
@@ -244,7 +239,6 @@ void set_mole_fraction(Asali* asali_,AsaliVector x)
         asali_->hmole_mix_updated_  = false;
         asali_->hmass_mix_updated_  = false;
         asali_->smole_mix_updated_  = false;
-        asali_->smass_mix_updated_  = false;
     }
     else
     {
@@ -505,7 +499,6 @@ void species_h_(Asali* asali_)
     }
 }
 
-
 void species_s_(Asali* asali_)
 {
     if ( !asali_->s_updated_ )
@@ -533,13 +526,14 @@ void species_s_(Asali* asali_)
                   + asali_->thermo_[idx].high[6];
             }
 
-            set_vector_element_from_double(&asali_->s_mole_,i,s*8314.); //J/kmol/K
-            set_vector_element_from_double(&asali_->s_mass_,i,s*8314/get_vector_element_as_double(&asali_->MW_,i)); //J/kg/K
+            s = 8314.*(s - log(asali_->P_*get_vector_element_as_double(&asali_->x_,i)/1.0e05));
+
+            set_vector_element_from_double(&asali_->s_mole_,i,s); //J/kmol/K
+            set_vector_element_from_double(&asali_->s_mass_,i,s/get_vector_element_as_double(&asali_->MW_,i)); //J/kg/K
         }
         asali_->s_updated_ = true;
     }
 }
-
 
 double get_mixture_thermal_conductivity(Asali* asali_) //[W/m/K]
 {
@@ -720,17 +714,7 @@ double get_mixture_molar_entropy(Asali* asali_)
 
 double get_mixture_mass_entropy(Asali* asali_)
 {
-    if ( !asali_->smass_mix_updated_ )
-    {
-        species_s_(asali_);
-        asali_->smass_mix_ = 0.;
-        for (int i=0;i<asali_->NC_;i++)
-        {
-            asali_->smass_mix_ = asali_->smass_mix_ + get_vector_element_as_double(&asali_->y_,i)*get_vector_element_as_double(&asali_->s_mass_,i);
-        }
-        asali_->smass_mix_updated_ = true;
-    }
-
+    asali_->smass_mix_ = get_mixture_molar_entropy(asali_)/asali_->MWmix_;
     return asali_->smass_mix_;
 }
 
@@ -789,7 +773,6 @@ void initialize(Asali* asali_)
     asali_->hmole_mix_updated_  = false;
     asali_->hmass_mix_updated_  = false;
     asali_->smole_mix_updated_  = false;
-    asali_->smass_mix_updated_  = false;
 
     asali_->pi_ = 3.14159265358979323846;
     
