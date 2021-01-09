@@ -46,10 +46,11 @@ function markdownFileHead()
 {
 	local N=$1
 	echo "# **ASALI: Modeling and beyond**  "
-	echo "## *APIs performance comparison*  "
+	echo "## **APIs elapsed time comparison**  "
+	echo "These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04*  "
 	echo "### 1. Assumptions  "
-	echo "This performance comparison has the following assumptions:  "
-	echo "* Number of runs: $N  "
+	echo "The performance comparison has the following assumptions:  "
+	echo "* Number of runs: **$N**  "
 	echo "* Elapsed time to initialize **output variables** is **not considered**  "
 	echo "* Elapsed time to initialize **operating condition** is **not considered**  "
 	echo "### 2. Results  "
