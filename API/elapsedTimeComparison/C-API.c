@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
 
     //Initialize variables
     Asali asali;
+    initialize(&asali);
     AsaliVector mu,cp,h,s,cond,diff_mix,v,l;
     AsaliMatrix diff;
     double MWmix, rho, mumix, cpmassmix, cpmolemix, hmassmix, hmolemix, smassmix, smolemix, condmix;
@@ -64,8 +65,6 @@ int main(int argc, char *argv[])
     clock_t tStart = clock();
     for (int i=0;i<N;i++)
     {
-        initialize(&asali);
-
         set_temperature(&asali,393.15);
         set_pressure(&asali,4e05);
         set_number_of_species(&asali,get_vector_size(&x));

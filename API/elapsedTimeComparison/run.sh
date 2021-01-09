@@ -47,7 +47,9 @@ function markdownFileHead()
 	local N=$1
 	echo "# **ASALI: Modeling and beyond**  "
 	echo "## **APIs elapsed time comparison**  "
-	echo "These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04*  "
+	echo "These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04*.  "
+	echo "You can run the same test on your own computer using the following command:  "
+	echo '`./run.sh -n '"$N"' --compile`  '
 	echo "### 1. Assumptions  "
 	echo "The performance comparison has the following assumptions:  "
 	echo "* Number of runs: **$N**  "
@@ -57,7 +59,6 @@ function markdownFileHead()
 	echo "|Language|Total time (s)|Single run time (s)|"
 	echo "|--------|----------------|-------------------|"
 }
-
 
 function printOnFile()
 {
