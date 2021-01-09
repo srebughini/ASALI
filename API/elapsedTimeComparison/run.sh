@@ -33,18 +33,18 @@ function printOnScreen()
 	echo "Processor model:  $model"
 	echo "Operating system: $os"
 	echo " "
-	cat Cpp.txt | sed 's/,/./g' | sed 's/E/e/g'
-	cat C.txt | sed 's/,/./g' | sed 's/E/e/g'
-	cat Fortran.txt | sed 's/,/./g' | sed 's/E/e/g'
+	sed 's/,/./g ; s/E/e/g' < Cpp.txt
+	sed 's/,/./g ; s/E/e/g' < C.txt
+	sed 's/,/./g ; s/E/e/g' < Fortran.txt
 }
 
 
 function parseSingleFileOutput()
 {
 	local filename=$1
-	local language=$(cat $filename | sed -n 1p | sed 's/version//g' | sed 's/ //g' | sed 's/,/./g' | sed 's/E/e/g')
-	local totaltime=$(cat $filename | sed -n 2p| sed 's/Total (s)://g' | sed 's/ //g'| sed 's/,/./g' | sed 's/E/e/g')
-	local singleruntime=$(cat $filename | sed -n 3p | sed 's/Single run (s)://g' | sed 's/ //g'| sed 's/,/./g' | sed 's/E/e/g')
+	local language=$(sed -n 1p | sed 's/version//g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename)
+	local totaltime=$(sed -n 2p| sed 's/Total (s)://g ; s/ //g ; s/,/./g ; s/E/e/g'  < $filename )
+	local singleruntime=$(sed -n 3p | sed 's/Single run (s)://g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename)
 	
 	echo "|$language|$totaltime|$singleruntime| "
 }
@@ -151,7 +151,9 @@ if [ "$file_output" == "true" ]; then
 	printOnFile $number_of_runs $processor_model $os > README.md
 fi
 
-rm -rf *.txt
+rm -rf Cpp.txt
+rm -rf C.txt
+rm -rf Fortran.txt
 
 
 
