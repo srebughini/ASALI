@@ -9,3 +9,5 @@ API/Cpp/database-generator
 API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/*.mod
+API/elapsedTimeComparison/*.mod
+API/elapsedTimeComparison/asali-*
