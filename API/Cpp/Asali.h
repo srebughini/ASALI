@@ -54,7 +54,6 @@ namespace ASALI
     class Asali 
     {
         public:
-
             Asali();
 
            ~Asali(void);
@@ -101,7 +100,6 @@ namespace ASALI
             void setSpecies(const std::vector<std::string> name);
 
         private:
-
             struct transportParameters
             {
                 std::vector<std::string>  name;
