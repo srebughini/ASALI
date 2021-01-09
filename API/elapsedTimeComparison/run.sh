@@ -25,7 +25,14 @@ function run()
 function printOnScreen()
 {
 	local N=$1
-	echo "ASALI-API performance test with $N runs"
+	local model=$(echo $2 | sed 's/_/ /g')
+	local os=$(echo $3 | sed 's/_/ /g')
+	echo "ASALI-API performance test"
+	echo " "
+	echo "Number of runs:   $N"
+	echo "Processor model:  $model"
+	echo "Operating system: $os"
+	echo " "
 	cat Cpp.txt | sed 's/,/./g' | sed 's/E/e/g'
 	cat C.txt | sed 's/,/./g' | sed 's/E/e/g'
 	cat Fortran.txt | sed 's/,/./g' | sed 's/E/e/g'
@@ -45,9 +52,11 @@ function parseSingleFileOutput()
 function markdownFileHead()
 {
 	local N=$1
+	local model=$(echo $2 | sed 's/_/ /g')
+	local os=$(echo $3 | sed 's/_/ /g')
 	echo "# **ASALI: Modeling and beyond**  "
 	echo "## **APIs elapsed time comparison**  "
-	echo "These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04*.  "
+	echo "These results are obtained with a *$model* with *$os*.  "
 	echo "You can run the same test on your own computer using the following command:  "
 	echo '`./run.sh -n '"$N"' --compile`  '
 	echo "### 1. Assumptions  "
@@ -63,7 +72,9 @@ function markdownFileHead()
 function printOnFile()
 {
 	local N=$1
-	markdownFileHead $N
+	local model=$2
+	local os=$3
+	markdownFileHead $N $model $os
 	parseSingleFileOutput Cpp.txt
 	parseSingleFileOutput C.txt
 	parseSingleFileOutput Fortran.txt
@@ -81,6 +92,8 @@ function Help()
 
 screen_output="true"
 file_output="false"
+processor_model=$(lscpu | grep 'Model name' | sed 's/Model name://g' | xargs | sed 's/ /_/g')
+os=$(hostnamectl | grep 'Operating System' | sed 's/Operating System://g' | xargs | sed 's/ /_/g')
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -131,11 +144,11 @@ fi
 run $number_of_runs
 
 if [ "$screen_output" == "true" ]; then
-	printOnScreen $number_of_runs
+	printOnScreen $number_of_runs $processor_model $os
 fi
 
 if [ "$file_output" == "true" ]; then
-	printOnFile $number_of_runs > README.md
+	printOnFile $number_of_runs $processor_model $os > README.md
 fi
 
 rm -rf *.txt
