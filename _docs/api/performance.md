@@ -9,7 +9,8 @@ If you download ASALI, you can run the same test on your own computer using the 
 `cd API/elapsedTimeComparison/`  
 `./run.sh -n 100000 --compile`  
 ## Assumptions and operating conditions
-The gas mixture operating conditions are reported in the following table:
+The gas mixture operating conditions are reported in the following table:  
+
 |Property|Value|Unit dimension|
 |--------|-----|--------------|
 |Temperature|393.15|K|
@@ -20,7 +21,8 @@ The gas mixture operating conditions are reported in the following table:
 The performance comparison has the following assumptions: 
 * Number of runs: **100000**  
 * Elapsed time to initialize **output variables** is **not considered**  
-* Elapsed time to initialize **operating condition** is **not considered** 
+* Elapsed time to initialize **operating condition** is **not considered**  
+
 ## Results  
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.
 
