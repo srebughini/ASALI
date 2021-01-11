@@ -42,11 +42,11 @@ function printOnScreen()
 function parseSingleFileOutput()
 {
 	local filename=$1
-	local language=$(sed -n 1p | sed 's/version//g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename)
-	local totaltime=$(sed -n 2p| sed 's/Total (s)://g ; s/ //g ; s/,/./g ; s/E/e/g'  < $filename )
-	local singleruntime=$(sed -n 3p | sed 's/Single run (s)://g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename)
+	local language=$(sed 's/version//g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename | sed -n 1p)
+	local initime=$(sed 's/Initialization (s)://g ; s/ //g ; s/,/./g ; s/E/e/g'  < $filename | sed -n 2p)
+	local estitime=$(sed 's/Estimation (s)://g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename | sed -n 3p)
 	
-	echo "|$language|$totaltime|$singleruntime| "
+	echo "|$language|$initime|$estitime| "
 }
 
 function markdownFileHead()
@@ -57,16 +57,29 @@ function markdownFileHead()
 	echo "# **ASALI: Modeling and beyond**  "
 	echo "## **APIs elapsed time comparison**  "
 	echo "These results are obtained with a *$model* with *$os*.  "
-	echo "You can run the same test on your own computer using the following command:  "
-	echo '`./run.sh -n '"$N"' --compile`  '
-	echo "### 1. Assumptions  "
+	echo "If you download ASALI, you can run the same test on your own computer using the following commands:  "
+	echo '```bash  '
+	echo "cd API/elapsedTimeComparison/  "
+	echo "./run.sh -n $N -f test.md --compile  "
+	echo '```  '
+	echo "## Assumptions and operating conditions  "
+	echo "The gas mixture operating conditions are reported in the following table:  " 
+	echo "|Property|Value|Unit dimension|  "
+	echo "|--------|-----|--------------|  "
+	echo "|Temperature|393.15|K|  "
+	echo "|Pressure|4|bar|  "
+	echo "|H<sub>2</sub>|0.1|Molar fraction|  "
+	echo "|O<sub>2</sub>|0.2|Molar fraction|  "
+	echo "|N<sub>2</sub>|0.7|Molar fraction|  "
 	echo "The performance comparison has the following assumptions:  "
 	echo "* Number of runs: **$N**  "
 	echo "* Elapsed time to initialize **output variables** is **not considered**  "
-	echo "* Elapsed time to initialize **operating condition** is **not considered**  "
-	echo "### 2. Results  "
-	echo "|Language|Total time (s)|Single run time (s)|"
-	echo "|--------|----------------|-------------------|"
+	echo "## Results  "
+	echo "The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  "
+
+	echo "|Language|Initialization (s)|Estimation (s)|  "
+	echo "|--------|----------------|-------------------|  "
+
 }
 
 function printOnFile()
@@ -82,16 +95,15 @@ function printOnFile()
 
 function Help()
 {
-   echo "Syntax: ./run.sh -n 100 --compile --file"
+   echo "Syntax: ./run.sh -n 100 -f test.md --compile "
    echo "   options:"
    echo "          --compile                Compile source code."
-   echo "          --file                   Output on file (README.md)."
-   echo "          -n                       Number of runs for performance check (e.g. 100)."
+   echo "          -f                       Output file (README.md)."
+   echo "          -n                       Number of runs (e.g. 100)."
    exit
 }
 
 screen_output="true"
-file_output="false"
 processor_model=$(lscpu | grep 'Model name' | sed 's/Model name://g' | xargs | sed 's/ /_/g')
 os=$(hostnamectl | grep 'Operating System' | sed 's/Operating System://g' | xargs | sed 's/ /_/g')
 
@@ -113,8 +125,8 @@ do
         shift # past argument
         shift # past value
         ;;
-        --file)
-        file_output="true"
+        -f|--file)
+        file_output="$2"
         shift # past argument
         ;;
         *)    # unknown option
@@ -127,6 +139,10 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 if [ -z "$number_of_runs" ]; then
 	Help	
+fi
+
+if [ -z "$file_output" ]; then
+	Help
 fi
 
 if [ -z "$compile_source" ]; then
@@ -147,9 +163,7 @@ if [ "$screen_output" == "true" ]; then
 	printOnScreen $number_of_runs $processor_model $os
 fi
 
-if [ "$file_output" == "true" ]; then
-	printOnFile $number_of_runs $processor_model $os > README.md
-fi
+printOnFile $number_of_runs $processor_model $os > $file_output
 
 rm -rf Cpp.txt
 rm -rf C.txt

@@ -99,7 +99,7 @@ program example
 	call cpu_time(tEnd)
 	
 	print '(A15)' ,'Fortran version'
-	print '(A16,ES9.3)' ,'Total (s):      ', tEnd - tStart
-	print '(A16,ES9.3)' ,'Single run (s): ', (tEnd - tStart)/N
+	print '(A21,A4)' ,'Initialization (s):  ', 'n.a.'
+	print '(A21,ES9.3)' ,'Estimation (s):      ', (tEnd - tStart)/N
 
 end program example

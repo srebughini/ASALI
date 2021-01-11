@@ -56,13 +56,21 @@ int main(int argc, char *argv[])
     vector_from_double_array(&x,3,X);
 
     //Initialize variables
+    clock_t initializationStart = clock();
+    for (int i=0;i<N-1;i++)
+    {
+        Asali asali;
+        initialize(&asali);
+    }
     Asali asali;
     initialize(&asali);
+    clock_t initializationEnd = clock();
+    
     AsaliVector mu,cp,h,s,cond,diff_mix,v,l;
     AsaliMatrix diff;
     double MWmix, rho, mumix, cpmassmix, cpmolemix, hmassmix, hmolemix, smassmix, smolemix, condmix;
 
-    clock_t tStart = clock();
+    clock_t estimationStart = clock();
     for (int i=0;i<N;i++)
     {
         set_temperature(&asali,393.15);
@@ -91,10 +99,10 @@ int main(int argc, char *argv[])
         smolemix = get_mixture_molar_entropy(&asali);
         condmix = get_mixture_thermal_conductivity(&asali);
     }
-    clock_t tEnd = clock();
+    clock_t estimationEnd = clock();
     printf("C version\n");
-    printf("Total (s):      %.3e\n",(double)(tEnd - tStart)/CLOCKS_PER_SEC);
-    printf("Single run (s): %.3e\n",((double)(tEnd - tStart)/CLOCKS_PER_SEC)/N);
+    printf("Initialization (s):  %.3e\n",((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/N);
+    printf("Estimation (s):      %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
     
     return 0;
 }

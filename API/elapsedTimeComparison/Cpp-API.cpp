@@ -58,12 +58,19 @@ int main(int argc, char** argv)
     x[2] = 1. - x[0] - x[1];
 
     //Initialize variables
+    clock_t initializationStart = clock();
+    for (int i=0;i<N-1;i++)
+    {
+        ASALI::Asali asali;
+    }
     ASALI::Asali asali;
+    clock_t initializationEnd = clock();
+
     std::vector<double> mu, cp, h, s, cond, diff_mix, v, l; 
     std::vector<std::vector<double> > diff;
     double mwmix, rho, mumix, cpmassmix, cpmolemix, hmassmix, hmolemix, condmix, smassmix, smolemix;
 
-    clock_t tStart = clock();
+    clock_t estimationStart = clock();
     for (int i=0;i<N;i++)
     {
         asali.setSpecies(names);
@@ -92,10 +99,10 @@ int main(int argc, char** argv)
         smolemix = asali.mixtureMolarEntropy();
     }
     
-    clock_t tEnd = clock();
+    clock_t estimationEnd = clock();
     std::cout << "C++ version" << std::endl << std::scientific << std::setprecision(3);
-    std::cout << "Total (s):      " << (double)(tEnd - tStart)/CLOCKS_PER_SEC << std::endl;
-    std::cout << "Single run (s): " << ((double)(tEnd - tStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
+    std::cout << "Initialization (s):  " << ((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
+    std::cout << "Estimation (s):      " << ((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
 
     return 0;
 }
