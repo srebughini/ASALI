@@ -11,13 +11,14 @@ If you download ASALI, you can run the same test on your own computer using the 
 ## Assumptions and operating conditions
 The gas mixture operating conditions are reported in the following table:  
 
-|Property|Value|Unit dimension|
-|--------|-----|--------------|
-|Temperature|393.15|K|
-|Pressure|4|bar|
-|H<sub>2</sub>|0.1|Molar fraction|
-|O<sub>2</sub>|0.2|Molar fraction|
-|N<sub>2</sub>|0.7|Molar fraction|  
+|Property|Value|Unit dimension|  
+|--------|-----|--------------|  
+|Temperature|393.15|K|  
+|Pressure|4|bar|  
+|H<sub>2</sub>|0.1|Molar fraction|  
+|O<sub>2</sub>|0.2|Molar fraction|  
+|N<sub>2</sub>|0.7|Molar fraction|    
+
 The performance comparison has the following assumptions: 
 * Number of runs: **100000**  
 * Elapsed time to initialize **output variables** is **not considered**  
