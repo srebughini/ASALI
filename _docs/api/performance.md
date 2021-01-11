@@ -6,8 +6,11 @@ redirect_from: /docs/index.html
 # **APIs elapsed time comparison**  
 This section reports the comparison of the ASALI APIs in term of computational time. These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04.1 LTS*.   
 If you download ASALI, you can run the same test on your own computer using the following commands:  
-`cd API/elapsedTimeComparison/`  
-`./run.sh -n 100000 --compile`  
+```bash
+cd API/elapsedTimeComparison/  
+./run.sh -n 100000 --compile
+```
+
 ## Assumptions and operating conditions
 The gas mixture operating conditions are reported in the following table:  
 

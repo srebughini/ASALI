@@ -7,8 +7,9 @@
 - title: Application Programming Interface
   docs:
   - api-introduction
+  - api-performance
   - api-matlab
   - api-fortran
   - api-c
   - api-javascript
-  - api-performance
+
