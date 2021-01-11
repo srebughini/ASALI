@@ -28,6 +28,7 @@ The performance comparison has the following assumptions:
 
 ## Results  
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
+
 |Language|Initialization (s)|Estimation (s)|  
 |--------|----------------|-------------------|  
 |C++|2.371e-03|6.821e-06| 
