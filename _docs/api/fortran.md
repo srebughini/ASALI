@@ -4,12 +4,7 @@ redirect_from: /docs/index.html
 ---
 
 # **Fortran version**
-The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
-
-```
-sudo apt-get install liblapack-dev
-``` 
-This version can be included in your code as follow:  
+The Fortran API can be included in your code as follow:  
 ```fortran
 !Include library
 include "Asali.f90"

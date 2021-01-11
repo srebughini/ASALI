@@ -147,6 +147,22 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Entropy|
 | *Method of*         |`GasSpecie`,`GasMixture`|
 | *Unit dimensions*   |J/kg/K|
+| **`getMolarInternalEnergy()`** | |
+| *Estimated property*|Internal energy|
+| *Method of*         |`GasSpecie`,`GasMixture`|
+| *Unit dimensions*   |J/kmol|
+| **`getMassInternalEnergy()`** | |
+| *Estimated property*|Internal energy|
+| *Method of*         |`GasSpecie`,`GasMixture`|
+| *Unit dimensions*   |J/kg|
+| **`getMolarGibbsFreeEnergy()`** | |
+| *Estimated property*|Gibbs free energy|
+| *Method of*         |`GasSpecie`,`GasMixture`|
+| *Unit dimensions*   |J/kmol|
+| **`getMassGibbsFreeEnergy()`** | |
+| *Estimated property*|Gibbs free energy|
+| *Method of*         |`GasSpecie`,`GasMixture`|
+| *Unit dimensions*   |J/kg|
 | **`getViscosity()`** | |
 | *Estimated property*|Viscosity|
 | *Method of*         |`GasSpecie`,`GasMixture`|
