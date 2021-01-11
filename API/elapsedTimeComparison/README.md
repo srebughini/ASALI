@@ -15,6 +15,7 @@ The gas mixture operating conditions are reported in the following table:
 |H<sub>2</sub>|0.1|Molar fraction|  
 |O<sub>2</sub>|0.2|Molar fraction|  
 |N<sub>2</sub>|0.7|Molar fraction|  
+
 The performance comparison has the following assumptions:  
 * Number of runs: **10000**  
 * Elapsed time to initialize **output variables** is **not considered**  
