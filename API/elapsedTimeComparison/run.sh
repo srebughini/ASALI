@@ -71,12 +71,12 @@ function markdownFileHead()
 	echo "|H<sub>2</sub>|0.1|Molar fraction|  "
 	echo "|O<sub>2</sub>|0.2|Molar fraction|  "
 	echo "|N<sub>2</sub>|0.7|Molar fraction|  "
+	echo " "
 	echo "The performance comparison has the following assumptions:  "
 	echo "* Number of runs: **$N**  "
 	echo "* Elapsed time to initialize **output variables** is **not considered**  "
 	echo "## Results  "
 	echo "The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  "
-
 	echo "|Language|Initialization (s)|Estimation (s)|  "
 	echo "|--------|----------------|-------------------|  "
 
