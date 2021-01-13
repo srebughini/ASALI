@@ -240,7 +240,7 @@ namespace ASALI
                 
                 //Beer
                 {
-                    beerLabel_.set_text(this->getBeerShort());
+                    beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                     beerLabel_.set_use_markup(true);
                     beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
                     propertiesGrid_.attach(beerLabel_,3,4,2,3);
@@ -467,7 +467,7 @@ namespace ASALI
             propertiesGrid_.remove(packedBedVoidFractionEntry_);
         }
 
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -880,7 +880,7 @@ namespace ASALI
             if ( kinetic_->nReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = smallDialog.run();
 
                 //Handle the response:

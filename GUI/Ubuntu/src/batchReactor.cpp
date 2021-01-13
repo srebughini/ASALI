@@ -435,7 +435,7 @@ namespace ASALI
             if ( kinetic_->nReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = smallDialog.run();
 
                 //Handle the response:

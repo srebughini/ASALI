@@ -50,6 +50,8 @@
 #include <vector>
 #include <algorithm>
 
+#include "beerQuote.hpp"
+
 #include <ida/ida.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <ida/ida_direct.h>
@@ -105,9 +107,6 @@ namespace ASALI
             double t0_;
             
             bool   check_;
-
-
-
             bool constraints_;
 
             N_Vector yIDA_;
@@ -125,18 +124,15 @@ namespace ASALI
 
             std::vector<double> algebraic_;
 
-            std::vector<std::string> beer_;
-
             int         checkFlag(void *flagvalue, int opt);
             void        error();
-            std::string getBeer();
+
+            ASALI::beerQuote beerQuote_;
     };
 
     template<typename T>
     bvpInterface<T>::bvpInterface()
     {
-        #include "shared/Beer.H"
-
         yIDA_         = NULL;
         dyIDA_        = NULL;
         y0IDA_        = NULL;
@@ -418,16 +414,8 @@ namespace ASALI
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.set_secondary_text(beerQuote_.getRandomQuote(),true);
         dialog.run();
-    }
-
-    template<typename T>
-    std::string bvpInterface<T>::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
     }
 
     template<typename T>

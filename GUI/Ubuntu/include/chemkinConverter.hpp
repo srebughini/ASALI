@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "beerQuote.hpp"
 
 #if ASALI_ON_WINDOW == 1
 #include <windows.h>
@@ -79,9 +80,6 @@ namespace ASALI
             void eraseSubString(std::string &mainStr, const std::string toErase);
             bool checkConvertedFile(std::string filename);
 
-            std::string getBeer();
-            std::string getBeerShort();
-
             Gtk::Box         mainBox_;
             Gtk::Box         buttonBox_;
             
@@ -98,8 +96,8 @@ namespace ASALI
             Gtk::Image       logo_;
             
             std::vector<std::string>  files_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
+            
+            ASALI::beerQuote  *beerQuote_;
     };
 }
 

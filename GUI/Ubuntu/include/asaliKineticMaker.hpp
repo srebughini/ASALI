@@ -41,6 +41,8 @@
 
 #include <gtkmm.h>
 #include "canteraInterface.hpp"
+#include "beerQuote.hpp"
+#include "asaliVectorUtils.hpp"
 
 namespace ASALI
 {
@@ -58,10 +60,6 @@ namespace ASALI
             void recap();
             void save();
             void exit();
-
-            std::string       getBeer();
-            std::string       getBeerShort();
-
 
             #include "shared/Vector.H"
 
@@ -127,8 +125,6 @@ namespace ASALI
             std::vector<Gtk::Entry *>         reactionEntry_;
             std::vector<Gtk::Entry *>         equationEntry_;
 
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
             std::vector<std::string>  n_;
             std::vector<std::string>  Rhet_;
             std::vector<std::string>  Rhom_;
@@ -140,6 +136,8 @@ namespace ASALI
             Cantera::ThermoPhase      *thermo_;
             Cantera::Transport        *transport_;
             ASALI::canteraInterface   *canteraInterface_;
+            ASALI::beerQuote          *beerQuote_;
+            ASALI::asaliVectorUtils   *vectorUtils_;
 
             unsigned int NR_;
             unsigned int NC_;

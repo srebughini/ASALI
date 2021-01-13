@@ -52,7 +52,6 @@
 #include <algorithm>
 #include <limits>
 
-
 namespace ASALI
 {
     class pythonInterface

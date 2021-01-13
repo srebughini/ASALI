@@ -54,6 +54,7 @@
 #include "linearRegression.hpp"
 #include "catalyticPellet.hpp"
 #include "asaliKineticMaker.hpp"
+#include "beerQuote.hpp"
 #include <gtk/gtk.h>
 
 namespace ASALI
@@ -97,9 +98,6 @@ namespace ASALI
             void het1d();
             void dp();
             bool chemistryMenu1(GdkEventButton*);
-
-            std::string       getBeer();
-            std::string       getBeerShort();
             
             std::vector<std::string> splitString(const std::string txt, std::string ch);
 
@@ -171,9 +169,6 @@ namespace ASALI
             
             std::string       kineticType_;
 
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
-
             Cantera::ThermoPhase              *thermo_;
             Cantera::Transport                *transport_;
             Cantera::Kinetics                 *kinetic_;
@@ -195,5 +190,6 @@ namespace ASALI
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
             ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
+            ASALI::beerQuote                  *beerQuote_;
     };
 }

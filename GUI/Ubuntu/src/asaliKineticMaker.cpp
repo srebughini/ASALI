@@ -77,6 +77,8 @@ namespace ASALI
       NC_(0),
       restart_(true)
     {
+        vectorUtils_ = new ASALI::asaliVectorUtils();
+
         {
             op_.push_back("+");
             op_.push_back("-");
@@ -88,8 +90,7 @@ namespace ASALI
             op_.push_back(".");
         }
 
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        beerQuote_ = new ASALI::beerQuote();
 
         //Reaction number
         {
@@ -475,7 +476,7 @@ namespace ASALI
             if ( counter != 0 )
             {
                 Gtk::MessageDialog dialog(*this,ni,true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                dialog.set_secondary_text(this->getBeerShort(),true);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = dialog.run();
 
                 //Handle the response:
@@ -509,7 +510,7 @@ namespace ASALI
         else
         {
             Gtk::MessageDialog dialog(*this,"At least one species is required!",true,Gtk::MESSAGE_ERROR,Gtk::BUTTONS_CLOSE);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
             return false;
         }
@@ -975,7 +976,7 @@ namespace ASALI
             std::ostringstream s;
             s << double(index+1);
             Gtk::MessageDialog dialog(*this,"Reaction number " + s.str() + " is empty!",true,Gtk::MESSAGE_ERROR,Gtk::BUTTONS_CLOSE);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
             return false;
         }
@@ -984,41 +985,27 @@ namespace ASALI
     void asaliKineticMaker::helpReaction()
     {
         Gtk::MessageDialog dialog(*this,"Example:\nH2+0.5*O2=H2O",true,Gtk::MESSAGE_INFO,Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
     void asaliKineticMaker::helpEquation()
     {
         Gtk::MessageDialog dialog(*this,"Example:\n100.*pow(H2,2)*exp(-500/T)*O2\nH2 is the mole fraction\nT is temperature in [K]\nThe reaction rate unit dimensions are kmol/m3/s or kmol/m2/s",true,Gtk::MESSAGE_INFO,Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
     
     void asaliKineticMaker::errorEquation(const std::string error)
     {
         Gtk::MessageDialog dialog(*this,error,true,Gtk::MESSAGE_ERROR,Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
     void asaliKineticMaker::exit()
     {
         this->hide();
-    }
-
-    std::string asaliKineticMaker::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
-    std::string asaliKineticMaker::getBeerShort()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
-        return beerShort_[i];
     }
 
     std::vector<std::string> asaliKineticMaker::splitString(const std::string txt, std::string ch)
@@ -1072,14 +1059,14 @@ namespace ASALI
     void asaliKineticMaker::missingSpecies(const std::string n)
     {
         Gtk::MessageDialog dialog(*this,n + " is missing!!",true,Gtk::MESSAGE_ERROR,Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
     void asaliKineticMaker::unknownOption(const std::string n)
     {
         Gtk::MessageDialog dialog(*this,n + " uknown option!!",true,Gtk::MESSAGE_ERROR,Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
     
@@ -1315,7 +1302,7 @@ namespace ASALI
     void asaliKineticMaker::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your kinetic scheme has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 

@@ -47,8 +47,7 @@ namespace ASALI
       exit_("Exit"),
       logo_("images/SmallLogo.png")
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        beerQuote_ = new ASALI::beerQuote();
 
         files_.resize(5);
 
@@ -314,21 +313,21 @@ namespace ASALI
     void chemkinConverter::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Conversion completed. Your file as been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
     void chemkinConverter::help()
     {
         Gtk::MessageDialog dialog(*this,"Problem in converting your scheme into CANTERA format?\nSend it to: ste.rebu@outlook.it\nWe will be glad to help you!",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
     void chemkinConverter::error(std::string type)
     {
         Gtk::MessageDialog dialog(*this,type+" is missing!!",true,Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
     
@@ -336,11 +335,11 @@ namespace ASALI
     {
         #if ASALI_ON_WINDOW == 0
           Gtk::MessageDialog dialog(*this,"Conversion stopped! The most common reasons for that are:\n1/Something is wrong with your input files.\n2/You have not load CANTERA enviornment",true,Gtk::MESSAGE_ERROR);
-          dialog.set_secondary_text(this->getBeerShort(),true);
+          dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
           dialog.run();
         #else
           Gtk::MessageDialog dialog(*this,"Conversion stopped!\nSomething is wrong with your input files.",true,Gtk::MESSAGE_ERROR);
-          dialog.set_secondary_text(this->getBeerShort(),true);
+          dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
           dialog.run(); 
         #endif
     }
@@ -535,20 +534,6 @@ namespace ASALI
        {
           mainStr.erase(pos, toErase.length());
        }
-    }
-
-    std::string chemkinConverter::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
-    std::string chemkinConverter::getBeerShort()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
-        return beerShort_[i];
     }
 
     chemkinConverter::~chemkinConverter()

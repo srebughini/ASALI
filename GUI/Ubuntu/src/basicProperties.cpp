@@ -54,8 +54,8 @@ namespace ASALI
       canteraInterface_(canteraInterface),
       speciesNames_(speciesNames)
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        beerQuote_ = new ASALI::beerQuote();
+        vectorUtils_ = new ASALI::asaliVectorUtils();
 
         //Input menu
         {
@@ -173,20 +173,6 @@ namespace ASALI
         doneButton_.set_label("Done");
         this->hide();
     }
-    
-    std::string basicProperties::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
-    std::string basicProperties::getBeerShort()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
-        return beerShort_[i];
-    }
 
     void basicProperties::inputReader()
     {
@@ -275,19 +261,19 @@ namespace ASALI
         if ( i == 4444 )
         {
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else if ( i == 4445 )
         {
             Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this,n_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
     }
@@ -295,7 +281,7 @@ namespace ASALI
     void basicProperties::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your file has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 

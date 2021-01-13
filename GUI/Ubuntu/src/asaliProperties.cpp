@@ -57,7 +57,7 @@ namespace ASALI
       doneButton_("Done"),
       type_("zero")
     {
-        #include "shared/Beer.H"
+        beerQuote_ = new ASALI::beerQuote();
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
@@ -685,7 +685,7 @@ namespace ASALI
     void asaliProperties::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your file has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
         dialog.run();
     }
 
@@ -1046,13 +1046,6 @@ namespace ASALI
     {
     }
  
-    std::string asaliProperties::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
     void asaliProperties::convertToCaption(std::string& n)
     {
         for(unsigned int i=0;i<26;i++)

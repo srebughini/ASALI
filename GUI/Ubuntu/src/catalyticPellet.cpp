@@ -141,7 +141,7 @@ namespace ASALI
 
                 //Beer
                 propertiesGrid_.attach(beerLabel_,0,4,3,2);
-                beerLabel_.set_text(this->getBeerShort());
+                beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                 beerLabel_.set_use_markup(true);
                 beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -358,7 +358,7 @@ namespace ASALI
     void catalyticPellet::pelletOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -385,7 +385,7 @@ namespace ASALI
     void catalyticPellet::modelOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -691,7 +691,7 @@ namespace ASALI
             if ( kinetic_->nReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = smallDialog.run();
 
                 //Handle the response:

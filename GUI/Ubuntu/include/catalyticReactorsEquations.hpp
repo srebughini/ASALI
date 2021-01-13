@@ -45,6 +45,7 @@
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
+#include "asaliVectorUtils.hpp"
 
 namespace ASALI
 {
@@ -108,11 +109,12 @@ class catalyticReactorsEquations
         bool heterogeneusReactions_;
         bool userCheck_;
 
-        Cantera::ThermoPhase*   gas_;
-        Cantera::Interface*     surface_;
-        Cantera::Kinetics*      kinetic_;
-        Cantera::Transport*     transport_;
-        ASALI::pythonInterface* pi_;
+        Cantera::ThermoPhase*    gas_;
+        Cantera::Interface*      surface_;
+        Cantera::Kinetics*       kinetic_;
+        Cantera::Transport*      transport_;
+        ASALI::pythonInterface*  pi_;
+        ASALI::asaliVectorUtils* vectorUtils_;
 
         std::vector<double>      QuserHom_;
         std::vector<double>      QuserHet_;

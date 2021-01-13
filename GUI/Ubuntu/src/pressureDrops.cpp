@@ -453,7 +453,7 @@ namespace ASALI
             this->add(mainBox_);
 
             this->run();
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -577,7 +577,7 @@ namespace ASALI
     
     void pressureDrops::dpConversion(unsigned int i)
     {
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 

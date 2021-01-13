@@ -36,11 +36,9 @@
 #                                                                                              #
 ##############################################################################################*/
 
+#ifndef BEERQUOTE_H
+#define BEERQUOTE_H
 
-#ifndef BASICPROPERTIES_H
-#define BASICPROPERTIES_H
-
-#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -52,80 +50,26 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <thread>
-#include "canteraInterface.hpp"
-#include "speciesPopup.hpp"
-#include "beerQuote.hpp"
-#include "asaliVectorUtils.hpp"
+#include <random>
 
 namespace ASALI
 {
-    class basicProperties : public Gtk::Window
+    class beerQuote
     {
         public:
-            basicProperties(ASALI::canteraInterface        *canteraInterface,
-                            ASALI::speciesPopup            *speciesNames,
-                            std::string                     kineticType);
-            
-            #include "shared/FileManager.H"
-            
-            virtual ~basicProperties();
+            beerQuote();
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
+            std::string getRandomQuote();
+            std::string getShortRandomQuote();
 
-            #include "shared/UnitConversion.H"
-            #include "shared/Vector.H"
+            virtual ~beerQuote();
 
-            void exit();
-            void availableSpecies();
-            void input();
-            void savedMessage();
-            void inputReader();
-            void checkInput(unsigned int i);
-            void title(std::string title);
-
-            Gtk::Button       helpButton_;
-            Gtk::Button       exitButton1_;
-            Gtk::Button       doneButton_;
-
-            Gtk::Grid         inputGrid_;
-
-            Gtk::Label        tempLabel_;
-            Gtk::Label        pressLabel_;
-            Gtk::Label        fractionLabel_;
-            
-            Gtk::Entry        tempEntry_;
-            Gtk::Entry        pressEntry_;
-
-            Gtk::ComboBoxText tempCombo_;
-            Gtk::ComboBoxText pressCombo_;
-            Gtk::ComboBoxText fractionCombo_;
-
-            std::vector<Gtk::Entry *> nameEntry_;
-            std::vector<Gtk::Entry *> fractionEntry_;
-
-            unsigned int NS_;
-            unsigned int OP_;
-            
-            double       T_;
-            double       p_;
-
-            std::pair<unsigned int,bool>  checkInput_;
-
-            std::vector<double>      x_;
-            std::vector<double>      y_;
-
-            std::vector<std::string>  n_;
-
-            std::string kineticType_;
-            
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-            ASALI::beerQuote               *beerQuote_;
-            ASALI::asaliVectorUtils        *vectorUtils_;
+        private:
+            unsigned int randomUnsignedInt(const unsigned int min, const unsigned int max);
+            unsigned int shortQuoteLength;
+        
+            std::vector<std::string>  beer_;
+            std::vector<std::string>  beerShort_;
     };
 }
 

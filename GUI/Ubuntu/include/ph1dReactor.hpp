@@ -44,6 +44,7 @@
 #include "odeInterface.hpp"
 #include "bvpInterface.hpp"
 #include "ph1dEquations.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
@@ -164,6 +165,7 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::ph1dEquations *eq_;
+            ASALI::beerQuote     *beerQuote_;
     };
 }
 

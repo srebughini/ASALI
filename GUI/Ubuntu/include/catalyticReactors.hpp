@@ -47,6 +47,7 @@
 #include "asaliCatalystProperties.hpp"
 #include "asaliPlot.hpp"
 #include "runBar.hpp"
+#include "asaliVectorUtils.hpp"
 
 namespace ASALI
 {
@@ -91,8 +92,6 @@ namespace ASALI
             
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
 
-            std::string getBeer();
-            std::string getBeerShort();
             std::string convertToTimeFormat(double t);
             
             std::vector<std::string> splitString(const std::string txt, std::string ch);
@@ -154,8 +153,6 @@ namespace ASALI
 
             std::vector<std::string>  n_;
             std::vector<std::string>  nc_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
 
             ASALI::canteraInterface        *canteraInterface_;
             ASALI::speciesPopup            *speciesNames_;
@@ -164,6 +161,8 @@ namespace ASALI
             ASALI::asaliPlot               *asaliPlot_;
             ASALI::runBar                  *bar_;
             ASALI::pythonInterface         *pi_;
+            ASALI::beerQuote               *beerQuote_;
+            ASALI::asaliVectorUtils        *vectorUtils_;
             
             Cantera::ThermoPhase     *thermo_;
             Cantera::Transport       *transport_;

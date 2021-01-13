@@ -70,10 +70,6 @@ namespace ASALI
       kineticType_(kineticType),
       inert_("NONE")
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
-
-
         if ( kineticType_ != "none" )
         {
             canteraInterface_    = new ASALI::canteraInterface(thermo_,transport_);
@@ -84,6 +80,8 @@ namespace ASALI
         asaliCatalystProperties_ = new ASALI::asaliCatalystProperties();
         asaliPlot_               = new ASALI::asaliPlot();
         bar_                     = new ASALI::runBar();
+        beerQuote_               = new ASALI::beerQuote();
+        vectorUtils_             = new ASALI::asaliVectorUtils();
 
         {
             this->set_border_width(15);
@@ -253,19 +251,19 @@ namespace ASALI
         if ( kineticType_ == "default" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else if ( kineticType_ == "load" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else if ( kineticType_ == "nokinetic" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else
@@ -303,23 +301,9 @@ namespace ASALI
         else
         {
             Gtk::MessageDialog dialog(*this,"No kinetic scheme implemented, please select ASALI kinetic type.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
             dialog.run();
         }
-    }
-
-    std::string catalyticReactors::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
-    std::string catalyticReactors::getBeerShort()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
-        return beerShort_[i];
     }
 
     std::string catalyticReactors::convertToTimeFormat(double t)
@@ -541,19 +525,19 @@ namespace ASALI
         {
             std::cout << i << std::endl;
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else if ( i == 4445 )
         {
             Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this,n_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(),true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
             dialog.run();
         }
     }
@@ -563,19 +547,19 @@ namespace ASALI
         if ( i == 4444 )
         {
             Gtk::MessageDialog dialog(*this,"Please, the sum of mass/mole fractions should be 1.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
             dialog.run();
         }
         else if ( i == 4445 )
         {
             Gtk::MessageDialog dialog(*this,"Something is wrong in your input, please fix it.",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this,nc_[i]+" is missing!!",true,Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(),true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
             dialog.run();
         }
     }
@@ -583,7 +567,7 @@ namespace ASALI
     void catalyticReactors::savedMessage()
     {
         Gtk::MessageDialog dialog(*this,"Your file has been saved.\nThank you for using ASALI.",true,Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(),true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
         dialog.run();
     }
 
@@ -631,7 +615,7 @@ namespace ASALI
                 if ( !check )
                 {
                     Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
-                    dialog.set_secondary_text(this->getBeerShort(),true);
+                    dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                     dialog.run();
                 }
             }
@@ -666,7 +650,7 @@ namespace ASALI
             pi_ = new ASALI::pythonInterface();
             
             Gtk::MessageDialog dialogBig(*this,"Please, load your ASALI kinetic file!",true,Gtk::MESSAGE_INFO);
-            dialogBig.set_secondary_text(this->getBeer(),true);
+            dialogBig.set_secondary_text(beerQuote_->getRandomQuote(),true);
             int resultsBig = dialogBig.run();
             
             switch(resultsBig)
@@ -683,7 +667,7 @@ namespace ASALI
                         if ( filename.substr(filename.length()-3,filename.length()) != ".py" )
                         {
                             Gtk::MessageDialog dialogSmall(*this,"Something is wrong in your ASALI kinetic file!",true,Gtk::MESSAGE_ERROR);
-                            dialogSmall.set_secondary_text(this->getBeer(),true);
+                            dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                             dialogSmall.run();
                         }
                         else
@@ -702,13 +686,13 @@ namespace ASALI
                             if ( check != "done" )
                             {
                                 Gtk::MessageDialog dialogSmall(*this,"Something is wrong in your ASALI kinetic file!",true,Gtk::MESSAGE_ERROR);
-                                dialogSmall.set_secondary_text(this->getBeer(),true);
+                                dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                                 dialogSmall.run();
                             }
                             else
                             {
                                 Gtk::MessageDialog dialogSmall(*this,"Your ASALI kinetic is loaded!",true,Gtk::MESSAGE_INFO);
-                                dialogSmall.set_secondary_text(this->getBeer(),true);
+                                dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                                 dialogSmall.run();
                                 
                                 if ( kineticType_ == "none" )
@@ -716,7 +700,7 @@ namespace ASALI
                                     if ( pi_->checkNames(inert_) == 1 && inert_ != "NONE")
                                     {
                                         Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
-                                        dialog.set_secondary_text(this->getBeerShort(),true);
+                                        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                                         dialog.run();
                                     }
                                     else
@@ -734,7 +718,7 @@ namespace ASALI
                                         if (check[i] == 1 )
                                         {
                                             Gtk::MessageDialog dialog(*this,pi_->getSpeciesName()[i] + " is missing in CANTERA transport/thermodynamic file!",true,Gtk::MESSAGE_WARNING);
-                                            dialog.set_secondary_text(this->getBeerShort(),true);
+                                            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                                             dialog.run();
                                         }
                                     }

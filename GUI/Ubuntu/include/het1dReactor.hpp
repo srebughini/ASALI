@@ -45,6 +45,7 @@
 #include "bvpInterface.hpp"
 #include "het1dEquations.hpp"
 
+
 namespace ASALI
 {
     class het1dReactor : public ASALI::catalyticReactors
@@ -220,6 +221,7 @@ namespace ASALI
             bool plotButtonBool_;
             
             ASALI::het1dEquations *eq_;
+            ASALI::beerQuote      *beerQuote_;
             
             sigc::connection run_;
     };

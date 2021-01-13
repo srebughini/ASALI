@@ -41,6 +41,7 @@
 #define PRESSUREDROPS_H
 
 #include "transportProperties.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
@@ -143,6 +144,8 @@ namespace ASALI
             std::vector<Gtk::Label*>        packedBedDpLabel_;
             std::vector<Gtk::Label*>        packedBedDpValueLabel_;
             std::vector<Gtk::ComboBoxText*> packedBedDpCombo_;
+            
+            ASALI::beerQuote *beerQuote_;
     };
 }
 

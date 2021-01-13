@@ -36,97 +36,75 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
-#ifndef BASICPROPERTIES_H
-#define BASICPROPERTIES_H
-
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
-#include "canteraInterface.hpp"
-#include "speciesPopup.hpp"
-#include "beerQuote.hpp"
 #include "asaliVectorUtils.hpp"
 
 namespace ASALI
 {
-    class basicProperties : public Gtk::Window
+    asaliVectorUtils::asaliVectorUtils()
     {
-        public:
-            basicProperties(ASALI::canteraInterface        *canteraInterface,
-                            ASALI::speciesPopup            *speciesNames,
-                            std::string                     kineticType);
+    }
+
+    double asaliVectorUtils::MaxElement(const std::vector<double> v)
+    {
+        double max = 0.;
+        
+        for (unsigned int i=0;i<v.size();i++)
+            max = std::max(v[i],max);
             
-            #include "shared/FileManager.H"
+        return max;
+    }
+
+    int asaliVectorUtils::MaxElement(const std::vector<int> v)
+    {
+        int max = 0.;
+        
+        for (unsigned int i=0;i<v.size();i++)
+            max = std::max(v[i],max);
             
-            virtual ~basicProperties();
+        return max;
+    }
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
-
-            #include "shared/UnitConversion.H"
-            #include "shared/Vector.H"
-
-            void exit();
-            void availableSpecies();
-            void input();
-            void savedMessage();
-            void inputReader();
-            void checkInput(unsigned int i);
-            void title(std::string title);
-
-            Gtk::Button       helpButton_;
-            Gtk::Button       exitButton1_;
-            Gtk::Button       doneButton_;
-
-            Gtk::Grid         inputGrid_;
-
-            Gtk::Label        tempLabel_;
-            Gtk::Label        pressLabel_;
-            Gtk::Label        fractionLabel_;
+    double asaliVectorUtils::MinElement(const std::vector<double> v)
+    {
+        double min = 1e64;
+        
+        for (unsigned int i=0;i<v.size();i++)
+            min = std::min(v[i],min);
             
-            Gtk::Entry        tempEntry_;
-            Gtk::Entry        pressEntry_;
+        return min;
+    }
 
-            Gtk::ComboBoxText tempCombo_;
-            Gtk::ComboBoxText pressCombo_;
-            Gtk::ComboBoxText fractionCombo_;
-
-            std::vector<Gtk::Entry *> nameEntry_;
-            std::vector<Gtk::Entry *> fractionEntry_;
-
-            unsigned int NS_;
-            unsigned int OP_;
+    double asaliVectorUtils::SumElements(const std::vector<double> v)
+    {
+        double sum = 0.;
+        
+        for (unsigned int i=0;i<v.size();i++)
+            sum = sum + v[i];
             
-            double       T_;
-            double       p_;
+        return sum;
+    }
 
-            std::pair<unsigned int,bool>  checkInput_;
+    double asaliVectorUtils::MeanValue(const std::vector<double> v)
+    {
+        return SumElements(v)/v.size();
+    }
 
-            std::vector<double>      x_;
-            std::vector<double>      y_;
+    double asaliVectorUtils::DotProduct(const std::vector<double> a,const std::vector<double> b)
+    {
+        return std::inner_product(a.begin(), a.end(), b.begin(),0);
+    }
 
-            std::vector<std::string>  n_;
+    std::vector<double> asaliVectorUtils::ElementByElementProduct(const std::vector<double> a,const std::vector<double> b)
+    {
+        std::vector<double> c(a.size());
 
-            std::string kineticType_;
-            
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-            ASALI::beerQuote               *beerQuote_;
-            ASALI::asaliVectorUtils        *vectorUtils_;
-    };
+        for (unsigned int i=0;i<a.size();i++)
+            c[i] = a[i]*b[i];
+
+        return c;
+    }
+
+    asaliVectorUtils::~asaliVectorUtils()
+    {
+    }
 }
-
-#endif

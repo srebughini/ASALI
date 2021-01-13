@@ -43,6 +43,7 @@
 #include "catalyticReactors.hpp"
 #include "odeInterface.hpp"
 #include "cstrEquations.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
@@ -147,6 +148,7 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::cstrEquations *eq_;
+            ASALI::beerQuote     *beerQuote_;
     };
 }
 
