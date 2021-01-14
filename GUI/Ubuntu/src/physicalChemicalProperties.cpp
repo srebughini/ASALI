@@ -338,7 +338,7 @@ namespace ASALI
 
     void physicalChemicalProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "properties.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "properties.asali");
         if ( filename != "" )
         {
             std::ofstream output;

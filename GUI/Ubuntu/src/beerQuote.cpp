@@ -219,13 +219,13 @@ namespace ASALI
 
     std::string beerQuote::getRandomQuote()
     {
-        unsigned int i = this->randomUnsignedInt(0, beer_.size());
+        unsigned int i = this->randomUnsignedInt(0, beer_.size()-1);
         return beer_[i];
     }
 
     std::string beerQuote::getShortRandomQuote()
     {
-        unsigned int i = this->randomUnsignedInt(0, beerShort_.size());
+        unsigned int i = this->randomUnsignedInt(0, beerShort_.size()-1);
         return beerShort_[i];
     }
 

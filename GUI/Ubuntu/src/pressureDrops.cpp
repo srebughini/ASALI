@@ -317,8 +317,8 @@ namespace ASALI
         L_     = Glib::Ascii::strtod(lengthEntry_.get_text());
         v_     = Glib::Ascii::strtod(velocityEntry_.get_text());
 
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_,velocityCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_,velocityCombo_.get_active_text());
 
         reactorType_ = reactorTypeCombo_.get_active_text();
         
@@ -326,11 +326,11 @@ namespace ASALI
         {
             Dt_ = Glib::Ascii::strtod(tubularTubeEntry_.get_text());
 
-            ConvertsToMeter(Dt_,tubularTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,tubularTubeCombo_.get_active_text());
 
             tw_      = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,tubularWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,tubularWallThicknessCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "packed bed" )
         {
@@ -338,15 +338,15 @@ namespace ASALI
             Dp_   = Glib::Ascii::strtod(packedBedParticleEntry_.get_text());
             epsi_ = Glib::Ascii::strtod(packedBedVoidFractionEntry_.get_text());
 
-            ConvertsToMeter(Dt_,packedBedTubeCombo_.get_active_text());
-            ConvertsToMeter(Dp_,packedBedParticleCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,packedBedTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dp_,packedBedParticleCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "honeycomb" )
         {
             cpsi_    = Glib::Ascii::strtod(honeyCombCPSIEntry_.get_text());
             tw_      = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
         }
     }
 
@@ -584,7 +584,7 @@ namespace ASALI
         if ( reactorType_ == "tubular")
         {
             double dp = dpTubular_;
-            ConvertsFromPascal(dp,tubularDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp,tubularDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -594,7 +594,7 @@ namespace ASALI
         else if ( reactorType_ == "honeycomb")
         {
             double dp = dpHoneyComb_;
-            ConvertsFromPascal(dp,honeyCombDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp,honeyCombDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -604,7 +604,7 @@ namespace ASALI
         else if ( reactorType_ == "packed bed")
         {
             double dp = dpPackedBed_[i];
-            ConvertsFromPascal(dp,packedBedDpCombo_[i]->get_active_text());
+            unitConversion_->fromPascal(dp,packedBedDpCombo_[i]->get_active_text());
             {
                 std::ostringstream s;
                 s << dp;

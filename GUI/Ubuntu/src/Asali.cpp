@@ -89,7 +89,10 @@ namespace ASALI
       smallLogo3_("images/SmallLogo.png"),
       smallLogo4_("images/SmallLogo.png")
     {
-		beerQuote_ = new ASALI::beerQuote();
+        beerQuote_      = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+        fileManager_    = new ASALI::asaliFileManager();
+        
         //First window
         {
             this->set_border_width(15);
@@ -404,7 +407,7 @@ namespace ASALI
 
     void Asali::kineticCheck()
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
         if ( filename != "" )
         {
             std::ifstream input;
@@ -450,7 +453,7 @@ namespace ASALI
 
     void Asali::loadCanteraInput()
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
         if ( filename != "" )
         {
             std::ifstream input;

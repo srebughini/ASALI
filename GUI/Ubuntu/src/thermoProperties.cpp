@@ -496,7 +496,7 @@ namespace ASALI
 
     void thermoProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "thermo.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "thermo.asali");
         if ( filename != "" )
         {
             std::ofstream output;

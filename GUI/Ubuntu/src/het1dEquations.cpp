@@ -367,7 +367,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -379,7 +379,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
                     
@@ -409,7 +409,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -421,7 +421,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
 
@@ -451,7 +451,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -463,7 +463,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03*(1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
 
@@ -502,7 +502,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter]    = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -520,7 +520,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -538,7 +538,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -585,7 +585,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter]    = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -603,7 +603,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -621,7 +621,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -670,7 +670,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter]    = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -688,7 +688,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -706,7 +706,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter]    = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }

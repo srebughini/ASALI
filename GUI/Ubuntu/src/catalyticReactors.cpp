@@ -82,6 +82,8 @@ namespace ASALI
         bar_                     = new ASALI::runBar();
         beerQuote_               = new ASALI::beerQuote();
         vectorUtils_             = new ASALI::asaliVectorUtils();
+        unitConversion_          = new ASALI::asaliUnitConversionUtils();
+        fileManager_             = new ASALI::asaliFileManager();
 
         {
             this->set_border_width(15);
@@ -356,8 +358,8 @@ namespace ASALI
         T_ = Glib::Ascii::strtod(tempEntry_.get_text());
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
 
-        ConvertsToKelvin(T_,tempCombo_.get_active_text());
-        ConvertsToPascal(p_,pressCombo_.get_active_text());
+        unitConversion_->toKelvin(T_,tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_,pressCombo_.get_active_text());
 
         std::vector<std::string>   n(NS_);
         std::vector<Glib::ustring> x(NS_);
@@ -416,7 +418,7 @@ namespace ASALI
             }
 
             {
-                double sum = SumElements(x_);
+                double sum = vectorUtils_->SumElements(x_);
                 for(unsigned int i=0;i<x_.size();i++)
                 {
                     x_[i] = x_[i]/sum;
@@ -497,7 +499,7 @@ namespace ASALI
                     }
 
                     {
-                        double sum = SumElements(xc_);
+                        double sum = vectorUtils_->SumElements(xc_);
                         for(unsigned int i=0;i<xc_.size();i++)
                         {
                             xc_[i] = xc_[i]/sum;
@@ -658,7 +660,7 @@ namespace ASALI
                 default:
                 {
                     dialogBig.hide();
-                    std::string filename = this->open_file(this->get_toplevel()->gobj());
+                    std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
                     if ( filename != "" )
                     {
                         std::ifstream input;
@@ -723,7 +725,7 @@ namespace ASALI
                                         }
                                     }
 
-                                    if ( MaxElement(check) == 0 )
+                                    if ( vectorUtils_->MaxElement(check) == 0 )
                                     {
                                         signal.disconnect();
                                         signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this,&catalyticReactors::recap));

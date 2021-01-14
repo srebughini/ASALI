@@ -54,8 +54,10 @@ namespace ASALI
       canteraInterface_(canteraInterface),
       speciesNames_(speciesNames)
     {
-        beerQuote_ = new ASALI::beerQuote();
-        vectorUtils_ = new ASALI::asaliVectorUtils();
+        beerQuote_      = new ASALI::beerQuote();
+        vectorUtils_    = new ASALI::asaliVectorUtils();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+        fileManager_    = new ASALI::asaliFileManager();
 
         //Input menu
         {
@@ -179,8 +181,8 @@ namespace ASALI
         T_ = Glib::Ascii::strtod(tempEntry_.get_text());
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
 
-        ConvertsToKelvin(T_,tempCombo_.get_active_text());
-        ConvertsToPascal(p_,pressCombo_.get_active_text());
+        unitConversion_->toKelvin(T_,tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_,pressCombo_.get_active_text());
 
         std::vector<std::string>   n(NS_);
         std::vector<Glib::ustring> x(NS_);
@@ -235,7 +237,7 @@ namespace ASALI
                 }
 
                 {
-                    double sum = SumElements(x_);
+                    double sum = vectorUtils_->SumElements(x_);
                     for(unsigned int i=0;i<x_.size();i++)
                     {
                         x_[i] = x_[i]/sum;

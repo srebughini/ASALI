@@ -52,14 +52,13 @@
 #include <algorithm>
 #include <limits>
 #include "beerQuote.hpp"
+#include "asaliUnitConversionUtils.hpp"
 
 namespace ASALI
 {
     class asaliProperties : public Gtk::Window
     {
         public:
-            #include "shared/UnitConversion.H"
-        
             asaliProperties();
             
             void destroy();
@@ -87,7 +86,6 @@ namespace ASALI
             double               get_MWmix(const std::vector<double> MW, const std::vector<double> x);
             
             std::string          get_type() {return type_;};
-
 
             virtual ~asaliProperties();
             
@@ -156,7 +154,8 @@ namespace ASALI
             double                    cond_;
             double                    mu_;
             
-            ASALI::beerQuote          *beerQuote_;
+            ASALI::beerQuote                  *beerQuote_;
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
     };
 }
 

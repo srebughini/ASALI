@@ -57,7 +57,8 @@ namespace ASALI
       doneButton_("Done"),
       type_("zero")
     {
-        beerQuote_ = new ASALI::beerQuote();
+        beerQuote_      = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
@@ -995,7 +996,7 @@ namespace ASALI
             }
 
             mu_ = Glib::Ascii::strtod(muEntry_.get_text());
-            ConvertsToPascalPerSecond(mu_,muCombo_.get_active_text());
+            unitConversion_->toPascalPerSecond(mu_,muCombo_.get_active_text());
 
             if ( energy_ == "on" )
             {

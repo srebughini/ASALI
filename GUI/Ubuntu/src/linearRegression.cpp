@@ -284,8 +284,8 @@ namespace ASALI
             {
                 double T1 = Glib::Ascii::strtod(tempEntry1_.get_text());
                 double T2 = Glib::Ascii::strtod(tempEntry2_.get_text());
-                ConvertsToKelvin(T1,tempCombo_.get_active_text());
-                ConvertsToKelvin(T2,tempCombo_.get_active_text());
+                unitConversion_->toKelvin(T1,tempCombo_.get_active_text());
+                unitConversion_->toKelvin(T2,tempCombo_.get_active_text());
                 
                 double Tmax = std::max(T1,T2);
                 double Tmin = std::min(T1,T2);
@@ -437,14 +437,14 @@ namespace ASALI
 
     void linearRegression::leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2)
     {
-        m = (x.size()*SumElements(ElementByElementProduct(x,y)) - SumElements(x)*SumElements(y))/(x.size()*SumElements(ElementByElementProduct(x,x)) - std::pow(SumElements(x),2.));
-        q = (SumElements(y)*SumElements(ElementByElementProduct(x,x)) - SumElements(x)*SumElements(ElementByElementProduct(x,y)))/(x.size()*SumElements(ElementByElementProduct(x,x)) - std::pow(SumElements(x),2.));
+        m = (x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,y)) - vectorUtils_->SumElements(x)*vectorUtils_->SumElements(y))/(x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - std::pow(vectorUtils_->SumElements(x),2.));
+        q = (vectorUtils_->SumElements(y)*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - vectorUtils_->SumElements(x)*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,y)))/(x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - std::pow(vectorUtils_->SumElements(x),2.));
 
         double tss = 0.;
         double rss = 0.;
         for (unsigned int i=0;i<x.size();i++)
         {
-            tss = tss + std::pow((y[i] - MeanValue(y)),2.);
+            tss = tss + std::pow((y[i] - vectorUtils_->MeanValue(y)),2.);
             rss = rss + std::pow((y[i] - m*x[i] - q),2.);
         }
 

@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "asaliUnitConversionUtils.hpp"
 
 namespace ASALI
 {
@@ -61,8 +62,6 @@ namespace ASALI
             
             void doneInput();
 
-            #include "shared/UnitConversion.H"
-            
             double get_rho()  {return rho_;};
             double get_cond() {return cond_;};
             double get_cp()   {return cp_;};
@@ -103,6 +102,9 @@ namespace ASALI
             double cond_;
             double alfa_;
             double T_;
+
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
+
     };
 }
 

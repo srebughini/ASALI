@@ -281,10 +281,10 @@ namespace ASALI
         tf_   = Glib::Ascii::strtod(timeEntry_.get_text());
         dt_   = Glib::Ascii::strtod(saveEntry_.get_text());
 
-        ConvertsToCubeMeter(V_,volumeCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_,loadCombo_.get_active_text());
-        ConvertsToSecond(tf_,timeCombo_.get_active_text());
-        ConvertsToSecond(dt_,saveCombo_.get_active_text());
+        unitConversion_->toCubeMeter(V_,volumeCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_,loadCombo_.get_active_text());
+        unitConversion_->toSecond(tf_,timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_,saveCombo_.get_active_text());
 
         energy_     = energyCombo_.get_active_text();
     }
@@ -712,7 +712,7 @@ namespace ASALI
     
     void batchReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "batch.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "batch.asali");
         if ( filename != "" )
         {
             std::ofstream output;

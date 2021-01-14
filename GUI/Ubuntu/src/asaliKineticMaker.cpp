@@ -78,6 +78,7 @@ namespace ASALI
       restart_(true)
     {
         vectorUtils_ = new ASALI::asaliVectorUtils();
+        fileManager_ = new ASALI::asaliFileManager();
 
         {
             op_.push_back("+");
@@ -1072,7 +1073,7 @@ namespace ASALI
     
     void asaliKineticMaker::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "kinetic.py");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "kinetic.py");
         if ( filename != "" )
         {
             if ( filename.substr(filename.length()-3,filename.length()) != ".py" )

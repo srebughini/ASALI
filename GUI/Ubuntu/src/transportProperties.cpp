@@ -458,7 +458,7 @@ namespace ASALI
 
     void transportProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "transport.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "transport.asali");
         if ( filename != "" )
         {
             std::ofstream output;

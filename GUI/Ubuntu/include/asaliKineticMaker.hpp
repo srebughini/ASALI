@@ -43,6 +43,7 @@
 #include "canteraInterface.hpp"
 #include "beerQuote.hpp"
 #include "asaliVectorUtils.hpp"
+#include "asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -50,9 +51,7 @@ namespace ASALI
     {
         public:
             asaliKineticMaker();
-            
-            #include "shared/FileManager.H"
-            
+
             void species();
             void reactionNumber();
             void reaction();
@@ -60,8 +59,6 @@ namespace ASALI
             void recap();
             void save();
             void exit();
-
-            #include "shared/Vector.H"
 
             virtual ~asaliKineticMaker();
             
@@ -138,6 +135,7 @@ namespace ASALI
             ASALI::canteraInterface   *canteraInterface_;
             ASALI::beerQuote          *beerQuote_;
             ASALI::asaliVectorUtils   *vectorUtils_;
+            ASALI::asaliFileManager   *fileManager_;
 
             unsigned int NR_;
             unsigned int NC_;

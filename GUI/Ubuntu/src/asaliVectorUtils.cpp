@@ -86,7 +86,7 @@ namespace ASALI
 
     double asaliVectorUtils::MeanValue(const std::vector<double> v)
     {
-        return SumElements(v)/v.size();
+        return this->SumElements(v)/v.size();
     }
 
     double asaliVectorUtils::DotProduct(const std::vector<double> a,const std::vector<double> b)

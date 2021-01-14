@@ -36,11 +36,9 @@
 #                                                                                              #
 ##############################################################################################*/
 
+#ifndef ASALIUNITCONVERSIONUTILS_H
+#define ASALIUNITCONVERSIONUTILS_H
 
-#ifndef BASICPROPERTIES_H
-#define BASICPROPERTIES_H
-
-#include <gtkmm.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
@@ -52,79 +50,36 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <thread>
-#include "canteraInterface.hpp"
-#include "speciesPopup.hpp"
-#include "beerQuote.hpp"
-#include "asaliVectorUtils.hpp"
-#include "asaliUnitConversionUtils.hpp"
-#include "asaliFileManager.hpp"
+#include <numeric>
+#include <functional>
+
 
 namespace ASALI
 {
-    class basicProperties : public Gtk::Window
+    class asaliUnitConversionUtils
     {
         public:
-            basicProperties(ASALI::canteraInterface        *canteraInterface,
-                            ASALI::speciesPopup            *speciesNames,
-                            std::string                     kineticType);
-            
-            virtual ~basicProperties();
+            asaliUnitConversionUtils();
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
+			void toMeter(double &v, std::string m);
+			void toKg(double &v, std::string m);
+			void toWattPerMeterPerKelvin(double &v, std::string m);
+			void toKgPerCubeMeter(double &v, std::string m);
+			void toJoulePerKgPerKelvin(double &v, std::string m);
+			void toPascalPerSecond(double &v, std::string m);
+			void toSecond(double &v, std::string m);
+			void toPascal(double &v, std::string m);
+			void toKelvin(double &v, std::string m);
+			void toCubeMeter(double &v, std::string m);
+			void toSquareMeter(double &v, std::string m);
+			void toOneOverMeter(double &v, std::string m);
+			void toMeterPerSecond(double &v, std::string m);
+			void toCubeMeterPerSecond(double &v, std::string m);
 
-            void exit();
-            void availableSpecies();
-            void input();
-            void savedMessage();
-            void inputReader();
-            void checkInput(unsigned int i);
-            void title(std::string title);
+			void fromPascal(double &v, std::string m);
+			void fromMeter(double &v, std::string m);
 
-            Gtk::Button       helpButton_;
-            Gtk::Button       exitButton1_;
-            Gtk::Button       doneButton_;
-
-            Gtk::Grid         inputGrid_;
-
-            Gtk::Label        tempLabel_;
-            Gtk::Label        pressLabel_;
-            Gtk::Label        fractionLabel_;
-            
-            Gtk::Entry        tempEntry_;
-            Gtk::Entry        pressEntry_;
-
-            Gtk::ComboBoxText tempCombo_;
-            Gtk::ComboBoxText pressCombo_;
-            Gtk::ComboBoxText fractionCombo_;
-
-            std::vector<Gtk::Entry *> nameEntry_;
-            std::vector<Gtk::Entry *> fractionEntry_;
-
-            unsigned int NS_;
-            unsigned int OP_;
-            
-            double       T_;
-            double       p_;
-
-            std::pair<unsigned int,bool>  checkInput_;
-
-            std::vector<double>      x_;
-            std::vector<double>      y_;
-
-            std::vector<std::string>  n_;
-
-            std::string kineticType_;
-            
-            ASALI::canteraInterface           *canteraInterface_;
-            ASALI::speciesPopup               *speciesNames_;
-            ASALI::beerQuote                  *beerQuote_;
-            ASALI::asaliVectorUtils           *vectorUtils_;
-            ASALI::asaliUnitConversionUtils   *unitConversion_;
-            ASALI::asaliFileManager           *fileManager_;
+            virtual ~asaliUnitConversionUtils();
     };
 }
 

@@ -47,7 +47,8 @@ namespace ASALI
       exit_("Exit"),
       logo_("images/SmallLogo.png")
     {
-        beerQuote_ = new ASALI::beerQuote();
+        beerQuote_   = new ASALI::beerQuote();
+        fileManager_ = new ASALI::asaliFileManager();
 
         files_.resize(5);
 
@@ -138,7 +139,7 @@ namespace ASALI
         }
         else
         {
-            std::string dialogname = this->save_file(this->get_toplevel()->gobj(), "*.cti");
+            std::string dialogname = fileManager_->saveFile(this->get_toplevel()->gobj(), "*.cti");
             if ( dialogname != "" )
             {
                 this->eraseSubString(dialogname,".xml");
@@ -263,7 +264,7 @@ namespace ASALI
 
     void chemkinConverter::load(int index)
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
         if ( filename != "" )
         {
             std::string command;

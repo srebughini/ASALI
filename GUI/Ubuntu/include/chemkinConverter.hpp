@@ -52,6 +52,7 @@
 #include <algorithm>
 #include <limits>
 #include "beerQuote.hpp"
+#include "asaliFileManager.hpp"
 
 #if ASALI_ON_WINDOW == 1
 #include <windows.h>
@@ -63,9 +64,7 @@ namespace ASALI
     {
         public:
             chemkinConverter();
-            
-            #include "shared/FileManager.H"
-            
+
             virtual ~chemkinConverter();
             
         private:
@@ -97,7 +96,8 @@ namespace ASALI
             
             std::vector<std::string>  files_;
             
-            ASALI::beerQuote  *beerQuote_;
+            ASALI::beerQuote        *beerQuote_;
+            ASALI::asaliFileManager *fileManager_;
     };
 }
 

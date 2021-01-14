@@ -448,10 +448,10 @@ namespace ASALI
         tau_   = Glib::Ascii::strtod(tauEntry_.get_text());
         L_     = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        ConvertsToSecond(tf_,timeCombo_.get_active_text());
-        ConvertsToSecond(dt_,saveCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_,loadCombo_.get_active_text());
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toSecond(tf_,timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_,saveCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_,loadCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
 
         pelletType_  = pelletTypeCombo_.get_active_text();
         modelType_   = modelTypeCombo_.get_active_text();
@@ -465,7 +465,7 @@ namespace ASALI
         else if ( modelTypeCombo_.get_active_row_number() == 1 )
         {
             dp_ = Glib::Ascii::strtod(poreEntry_.get_text());
-            ConvertsToMeter(dp_,poreCombo_.get_active_text());
+            unitConversion_->toMeter(dp_,poreCombo_.get_active_text());
         }
     }
 
@@ -1094,7 +1094,7 @@ namespace ASALI
     
     void catalyticPellet::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "pellet.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "pellet.asali");
         if ( filename != "" )
         {
             std::ofstream output;

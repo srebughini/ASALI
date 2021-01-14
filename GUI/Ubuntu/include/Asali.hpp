@@ -55,6 +55,8 @@
 #include "catalyticPellet.hpp"
 #include "asaliKineticMaker.hpp"
 #include "beerQuote.hpp"
+#include "asaliUnitConversionUtils.hpp"
+#include "asaliFileManager.hpp"
 #include <gtk/gtk.h>
 
 namespace ASALI
@@ -65,10 +67,7 @@ namespace ASALI
             Asali();
             
             virtual ~Asali();
-            
-            #include "shared/UnitConversion.H"
-            #include "shared/FileManager.H"
-            
+
         private:
             void exit();
             void discrimer();
@@ -191,5 +190,7 @@ namespace ASALI
             ASALI::catalyticPellet            *pelletMenu_;
             ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
             ASALI::beerQuote                  *beerQuote_;
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
+            ASALI::asaliFileManager           *fileManager_;
     };
 }

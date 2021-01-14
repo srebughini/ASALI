@@ -314,7 +314,7 @@ namespace ASALI
 
     void equilibriumCalculator::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "equilibrium.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "equilibrium.asali");
         if ( filename != "" )
         {
             std::ofstream output;

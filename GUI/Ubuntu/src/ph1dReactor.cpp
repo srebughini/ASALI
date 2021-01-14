@@ -339,11 +339,11 @@ namespace ASALI
         dt_   = Glib::Ascii::strtod(saveEntry_.get_text());
         NP_   = Glib::Ascii::strtod(pointsEntry_.get_text());
 
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_,velocityCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_,loadCombo_.get_active_text());
-        ConvertsToSecond(tf_,timeCombo_.get_active_text());
-        ConvertsToSecond(dt_,saveCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_,velocityCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_,loadCombo_.get_active_text());
+        unitConversion_->toSecond(tf_,timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_,saveCombo_.get_active_text());
 
         resolution_ = resolutionCombo_.get_active_text();
         energy_     = energyCombo_.get_active_text();
@@ -1090,7 +1090,7 @@ namespace ASALI
     
     void ph1dReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "pseudo-hom.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "pseudo-hom.asali");
         if ( filename != "" )
         {
             std::ofstream output;

@@ -36,96 +36,63 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
-#ifndef BASICPROPERTIES_H
-#define BASICPROPERTIES_H
-
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
-#include "canteraInterface.hpp"
-#include "speciesPopup.hpp"
-#include "beerQuote.hpp"
-#include "asaliVectorUtils.hpp"
-#include "asaliUnitConversionUtils.hpp"
 #include "asaliFileManager.hpp"
 
 namespace ASALI
 {
-    class basicProperties : public Gtk::Window
+    asaliFileManager::asaliFileManager()
     {
-        public:
-            basicProperties(ASALI::canteraInterface        *canteraInterface,
-                            ASALI::speciesPopup            *speciesNames,
-                            std::string                     kineticType);
-            
-            virtual ~basicProperties();
+    }
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
+	std::string asaliFileManager::saveFile(gpointer window, std::string current_file_name)
+	{
+		GtkWindow *parent_window = GTK_WINDOW(window);
+		GtkFileChooserNative *native;
+		GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+		gint res;
 
-            void exit();
-            void availableSpecies();
-            void input();
-            void savedMessage();
-            void inputReader();
-            void checkInput(unsigned int i);
-            void title(std::string title);
+		native = gtk_file_chooser_native_new("Save File", parent_window, action, "_Save", "_Cancel");
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(native), current_file_name.c_str());
+		res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(native));
+		if (res == GTK_RESPONSE_ACCEPT)
+		{
+			char *filename;
+			GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
+			filename = gtk_file_chooser_get_filename(chooser);
+			g_object_unref (native);
+			return std::string(filename);
+		}
+		else
+		{
+			return "";
+		}
+	}
 
-            Gtk::Button       helpButton_;
-            Gtk::Button       exitButton1_;
-            Gtk::Button       doneButton_;
 
-            Gtk::Grid         inputGrid_;
+	std::string asaliFileManager::openFile(gpointer window)
+	{
+		GtkWindow *parent_window = GTK_WINDOW(window);
+		GtkFileChooserNative *native;
+		GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+		gint res;
 
-            Gtk::Label        tempLabel_;
-            Gtk::Label        pressLabel_;
-            Gtk::Label        fractionLabel_;
-            
-            Gtk::Entry        tempEntry_;
-            Gtk::Entry        pressEntry_;
+		native = gtk_file_chooser_native_new ("Open File", parent_window, action, "_Open", "_Cancel");
+		res = gtk_native_dialog_run (GTK_NATIVE_DIALOG (native));
+		if (res == GTK_RESPONSE_ACCEPT)
+		{
+			char* filename;
+			GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+			filename = gtk_file_chooser_get_filename(chooser);
+			g_object_unref(native);
+			return std::string(filename);
+		}
+		else
+		{
+			return "";
+		}
+	}
 
-            Gtk::ComboBoxText tempCombo_;
-            Gtk::ComboBoxText pressCombo_;
-            Gtk::ComboBoxText fractionCombo_;
-
-            std::vector<Gtk::Entry *> nameEntry_;
-            std::vector<Gtk::Entry *> fractionEntry_;
-
-            unsigned int NS_;
-            unsigned int OP_;
-            
-            double       T_;
-            double       p_;
-
-            std::pair<unsigned int,bool>  checkInput_;
-
-            std::vector<double>      x_;
-            std::vector<double>      y_;
-
-            std::vector<std::string>  n_;
-
-            std::string kineticType_;
-            
-            ASALI::canteraInterface           *canteraInterface_;
-            ASALI::speciesPopup               *speciesNames_;
-            ASALI::beerQuote                  *beerQuote_;
-            ASALI::asaliVectorUtils           *vectorUtils_;
-            ASALI::asaliUnitConversionUtils   *unitConversion_;
-            ASALI::asaliFileManager           *fileManager_;
-    };
+    asaliFileManager::~asaliFileManager()
+    {
+    }
 }
-
-#endif

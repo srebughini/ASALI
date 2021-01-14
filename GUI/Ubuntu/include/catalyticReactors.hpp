@@ -48,6 +48,7 @@
 #include "asaliPlot.hpp"
 #include "runBar.hpp"
 #include "asaliVectorUtils.hpp"
+#include "asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -59,10 +60,6 @@ namespace ASALI
                               Cantera::Kinetics    *kinetic,
                               Cantera::Interface   *surface,
                               std::string           kineticType);
-
-            #include "shared/UnitConversion.H"
-            #include "shared/Vector.H"
-            #include "shared/FileManager.H"
 
             virtual ~catalyticReactors();
 
@@ -154,15 +151,17 @@ namespace ASALI
             std::vector<std::string>  n_;
             std::vector<std::string>  nc_;
 
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-            ASALI::asaliProperties         *asaliProperties_;
-            ASALI::asaliCatalystProperties *asaliCatalystProperties_;
-            ASALI::asaliPlot               *asaliPlot_;
-            ASALI::runBar                  *bar_;
-            ASALI::pythonInterface         *pi_;
-            ASALI::beerQuote               *beerQuote_;
-            ASALI::asaliVectorUtils        *vectorUtils_;
+            ASALI::canteraInterface          *canteraInterface_;
+            ASALI::speciesPopup              *speciesNames_;
+            ASALI::asaliProperties           *asaliProperties_;
+            ASALI::asaliCatalystProperties   *asaliCatalystProperties_;
+            ASALI::asaliPlot                 *asaliPlot_;
+            ASALI::runBar                    *bar_;
+            ASALI::pythonInterface           *pi_;
+            ASALI::beerQuote                 *beerQuote_;
+            ASALI::asaliVectorUtils          *vectorUtils_;
+            ASALI::asaliUnitConversionUtils  *unitConversion_;
+            ASALI::asaliFileManager          *fileManager_;
             
             Cantera::ThermoPhase     *thermo_;
             Cantera::Transport       *transport_;

@@ -54,8 +54,6 @@ class catalyticReactorsEquations
     public:
         catalyticReactorsEquations();
 
-        #include "shared/Vector.H"
-
         void setCanteraThermo(Cantera::ThermoPhase*    gas);
         
         void setCanteraInterface(Cantera::Interface*   surface);
