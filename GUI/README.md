@@ -97,3 +97,11 @@ To run Asali:
 
 ### 2.2 Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
+
+### 2.3 Docker
+##### 2.3.1 Docker on Linux OS
+Install docker --> TODO how
+```bash
+sudo docker build . -t asali
+sudo docker run asali:latest
+```
