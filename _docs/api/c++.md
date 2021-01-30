@@ -139,5 +139,5 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 | *Unit dimensions*   |m|
 | **`asali.binaryDiffusion()`** | |
 | *Estimated property*|Single binary diffusion|
-| *Return type*       |`std::vector<std::vector<double> >`|
+| *Return type*       |`std::vector<std::vector<double>>`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
