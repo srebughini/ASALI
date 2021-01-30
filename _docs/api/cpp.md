@@ -1,43 +1,41 @@
 ---
-permalink: /docs/api-c/
+permalink: /docs/api-cpp/
 redirect_from: /docs/index.html
 ---
 
-# **C version**
-The C API can be included in your code as follow:  
-```c
+# **C++ version**
+The C++ API can be included in your code as follow:  
+```cpp
 //Include library
 #include "Asali.h"
 
 //Main
 int main()
 {
-    //Create composition using Asali vectors format
-    AsaliVector x,names;
-    double X[3] = {0.1, 0.2, 0.7};
-    empty_vector_of_char(&names,3);
-    set_vector_element_from_char(&names,0,"H2");
-    set_vector_element_from_char(&names,1,"O2");
-    set_vector_element_from_char(&names,2,"N2");
-    vector_from_double_array(&x,3,X);
+    //Create composition using std vectors
+    std::vector<std::string> names(3);
+    std::vector<double> x(3);
+
+    names[0] = "H2";
+    names[1] = "O2";
+    names[2] = "N2";
+
+    x[0] = 0.1;
+    x[1] = 0.2;
+    x[2] = 1. - x[0] - x[1];
 
     //Initialize Asali
-    Asali asali;
-    initialize(&asali);
+    ASALI::Asali asali;
 
     //Set up composition/pressure and temperature
-    set_temperature(&asali,393.15);
-    set_pressure(&asali,4e05);
-    set_number_of_species(&asali,get_vector_size(&x));
-    set_species_names(&asali,names);
-    set_mole_fraction(&asali,x);
+    asali.setSpecies(names);
+    asali.setTemperature(393.15); //K
+    asali.setPressure(4e05); //Pa
+    asali.setMoleFraction(x);
 
     //Properties evaluation
-    AsaliVector cp;
-    AsaliMatrix diff;
-
-    diff = get_binary_diffusion(&asali);
-    cp = get_species_mass_specific_heat(&asali);
+    std::vector<std::vector<double>> diff = asali.binaryDiffusion();
+    std::vector<double>              cp   = asali.speciesMassCp();
     return 0;
 }
 ```
@@ -55,91 +53,91 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 
 | | |
 |:-|:-|
-| **`get_density(&asali)`** | |
+| **`asali.density()`** | |
 | *Estimated property*|Mixture density|
 | *Return type*       |`double`|
 | *Unit dimensions*   |kg/m<sup>3</sup>|
-| **`get_mixture_molecular_weight(&asali)`** | |
+| **`asali.mixtureMolecularWeight()`** | |
 | *Estimated property*|Mixture molecular weight |
 | *Return type*       |`double`|
 | *Unit dimensions*   |g/mol|
-| **`get_mixture_thermal_conductivity(&asali)`** | |
+| **`asali.mixtureThermalConductivity()`** | |
 | *Estimated property*|Mixture thermal conductivity |
 | *Return type*       |`double`|
 | *Unit dimensions*   |W/m/K|
-| **`get_mixture_viscosity(&asali)`** | |
+| **`asali.mixtureViscosity()`** | |
 | *Estimated property*|Mixture viscosity |
 | *Return type*       |`double`|
 | *Unit dimensions*   |Pa*s|
-| **`get_mixture_molar_specific_heat(&asali)`** | |
+| **`asali.mixtureMolarCp()`** | |
 | *Estimated property*|Mixture specific heat |
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol/K|
-| **`get_mixture_mass_specific_heat(&asali)`** | |
+| **`asali.mixtureMassCp()`** | |
 | *Estimated property*|Mixture specific heat |
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg/K|
-| **`get_mixture_molar_enthalpy(&asali)`** | |
+| **`asali.mixtureMolarEnthalpy()`** | |
 | *Estimated property*|Mixture enthalpy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol|
-| **`get_mixture_mass_enthalpy(&asali)`** | |
+| **`asali.mixtureMassEnthalpy()`** | |
 | *Estimated property*|Mixture enthalpy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg|
-| **`get_mixture_molar_entropy(&asali)`** | |
+| **`asali.mixtureMolarEntropy()`** | |
 | *Estimated property*|Mixture entropy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kmol/K|
-| **`get_mixture_mass_entropy(&asali)`** | |
+| **`asali.mixtureMassEntropy()`** | |
 | *Estimated property*|Mixture entropy|
 | *Return type*       |`double`|
 | *Unit dimensions*   |J/kg/K|
-| **`get_mixture_diffusion(&asali)`** | |
+| **`asali.mixtureDiffusion()`** | |
 | *Estimated property*|Mixture diffusivity|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
-| **`get_species_thermal_conductivity(&asali)`** | |
+| **`asali.speciesThermalConductivity()`** | |
 | *Estimated property*|Single specie thermal conductivity|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |W/m/K|
-| **`get_species_viscosity(&asali)`** | |
+| **`asali.speciesViscosity()`** | |
 | *Estimated property*|Single specie viscosity|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |Pa*s|
-| **`get_species_molar_specific_heat(&asali)`** | |
+| **`asali.speciesMolarCp()`** | |
 | *Estimated property*|Single specie specific heat|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kmol/K|
-| **`get_species_mass_specific_heat(&asali)`** | |
+| **`asali.speciesMassCp()`** | |
 | *Estimated property*|Single specie specific heat|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kg/K|
-| **`get_species_molar_enthalpy(&asali)`** | |
+| **`asali.speciesMolarEnthalpy()`** | |
 | *Estimated property*|Single specie enthalpy|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kmol|
-| **`get_species_mass_enthalpy(&asali)`** | |
+| **`asali.speciesMassEnthalpy()`** | |
 | *Estimated property*|Single specie enthalpy|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kg|
-| **`get_species_molar_entropy(&asali)`** | |
+| **`asali.speciesMolarEntropy()`** | |
 | *Estimated property*|Single specie entropy|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kmol/K|
-| **`get_species_mass_entropy(&asali)`** | |
+| **`asali.speciesMassEntropy()`** | |
 | *Estimated property*|Single specie entropy|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |J/kg/K|
-| **`get_arithmetic_mean_gas_velocity(&asali)`** | |
+| **`asali.arithmeticMeanGasVelocity()`** | |
 | *Estimated property*|Single gas velocity|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |m/s|
-| **`get_mean_free_path(&asali)`** | |
+| **`asali.meanFreePath()`** | |
 | *Estimated property*|Single mean free path|
-| *Return type*       |`AsaliVector`|
+| *Return type*       |`std::vector<double>`|
 | *Unit dimensions*   |m|
-| **`get_binary_diffusion(&asali)`** | |
+| **`asali.binaryDiffusion()`** | |
 | *Estimated property*|Single binary diffusion|
-| *Return type*       |`AsaliMatrix`|
+| *Return type*       |`std::vector<std::vector<double> >`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
