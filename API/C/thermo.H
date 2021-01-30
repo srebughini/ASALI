@@ -9178,6 +9178,26 @@ void thermo_update(Asali* asali_)
 		asali_->thermo_[435].low[5] = 6.0020937500e+04;
 		asali_->thermo_[435].low[6] = 2.9624124527e+01;
 		
+		asali_->thermo_[436].name = (char*) malloc(7 * sizeof(char));
+		strcpy(asali_->thermo_[436].name,"BENZYNE");
+
+		asali_->thermo_[436].high = (float*) malloc(7 * sizeof(float));
+		asali_->thermo_[436].high[0] = 1.0946581841e+01;
+		asali_->thermo_[436].high[1] = 1.5037324280e-02;
+		asali_->thermo_[436].high[2] = -5.2784494073e-06;
+		asali_->thermo_[436].high[3] = 8.1460760359e-10;
+		asali_->thermo_[436].high[4] = -4.4907335500e-14;
+		asali_->thermo_[436].high[5] = 5.0330140625e+04;
+		asali_->thermo_[436].high[6] = -3.5378292084e+01;
+
+		asali_->thermo_[436].low = (float*) malloc(7 * sizeof(float));
+		asali_->thermo_[436].low[0] = -3.7379617691e+00;
+		asali_->thermo_[436].low[1] = 5.6993164122e-02;
+		asali_->thermo_[436].low[2] = -5.0231134082e-05;
+		asali_->thermo_[436].low[3] = 2.2220648432e-08;
+		asali_->thermo_[436].low[4] = -3.8674146351e-12;
+		asali_->thermo_[436].low[5] = 5.4441812500e+04;
+		asali_->thermo_[436].low[6] = 4.0407081604e+01;
 		
 		asali_->thermo_[437].name = (char*) malloc(8 * sizeof(char));
 		strcpy(asali_->thermo_[437].name,"NC10MOOH");

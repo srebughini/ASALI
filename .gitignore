@@ -4,6 +4,10 @@ Asali
 __*
 API/C/example
 API/C/database-generator
+API/Cpp/example
+API/Cpp/database-generator
 API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/*.mod
+API/elapsedTimeComparison/*.mod
+API/elapsedTimeComparison/asali-*
