@@ -2,17 +2,40 @@
 # We use the keyword 'FROM' to do that.
 # In our example, we want import the python image.
 # So we write 'python' for the image name and 'latest' for the version.
-FROM python:3.8.7-buster
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
 
 # In order to launch our python code, we must import it into our image.
 # We use the keyword 'COPY' to do that.
 # The first parameter 'main.py' is the name of the file on the host.
 # The second parameter '/' is the path where to put the file on the image.
 # Here we put the file at the image root folder.
-RUN apt-get update -y
-RUN apt-get install apt-utils g++  git scons build-essential gfortran libboost-dev python-setuptools -y
 
-RUN apt-get install libgtkmm-3.0-dev -y
+RUN apt-get update -y
+RUN apt-get install scons \
+python3-ruamel.yaml \
+python3-yaml \
+build-essential \
+libgtkmm-3.0-dev \
+g++ \
+gfortran \
+git \
+python \
+libboost-dev \
+cython \
+python-dev \
+python-numpy \
+python-numpy-dev \
+python-setuptools \
+python3 \
+python3-dev \
+python3-setuptools \
+python3-numpy \
+cython3 \
+python3-matplotlib -y
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 RUN mkdir /app
 WORKDIR /app
@@ -21,13 +44,22 @@ RUN git clone https://github.com/Cantera/cantera.git
 
 WORKDIR /app/cantera
 RUN scons build system_sundials=n
-RUN soncs install
+RUN scons install
 
 
-WORKDIR /
+WORKDIR /app
+RUN mkdir /app/asali
+WORKDIR /app/asali
+COPY src /app/asali/src
+COPY include /app/asali/include
+COPY chemkin /app/asali/chemkin
+COPY images /app/asali/images
+COPY database /app/asali/database
+COPY Makefile /app/asali/.
+
 RUN make all CANTERA_PREFIX=/usr/local/
 
 # We need to define the command to launch when we are going to run the image.
 # We use the keyword 'CMD' to do that.
 # The following command will execute "python ./main.py".
-CMD [ "./Asali.sh" ]
+CMD [ "./app/asali/Asali" ]
