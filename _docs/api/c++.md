@@ -1,5 +1,5 @@
 ---
-permalink: /docs/api-cpp/
+permalink: /docs/api-c++/
 redirect_from: /docs/index.html
 ---
 
