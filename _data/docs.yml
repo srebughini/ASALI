@@ -11,5 +11,6 @@
   - api-matlab
   - api-fortran
   - api-c
+  - api-cpp
   - api-javascript
 
