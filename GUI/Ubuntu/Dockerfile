@@ -1,9 +1,9 @@
-FROM ubuntu:20.04
+FROM python:3.8.7-buster
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y
-RUN apt-get install scons \
+RUN apt-get install --no-install-recommends scons \
 python3-ruamel.yaml \
 python3-yaml \
 build-essential \
@@ -27,29 +27,16 @@ python3-matplotlib -y
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir /app && mkdir /app/asali
+COPY . /app/asali/
 
+WORKDIR /app
 RUN git clone https://github.com/Cantera/cantera.git
 
 WORKDIR /app/cantera
-RUN scons build system_sundials=n
-RUN scons install
+RUN scons build system_sundials=n && scons install
 
-
-WORKDIR /app
-RUN mkdir /app/asali
 WORKDIR /app/asali
-COPY src /app/asali/src
-COPY include /app/asali/include
-COPY chemkin /app/asali/chemkin
-COPY images /app/asali/images
-COPY database /app/asali/database
-COPY Makefile /app/asali/.
-
 RUN make all CANTERA_PREFIX=/usr/local/
 
-# We need to define the command to launch when we are going to run the image.
-# We use the keyword 'CMD' to do that.
-# The following command will execute "python ./main.py".
 CMD [ "./Asali" ]

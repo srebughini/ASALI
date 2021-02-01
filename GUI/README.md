@@ -100,8 +100,10 @@ To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow 
 
 ### 2.3 Docker
 ##### 2.3.1 Docker on Linux OS
-Install docker --> TODO how
+Before installing Asali, you need to install docker by following the [this instruction](https://docs.docker.com/engine/install/ubuntu/).  
+Once docker is installed, you can compile Asali and run it with the following instructions:  
 ```bash
-sudo docker build . -t asali
-sudo docker run asali:latest
+cd Ubuntu
+sudo docker build . -t asali:latest
+sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -u $(id -u):$(id -g) asali:latest
 ```
