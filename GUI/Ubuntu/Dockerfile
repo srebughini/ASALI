@@ -18,7 +18,7 @@ python3-setuptools \
 python3-numpy \
 python3-ruamel.yaml \
 python3-yaml \
-python3-matplotlib -y
+python3-matplotlib -y 
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
@@ -29,7 +29,7 @@ WORKDIR /app
 RUN git clone https://github.com/Cantera/cantera.git
 
 WORKDIR /app/cantera
-RUN scons build system_sundials=n && scons install
+RUN scons build system_sundials=n python_package=minimal cc_flags='-Os -s' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n && scons install
 
 WORKDIR /app/asali
 RUN make all CANTERA_PREFIX=/usr/local/
