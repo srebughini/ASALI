@@ -1,28 +1,23 @@
-FROM python:3.8.7-buster
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y
 RUN apt-get install --no-install-recommends scons \
-python3-ruamel.yaml \
-python3-yaml \
+ca-certificates \
 build-essential \
-libgtkmm-3.0-dev \
 g++ \
 gfortran \
 git \
-python \
 libboost-dev \
-cython \
-python-dev \
-python-numpy \
-python-numpy-dev \
-python-setuptools \
+libgtkmm-3.0-dev \
+cython3 \
 python3 \
 python3-dev \
 python3-setuptools \
 python3-numpy \
-cython3 \
+python3-ruamel.yaml \
+python3-yaml \
 python3-matplotlib -y
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
