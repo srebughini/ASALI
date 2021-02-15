@@ -1,4 +1,5 @@
 FROM ubuntu:20.04
+MAINTAINER ASALIcode <ste.rebu@outlook.it>
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -29,9 +30,11 @@ python3-matplotlib -y \
 WORKDIR /app/cantera
 RUN scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n && scons install
 
-#COPY . /app/asali/
+COPY . /app/asali/
 
-#WORKDIR /app/asali
-#RUN make all CANTERA_PREFIX=/usr/local/
+WORKDIR /app/asali
+RUN make all CANTERA_PREFIX=/usr/local/
 
-#CMD [ "./Asali" ]
+ADD database /app/asali/database
+
+CMD [ "./Asali" ]

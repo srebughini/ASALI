@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -6,13 +6,15 @@ RUN apk add --no-cache g++ \
 gfortran \
 git \
 boost-dev \
-gtkmm \
 python3 \
 cython \
 make \
 scons \
+python3-dev \
 py3-setuptools \
 py3-ruamel.yaml \
+py3-numpy \
+gtkmm3-dev \
 && mkdir /app \
 && mkdir /app/cantera \
 && mkdir /app/asali \
@@ -21,9 +23,9 @@ py3-ruamel.yaml \
 WORKDIR /app/cantera
 RUN scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n && scons install
 
-#COPY . /app/asali/
+COPY . /app/asali/
 
-#WORKDIR /app/asali
-#RUN make all CANTERA_PREFIX=/usr/local/
+WORKDIR /app/asali
+RUN make all CANTERA_PREFIX=/usr/local/
 
-#CMD [ "./Asali" ]
+CMD [ "./Asali" ]

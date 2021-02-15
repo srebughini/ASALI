@@ -105,5 +105,5 @@ Once docker is installed, you can compile Asali and run it with the following in
 ```bash
 cd Ubuntu
 sudo docker build . -t asali:latest
-sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -u $(id -u):$(id -g) asali:latest
+sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix $PWD/database:/app/asali/database -e DISPLAY=$DISPLAY -u $(id -u):$(id -g) asali:latest
 ```
