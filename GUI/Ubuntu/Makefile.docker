@@ -16,9 +16,11 @@ CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=0
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config --embed --libs)\
+          -Wl,-Bstatic \
           -lcantera\
           -lcantera_fortran\
           -lgfortran\
+          -Wl,-Bdynamic \
           -lpthread \
           -lm 
 

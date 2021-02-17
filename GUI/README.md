@@ -107,3 +107,6 @@ cd Ubuntu
 sudo docker build . -t asali:latest
 sudo docker run -v /tmp/.X11-unix:/tmp/.X11-unix $PWD/database:/app/asali/database -e DISPLAY=$DISPLAY -u $(id -u):$(id -g) asali:latest
 ```
+* To be check if chemkin converter works
+* To be add dockercompose.yml
+* To be upgrade to cantera 2.6
