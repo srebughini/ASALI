@@ -60,6 +60,7 @@ namespace ASALI
             void setTemperature(const double T);
             void setPressure(const double p);
             void convertToCaption(std::string& n);
+            void initialize();
 
             double specieProperty(std::string p,std::string n);
             
@@ -68,15 +69,26 @@ namespace ASALI
             virtual void thermoCalculate();
             virtual void transportCalculate();
             virtual void vacuumCalculate();
+            virtual void calculateHomogeneousReactions(std::vector<double> omega, double T, double P);
             virtual void equilibriumCalculate(std::string type);
+            virtual void setStateFromMassFraction(double* y, double T, double p);
+            virtual void setStateFromMoleFraction(double* x, double T, double p);
 
             virtual double temperature();
             virtual double density();
+            virtual double getCpMassMix();
+            virtual double getCpMoleMix();
+            virtual double getMWmix();
+
+            virtual std::vector<double> getMW();
+            virtual std::vector<double> getHmole();
+            virtual std::vector<double> getSmole();
+            virtual std::vector<double> getCpMole();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
-            virtual int               numberOfSpecies();
-            
+            virtual unsigned int      numberOfGasSpecies();
+            virtual unsigned int      numberOfSurfaceSpecies();
             
             inline std::vector<double> h()                      {return h_;};
             inline std::vector<double> s()                      {return s_;};
@@ -88,24 +100,25 @@ namespace ASALI
             inline std::vector<double> massFractions()          {return mass_;};
             inline std::vector<double> vm()                     {return v_;};
             inline std::vector<double> l()                      {return l_;};
+            inline std::vector<double> RfromGas()               {return RfromGas_;};
+            
             inline std::vector<std::vector<double> > diff()     {return diff_;};
             
             inline std::vector<std::string> names()             {return n_;};
-            
-            inline unsigned int nSpecies()                      {return NS_;};
 
+            inline double QfromGas()                            {return QfromGas_;};
 
             virtual ~basicInterface();
             
-        private:
             double                 T_;
             double                 p_;
+            double                 QfromGas_;
             double                *x_;
             double                *y_;
 
             unsigned int          NS_;
-            
-            
+            unsigned int          SURF_NS_;
+
             std::vector<double>   h_;
             std::vector<double>   s_;
             std::vector<double>   cp_;
@@ -117,6 +130,8 @@ namespace ASALI
             std::vector<double>   mole_;
             std::vector<double>   mass_;
             
+            std::vector<double>   RfromGas_;
+            
             std::vector<std::vector<double> > diff_;
             
             std::vector<std::string> n_;
@@ -125,7 +140,7 @@ namespace ASALI
             std::vector<std::string> big;
             
             const double pi_ = 3.14159265358979323846;
-
+        private:
     };
 }
 

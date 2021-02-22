@@ -51,10 +51,11 @@ namespace ASALI
     {
         public:
 
-            ph1dReactor(Cantera::ThermoPhase *thermo,
-                        Cantera::Transport   *transport,
-                        Cantera::Kinetics    *kinetic,
-                        Cantera::Interface   *surface,
+            ph1dReactor(Cantera::ThermoPhase* thermo,
+                        Cantera::Transport*   transport,
+                        Cantera::Kinetics*    kinetic,
+                        Cantera::ThermoPhase* surface,
+                        Cantera::Kinetics*    surface_kinetic,
                         std::string           kineticType);
             
             virtual ~ph1dReactor();

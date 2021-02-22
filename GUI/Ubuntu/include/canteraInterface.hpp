@@ -38,7 +38,6 @@
 
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
-#include "cantera/Interface.h"
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
@@ -51,22 +50,36 @@ namespace ASALI
     {
         public:
             canteraInterface(Cantera::ThermoPhase* thermo,
-                             Cantera::Transport*   transport);
+                             Cantera::Transport*   transport,
+                             Cantera::Kinetics*    kinetic,
+                             Cantera::ThermoPhase* surface,
+                             Cantera::Kinetics*    surface_kinetic);
 
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
             virtual void thermoCalculate();
             virtual void transportCalculate();
             virtual void vacuumCalculate();
+            virtual void calculateHomogeneousReactions(std::vector<double> omega, double T, double P);
             virtual void equilibriumCalculate(std::string type);
-            virtual void convertToCaption(std::string& n);
-            
+            virtual void setStateFromMassFraction(double* y, double T, double p);
+            virtual void setStateFromMoleFraction(double* x, double T, double p);
+
             virtual double temperature();
             virtual double density();
+            virtual double getCpMassMix();
+            virtual double getCpMoleMix();
+            virtual double getMWmix();
+
+            virtual std::vector<double> getMW();
+            virtual std::vector<double> getHmole();
+            virtual std::vector<double> getSmole();
+            virtual std::vector<double> getCpMole();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
-            virtual int               numberOfSpecies();
+            virtual unsigned int      numberOfGasSpecies();
+            virtual unsigned int      numberOfSurfaceSpecies();
 
             virtual ~canteraInterface();
             
@@ -74,6 +87,9 @@ namespace ASALI
 
             Cantera::ThermoPhase* thermo_;
             Cantera::Transport*   transport_;
+            Cantera::Kinetics*    kinetic_;
+            Cantera::ThermoPhase* surface_;
+            Cantera::Kinetics*    surface_kinetic_;
     };
 }
 

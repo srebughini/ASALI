@@ -40,12 +40,13 @@
 
 namespace ASALI
 {
-    ph1dReactor::ph1dReactor(Cantera::ThermoPhase *thermo,
-                             Cantera::Transport   *transport,
-                             Cantera::Kinetics    *kinetic,
-                             Cantera::Interface   *surface,
-                             std::string           kineticType)
-    : catalyticReactors(thermo, transport, kinetic, surface, kineticType),
+    ph1dReactor::ph1dReactor(Cantera::ThermoPhase* thermo,
+                             Cantera::Transport*   transport,
+                             Cantera::Kinetics*    kinetic,
+                             Cantera::ThermoPhase* surface,
+                             Cantera::Kinetics*    surface_kinetic,
+                             std::string           kineticType);
+    : catalyticReactors(thermo, transport, kinetic, surface, surface_kinetic, kineticType),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       recapMainBox_(Gtk::ORIENTATION_VERTICAL),
       exitButton3_("Exit"),
@@ -521,10 +522,7 @@ namespace ASALI
     {
         if ( kineticCombo_.get_active_text() == "CANTERA")
         {
-            eq_->setCanteraThermo(thermo_);
-            eq_->setCanteraTransport(transport_);
-            eq_->setCanteraInterface(surface_);
-            eq_->setCanteraKinetics(kinetic_);
+            eq_->setInterface(chemistryInterface_);
             eq_->turnOnUserDefined(false);
 
             if ( kinetic_->nReactions() != 0. )
@@ -641,25 +639,25 @@ namespace ASALI
             {
                 if ( kineticCombo_.get_active_text() == "ASALI" )
                 {
-                    canteraInterface_->setTemperature(T_);
-                    canteraInterface_->setPressure(p_);
+                    chemistryInterface_->setTemperature(T_);
+                    chemistryInterface_->setPressure(p_);
                     if ( fractionCombo_.get_active_row_number() == 0 )
                     {
-                        canteraInterface_->setMoleFraction(x_,n_);
+                        chemistryInterface_->setMoleFraction(x_,n_);
                     }
                     else if ( fractionCombo_.get_active_row_number() == 1 )
                     {
-                        canteraInterface_->setMassFraction(x_,n_);
+                        chemistryInterface_->setMassFraction(x_,n_);
                     }
 
                     {
-                        std::vector<double> y = canteraInterface_->massFractions();
+                        std::vector<double> y = chemistryInterface_->massFractions();
                         
                         for (unsigned int i=0;i<n_.size();i++)
                         {
-                            for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                            for (unsigned int j=0;j<chemistryInterface_->nSpecies();j++)
                             {
-                                if ( n_[i] == canteraInterface_->names()[j] )
+                                if ( n_[i] == chemistryInterface_->names()[j] )
                                 {
                                     x0[i] = y[j];
                                     break;
@@ -670,23 +668,23 @@ namespace ASALI
 
                     x0[x_.size()] = T_;
 
-                    eq_->setSpecificMassFlowRate(v_*canteraInterface_->density());
+                    eq_->setSpecificMassFlowRate(v_*chemistryInterface_->density());
                 }
                 else
                 {
-                    canteraInterface_->setTemperature(T_);
-                    canteraInterface_->setPressure(p_);
+                    chemistryInterface_->setTemperature(T_);
+                    chemistryInterface_->setPressure(p_);
                     if ( fractionCombo_.get_active_row_number() == 0 )
                     {
-                        canteraInterface_->setMoleFraction(x_,n_);
+                        chemistryInterface_->setMoleFraction(x_,n_);
                     }
                     else if ( fractionCombo_.get_active_row_number() == 1 )
                     {
-                        canteraInterface_->setMassFraction(x_,n_);
+                        chemistryInterface_->setMassFraction(x_,n_);
                     }
 
                     {
-                        std::vector<double> y = canteraInterface_->massFractions();
+                        std::vector<double> y = chemistryInterface_->massFractions();
                         for (unsigned int i=0;i<thermo_->nSpecies();i++)
                         {
                                 x0[i] = y[i];
@@ -714,7 +712,7 @@ namespace ASALI
 
                     x0[thermo_->nSpecies() + surface_->nSpecies()] = T_;
                     
-                    eq_->setSpecificMassFlowRate(v_*canteraInterface_->density());
+                    eq_->setSpecificMassFlowRate(v_*chemistryInterface_->density());
                 }
             }
 
@@ -850,25 +848,25 @@ namespace ASALI
             {
                 if ( kineticCombo_.get_active_text() == "ASALI" )
                 {
-                    canteraInterface_->setTemperature(T_);
-                    canteraInterface_->setPressure(p_);
+                    chemistryInterface_->setTemperature(T_);
+                    chemistryInterface_->setPressure(p_);
                     if ( fractionCombo_.get_active_row_number() == 0 )
                     {
-                        canteraInterface_->setMoleFraction(x_,n_);
+                        chemistryInterface_->setMoleFraction(x_,n_);
                     }
                     else if ( fractionCombo_.get_active_row_number() == 1 )
                     {
-                        canteraInterface_->setMassFraction(x_,n_);
+                        chemistryInterface_->setMassFraction(x_,n_);
                     }
 
                     std::vector<double> xInlet(x_.size());
                     {
-                        std::vector<double> y = canteraInterface_->massFractions();
+                        std::vector<double> y = chemistryInterface_->massFractions();
                         for (unsigned int i=0;i<n_.size();i++)
                         {
-                            for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                            for (unsigned int j=0;j<chemistryInterface_->nSpecies();j++)
                             {
-                                if ( n_[i] == canteraInterface_->names()[j] )
+                                if ( n_[i] == chemistryInterface_->names()[j] )
                                 {
                                     xInlet[i] = y[j];
                                     break;
@@ -908,26 +906,26 @@ namespace ASALI
                         x0[counter++] = T_;
                     }
 
-                    eq_->setSpecificMassFlowRate(v_*canteraInterface_->density());
+                    eq_->setSpecificMassFlowRate(v_*chemistryInterface_->density());
                     eq_->setInletConditions(xInlet,T_);
                 }
                 else
                 {
-                    canteraInterface_->setTemperature(T_);
-                    canteraInterface_->setPressure(p_);
+                    chemistryInterface_->setTemperature(T_);
+                    chemistryInterface_->setPressure(p_);
                     if ( fractionCombo_.get_active_row_number() == 0 )
                     {
-                        canteraInterface_->setMoleFraction(x_,n_);
+                        chemistryInterface_->setMoleFraction(x_,n_);
                     }
                     else if ( fractionCombo_.get_active_row_number() == 1 )
                     {
-                        canteraInterface_->setMassFraction(x_,n_);
+                        chemistryInterface_->setMassFraction(x_,n_);
                     }
 
                     std::vector<double> xInlet(thermo_->nSpecies());
                     std::vector<double> xInside(thermo_->nSpecies());
                     {
-                        std::vector<double> y = canteraInterface_->massFractions();
+                        std::vector<double> y = chemistryInterface_->massFractions();
                         for (unsigned int i=0;i<thermo_->nSpecies();i++)
                         {
                             if ( thermo_->speciesName(i) == inert_ )
@@ -982,7 +980,7 @@ namespace ASALI
                         x0[counter++] = T_;
                     }
 
-                    eq_->setSpecificMassFlowRate(v_*canteraInterface_->density());
+                    eq_->setSpecificMassFlowRate(v_*chemistryInterface_->density());
                     eq_->setInletConditions(xInlet,T_);
                 }
             }
@@ -1151,17 +1149,17 @@ namespace ASALI
                         }
                         else
                         {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p_);
-                            canteraInterface_->setMassFraction(y[j],n_);
+                            chemistryInterface_->setTemperature(T[j]);
+                            chemistryInterface_->setPressure(p_);
+                            chemistryInterface_->setMassFraction(y[j],n_);
 
                             for (unsigned int i=0;i<n_.size();i++)
                             {
-                                for (unsigned int k=0;k<canteraInterface_->names().size();k++)
+                                for (unsigned int k=0;k<chemistryInterface_->names().size();k++)
                                 {
-                                    if ( n_[i] == canteraInterface_->names()[k] )
+                                    if ( n_[i] == chemistryInterface_->names()[k] )
                                     {
-                                        mole[i] = canteraInterface_->moleFractions()[k];
+                                        mole[i] = chemistryInterface_->moleFractions()[k];
                                         break;
                                     }
                                 }
@@ -1234,10 +1232,10 @@ namespace ASALI
 
                         std::vector<double> mole(thermo_->nSpecies());
                         {
-                            canteraInterface_->setTemperature(T[j]);
-                            canteraInterface_->setPressure(p_);
-                            canteraInterface_->setMassFraction(y[j],name);
-                            mole = canteraInterface_->moleFractions();
+                            chemistryInterface_->setTemperature(T[j]);
+                            chemistryInterface_->setPressure(p_);
+                            chemistryInterface_->setMassFraction(y[j],name);
+                            mole = chemistryInterface_->moleFractions();
                         }
                     
                         for (unsigned int i=0;i<thermo_->nSpecies();i++)
@@ -1300,15 +1298,15 @@ namespace ASALI
                             {
                                 for (unsigned int k=0;k<NP_;k++)
                                 {
-                                    canteraInterface_->setTemperature(T[j][k]);
-                                    canteraInterface_->setPressure(p_);
+                                    chemistryInterface_->setTemperature(T[j][k]);
+                                    chemistryInterface_->setPressure(p_);
                                     std::vector<double> x(n_.size());
                                     for (unsigned int i=0;i<n_.size();i++)
                                     {
                                         x[i] = y[j][k][i];
                                     }
-                                    canteraInterface_->setMassFraction(x,n_);
-                                    x = canteraInterface_->moleFractions();
+                                    chemistryInterface_->setMassFraction(x,n_);
+                                    x = chemistryInterface_->moleFractions();
 
                                     for (unsigned int i=0;i<n_.size();i++)
                                     {
@@ -1395,15 +1393,15 @@ namespace ASALI
                         {
                             for (unsigned int k=0;k<NP_;k++)
                             {
-                                canteraInterface_->setTemperature(T[j][k]);
-                                canteraInterface_->setPressure(p_);
+                                chemistryInterface_->setTemperature(T[j][k]);
+                                chemistryInterface_->setPressure(p_);
                                 std::vector<double> x(thermo_->nSpecies());
                                 for (unsigned int i=0;i<thermo_->nSpecies();i++)
                                 {
                                     x[i] = y[j][k][i];
                                 }
-                                canteraInterface_->setMassFraction(x,n);
-                                x = canteraInterface_->moleFractions();
+                                chemistryInterface_->setMassFraction(x,n);
+                                x = chemistryInterface_->moleFractions();
 
                                 for (unsigned int i=0;i<thermo_->nSpecies();i++)
                                 {
@@ -1541,17 +1539,17 @@ namespace ASALI
                     }
                     else
                     {
-                        canteraInterface_->setTemperature(T[j]);
-                        canteraInterface_->setPressure(p_);
-                        canteraInterface_->setMassFraction(y[j],n_);
+                        chemistryInterface_->setTemperature(T[j]);
+                        chemistryInterface_->setPressure(p_);
+                        chemistryInterface_->setMassFraction(y[j],n_);
 
                         for (unsigned int i=0;i<n_.size();i++)
                         {
-                            for (unsigned int k=0;k<canteraInterface_->names().size();k++)
+                            for (unsigned int k=0;k<chemistryInterface_->names().size();k++)
                             {
-                                if ( n_[i] == canteraInterface_->names()[k] )
+                                if ( n_[i] == chemistryInterface_->names()[k] )
                                 {
-                                    mole[i] = canteraInterface_->moleFractions()[k];
+                                    mole[i] = chemistryInterface_->moleFractions()[k];
                                     break;
                                 }
                             }
@@ -1584,10 +1582,10 @@ namespace ASALI
                 {
                     std::vector<double> mole(thermo_->nSpecies());
                     {
-                        canteraInterface_->setTemperature(T[j]);
-                        canteraInterface_->setPressure(p_);
-                        canteraInterface_->setMassFraction(y[j],name);
-                        mole = canteraInterface_->moleFractions();
+                        chemistryInterface_->setTemperature(T[j]);
+                        chemistryInterface_->setPressure(p_);
+                        chemistryInterface_->setMassFraction(y[j],name);
+                        mole = chemistryInterface_->moleFractions();
                     }
                     for (unsigned int i=0;i<thermo_->nSpecies();i++)
                     {
@@ -1651,15 +1649,15 @@ namespace ASALI
                         {
                             for (unsigned int k=0;k<NP_;k++)
                             {
-                                canteraInterface_->setTemperature(T[j][k]);
-                                canteraInterface_->setPressure(p_);
+                                chemistryInterface_->setTemperature(T[j][k]);
+                                chemistryInterface_->setPressure(p_);
                                 std::vector<double> x(n_.size());
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
                                     x[i] = y[j][k][i];
                                 }
-                                canteraInterface_->setMassFraction(x,n_);
-                                x = canteraInterface_->moleFractions();
+                                chemistryInterface_->setMassFraction(x,n_);
+                                x = chemistryInterface_->moleFractions();
 
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
@@ -1692,15 +1690,15 @@ namespace ASALI
                     {
                         for (unsigned int k=0;k<NP_;k++)
                         {
-                            canteraInterface_->setTemperature(T[j][k]);
-                            canteraInterface_->setPressure(p_);
+                            chemistryInterface_->setTemperature(T[j][k]);
+                            chemistryInterface_->setPressure(p_);
                             std::vector<double> x(thermo_->nSpecies());
                             for (unsigned int i=0;i<thermo_->nSpecies();i++)
                             {
                                 x[i] = y[j][k][i];
                             }
-                            canteraInterface_->setMassFraction(x,name);
-                            x = canteraInterface_->moleFractions();
+                            chemistryInterface_->setMassFraction(x,name);
+                            x = chemistryInterface_->moleFractions();
 
                             for (unsigned int i=0;i<thermo_->nSpecies();i++)
                             {

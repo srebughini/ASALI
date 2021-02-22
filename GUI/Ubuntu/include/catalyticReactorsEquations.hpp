@@ -40,11 +40,8 @@
 #define CATALYTICREACTORSEQUATIONS_H
 
 #include "pythonInterface.hpp"
+#include "canteraInterface.hpp"
 #include <gtkmm.h>
-#include "cantera/Interface.h"
-#include "cantera/thermo.h"
-#include "cantera/transport.h"
-#include "cantera/kinetics.h"
 
 namespace ASALI
 {
@@ -56,14 +53,8 @@ class catalyticReactorsEquations
 
         #include "shared/Vector.H"
 
-        void setCanteraThermo(Cantera::ThermoPhase*    gas);
+        void setInterface(ASALI::canteraInterface* chemistryInterface);
         
-        void setCanteraInterface(Cantera::Interface*   surface);
-        
-        void setCanteraKinetics(Cantera::Kinetics*    kinetic);
-        
-        void setCanteraTransport(Cantera::Transport*    transport);
-
         void setHomogeneousReactions(const bool flag)   {homogeneousReactions_  = flag;}
 
         void setHeterogeneusReactions(const bool flag)  {heterogeneusReactions_ = flag;}
@@ -109,11 +100,8 @@ class catalyticReactorsEquations
         bool heterogeneusReactions_;
         bool userCheck_;
 
-        Cantera::ThermoPhase*   gas_;
-        Cantera::Interface*     surface_;
-        Cantera::Kinetics*      kinetic_;
-        Cantera::Transport*     transport_;
-        ASALI::pythonInterface* pi_;
+        ASALI::pythonInterface*  pi_;
+        ASALI::canteraInterface* chemistryInterface_;
 
         std::vector<double>      QuserHom_;
         std::vector<double>      QuserHet_;

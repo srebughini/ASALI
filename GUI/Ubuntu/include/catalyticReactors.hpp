@@ -53,10 +53,11 @@ namespace ASALI
     class catalyticReactors : public Gtk::Window
     {
         public:
-            catalyticReactors(Cantera::ThermoPhase *thermo,
-                              Cantera::Transport   *transport,
-                              Cantera::Kinetics    *kinetic,
-                              Cantera::Interface   *surface,
+            catalyticReactors(Cantera::ThermoPhase* thermo,
+                              Cantera::Transport*   transport,
+                              Cantera::Kinetics*    kinetic,
+                              Cantera::ThermoPhase* surface,
+                              Cantera::Kinetics*    surface_kinetic,
                               std::string           kineticType);
 
             #include "shared/UnitConversion.H"
@@ -157,18 +158,19 @@ namespace ASALI
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
 
-            ASALI::canteraInterface        *canteraInterface_;
+            ASALI::canteraInterface        *chemistryInterface_;
             ASALI::speciesPopup            *speciesNames_;
             ASALI::asaliProperties         *asaliProperties_;
             ASALI::asaliCatalystProperties *asaliCatalystProperties_;
             ASALI::asaliPlot               *asaliPlot_;
             ASALI::runBar                  *bar_;
             ASALI::pythonInterface         *pi_;
-            
-            Cantera::ThermoPhase     *thermo_;
-            Cantera::Transport       *transport_;
-            Cantera::Kinetics        *kinetic_;
-            Cantera::Interface       *surface_;
+
+            Cantera::ThermoPhase* thermo_;
+            Cantera::Transport*   transport_;
+            Cantera::Kinetics*    kinetic_;
+            Cantera::ThermoPhase* surface_;
+            Cantera::Kinetics*    surface_kinetic_;
 
             std::string kineticType_;
             std::string inert_;

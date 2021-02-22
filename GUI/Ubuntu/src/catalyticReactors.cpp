@@ -40,10 +40,11 @@
 
 namespace ASALI
 {
-    catalyticReactors::catalyticReactors(Cantera::ThermoPhase *thermo,
-                                         Cantera::Transport   *transport,
-                                         Cantera::Kinetics    *kinetic,
-                                         Cantera::Interface   *surface,
+    catalyticReactors::catalyticReactors(Cantera::ThermoPhase* thermo,
+                                         Cantera::Transport*   transport,
+                                         Cantera::Kinetics*    kinetic,
+                                         Cantera::ThermoPhase* surface,
+                                         Cantera::Kinetics*    surface_kinetic,
                                          std::string           kineticType)
     : coverageBox_(Gtk::ORIENTATION_VERTICAL),
       helpButton_("Available species"),
@@ -67,6 +68,7 @@ namespace ASALI
       transport_(transport),
       kinetic_(kinetic),
       surface_(surface),
+      surface_kinetic_(surface_kinetic),
       kineticType_(kineticType),
       inert_("NONE")
     {
@@ -76,7 +78,7 @@ namespace ASALI
 
         if ( kineticType_ != "none" )
         {
-            canteraInterface_    = new ASALI::canteraInterface(thermo_,transport_);
+            chemistryInterface_    = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
         }
 
         speciesNames_            = new ASALI::speciesPopup();
@@ -250,19 +252,19 @@ namespace ASALI
     void catalyticReactors::composition()
     {
         this->read();
-        if ( kineticType_ == "default" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
+        if ( kineticType_ == "default" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
         }
-        else if ( kineticType_ == "load" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
+        else if ( kineticType_ == "load" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeerShort(),true);
             dialog.run();
         }
-        else if ( kineticType_ == "nokinetic" && canteraInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
+        else if ( kineticType_ == "nokinetic" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this,inert_+" is missing!!",true,Gtk::MESSAGE_WARNING);
             dialog.set_secondary_text(this->getBeerShort(),true);
@@ -413,7 +415,7 @@ namespace ASALI
             }
             else if ( kineticCombo_.get_active_text() == "CANTERA" )
             {
-                check = canteraInterface_->checkNames(n_);
+                check = chemistryInterface_->checkNames(n_);
             }
 
             for (unsigned int i=0;i<check.size();i++)
@@ -728,7 +730,7 @@ namespace ASALI
                                 else
                                 {
                                     std::vector<std::string> n     = pi_->getSpeciesName();
-                                    std::vector<int>         check = canteraInterface_->checkNames(n);
+                                    std::vector<int>         check = chemistryInterface_->checkNames(n);
                                     for (unsigned int i=0;i<check.size();i++)
                                     {
                                         if (check[i] == 1 )

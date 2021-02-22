@@ -51,10 +51,11 @@ namespace ASALI
     {
         public:
 
-            catalyticPellet(Cantera::ThermoPhase *thermo,
-                            Cantera::Transport   *transport,
-                            Cantera::Kinetics    *kinetic,
-                            Cantera::Interface   *surface,
+            catalyticPellet(Cantera::ThermoPhase* thermo,
+                            Cantera::Transport*   transport,
+                            Cantera::Kinetics*    kinetic,
+                            Cantera::ThermoPhase* surface,
+                            Cantera::Kinetics*    surface_kinetic,
                             std::string           kineticType);
             
             virtual ~catalyticPellet();

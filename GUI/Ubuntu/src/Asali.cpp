@@ -359,7 +359,7 @@ namespace ASALI
     {
         thermo_           = Cantera::newPhase("database/data.xml","gas");
         transport_        = Cantera::newDefaultTransportMgr(thermo_);
-        canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+        chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
         speciesNames_     = new ASALI::speciesPopup();
         kineticType_      = "default";
         this->mainMenu();
@@ -577,7 +577,7 @@ namespace ASALI
                             {
                                 thermo_           = Cantera::newPhase(filename,type);
                                 transport_        = Cantera::newDefaultTransportMgr(thermo_);
-                                canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                                chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
                                 speciesNames_     = new ASALI::speciesPopup();
                                 kineticType_      = "nokinetic";
                                 smallDialog.hide();
@@ -665,11 +665,20 @@ namespace ASALI
                     else
                     {
                         thermo_     = Cantera::newPhase(filename,type[0]);
-                        std::vector<Cantera::ThermoPhase*>  phases{thermo_};
-                        surface_    = Cantera::importInterface(filename,type[1],phases);
-                        kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-                        transport_  = Cantera::newDefaultTransportMgr(thermo_);
-                        canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
+                        surface_    = Cantera::newPhase(filename,type[1]);
+                        
+                        {
+							std::vector<Cantera::ThermoPhase*>  phases{thermo_};
+							transport_  = Cantera::newDefaultTransportMgr(thermo_);
+							kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+						}
+						
+                        {
+							std::vector<Cantera::ThermoPhase*>  phases{surface_, thermo_};
+							surface_kinetic_ = Cantera::newKineticsMgr(surface_->xml(), phases);
+						}
+
+                        chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
                         kineticType_ = "load";
                         this->mainMenu();
                     }
@@ -696,7 +705,7 @@ namespace ASALI
             {
                 delete transportMenu_;
             }
-            transportMenu_ = new ASALI::transportProperties(canteraInterface_,speciesNames_,kineticType_);
+            transportMenu_ = new ASALI::transportProperties(chemistryInterface_,speciesNames_,kineticType_);
             transportMenu_->show();
         }
     }
@@ -713,7 +722,7 @@ namespace ASALI
             {
                 delete thermoMenu_;
             }
-            thermoMenu_ = new ASALI::thermoProperties(canteraInterface_,speciesNames_,kineticType_);
+            thermoMenu_ = new ASALI::thermoProperties(chemistryInterface_,speciesNames_,kineticType_);
             thermoMenu_->show();
         }
     }
@@ -730,7 +739,7 @@ namespace ASALI
             {
                 delete thermoTransportMenu_;
             }
-            thermoTransportMenu_ = new ASALI::thermoTransportProperties(canteraInterface_,speciesNames_,kineticType_);
+            thermoTransportMenu_ = new ASALI::thermoTransportProperties(chemistryInterface_,speciesNames_,kineticType_);
             thermoTransportMenu_->show();
         }
     }
@@ -747,7 +756,7 @@ namespace ASALI
             {
                 delete vacuumMenu_;
             }
-            vacuumMenu_ = new ASALI::vacuumProperties(canteraInterface_,speciesNames_,kineticType_);
+            vacuumMenu_ = new ASALI::vacuumProperties(chemistryInterface_,speciesNames_,kineticType_);
             vacuumMenu_->show();
         }
     }
@@ -764,7 +773,7 @@ namespace ASALI
             {
                 delete equilibriumMenu_;
             }
-            equilibriumMenu_ = new ASALI::equilibriumCalculator(canteraInterface_,speciesNames_,kineticType_);
+            equilibriumMenu_ = new ASALI::equilibriumCalculator(chemistryInterface_,speciesNames_,kineticType_);
             equilibriumMenu_->show();
         }
     }
@@ -781,7 +790,7 @@ namespace ASALI
             {
                 delete linearRegressionMenu_;
             }
-            linearRegressionMenu_ = new ASALI::linearRegression(canteraInterface_,speciesNames_,kineticType_);
+            linearRegressionMenu_ = new ASALI::linearRegression(chemistryInterface_,speciesNames_,kineticType_);
             linearRegressionMenu_->show();
         }
     }
@@ -792,7 +801,7 @@ namespace ASALI
         {
             delete pelletMenu_;
         }
-        pelletMenu_ = new ASALI::catalyticPellet(thermo_,transport_,kinetic_,surface_,kineticType_);
+        pelletMenu_ = new ASALI::catalyticPellet(thermo_,transport_,kinetic_,surface_,surface_kinetic_,kineticType_);
         pelletMenu_->show();
     }
 
@@ -811,7 +820,7 @@ namespace ASALI
         {
             delete batchMenu_;
         }
-        batchMenu_ = new ASALI::batchReactor(thermo_,transport_,kinetic_,surface_,kineticType_);
+        batchMenu_ = new ASALI::batchReactor(thermo_,transport_,kinetic_,surface_,surface_kinetic_,kineticType_);
         batchMenu_->show();
     }
 
@@ -821,7 +830,7 @@ namespace ASALI
         {
             delete cstrMenu_;
         }
-        cstrMenu_ = new ASALI::cstrReactor(thermo_,transport_,kinetic_,surface_,kineticType_);
+        cstrMenu_ = new ASALI::cstrReactor(thermo_,transport_,kinetic_,surface_,surface_kinetic_,kineticType_);
         cstrMenu_->show();
     }
 
@@ -831,7 +840,7 @@ namespace ASALI
         {
             delete ph1dMenu_;
         }
-        ph1dMenu_ = new ASALI::ph1dReactor(thermo_,transport_,kinetic_,surface_,kineticType_);
+        ph1dMenu_ = new ASALI::ph1dReactor(thermo_,transport_,kinetic_,surface_,surface_kinetic_,kineticType_);
         ph1dMenu_->show();
     }
 
@@ -841,7 +850,7 @@ namespace ASALI
         {
             delete het1dMenu_;
         }
-        het1dMenu_ = new ASALI::het1dReactor(thermo_,transport_,kinetic_,surface_,kineticType_);
+        het1dMenu_ = new ASALI::het1dReactor(thermo_,transport_,kinetic_,surface_,surface_kinetic_,kineticType_);
         het1dMenu_->show();
     }
 
@@ -851,7 +860,7 @@ namespace ASALI
         {
             delete dpMenu_;
         }
-        dpMenu_ = new ASALI::pressureDrops(canteraInterface_,speciesNames_,kineticType_);
+        dpMenu_ = new ASALI::pressureDrops(chemistryInterface_,speciesNames_,kineticType_);
         dpMenu_->show();
     }
 

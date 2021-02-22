@@ -50,10 +50,11 @@ namespace ASALI
     {
         public:
 
-            batchReactor(Cantera::ThermoPhase *thermo,
-                         Cantera::Transport   *transport,
-                         Cantera::Kinetics    *kinetic,
-                         Cantera::Interface   *surface,
+            batchReactor(Cantera::ThermoPhase* thermo,
+                         Cantera::Transport*   transport,
+                         Cantera::Kinetics*    kinetic,
+                         Cantera::ThermoPhase* surface,
+                         Cantera::Kinetics*    surface_kinetic,
                          std::string           kineticType);
             
             virtual ~batchReactor();

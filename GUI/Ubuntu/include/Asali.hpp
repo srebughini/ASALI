@@ -175,9 +175,11 @@ namespace ASALI
             Cantera::ThermoPhase              *thermo_;
             Cantera::Transport                *transport_;
             Cantera::Kinetics                 *kinetic_;
-            Cantera::Interface                *surface_;
+            Cantera::ThermoPhase              *surface_;
+            Cantera::Kinetics                 *surface_kinetic_;
+            
             ASALI::chemkinConverter           *converter_;
-            ASALI::canteraInterface           *canteraInterface_;
+            ASALI::canteraInterface           *chemistryInterface_;
             ASALI::speciesPopup               *speciesNames_;
             ASALI::transportProperties        *transportMenu_;
             ASALI::thermoProperties           *thermoMenu_;

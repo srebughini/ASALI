@@ -43,24 +43,9 @@ namespace ASALI
     catalyticReactorsEquations::catalyticReactorsEquations()
     {}
 
-    void catalyticReactorsEquations::setCanteraThermo(Cantera::ThermoPhase* gas)
+    void catalyticReactorsEquations::setInterface(ASALI::canteraInterface* chemistryInterface)
     {
-        gas_ = gas;
-    }
-    
-    void catalyticReactorsEquations::setCanteraInterface(Cantera::Interface* surface)
-    {
-        surface_ = surface;
-    }
-
-    void catalyticReactorsEquations::setCanteraKinetics(Cantera::Kinetics* kinetic)
-    {
-        kinetic_ = kinetic;
-    }
-
-    void catalyticReactorsEquations::setCanteraTransport(Cantera::Transport* transport)
-    {
-        transport_ = transport;
+        chemistryInterface_ = chemistryInterface;
     }
 
     void catalyticReactorsEquations::setKineticType(const std::string type)
