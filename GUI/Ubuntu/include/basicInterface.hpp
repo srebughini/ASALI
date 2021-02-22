@@ -36,44 +36,96 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef CANTERAINTERFACE_H
-#define CANTERAINTERFACE_H
-#include "cantera/Interface.h"
-#include "cantera/thermo.h"
-#include "cantera/transport.h"
-#include "cantera/kinetics.h"
-#include "cantera/transport/TransportData.h"
-#include "basicInterface.hpp"
+#ifndef BASICINTERFACE_H
+#define BASICINTERFACE_H
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
 
 namespace ASALI
 {
-    class canteraInterface : public ASALI::basicInterface
+    class basicInterface
     {
         public:
-            canteraInterface(Cantera::ThermoPhase* thermo,
-                             Cantera::Transport*   transport);
+            basicInterface();
 
+            void setTemperature(const double T);
+            void setPressure(const double p);
+            void convertToCaption(std::string& n);
+
+            double specieProperty(std::string p,std::string n);
+            
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
             virtual void thermoCalculate();
             virtual void transportCalculate();
             virtual void vacuumCalculate();
             virtual void equilibriumCalculate(std::string type);
-            virtual void convertToCaption(std::string& n);
-            
+
             virtual double temperature();
             virtual double density();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
             virtual int               numberOfSpecies();
+            
+            
+            inline std::vector<double> h()                      {return h_;};
+            inline std::vector<double> s()                      {return s_;};
+            inline std::vector<double> cp()                     {return cp_;};
+            inline std::vector<double> MW()                     {return MW_;};
+            inline std::vector<double> mu()                     {return mu_;};
+            inline std::vector<double> cond()                   {return cond_;};
+            inline std::vector<double> moleFractions()          {return mole_;};
+            inline std::vector<double> massFractions()          {return mass_;};
+            inline std::vector<double> vm()                     {return v_;};
+            inline std::vector<double> l()                      {return l_;};
+            inline std::vector<std::vector<double> > diff()     {return diff_;};
+            
+            inline std::vector<std::string> names()             {return n_;};
+            
+            inline unsigned int nSpecies()                      {return NS_;};
 
-            virtual ~canteraInterface();
+
+            virtual ~basicInterface();
             
         private:
+            double                 T_;
+            double                 p_;
+            double                *x_;
+            double                *y_;
 
-            Cantera::ThermoPhase* thermo_;
-            Cantera::Transport*   transport_;
+            unsigned int          NS_;
+            
+            
+            std::vector<double>   h_;
+            std::vector<double>   s_;
+            std::vector<double>   cp_;
+            std::vector<double>   v_;
+            std::vector<double>   l_;
+            std::vector<double>   MW_;
+            std::vector<double>   mu_;
+            std::vector<double>   cond_;
+            std::vector<double>   mole_;
+            std::vector<double>   mass_;
+            
+            std::vector<std::vector<double> > diff_;
+            
+            std::vector<std::string> n_;
+
+            std::vector<std::string> small;
+            std::vector<std::string> big;
+            
+            const double pi_ = 3.14159265358979323846;
+
     };
 }
 
