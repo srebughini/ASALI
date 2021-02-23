@@ -78,10 +78,14 @@ namespace ASALI
       kineticButtonBox_(Gtk::ORIENTATION_VERTICAL),
       heading_("\nAuthor: Stefano Rebughini, PhD"
                "\nE-mail: ste.rebu@outlook.it"),
+      #if ASALI_USING_CANTERA==1
       kineticLabel_("<b>Please, load your CANTERA kinetic/propeties file</b>"
                     "<b>\nor select the default one (database/data.xml)</b>"
                     "\n\nLoading might take several minutes, depending"
                     "\non your system performances."),
+      #else
+      kineticLabel_("<b>You are using the version of ASALI without Cantera</b>"),
+      #endif
       bigLogo_("images/BigLogo.png"),
       smallLogo1_("images/SmallLogo.png"),
       smallLogo2_("images/SmallLogo.png"),
@@ -166,6 +170,7 @@ namespace ASALI
             chemistryButtonBox_.pack_start(defaultCanteraInputButton_, Gtk::PACK_SHRINK);
             defaultCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::defaultCanteraInput));
             defaultCanteraInputButton_.set_tooltip_text("Select the ASALI database for transport and thermodynamic properties");
+            #if ASALI_USING_CANTERA==1
             chemistryButtonBox_.pack_start(loadCanteraInputButton_, Gtk::PACK_SHRINK);
             loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::loadCanteraInput));
             loadCanteraInputButton_.set_tooltip_text("Load CANTERA input file");
@@ -176,7 +181,8 @@ namespace ASALI
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
             chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
-            asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::kineticasaliGui));
+            #endif
+            asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::kineticAsali));
             asaliKineticButton_.set_tooltip_text("Write or check a kinetic scheme in ASALI format");
             
             //Adding exit button
@@ -184,7 +190,7 @@ namespace ASALI
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::exit));
         }
 
-        //asaliGui kinetic 
+        //Asali kinetic 
         {
             //Adding logo
             kineticBox_.set_halign(Gtk::ALIGN_START);
@@ -227,8 +233,10 @@ namespace ASALI
             menuButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             menuButtonBox_.set_spacing(10);
             menuButtonBox_.set_homogeneous(true);
+            #if ASALI_USING_CANTERA==1
             menuButtonBox_.pack_start(canteraInputButton_, Gtk::PACK_SHRINK);
             canteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::chemistryMenu2));
+            #endif
             menuButtonBox_.pack_start(transportButton_, Gtk::PACK_SHRINK);
             transportButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::transport));
             transportButton_.set_tooltip_text("Estimation of transport properties at assigned Temperture, Pressure and Composition");
@@ -241,18 +249,20 @@ namespace ASALI
             menuButtonBox_.pack_start(vacuumButton_, Gtk::PACK_SHRINK);
             vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::vacuum));
             vacuumButton_.set_tooltip_text("Estimation of specie vacuum properties at assigned Temperture and Pressure");
-            menuButtonBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
-            equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::equilibrium));
-            equilibriumButton_.set_tooltip_text("Estimation of chemical equilibrium based on CANTERA");
             menuButtonBox_.pack_start(linearRegressionButton_, Gtk::PACK_SHRINK);
             linearRegressionButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::linearRegression));
             linearRegressionButton_.set_tooltip_text("Estimaion of linear equations for thermodynamic and transport properties\nof a gas mixture as a function of Temperature");
+            #if ASALI_USING_CANTERA==1
+            menuButtonBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
+            equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::equilibrium));
+            equilibriumButton_.set_tooltip_text("Estimation of chemical equilibrium based on CANTERA");
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
             reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::reactors));
             reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
             menuButtonBox_.pack_start(pelletButton_, Gtk::PACK_SHRINK);
             pelletButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::pellets));
             pelletButton_.set_tooltip_text("Solvers for different catalytic pellet geometries");
+            #endif
 
             //Adding exit button
             menuButtonBox_.pack_start(exitButton3_, Gtk::PACK_SHRINK);
@@ -261,6 +271,7 @@ namespace ASALI
         
         //Catalytic reactor menu
         {
+            #if ASALI_USING_CANTERA==1
             //Adding logo
             reactorBox_.set_halign(Gtk::ALIGN_START);
             reactorBox_.set_spacing(10);
@@ -292,6 +303,7 @@ namespace ASALI
             backButton1_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::mainMenu));
             reactorButtonGrid_.attach(exitButton4_,1,0,1,1);
             exitButton4_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::exit));
+            #endif
         }
     }
 
@@ -357,9 +369,13 @@ namespace ASALI
 
     void asaliGui::defaultCanteraInput()
     {
+        #if ASALI_USING_CANTERA==1
         thermo_           = Cantera::newPhase("database/data.xml","gas");
         transport_        = Cantera::newDefaultTransportMgr(thermo_);
         chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
+        #else
+        chemistryInterface_ = new ASALI::asaliInterface();
+        #endif
         speciesNames_     = new ASALI::speciesPopup();
         kineticType_      = "default";
         this->mainMenu();
@@ -371,17 +387,7 @@ namespace ASALI
         this->mainMenu();
     }
 
-    void asaliGui::chemkin()
-    {
-        if (!converter_)
-        {
-            delete converter_;
-        }
-        converter_ = new ASALI::chemkinConverter();
-        converter_->show();
-    }
-    
-    void asaliGui::kineticasaliGui()
+    void asaliGui::kineticAsali()
     {
         this->set_title("ASALI: Kinetic");
         this->remove();
@@ -446,6 +452,107 @@ namespace ASALI
         }
     }
 
+    void asaliGui::transport()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!transportMenu_)
+            {
+                delete transportMenu_;
+            }
+            transportMenu_ = new ASALI::transportProperties(speciesNames_,kineticType_);
+            transportMenu_->setChemistryInterface(chemistryInterface_);
+            transportMenu_->show();
+        }
+    }
+
+    void asaliGui::thermo()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!thermoMenu_)
+            {
+                delete thermoMenu_;
+            }
+            thermoMenu_ = new ASALI::thermoProperties(speciesNames_,kineticType_);
+            thermoMenu_->setChemistryInterface(chemistryInterface_);
+            thermoMenu_->show();
+        }
+    }
+
+    void asaliGui::thermoTransport()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!thermoTransportMenu_)
+            {
+                delete thermoTransportMenu_;
+            }
+            thermoTransportMenu_ = new ASALI::thermoTransportProperties(speciesNames_,kineticType_);
+            thermoTransportMenu_->setChemistryInterface(chemistryInterface_);
+            thermoTransportMenu_->show();
+        }
+    }
+
+    void asaliGui::vacuum()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!vacuumMenu_)
+            {
+                delete vacuumMenu_;
+            }
+            vacuumMenu_ = new ASALI::vacuumProperties(speciesNames_,kineticType_);
+            vacuumMenu_->setChemistryInterface(chemistryInterface_);
+            vacuumMenu_->show();
+        }
+    }
+
+    void asaliGui::linearRegression()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!linearRegressionMenu_)
+            {
+                delete linearRegressionMenu_;
+            }
+            linearRegressionMenu_ = new ASALI::linearRegression(speciesNames_,kineticType_);
+            linearRegressionMenu_->setChemistryInterface(chemistryInterface_);
+            linearRegressionMenu_->show();
+        }
+    }
+
+    #if ASALI_USING_CANTERA==1
+    void asaliGui::chemkin()
+    {
+        if (!converter_)
+        {
+            delete converter_;
+        }
+        converter_ = new ASALI::chemkinConverter();
+        converter_->show();
+    }
+    
     void asaliGui::loadCanteraInput()
     {
         std::string filename = this->open_file(this->get_toplevel()->gobj());
@@ -668,15 +775,15 @@ namespace ASALI
                         surface_    = Cantera::newPhase(filename,type[1]);
                         
                         {
-							std::vector<Cantera::ThermoPhase*>  phases{thermo_};
-							transport_  = Cantera::newDefaultTransportMgr(thermo_);
-							kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-						}
-						
+                            std::vector<Cantera::ThermoPhase*>  phases{thermo_};
+                            transport_  = Cantera::newDefaultTransportMgr(thermo_);
+                            kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
+                        }
+                        
                         {
-							std::vector<Cantera::ThermoPhase*>  phases{surface_, thermo_};
-							surface_kinetic_ = Cantera::newKineticsMgr(surface_->xml(), phases);
-						}
+                            std::vector<Cantera::ThermoPhase*>  phases{surface_, thermo_};
+                            surface_kinetic_ = Cantera::newKineticsMgr(surface_->xml(), phases);
+                        }
 
                         chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
                         kineticType_ = "load";
@@ -693,74 +800,6 @@ namespace ASALI
         }
     }
 
-    void asaliGui::transport()
-    {
-        if ( kineticType_ == "none" )
-        {
-            this->noneInputError();
-        }
-        else
-        {
-            if (!transportMenu_)
-            {
-                delete transportMenu_;
-            }
-            transportMenu_ = new ASALI::transportProperties(chemistryInterface_,speciesNames_,kineticType_);
-            transportMenu_->show();
-        }
-    }
-
-    void asaliGui::thermo()
-    {
-        if ( kineticType_ == "none" )
-        {
-            this->noneInputError();
-        }
-        else
-        {
-            if (!thermoMenu_)
-            {
-                delete thermoMenu_;
-            }
-            thermoMenu_ = new ASALI::thermoProperties(chemistryInterface_,speciesNames_,kineticType_);
-            thermoMenu_->show();
-        }
-    }
-
-    void asaliGui::thermoTransport()
-    {
-        if ( kineticType_ == "none" )
-        {
-            this->noneInputError();
-        }
-        else
-        {
-            if (!thermoTransportMenu_)
-            {
-                delete thermoTransportMenu_;
-            }
-            thermoTransportMenu_ = new ASALI::thermoTransportProperties(chemistryInterface_,speciesNames_,kineticType_);
-            thermoTransportMenu_->show();
-        }
-    }
-
-    void asaliGui::vacuum()
-    {
-        if ( kineticType_ == "none" )
-        {
-            this->noneInputError();
-        }
-        else
-        {
-            if (!vacuumMenu_)
-            {
-                delete vacuumMenu_;
-            }
-            vacuumMenu_ = new ASALI::vacuumProperties(chemistryInterface_,speciesNames_,kineticType_);
-            vacuumMenu_->show();
-        }
-    }
-
     void asaliGui::equilibrium()
     {
         if ( kineticType_ == "none" )
@@ -773,28 +812,12 @@ namespace ASALI
             {
                 delete equilibriumMenu_;
             }
-            equilibriumMenu_ = new ASALI::equilibriumCalculator(chemistryInterface_,speciesNames_,kineticType_);
+            equilibriumMenu_ = new ASALI::equilibriumCalculator(speciesNames_,kineticType_);
+            equilibriumMenu_->setChemistryInterface(chemistryInterface_);
             equilibriumMenu_->show();
         }
     }
-
-    void asaliGui::linearRegression()
-    {
-        if ( kineticType_ == "none" )
-        {
-            this->noneInputError();
-        }
-        else
-        {
-            if (!linearRegressionMenu_)
-            {
-                delete linearRegressionMenu_;
-            }
-            linearRegressionMenu_ = new ASALI::linearRegression(chemistryInterface_,speciesNames_,kineticType_);
-            linearRegressionMenu_->show();
-        }
-    }
-
+    
     void asaliGui::pellets()
     {
         if (!pelletMenu_)
@@ -863,6 +886,7 @@ namespace ASALI
         dpMenu_ = new ASALI::pressureDrops(chemistryInterface_,speciesNames_,kineticType_);
         dpMenu_->show();
     }
+    #endif
 
     void asaliGui::exit()
     {

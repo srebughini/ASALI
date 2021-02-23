@@ -48,8 +48,7 @@ namespace ASALI
     {
         public:
 
-            pressureDrops(ASALI::canteraInterface        *canteraInterface,
-                          ASALI::speciesPopup            *speciesNames,
+            pressureDrops(ASALI::speciesPopup            *speciesNames,
                           std::string                     kineticType);
             
             virtual ~pressureDrops();
@@ -145,9 +144,6 @@ namespace ASALI
             std::vector<Gtk::Label*>        packedBedDpLabel_;
             std::vector<Gtk::Label*>        packedBedDpValueLabel_;
             std::vector<Gtk::ComboBoxText*> packedBedDpCombo_;
-
-
-            ASALI::canteraInterface        *canteraInterface_;
     };
 }
 

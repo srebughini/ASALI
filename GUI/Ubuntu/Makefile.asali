@@ -8,7 +8,9 @@ SRC_TO_IGNORE := $(wildcard $(SRC_DIR)/*Reactor.cpp) \
                  $(wildcard $(SRC_DIR)/*Reactors.cpp) \
                  $(wildcard $(SRC_DIR)/*Equations.cpp) \
                  $(SRC_DIR)/canteraInterface.cpp \
-                 $(SRC_DIR)/chemkinConverter.cpp
+                 $(SRC_DIR)/chemkinConverter.cpp \
+                 $(SRC_DIR)/pressureDrops.cpp \
+                 $(SRC_DIR)/equilibriumCalculator.cpp
 
 SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
 
@@ -18,7 +20,7 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
             $(shell python3-config --embed --cflags)\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
+CFLAGS := -fPIC -fno-var-tracking -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config --embed --libs)\
           -lgfortran\

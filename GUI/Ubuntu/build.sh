@@ -50,7 +50,7 @@ function echoGreen {
 }
 
 POSITIONAL=()
-cantera_path="/usr/local"
+cantera_path="/usr/local/"
 operating_system="ubuntu"
 with_cantera="true"
 while [[ $# -gt 0 ]]
@@ -94,7 +94,7 @@ else
 fi
 
 if [ "$with_cantera" == "true" ]; then
-    if [ ! -f "$cantera_path/cantera" ]; then
+    if [ ! -d "$cantera_path/include/cantera" ]; then
         echo " "
         echoRed "Cantera is missing in: $cantera_path"
         Help
@@ -102,9 +102,9 @@ if [ "$with_cantera" == "true" ]; then
     asali_using_cantera=1
     fi
 else
-    cp -rf $folder_api/shared/* include/shared/.
-    cp -rf $folder_api/Asali.cpp src/.
-    cp -rf $folder_api/Asali.hpp include/.
+    cp -u $folder_api/shared/* include/shared/.
+    cp -u $folder_api/Asali.cpp src/.
+    cp -u $folder_api/Asali.hpp include/.
     asali_using_cantera=0
 fi
 

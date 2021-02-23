@@ -40,18 +40,14 @@
 
 namespace ASALI
 {
-    equilibriumCalculator::equilibriumCalculator(ASALI::canteraInterface        *canteraInterface,
-                                                 ASALI::speciesPopup            *speciesNames,
+    equilibriumCalculator::equilibriumCalculator(ASALI::speciesPopup            *speciesNames,
                                                  std::string                     kineticType)
-    : transportProperties(canteraInterface,speciesNames,kineticType),
+    : transportProperties(speciesNames,kineticType),
       exitButton2_("Exit"),
       saveButton_("Save"),
       backButton_("Back"),
       initialStateLabel_("Initial state"),
-      finalStateLabel_("Final state"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      finalStateLabel_("Final state")
     {
 
         //Input
@@ -153,15 +149,15 @@ namespace ASALI
         else
         {
             this->clean();
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->setMoleFraction(x_,n_);
+                chemistryInterface_->setMoleFraction(x_,n_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->setMassFraction(x_,n_);
+                chemistryInterface_->setMassFraction(x_,n_);
             }
 
             x_.clear();
@@ -169,14 +165,14 @@ namespace ASALI
             x_.resize(n_.size());
             y_.resize(n_.size());
             {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
+                std::vector<double> x = chemistryInterface_->mole();
+                std::vector<double> y = chemistryInterface_->mass();
                 
                 for (unsigned int i=0;i<n_.size();i++)
                 {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
-                        if ( n_[i] == canteraInterface_->names()[j] )
+                        if ( n_[i] == chemistryInterface_->names()[j] )
                         {
                             x_[i] = x[j];
                             y_[i] = y[j];
@@ -188,11 +184,11 @@ namespace ASALI
 
             if ( equilibriumCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->equilibriumCalculate("TP");
+                chemistryInterface_->equilibriumCalculate("TP");
             }
             else if ( equilibriumCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->equilibriumCalculate("HP");
+                chemistryInterface_->equilibriumCalculate("HP");
             }
 
             xeq_.clear();
@@ -200,14 +196,14 @@ namespace ASALI
             xeq_.resize(n_.size());
             yeq_.resize(n_.size());
             {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
+                std::vector<double> x = chemistryInterface_->mole();
+                std::vector<double> y = chemistryInterface_->mass();
                 
                 for (unsigned int i=0;i<n_.size();i++)
                 {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
-                        if ( n_[i] == canteraInterface_->names()[j] )
+                        if ( n_[i] == chemistryInterface_->names()[j] )
                         {
                             xeq_[i] = x[j];
                             yeq_[i] = y[j];
@@ -217,8 +213,7 @@ namespace ASALI
                 }
             }
 
-            Teq_ = canteraInterface_->Temperature();
-            
+            Teq_ = chemistryInterface_->getTemperature();
 
             {
                 resultsGrid_.attach(backButton_,0,n_.size()+3,1,1);

@@ -40,10 +40,9 @@
 
 namespace ASALI
 {
-    pressureDrops::pressureDrops(ASALI::canteraInterface        *canteraInterface,
-                                 ASALI::speciesPopup            *speciesNames,
+    pressureDrops::pressureDrops(ASALI::speciesPopup            *speciesNames,
                                  std::string                     kineticType)
-    : transportProperties(canteraInterface,speciesNames,kineticType),
+    : transportProperties(speciesNames,kineticType),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       calculateButton_("Calculate"),
       backButton3_("Back"),
@@ -70,8 +69,7 @@ namespace ASALI
       tubularDpBool_(false),
       honeyCombDpBool_(false),
       packedBedDpBool_(false),
-      Ndp_(3),
-      canteraInterface_(canteraInterface)
+      Ndp_(3)
     {
 
         //Set up packed bed
@@ -366,20 +364,20 @@ namespace ASALI
 
         if ( reactorType_ == "tubular" )
         {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->setMoleFraction(x_,n_);
+                chemistryInterface_->setMoleFraction(x_,n_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->setMassFraction(x_,n_);
+                chemistryInterface_->setMassFraction(x_,n_);
             }
             
-            canteraInterface_->transportCalculate();
+            chemistryInterface_->transportCalculate();
             
-            double Re = v_*canteraInterface_->density()*(Dt_-2.*tw_)/canteraInterface_->mu()[canteraInterface_->mu().size()-1];
+            double Re = v_*chemistryInterface_->getDensity()*(Dt_-2.*tw_)/chemistryInterface_->mu()[chemistryInterface_->mu().size()-1];
             double f  = 0.;
             
             if ( Re < 2100. )
@@ -391,27 +389,27 @@ namespace ASALI
                 f = 0.0791/std::pow(Re,0.25);
             }
 
-            dpTubular_ = 2.*f*canteraInterface_->density()*v_*v_*L_/(Dt_-2.*tw_);
+            dpTubular_ = 2.*f*chemistryInterface_->getDensity()*v_*v_*L_/(Dt_-2.*tw_);
         }
         else if ( reactorType_ == "honeycomb" )
         {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->setMoleFraction(x_,n_);
+                chemistryInterface_->setMoleFraction(x_,n_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->setMassFraction(x_,n_);
+                chemistryInterface_->setMassFraction(x_,n_);
             }
             
-            canteraInterface_->transportCalculate();
+            chemistryInterface_->transportCalculate();
 
             double Dc   = sqrt(1./cpsi_)*2.54*1e-02 - tw_; //[m]
             double epsi = std::pow(Dc,2.)/std::pow(Dc + tw_,2.);
             double v    = v_/epsi;
-            double Re   = v*canteraInterface_->density()*Dc/canteraInterface_->mu()[canteraInterface_->mu().size()-1];
+            double Re   = v*chemistryInterface_->getDensity()*Dc/chemistryInterface_->mu()[chemistryInterface_->mu().size()-1];
             double f    = 0.;
             
             if ( Re < 2100. )
@@ -423,30 +421,30 @@ namespace ASALI
                 f = 0.0791/std::pow(Re,0.25);
             }
 
-            dpHoneyComb_ = 2.*f*canteraInterface_->density()*v*v*L_/Dc;
+            dpHoneyComb_ = 2.*f*chemistryInterface_->getDensity()*v*v*L_/Dc;
         }
         else if ( reactorType_ == "packed bed" )
         {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->setMoleFraction(x_,n_);
+                chemistryInterface_->setMoleFraction(x_,n_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->setMassFraction(x_,n_);
+                chemistryInterface_->setMassFraction(x_,n_);
             }
             
-            canteraInterface_->transportCalculate();
+            chemistryInterface_->transportCalculate();
 
-            double mu       = canteraInterface_->mu()[canteraInterface_->mu().size()-1];
-            double G        = canteraInterface_->density()*v_;
+            double mu       = chemistryInterface_->mu()[chemistryInterface_->mu().size()-1];
+            double G        = chemistryInterface_->getDensity()*v_;
             double Aw       = 1. + 2./(3.*Dt_*(1.-epsi_)/Dp_);
             double Bw       = std::pow(1.15*std::pow(Dp_/Dt_,2.) + 0.87,2.);
-            dpPackedBed_[0] = (150.*(1.-epsi_)/(Dp_*G/mu) + 7./4.)*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*canteraInterface_->density()*Dp_);                                     //Ergun
-            dpPackedBed_[1] = (150.*(1.-epsi_)/(Dp_*G/mu) + 4.2*std::pow((1.-epsi_)/(Dp_*G/mu),1./6.))*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*canteraInterface_->density()*Dp_); //Tallmadge
-            dpPackedBed_[2] = (154.*std::pow(Aw,2.)*(1.-epsi_)/(Dp_*G/mu) + Aw/Bw)*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*canteraInterface_->density()*Dp_);                     //Eisfeld
+            dpPackedBed_[0] = (150.*(1.-epsi_)/(Dp_*G/mu) + 7./4.)*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*chemistryInterface_->getDensity()*Dp_);                                     //Ergun
+            dpPackedBed_[1] = (150.*(1.-epsi_)/(Dp_*G/mu) + 4.2*std::pow((1.-epsi_)/(Dp_*G/mu),1./6.))*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*chemistryInterface_->getDensity()*Dp_); //Tallmadge
+            dpPackedBed_[2] = (154.*std::pow(Aw,2.)*(1.-epsi_)/(Dp_*G/mu) + Aw/Bw)*(1.-epsi_)*std::pow(G,.2)/(std::pow(epsi_,3.)*chemistryInterface_->getDensity()*Dp_);                     //Eisfeld
         } 
     }
 

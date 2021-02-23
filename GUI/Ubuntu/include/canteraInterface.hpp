@@ -42,6 +42,8 @@
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
 #include "cantera/transport/TransportData.h"
+#include "cantera/thermo/SurfPhase.h"
+#include "cantera/kinetics/InterfaceKinetics.h"
 #include "basicInterface.hpp"
 
 namespace ASALI
@@ -49,11 +51,11 @@ namespace ASALI
     class canteraInterface : public ASALI::basicInterface
     {
         public:
-            canteraInterface(Cantera::ThermoPhase* thermo,
-                             Cantera::Transport*   transport,
-                             Cantera::Kinetics*    kinetic,
-                             Cantera::ThermoPhase* surface,
-                             Cantera::Kinetics*    surface_kinetic);
+            canteraInterface(Cantera::ThermoPhase*       thermo,
+                             Cantera::Transport*         transport,
+                             Cantera::Kinetics*          kinetic,
+                             Cantera::SurfPhase*         surface,
+                             Cantera::InterfaceKinetics* surface_kinetic);
 
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
@@ -69,11 +71,13 @@ namespace ASALI
             virtual double getCpMassMix();
             virtual double getCpMoleMix();
             virtual double getMWmix();
+            virtual double getCondMix();
 
             virtual std::vector<double> getMW();
             virtual std::vector<double> getHmole();
             virtual std::vector<double> getSmole();
             virtual std::vector<double> getCpMole();
+            virtual std::vector<double> getDiffMix();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
@@ -95,11 +99,11 @@ namespace ASALI
             
         private:
 
-            Cantera::ThermoPhase* thermo_;
-            Cantera::Transport*   transport_;
-            Cantera::Kinetics*    kinetic_;
-            Cantera::ThermoPhase* surface_;
-            Cantera::Kinetics*    surface_kinetic_;
+            Cantera::ThermoPhase*       thermo_;
+            Cantera::Transport*         transport_;
+            Cantera::Kinetics*          kinetic_;
+            Cantera::SurfPhase*         surface_;
+            Cantera::InterfaceKinetics* surface_kinetic_;
             
             double                QfromGas_;
             double                QfromSurface_;

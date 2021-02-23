@@ -48,8 +48,7 @@ namespace ASALI
     {
         public:
 
-            equilibriumCalculator(ASALI::canteraInterface        *canteraInterface,
-                                  ASALI::speciesPopup            *speciesNames,
+            equilibriumCalculator(ASALI::speciesPopup            *speciesNames,
                                   std::string                     kineticType);
             
             #include "shared/FileManager.H"
@@ -89,12 +88,6 @@ namespace ASALI
 
             std::vector<double>      xeq_;
             std::vector<double>      yeq_;
-
-            std::string kineticType_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

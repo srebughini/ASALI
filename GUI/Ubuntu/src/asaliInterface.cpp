@@ -43,8 +43,8 @@ namespace ASALI
     asaliInterface::asaliInterface():
     basicInterface()
     {
-        this->initialize();
         asali_ = new ASALI::Asali();
+        names_ = asali_->allSpeciesName();
     }
 
     void asaliInterface::setTemperature(const double T)
@@ -62,19 +62,18 @@ namespace ASALI
     void asaliInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name)
     {
         asali_->setSpecies(name);
-        names_ = asali_->speciesName();
         this->setStateFromMoleFraction(x.data(), T_, p_);
     }
 
     void asaliInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name)
     {
         asali_->setSpecies(name);
-        names_ = asali_->speciesName();
         this->setStateFromMassFraction(y.data(), T_, p_);
     }
     
     void asaliInterface::setStateFromMassFraction(const double* y, const double T, const double p)
     {
+        this->resize();
         T_ = T;
         p_ = p;
 
@@ -84,8 +83,8 @@ namespace ASALI
         asali_->setTemperature(T_);
         asali_->setPressure(p_);
 
-		mole_ = asali_->moleFraction();
-		mass_ = asali_->massFraction();
+        mole_ = asali_->moleFraction();
+        mass_ = asali_->massFraction();
 
         x_ = mole_.data();
         y_ = mass_.data();
@@ -99,6 +98,7 @@ namespace ASALI
     
     void asaliInterface::setStateFromMoleFraction(const double* x, const double T, const double p)
     {
+        this->resize();
         T_ = T;
         p_ = p;
         
@@ -108,8 +108,8 @@ namespace ASALI
         asali_->setTemperature(T_);
         asali_->setPressure(p_);
 
-		mole_ = asali_->moleFraction();
-		mass_ = asali_->massFraction();
+        mole_ = asali_->moleFraction();
+        mass_ = asali_->massFraction();
 
         x_ = mole_.data();
         y_ = mass_.data();
@@ -123,7 +123,7 @@ namespace ASALI
 
     void asaliInterface::vacuumCalculate()
     {
-		/*
+        /*
         for(unsigned int i=0;i<NS_;i++)
         {
             const Cantera::GasTransportData* transportData = dynamic_cast<Cantera::GasTransportData*>(thermo_->species(n_[i])->transport.get());
@@ -134,7 +134,7 @@ namespace ASALI
 
     void asaliInterface::thermoCalculate()
     {
-		/*
+        /*
         double mw[NS_];
         double h[NS_];
         double s[NS_];
@@ -164,24 +164,23 @@ namespace ASALI
 
     void asaliInterface::transportCalculate()
     {
-		/*
-        double mu[NS_];
-        double diff[NS_*NS_];
-        double diffM[NS_];
+        std::vector<double> mu    = asali_->speciesViscosity();
+        std::vector<double> mw    = asali_->speciesMolecularWeight();
+        std::vector<double> diffM = asali_->mixtureDiffusion();
+        std::vector<double> cond  = asali_->speciesThermalConductivity();
         
-        transport_->getSpeciesViscosities(mu);
-        transport_->getBinaryDiffCoeffs(NS_,diff);
-        transport_->getMixDiffCoeffs(diffM);
+        std::vector<std::vector<double> > diff = asali_->binaryDiffusion();
+        
+        std::vector<std::string> n = asali_->speciesName();
 
-        unsigned int counter = 0;
         for (unsigned int i=0;i<(NS_+1);i++)
         {
             if ( i == NS_ ) 
             {
                 n_[i]     = "mix";
-                mu_[i]    = transport_->viscosity();             //Pas
-                cond_[i]  = transport_->thermalConductivity();   //W/m/K
-                MW_[i]    = thermo_->meanMolecularWeight();
+                mu_[i]    = asali_->mixtureViscosity();             //Pas
+                cond_[i]  = asali_->mixtureThermalConductivity();   //W/m/K
+                MW_[i]    = asali_->mixtureMolecularWeight();
                 for (unsigned int j=0;j<(NS_+1);j++)
                 {
                     diff_[i][j] = -1.;
@@ -189,9 +188,10 @@ namespace ASALI
             }
             else
             {
-                n_[i]  = thermo_->speciesName(i);
-                mu_[i] = mu[i];
-                MW_[i] = thermo_->molecularWeight(i);
+                n_[i]    = n[i];
+                mu_[i]   = mu[i];
+                MW_[i]   = mw[i];
+                cond_[i] = cond[i];
 
                 for (unsigned int j=0;j<(NS_+1);j++)
                 {
@@ -201,33 +201,11 @@ namespace ASALI
                     }
                     else
                     {
-                        diff_[i][j] = diff[counter++];
+                        diff_[i][j] = diff[i][j];
                     }
                 }
             }
         }
-        
-        
-        {
-            double X[NS_];
-            for (unsigned int i=0;i<NS_;i++)
-            {
-                for (unsigned int j=0;j<NS_;j++)
-                {
-                    if (j==i)
-                    {
-                        X[j] = 1.;
-                    }
-                    else
-                    {
-                        X[j] = 0.;
-                    }
-                }
-
-                thermo_->setState_TPY(T_,p_,X);
-                cond_[i] = transport_->thermalConductivity();
-            }
-        }*/
     }
     
     double asaliInterface::getTemperature()
@@ -259,7 +237,7 @@ namespace ASALI
     {
         int check = 1;
         this->convertToCaption(name);
-        for (unsigned int j=0;j<NS_;j++)
+        for (unsigned int j=0;j<names_.size();j++)
         {
             if ( name == names_[j] )
             {
@@ -303,12 +281,11 @@ namespace ASALI
     std::vector<int>  asaliInterface::checkNames(std::vector<std::string> &name)
     {
         std::vector<int> check(name.size());
-        
         for (unsigned int i=0;i<name.size();i++)
         {
             this->convertToCaption(name[i]);
             check[i] = 1;
-            for (unsigned int j=0;j<NS_;j++)
+            for (unsigned int j=0;j<names_.size();j++)
             {
                 if ( name[i] == names_[j] )
                 {

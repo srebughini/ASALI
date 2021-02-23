@@ -47,8 +47,8 @@ namespace ASALI
     {
         if ( type_ == "CANTERA" )
         {
-			NC_      = chemistryInterface_->numberOfGasSpecies();
-			SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
+            NC_      = chemistryInterface_->numberOfGasSpecies();
+            SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
             NE_      = NC_ + SURF_NC_ + 1 + 1;
 
             x_.resize(NC_);
@@ -151,9 +151,9 @@ namespace ASALI
             rho_   = cTot_*MWmix_;
             V_     = mass_/rho_;
 
-			chemistryInterface_->setStateFromMassFraction(canteraArray, T_, P_);
+            chemistryInterface_->setStateFromMassFraction(canteraArray, T_, P_);
             
-            std::vector<double> x  = chemistryInterface_->moleFractions();
+            std::vector<double> x  = chemistryInterface_->mole();
             std::vector<double> mw = chemistryInterface_->getMW();
 
             for (unsigned int i=0;i<NC_;i++)

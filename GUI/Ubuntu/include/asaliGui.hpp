@@ -37,23 +37,28 @@
 ##############################################################################################*/
 
 #include "pythonInterface.hpp"
-#include "chemkinConverter.hpp"
-#include "canteraInterface.hpp"
 #include "speciesPopup.hpp"
 #include "transportProperties.hpp"
 #include "thermoProperties.hpp"
 #include "thermoTransportProperties.hpp"
 #include "vacuumProperties.hpp"
+#include "linearRegression.hpp"
+#include "asaliKineticMaker.hpp"
+#include <gtk/gtk.h>
+
+#if ASALI_USING_CANTERA==1
+#include "chemkinConverter.hpp"
+#include "canteraInterface.hpp"
+#include "catalyticPellet.hpp"
 #include "equilibriumCalculator.hpp"
 #include "batchReactor.hpp"
 #include "cstrReactor.hpp"
 #include "ph1dReactor.hpp"
 #include "het1dReactor.hpp"
 #include "pressureDrops.hpp"
-#include "linearRegression.hpp"
-#include "catalyticPellet.hpp"
-#include "asaliKineticMaker.hpp"
-#include <gtk/gtk.h>
+#else
+#include "asaliInterface.hpp"
+#endif
 
 namespace ASALI
 {
@@ -74,11 +79,9 @@ namespace ASALI
             void mainMenu();
             void noneInputError();
             void changeCursor();
-            void loadCanteraInput();
             void defaultCanteraInput();
             void noneInput();
-            void chemkin();
-            void kineticasaliGui();
+            void kineticAsali();
             void kineticMake();
             void kineticCheck();
             void chemistryMenu2();
@@ -86,8 +89,14 @@ namespace ASALI
             void thermo();
             void thermoTransport();
             void vacuum();
-            void equilibrium();
             void linearRegression();
+
+            bool chemistryMenu1(GdkEventButton*);
+            
+            #if ASALI_USING_CANTERA==1
+            void chemkin();
+            void loadCanteraInput();
+            void equilibrium();
             void pellets();
             void reactors();
             void batch();
@@ -95,7 +104,7 @@ namespace ASALI
             void ph1d();
             void het1d();
             void dp();
-            bool chemistryMenu1(GdkEventButton*);
+            #endif
 
             std::string       getBeer();
             std::string       getBeerShort();
@@ -172,28 +181,33 @@ namespace ASALI
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
 
-            Cantera::ThermoPhase              *thermo_;
-            Cantera::Transport                *transport_;
-            Cantera::Kinetics                 *kinetic_;
-            Cantera::ThermoPhase              *surface_;
-            Cantera::Kinetics                 *surface_kinetic_;
-            
-            ASALI::chemkinConverter           *converter_;
-            ASALI::canteraInterface           *chemistryInterface_;
+
             ASALI::speciesPopup               *speciesNames_;
             ASALI::transportProperties        *transportMenu_;
             ASALI::thermoProperties           *thermoMenu_;
             ASALI::thermoTransportProperties  *thermoTransportMenu_;
             ASALI::vacuumProperties           *vacuumMenu_;
-            ASALI::equilibriumCalculator      *equilibriumMenu_;
             ASALI::linearRegression           *linearRegressionMenu_;
+            ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
+
+            #if ASALI_USING_CANTERA==1
+            ASALI::chemkinConverter           *converter_;
+            ASALI::canteraInterface           *chemistryInterface_;
+            ASALI::equilibriumCalculator      *equilibriumMenu_;
             ASALI::batchReactor               *batchMenu_;
             ASALI::cstrReactor                *cstrMenu_;
             ASALI::ph1dReactor                *ph1dMenu_;
             ASALI::het1dReactor               *het1dMenu_;
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
-            ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
 
+            Cantera::ThermoPhase              *thermo_;
+            Cantera::Transport                *transport_;
+            Cantera::Kinetics                 *kinetic_;
+            Cantera::ThermoPhase              *surface_;
+            Cantera::Kinetics                 *surface_kinetic_;
+            #else
+            ASALI::asaliInterface             *chemistryInterface_;
+            #endif
     };
 }

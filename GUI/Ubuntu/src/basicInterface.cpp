@@ -42,10 +42,36 @@ namespace ASALI
 {
     basicInterface::basicInterface()
     {
-
+        small.resize(26);    big.resize(26);
+        small[0]  = "a";    big[0]  = "A";
+        small[1]  = "b";    big[1]  = "B";
+        small[2]  = "c";    big[2]  = "C";
+        small[3]  = "d";    big[3]  = "D";
+        small[4]  = "e";    big[4]  = "E";
+        small[5]  = "f";    big[5]  = "F";
+        small[6]  = "g";    big[6]  = "G";
+        small[7]  = "h";    big[7]  = "H";
+        small[8]  = "i";    big[8]  = "I";
+        small[9]  = "j";    big[9]  = "J";
+        small[10] = "k";    big[10] = "K";
+        small[11] = "l";    big[11] = "L";
+        small[12] = "m";    big[12] = "M";
+        small[13] = "n";    big[13] = "N";
+        small[14] = "o";    big[14] = "O";
+        small[15] = "p";    big[15] = "P";
+        small[16] = "q";    big[16] = "Q";
+        small[17] = "r";    big[17] = "R";
+        small[18] = "s";    big[18] = "S";
+        small[19] = "t";    big[19] = "T";
+        small[20] = "u";    big[20] = "U";
+        small[21] = "v";    big[21] = "V";
+        small[22] = "w";    big[22] = "W";
+        small[23] = "x";    big[23] = "X";
+        small[24] = "y";    big[24] = "Y";
+        small[25] = "z";    big[25] = "Z";
     }
     
-    void basicInterface::initialize()
+    void basicInterface::resize()
     {
         T_        = 0.;
         p_        = 0.;
@@ -74,34 +100,6 @@ namespace ASALI
         {
             diff_[i].resize(NS_ + 1);
         }
-        
-        small.resize(26);    big.resize(26);
-        small[0]  = "a";    big[0]  = "A";
-        small[1]  = "b";    big[1]  = "B";
-        small[2]  = "c";    big[2]  = "C";
-        small[3]  = "d";    big[3]  = "D";
-        small[4]  = "e";    big[4]  = "E";
-        small[5]  = "f";    big[5]  = "F";
-        small[6]  = "g";    big[6]  = "G";
-        small[7]  = "h";    big[7]  = "H";
-        small[8]  = "i";    big[8]  = "I";
-        small[9]  = "j";    big[9]  = "J";
-        small[10] = "k";    big[10] = "K";
-        small[11] = "l";    big[11] = "L";
-        small[12] = "m";    big[12] = "M";
-        small[13] = "n";    big[13] = "N";
-        small[14] = "o";    big[14] = "O";
-        small[15] = "p";    big[15] = "P";
-        small[16] = "q";    big[16] = "Q";
-        small[17] = "r";    big[17] = "R";
-        small[18] = "s";    big[18] = "S";
-        small[19] = "t";    big[19] = "T";
-        small[20] = "u";    big[20] = "U";
-        small[21] = "v";    big[21] = "V";
-        small[22] = "w";    big[22] = "W";
-        small[23] = "x";    big[23] = "X";
-        small[24] = "y";    big[24] = "Y";
-        small[25] = "z";    big[25] = "Z";
     }
 
     void basicInterface::setTemperature(const double T)
@@ -219,9 +217,9 @@ namespace ASALI
 
     void basicInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name) {}
 
-    void basicInterface::setStateFromMassFraction(double* y, double T, double P) {}
+    void basicInterface::setStateFromMassFraction(const double* y, const double T, const double P) {}
     
-    void basicInterface::setStateFromMoleFraction(double* x, double T, double P) {}
+    void basicInterface::setStateFromMoleFraction(const double* x, const double T, const double P) {}
 
     void basicInterface::vacuumCalculate() {}
 
@@ -239,6 +237,8 @@ namespace ASALI
     
     double basicInterface::getMWmix() { return 0.; }
     
+    double basicInterface::getCondMix() { return 0.; }
+    
     int  basicInterface::checkNames(std::string name) { return 0; }
 
     unsigned int basicInterface::numberOfGasSpecies()     { return 0; }
@@ -252,6 +252,8 @@ namespace ASALI
     std::vector<double> basicInterface::getSmole() { std::vector<double> dummy; return dummy; }
     
     std::vector<double> basicInterface::getCpMole() { std::vector<double> dummy; return dummy; }
+    
+    std::vector<double> basicInterface::getDiffMix() { std::vector<double> dummy; return dummy; }
 
     std::vector<int>  basicInterface::checkNames(std::vector<std::string> &name) { std::vector<int> dummy; return dummy; }
 

@@ -58,7 +58,7 @@ namespace ASALI
             basicInterface();
 
             void convertToCaption(std::string& n);
-            void initialize();
+            void resize();
 
             double specieProperty(std::string p,std::string n);
             
@@ -78,11 +78,13 @@ namespace ASALI
             virtual double getCpMassMix();
             virtual double getCpMoleMix();
             virtual double getMWmix();
+            virtual double getCondMix();
 
             virtual std::vector<double> getMW();
             virtual std::vector<double> getHmole();
             virtual std::vector<double> getSmole();
             virtual std::vector<double> getCpMole();
+            virtual std::vector<double> getDiffMix();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);

@@ -40,7 +40,26 @@
 #define ASALIKINETICMAKER_H
 
 #include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+#include <thread>
+#include <numeric>
+#include <functional>
+
+#if ASALI_USING_CANTERA==1
 #include "canteraInterface.hpp"
+#else
+#include "asaliInterface.hpp"
+#endif
 
 namespace ASALI
 {
@@ -60,9 +79,20 @@ namespace ASALI
             void save();
             void exit();
 
+            #if ASALI_USING_CANTERA==1
+            void setChemistryInterface(ASALI::canteraInterface* chemistryInterface);
+            #else
+            void setChemistryInterface(ASALI::asaliInterface*   chemistryInterface);
+            #endif
+
             std::string       getBeer();
             std::string       getBeerShort();
 
+            #if ASALI_USING_CANTERA==1
+            ASALI::canteraInterface        *chemistryInterface_;
+            #else
+            ASALI::asaliInterface          *chemistryInterface_;
+            #endif
 
             #include "shared/Vector.H"
 
@@ -123,7 +153,6 @@ namespace ASALI
             std::vector<Gtk::Label *>         recapTypeVectorLabel_;
 
             std::vector<Gtk::ComboBoxText *>  reactionCombo_;
-            
 
             std::vector<Gtk::Entry *>         speciesEntry_;
             std::vector<Gtk::Entry *>         reactionEntry_;
@@ -139,16 +168,10 @@ namespace ASALI
             std::vector<std::string>  t_;
             std::vector<std::string>  op_;
 
-            Cantera::ThermoPhase      *thermo_;
-            Cantera::Transport        *transport_;
-            ASALI::canteraInterface   *canteraInterface_;
-
             unsigned int NR_;
             unsigned int NC_;
             
-            
             bool restart_;
-            
             
             std::vector<std::vector<double> > shet_;
             std::vector<std::vector<double> > shom_;
@@ -170,7 +193,6 @@ namespace ASALI
             std::vector<std::string> splitString(const std::string txt, std::string ch);
 
             int getSpecieIndex(std::string n, std::vector<std::string> nv);
-
     };
 }
 

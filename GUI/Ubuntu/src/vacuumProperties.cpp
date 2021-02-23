@@ -40,10 +40,9 @@
 
 namespace ASALI
 {
-    vacuumProperties::vacuumProperties(ASALI::canteraInterface        *canteraInterface,
-                                       ASALI::speciesPopup            *speciesNames,
+    vacuumProperties::vacuumProperties(ASALI::speciesPopup            *speciesNames,
                                        std::string                     kineticType)
-    : transportProperties(canteraInterface,speciesNames,kineticType),
+    : transportProperties(speciesNames,kineticType),
       exitButton_("Exit"),
       saveButton_("Save"),
       calculateButton_("Calculate"),
@@ -65,10 +64,7 @@ namespace ASALI
       diffResults_("?"),
       velocityResults_("?"),
       pathResults_("?"),
-      knudsenResults_("?"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      knudsenResults_("?")
     {
         this->remove();
         this->set_border_width(15);
@@ -233,7 +229,7 @@ namespace ASALI
                  kineticType_ == "load"    ||
                  kineticType_ == "nokinetic")
             {
-                std::vector<int> check = canteraInterface_->checkNames(n_);
+                std::vector<int> check = chemistryInterface_->checkNames(n_);
 
                 for (unsigned int i=0;i<check.size();i++)
                 {
@@ -281,20 +277,20 @@ namespace ASALI
         }
         else
         {
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
-            canteraInterface_->setMoleFraction(x_,n_);
-            canteraInterface_->vacuumCalculate();
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
+            chemistryInterface_->setMoleFraction(x_,n_);
+            chemistryInterface_->vacuumCalculate();
 
             {
-                std::vector<double> vm = canteraInterface_->vm();
-                std::vector<double> l  = canteraInterface_->l();
+                std::vector<double> vm = chemistryInterface_->vm();
+                std::vector<double> l  = chemistryInterface_->l();
 
                 for (unsigned int i=0;i<n_.size();i++)
                 {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
-                        if ( n_[i] == canteraInterface_->names()[j] )
+                        if ( n_[i] == chemistryInterface_->names()[j] )
                         {
                             lK_ = l[j];
                             vK_ = vm[j];
@@ -311,21 +307,21 @@ namespace ASALI
                 }
                 else //viscous
                 {
-                    canteraInterface_->transportCalculate();
+                    chemistryInterface_->transportCalculate();
                     for (unsigned int i=0;i<n_.size();i++)
                     {
-                        for (unsigned int j=0;j<canteraInterface_->names().size();j++)
+                        for (unsigned int j=0;j<chemistryInterface_->names().size();j++)
                         {
-                            if ( n_[i] == canteraInterface_->names()[j] )
+                            if ( n_[i] == chemistryInterface_->names()[j] )
                             {
                                 vK_    = vm[j];
                                 for (unsigned int k=0;k<n_.size();k++)
                                 {
-                                    for (unsigned int h=0;h<canteraInterface_->names().size();h++)
+                                    for (unsigned int h=0;h<chemistryInterface_->names().size();h++)
                                     {
-                                        if ( n_[k] == canteraInterface_->names()[h] )
+                                        if ( n_[k] == chemistryInterface_->names()[h] )
                                         {
-                                            diffK_ = canteraInterface_->diff()[j][h];
+                                            diffK_ = chemistryInterface_->diff()[j][h];
                                             break;
                                         }
                                     }

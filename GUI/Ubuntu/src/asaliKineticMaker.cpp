@@ -369,7 +369,7 @@ namespace ASALI
 
             for (unsigned int i=0;i<NC_;i++)
             {
-                canteraInterface_->convertToCaption(n_[i]);
+                chemistryInterface_->convertToCaption(n_[i]);
                 recapSpeciesVectorLabel_[i]->set_text(n_[i]);
             }
 
@@ -380,8 +380,8 @@ namespace ASALI
                 std::string r = reactionEntry_[i]->get_text();
                 std::string t = reactionCombo_[i]->get_active_text();
                 
-                canteraInterface_->convertToCaption(r);
-                canteraInterface_->convertToCaption(Rtot_[i]);
+                chemistryInterface_->convertToCaption(r);
+                chemistryInterface_->convertToCaption(Rtot_[i]);
                 this->replaceString(Rtot_[i],"EXP","exp");
                 this->replaceString(Rtot_[i],"POW","pow");
                 
@@ -401,27 +401,6 @@ namespace ASALI
 
     bool asaliKineticMaker::checkSpecies()
     {
-        if ( !thermo_ )
-        {
-            delete thermo_;
-        }
-        
-        if ( !transport_ )
-        {
-            delete transport_;
-        }
-        
-        if ( !canteraInterface_ )
-        {
-            delete canteraInterface_;
-        }
-
-        {
-            thermo_           = Cantera::newPhase("database/data.xml","gas");
-            transport_        = Cantera::newDefaultTransportMgr(thermo_);
-            canteraInterface_ = new ASALI::canteraInterface(thermo_,transport_);
-        }
-
         std::vector<std::string> n(speciesEntry_.size());
         for (unsigned int i=0;i<speciesEntry_.size();i++)
         {
@@ -447,7 +426,7 @@ namespace ASALI
             unsigned int counter = 0;
             {
                 std::vector<std::string> n     = n_;
-                std::vector<int>         check = canteraInterface_->checkNames(n);
+                std::vector<int>         check = chemistryInterface_->checkNames(n);
                 std::string              ci;
 
                 for (unsigned int i=0;i<check.size();i++)
