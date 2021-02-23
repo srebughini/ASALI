@@ -36,18 +36,17 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.h"
+#include "Asali.hpp"
 
 namespace ASALI
 {
-    
     Asali::Asali()
     :pi_(3.14159265358979323846)
     {
-        #include "transport.H"
-        #include "thermo.H"
-        #include "omega11.H"
-        #include "omega22.H"
+        #include "shared/transport.H"
+        #include "shared/thermo.H"
+        #include "shared/omega11.H"
+        #include "shared/omega22.H"
 
         T_ = 0.;
         p_ = 0.;

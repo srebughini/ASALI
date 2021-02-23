@@ -36,11 +36,11 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#include "AsaliGui.hpp"
 
 namespace ASALI
 {
-    Asali::Asali()
+    AsaliGui::AsaliGui()
     : discrimerButton_("Discrimer"),
       exitButton1_("Exit"),
       exitButton2_("Exit"),
@@ -106,8 +106,8 @@ namespace ASALI
             grid_.set_row_spacing(10);
             logoEventBox_.add(bigLogo_);
             logoEventBox_.set_events(Gdk::BUTTON_PRESS_MASK);
-            logoEventBox_.signal_button_press_event().connect(sigc::mem_fun(*this,&Asali::chemistryMenu1));
-            logoEventBox_.signal_realize().connect(sigc::mem_fun(*this,&Asali::changeCursor));
+            logoEventBox_.signal_button_press_event().connect(sigc::mem_fun(*this,&AsaliGui::chemistryMenu1));
+            logoEventBox_.signal_realize().connect(sigc::mem_fun(*this,&AsaliGui::changeCursor));
 
             //Adding beer
             beerLabel_.set_text(this->getBeer());
@@ -133,19 +133,19 @@ namespace ASALI
             grid_.attach(startButtonBox_,1,4,1,1);
             startButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             startButtonBox_.pack_start(startButton_, Gtk::PACK_SHRINK);
-            startButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
+            startButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::chemistryMenu2));
 
             //Adding discrimer button (position 0,2)
             grid_.attach(discrimerButtonBox_,0,4,1,1);
             discrimerButtonBox_.set_layout(Gtk::BUTTONBOX_START);
             discrimerButtonBox_.pack_start(discrimerButton_, Gtk::PACK_SHRINK);
-            discrimerButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::discrimer));
+            discrimerButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::discrimer));
 
             //Adding exit button (position 2,2)
             grid_.attach(exitButtonBox_,2,4,1,1);
             exitButtonBox_.set_layout(Gtk::BUTTONBOX_END);
             exitButtonBox_.pack_start(exitButton1_, Gtk::PACK_SHRINK);
-            exitButton1_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
+            exitButton1_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::exit));
 
             this->show_all_children();
         }
@@ -164,27 +164,27 @@ namespace ASALI
             chemistryButtonBox_.pack_start(kineticLabel_, Gtk::PACK_SHRINK);
             kineticLabel_.set_use_markup(true);
             chemistryButtonBox_.pack_start(defaultCanteraInputButton_, Gtk::PACK_SHRINK);
-            defaultCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::defaultCanteraInput));
+            defaultCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::defaultCanteraInput));
             defaultCanteraInputButton_.set_tooltip_text("Select the ASALI database for transport and thermodynamic properties");
             chemistryButtonBox_.pack_start(loadCanteraInputButton_, Gtk::PACK_SHRINK);
-            loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::loadCanteraInput));
+            loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::loadCanteraInput));
             loadCanteraInputButton_.set_tooltip_text("Load CANTERA input file");
             chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
-            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::noneInput));
+            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::noneInput));
             noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
-            conversionButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemkin));
+            conversionButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
             chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
-            asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticAsali));
+            asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::kineticAsaliGui));
             asaliKineticButton_.set_tooltip_text("Write or check a kinetic scheme in ASALI format");
             
             //Adding exit button
             chemistryButtonBox_.pack_start(exitButton2_, Gtk::PACK_SHRINK);
-            exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
+            exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::exit));
         }
 
-        //Asali kinetic 
+        //AsaliGui kinetic 
         {
             //Adding logo
             kineticBox_.set_halign(Gtk::ALIGN_START);
@@ -197,10 +197,10 @@ namespace ASALI
             kineticButtonBox_.set_spacing(10);
             kineticButtonBox_.set_homogeneous(true);
             kineticButtonBox_.pack_start(asaliKineticMakeButton_, Gtk::PACK_SHRINK);
-            asaliKineticMakeButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticMake));
+            asaliKineticMakeButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::kineticMake));
             asaliKineticMakeButton_.set_tooltip_text("Write a new kinetic scheme in ASALI format");
             kineticButtonBox_.pack_start(asaliKineticCheckButton_, Gtk::PACK_SHRINK);
-            asaliKineticCheckButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::kineticCheck));
+            asaliKineticCheckButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::kineticCheck));
             asaliKineticCheckButton_.set_tooltip_text("Check a kinetic scheme in ASALI format");
 
             //Adding exit button
@@ -210,9 +210,9 @@ namespace ASALI
             kineticButtonGrid_.set_column_spacing(10);
             kineticButtonGrid_.set_row_spacing(10);
             kineticButtonGrid_.attach(backButton2_,0,0,1,1);
-            backButton2_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
+            backButton2_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::chemistryMenu2));
             kineticButtonGrid_.attach(exitButton5_,1,0,1,1);
-            exitButton5_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
+            exitButton5_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::exit));
         }
 
         //Main Menu
@@ -228,35 +228,35 @@ namespace ASALI
             menuButtonBox_.set_spacing(10);
             menuButtonBox_.set_homogeneous(true);
             menuButtonBox_.pack_start(canteraInputButton_, Gtk::PACK_SHRINK);
-            canteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::chemistryMenu2));
+            canteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::chemistryMenu2));
             menuButtonBox_.pack_start(transportButton_, Gtk::PACK_SHRINK);
-            transportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::transport));
+            transportButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::transport));
             transportButton_.set_tooltip_text("Estimation of transport properties at assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(thermoButton_, Gtk::PACK_SHRINK);
-            thermoButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermo));
+            thermoButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::thermo));
             thermoButton_.set_tooltip_text("Estimation of thermodynamic properties at assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(thermoTransportButton_, Gtk::PACK_SHRINK);
-            thermoTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermoTransport));
+            thermoTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::thermoTransport));
             thermoTransportButton_.set_tooltip_text("Estimation of thermodynamic & transport properties\nat assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(vacuumButton_, Gtk::PACK_SHRINK);
-            vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::vacuum));
+            vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::vacuum));
             vacuumButton_.set_tooltip_text("Estimation of specie vacuum properties at assigned Temperture and Pressure");
             menuButtonBox_.pack_start(equilibriumButton_, Gtk::PACK_SHRINK);
-            equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::equilibrium));
+            equilibriumButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::equilibrium));
             equilibriumButton_.set_tooltip_text("Estimation of chemical equilibrium based on CANTERA");
             menuButtonBox_.pack_start(linearRegressionButton_, Gtk::PACK_SHRINK);
-            linearRegressionButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::linearRegression));
+            linearRegressionButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::linearRegression));
             linearRegressionButton_.set_tooltip_text("Estimaion of linear equations for thermodynamic and transport properties\nof a gas mixture as a function of Temperature");
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
-            reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::reactors));
+            reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::reactors));
             reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
             menuButtonBox_.pack_start(pelletButton_, Gtk::PACK_SHRINK);
-            pelletButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::pellets));
+            pelletButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::pellets));
             pelletButton_.set_tooltip_text("Solvers for different catalytic pellet geometries");
 
             //Adding exit button
             menuButtonBox_.pack_start(exitButton3_, Gtk::PACK_SHRINK);
-            exitButton3_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
+            exitButton3_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::exit));
         }
         
         //Catalytic reactor menu
@@ -272,15 +272,15 @@ namespace ASALI
             reactorButtonBox_.set_spacing(10);
             reactorButtonBox_.set_homogeneous(true);
             reactorButtonBox_.pack_start(batchButton_, Gtk::PACK_SHRINK);
-            batchButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::batch));
+            batchButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::batch));
             reactorButtonBox_.pack_start(cstrButton_, Gtk::PACK_SHRINK);
-            cstrButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::cstr));
+            cstrButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::cstr));
             reactorButtonBox_.pack_start(ph1dButton_, Gtk::PACK_SHRINK);
-            ph1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::ph1d));
+            ph1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::ph1d));
             reactorButtonBox_.pack_start(het1dButton_, Gtk::PACK_SHRINK);
-            het1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::het1d));
+            het1dButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::het1d));
             reactorButtonBox_.pack_start(dpButton_, Gtk::PACK_SHRINK);
-            dpButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::dp));
+            dpButton_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::dp));
 
             //Adding exit button
             reactorButtonBox_.pack_start(reactorButtonGrid_, Gtk::PACK_SHRINK);
@@ -289,22 +289,22 @@ namespace ASALI
             reactorButtonGrid_.set_column_spacing(10);
             reactorButtonGrid_.set_row_spacing(10);
             reactorButtonGrid_.attach(backButton1_,0,0,1,1);
-            backButton1_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::mainMenu));
+            backButton1_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::mainMenu));
             reactorButtonGrid_.attach(exitButton4_,1,0,1,1);
-            exitButton4_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::exit));
+            exitButton4_.signal_clicked().connect(sigc::mem_fun(*this,&AsaliGui::exit));
         }
     }
 
-    Asali::~Asali()
+    AsaliGui::~AsaliGui()
     {
     }
 
-    void Asali::changeCursor()
+    void AsaliGui::changeCursor()
     {
         logoEventBox_.get_window()->set_cursor(Gdk::Cursor::create(Gdk::HAND1));
     }
 
-    bool Asali::chemistryMenu1(GdkEventButton*)
+    bool AsaliGui::chemistryMenu1(GdkEventButton*)
     {
         this->remove();
         this->set_title("ASALI");
@@ -315,7 +315,7 @@ namespace ASALI
         return true;
     }
 
-    void Asali::chemistryMenu2()
+    void AsaliGui::chemistryMenu2()
     {
         this->remove();
         this->set_title("ASALI");
@@ -324,7 +324,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void Asali::mainMenu()
+    void AsaliGui::mainMenu()
     {
         this->remove();
         this->set_title("ASALI");
@@ -333,7 +333,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void Asali::discrimer()
+    void AsaliGui::discrimer()
     {
         Gtk::MessageDialog dialog(*this,"ASALI is free software: You can redistribute it and/or modify\n"
                                         " it the terms of the GNU General Public License as published by\n"
@@ -348,14 +348,14 @@ namespace ASALI
         dialog.run();
     }
     
-    void Asali::noneInputError()
+    void AsaliGui::noneInputError()
     {
         Gtk::MessageDialog dialog(*this,"This feauture is not available. To use it, please, select a CANTERA kinetic/properties file.",true,Gtk::MESSAGE_ERROR);
         dialog.set_secondary_text(this->getBeer(),true);
         dialog.run();
     }
 
-    void Asali::defaultCanteraInput()
+    void AsaliGui::defaultCanteraInput()
     {
         thermo_           = Cantera::newPhase("database/data.xml","gas");
         transport_        = Cantera::newDefaultTransportMgr(thermo_);
@@ -365,13 +365,13 @@ namespace ASALI
         this->mainMenu();
     }
     
-    void Asali::noneInput()
+    void AsaliGui::noneInput()
     {
         kineticType_ = "none";
         this->mainMenu();
     }
 
-    void Asali::chemkin()
+    void AsaliGui::chemkin()
     {
         if (!converter_)
         {
@@ -381,7 +381,7 @@ namespace ASALI
         converter_->show();
     }
     
-    void Asali::kineticAsali()
+    void AsaliGui::kineticAsaliGui()
     {
         this->set_title("ASALI: Kinetic");
         this->remove();
@@ -390,7 +390,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void Asali::kineticMake()
+    void AsaliGui::kineticMake()
     {
         if (!asaliKineticMakerMenu_)
         {
@@ -400,7 +400,7 @@ namespace ASALI
         asaliKineticMakerMenu_->show();
     }
 
-    void Asali::kineticCheck()
+    void AsaliGui::kineticCheck()
     {
         std::string filename = this->open_file(this->get_toplevel()->gobj());
         if ( filename != "" )
@@ -446,7 +446,7 @@ namespace ASALI
         }
     }
 
-    void Asali::loadCanteraInput()
+    void AsaliGui::loadCanteraInput()
     {
         std::string filename = this->open_file(this->get_toplevel()->gobj());
         if ( filename != "" )
@@ -693,7 +693,7 @@ namespace ASALI
         }
     }
 
-    void Asali::transport()
+    void AsaliGui::transport()
     {
         if ( kineticType_ == "none" )
         {
@@ -710,7 +710,7 @@ namespace ASALI
         }
     }
 
-    void Asali::thermo()
+    void AsaliGui::thermo()
     {
         if ( kineticType_ == "none" )
         {
@@ -727,7 +727,7 @@ namespace ASALI
         }
     }
 
-    void Asali::thermoTransport()
+    void AsaliGui::thermoTransport()
     {
         if ( kineticType_ == "none" )
         {
@@ -744,7 +744,7 @@ namespace ASALI
         }
     }
 
-    void Asali::vacuum()
+    void AsaliGui::vacuum()
     {
         if ( kineticType_ == "none" )
         {
@@ -761,7 +761,7 @@ namespace ASALI
         }
     }
 
-    void Asali::equilibrium()
+    void AsaliGui::equilibrium()
     {
         if ( kineticType_ == "none" )
         {
@@ -778,7 +778,7 @@ namespace ASALI
         }
     }
 
-    void Asali::linearRegression()
+    void AsaliGui::linearRegression()
     {
         if ( kineticType_ == "none" )
         {
@@ -795,7 +795,7 @@ namespace ASALI
         }
     }
 
-    void Asali::pellets()
+    void AsaliGui::pellets()
     {
         if (!pelletMenu_)
         {
@@ -805,7 +805,7 @@ namespace ASALI
         pelletMenu_->show();
     }
 
-    void Asali::reactors()
+    void AsaliGui::reactors()
     {
         this->set_title("ASALI: Catalytic reactors");
         this->remove();
@@ -814,7 +814,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void Asali::batch()
+    void AsaliGui::batch()
     {
         if (!batchMenu_)
         {
@@ -824,7 +824,7 @@ namespace ASALI
         batchMenu_->show();
     }
 
-    void Asali::cstr()
+    void AsaliGui::cstr()
     {
         if (!cstrMenu_)
         {
@@ -834,7 +834,7 @@ namespace ASALI
         cstrMenu_->show();
     }
 
-    void Asali::ph1d()
+    void AsaliGui::ph1d()
     {
         if (!ph1dMenu_)
         {
@@ -844,7 +844,7 @@ namespace ASALI
         ph1dMenu_->show();
     }
 
-    void Asali::het1d()
+    void AsaliGui::het1d()
     {
         if (!het1dMenu_)
         {
@@ -854,7 +854,7 @@ namespace ASALI
         het1dMenu_->show();
     }
 
-    void Asali::dp()
+    void AsaliGui::dp()
     {
         if (!dpMenu_)
         {
@@ -864,26 +864,26 @@ namespace ASALI
         dpMenu_->show();
     }
 
-    void Asali::exit()
+    void AsaliGui::exit()
     {
         this->hide();
     }
     
-    std::string Asali::getBeer()
+    std::string AsaliGui::getBeer()
     {
         unsigned int seed = time(NULL);
         int i = rand_r(&seed)%beer_.size();
         return beer_[i];
     }
 
-    std::string Asali::getBeerShort()
+    std::string AsaliGui::getBeerShort()
     {
         unsigned int seed = time(NULL);
         int i = rand_r(&seed)%beerShort_.size();
         return beerShort_[i];
     }
 
-    std::vector<std::string> Asali::splitString(const std::string txt, std::string ch)
+    std::vector<std::string> AsaliGui::splitString(const std::string txt, std::string ch)
     {
         std::vector<std::string> strs;
         std::size_t pos        = txt.find( ch );
