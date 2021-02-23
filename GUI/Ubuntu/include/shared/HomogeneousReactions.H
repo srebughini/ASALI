@@ -40,32 +40,16 @@ if ( homogeneousReactions_ == true )
 {
     if ( type_ == "CANTERA" )
     {
-		chemistryInterface_->calculateHomogeneousReactions(omega_, T_, P_);
-		RfromGas_ = chemistryInterface_->RfromGas();
-		QfromGas_ = chemistryInterface_->QfromGas();
-		
-		/*
-        double* bulkArray = omega_.data();
-        double  canteraArray[NC_];
-
-        gas_->setState_TPY(T_,P_,bulkArray);
-        kinetic_->getNetProductionRates(canteraArray);
-
-        for (unsigned int j=0;j<NC_;j++)
+        chemistryInterface_->calculateHomogeneousReactions(omega_, T_, P_);
+        RfromGas_ = chemistryInterface_->RfromGas();
+        if ( energyEquation_ == true )
         {
-            RfromGas_[j] = canteraArray[j]; //kmol/m2/s
+            QfromGas_ = chemistryInterface_->QfromGas();
         }
-
-        double reactionArray[kinetic_->nReactions()];
-        double enthalpyArray[kinetic_->nReactions()];
-        kinetic_->getNetRatesOfProgress(reactionArray);
-        kinetic_->getDeltaEnthalpy(enthalpyArray);
-        QfromGas_ = 0.;
-        for (unsigned int j=0;j<kinetic_->nReactions();j++)
-        {   
-            QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
+        else
+        {
+            QfromGas_ = 0.;
         }
-        QfromGas_ = -QfromGas_;*/
     }
     else if ( type_ == "ASALI" )
     {
@@ -75,9 +59,6 @@ if ( homogeneousReactions_ == true )
         {
             if ( userCheck_ == false )
             {
-                /*double hArray[gas_->nSpecies()];
-                gas_->getPartialMolarEnthalpies(hArray);*/
-
                 chemistryInterface_->setStateFromMoleFraction(x_.data(), T_, P_);
                 std::vector<double> hArray = chemistryInterface_->getHmole();
                 

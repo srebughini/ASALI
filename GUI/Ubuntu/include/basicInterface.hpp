@@ -66,16 +66,16 @@ namespace ASALI
             
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void thermoCalculate();
-            virtual void transportCalculate();
-            virtual void vacuumCalculate();
-            virtual void calculateHomogeneousReactions(std::vector<double> omega, double T, double P);
-            virtual void equilibriumCalculate(std::string type);
             virtual void setStateFromMassFraction(double* y, double T, double p);
             virtual void setStateFromMoleFraction(double* x, double T, double p);
 
-            virtual double temperature();
-            virtual double density();
+            virtual void thermoCalculate();
+            virtual void transportCalculate();
+            virtual void vacuumCalculate();
+            virtual void equilibriumCalculate(std::string type);
+
+            virtual double getTemperature();
+            virtual double getDensity();
             virtual double getCpMassMix();
             virtual double getCpMoleMix();
             virtual double getMWmix();
@@ -90,29 +90,27 @@ namespace ASALI
             virtual unsigned int      numberOfGasSpecies();
             virtual unsigned int      numberOfSurfaceSpecies();
             
+            inline std::vector<double> getMoleFraction()        {return mole_;};
+            inline std::vector<double> getMassFraction()        {return mass_;};
             inline std::vector<double> h()                      {return h_;};
             inline std::vector<double> s()                      {return s_;};
             inline std::vector<double> cp()                     {return cp_;};
             inline std::vector<double> MW()                     {return MW_;};
             inline std::vector<double> mu()                     {return mu_;};
             inline std::vector<double> cond()                   {return cond_;};
-            inline std::vector<double> moleFractions()          {return mole_;};
-            inline std::vector<double> massFractions()          {return mass_;};
+            inline std::vector<double> mole()                   {return mole_;};
+            inline std::vector<double> mass()                   {return mass_;};
             inline std::vector<double> vm()                     {return v_;};
             inline std::vector<double> l()                      {return l_;};
-            inline std::vector<double> RfromGas()               {return RfromGas_;};
-            
+
             inline std::vector<std::vector<double> > diff()     {return diff_;};
             
             inline std::vector<std::string> names()             {return n_;};
-
-            inline double QfromGas()                            {return QfromGas_;};
 
             virtual ~basicInterface();
             
             double                 T_;
             double                 p_;
-            double                 QfromGas_;
             double                *x_;
             double                *y_;
 
@@ -129,8 +127,6 @@ namespace ASALI
             std::vector<double>   cond_;
             std::vector<double>   mole_;
             std::vector<double>   mass_;
-            
-            std::vector<double>   RfromGas_;
             
             std::vector<std::vector<double> > diff_;
             

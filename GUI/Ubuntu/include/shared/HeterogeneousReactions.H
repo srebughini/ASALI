@@ -40,7 +40,21 @@ if ( heterogeneusReactions_ == true && alfa_ != 0.)
 {
     if ( type_ == "CANTERA" )
     {
+        chemistryInterface_->calculateHeterogeneousReactions(omega_, Z_, T_, P_);
+        RfromSurface_ = chemistryInterface_->RfromSurface();
+        Rsurface_ = chemistryInterface_->Rsurface();
+        SD_ = chemistryInterface_->siteDensity();
+        
+        if ( energyEquation_ == true )
         {
+            QfromSurface_ = chemistryInterface_->QfromSurface();
+        }
+        else
+        {
+            QfromSurface_ = 0.;
+        }
+        
+        /*{
             double* bulkArray     = omega_.data();
             double* coverageArray = Z_.data();
             double  reactionArray[NC_+SURF_NC_];
@@ -84,7 +98,7 @@ if ( heterogeneusReactions_ == true && alfa_ != 0.)
             QfromSurface_ = 0.;
 
             SD_ = surface_->siteDensity();
-        }
+        }*/
     }
     else if ( type_ == "ASALI" )
     {
@@ -94,8 +108,8 @@ if ( heterogeneusReactions_ == true && alfa_ != 0.)
         {
             if ( userCheck_ == false )
             {
-                double hArray[gas_->nSpecies()];
-                gas_->getPartialMolarEnthalpies(hArray);
+                chemistryInterface_->setStateFromMoleFraction(x_.data(), T_, P_);
+                std::vector<double> hArray = chemistryInterface_->getHmole();
                 
                 for (unsigned int i=0;i<NC_;i++)
                 {

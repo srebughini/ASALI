@@ -57,16 +57,16 @@ namespace ASALI
 
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void thermoCalculate();
-            virtual void transportCalculate();
-            virtual void vacuumCalculate();
-            virtual void calculateHomogeneousReactions(std::vector<double> omega, double T, double P);
-            virtual void equilibriumCalculate(std::string type);
             virtual void setStateFromMassFraction(double* y, double T, double p);
             virtual void setStateFromMoleFraction(double* x, double T, double p);
 
-            virtual double temperature();
-            virtual double density();
+            virtual void thermoCalculate();
+            virtual void transportCalculate();
+            virtual void vacuumCalculate();
+            virtual void equilibriumCalculate(std::string type);
+
+            virtual double getTemperature();
+            virtual double getDensity();
             virtual double getCpMassMix();
             virtual double getCpMoleMix();
             virtual double getMWmix();
@@ -81,6 +81,16 @@ namespace ASALI
             virtual unsigned int      numberOfGasSpecies();
             virtual unsigned int      numberOfSurfaceSpecies();
 
+            void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
+            void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);
+
+            inline std::vector<double> RfromGas()               {return RfromGas_;};
+            inline std::vector<double> RfromSurface()           {return RfromSurface_;};
+            inline std::vector<double> Rsurface()               {return Rsurface_;};
+            inline double QfromGas()                            {return QfromGas_;};
+            inline double QfromSurface()                        {return QfromSurface_;};
+            inline double siteDensity()                         {return SD_;};
+
             virtual ~canteraInterface();
             
         private:
@@ -90,6 +100,14 @@ namespace ASALI
             Cantera::Kinetics*    kinetic_;
             Cantera::ThermoPhase* surface_;
             Cantera::Kinetics*    surface_kinetic_;
+            
+            double                QfromGas_;
+            double                QfromSurface_;
+            double                SD_;
+            
+            std::vector<double>   RfromGas_;
+            std::vector<double>   RfromSurface_;
+            std::vector<double>   Rsurface_;
     };
 }
 

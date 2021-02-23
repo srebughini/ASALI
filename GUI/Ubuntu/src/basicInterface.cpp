@@ -49,7 +49,6 @@ namespace ASALI
     {
         T_        = 0.;
         p_        = 0.;
-        QfromGas_ = 0.;
         
         NS_      = this->numberOfGasSpecies();
         SURF_NS_ = this->numberOfSurfaceSpecies();
@@ -59,7 +58,7 @@ namespace ASALI
         
         mole_.resize(NS_);
         mass_.resize(NS_);
-        RfromGas_.resize(NS_);
+
         v_.resize(NS_);
         l_.resize(NS_);
         h_.resize(NS_ + 1);
@@ -103,7 +102,7 @@ namespace ASALI
         small[23] = "x";    big[23] = "X";
         small[24] = "y";    big[24] = "Y";
         small[25] = "z";    big[25] = "Z";
-	}
+    }
 
     void basicInterface::setTemperature(const double T)
     {
@@ -216,8 +215,6 @@ namespace ASALI
         return r;
     }
     
-    void basicInterface::calculateHomogeneousReactions(std::vector<double> omega, double T, double P) {}
-
     void basicInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name) {}
 
     void basicInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name) {}
@@ -234,31 +231,31 @@ namespace ASALI
 
     void basicInterface::transportCalculate() {}
 
-    double basicInterface::temperature() { return 0.; }
+    double basicInterface::getTemperature() { return 0.; }
     
-    double basicInterface::density() { return 0.; }
+    double basicInterface::getDensity() { return 0.; }
 
-	double basicInterface::getCpMassMix() { return 0.; }
-	
-	double basicInterface::getCpMoleMix() { return 0.; }
-	
-	double basicInterface::getMWmix() { return 0.; }
-	
-	std::vector<double> basicInterface::getMW() { std::vector<double> dummy; return dummy; }
-	
-	std::vector<double> basicInterface::getHmole() { std::vector<double> dummy; return dummy; }
-	
-	std::vector<double> basicInterface::getSmole() { std::vector<double> dummy; return dummy; }
-	
-	std::vector<double> basicInterface::getCpMole() { std::vector<double> dummy; return dummy; }
-
-    std::vector<int>  basicInterface::checkNames(std::vector<std::string> &name) { std::vector<int> dummy; return dummy; }
-
+    double basicInterface::getCpMassMix() { return 0.; }
+    
+    double basicInterface::getCpMoleMix() { return 0.; }
+    
+    double basicInterface::getMWmix() { return 0.; }
+    
     int  basicInterface::checkNames(std::string name) { return 0; }
 
     unsigned int basicInterface::numberOfGasSpecies()     { return 0; }
     
     unsigned int basicInterface::numberOfSurfaceSpecies() { return 0; }
+    
+    std::vector<double> basicInterface::getMW() { std::vector<double> dummy; return dummy; }
+    
+    std::vector<double> basicInterface::getHmole() { std::vector<double> dummy; return dummy; }
+    
+    std::vector<double> basicInterface::getSmole() { std::vector<double> dummy; return dummy; }
+    
+    std::vector<double> basicInterface::getCpMole() { std::vector<double> dummy; return dummy; }
+
+    std::vector<int>  basicInterface::checkNames(std::vector<std::string> &name) { std::vector<int> dummy; return dummy; }
 
     basicInterface::~basicInterface()
     {
