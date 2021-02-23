@@ -12,7 +12,7 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
             -I$(CANTERA_PREFIX)include/cantera/ext\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=0
+CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config --embed --libs)\

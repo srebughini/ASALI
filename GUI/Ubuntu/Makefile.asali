@@ -18,7 +18,7 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
             $(shell python3-config --embed --cflags)\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=0 -DASALI_USING_CANTERA=0
+CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config --embed --libs)\
           -lgfortran\
