@@ -36,13 +36,13 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "AsaliGui.hpp"
+#include "asaliGui.hpp"
 
 int main(int argc, char *argv[])
 {
   Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
 
-  ASALI::AsaliGui asali;
+  ASALI::asaliGui asali;
 
   return app->run(asali);
 }

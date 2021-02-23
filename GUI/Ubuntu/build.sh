@@ -1,5 +1,7 @@
 #bin/bash
 
+folder_api=$(cd '../../API/Cpp'; pwd)
+
 function Help()
 {
     echo " "
@@ -100,6 +102,9 @@ if [ "$with_cantera" == "true" ]; then
     asali_using_cantera=1
     fi
 else
+    cp -rf $folder_api/shared/* include/shared/.
+    cp -rf $folder_api/Asali.cpp src/.
+    cp -rf $folder_api/Asali.hpp include/.
     asali_using_cantera=0
 fi
 

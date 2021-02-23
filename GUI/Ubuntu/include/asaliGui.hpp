@@ -57,12 +57,12 @@
 
 namespace ASALI
 {
-    class AsaliGui : public Gtk::Window
+    class asaliGui : public Gtk::Window
     {
         public:
-            AsaliGui();
+            asaliGui();
             
-            virtual ~AsaliGui();
+            virtual ~asaliGui();
             
             #include "shared/UnitConversion.H"
             #include "shared/FileManager.H"
@@ -78,7 +78,7 @@ namespace ASALI
             void defaultCanteraInput();
             void noneInput();
             void chemkin();
-            void kineticAsaliGui();
+            void kineticasaliGui();
             void kineticMake();
             void kineticCheck();
             void chemistryMenu2();

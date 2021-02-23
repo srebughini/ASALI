@@ -11,3 +11,10 @@ API/Fortran/database-generator
 API/Fortran/*.mod
 API/elapsedTimeComparison/*.mod
 API/elapsedTimeComparison/asali-*
+
+GUI/Ubuntu/src/Asali.cpp
+GUI/Ubuntu/include/Asali.hpp
+GUI/Ubuntu/include/shared/omega11.H
+GUI/Ubuntu/include/shared/omega22.H
+GUI/Ubuntu/include/shared/transport.H
+GUI/Ubuntu/include/shared/thermo.H
