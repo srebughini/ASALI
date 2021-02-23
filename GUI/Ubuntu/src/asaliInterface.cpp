@@ -123,31 +123,22 @@ namespace ASALI
 
     void asaliInterface::vacuumCalculate()
     {
-        /*
-        for(unsigned int i=0;i<NS_;i++)
-        {
-            const Cantera::GasTransportData* transportData = dynamic_cast<Cantera::GasTransportData*>(thermo_->species(n_[i])->transport.get());
-            v_[i] = std::sqrt(8.*8314.*T_/(pi_*MW_[i]));
-            l_[i] = 1.38064852*1e-23*T_/(std::sqrt(2)*p_*std::pow(transportData->diameter,2.));
-        }*/
+		l_ = asali_->meanFreePath();
+		v_ = asali_->arithmeticMeanGasVelocity();
     }
 
     void asaliInterface::thermoCalculate()
     {
-        /*
-        double mw[NS_];
-        double h[NS_];
-        double s[NS_];
-        double cp[NS_];
+        std::vector<double> mw = asali_->speciesMolecularWeight();
+        std::vector<double> h  = asali_->speciesMolarEnthalpy();
+        std::vector<double> s  = asali_->speciesMolarEntropy();
+        std::vector<double> cp = asali_->speciesMolarCp();
 
-        thermo_->getMolecularWeights(mw);
-        thermo_->getPartialMolarEnthalpies(h);
-        thermo_->getPartialMolarEntropies(s);
-        thermo_->getPartialMolarCp(cp);
+        std::vector<std::string> n = asali_->speciesName();
 
         for (unsigned int i=0;i<NS_;i++)
         {
-            n_[i]  = thermo_->speciesName(i);
+            n_[i]  = n[i];
             h_[i]  = h[i];
             s_[i]  = s[i];
             cp_[i] = cp[i];
@@ -155,11 +146,10 @@ namespace ASALI
         }
 
         n_[NS_]  = "mix";
-        h_[NS_]  = thermo_->enthalpy_mole();       //J/Kmol
-        s_[NS_]  = thermo_->entropy_mole();        //J/Kmol/K
-        cp_[NS_] = this->getCpMoleMix();             //J/Kmol/K
-        MW_[NS_] = this->getMWmix();
-        */
+        h_[NS_]  = asali_->mixtureMolarEnthalpy();     //J/Kmol
+        s_[NS_]  = asali_->mixtureMolarEntropy();      //J/Kmol/K
+        cp_[NS_] = asali_->mixtureMolarCp();           //J/Kmol/K
+        MW_[NS_] = asali_->mixtureMolecularWeight();
     }
 
     void asaliInterface::transportCalculate()
