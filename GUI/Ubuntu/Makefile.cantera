@@ -3,7 +3,9 @@ EXE := Asali
 SRC_DIR := src
 OBJ_DIR := obj
 
-SRC := $(wildcard $(SRC_DIR)/*.cpp)
+SRC_TO_IGNORE := $(SRC_DIR)/Asali.cpp
+
+SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
