@@ -845,10 +845,10 @@ namespace ASALI
 
                 std::vector<double> xInlet(x_.size());
                 {
-                    std::vector<double> y = chemistryInterface_->massFractions();
+                    std::vector<double> y = chemistryInterface_->mass();
                     for (unsigned int i=0;i<n_.size();i++)
                     {
-                        for (unsigned int j=0;j<chemistryInterface_->nSpecies();j++)
+                        for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                         {
                             if ( n_[i] == chemistryInterface_->names()[j] )
                             {
@@ -920,7 +920,7 @@ namespace ASALI
                 std::vector<double> xInlet(thermo_->nSpecies());
                 std::vector<double> xInside(thermo_->nSpecies());
                 {
-                    std::vector<double> y = chemistryInterface_->massFractions();
+                    std::vector<double> y = chemistryInterface_->mass();
                     for (unsigned int i=0;i<thermo_->nSpecies();i++)
                     {
                         if ( thermo_->speciesName(i) == inert_ )
@@ -1160,7 +1160,7 @@ namespace ASALI
                                     {
                                         if ( n_[i] == chemistryInterface_->names()[q] )
                                         {
-                                            mole[j][k][i] = chemistryInterface_->moleFractions()[q];
+                                            mole[j][k][i] = chemistryInterface_->mole()[q];
                                             break;
                                         }
                                     }
@@ -1236,7 +1236,7 @@ namespace ASALI
                                 x[i] = y[j][k][i];
                             }
                             chemistryInterface_->setMassFraction(x,n);
-                            x = chemistryInterface_->moleFractions();
+                            x = chemistryInterface_->mole();
 
                             for (unsigned int i=0;i<thermo_->nSpecies();i++)
                             {
@@ -1357,7 +1357,7 @@ namespace ASALI
                                 {
                                     if ( n_[i] == chemistryInterface_->names()[q] )
                                     {
-                                        mole[j][k][i] = chemistryInterface_->moleFractions()[q];
+                                        mole[j][k][i] = chemistryInterface_->mole()[q];
                                         break;
                                     }
                                 }
@@ -1395,7 +1395,7 @@ namespace ASALI
                             x[i] = y[j][k][i];
                         }
                         chemistryInterface_->setMassFraction(x,n);
-                        x = chemistryInterface_->moleFractions();
+                        x = chemistryInterface_->mole();
 
                         for (unsigned int i=0;i<thermo_->nSpecies();i++)
                         {

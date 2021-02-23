@@ -26,22 +26,22 @@ LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
 
 .PHONY: clean
 clean:
-    $(RM) $(OBJ) $(EXE)
+	$(RM) $(OBJ) $(EXE)
 
 .PHONY: help
 help:
-    @echo available targets: clean all help
+	@echo available targets: clean all help
 
 .PHONY: all
 all: $(EXE)
 
 $(OBJ_DIR):
-    mkdir $@
+	mkdir $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-    $(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(EXE): $(OBJ)
-    $(CXX) $(LDFLAGS) $^ $(LDLIBS) $(CFLAGS) -o $@
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS) $(CFLAGS) -o $@
 
 
