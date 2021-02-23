@@ -40,8 +40,7 @@
 
 namespace ASALI
 {
-    transportProperties::transportProperties(ASALI::canteraInterface        *canteraInterface,
-                                             ASALI::speciesPopup            *speciesNames,
+    transportProperties::transportProperties(ASALI::speciesPopup            *speciesNames,
                                              std::string                     kineticType)
     : helpButton_("Available species"),
       exitButton1_("Exit"),
@@ -50,6 +49,8 @@ namespace ASALI
       pressLabel_("Pressure"),
       NS_(10),
       OP_(3),
+      kineticType_(kineticType),
+      speciesNames_(speciesNames),
       condBox_(Gtk::ORIENTATION_VERTICAL),
       muBox_(Gtk::ORIENTATION_VERTICAL),
       diffBox_(Gtk::ORIENTATION_VERTICAL),
@@ -58,10 +59,7 @@ namespace ASALI
       backButton_("Back"),
       condLabel_("Thermal conductivity"),
       muLabel_("Viscosity"),
-      diffLabel_("Diffusivity"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      diffLabel_("Diffusivity")
     {
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
@@ -211,6 +209,17 @@ namespace ASALI
     {
     }
     
+    #if ASALI_USING_CANTERA==1
+    void transportProperties::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #else
+    void transportProperties::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #endif
 
     void transportProperties::clean()
     {
@@ -261,31 +270,31 @@ namespace ASALI
         else
         {
             this->clean();
-            canteraInterface_->setTemperature(T_);
-            canteraInterface_->setPressure(p_);
+            chemistryInterface_->setTemperature(T_);
+            chemistryInterface_->setPressure(p_);
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                canteraInterface_->setMoleFraction(x_,n_);
+                chemistryInterface_->setMoleFraction(x_,n_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
-                canteraInterface_->setMassFraction(x_,n_);
+                chemistryInterface_->setMassFraction(x_,n_);
             }
             
-            canteraInterface_->transportCalculate();
+            chemistryInterface_->transportCalculate();
             x_.clear();
             y_.clear();
             x_.resize(n_.size());
             y_.resize(n_.size());
             {
-                std::vector<double> x = canteraInterface_->moleFractions();
-                std::vector<double> y = canteraInterface_->massFractions();
+                std::vector<double> x = chemistryInterface_->mole();
+                std::vector<double> y = chemistryInterface_->mass();
                 
                 for (unsigned int i=0;i<n_.size();i++)
                 {
-                    for (unsigned int j=0;j<canteraInterface_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
-                        if ( n_[i] == canteraInterface_->names()[j] )
+                        if ( n_[i] == chemistryInterface_->names()[j] )
                         {
                             x_[i] = x[j];
                             y_[i] = y[j];
@@ -315,20 +324,20 @@ namespace ASALI
             
             for (unsigned int i=0;i<n_.size();i++)
             {
-                for (unsigned int j=0;j<canteraInterface_->names().size();j++)
+                for (unsigned int j=0;j<chemistryInterface_->names().size();j++)
                 {
-                    if ( n_[i] == canteraInterface_->names()[j] )
+                    if ( n_[i] == chemistryInterface_->names()[j] )
                     {
-                        mu_[i]    = canteraInterface_->mu()[j];
-                        cond_[i]  = canteraInterface_->cond()[j];
-                        MW_[i]    = canteraInterface_->MW()[j];
+                        mu_[i]    = chemistryInterface_->mu()[j];
+                        cond_[i]  = chemistryInterface_->cond()[j];
+                        MW_[i]    = chemistryInterface_->MW()[j];
                         for (unsigned int k=0;k<n_.size();k++)
                         {
-                            for (unsigned int h=0;h<canteraInterface_->names().size();h++)
+                            for (unsigned int h=0;h<chemistryInterface_->names().size();h++)
                             {
-                                if ( n_[k] == canteraInterface_->names()[h] )
+                                if ( n_[k] == chemistryInterface_->names()[h] )
                                 {
-                                    diff_[i][k] = canteraInterface_->diff()[j][h];
+                                    diff_[i][k] = chemistryInterface_->diff()[j][h];
                                     break;
                                 }
                             }
@@ -673,7 +682,7 @@ namespace ASALI
                  kineticType_ == "load"    ||
                  kineticType_ == "nokinetic")
             {
-                std::vector<int> check = canteraInterface_->checkNames(n_);
+                std::vector<int> check = chemistryInterface_->checkNames(n_);
 
                 for (unsigned int i=0;i<check.size();i++)
                 {

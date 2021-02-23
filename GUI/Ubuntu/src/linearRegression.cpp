@@ -40,10 +40,9 @@
 
 namespace ASALI
 {
-    linearRegression::linearRegression(ASALI::canteraInterface        *canteraInterface,
-                                       ASALI::speciesPopup            *speciesNames,
+    linearRegression::linearRegression(ASALI::speciesPopup            *speciesNames,
                                        std::string                     kineticType)
-    : thermoProperties(canteraInterface,speciesNames,kineticType),
+    : thermoProperties(speciesNames,kineticType),
       tempBox_(Gtk::ORIENTATION_VERTICAL),
       exitButton2_("Exit"),
       backButton_("Back"),
@@ -57,9 +56,7 @@ namespace ASALI
       rLabel_("R\u00b2:\t"),
       rValueLabel_("n.a."),
       logo_("images/RegressionLogo.png"),
-      kineticType_(kineticType),
-      diffCheck_(false),
-      canteraInterface_(canteraInterface)
+      diffCheck_(false)
     {
 
         {
@@ -321,25 +318,25 @@ namespace ASALI
             //Property evaluation
             for (unsigned int i=0;i<Tv_.size();i++)
             {
-                canteraInterface_->setTemperature(Tv_[i]);
+                chemistryInterface_->setTemperature(Tv_[i]);
 
-                canteraInterface_->setPressure(p_);
+                chemistryInterface_->setPressure(p_);
 
                 if ( fractionCombo_.get_active_row_number() == 0 )
                 {
-                    canteraInterface_->setMoleFraction(x_,n_);
+                    chemistryInterface_->setMoleFraction(x_,n_);
                 }
                 else if ( fractionCombo_.get_active_row_number() == 1 )
                 {
-                    canteraInterface_->setMassFraction(x_,n_);
+                    chemistryInterface_->setMassFraction(x_,n_);
                 }
                 
-                canteraInterface_->transportCalculate();
-                canteraInterface_->thermoCalculate();
+                chemistryInterface_->transportCalculate();
+                chemistryInterface_->thermoCalculate();
                 
                 if (propertyCombo_.get_active_row_number() == 0 )
                 {
-                    pv_[i] = canteraInterface_->specieProperty("cond",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("cond",name_);
 
                     //Convert unit
                     this->condUnitDimensions(pv_[i]);
@@ -349,7 +346,7 @@ namespace ASALI
                 }
                 else if (propertyCombo_.get_active_row_number() == 1 )
                 {
-                    pv_[i] = canteraInterface_->specieProperty("mu",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("mu",name_);
 
                     //Convert unit
                     this->muUnitDimensions(pv_[i]);
@@ -359,21 +356,21 @@ namespace ASALI
                 }
                 else if (propertyCombo_.get_active_row_number() == 2 )
                 {
-                    pv_[i] = canteraInterface_->specieProperty("cp",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("cp",name_);
 
                     //Convert unit
                     this->cpUnitDimensions(pv_[i]);
                 }
                 else if (propertyCombo_.get_active_row_number() == 3 )
                 {
-                    pv_[i] = canteraInterface_->specieProperty("h",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("h",name_);
 
                     //Convert unit
                     this->hUnitDimensions(pv_[i]);
                 }
                 else if (propertyCombo_.get_active_row_number() == 4 )
                 {
-                    pv_[i] = canteraInterface_->specieProperty("s",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("s",name_);
 
                     //Convert unit
                     this->sUnitDimensions(pv_[i]);
@@ -384,7 +381,7 @@ namespace ASALI
                 else if (propertyCombo_.get_active_row_number() == 5 )
                 {
                     name_ = specieCombo_.get_active_text();
-                    pv_[i] = canteraInterface_->specieProperty("s",name_);
+                    pv_[i] = chemistryInterface_->specieProperty("s",name_);
 
                     //Convert unit
                     this->diffUnitDimensions(pv_[i]);
@@ -496,7 +493,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg/K
+            p = p/chemistryInterface_->specieProperty("MW",name_); //J/kg/K
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -508,7 +505,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
+            p = p/(chemistryInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
         }
     }
 
@@ -524,7 +521,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg
+            p = p/chemistryInterface_->specieProperty("MW",name_); //J/kg
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -537,7 +534,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg
+            p = p/(chemistryInterface_->specieProperty("MW",name_)*4.186); //cal/kg
         }
     }
 
@@ -553,7 +550,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 2 )
         {
-            p = p/canteraInterface_->specieProperty("MW",name_); //J/kg/K
+            p = p/chemistryInterface_->specieProperty("MW",name_); //J/kg/K
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 3 )
         {
@@ -565,7 +562,7 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )
         {
-            p = p/(canteraInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
+            p = p/(chemistryInterface_->specieProperty("MW",name_)*4.186); //cal/kg/K
         }
     }
  

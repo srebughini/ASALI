@@ -47,8 +47,7 @@ namespace ASALI
     class linearRegression : public ASALI::thermoProperties
     {
         public:
-            linearRegression(ASALI::canteraInterface        *canteraInterface,
-                             ASALI::speciesPopup            *speciesNames,
+            linearRegression(ASALI::speciesPopup            *speciesNames,
                              std::string                     kineticType);
             
             #include "shared/Vector.H"
@@ -58,8 +57,7 @@ namespace ASALI
             virtual void results();
 
         private:
-        
-        
+
             void cleanInput();
             void uploadLayout();
             void run();
@@ -102,7 +100,6 @@ namespace ASALI
             std::vector<double> Tv_;
             std::vector<double> pv_;
 
-            std::string kineticType_;
             std::string name_;
             
             double      m_;
@@ -110,9 +107,6 @@ namespace ASALI
             double      r2_;
 
             bool        diffCheck_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
 
     };
 }

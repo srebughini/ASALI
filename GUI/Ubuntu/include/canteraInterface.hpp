@@ -57,13 +57,12 @@ namespace ASALI
 
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void setStateFromMassFraction(double* y, double T, double p);
-            virtual void setStateFromMoleFraction(double* x, double T, double p);
+            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
+            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
 
             virtual void thermoCalculate();
             virtual void transportCalculate();
             virtual void vacuumCalculate();
-            virtual void equilibriumCalculate(std::string type);
 
             virtual double getTemperature();
             virtual double getDensity();
@@ -83,6 +82,7 @@ namespace ASALI
 
             void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
             void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);
+            void equilibriumCalculate(std::string type);
 
             inline std::vector<double> RfromGas()               {return RfromGas_;};
             inline std::vector<double> RfromSurface()           {return RfromSurface_;};

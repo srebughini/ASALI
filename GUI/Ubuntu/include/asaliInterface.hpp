@@ -36,60 +36,52 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
-#ifndef THERMOPROPERTIES_H
-#define THERMOPROPERTIES_H
-
-#include "transportProperties.hpp"
+#ifndef ASALIINTERFACE_H
+#define ASALIINTERFACE_H
+#include "basicInterface.hpp"
+#include "Asali.hpp"
 
 namespace ASALI
 {
-    class thermoProperties : public ASALI::transportProperties
+    class asaliInterface : public ASALI::basicInterface
     {
         public:
-            thermoProperties(ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            virtual ~thermoProperties();
+            asaliInterface();
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
-            virtual void cpUnitConversion(bool check);
-            virtual void hUnitConversion(bool check);
-            virtual void sUnitConversion(bool check);
+            virtual void setTemperature(const double T);
+            virtual void setPressure(const double p);
+            virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
+            virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
+            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
+            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
 
-            std::vector<double>      cp_;
-            std::vector<double>      h_;
-            std::vector<double>      s_;
+            virtual void thermoCalculate();
+            virtual void transportCalculate();
+            virtual void vacuumCalculate();
+
+            virtual double getTemperature();
+            virtual double getDensity();
+            virtual double getCpMassMix();
+            virtual double getCpMoleMix();
+            virtual double getMWmix();
+
+            virtual std::vector<double> getMW();
+            virtual std::vector<double> getHmole();
+            virtual std::vector<double> getSmole();
+            virtual std::vector<double> getCpMole();
+
+            virtual std::vector<int>  checkNames(std::vector<std::string>& name);
+            virtual int               checkNames(std::string name);
+            virtual unsigned int      numberOfGasSpecies();
+            virtual unsigned int      numberOfSurfaceSpecies();
+
+            virtual ~asaliInterface();
             
         private:
 
-            Gtk::Box          cpBox_;
-            Gtk::Box          hBox_;
-            Gtk::Box          sBox_;
-
-            Gtk::Button       exitButton2_;
-            Gtk::Button       saveButton_;
-            Gtk::Button       backButton_;
+            ASALI::Asali *asali_;
             
-            Gtk::Grid         resultsGrid_;
-
-            Gtk::Label        cpLabel_;
-            Gtk::Label        hLabel_;
-            Gtk::Label        sLabel_;
-            
-            Gtk::ComboBoxText cpCombo_;
-            Gtk::ComboBoxText hCombo_;
-            Gtk::ComboBoxText sCombo_;
-
-            std::vector<Gtk::Label *>          nameVector_;
-            std::vector<Gtk::Label *>          cpVector_;
-            std::vector<Gtk::Label *>          hVector_;
-            std::vector<Gtk::Label *>          sVector_;
-            std::vector<Gtk::ComboBoxText *>   speciesCombo_;
-
+            std::vector<std::string> names_;
     };
 }
 

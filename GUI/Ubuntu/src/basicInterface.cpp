@@ -223,8 +223,6 @@ namespace ASALI
     
     void basicInterface::setStateFromMoleFraction(double* x, double T, double P) {}
 
-    void basicInterface::equilibriumCalculate(std::string type) {}
-
     void basicInterface::vacuumCalculate() {}
 
     void basicInterface::thermoCalculate() {}

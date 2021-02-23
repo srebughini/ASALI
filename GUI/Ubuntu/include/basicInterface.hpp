@@ -57,22 +57,21 @@ namespace ASALI
         public:
             basicInterface();
 
-            void setTemperature(const double T);
-            void setPressure(const double p);
             void convertToCaption(std::string& n);
             void initialize();
 
             double specieProperty(std::string p,std::string n);
             
+            virtual void setTemperature(const double T);
+            virtual void setPressure(const double p);
             virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
             virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void setStateFromMassFraction(double* y, double T, double p);
-            virtual void setStateFromMoleFraction(double* x, double T, double p);
+            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
+            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
 
             virtual void thermoCalculate();
             virtual void transportCalculate();
             virtual void vacuumCalculate();
-            virtual void equilibriumCalculate(std::string type);
 
             virtual double getTemperature();
             virtual double getDensity();

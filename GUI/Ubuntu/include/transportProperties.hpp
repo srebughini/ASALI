@@ -53,16 +53,23 @@
 #include <algorithm>
 #include <limits>
 #include <thread>
-#include "canteraInterface.hpp"
+#include <numeric>
+#include <functional>
+
 #include "speciesPopup.hpp"
+
+#if ASALI_USING_CANTERA==1
+#include "canteraInterface.hpp"
+#else
+#include "asaliInterface.hpp"
+#endif
 
 namespace ASALI
 {
     class transportProperties : public Gtk::Window
     {
         public:
-            transportProperties(ASALI::canteraInterface        *canteraInterface,
-                                ASALI::speciesPopup            *speciesNames,
+            transportProperties(ASALI::speciesPopup            *speciesNames,
                                 std::string                     kineticType);
             
             #include "shared/FileManager.H"
@@ -88,6 +95,11 @@ namespace ASALI
             void inputReader();
             void checkInput(unsigned int i);
             
+            #if ASALI_USING_CANTERA==1
+            void setChemistryInterface(ASALI::canteraInterface* chemistryInterface);
+            #else
+            void setChemistryInterface(ASALI::asaliInterface*   chemistryInterface);
+            #endif
 
             std::string getBeer();
             std::string getBeerShort();
@@ -132,6 +144,16 @@ namespace ASALI
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
 
+            std::string kineticType_;
+
+            ASALI::speciesPopup            *speciesNames_;
+
+            #if ASALI_USING_CANTERA==1
+            ASALI::canteraInterface        *chemistryInterface_;
+            #else
+            ASALI::asaliInterface          *chemistryInterface_;
+            #endif
+
         private:
 
             Gtk::Box          condBox_;
@@ -158,12 +180,6 @@ namespace ASALI
             std::vector<Gtk::Label *>          diffVector_;
             std::vector<Gtk::ComboBoxText *>   speciesCombo_;
             std::vector<Gtk::Box *>            diffBoxVector_;
-
-            std::string kineticType_;
-            
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 
