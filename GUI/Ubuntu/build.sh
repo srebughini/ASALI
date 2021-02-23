@@ -106,9 +106,7 @@ fi
 BuildingOptions $operating_system $with_cantera $cantera_path
 
 if [ "$with_cantera" == "true" ]; then
-    echo $ASALI_USING_CANTERA
     make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window
 else
-    echo $ASALI_USING_CANTERA
     make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window
 fi
