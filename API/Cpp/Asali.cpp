@@ -50,23 +50,7 @@ namespace ASALI
 
         T_ = 0.;
         p_ = 0.;
-        mu_update_   = false;
-        diff_update_ = false;
-        rho_update_  = false;
-        cp_update_   = false;
-        h_update_    = false;
-        s_update_    = false;
-        cond_update_ = false;
-        v_update_    = false;
-        l_update_    = false;
-        mu_mix_update_     = false;
-        diff_mix_update_   = false;
-        cond_mix_update_   = false;
-        cpmole_mix_update_ = false;
-        cpmass_mix_update_ = false;
-        hmole_mix_update_  = false;
-        hmass_mix_update_  = false;
-        smole_mix_update_  = false;
+        this->refresh();
     }
 
     //- Return functions
@@ -94,23 +78,7 @@ namespace ASALI
         if (T != T_)
         {
             T_ = T;
-            mu_update_   = false;
-            diff_update_ = false;
-            rho_update_  = false;
-            cp_update_   = false;
-            h_update_    = false;
-            s_update_    = false;
-            cond_update_ = false;
-            v_update_    = false;
-            l_update_    = false;
-            mu_mix_update_     = false;
-            diff_mix_update_   = false;
-            cond_mix_update_   = false;
-            cpmole_mix_update_ = false;
-            cpmass_mix_update_ = false;
-            hmole_mix_update_  = false;
-            hmass_mix_update_  = false;
-            smole_mix_update_  = false;
+            this->refresh();
         }
     }
 
@@ -119,23 +87,7 @@ namespace ASALI
         if (p != p_)
         {
             p_ = p;
-            mu_update_   = false;
-            diff_update_ = false;
-            rho_update_  = false;
-            cp_update_   = false;
-            h_update_    = false;
-            s_update_    = false;
-            cond_update_ = false;
-            v_update_    = false;
-            l_update_    = false;
-            mu_mix_update_     = false;
-            diff_mix_update_   = false;
-            cond_mix_update_   = false;
-            cpmole_mix_update_ = false;
-            cpmass_mix_update_ = false;
-            hmole_mix_update_  = false;
-            hmass_mix_update_  = false;
-            smole_mix_update_  = false;
+            this->refresh();
         }
     }
 
@@ -167,24 +119,7 @@ namespace ASALI
                 std::cout << "Wrong number of species!\n" << std::endl;
                 exit(EXIT_FAILURE);
             }
-
-            mu_update_   = false;
-            diff_update_ = false;
-            rho_update_  = false;
-            cp_update_   = false;
-            h_update_    = false;
-            s_update_    = false;
-            cond_update_ = false;
-            v_update_    = false;
-            l_update_    = false;
-            mu_mix_update_     = false;
-            diff_mix_update_   = false;
-            cond_mix_update_   = false;
-            cpmole_mix_update_ = false;
-            cpmass_mix_update_ = false;
-            hmole_mix_update_  = false;
-            hmass_mix_update_  = false;
-            smole_mix_update_  = false;
+            this->refresh();
         }
     }
 
@@ -213,23 +148,7 @@ namespace ASALI
                 std::cout << "Wrong number of species!\n" << std::endl;
                 exit(EXIT_FAILURE);
             }
-            mu_update_   = false;
-            diff_update_ = false;
-            rho_update_  = false;
-            cp_update_   = false;
-            h_update_    = false;
-            s_update_    = false;
-            cond_update_ = false;
-            v_update_    = false;
-            l_update_    = false;
-            mu_mix_update_     = false;
-            diff_mix_update_   = false;
-            cond_mix_update_   = false;
-            cpmole_mix_update_ = false;
-            cpmass_mix_update_ = false;
-            hmole_mix_update_  = false;
-            hmass_mix_update_  = false;
-            smole_mix_update_  = false;
+            this->refresh();
         }
     }
         
@@ -260,22 +179,7 @@ namespace ASALI
                     exit(EXIT_FAILURE);
                 }
             }
-            mu_update_   = false;
-            diff_update_ = false;
-            rho_update_  = false;
-            cp_update_   = false;
-            h_update_    = false;
-            s_update_    = false;
-            cond_update_ = false;
-            v_update_    = false;
-            l_update_    = false;
-            mu_mix_update_     = false;
-            diff_mix_update_   = false;
-            cond_mix_update_   = false;
-            cpmole_mix_update_ = false;
-            cpmass_mix_update_ = false;
-            hmole_mix_update_  = false;
-            hmass_mix_update_  = false;
+            this->refresh();
         }
     }
 
@@ -712,6 +616,27 @@ namespace ASALI
         {
             diff_[i].resize(NC_);
         }
+    }
+    
+    void Asali::refresh()
+    {
+        mu_update_   = false;
+        diff_update_ = false;
+        rho_update_  = false;
+        cp_update_   = false;
+        h_update_    = false;
+        s_update_    = false;
+        cond_update_ = false;
+        v_update_    = false;
+        l_update_    = false;
+        mu_mix_update_     = false;
+        diff_mix_update_   = false;
+        cond_mix_update_   = false;
+        cpmole_mix_update_ = false;
+        cpmass_mix_update_ = false;
+        hmole_mix_update_  = false;
+        hmass_mix_update_  = false;
+        smole_mix_update_  = false;
     }
 
     double Asali::mixtureThermalConductivity() //[W/m/K]

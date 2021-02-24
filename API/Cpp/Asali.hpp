@@ -162,6 +162,7 @@ namespace ASALI
             std::vector<std::string> name_;
 
             void resize();
+            void refresh();
             void density_();
             void speciesViscosity_();
             void binaryDiffusion_();

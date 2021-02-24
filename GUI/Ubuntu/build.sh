@@ -31,9 +31,10 @@ function BuildingOptions()
     echo " "
     echoGreen "Building options:"
     echoGreen "- operating system: $1"
-    if [ "$2" == "true" ]; then
+    echoGreen "- python version:   $2"
+    if [ "$3" == "true" ]; then
         echoGreen "- cantera:          yes"
-        echoGreen "- cantera path:     $3"
+        echoGreen "- cantera path:     $4"
     else
         echoGreen "- cantera:          no"
     fi
@@ -108,10 +109,21 @@ else
     asali_using_cantera=0
 fi
 
-BuildingOptions $operating_system $with_cantera $cantera_path
+python_version=$(python3 --version | sed 's/Python //g')
+
+if [[ $python_version == *"3.8"* ]]; then
+    python_config_command='python3-config --embed'
+else
+    python_config_command='python3-config'
+fi
+
+echo $python_config_command
+
+BuildingOptions $operating_system $python_version $with_cantera $cantera_path
 
 if [ "$with_cantera" == "true" ]; then
-    make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window
+    make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
 else
-    make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window
+    make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
 fi
+

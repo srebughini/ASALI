@@ -17,12 +17,12 @@ SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
-            $(shell python3-config --embed --cflags)\
+            $(shell ${PYTHON_CONFIG} --cflags)\
             -Iinclude
 
-CFLAGS := -fPIC -fno-var-tracking -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
+CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
-          $(shell python3-config --embed --libs)\
+          $(shell ${PYTHON_CONFIG} --libs)\
           -lgfortran\
           -lpthread\
           -lm
