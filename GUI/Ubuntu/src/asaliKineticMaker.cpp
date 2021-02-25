@@ -244,7 +244,19 @@ namespace ASALI
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&asaliKineticMaker::exit));
         }
     }
-    
+
+    #if ASALI_USING_CANTERA==1
+    void asaliKineticMaker::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #else
+    void asaliKineticMaker::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #endif
+
     void asaliKineticMaker::species()
     {
         restart_ = true;
