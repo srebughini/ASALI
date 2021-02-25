@@ -75,6 +75,7 @@ namespace ASALI
         private:
 
             void exit();
+            void createChemistryInterface();
             void discrimer();
             void mainMenu();
             void noneInputError();

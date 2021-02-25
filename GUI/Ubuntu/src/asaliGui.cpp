@@ -180,8 +180,8 @@ namespace ASALI
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
-            chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             #endif
+            chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this,&asaliGui::kineticAsali));
             asaliKineticButton_.set_tooltip_text("Write or check a kinetic scheme in ASALI format");
             
@@ -367,15 +367,35 @@ namespace ASALI
         dialog.run();
     }
 
-    void asaliGui::defaultCanteraInput()
+    void asaliGui::createChemistryInterface()
     {
+		if (!chemistryInterface_)
+        {
+            delete chemistryInterface_;
+        }
+
         #if ASALI_USING_CANTERA==1
+		if (!thermo_)
+        {
+            delete thermo_;
+        }
+
+		if (!transport_)
+        {
+            delete transport_;
+        }
+
         thermo_           = Cantera::newPhase("database/data.xml","gas");
         transport_        = Cantera::newDefaultTransportMgr(thermo_);
         chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
         #else
         chemistryInterface_ = new ASALI::asaliInterface();
         #endif
+	}
+
+    void asaliGui::defaultCanteraInput()
+    {
+		this->createChemistryInterface();
         speciesNames_     = new ASALI::speciesPopup();
         kineticType_      = "default";
         this->mainMenu();
@@ -402,7 +422,11 @@ namespace ASALI
         {
             delete asaliKineticMakerMenu_;
         }
+
+        this->createChemistryInterface();
+        
         asaliKineticMakerMenu_ = new ASALI::asaliKineticMaker();
+        asaliKineticMakerMenu_->setChemistryInterface(chemistryInterface_);
         asaliKineticMakerMenu_->show();
     }
 

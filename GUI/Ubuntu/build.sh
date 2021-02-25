@@ -21,8 +21,10 @@ function Help()
 
 function Clean()
 {
-    make clean -f Makefile.cantera
-    make clean -f Makefile.asali
+    python_config_command=$(PythonVersion)
+
+    make clean -f Makefile.cantera PYTHON_CONFIG=$python_config_command
+    make clean -f Makefile.asali PYTHON_CONFIG=$python_config_command
     exit
 }
 
@@ -41,13 +43,60 @@ function BuildingOptions()
     echo " "
 }
 
+function Continue()
+{
+    question=$(echoYellow "Do you want to continue? [y/N] ")
+    
+    read -r -p "$question"  response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            echo "true"
+            ;;
+        *)
+            echo "false"
+            ;;
+    esac
+}
+
+function CheckCommand()
+{
+    if ! command -v $1 &> /dev/null
+    then
+        echo " "
+        echoRed "$1 could not be found"
+        echo " "
+        Help
+        exit
+    fi
+}
+
+
+function PythonVersion()
+{
+    python_version=$(python3 --version | sed 's/Python //g')
+
+    if [[ $python_version == *"not found"* ]]; then
+        echoRed 'python3 not found'
+        
+    fi
+
+    if [[ $python_version == *"3.8"* ]]; then
+        echo 'python3-config --embed'
+    else
+        echo 'python3-config'
+    fi
+}
 
 function echoRed {
     echo -e "\e[31m$1\e[0m"
 }
 
 function echoGreen {
-    echo -e "\e[92m$1\e[0m"
+    echo -e "\e[32m$1\e[0m"
+}
+
+function echoYellow {
+    echo -e "\e[93m$1\e[0m"
 }
 
 POSITIONAL=()
@@ -62,6 +111,9 @@ do
         Help
         ;;
         -c|--clean)
+        CheckCommand python3
+        CheckCommand python-config
+        CheckCommand make
         Clean
         ;;
         --cantera-path)
@@ -86,6 +138,10 @@ do
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
+CheckCommand python3
+CheckCommand python-config
+CheckCommand make
+
 if [ "$operating_system" == "ubuntu" ]; then
     asali_on_window=0
 elif [ "$operating_system" == "windows" ]; then
@@ -109,21 +165,17 @@ else
     asali_using_cantera=0
 fi
 
-python_version=$(python3 --version | sed 's/Python //g')
-
-if [[ $python_version == *"3.8"* ]]; then
-    python_config_command='python3-config --embed'
-else
-    python_config_command='python3-config'
-fi
-
-echo $python_config_command
+python_config_command=$(PythonVersion)
 
 BuildingOptions $operating_system $python_version $with_cantera $cantera_path
 
-if [ "$with_cantera" == "true" ]; then
-    make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
-else
-    make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
+compile=$(Continue)
+
+if [ "$compile" == "true" ]; then
+    if [ "$with_cantera" == "true" ]; then
+        make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
+    else
+        make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
+    fi
 fi
 
