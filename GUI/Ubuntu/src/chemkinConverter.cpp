@@ -45,7 +45,7 @@ namespace ASALI
       output_("Convert"),
       help_("Help"),
       exit_("Exit"),
-      logo_("images/SmallLogo.png")
+      logo_(this->relative_path_to_absolute_path("images/SmallLogo.png"))
     {
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
@@ -56,7 +56,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: CHEMKIN converter");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.png");
+        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
         
 
         //Adding logo

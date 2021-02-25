@@ -58,7 +58,9 @@ namespace ASALI
     {
         public:
             speciesPopup();
-            
+
+            #include "shared/FileManager.H"
+
             virtual ~speciesPopup();
             
         private:

@@ -2,6 +2,18 @@
 
 folder_api=$(cd '../../API/Cpp'; pwd)
 
+function echoRed {
+    echo -e "\e[31m$1\e[0m"
+}
+
+function echoGreen {
+    echo -e "\e[32m$1\e[0m"
+}
+
+function echoYellow {
+    echo -e "\e[93m$1\e[0m"
+}
+
 function Help()
 {
     echo " "
@@ -11,6 +23,8 @@ function Help()
     echo "          -c|--clean               Clean installation folder"
     echo "          --cantera-path           Cantera path     (Default: /usr/local/)"
     echo "          --os                     Operating system (Default: ubuntu)"
+    echo "          --output-folder          Target folder    (Default: .)"
+    echo "          --symbolic-link          Create symbolic link in /usr/local/bin/"
     echo "          --without-cantera        Install ASALI without cantera"
     echo " "
     echo "   available options:"
@@ -19,33 +33,38 @@ function Help()
     exit
 }
 
-function Clean()
-{
-    python_config_command=$(PythonVersion)
-
-    make clean -f Makefile.cantera PYTHON_CONFIG=$python_config_command
-    make clean -f Makefile.asali PYTHON_CONFIG=$python_config_command
-    exit
-}
 
 function BuildingOptions()
 {
     echo " "
-    echoGreen "Building options:"
-    echoGreen "- operating system: $1"
-    echoGreen "- python version:   $2"
+    	echoGreen "Building options:"
+    	echoGreen "- operating system: $1"
+    	echoGreen "- python version:   $2"
     if [ "$3" == "true" ]; then
-        echoGreen "- cantera:          yes"
-        echoGreen "- cantera path:     $4"
+    	echoGreen "- cantera:          yes"
+    	echoGreen "- cantera path:     $4"
     else
-        echoGreen "- cantera:          no"
+    	echoGreen "- cantera:          no"
     fi
+    
+    if [ "$5" == "actual" ]; then
+    	echoGreen "- output folder:    $PWD"
+    else
+    	echoGreen "- output folder:    $5"
+    fi
+    
+    if [ "$6" == "true" ]; then
+    	echoGreen "- symbolic link:    yes"
+    else
+    	echoGreen "- symbolic link:    no"
+    fi
+
     echo " "
 }
 
 function Continue()
 {
-    question=$(echoYellow "Do you want to continue? [y/N] ")
+    local question=$(echoYellow "Do you want to continue? [y/N] ")
     
     read -r -p "$question"  response
     case "$response" in
@@ -70,39 +89,111 @@ function CheckCommand()
     fi
 }
 
+function CheckOperatingSystem()
+{
+    if [ "$1" == "ubuntu" ]; then
+        asali_on_windows=0
+    elif [ "$1" == "windows" ]; then
+        asali_on_windows=1
+    else
+        Help
+    fi
+}
 
-function PythonVersion()
+function CheckCantera()
+{
+    if [ "$1" == "true" ]; then
+        if [ ! -d "$2/include/cantera" ]; then
+        echo " "
+        echoRed "Cantera is missing in: $2"
+        Help
+        else
+        asali_using_cantera=1
+        fi
+    else
+        cp -u $3/shared/* include/shared/.
+        cp -u $3/Asali.cpp src/.
+        cp -u $3/Asali.hpp include/.
+        asali_using_cantera=0
+    fi
+}
+
+function CheckPython()
 {
     python_version=$(python3 --version | sed 's/Python //g')
-
+    
     if [[ $python_version == *"not found"* ]]; then
         echoRed 'python3 not found'
-        
+        echo " "
+        exit
     fi
 
     if [[ $python_version == *"3.8"* ]]; then
-        echo 'python3-config --embed'
+        python_config_command='--embed'
     else
-        echo 'python3-config'
+        python_config_command=''
     fi
 }
 
-function echoRed {
-    echo -e "\e[31m$1\e[0m"
+function CheckSymbolicLink()
+{
+    if [[ $1 == "false" ]]; then
+        compiling_folder=""
+    fi
 }
 
-function echoGreen {
-    echo -e "\e[32m$1\e[0m"
+function CreateSymbolicLink()
+{
+    if [[ $1 == "true" ]]; then
+    	echo " "
+    	echoYellow "Please, enter sudo password to create the symbolic link in /usr/local/bin "
+    	sudo ln -s $2/Asali /usr/local/bin/Asali
+    fi
 }
 
-function echoYellow {
-    echo -e "\e[93m$1\e[0m"
+function Compile()
+{
+    if [ "$1" == "true" ]; then
+        make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
+    else
+        make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
+    fi
+}
+
+function MakeOutputFolder()
+{
+    mkdir -p $1
+    echo $(cd $1; pwd)
+}
+
+function Copy()
+{
+    if [ "$1" != "$PWD" ]; then
+        mkdir -p $1
+        cp -f Asali $1/.
+        cp -rf images $1/.
+        cp -rf database $1/.
+        cd $1
+    fi
+}
+
+function Clean()
+{
+    python_version=$(python3 --version | sed 's/Python //g')
+    python_config_command=$(CheckPython $python_version)
+
+    make clean -f Makefile.cantera PYTHON_CONFIG=$python_config_command
+    make clean -f Makefile.asali PYTHON_CONFIG=$python_config_command
+    exit
 }
 
 POSITIONAL=()
 cantera_path="/usr/local/"
 operating_system="ubuntu"
 with_cantera="true"
+output_folder=$PWD
+symbolic_link="false"
+compiling_folder=$output_folder
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -126,8 +217,17 @@ do
         shift # past argument
         shift # past value
         ;;
+        --output-folder)
+        output_folder=$(MakeOutputFolder "$2")
+        shift # past argument
+        shift # past value
+        ;;
         --without-cantera)
         with_cantera="false"
+        shift # past argument
+        ;;
+        --symbolic-link)
+        symbolic_link="true"
         shift # past argument
         ;;
         *)    # unknown option
@@ -141,41 +241,29 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 CheckCommand python3
 CheckCommand python-config
 CheckCommand make
-
-if [ "$operating_system" == "ubuntu" ]; then
-    asali_on_window=0
-elif [ "$operating_system" == "windows" ]; then
-    asali_on_window=1
-else
-    Help
-fi
-
-if [ "$with_cantera" == "true" ]; then
-    if [ ! -d "$cantera_path/include/cantera" ]; then
-        echo " "
-        echoRed "Cantera is missing in: $cantera_path"
-        Help
-    else
-    asali_using_cantera=1
-    fi
-else
-    cp -u $folder_api/shared/* include/shared/.
-    cp -u $folder_api/Asali.cpp src/.
-    cp -u $folder_api/Asali.hpp include/.
-    asali_using_cantera=0
-fi
-
-python_config_command=$(PythonVersion)
-
-BuildingOptions $operating_system $python_version $with_cantera $cantera_path
+CheckOperatingSystem $operating_system
+CheckCantera $with_cantera $cantera_path $folder_api
+CheckPython
+BuildingOptions $operating_system $python_version $with_cantera $cantera_path $output_folder $symbolic_link
+CheckSymbolicLink $symbolic_link
 
 compile=$(Continue)
-
 if [ "$compile" == "true" ]; then
-    if [ "$with_cantera" == "true" ]; then
-        make all -f Makefile.cantera CANTERA_PREFIX=$cantera_path ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
-    else
-        make all -f Makefile.asali ASALI_USING_CANTERA=$asali_using_cantera ASALI_ON_WINDOW=$asali_on_window PYTHON_CONFIG=$python_config_command
-    fi
+   Compile $with_cantera $cantera_path $asali_using_cantera $asali_on_windows $python_config_command $compiling_folder
+   Copy $output_folder
+   CreateSymbolicLink $symbolic_link $output_folder
+   echo " "
+   echoGreen "Done"
+   echo " "
+else
+   echo " "
+   echoRed "Stopped"
+   echo " "
 fi
+
+
+
+
+
+
 

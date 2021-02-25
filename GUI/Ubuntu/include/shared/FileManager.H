@@ -83,4 +83,9 @@ std::string open_file(gpointer window)
     {
         return "";
     }
-} 
+}
+
+std::string relative_path_to_absolute_path(std::string relpath)
+{
+    return std::string(g_build_filename(COMPILING_PATH,relpath.c_str(),NULL));
+}

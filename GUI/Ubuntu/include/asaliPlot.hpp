@@ -61,6 +61,7 @@ namespace ASALI
             asaliPlot();
             
             #include "shared/UnitConversion.H"
+            #include "shared/FileManager.H"
             
             void setSpecieNames(const std::vector<std::string> n);
             void setSiteNames(const std::vector<std::string> nc);

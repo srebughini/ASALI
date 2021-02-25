@@ -63,8 +63,8 @@ namespace ASALI
       pointsLabel_("Number of points"),
       inertLabel_("Inert specie"),
       resolutionLabel_("Resolution type"),
-      logo1_("images/Ph1DLogo.png"),
-      logo2_("images/Ph1DLogo.png"),
+      logo1_(this->relative_path_to_absolute_path("images/Ph1DLogo.png")),
+      logo2_(this->relative_path_to_absolute_path("images/Ph1DLogo.png")),
       plotButtonBool_(false)
     {
         eq_ = new ASALI::ph1dEquations();
@@ -74,7 +74,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: 1D PH reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
 
             //Add background grid
             this->add(mainBox_);

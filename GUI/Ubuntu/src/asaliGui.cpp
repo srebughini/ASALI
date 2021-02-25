@@ -86,11 +86,11 @@ namespace ASALI
       #else
       kineticLabel_("<b>You are using the version of ASALI without Cantera</b>"),
       #endif
-      bigLogo_("images/BigLogo.png"),
-      smallLogo1_("images/SmallLogo.png"),
-      smallLogo2_("images/SmallLogo.png"),
-      smallLogo3_("images/SmallLogo.png"),
-      smallLogo4_("images/SmallLogo.png")
+      bigLogo_(this->relative_path_to_absolute_path("images/BigLogo.png")),
+      smallLogo1_(this->relative_path_to_absolute_path("images/SmallLogo.png")),
+      smallLogo2_(this->relative_path_to_absolute_path("images/SmallLogo.png")),
+      smallLogo3_(this->relative_path_to_absolute_path("images/SmallLogo.png")),
+      smallLogo4_(this->relative_path_to_absolute_path("images/SmallLogo.png"))
     {
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
@@ -100,7 +100,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
 
             //Add background grid
             this->add(grid_);
@@ -385,7 +385,7 @@ namespace ASALI
             delete transport_;
         }
 
-        thermo_           = Cantera::newPhase("database/data.xml","gas");
+        thermo_           = Cantera::newPhase(this->relative_path_to_absolute_path("database/data.xml"),"gas");
         transport_        = Cantera::newDefaultTransportMgr(thermo_);
         chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
         #else

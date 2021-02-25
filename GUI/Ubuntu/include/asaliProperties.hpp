@@ -59,7 +59,8 @@ namespace ASALI
         public:
         
             #include "shared/UnitConversion.H"
-        
+            #include "shared/FileManager.H"
+            
             asaliProperties();
             
             void destroy();

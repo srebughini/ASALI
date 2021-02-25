@@ -17,12 +17,15 @@ SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
-            $(shell ${PYTHON_CONFIG} --cflags)\
+            $(shell python3-config ${PYTHON_CONFIG} --cflags)\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s -std=c++11 -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} -DASALI_USING_CANTERA=${ASALI_USING_CANTERA}
+CFLAGS := -fPIC -Os -s -std=c++11 \
+          -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
+          -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
+          -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
-          $(shell ${PYTHON_CONFIG} --libs)\
+          $(shell python3-config ${PYTHON_CONFIG} --libs)\
           -lgfortran\
           -lpthread\
           -lm

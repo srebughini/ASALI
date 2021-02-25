@@ -91,7 +91,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Catalytic reactors");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
         }
         
         //Species input menu

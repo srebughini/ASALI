@@ -41,10 +41,10 @@
 namespace ASALI
 {
     asaliProperties::asaliProperties()
-    : batchLogo_("images/BatchLogo.png"),
-      ph1dLogo_("images/Ph1DLogo.png"),
-      het1dLogo_("images/Het1DLogo.png"),
-      pelletLogo_("images/PelletLogo.png"),
+    : batchLogo_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
+      ph1dLogo_(this->relative_path_to_absolute_path("images/Ph1DLogo.png")),
+      het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
+      pelletLogo_(this->relative_path_to_absolute_path("images/PelletLogo.png")),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       nameLabel_("Name"),
       mwLabel_("Molecular weight"),
@@ -62,7 +62,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.png");
+        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);

@@ -41,7 +41,7 @@
 namespace ASALI
 {
     asaliCatalystProperties::asaliCatalystProperties()
-    : het1dLogo_("images/Het1DLogo.png"),
+    : het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       rhoLabel_("Density"),
       condLabel_("Thermal conductivity"),
@@ -53,7 +53,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: catalyst input");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file("images/Icon.png");
+        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);
