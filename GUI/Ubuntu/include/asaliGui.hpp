@@ -45,7 +45,6 @@
 #include "linearRegression.hpp"
 #include "asaliKineticMaker.hpp"
 #include <gtk/gtk.h>
-#include <filesystem>
 
 #if ASALI_USING_CANTERA==1
 #include "chemkinConverter.hpp"

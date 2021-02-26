@@ -26,6 +26,7 @@ function Help()
     echo "          --output-folder          Target folder    (Default: .)"
     echo "          --symbolic-link          Create symbolic link in /usr/local/bin/"
     echo "          --without-cantera        Install ASALI without cantera"
+    echo "          --no-interaction         Ignore human interaction"
     echo " "
     echo "   available options:"
     echo "          --os                     ubuntu/windows"
@@ -37,26 +38,32 @@ function Help()
 function BuildingOptions()
 {
     echo " "
-    	echoGreen "Building options:"
-    	echoGreen "- operating system: $1"
-    	echoGreen "- python version:   $2"
+        echoGreen "Building options:"
+        echoGreen "- operating system:  $1"
+        echoGreen "- python version:    $2"
     if [ "$3" == "true" ]; then
-    	echoGreen "- cantera:          yes"
-    	echoGreen "- cantera path:     $4"
+        echoGreen "- cantera:           yes"
+        echoGreen "- cantera path:      $4"
     else
-    	echoGreen "- cantera:          no"
+        echoGreen "- cantera:           no"
     fi
     
     if [ "$5" == "actual" ]; then
-    	echoGreen "- output folder:    $PWD"
+        echoGreen "- output folder:     $PWD"
     else
-    	echoGreen "- output folder:    $5"
+        echoGreen "- output folder:     $5"
     fi
     
     if [ "$6" == "true" ]; then
-    	echoGreen "- symbolic link:    yes"
+        echoGreen "- symbolic link:     yes"
     else
-    	echoGreen "- symbolic link:    no"
+        echoGreen "- symbolic link:     no"
+    fi
+
+    if [ "$7" == "true" ]; then
+        echoGreen "- human interaction: yes"
+    else
+        echoGreen "- human interaction: no"
     fi
 
     echo " "
@@ -64,17 +71,21 @@ function BuildingOptions()
 
 function Continue()
 {
-    local question=$(echoYellow "Do you want to continue? [y/N] ")
-    
-    read -r -p "$question"  response
-    case "$response" in
-        [yY][eE][sS]|[yY]) 
-            echo "true"
-            ;;
-        *)
-            echo "false"
-            ;;
-    esac
+    if [ "$human_interaction" == "true" ]; then
+        local question=$(echoYellow "Do you want to continue? [y/N] ")
+        
+        read -r -p "$question"  response
+        case "$response" in
+            [yY][eE][sS]|[yY]) 
+                echo "true"
+                ;;
+            *)
+                echo "false"
+                ;;
+        esac
+    else
+        echo "true"
+    fi
 }
 
 function CheckCommand()
@@ -145,9 +156,9 @@ function CheckSymbolicLink()
 function CreateSymbolicLink()
 {
     if [[ $1 == "true" ]]; then
-    	echo " "
-    	echoYellow "Please, enter sudo password to create the symbolic link in /usr/local/bin "
-    	sudo ln -s $2/Asali /usr/local/bin/Asali
+        echo " "
+        echoYellow "Please, enter sudo password to create the symbolic link in /usr/local/bin "
+        sudo ln -s $2/Asali /usr/local/bin/Asali
     fi
 }
 
@@ -194,6 +205,7 @@ with_cantera="true"
 output_folder=$PWD
 symbolic_link="false"
 compiling_folder=$output_folder
+human_interaction="true"
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -230,6 +242,10 @@ do
         symbolic_link="true"
         shift # past argument
         ;;
+        --no-interaction)
+        human_interaction="false"
+        shift # past argument
+        ;;
         *)    # unknown option
         POSITIONAL+=("$1") # save it in an array for later
         shift # past argument
@@ -244,7 +260,7 @@ CheckCommand make
 CheckOperatingSystem $operating_system
 CheckCantera $with_cantera $cantera_path $folder_api
 CheckPython
-BuildingOptions $operating_system $python_version $with_cantera $cantera_path $output_folder $symbolic_link
+BuildingOptions $operating_system $python_version $with_cantera $cantera_path $output_folder $symbolic_link $human_interaction
 CheckSymbolicLink $symbolic_link
 
 compile=$(Continue)
