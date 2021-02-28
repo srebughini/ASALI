@@ -72,17 +72,22 @@ namespace ASALI
             virtual double getCpMoleMix();
             virtual double getMWmix();
             virtual double getCondMix();
+            virtual double getMuMix();
 
             virtual std::vector<double> getMW();
             virtual std::vector<double> getHmole();
             virtual std::vector<double> getSmole();
             virtual std::vector<double> getCpMole();
             virtual std::vector<double> getDiffMix();
+            virtual std::vector<double> getBinaryDiffVector();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
             virtual unsigned int      numberOfGasSpecies();
             virtual unsigned int      numberOfSurfaceSpecies();
+            
+            unsigned int numberOfHomogeneousReactions();
+            unsigned int getGasSpecieIndex(std::string name);
 
             void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
             void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);

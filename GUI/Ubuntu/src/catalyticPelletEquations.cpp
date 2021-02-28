@@ -47,8 +47,8 @@ namespace ASALI
     {
         if ( type_ == "CANTERA" )
         {
-            NC_      = gas_->nSpecies();
-            SURF_NC_ = surface_->nSpecies();
+            NC_      = chemistryInterface_->numberOfGasSpecies();
+            SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
             NE_      = NP_*(NC_ + SURF_NC_);
 
             canteraIndex_.resize(NC_);
@@ -385,48 +385,41 @@ namespace ASALI
             // Calculates the volume and the concentrations of species
             if ( userCheck_ == false )
             {
-                double canteraArray[gas_->nSpecies()];
-                memset(canteraArray,0.,sizeof(canteraArray));
-                for (unsigned int j=0;j<NC_;j++)
-                {
-                    canteraArray[canteraIndex_[j]] = omega_[j];
-                }
-
-                MWmix_ = gas_->meanMolecularWeight();
+                MWmix_ = chemistryInterface_->getMWmix();
                 cTot_  = P_/(8314.*T_);
                 rho_   = cTot_*MWmix_;
 
-                gas_->setState_TPY(T_,P_,canteraArray);
+				chemistryInterface_->setStateFromMassFraction(omega_.data(), T_,P_);
+				
+				std::vector<double> mole = chemistryInterface_->mole();
+				std::vector<double> mw   = chemistryInterface_->getMW();
 
-                gas_->getMoleFractions(canteraArray);
+				for (unsigned int i=0;i<NC_;i++)
+				{
+					MW_[i] = mw[canteraIndex_[i]];
+					x_[i]  = mole[canteraIndex_[i]];
+				}
+
+                std::vector<double> diffMix = chemistryInterface_->getDiffMix();
 
                 for (unsigned int j=0;j<NC_;j++)
                 {
-                    MW_[j] = gas_->molecularWeight(canteraIndex_[j]);
-                    x_[j]  = canteraArray[canteraIndex_[j]];
-                }
-
-                transport_->getMixDiffCoeffs(canteraArray);
-
-                for (unsigned int j=0;j<NC_;j++)
-                {
-                    diff_[j] = canteraArray[canteraIndex_[j]];
+                    diff_[j] = diffMix[canteraIndex_[j]];
                 }
                 
                 if ( modelType_ == "Dusty Gas Model" )
                 {
-                    double canteraMatrix[gas_->nSpecies()*gas_->nSpecies()];
-                    transport_->getBinaryDiffCoeffs(gas_->nSpecies(),canteraMatrix);
-
-                    std::vector<std::vector<double> > diffM(gas_->nSpecies());
-
+                    std::vector<std::vector<double> > diffM(chemistryInterface_->numberOfGasSpecies());
                     unsigned int counter = 0;
-                    for (unsigned int j=0;j<gas_->nSpecies();j++)
+
+					std::vector<double> diffB = chemistryInterface_->getBinaryDiffVector();
+
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
-                        diffM[j].resize(gas_->nSpecies());
-                        for (unsigned int k=0;k<gas_->nSpecies();k++)
+                        diffM[j].resize(chemistryInterface_->numberOfGasSpecies());
+                        for (unsigned int k=0;k<chemistryInterface_->numberOfGasSpecies();k++)
                         {
-                            diffM[j][k] = canteraMatrix[counter++];
+                            diffM[j][k] = diffB[counter++];
                         }
                     }
 

@@ -60,6 +60,11 @@ namespace ASALI
         RfromGas_.resize(NS_);
         RfromSurface_.resize(NS_);
         Rsurface_.resize(NS_);
+        
+        for (unsigned int i=0;i<SURF_NS_;i++)
+        {
+			nc_[i] = surface_->speciesName(i);
+		}
     }
 
     void canteraInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name)
@@ -278,6 +283,11 @@ namespace ASALI
     {
         return transport_->thermalConductivity();
     }
+    
+    double canteraInterface::getMuMix()
+    {
+		return transport_->viscosity();
+	}
 
     int  canteraInterface::checkNames(std::string name)
     {
@@ -305,6 +315,16 @@ namespace ASALI
     {
         return surface_->nSpecies();
     }
+
+	unsigned int canteraInterface::numberOfHomogeneousReactions()
+	{
+		return kinetic_->nReactions();
+	}
+
+	unsigned int canteraInterface::getGasSpecieIndex(std::string name)
+	{
+		return thermo_->speciesIndex(name);
+	}
 
     std::vector<double> canteraInterface::getMW()
     {
@@ -370,6 +390,21 @@ namespace ASALI
 
         std::vector<double> dummy(NS_);
         for (unsigned int i=0;i<NS_;i++)
+        {
+            dummy[i] = diff[i];
+        }
+
+        return dummy;
+    }
+
+    std::vector<double> canteraInterface::getBinaryDiffVector()
+    {
+        double diff[NS_*NS_];
+
+        transport_->getBinaryDiffCoeffs(NS_,diff);
+
+        std::vector<double> dummy(NS_*NS_);
+        for (unsigned int i=0;i<NS_*NS_;i++)
         {
             dummy[i] = diff[i];
         }

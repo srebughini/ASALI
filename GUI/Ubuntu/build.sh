@@ -264,6 +264,7 @@ BuildingOptions $operating_system $python_version $with_cantera $cantera_path $o
 CheckSymbolicLink $symbolic_link
 
 compile=$(Continue)
+
 if [ "$compile" == "true" ]; then
    Compile $with_cantera $cantera_path $asali_using_cantera $asali_on_windows $python_config_command $compiling_folder
    Copy $output_folder

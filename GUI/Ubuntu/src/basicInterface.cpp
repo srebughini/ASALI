@@ -100,6 +100,8 @@ namespace ASALI
         {
             diff_[i].resize(NS_ + 1);
         }
+        
+        nc_.resize(SURF_NS_);
     }
 
     void basicInterface::setTemperature(const double T)
@@ -239,6 +241,8 @@ namespace ASALI
     
     double basicInterface::getCondMix() { return 0.; }
     
+    double basicInterface::getMuMix() { return 0.; }
+    
     int  basicInterface::checkNames(std::string name) { return 0; }
 
     unsigned int basicInterface::numberOfGasSpecies()     { return 0; }
@@ -254,6 +258,8 @@ namespace ASALI
     std::vector<double> basicInterface::getCpMole() { std::vector<double> dummy; return dummy; }
     
     std::vector<double> basicInterface::getDiffMix() { std::vector<double> dummy; return dummy; }
+    
+    std::vector<double> basicInterface::getBinaryDiffVector() { std::vector<double> dummy; return dummy; }
 
     std::vector<int>  basicInterface::checkNames(std::vector<std::string> &name) { std::vector<int> dummy; return dummy; }
 

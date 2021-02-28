@@ -41,24 +41,24 @@
 #define CATALYTICREACTORS_H
 
 #include "pythonInterface.hpp"
-#include "canteraInterface.hpp"
 #include "speciesPopup.hpp"
 #include "asaliProperties.hpp"
 #include "asaliCatalystProperties.hpp"
 #include "asaliPlot.hpp"
 #include "runBar.hpp"
 
+#if ASALI_USING_CANTERA==1
+#include "canteraInterface.hpp"
+#else
+#include "asaliInterface.hpp"
+#endif
+
 namespace ASALI
 {
     class catalyticReactors : public Gtk::Window
     {
         public:
-            catalyticReactors(Cantera::ThermoPhase* thermo,
-                              Cantera::Transport*   transport,
-                              Cantera::Kinetics*    kinetic,
-                              Cantera::ThermoPhase* surface,
-                              Cantera::Kinetics*    surface_kinetic,
-                              std::string           kineticType);
+            catalyticReactors(std::string kineticType);
 
             #include "shared/UnitConversion.H"
             #include "shared/Vector.H"
@@ -87,9 +87,15 @@ namespace ASALI
             void kineticShow();
             void kineticReader();
             void switchTo();
-            
+
             void bar(const double fraction,const std::string tm);
-            
+
+            #if ASALI_USING_CANTERA==1
+            void setChemistryInterface(ASALI::canteraInterface* chemistryInterface);
+            #else
+            void setChemistryInterface(ASALI::asaliInterface*   chemistryInterface);
+            #endif
+
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
 
             std::string getBeer();
@@ -158,19 +164,18 @@ namespace ASALI
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
 
+            #if ASALI_USING_CANTERA==1
             ASALI::canteraInterface        *chemistryInterface_;
+            #else
+            ASALI::asaliInterface          *chemistryInterface_;
+            #endif
+
             ASALI::speciesPopup            *speciesNames_;
             ASALI::asaliProperties         *asaliProperties_;
             ASALI::asaliCatalystProperties *asaliCatalystProperties_;
             ASALI::asaliPlot               *asaliPlot_;
             ASALI::runBar                  *bar_;
             ASALI::pythonInterface         *pi_;
-
-            Cantera::ThermoPhase* thermo_;
-            Cantera::Transport*   transport_;
-            Cantera::Kinetics*    kinetic_;
-            Cantera::ThermoPhase* surface_;
-            Cantera::Kinetics*    surface_kinetic_;
 
             std::string kineticType_;
             std::string inert_;

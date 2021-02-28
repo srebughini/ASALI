@@ -50,12 +50,7 @@ namespace ASALI
     {
         public:
 
-            cstrReactor(Cantera::ThermoPhase* thermo,
-                        Cantera::Transport*   transport,
-                        Cantera::Kinetics*    kinetic,
-                        Cantera::ThermoPhase* surface,
-                        Cantera::Kinetics*    surface_kinetic,
-                        std::string           kineticType);
+            cstrReactor(std::string kineticType);
             
             virtual ~cstrReactor();
 

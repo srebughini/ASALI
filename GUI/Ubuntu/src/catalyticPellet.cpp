@@ -40,13 +40,8 @@
 
 namespace ASALI
 {
-    catalyticPellet::catalyticPellet(Cantera::ThermoPhase* thermo,
-                                     Cantera::Transport*   transport,
-                                     Cantera::Kinetics*    kinetic,
-                                     Cantera::ThermoPhase* surface,
-                                     Cantera::Kinetics*    surface_kinetic,
-                                     std::string           kineticType)
-    : catalyticReactors(thermo, transport, kinetic, surface, surface_kinetic, kineticType),
+    catalyticPellet::catalyticPellet(std::string kineticType)
+    : catalyticReactors(kineticType),
       mainBox_(Gtk::ORIENTATION_VERTICAL),
       recapMainBox_(Gtk::ORIENTATION_VERTICAL),
       exitButton3_("Exit"),
@@ -686,7 +681,7 @@ namespace ASALI
             eq_->setInterface(chemistryInterface_);
             eq_->turnOnUserDefined(false);
 
-            if ( kinetic_->nReactions() != 0. )
+            if ( chemistryInterface_->numberOfHomogeneousReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
                 smallDialog.set_secondary_text(this->getBeerShort(),true);
@@ -917,13 +912,14 @@ namespace ASALI
                     chemistryInterface_->setMassFraction(x_,n_);
                 }
 
-                std::vector<double> xInlet(thermo_->nSpecies());
-                std::vector<double> xInside(thermo_->nSpecies());
+                std::vector<double> xInlet(chemistryInterface_->numberOfGasSpecies());
+                std::vector<double> xInside(chemistryInterface_->numberOfGasSpecies());
                 {
-                    std::vector<double> y = chemistryInterface_->mass();
-                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                    std::vector<double>      y     = chemistryInterface_->mass();
+                    std::vector<std::string> names = chemistryInterface_->names();
+                    for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                     {
-                        if ( thermo_->speciesName(i) == inert_ )
+                        if ( names[i] == inert_ )
                         {
                             eq_->setInert(i);
                             xInlet[i]  = y[i];
@@ -937,13 +933,14 @@ namespace ASALI
                     }
                 }
                 
-                std::vector<double> thetaInlet(surface_->nSpecies());
+                std::vector<double> thetaInlet(chemistryInterface_->numberOfSurfaceSpecies());
                 {
+					std::vector<std::string> coverageNames = chemistryInterface_->coverageNames();
                     for (unsigned int i=0;i<nc_.size();i++)
                     {
-                        for (unsigned int j=0;j<surface_->nSpecies();j++)
+                        for (unsigned int j=0;j<chemistryInterface_->numberOfSurfaceSpecies();j++)
                         {
-                            if ( nc_[i] == surface_->speciesName(j) )
+                            if ( nc_[i] == coverageNames[j] )
                             {
                                 thetaInlet[j] = xc_[i];
                                 break;
@@ -955,7 +952,7 @@ namespace ASALI
                 unsigned int counter = 0;
                 for (unsigned int i=0;i<NP_;i++)
                 {
-                    for (unsigned int j=0;j<thermo_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfGasSpecies();j++)
                     {
                         if ( i == 0 )
                         {
@@ -981,7 +978,7 @@ namespace ASALI
                             x0[counter++] = xInside[j];
                         }
                     }
-                    for (unsigned int j=0;j<surface_->nSpecies();j++)
+                    for (unsigned int j=0;j<chemistryInterface_->numberOfSurfaceSpecies();j++)
                     {
                         x0[counter++] = thetaInlet[j];
                     }
@@ -1218,27 +1215,23 @@ namespace ASALI
             {
                 //Conversion from mass to mole
                 std::vector<std::vector<std::vector<double> > > mole = eq_->getSpecie();
+                std::vector<std::string> n = chemistryInterface_->names();
                 {
-                    std::vector<std::string> n(thermo_->nSpecies());
-                    for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                    {
-                        n[i] = thermo_->speciesName(i);
-                    }
                     for (unsigned int j=0;j<t.size();j++)
                     {
                         for (unsigned int k=0;k<NP_;k++)
                         {
                             chemistryInterface_->setTemperature(T_);
                             chemistryInterface_->setPressure(p_);
-                            std::vector<double> x(thermo_->nSpecies());
-                            for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                            std::vector<double> x(chemistryInterface_->numberOfGasSpecies());
+                            for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                             {
                                 x[i] = y[j][k][i];
                             }
                             chemistryInterface_->setMassFraction(x,n);
                             x = chemistryInterface_->mole();
 
-                            for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                            for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                             {
                                 mole[j][k][i] = x[i];
                             }
@@ -1246,9 +1239,9 @@ namespace ASALI
                     }
                 }
 
-                for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                 {
-                    std::string name = thermo_->speciesName(i);
+                    std::string name = n[i];
                     output << "\nSpecie:           " << name << std::endl;
 
                     output << "Mass fraction" << std::endl;
@@ -1378,26 +1371,22 @@ namespace ASALI
             //Conversion from mass to mole
             std::vector<std::vector<std::vector<double> > > mole = eq_->getSpecie();
             {
-                std::vector<std::string> n(thermo_->nSpecies());
-                for (unsigned int i=0;i<thermo_->nSpecies();i++)
-                {
-                    n[i] = thermo_->speciesName(i);
-                }
+				std::vector<std::string> n = chemistryInterface_->names();
                 for (unsigned int j=0;j<t.size();j++)
                 {
                     for (unsigned int k=0;k<NP_;k++)
                     {
                         chemistryInterface_->setTemperature(T_);
                         chemistryInterface_->setPressure(p_);
-                        std::vector<double> x(thermo_->nSpecies());
-                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                        std::vector<double> x(chemistryInterface_->numberOfGasSpecies());
+                        for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                         {
                             x[i] = y[j][k][i];
                         }
                         chemistryInterface_->setMassFraction(x,n);
                         x = chemistryInterface_->mole();
 
-                        for (unsigned int i=0;i<thermo_->nSpecies();i++)
+                        for (unsigned int i=0;i<chemistryInterface_->numberOfGasSpecies();i++)
                         {
                             mole[j][k][i] = x[i];
                         }
@@ -1405,21 +1394,9 @@ namespace ASALI
                 }
             }
 
-            std::vector<std::string> n(thermo_->nSpecies());
-            for (unsigned int i=0;i<thermo_->nSpecies();i++)
-            {
-                n[i] = thermo_->speciesName(i);
-            }
-
-            asaliPlot_->setSpecieNames(n);
+            asaliPlot_->setSpecieNames(chemistryInterface_->names());
             asaliPlot_->setSpecie(y,mole);
-
-            n.resize(surface_->nSpecies());
-            for (unsigned int i=0;i<surface_->nSpecies();i++)
-            {
-                n[i] = surface_->speciesName(i);
-            }
-            asaliPlot_->setSiteNames(n);
+            asaliPlot_->setSiteNames(chemistryInterface_->coverageNames());
             asaliPlot_->setSite(eq_->getSite());
         }
         

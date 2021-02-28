@@ -75,7 +75,8 @@ namespace ASALI
         private:
 
             void exit();
-            void createChemistryInterface();
+            void updateBasicChemistryInterface();
+            void updateChemistryInterface(std::string filepath, std::string gasPhase, std::string surfPhase);
             void discrimer();
             void mainMenu();
             void noneInputError();
@@ -178,6 +179,8 @@ namespace ASALI
             Gtk::LinkButton   forgeButton_;
             
             std::string       kineticType_;
+            std::string       basicXMLfilepath_;
+            std::string       basicGasPhase_;
 
             std::vector<std::string>  beer_;
             std::vector<std::string>  beerShort_;
@@ -201,12 +204,6 @@ namespace ASALI
             ASALI::het1dReactor               *het1dMenu_;
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
-
-            Cantera::ThermoPhase              *thermo_;
-            Cantera::Transport                *transport_;
-            Cantera::Kinetics                 *kinetic_;
-            Cantera::ThermoPhase              *surface_;
-            Cantera::Kinetics                 *surface_kinetic_;
             #else
             ASALI::asaliInterface             *chemistryInterface_;
             #endif

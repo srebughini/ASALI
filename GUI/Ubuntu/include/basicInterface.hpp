@@ -79,12 +79,14 @@ namespace ASALI
             virtual double getCpMoleMix();
             virtual double getMWmix();
             virtual double getCondMix();
+            virtual double getMuMix();
 
             virtual std::vector<double> getMW();
             virtual std::vector<double> getHmole();
             virtual std::vector<double> getSmole();
             virtual std::vector<double> getCpMole();
             virtual std::vector<double> getDiffMix();
+            virtual std::vector<double> getBinaryDiffVector();
 
             virtual std::vector<int>  checkNames(std::vector<std::string>& name);
             virtual int               checkNames(std::string name);
@@ -107,6 +109,7 @@ namespace ASALI
             inline std::vector<std::vector<double> > diff()     {return diff_;};
             
             inline std::vector<std::string> names()             {return n_;};
+            inline std::vector<std::string> coverageNames()     {return nc_;};
 
             virtual ~basicInterface();
             
@@ -132,6 +135,7 @@ namespace ASALI
             std::vector<std::vector<double> > diff_;
             
             std::vector<std::string> n_;
+            std::vector<std::string> nc_;
 
             std::vector<std::string> small;
             std::vector<std::string> big;

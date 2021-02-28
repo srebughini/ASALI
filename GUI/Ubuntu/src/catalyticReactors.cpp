@@ -40,12 +40,7 @@
 
 namespace ASALI
 {
-    catalyticReactors::catalyticReactors(Cantera::ThermoPhase* thermo,
-                                         Cantera::Transport*   transport,
-                                         Cantera::Kinetics*    kinetic,
-                                         Cantera::ThermoPhase* surface,
-                                         Cantera::Kinetics*    surface_kinetic,
-                                         std::string           kineticType)
+    catalyticReactors::catalyticReactors(std::string           kineticType)
     : coverageBox_(Gtk::ORIENTATION_VERTICAL),
       helpButton_("Available species"),
       nextButton1_("Next"),
@@ -64,22 +59,11 @@ namespace ASALI
       OP_(3),
       NS_(7),
       SURF_NS_(5),
-      thermo_(thermo),
-      transport_(transport),
-      kinetic_(kinetic),
-      surface_(surface),
-      surface_kinetic_(surface_kinetic),
       kineticType_(kineticType),
       inert_("NONE")
     {
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
-
-
-        if ( kineticType_ != "none" )
-        {
-            chemistryInterface_    = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
-        }
 
         speciesNames_            = new ASALI::speciesPopup();
         asaliProperties_         = new ASALI::asaliProperties();
@@ -232,6 +216,18 @@ namespace ASALI
     catalyticReactors::~catalyticReactors()
     {
     }
+
+    #if ASALI_USING_CANTERA==1
+    void catalyticReactors::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #else
+    void catalyticReactors::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
+    {
+        chemistryInterface_ = chemistryInterface;
+    }
+    #endif
 
     void catalyticReactors::coverage()
     {
@@ -486,12 +482,13 @@ namespace ASALI
             {
                 std::vector<int> check(nc_.size());
                 {
+					std::vector<std::string> coverageName = chemistryInterface_->coverageNames();
                     for (unsigned int i=0;i<nc_.size();i++)
                     {
                         check[i] = 1;
-                        for (unsigned int j=0;j<surface_->nSpecies();j++)
+                        for (unsigned int j=0;j<chemistryInterface_->numberOfSurfaceSpecies();j++)
                         {
-                            if ( nc_[i] == surface_->speciesName(j) )
+                            if ( nc_[i] == coverageName[j] )
                             {
                                 check[i] = 0;
                                 break;
@@ -651,7 +648,7 @@ namespace ASALI
                 canteraIndex_.resize(n_.size());
                 for (unsigned int i=0;i<n_.size();i++)
                 {
-                    canteraIndex_[i] = thermo_->speciesIndex(n_[i]);
+                    canteraIndex_[i] = chemistryInterface_->getGasSpecieIndex(n_[i]);
                 }
             }
         }
