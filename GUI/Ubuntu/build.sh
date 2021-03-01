@@ -34,7 +34,6 @@ function Help()
     exit
 }
 
-
 function BuildingOptions()
 {
     echo " "
@@ -122,9 +121,10 @@ function CheckCantera()
         asali_using_cantera=1
         fi
     else
-        cp -u $3/shared/* include/shared/.
-        cp -u $3/Asali.cpp src/.
-        cp -u $3/Asali.hpp include/.
+        mkdir -p ext/shared/
+        cp -u $3/shared/* ext/shared/.
+        cp -u $3/Asali.cpp ext/.
+        cp -u $3/Asali.hpp ext/.
         asali_using_cantera=0
     fi
 }
@@ -142,14 +142,18 @@ function CheckPython()
     if [[ $python_version == *"3.8"* ]]; then
         python_config_command='--embed'
     else
-        python_config_command=''
+        python_config_command=' '
     fi
 }
 
 function CheckSymbolicLink()
 {
-    if [[ $1 == "false" ]]; then
+    if [[ "$1" == "false" ]]; then
         compiling_folder=""
+    else
+        make clean -f Makefile.cantera PYTHON_CONFIG=$2
+        make clean -f Makefile.asali PYTHON_CONFIG=$2
+        make clean -f Makefile.libs
     fi
 }
 
@@ -168,8 +172,8 @@ function Compile()
         make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
     else
         echoRed "This version is not available, yet :)"
-        exit
-        #make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
+        make all -f Makefile.libs
+        make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
     fi
 }
 
@@ -197,6 +201,7 @@ function Clean()
 
     make clean -f Makefile.cantera PYTHON_CONFIG=$python_config_command
     make clean -f Makefile.asali PYTHON_CONFIG=$python_config_command
+    make clean -f Makefile.libs
     exit
 }
 
@@ -259,25 +264,20 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 CheckCommand python3
 CheckCommand python-config
 CheckCommand make
-CheckOperatingSystem $operating_system
-CheckCantera $with_cantera $cantera_path $folder_api
+CheckOperatingSystem "$operating_system"
+CheckCantera "$with_cantera" "$cantera_path" "$folder_api"
 CheckPython
-BuildingOptions $operating_system $python_version $with_cantera $cantera_path $output_folder $symbolic_link $human_interaction
-CheckSymbolicLink $symbolic_link
+BuildingOptions "$operating_system" "$python_version" "$with_cantera" "$cantera_path" "$output_folder" "$symbolic_link" "$human_interaction"
+CheckSymbolicLink "$symbolic_link" "$python_config_command"
 
 compile=$(Continue)
 
 if [ "$compile" == "true" ]; then
-   Compile $with_cantera $cantera_path $asali_using_cantera $asali_on_windows $python_config_command $compiling_folder
-   Copy $output_folder
-   CreateSymbolicLink $symbolic_link $output_folder
-   echo " "
-   echoGreen "Done"
-   echo " "
+   Compile "$with_cantera" "$cantera_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder"
+   Copy "$output_folder"
+   CreateSymbolicLink "$symbolic_link" "$output_folder"
 else
-   echo " "
    echoRed "Stopped"
-   echo " "
 fi
 
 

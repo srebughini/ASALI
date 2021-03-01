@@ -18,14 +18,19 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
             $(shell python3-config ${PYTHON_CONFIG} --cflags)\
-            -Iinclude
+            -Iinclude \
+            -Iext
 
 CFLAGS := -fPIC -Os -s -std=c++11 \
           -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
           -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
+
+LDFLAGS := -Lext
+
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
+          -Wl,-Bstatic -lasali -Wl,-Bdynamic\
           -lgfortran\
           -lpthread\
           -lm
