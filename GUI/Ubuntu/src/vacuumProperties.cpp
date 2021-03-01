@@ -40,8 +40,8 @@
 
 namespace ASALI
 {
-    vacuumProperties::vacuumProperties(ASALI::speciesPopup            *speciesNames,
-                                       std::string                     kineticType)
+    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames,
+                                       std::string          kineticType)
     : transportProperties(speciesNames,kineticType),
       exitButton_("Exit"),
       saveButton_("Save"),

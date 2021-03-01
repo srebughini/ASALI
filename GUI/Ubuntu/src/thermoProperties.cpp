@@ -40,8 +40,8 @@
 
 namespace ASALI
 {
-    thermoProperties::thermoProperties(ASALI::speciesPopup            *speciesNames,
-                                       std::string                     kineticType)
+    thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames,
+                                       std::string          kineticType)
     : transportProperties(speciesNames,kineticType),
       cpBox_(Gtk::ORIENTATION_VERTICAL),
       hBox_(Gtk::ORIENTATION_VERTICAL),
@@ -136,7 +136,6 @@ namespace ASALI
     thermoProperties::~thermoProperties()
     {
     }
-    
 
     void thermoProperties::clean()
     {

@@ -48,8 +48,8 @@ namespace ASALI
     {
         public:
 
-            vacuumProperties(ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
+            vacuumProperties(ASALI::speciesPopup *speciesNames,
+                             std::string          kineticType);
             
             virtual ~vacuumProperties();
             

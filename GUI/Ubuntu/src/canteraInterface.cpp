@@ -63,8 +63,8 @@ namespace ASALI
         
         for (unsigned int i=0;i<SURF_NS_;i++)
         {
-			nc_[i] = surface_->speciesName(i);
-		}
+            nc_[i] = surface_->speciesName(i);
+        }
     }
 
     void canteraInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name)
@@ -286,8 +286,8 @@ namespace ASALI
     
     double canteraInterface::getMuMix()
     {
-		return transport_->viscosity();
-	}
+        return transport_->viscosity();
+    }
 
     int  canteraInterface::checkNames(std::string name)
     {
@@ -313,18 +313,25 @@ namespace ASALI
 
     unsigned int canteraInterface::numberOfSurfaceSpecies()
     {
-        return surface_->nSpecies();
+        if (!surface_)
+        {
+            return surface_->nSpecies();
+        }
+        else
+        {
+            return 0;
+        }
     }
 
-	unsigned int canteraInterface::numberOfHomogeneousReactions()
-	{
-		return kinetic_->nReactions();
-	}
+    unsigned int canteraInterface::numberOfHomogeneousReactions()
+    {
+        return kinetic_->nReactions();
+    }
 
-	unsigned int canteraInterface::getGasSpecieIndex(std::string name)
-	{
-		return thermo_->speciesIndex(name);
-	}
+    unsigned int canteraInterface::getGasSpecieIndex(std::string name)
+    {
+        return thermo_->speciesIndex(name);
+    }
 
     std::vector<double> canteraInterface::getMW()
     {

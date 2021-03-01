@@ -40,8 +40,8 @@
 
 namespace ASALI
 {
-    transportProperties::transportProperties(ASALI::speciesPopup            *speciesNames,
-                                             std::string                     kineticType)
+    transportProperties::transportProperties(ASALI::speciesPopup *speciesNames,
+                                             std::string          kineticType)
     : helpButton_("Available species"),
       exitButton1_("Exit"),
       doneButton_("Done"),

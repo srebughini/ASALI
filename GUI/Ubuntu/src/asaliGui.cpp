@@ -371,17 +371,17 @@ namespace ASALI
 
     void asaliGui::updateBasicChemistryInterface()
     {
-		if (!chemistryInterface_)
+        if (!chemistryInterface_)
         {
             delete chemistryInterface_;
         }
 
         #if ASALI_USING_CANTERA==1
-		Cantera::ThermoPhase       *thermo;
-		Cantera::Transport         *transport;
-		Cantera::Kinetics          *kinetic;
-		Cantera::SurfPhase         *surface;
-		Cantera::InterfaceKinetics *surface_kinetic;
+        Cantera::ThermoPhase       *thermo;
+        Cantera::Transport         *transport;
+        Cantera::Kinetics          *kinetic;
+        Cantera::SurfPhase         *surface;
+        Cantera::InterfaceKinetics *surface_kinetic;
 
         thermo              = Cantera::newPhase(basicXMLfilepath_,basicGasPhase_);
         transport           = Cantera::newDefaultTransportMgr(thermo);
@@ -389,54 +389,54 @@ namespace ASALI
         #else
         chemistryInterface_ = new ASALI::asaliInterface();
         #endif
-	}
+    }
 
     void asaliGui::updateChemistryInterface(std::string filepath, std::string gasPhase, std::string surfPhase)
     {
-		if (!chemistryInterface_)
+        if (!chemistryInterface_)
         {
             delete chemistryInterface_;
         }
 
         #if ASALI_USING_CANTERA==1
-		Cantera::ThermoPhase       *thermo;
-		Cantera::Transport         *transport;
-		Cantera::Kinetics          *kinetic;
-		Cantera::SurfPhase         *surface;
-		Cantera::InterfaceKinetics *surface_kinetic;
+        Cantera::ThermoPhase       *thermo;
+        Cantera::Transport         *transport;
+        Cantera::Kinetics          *kinetic;
+        Cantera::SurfPhase         *surface;
+        Cantera::InterfaceKinetics *surface_kinetic;
 
-		{
-			thermo  = Cantera::newPhase(filepath,gasPhase);
-			std::vector<Cantera::ThermoPhase*>  phases{thermo};
-			transport  = Cantera::newDefaultTransportMgr(thermo);
-			kinetic    = Cantera::newKineticsMgr(thermo->xml(), phases);
-		}
-		
-		if (surfPhase != "none")
-		{
-			{
-				std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath,surfPhase));
-				std::shared_ptr<Cantera::SurfPhase>   surface_ptr = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
-				surface = surface_ptr.get();
-			}
+        {
+            thermo  = Cantera::newPhase(filepath,gasPhase);
+            std::vector<Cantera::ThermoPhase*>  phases{thermo};
+            transport  = Cantera::newDefaultTransportMgr(thermo);
+            kinetic    = Cantera::newKineticsMgr(thermo->xml(), phases);
+        }
+        
+        if (surfPhase != "none")
+        {
+            {
+                std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath,surfPhase));
+                std::shared_ptr<Cantera::SurfPhase>   surface_ptr = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
+                surface = surface_ptr.get();
+            }
 
-			{
-				std::vector<Cantera::ThermoPhase*>            phases{surface, thermo};
-				std::shared_ptr<Cantera::Kinetics>            surface_as_kinetic(Cantera::newKinetics(phases, filepath,surfPhase));
-				std::shared_ptr<Cantera::InterfaceKinetics>   surface_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
-				surface_kinetic = surface_ptr.get();
-			}
-		}
+            {
+                std::vector<Cantera::ThermoPhase*>            phases{surface, thermo};
+                std::shared_ptr<Cantera::Kinetics>            surface_as_kinetic(Cantera::newKinetics(phases, filepath,surfPhase));
+                std::shared_ptr<Cantera::InterfaceKinetics>   surface_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
+                surface_kinetic = surface_ptr.get();
+            }
+        }
 
         chemistryInterface_ = new ASALI::canteraInterface(thermo,transport, kinetic, surface, surface_kinetic);
         #else
         chemistryInterface_ = new ASALI::asaliInterface();
         #endif
-	}
+    }
 
     void asaliGui::defaultCanteraInput()
     {
-		this->updateBasicChemistryInterface();
+        this->updateBasicChemistryInterface();
         speciesNames_     = new ASALI::speciesPopup();
         kineticType_      = "default";
         this->mainMenu();

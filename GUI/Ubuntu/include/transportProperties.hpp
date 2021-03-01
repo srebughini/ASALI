@@ -69,8 +69,8 @@ namespace ASALI
     class transportProperties : public Gtk::Window
     {
         public:
-            transportProperties(ASALI::speciesPopup            *speciesNames,
-                                std::string                     kineticType);
+            transportProperties(ASALI::speciesPopup  *speciesNames,
+                                std::string           kineticType);
             
             #include "shared/FileManager.H"
             
