@@ -583,7 +583,7 @@ namespace ASALI
         reactorType_ = reactorTypeCombo_.get_active_text();
         energy_      = energyCombo_.get_active_text();
         inert_       = inertEntry_.get_text();
-        asaliProperties_->convertToCaption(inert_);
+        constantProperties_->convertToCaption(inert_);
         
         if ( reactorTypeCombo_.get_active_text() == "tubular" )
         {
@@ -912,10 +912,10 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
-                eq_->set_MW(asaliProperties_->get_MW());
-                eq_->set_QfromSurface(asaliProperties_->get_Qhet());
-                eq_->set_QfromGas(asaliProperties_->get_Qhom());
-                eq_->set_cp(asaliProperties_->get_cp());
+                eq_->set_MW(constantProperties_->get_MW());
+                eq_->set_QfromSurface(constantProperties_->get_Qhet());
+                eq_->set_QfromGas(constantProperties_->get_Qhom());
+                eq_->set_cp(constantProperties_->get_cp());
                 eq_->setHomogeneousReactions(true);
             }
             else
@@ -960,10 +960,10 @@ namespace ASALI
         }
             
         eq_->setPressure(p_);
-        eq_->setCatalystProperties(asaliCatalystProperties_->get_load(),
-                                   asaliCatalystProperties_->get_rho(),
-                                   asaliCatalystProperties_->get_cp(),
-                                   asaliCatalystProperties_->get_cond());
+        eq_->setCatalystProperties(catalystProperties_->get_load(),
+                                   catalystProperties_->get_rho(),
+                                   catalystProperties_->get_cp(),
+                                   catalystProperties_->get_cond());
 
         std::vector<double> x0(eq_->NumberOfEquations());
         if ( kineticType_ == "none" )
@@ -972,8 +972,8 @@ namespace ASALI
             std::vector<double> xInlet(x_.size());
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                xInlet = asaliProperties_->get_mass_fraction(asaliProperties_->get_MW(),x_);
-                MWmix  = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),xInlet);
+                xInlet = constantProperties_->get_mass_fraction(constantProperties_->get_MW(),x_);
+                MWmix  = constantProperties_->get_MWmix(constantProperties_->get_MW(),xInlet);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
@@ -981,7 +981,7 @@ namespace ASALI
                 {
                     xInlet[i] = x_[i];
                 }
-                MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),xInlet);
+                MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(),xInlet);
             }
             
             std::vector<double> xInside(x_.size());
@@ -1024,7 +1024,7 @@ namespace ASALI
                     }
                 }
                 x0[counter++] = T_;
-                x0[counter++] = asaliCatalystProperties_->get_T();
+                x0[counter++] = catalystProperties_->get_T();
             }
 
             eq_->setSpecificMassFlowRate(v_*p_*MWmix/(8314.*T_));
@@ -1100,7 +1100,7 @@ namespace ASALI
                         }
                     }
                     x0[counter++] = T_;
-                    x0[counter++] = asaliCatalystProperties_->get_T();
+                    x0[counter++] = catalystProperties_->get_T();
                 }
                 eq_->setSpecificMassFlowRate(v_*chemistryInterface_->getDensity());
                 eq_->setInletConditions(xInlet,T_);
@@ -1183,7 +1183,7 @@ namespace ASALI
                         x0[counter++] = thetaInlet[j];
                     }
                     x0[counter++] = T_;
-                    x0[counter++] = asaliCatalystProperties_->get_T();
+                    x0[counter++] = catalystProperties_->get_T();
                 }
 
                 eq_->setSpecificMassFlowRate(v_*chemistryInterface_->getDensity());
@@ -1276,13 +1276,13 @@ namespace ASALI
     {
         this->compositionReader();
         this->kineticReader();
-        asaliProperties_->destroy();
-        asaliProperties_->set_type("het1d");
-        asaliProperties_->set_energy(energy_);
-        asaliProperties_->set_n(n_);
-        asaliProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
-        asaliProperties_->build();
-        asaliProperties_->show();
+        constantProperties_->destroy();
+        constantProperties_->set_type("het1d");
+        constantProperties_->set_energy(energy_);
+        constantProperties_->set_n(n_);
+        constantProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
+        constantProperties_->build();
+        constantProperties_->show();
 
         {
             signal.disconnect();
@@ -1292,7 +1292,7 @@ namespace ASALI
 
     void het1dReactor::catalystPropertiesShow()
     {
-        asaliCatalystProperties_->show();
+        catalystProperties_->show();
         {
             run_.disconnect();
             run_ = runButton_.signal_clicked().connect(sigc::mem_fun(*this,&het1dReactor::run));
@@ -1344,8 +1344,8 @@ namespace ASALI
                                     xw[i] = yw[j][k][i];
                                 }
                                 
-                                xb = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),xb);
-                                xw = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),xw);
+                                xb = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),xb);
+                                xw = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),xw);
 
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
@@ -1746,13 +1746,13 @@ namespace ASALI
 
     void het1dReactor::plot()
     {
-        if (!asaliPlot_)
+        if (!plot_)
         {
-            delete asaliPlot_;
+            delete plot_;
         }
 
-        asaliPlot_ = new ASALI::asaliPlot();
-        asaliPlot_->setTime(eq_->getTime());
+        plot_ = new ASALI::plot();
+        plot_->setTime(eq_->getTime());
 
         if ( kineticCombo_.get_active_text() == "ASALI" )
         {
@@ -1780,8 +1780,8 @@ namespace ASALI
                                 xw[i] = yw[j][k][i];
                             }
                             
-                            xb = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),xb);
-                            xw = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),xw);
+                            xb = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),xb);
+                            xw = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),xw);
 
                             for (unsigned int i=0;i<n_.size();i++)
                             {
@@ -1857,9 +1857,9 @@ namespace ASALI
                 n[i+n_.size()] = n_[i] + "(wall)";
             }
 
-            asaliPlot_->setSpecieNames(n);
-            asaliPlot_->setSpecie(yb,moleb,yw,molew);
-            asaliPlot_->setTemperature(Tb,Tw);
+            plot_->setSpecieNames(n);
+            plot_->setSpecie(yb,moleb,yw,molew);
+            plot_->setTemperature(Tb,Tw);
         }
         else if ( kineticCombo_.get_active_text() == "CANTERA" )
         {
@@ -1926,11 +1926,11 @@ namespace ASALI
                 n[i+chemistryInterface_->numberOfGasSpecies()] = chemistryInterface_->names()[i] + "(wall)";
             }
 
-            asaliPlot_->setSpecieNames(n);
-            asaliPlot_->setSpecie(yb,moleb,yw,molew);
-            asaliPlot_->setSiteNames(chemistryInterface_->coverageNames());
-            asaliPlot_->setSite(eq_->getSite());
-            asaliPlot_->setTemperature(Tb,Tw);
+            plot_->setSpecieNames(n);
+            plot_->setSpecie(yb,moleb,yw,molew);
+            plot_->setSiteNames(chemistryInterface_->coverageNames());
+            plot_->setSite(eq_->getSite());
+            plot_->setTemperature(Tb,Tw);
         }
         
         
@@ -1942,12 +1942,12 @@ namespace ASALI
             {
                 l[k] = k*dz;
             }
-            asaliPlot_->setLength(l,lengthCombo_.get_active_text());
+            plot_->setLength(l,lengthCombo_.get_active_text());
         }
 
-        asaliPlot_->setType("het1d");
-        asaliPlot_->build();
-        asaliPlot_->show();
+        plot_->setType("het1d");
+        plot_->build();
+        plot_->show();
     }
 
 }

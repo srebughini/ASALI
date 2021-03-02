@@ -1,18 +1,18 @@
-#	2*CO + O2 = 2*CO2	r=1*CO*O2	(heterogeneous)
+#	2*CO+O2=2*CO2	r=100*CO*O2	(heterogeneous)
 
 from math import exp, pow
 class kinetic:
 
-	n = ["AR","CO","CO2","O2"]
+	n = ["AR","CO","O2","CO2"]
 
-	shet = [[0,-2,2,-1]]
+	shet = [[0,-2,-1,2]]
 
 	Nhet = 1
 	Nhom = 0
 
 	#Unit dimensions: kmol/m2/s
 	def heterogeneous(self,T,x):
-		r = [1*x[1]*x[3]]
+		r = [100*x[1]*x[2]]
 		R = [0.]*4
 		for i in range(0,4):
 			for j in range(0,1):
@@ -32,7 +32,7 @@ class kinetic:
 
 	#Unit dimensions: kmol/m2/s
 	def allHeterogeneous(self,T,x):
-		r = [1*x[1]*x[3]]
+		r = [100*x[1]*x[2]]
 		R = [0]*1*4
 		c = 0
 		for i in range(0,4):
@@ -48,7 +48,7 @@ class kinetic:
 
 	#Unit dimensions: kmol/m2/s
 	def netHet(self,T,x):
-		r = [1*x[1]*x[3]]
+		r = [100*x[1]*x[2]]
 		return r
 
 	def name(self):

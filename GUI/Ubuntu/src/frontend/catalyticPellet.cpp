@@ -452,7 +452,7 @@ namespace ASALI
         pelletType_  = pelletTypeCombo_.get_active_text();
         modelType_   = modelTypeCombo_.get_active_text();
         inert_       = inertEntry_.get_text();
-        asaliProperties_->convertToCaption(inert_);
+        constantProperties_->convertToCaption(inert_);
 
         if ( modelTypeCombo_.get_active_row_number() == 0 )
         {
@@ -722,7 +722,7 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
-                eq_->set_MW(asaliProperties_->get_MW());
+                eq_->set_MW(constantProperties_->get_MW());
                 eq_->setHomogeneousReactions(true);
             }
             else
@@ -767,7 +767,7 @@ namespace ASALI
             std::vector<double> xInlet(x_.size());
             if ( fractionCombo_.get_active_row_number() == 0 )
             {
-                xInlet = asaliProperties_->get_mass_fraction(asaliProperties_->get_MW(),x_);
+                xInlet = constantProperties_->get_mass_fraction(constantProperties_->get_MW(),x_);
             }
             else if ( fractionCombo_.get_active_row_number() == 1 )
             {
@@ -1072,13 +1072,13 @@ namespace ASALI
         this->read();
         this->compositionReader();
         this->kineticReader();
-        asaliProperties_->destroy();
-        asaliProperties_->set_type("pellet");
-        asaliProperties_->set_energy("off");
-        asaliProperties_->set_n(n_);
-        asaliProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
-        asaliProperties_->build();
-        asaliProperties_->show();
+        constantProperties_->destroy();
+        constantProperties_->set_type("pellet");
+        constantProperties_->set_energy("off");
+        constantProperties_->set_n(n_);
+        constantProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
+        constantProperties_->build();
+        constantProperties_->show();
 
         {
             signal.disconnect();
@@ -1126,7 +1126,7 @@ namespace ASALI
                                     x[i] = y[j][k][i];
                                 }
                                 
-                                x = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),x);
+                                x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),x);
 
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
@@ -1291,13 +1291,13 @@ namespace ASALI
 
     void catalyticPellet::plot()
     {
-        if (!asaliPlot_)
+        if (!plot_)
         {
-            delete asaliPlot_;
+            delete plot_;
         }
 
-        asaliPlot_ = new ASALI::asaliPlot();
-        asaliPlot_->setTime(eq_->getTime());
+        plot_ = new ASALI::plot();
+        plot_->setTime(eq_->getTime());
 
         if ( kineticCombo_.get_active_text() == "ASALI" )
         {
@@ -1319,7 +1319,7 @@ namespace ASALI
                                 x[i] = y[j][k][i];
                             }
                             
-                            x = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),x);
+                            x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),x);
 
                             for (unsigned int i=0;i<n_.size();i++)
                             {
@@ -1360,8 +1360,8 @@ namespace ASALI
                 }
             }
 
-            asaliPlot_->setSpecieNames(n_);
-            asaliPlot_->setSpecie(y,mole);
+            plot_->setSpecieNames(n_);
+            plot_->setSpecie(y,mole);
         }
         else if ( kineticCombo_.get_active_text() == "CANTERA" )
         {
@@ -1394,10 +1394,10 @@ namespace ASALI
                 }
             }
 
-            asaliPlot_->setSpecieNames(chemistryInterface_->names());
-            asaliPlot_->setSpecie(y,mole);
-            asaliPlot_->setSiteNames(chemistryInterface_->coverageNames());
-            asaliPlot_->setSite(eq_->getSite());
+            plot_->setSpecieNames(chemistryInterface_->names());
+            plot_->setSpecie(y,mole);
+            plot_->setSiteNames(chemistryInterface_->coverageNames());
+            plot_->setSite(eq_->getSite());
         }
         
         
@@ -1409,11 +1409,11 @@ namespace ASALI
             {
                 l[k] = k*dz;
             }
-            asaliPlot_->setLength(l,lengthCombo_.get_active_text());
+            plot_->setLength(l,lengthCombo_.get_active_text());
         }
 
-        asaliPlot_->setType("pellet");
-        asaliPlot_->build();
-        asaliPlot_->show();
+        plot_->setType("pellet");
+        plot_->build();
+        plot_->show();
     }
 }

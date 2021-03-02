@@ -90,8 +90,17 @@ To install [Cantera](https://cantera.org/) type the following commands from the 
 More details can be found at: https://cantera.org/install/compiling-install.html 
 
 ##### 2.1.5 How to install ASALI
-To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
-`make all CANTERA_PREFIX=/usr/local/`  
+To install Asali run the following command. 
+`./build`  
+The available compiling options are:  
+* *-h|--help*:        Show help message
+* *-c|--clean*:       Clean installation folder
+* *--cantera-path*:   Select Cantera path        (Default: /usr/local/)
+* *--os*:             Select operating system    (Default: ubuntu)
+* *--output-folder*:  Select target folder       (Default: .)
+* *--symbolic-link*:  Create symbolic link in /usr/local/bin/
+* *--no-interaction*: Disable human interaction
+
 To run Asali:  
 `./Asali`  
 

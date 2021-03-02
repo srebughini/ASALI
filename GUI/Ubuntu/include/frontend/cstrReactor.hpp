@@ -40,7 +40,7 @@
 #ifndef CSTRREACTORS_H
 #define CSTRREACTORS_H
 
-#include "backend/catalyticReactors.hpp"
+#include "frontend/catalyticReactors.hpp"
 #include "backend/odeInterface.hpp"
 #include "backend/cstrEquations.hpp"
 

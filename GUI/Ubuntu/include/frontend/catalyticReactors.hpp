@@ -42,9 +42,9 @@
 
 #include "backend/pythonInterface.hpp"
 #include "frontend/speciesPopup.hpp"
-#include "frontend/asaliProperties.hpp"
-#include "frontend/asaliCatalystProperties.hpp"
-#include "frontend/asaliPlot.hpp"
+#include "frontend/constantProperties.hpp"
+#include "frontend/catalystProperties.hpp"
+#include "frontend/plot.hpp"
 #include "frontend/runBar.hpp"
 
 #if ASALI_USING_CANTERA==1
@@ -170,12 +170,12 @@ namespace ASALI
             ASALI::asaliInterface          *chemistryInterface_;
             #endif
 
-            ASALI::speciesPopup            *speciesNames_;
-            ASALI::asaliProperties         *asaliProperties_;
-            ASALI::asaliCatalystProperties *asaliCatalystProperties_;
-            ASALI::asaliPlot               *asaliPlot_;
-            ASALI::runBar                  *bar_;
-            ASALI::pythonInterface         *pi_;
+            ASALI::speciesPopup        *speciesNames_;
+            ASALI::constantProperties  *constantProperties_;
+            ASALI::catalystProperties  *catalystProperties_;
+            ASALI::plot                *plot_;
+            ASALI::runBar              *bar_;
+            ASALI::pythonInterface     *pi_;
 
             std::string kineticType_;
             std::string inert_;
