@@ -3,16 +3,16 @@ EXE := Asali
 SRC_DIR := src
 OBJ_DIR := obj
 
-SRC_TO_IGNORE := $(wildcard $(SRC_DIR)/*Reactor.cpp) \
-                 $(wildcard $(SRC_DIR)/*Pellet.cpp) \
-                 $(wildcard $(SRC_DIR)/*Reactors.cpp) \
-                 $(wildcard $(SRC_DIR)/*Equations.cpp) \
-                 $(SRC_DIR)/canteraInterface.cpp \
-                 $(SRC_DIR)/chemkinConverter.cpp \
-                 $(SRC_DIR)/pressureDrops.cpp \
-                 $(SRC_DIR)/equilibriumCalculator.cpp
+SRC_TO_IGNORE := $(wildcard $(SRC_DIR)/frontend/*Reactor.cpp) \
+                 $(wildcard $(SRC_DIR)/frontend/*Pellet.cpp) \
+                 $(wildcard $(SRC_DIR)/frontend/*Reactors.cpp) \
+                 $(wildcard $(SRC_DIR)/backend/*Equations.cpp) \
+                 $(SRC_DIR)/backend/canteraInterface.cpp \
+                 $(SRC_DIR)/frontend/chemkinConverter.cpp \
+                 $(SRC_DIR)/frontend/pressureDrops.cpp \
+                 $(SRC_DIR)/frontend/equilibriumCalculator.cpp
 
-SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
+SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wildcard $(SRC_DIR)/backend/*.cpp) $(SRC_DIR)/main.cpp)
 
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
@@ -48,6 +48,8 @@ all: $(EXE)
 
 $(OBJ_DIR):
 	mkdir $@
+	mkdir $@/frontend
+	mkdir $@/backend
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@

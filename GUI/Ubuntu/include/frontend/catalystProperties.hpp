@@ -36,13 +36,77 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#ifndef CATALYSTPROPERTIES_H
+#define CATALYSTPROPERTIES_H
 
-int main(int argc, char *argv[])
+#include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class catalystProperties : public Gtk::Window
+    {
+        public:
+            catalystProperties();
+            
+            void doneInput();
 
-  ASALI::mainGui asali;
+            #include "shared/UnitConversion.H"
+            #include "shared/FileManager.H"
+            
+            double get_rho()  {return rho_;};
+            double get_cond() {return cond_;};
+            double get_cp()   {return cp_;};
+            double get_load() {return alfa_;};
+            double get_T()    {return T_;};
 
-  return app->run(asali);
+            virtual ~catalystProperties();
+            
+        private:
+
+            Gtk::Image        het1dLogo_;
+
+            Gtk::Box          mainBox_;
+
+            Gtk::Grid         mainGrid_;
+
+
+            Gtk::Label        rhoLabel_;
+            Gtk::Label        condLabel_;
+            Gtk::Label        cpLabel_;
+            Gtk::Label        loadLabel_;
+            Gtk::Label        TLabel_;
+
+            Gtk::Button       doneButton_;
+            
+            Gtk::ComboBoxText rhoCombo_;
+            Gtk::ComboBoxText condCombo_;
+            Gtk::ComboBoxText cpCombo_;
+            Gtk::ComboBoxText loadCombo_;
+            Gtk::ComboBoxText TCombo_;
+
+            Gtk::Entry        rhoEntry_;
+            Gtk::Entry        condEntry_;
+            Gtk::Entry        cpEntry_;
+            Gtk::Entry        loadEntry_;
+            Gtk::Entry        TEntry_;
+
+            double rho_;
+            double cp_;
+            double cond_;
+            double alfa_;
+            double T_;
+    };
 }
+
+#endif

@@ -36,13 +36,82 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#ifndef BATCHEQUATIONS_H
+#define BATCHEQUATIONS_H
 
-int main(int argc, char *argv[])
+#include "backend/catalyticReactorsEquations.hpp"
+
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+class batchEquations : public ASALI::catalyticReactorsEquations
+{
+    public:
 
-  ASALI::mainGui asali;
+        batchEquations();
 
-  return app->run(asali);
+        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+
+        void setVolume(const double V);
+
+        void setPressure(const double P);
+
+        void setTemperature(const double T);
+        
+        void setCatalystLoad(const double alfa);
+
+        void setIntegrationTime(const double tF);
+
+        std::vector<double> getTime()        const {return Time_;};
+        std::vector<double> getMass()        const {return Mass_;};
+        std::vector<double> getVolume()      const {return Volume_;};
+        std::vector<double> getTemperature() const {return Temperature_;};
+
+        std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
+        std::vector<std::vector<double> > getSite()        const {return Site_;};
+
+        virtual void store(const double tf, const std::vector<double> xf);
+
+        virtual void resize();
+
+        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+
+    private:
+
+        double MWmix_;
+        double cTot_;
+        double rho_;
+        double P_;
+        double T_;
+        double V_;
+        double alfa_;
+        double mass_;
+        double QfromGas_;
+        double QfromSurface_;
+        double SD_;
+        double dt_;
+        
+        unsigned int SURF_NC_;
+        unsigned int TC_;
+ 
+        bool energyEquation_;
+
+        std::vector<double> omega_;
+        std::vector<double> x_;
+        std::vector<double> RfromGas_;
+        std::vector<double> RfromSurface_;
+        std::vector<double> Z_;
+        std::vector<double> Rsurface_;
+        std::vector<double> dy_;
+        std::vector<double> y_;
+        std::vector<double> h_;
+
+        std::vector<double> Time_;
+        std::vector<double> Mass_;
+        std::vector<double> Volume_;
+        std::vector<double> Temperature_;
+        std::vector<std::vector<double> > Specie_;
+        std::vector<std::vector<double> > Site_;
+    };
 }
+
+#endif

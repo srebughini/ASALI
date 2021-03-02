@@ -36,13 +36,53 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#ifndef ASALIINTERFACE_H
+#define ASALIINTERFACE_H
+#include "backend/basicInterface.hpp"
+#include "Asali.hpp"
 
-int main(int argc, char *argv[])
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class asaliInterface : public ASALI::basicInterface
+    {
+        public:
+            asaliInterface();
 
-  ASALI::mainGui asali;
+            virtual void setTemperature(const double T);
+            virtual void setPressure(const double p);
+            virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
+            virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
+            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
+            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
 
-  return app->run(asali);
+            virtual void thermoCalculate();
+            virtual void transportCalculate();
+            virtual void vacuumCalculate();
+
+            virtual double getTemperature();
+            virtual double getDensity();
+            virtual double getCpMassMix();
+            virtual double getCpMoleMix();
+            virtual double getMWmix();
+
+            virtual std::vector<double> getMW();
+            virtual std::vector<double> getHmole();
+            virtual std::vector<double> getSmole();
+            virtual std::vector<double> getCpMole();
+
+            virtual std::vector<int>  checkNames(std::vector<std::string>& name);
+            virtual int               checkNames(std::string name);
+            virtual unsigned int      numberOfGasSpecies();
+            virtual unsigned int      numberOfSurfaceSpecies();
+
+            virtual ~asaliInterface();
+            
+        private:
+
+            ASALI::Asali *asali_;
+            
+            std::vector<std::string> names_;
+    };
 }
+
+#endif

@@ -36,13 +36,59 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
 
-int main(int argc, char *argv[])
+#ifndef EQUILIBRIUMCALCULATOR_H
+#define EQUILIBRIUMCALCULATOR_H
+
+#include "frontend/transportProperties.hpp"
+
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class equilibriumCalculator : public ASALI::transportProperties
+    {
+        public:
 
-  ASALI::mainGui asali;
+            equilibriumCalculator(ASALI::speciesPopup            *speciesNames,
+                                  std::string                     kineticType);
+            
+            #include "shared/FileManager.H"
+            
+            virtual ~equilibriumCalculator();
+            
+            virtual void save();
+            virtual void results();
+            virtual void showAtomNames();
 
-  return app->run(asali);
+        private:
+        
+            void clean();
+            void initialFractionUnitConversion();
+            void finalFractionUnitConversion();
+
+            Gtk::Button       exitButton2_;
+            Gtk::Button       saveButton_;
+            Gtk::Button       backButton_;
+
+            Gtk::Label        initialStateLabel_;
+            Gtk::Label        finalStateLabel_;
+
+            
+            Gtk::Grid         resultsGrid_;
+            
+            Gtk::ComboBoxText equilibriumCombo_;
+            Gtk::ComboBoxText initialFractionCombo_;
+            Gtk::ComboBoxText finalFractionCombo_;
+
+
+            std::vector<Gtk::Label *> nameVector_;
+            std::vector<Gtk::Label *> initialFractionVector_;
+            std::vector<Gtk::Label *> finalFractionVector_;
+
+            double         Teq_;
+
+            std::vector<double>      xeq_;
+            std::vector<double>      yeq_;
+    };
 }
+
+#endif

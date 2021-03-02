@@ -36,13 +36,35 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#include "frontend/speciesPopup.hpp"
 
-int main(int argc, char *argv[])
+namespace ASALI
 {
-  Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    speciesPopup::speciesPopup()
+    : closeButton_("Close"),
+      mainBox_(Gtk::ORIENTATION_VERTICAL),
+      speciesImage_(this->relative_path_to_absolute_path("database/names.tiff"))
+    {
+        this->set_default_size(600,400);
+        this->set_border_width(15);
+        this->set_title("ASALI: species names");
+        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
+        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->add(mainBox_);
+        mainBox_.pack_start(scrolledWindow_);
+        scrolledWindow_.add(speciesImage_);
+        scrolledWindow_.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+        mainBox_.pack_end(closeButton_, Gtk::PACK_SHRINK);
+        closeButton_.signal_clicked().connect(sigc::mem_fun(*this,&speciesPopup::exit));
+        this->show_all_children();
+    }
 
-  ASALI::mainGui asali;
+    void speciesPopup::exit()
+    {
+        this->hide();
+    }
 
-  return app->run(asali);
+    speciesPopup::~speciesPopup()
+    {
+    }
 }
