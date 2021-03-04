@@ -6,6 +6,7 @@ OBJ_DIR := obj
 SRC_TO_IGNORE := $(SRC_DIR)/Asali.cpp $(SRC_DIR)/backend/asaliInterface.cpp
 
 SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wildcard $(SRC_DIR)/backend/*.cpp) $(SRC_DIR)/main.cpp)
+
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\

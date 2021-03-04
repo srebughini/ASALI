@@ -313,7 +313,7 @@ namespace ASALI
 
     unsigned int canteraInterface::numberOfSurfaceSpecies()
     {
-        if (!surface_)
+        if (surface_)
         {
             return surface_->nSpecies();
         }

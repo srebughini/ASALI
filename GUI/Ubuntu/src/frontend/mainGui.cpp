@@ -411,7 +411,7 @@ namespace ASALI
             transport  = Cantera::newDefaultTransportMgr(thermo);
             kinetic    = Cantera::newKineticsMgr(thermo->xml(), phases);
         }
-        
+
         if (surfPhase != "none")
         {
             {
@@ -419,10 +419,9 @@ namespace ASALI
                 std::shared_ptr<Cantera::SurfPhase>   surface_ptr = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
                 surface = surface_ptr.get();
             }
-
             {
-                std::vector<Cantera::ThermoPhase*>            phases{surface, thermo};
-                std::shared_ptr<Cantera::Kinetics>            surface_as_kinetic(Cantera::newKinetics(phases, filepath,surfPhase));
+                std::vector<Cantera::ThermoPhase*>            phases{thermo, surface};
+                std::shared_ptr<Cantera::Kinetics>            surface_as_kinetic(Cantera::newKinetics(phases, filepath, surfPhase));
                 std::shared_ptr<Cantera::InterfaceKinetics>   surface_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
                 surface_kinetic = surface_ptr.get();
             }

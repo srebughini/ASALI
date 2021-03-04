@@ -344,7 +344,7 @@ namespace ASALI
         resolution_ = resolutionCombo_.get_active_text();
         energy_     = energyCombo_.get_active_text();
         inert_      = inertEntry_.get_text();
-        asaliProperties_->convertToCaption(inert_);
+        constantProperties_->convertToCaption(inert_);
     }
 
     void ph1dReactor::input()
@@ -561,10 +561,10 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_,canteraIndex_,n_);
-                eq_->set_MW(asaliProperties_->get_MW());
-                eq_->set_QfromSurface(asaliProperties_->get_Qhet());
-                eq_->set_QfromGas(asaliProperties_->get_Qhom());
-                eq_->set_cp(asaliProperties_->get_cp());
+                eq_->set_MW(constantProperties_->get_MW());
+                eq_->set_QfromSurface(constantProperties_->get_Qhet());
+                eq_->set_QfromGas(constantProperties_->get_Qhom());
+                eq_->set_cp(constantProperties_->get_cp());
                 eq_->setHomogeneousReactions(true);
             }
             else
@@ -605,14 +605,14 @@ namespace ASALI
                 double MWmix = 0;
                 if ( fractionCombo_.get_active_row_number() == 0 )
                 {
-                    std::vector<double> y = asaliProperties_->get_mass_fraction(asaliProperties_->get_MW(),x_);
+                    std::vector<double> y = constantProperties_->get_mass_fraction(constantProperties_->get_MW(),x_);
                     
                     for (unsigned int i=0;i<x_.size();i++)
                     {
                         x0[i] = y[i];
                     }
                     
-                    MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),y);
+                    MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(),y);
                 }
                 else if ( fractionCombo_.get_active_row_number() == 1 )
                 {
@@ -621,7 +621,7 @@ namespace ASALI
                         x0[i] = x_[i];
                     }
                     
-                    MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),x_);
+                    MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(),x_);
                 }
      
 
@@ -792,8 +792,8 @@ namespace ASALI
                 std::vector<double> xInlet(x_.size());
                 if ( fractionCombo_.get_active_row_number() == 0 )
                 {
-                    xInlet = asaliProperties_->get_mass_fraction(asaliProperties_->get_MW(),x_);
-                    MWmix  = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),xInlet);
+                    xInlet = constantProperties_->get_mass_fraction(constantProperties_->get_MW(),x_);
+                    MWmix  = constantProperties_->get_MWmix(constantProperties_->get_MW(),xInlet);
                 }
                 else if ( fractionCombo_.get_active_row_number() == 1 )
                 {
@@ -801,7 +801,7 @@ namespace ASALI
                     {
                         xInlet[i] = x_[i];
                     }
-                    MWmix = asaliProperties_->get_MWmix(asaliProperties_->get_MW(),xInlet);
+                    MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(),xInlet);
                 }
                 
                 std::vector<double> xInside(x_.size());
@@ -1066,13 +1066,13 @@ namespace ASALI
     {
         this->compositionReader();
         this->kineticReader();
-        asaliProperties_->destroy();
-        asaliProperties_->set_type("ph1d");
-        asaliProperties_->set_energy(energy_);
-        asaliProperties_->set_n(n_);
-        asaliProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
-        asaliProperties_->build();
-        asaliProperties_->show();
+        constantProperties_->destroy();
+        constantProperties_->set_type("ph1d");
+        constantProperties_->set_energy(energy_);
+        constantProperties_->set_n(n_);
+        constantProperties_->set_reactions(pi_->getNumberOfHomReactions(),pi_->getNumberOfHetReactions());
+        constantProperties_->build();
+        constantProperties_->show();
 
         {
             signal.disconnect();
@@ -1139,7 +1139,7 @@ namespace ASALI
                         std::vector<double> mole(n_.size());
                         if ( kineticType_ == "none" )
                         {
-                            mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
+                            mole = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),y[j]);
                         }
                         else
                         {
@@ -1274,7 +1274,7 @@ namespace ASALI
                                         x[i] = y[j][k][i];
                                     }
                                     
-                                    x = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),x);
+                                    x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),x);
 
                                     for (unsigned int i=0;i<n_.size();i++)
                                     {
@@ -1498,18 +1498,18 @@ namespace ASALI
 
     void ph1dReactor::plot()
     {
-        if (!asaliPlot_)
+        if (!plot_)
         {
-            delete asaliPlot_;
+            delete plot_;
         }
 
-        asaliPlot_ = new ASALI::asaliPlot();
+        plot_ = new ASALI::plot();
 
         if ( resolution_ == "steady state" )
         {
-            asaliPlot_->setResolutionType(resolution_);
-            asaliPlot_->setLength(eq_->getLength(),lengthCombo_.get_active_text());
-            asaliPlot_->setTemperature(eq_->getTemperature());
+            plot_->setResolutionType(resolution_);
+            plot_->setLength(eq_->getLength(),lengthCombo_.get_active_text());
+            plot_->setTemperature(eq_->getTemperature());
 
             if ( kineticCombo_.get_active_text() == "ASALI" )
             {
@@ -1523,7 +1523,7 @@ namespace ASALI
                     std::vector<double> mole(n_.size());
                     if ( kineticType_ == "none" )
                     {
-                        mole = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),y[j]);
+                        mole = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),y[j]);
                     }
                     else
                     {
@@ -1549,8 +1549,8 @@ namespace ASALI
                         x[j][i] = mole[i];
                     }
                 }
-                asaliPlot_->setSpecieNames(n_);
-                asaliPlot_->setSpecie(y,x);
+                plot_->setSpecieNames(n_);
+                plot_->setSpecie(y,x);
             }
             else if ( kineticCombo_.get_active_text() == "CANTERA" )
             {
@@ -1577,17 +1577,17 @@ namespace ASALI
                     }
                 }
 
-                asaliPlot_->setSpecieNames(name);
-                asaliPlot_->setSpecie(y,x);
-                asaliPlot_->setSiteNames(namec);
-                asaliPlot_->setSite(eq_->getSite());
+                plot_->setSpecieNames(name);
+                plot_->setSpecie(y,x);
+                plot_->setSiteNames(namec);
+                plot_->setSite(eq_->getSite());
             }
         }
         else if ( resolution_ == "transient" )
         {
-            asaliPlot_->setResolutionType(resolution_);
-            asaliPlot_->setTime(eq_->getTime());
-            asaliPlot_->setTemperature(eq_->getTemperatureTransient());
+            plot_->setResolutionType(resolution_);
+            plot_->setTime(eq_->getTime());
+            plot_->setTemperature(eq_->getTemperatureTransient());
 
             if ( kineticCombo_.get_active_text() == "ASALI" )
             {
@@ -1611,7 +1611,7 @@ namespace ASALI
                                     x[i] = y[j][k][i];
                                 }
                                 
-                                x = asaliProperties_->get_mole_fraction(asaliProperties_->get_MW(),x);
+                                x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(),x);
 
                                 for (unsigned int i=0;i<n_.size();i++)
                                 {
@@ -1645,8 +1645,8 @@ namespace ASALI
                     }
                 }
 
-                asaliPlot_->setSpecieNames(n_);
-                asaliPlot_->setSpecie(y,mole);
+                plot_->setSpecieNames(n_);
+                plot_->setSpecie(y,mole);
             }
             else if ( kineticCombo_.get_active_text() == "CANTERA" )
             {
@@ -1681,10 +1681,10 @@ namespace ASALI
                         }
                     }
                 }
-                asaliPlot_->setSpecieNames(name);
-                asaliPlot_->setSpecie(y,mole);
-                asaliPlot_->setSiteNames(namec);
-                asaliPlot_->setSite(eq_->getSiteTransient());
+                plot_->setSpecieNames(name);
+                plot_->setSpecie(y,mole);
+                plot_->setSiteNames(namec);
+                plot_->setSite(eq_->getSiteTransient());
             }
              
             //Length
@@ -1695,12 +1695,12 @@ namespace ASALI
                 {
                     l[k] = k*dz;
                 }
-                asaliPlot_->setLength(l,lengthCombo_.get_active_text());
+                plot_->setLength(l,lengthCombo_.get_active_text());
             }
         }
 
-        asaliPlot_->setType("ph1d");
-        asaliPlot_->build();
-        asaliPlot_->show();
+        plot_->setType("ph1d");
+        plot_->build();
+        plot_->show();
     }
 }

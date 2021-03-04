@@ -67,33 +67,58 @@ Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, W
 ### 2.1 Linux OS
 ##### 2.1.1 Pre-requisites installation
 The Linux based external libraries can be installed by typing these commands:  
-`sudo apt-get update`  
-`sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3`  
-`sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1`  
+```bash
+sudo apt-get update  
+sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3  
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
+```
 
 ##### 2.1.2 How to install Gtkmm libraries
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
-`sudo apt-get install libgtkmm-3.0-dev`  
+```bash
+sudo apt-get install libgtkmm-3.0-dev  
+```
 More details can be found at: https://www.gtkmm.org/en/  
 
 ##### 2.1.3 How to install Matplotlib
 [Matplotlib](https://matplotlib.org/) can be installed with the following command:  
-`sudo apt-get install python3-matplotlib`  
+```bash
+sudo apt-get install python3-matplotlib  
+```
 Details can be found at: https://matplotlib.org/
 
 ##### 2.1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
-`git clone https://github.com/Cantera/cantera.git`   
+```bash
+git clone https://github.com/Cantera/cantera.git   
+```
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
-`scons build system_sundials=n`   
-`sudo scons install`    
+```bash
+scons build system_sundials=n  
+sudo scons install  
+```
 More details can be found at: https://cantera.org/install/compiling-install.html 
 
 ##### 2.1.5 How to install ASALI
-To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
-`make all CANTERA_PREFIX=/usr/local/`  
+To install Asali run the following command.  
+```bash
+./build  
+```
+The installation can be customized with the following options:  
+|Option|Comment|  
+|--------|-----|
+|`--help`|Show help message|
+|`--clean`|Clean installation folder|
+|`--cantera-path`|Select Cantera path|
+|`--os`|Select operating system|
+|`--output-folder`|Select target folder|
+|`--symbolic-link`|Create symbolic link in `/usr/local/bin/`|
+|`--no-interaction`|Disable human interaction|
+  
 To run Asali:  
-`./Asali`  
+```bash
+./Asali  
+```
 
 ### 2.2 Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.

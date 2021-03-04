@@ -15,14 +15,11 @@ before_script: |
 branches:
   only:
   - master
-env:
-  global:
-  - ASALI_OS='-DASALI_ON_WINDOW=0'
 script: |
     cd cantera
     scons build system_sundials=n
     sudo scons install
     cd ..
     cd GUI/Ubuntu
-    make clean
-    make all CANTERA_PREFIX=/usr/local/
+    ./build.sh -c
+    ./build.sh --no-interaction

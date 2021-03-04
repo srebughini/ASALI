@@ -65,11 +65,11 @@ namespace ASALI
         #include "shared/Beer.H"
         #include "shared/BeerShort.H"
 
-        speciesNames_            = new ASALI::speciesPopup();
-        asaliProperties_         = new ASALI::asaliProperties();
-        asaliCatalystProperties_ = new ASALI::asaliCatalystProperties();
-        asaliPlot_               = new ASALI::asaliPlot();
-        bar_                     = new ASALI::runBar();
+        speciesNames_        = new ASALI::speciesPopup();
+        constantProperties_  = new ASALI::constantProperties();
+        catalystProperties_  = new ASALI::catalystProperties();
+        plot_                = new ASALI::plot();
+        bar_                 = new ASALI::runBar();
 
         {
             this->set_border_width(15);
@@ -604,7 +604,7 @@ namespace ASALI
                     x[i] = 0.0;
                     for (unsigned int j=0;j<n_.size();j++)
                     {
-                        asaliProperties_->convertToCaption(n_[j]);
+                        constantProperties_->convertToCaption(n_[j]);
                         if ( n[i] == n_[j] )
                         {
                             x[i] = x_[j];
