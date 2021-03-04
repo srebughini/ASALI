@@ -561,10 +561,10 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->set_MW(constantProperties_->get_MW());
-                eq_->set_QfromSurface(constantProperties_->get_Qhet());
-                eq_->set_QfromGas(constantProperties_->get_Qhom());
-                eq_->set_cp(constantProperties_->get_cp());
+                eq_->setMW(constantProperties_->get_MW());
+                eq_->setQfromSurface(constantProperties_->get_Qhet());
+                eq_->setQfromGas(constantProperties_->get_Qhom());
+                eq_->setCpMassMix(constantProperties_->get_cp());
                 eq_->setHomogeneousReactions(true);
             }
             else

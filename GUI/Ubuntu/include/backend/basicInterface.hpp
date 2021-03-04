@@ -68,9 +68,6 @@ namespace ASALI
         /// Return the property of a specie from species name and property name
         double specieProperty(std::string p, std::string n);
         
-        /// Return specie index from specie name
-        int getSpecieIndex(std::string n);
-
         /// Return mole fraction
         inline std::vector<double> getMoleFraction() { return mole_; };
         
@@ -187,6 +184,9 @@ namespace ASALI
         
         /// Check single species name
         virtual int checkNames(std::string name) = 0;
+        
+        /// Return specie index from specie name
+        virtual int getSpecieIndex(std::string n) = 0;
         
         /// Return number of gas species in the gas mixture
         virtual unsigned int numberOfGasSpecies() = 0;

@@ -297,6 +297,11 @@ namespace ASALI
         return transport_->viscosity();
     }
 
+    int canteraInterface::getSpecieIndex(std::string name)
+    {
+        return thermo_->speciesIndex(name);
+    }
+
     int canteraInterface::checkNames(std::string name)
     {
         int check = 1;
@@ -336,11 +341,6 @@ namespace ASALI
         return kinetic_->nReactions();
     }
 
-    unsigned int canteraInterface::getGasSpecieIndex(std::string name)
-    {
-        return thermo_->speciesIndex(name);
-    }
-    
     std::vector<double> canteraInterface::doubleVectorToStdVector(double* double_vector, unsigned int vector_size)
     {
         std::vector<double> std_vector(vector_size);

@@ -722,7 +722,7 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->set_MW(constantProperties_->get_MW());
+                eq_->setMW(constantProperties_->get_MW());
                 eq_->setHomogeneousReactions(true);
             }
             else

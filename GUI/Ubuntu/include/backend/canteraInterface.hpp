@@ -127,7 +127,10 @@ namespace ASALI
         
         /// Check species names        
         std::vector<int> checkNames(std::vector<std::string> &name);
-        
+
+        /// Return specie index from specie name
+        int getSpecieIndex(std::string n);
+
         /// Check single species name
         int checkNames(std::string name);
         
@@ -136,6 +139,9 @@ namespace ASALI
         
         /// Return number of coverage species
         unsigned int numberOfSurfaceSpecies();
+        
+        /// Return number of homogeneous reactions
+        unsigned int numberOfHomogeneousReactions();
         
         /// Calculate species homogeneous reactions
         void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);

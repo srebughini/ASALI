@@ -648,7 +648,7 @@ namespace ASALI
                 canteraIndex_.resize(n_.size());
                 for (unsigned int i = 0; i < n_.size(); i++)
                 {
-                    canteraIndex_[i] = chemistryInterface_->getGasSpecieIndex(n_[i]);
+                    canteraIndex_[i] = chemistryInterface_->getSpecieIndex(n_[i]);
                 }
             }
         }

@@ -96,7 +96,7 @@ namespace ASALI
         QuserHom_ = Q;
     }
 
-    void catalyticReactorsEquations::setCpMix(const double cp)
+    void catalyticReactorsEquations::setCpMassMix(const double cp)
     {
         cp_ = cp;
     }

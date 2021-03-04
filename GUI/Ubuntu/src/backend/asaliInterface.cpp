@@ -232,6 +232,18 @@ namespace ASALI
         return asali_->mixtureViscosity();
     }
 
+    int asaliInterface::getSpecieIndex(std::string n)
+    {
+        for (unsigned int i = 0; i <= NS_; i++)
+        {
+            if (n_[i] == n)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     int asaliInterface::checkNames(std::string name)
     {
         int check = 1;

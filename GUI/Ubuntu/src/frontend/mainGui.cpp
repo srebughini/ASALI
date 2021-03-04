@@ -377,7 +377,7 @@ namespace ASALI
             delete chemistryInterface_;
         }
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         Cantera::ThermoPhase *thermo;
         Cantera::Transport *transport;
         Cantera::Kinetics *kinetic;
@@ -387,9 +387,9 @@ namespace ASALI
         thermo = Cantera::newPhase(basicXMLfilepath_, basicGasPhase_);
         transport = Cantera::newDefaultTransportMgr(thermo);
         chemistryInterface_ = new ASALI::canteraInterface(thermo, transport, kinetic, surface, surface_kinetic);
-#else
+        #else
         chemistryInterface_ = new ASALI::asaliInterface();
-#endif
+        #endif
     }
 
     void mainGui::updateChemistryInterface(std::string filepath, std::string gasPhase, std::string surfPhase)
@@ -399,7 +399,7 @@ namespace ASALI
             delete chemistryInterface_;
         }
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         Cantera::ThermoPhase *thermo;
         Cantera::Transport *transport;
         Cantera::Kinetics *kinetic;
@@ -415,23 +415,18 @@ namespace ASALI
 
         if (surfPhase != "none")
         {
-            {
-                std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath, surfPhase));
-                std::shared_ptr<Cantera::SurfPhase> surface_ptr = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
-                surface = surface_ptr.get();
-            }
-            {
-                std::vector<Cantera::ThermoPhase *> phases{thermo, surface};
-                std::shared_ptr<Cantera::Kinetics> surface_as_kinetic(Cantera::newKinetics(phases, filepath, surfPhase));
-                std::shared_ptr<Cantera::InterfaceKinetics> surface_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
-                surface_kinetic = surface_ptr.get();
-            }
+			std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath, surfPhase));
+			std::vector<Cantera::ThermoPhase *> phases{thermo, surface_as_thermo.get()};
+			std::shared_ptr<Cantera::Kinetics> surface_as_kinetic(Cantera::newKinetics(phases, filepath, surfPhase));
+			std::shared_ptr<Cantera::SurfPhase> surface_ptr = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
+			std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
+			surface = surface_ptr.get();
+			surface_kinetic = surface_kinetic_ptr.get();
         }
-
         chemistryInterface_ = new ASALI::canteraInterface(thermo, transport, kinetic, surface, surface_kinetic);
-#else
+        #else
         chemistryInterface_ = new ASALI::asaliInterface();
-#endif
+        #endif
     }
 
     void mainGui::defaultCanteraInput()

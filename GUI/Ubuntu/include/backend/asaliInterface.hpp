@@ -122,6 +122,9 @@ namespace ASALI
         /// Check single species name
         int checkNames(std::string name);
         
+        /// Return specie index from specie name
+        int getSpecieIndex(std::string n);
+        
         /// Return number of gas species in the gas mixture
         unsigned int numberOfGasSpecies();
         

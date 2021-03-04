@@ -82,18 +82,6 @@ namespace ASALI
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
     
-    int basicInterface::getSpecieIndex(std::string n)
-    {
-        for (unsigned int i = 0; i <= NS_; i++)
-        {
-            if (n_[i] == n)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     double basicInterface::specieProperty(std::string p, std::string n)
     {
         if (n != "mix")
