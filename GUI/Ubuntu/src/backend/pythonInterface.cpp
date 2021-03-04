@@ -246,21 +246,8 @@ namespace ASALI
     
     void pythonInterface::run()
     {
-        pHetReactionRate = PyObject_CallMethodObjArgs(pInstance,pHetReaction,pTemperature,pMassFraction,NULL);
-
-        Rhet_.clear();
-        for (unsigned int i=0;i<PyList_Size(pHetReactionRate);i++)
-        {
-            Rhet_.push_back(PyFloat_AsDouble(PyList_GetItem(pHetReactionRate,i)));
-        }
-
-        pHomReactionRate  = PyObject_CallMethodObjArgs(pInstance,pHomReaction,pTemperature,pMassFraction,NULL);
-
-        Rhom_.clear();
-        for (unsigned int i=0;i<PyList_Size(pHomReactionRate);i++)
-        {
-            Rhom_.push_back(PyFloat_AsDouble(PyList_GetItem(pHomReactionRate,i)));
-        }
+        this->runHeterogeneous();
+        this->runHomogeneous();
     }
     
     void pythonInterface::runHomogeneous()

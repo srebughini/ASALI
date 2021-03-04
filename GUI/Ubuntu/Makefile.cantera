@@ -3,9 +3,9 @@ EXE := Asali
 SRC_DIR := src
 OBJ_DIR := obj
 
-SRC_TO_IGNORE := $(SRC_DIR)/Asali.cpp $(SRC_DIR)/asaliInterface.cpp
+SRC_TO_IGNORE := $(SRC_DIR)/Asali.cpp $(SRC_DIR)/backend/asaliInterface.cpp
 
-SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
+SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wildcard $(SRC_DIR)/backend/*.cpp) $(SRC_DIR)/main.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
@@ -18,6 +18,7 @@ CFLAGS := -fPIC -Os -s -std=c++11 \
           -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
           -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
+
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
@@ -40,6 +41,8 @@ all: $(EXE)
 
 $(OBJ_DIR):
 	mkdir $@
+	mkdir $@/frontend
+	mkdir $@/backend
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
