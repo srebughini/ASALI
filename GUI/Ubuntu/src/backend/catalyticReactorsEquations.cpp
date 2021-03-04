@@ -54,7 +54,7 @@ namespace ASALI
         homogeneousReactions_ = flag;
     }
 
-    void catalyticReactorsEquations::setHeterogeneusReactions(const bool flag) { 
+    void catalyticReactorsEquations::setHeterogeneusReactions(const bool flag) 
     {
         heterogeneusReactions_ = flag;
     }
