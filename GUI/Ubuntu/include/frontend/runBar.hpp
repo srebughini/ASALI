@@ -56,29 +56,27 @@ namespace ASALI
 {
     class runBar : public Gtk::Window
     {
-        public:
-            runBar();
+    public:
+        runBar();
 
-            void update(const double fraction,const std::string tm);
-            void exit();
-            void close();
+        void update(const double fraction, const std::string tm);
+        void exit();
+        void close();
 
-            bool check() {return close_;};
+        bool check() { return close_; };
 
-            #include "shared/FileManager.H"
+#include "shared/FileManager.H"
 
-            virtual ~runBar();
-            
-        private:
-        
+        virtual ~runBar();
 
-            Gtk::Box                 mainBox_;
-            Gtk::Button              closeButton_;
-            Gtk::Label               solvingLabel_;
-            Gtk::Label               timeLabel_;
-            Gtk::ProgressBar         runBar_;
-            
-            bool                     close_;
+    private:
+        Gtk::Box mainBox_;
+        Gtk::Button closeButton_;
+        Gtk::Label solvingLabel_;
+        Gtk::Label timeLabel_;
+        Gtk::ProgressBar runBar_;
+
+        bool close_;
     };
 }
 

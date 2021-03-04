@@ -43,40 +43,38 @@
 
 namespace ASALI
 {
-class batchEquations : public ASALI::catalyticReactorsEquations
-{
+    class batchEquations : public ASALI::catalyticReactorsEquations
+    {
     public:
-
         batchEquations();
 
-        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+        void setEnergy(const bool flag) { energyEquation_ = flag; }
 
         void setVolume(const double V);
 
         void setPressure(const double P);
 
         void setTemperature(const double T);
-        
+
         void setCatalystLoad(const double alfa);
 
         void setIntegrationTime(const double tF);
 
-        std::vector<double> getTime()        const {return Time_;};
-        std::vector<double> getMass()        const {return Mass_;};
-        std::vector<double> getVolume()      const {return Volume_;};
-        std::vector<double> getTemperature() const {return Temperature_;};
+        std::vector<double> getTime() const { return Time_; };
+        std::vector<double> getMass() const { return Mass_; };
+        std::vector<double> getVolume() const { return Volume_; };
+        std::vector<double> getTemperature() const { return Temperature_; };
 
-        std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
-        std::vector<std::vector<double> > getSite()        const {return Site_;};
+        std::vector<std::vector<double>> getSpecie() const { return Specie_; };
+        std::vector<std::vector<double>> getSite() const { return Site_; };
 
         virtual void store(const double tf, const std::vector<double> xf);
 
         virtual void resize();
 
-        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -89,10 +87,10 @@ class batchEquations : public ASALI::catalyticReactorsEquations
         double QfromSurface_;
         double SD_;
         double dt_;
-        
+
         unsigned int SURF_NC_;
         unsigned int TC_;
- 
+
         bool energyEquation_;
 
         std::vector<double> omega_;
@@ -109,8 +107,8 @@ class batchEquations : public ASALI::catalyticReactorsEquations
         std::vector<double> Mass_;
         std::vector<double> Volume_;
         std::vector<double> Temperature_;
-        std::vector<std::vector<double> > Specie_;
-        std::vector<std::vector<double> > Site_;
+        std::vector<std::vector<double>> Specie_;
+        std::vector<std::vector<double>> Site_;
     };
 }
 

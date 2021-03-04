@@ -50,73 +50,72 @@ namespace ASALI
 {
     class canteraInterface : public ASALI::basicInterface
     {
-        public:
-            canteraInterface(Cantera::ThermoPhase*       thermo,
-                             Cantera::Transport*         transport,
-                             Cantera::Kinetics*          kinetic,
-                             Cantera::SurfPhase*         surface,
-                             Cantera::InterfaceKinetics* surface_kinetic);
+    public:
+        canteraInterface(Cantera::ThermoPhase *thermo,
+                         Cantera::Transport *transport,
+                         Cantera::Kinetics *kinetic,
+                         Cantera::SurfPhase *surface,
+                         Cantera::InterfaceKinetics *surface_kinetic);
 
-            virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
-            virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
-            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
+        virtual void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        virtual void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
+        virtual void setStateFromMassFraction(const double *y, const double T, const double p);
+        virtual void setStateFromMoleFraction(const double *x, const double T, const double p);
 
-            virtual void thermoCalculate();
-            virtual void transportCalculate();
-            virtual void vacuumCalculate();
+        virtual void thermoCalculate();
+        virtual void transportCalculate();
+        virtual void vacuumCalculate();
 
-            virtual double getTemperature();
-            virtual double getDensity();
-            virtual double getCpMassMix();
-            virtual double getCpMoleMix();
-            virtual double getMWmix();
-            virtual double getCondMix();
-            virtual double getMuMix();
+        virtual double getTemperature();
+        virtual double getDensity();
+        virtual double getCpMassMix();
+        virtual double getCpMoleMix();
+        virtual double getMWmix();
+        virtual double getCondMix();
+        virtual double getMuMix();
 
-            virtual std::vector<double> getMW();
-            virtual std::vector<double> getHmole();
-            virtual std::vector<double> getSmole();
-            virtual std::vector<double> getCpMole();
-            virtual std::vector<double> getDiffMix();
-            virtual std::vector<double> getBinaryDiffVector();
+        virtual std::vector<double> getMW();
+        virtual std::vector<double> getHmole();
+        virtual std::vector<double> getSmole();
+        virtual std::vector<double> getCpMole();
+        virtual std::vector<double> getDiffMix();
+        virtual std::vector<double> getBinaryDiffVector();
 
-            virtual std::vector<int>  checkNames(std::vector<std::string>& name);
-            virtual int               checkNames(std::string name);
-            virtual unsigned int      numberOfGasSpecies();
-            virtual unsigned int      numberOfSurfaceSpecies();
-            
-            unsigned int numberOfHomogeneousReactions();
-            unsigned int getGasSpecieIndex(std::string name);
+        virtual std::vector<int> checkNames(std::vector<std::string> &name);
+        virtual int checkNames(std::string name);
+        virtual unsigned int numberOfGasSpecies();
+        virtual unsigned int numberOfSurfaceSpecies();
 
-            void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
-            void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);
-            void equilibriumCalculate(std::string type);
+        unsigned int numberOfHomogeneousReactions();
+        unsigned int getGasSpecieIndex(std::string name);
 
-            inline std::vector<double> RfromGas()               {return RfromGas_;};
-            inline std::vector<double> RfromSurface()           {return RfromSurface_;};
-            inline std::vector<double> Rsurface()               {return Rsurface_;};
-            inline double QfromGas()                            {return QfromGas_;};
-            inline double QfromSurface()                        {return QfromSurface_;};
-            inline double siteDensity()                         {return SD_;};
+        void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
+        void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);
+        void equilibriumCalculate(std::string type);
 
-            virtual ~canteraInterface();
-            
-        private:
+        inline std::vector<double> RfromGas() { return RfromGas_; };
+        inline std::vector<double> RfromSurface() { return RfromSurface_; };
+        inline std::vector<double> Rsurface() { return Rsurface_; };
+        inline double QfromGas() { return QfromGas_; };
+        inline double QfromSurface() { return QfromSurface_; };
+        inline double siteDensity() { return SD_; };
 
-            Cantera::ThermoPhase*       thermo_;
-            Cantera::Transport*         transport_;
-            Cantera::Kinetics*          kinetic_;
-            Cantera::SurfPhase*         surface_;
-            Cantera::InterfaceKinetics* surface_kinetic_;
-            
-            double                QfromGas_;
-            double                QfromSurface_;
-            double                SD_;
-            
-            std::vector<double>   RfromGas_;
-            std::vector<double>   RfromSurface_;
-            std::vector<double>   Rsurface_;
+        virtual ~canteraInterface();
+
+    private:
+        Cantera::ThermoPhase *thermo_;
+        Cantera::Transport *transport_;
+        Cantera::Kinetics *kinetic_;
+        Cantera::SurfPhase *surface_;
+        Cantera::InterfaceKinetics *surface_kinetic_;
+
+        double QfromGas_;
+        double QfromSurface_;
+        double SD_;
+
+        std::vector<double> RfromGas_;
+        std::vector<double> RfromSurface_;
+        std::vector<double> Rsurface_;
     };
 }
 

@@ -36,7 +36,6 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
 #ifndef EQUILIBRIUMCALCULATOR_H
 #define EQUILIBRIUMCALCULATOR_H
 
@@ -46,48 +45,44 @@ namespace ASALI
 {
     class equilibriumCalculator : public ASALI::transportProperties
     {
-        public:
+    public:
+        equilibriumCalculator(ASALI::speciesPopup *speciesNames,
+                              std::string kineticType);
 
-            equilibriumCalculator(ASALI::speciesPopup            *speciesNames,
-                                  std::string                     kineticType);
-            
-            #include "shared/FileManager.H"
-            
-            virtual ~equilibriumCalculator();
-            
-            virtual void save();
-            virtual void results();
-            virtual void showAtomNames();
+#include "shared/FileManager.H"
 
-        private:
-        
-            void clean();
-            void initialFractionUnitConversion();
-            void finalFractionUnitConversion();
+        virtual ~equilibriumCalculator();
 
-            Gtk::Button       exitButton2_;
-            Gtk::Button       saveButton_;
-            Gtk::Button       backButton_;
+        virtual void save();
+        virtual void results();
+        virtual void showAtomNames();
 
-            Gtk::Label        initialStateLabel_;
-            Gtk::Label        finalStateLabel_;
+    private:
+        void clean();
+        void initialFractionUnitConversion();
+        void finalFractionUnitConversion();
 
-            
-            Gtk::Grid         resultsGrid_;
-            
-            Gtk::ComboBoxText equilibriumCombo_;
-            Gtk::ComboBoxText initialFractionCombo_;
-            Gtk::ComboBoxText finalFractionCombo_;
+        Gtk::Button exitButton2_;
+        Gtk::Button saveButton_;
+        Gtk::Button backButton_;
 
+        Gtk::Label initialStateLabel_;
+        Gtk::Label finalStateLabel_;
 
-            std::vector<Gtk::Label *> nameVector_;
-            std::vector<Gtk::Label *> initialFractionVector_;
-            std::vector<Gtk::Label *> finalFractionVector_;
+        Gtk::Grid resultsGrid_;
 
-            double         Teq_;
+        Gtk::ComboBoxText equilibriumCombo_;
+        Gtk::ComboBoxText initialFractionCombo_;
+        Gtk::ComboBoxText finalFractionCombo_;
 
-            std::vector<double>      xeq_;
-            std::vector<double>      yeq_;
+        std::vector<Gtk::Label *> nameVector_;
+        std::vector<Gtk::Label *> initialFractionVector_;
+        std::vector<Gtk::Label *> finalFractionVector_;
+
+        double Teq_;
+
+        std::vector<double> xeq_;
+        std::vector<double> yeq_;
     };
 }
 

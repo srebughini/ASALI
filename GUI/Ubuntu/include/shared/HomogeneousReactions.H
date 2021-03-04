@@ -36,13 +36,13 @@
 #                                                                                              #
 ##############################################################################################*/
 
-if ( homogeneousReactions_ == true )
+if (homogeneousReactions_ == true)
 {
-    if ( type_ == "CANTERA" )
+    if (type_ == "CANTERA")
     {
         chemistryInterface_->calculateHomogeneousReactions(omega_, T_, P_);
         RfromGas_ = chemistryInterface_->RfromGas();
-        if ( energyEquation_ == true )
+        if (energyEquation_ == true)
         {
             QfromGas_ = chemistryInterface_->QfromGas();
         }
@@ -51,32 +51,32 @@ if ( homogeneousReactions_ == true )
             QfromGas_ = 0.;
         }
     }
-    else if ( type_ == "ASALI" )
+    else if (type_ == "ASALI")
     {
-        RfromGas_ = this->reactionRate(x_,T_,"homogeneous"); //kmol/m3/s
+        RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); //kmol/m3/s
 
-        if ( energyEquation_ == true )
+        if (energyEquation_ == true)
         {
-            if ( userCheck_ == false )
+            if (userCheck_ == false)
             {
                 chemistryInterface_->setStateFromMoleFraction(x_.data(), T_, P_);
                 std::vector<double> hArray = chemistryInterface_->getHmole();
-                
-                for (unsigned int i=0;i<NC_;i++)
+
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     h_[i] = hArray[canteraIndex_[i]];
                 }
 
-                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+                QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
             }
             else
             {
 
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     h_[i] = 0.;
                 }
-                QfromGas_ = this->heatOfReaction(x_,T_,h_,"homogeneous"); //W/m3
+                QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
             }
         }
         else
@@ -84,11 +84,10 @@ if ( homogeneousReactions_ == true )
             QfromGas_ = 0.;
         }
     }
-
 }
 else
 {
-    for (unsigned int j=0;j<NC_;j++)
+    for (unsigned int j = 0; j < NC_; j++)
     {
         RfromGas_[j] = 0.; //kmol/m2/s
     }

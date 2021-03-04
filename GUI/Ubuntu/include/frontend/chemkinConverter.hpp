@@ -60,49 +60,46 @@ namespace ASALI
 {
     class chemkinConverter : public Gtk::Window
     {
-        public:
-            chemkinConverter();
-            
-            #include "shared/FileManager.H"
-            
-            virtual ~chemkinConverter();
-            
-        private:
-        
-            void exit();
-            void clean();
-            void load(int index);
-            void savedMessage();
-            void notSavedMessage();
-            void run();
-            void help();
-            void error(std::string type);
-            void eraseSubString(std::string &mainStr, const std::string toErase);
-            bool checkConvertedFile(std::string filename);
+    public:
+        chemkinConverter();
 
-            std::string getBeer();
-            std::string getBeerShort();
+#include "shared/FileManager.H"
 
-            Gtk::Box         mainBox_;
-            Gtk::Box         buttonBox_;
-            
-            Gtk::Grid        endGrid_;
+        virtual ~chemkinConverter();
 
-            Gtk::Button      kinetic_;
-            Gtk::Button      thermo_;
-            Gtk::Button      transport_;
-            Gtk::Button      surface_;
-            Gtk::Button      output_;
-            Gtk::Button      help_;
-            Gtk::Button      exit_;
-           
-            
-            Gtk::Image       logo_;
-            
-            std::vector<std::string>  files_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
-        
+    private:
+        void exit();
+        void clean();
+        void load(int index);
+        void savedMessage();
+        void notSavedMessage();
+        void run();
+        void help();
+        void error(std::string type);
+        void eraseSubString(std::string &mainStr, const std::string toErase);
+        bool checkConvertedFile(std::string filename);
+
+        std::string getBeer();
+        std::string getBeerShort();
+
+        Gtk::Box mainBox_;
+        Gtk::Box buttonBox_;
+
+        Gtk::Grid endGrid_;
+
+        Gtk::Button kinetic_;
+        Gtk::Button thermo_;
+        Gtk::Button transport_;
+        Gtk::Button surface_;
+        Gtk::Button output_;
+        Gtk::Button help_;
+        Gtk::Button exit_;
+
+        Gtk::Image logo_;
+
+        std::vector<std::string> files_;
+        std::vector<std::string> beer_;
+        std::vector<std::string> beerShort_;
     };
 }
 

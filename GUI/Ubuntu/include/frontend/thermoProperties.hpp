@@ -36,7 +36,6 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
 #ifndef THERMOPROPERTIES_H
 #define THERMOPROPERTIES_H
 
@@ -46,50 +45,48 @@ namespace ASALI
 {
     class thermoProperties : public ASALI::transportProperties
     {
-        public:
-            thermoProperties(ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            virtual ~thermoProperties();
+    public:
+        thermoProperties(ASALI::speciesPopup *speciesNames,
+                         std::string kineticType);
 
-            virtual void results();
-            virtual void save();
-            virtual void clean();
-            virtual void showAtomNames();
-            virtual void cpUnitConversion(bool check);
-            virtual void hUnitConversion(bool check);
-            virtual void sUnitConversion(bool check);
+        virtual ~thermoProperties();
 
-            std::vector<double>      cp_;
-            std::vector<double>      h_;
-            std::vector<double>      s_;
-            
-        private:
+        virtual void results();
+        virtual void save();
+        virtual void clean();
+        virtual void showAtomNames();
+        virtual void cpUnitConversion(bool check);
+        virtual void hUnitConversion(bool check);
+        virtual void sUnitConversion(bool check);
 
-            Gtk::Box          cpBox_;
-            Gtk::Box          hBox_;
-            Gtk::Box          sBox_;
+        std::vector<double> cp_;
+        std::vector<double> h_;
+        std::vector<double> s_;
 
-            Gtk::Button       exitButton2_;
-            Gtk::Button       saveButton_;
-            Gtk::Button       backButton_;
-            
-            Gtk::Grid         resultsGrid_;
+    private:
+        Gtk::Box cpBox_;
+        Gtk::Box hBox_;
+        Gtk::Box sBox_;
 
-            Gtk::Label        cpLabel_;
-            Gtk::Label        hLabel_;
-            Gtk::Label        sLabel_;
-            
-            Gtk::ComboBoxText cpCombo_;
-            Gtk::ComboBoxText hCombo_;
-            Gtk::ComboBoxText sCombo_;
+        Gtk::Button exitButton2_;
+        Gtk::Button saveButton_;
+        Gtk::Button backButton_;
 
-            std::vector<Gtk::Label *>          nameVector_;
-            std::vector<Gtk::Label *>          cpVector_;
-            std::vector<Gtk::Label *>          hVector_;
-            std::vector<Gtk::Label *>          sVector_;
-            std::vector<Gtk::ComboBoxText *>   speciesCombo_;
+        Gtk::Grid resultsGrid_;
 
+        Gtk::Label cpLabel_;
+        Gtk::Label hLabel_;
+        Gtk::Label sLabel_;
+
+        Gtk::ComboBoxText cpCombo_;
+        Gtk::ComboBoxText hCombo_;
+        Gtk::ComboBoxText sCombo_;
+
+        std::vector<Gtk::Label *> nameVector_;
+        std::vector<Gtk::Label *> cpVector_;
+        std::vector<Gtk::Label *> hVector_;
+        std::vector<Gtk::Label *> sVector_;
+        std::vector<Gtk::ComboBoxText *> speciesCombo_;
     };
 }
 

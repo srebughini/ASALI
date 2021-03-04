@@ -63,208 +63,204 @@
 
 namespace ASALI
 {
-    #define Ith(v,i)    NV_Ith_S(v,i-1)
-    #define IJth(A,i,j) DENSE_ELEM(A,i-1,j-1)
+#define Ith(v, i) NV_Ith_S(v, i - 1)
+#define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
-    template<typename T>
+    template <typename T>
     class bvpInterface : public Gtk::Window
     {
-        public:
+    public:
+        bvpInterface();
 
-            bvpInterface();
+        int solve(const double tf, std::vector<double> &yf);
 
-            int solve(const double tf, std::vector<double>& yf);
+        void setEquations(T *eq);
 
-            void setEquations(T* eq);
+        void setInitialConditions(double t0, std::vector<double> y0);
 
-            void setInitialConditions(double t0, std::vector<double> y0);
+        void setAlgebraic(const std::vector<bool> algebraic);
 
-            void setAlgebraic(const std::vector<bool> algebraic);
+        void setTollerance(const double absTol, const double relTol);
 
-            void setTollerance(const double absTol, const double relTol);
+        void setBandDimensions(const double upperBand, const double lowerBand);
 
-            void setBandDimensions(const double upperBand, const double lowerBand);
-            
-            void setConstraints(const bool constraints);
-            
-            bool check()            {return check_;};
-            void start()            {check_ = true;};
+        void setConstraints(const bool constraints);
 
-            ~bvpInterface(void);
+        bool check() { return check_; };
+        void start() { check_ = true; };
 
-        private:
+        ~bvpInterface(void);
 
-            void *ida_mem_;
+    private:
+        void *ida_mem_;
 
-            T* eq_;
-            
-            int NEQ_;
+        T *eq_;
 
-            double relTol_;
-            double absTol_;
-            double upperBand_;
-            double lowerBand_;
-            double t0_;
-            
-            bool   check_;
+        int NEQ_;
 
+        double relTol_;
+        double absTol_;
+        double upperBand_;
+        double lowerBand_;
+        double t0_;
 
+        bool check_;
 
-            bool constraints_;
+        bool constraints_;
 
-            N_Vector yIDA_;
-            N_Vector dyIDA_;
-            N_Vector y0IDA_;
-            N_Vector dy0IDA_;
-            N_Vector algebraicIDA_;
+        N_Vector yIDA_;
+        N_Vector dyIDA_;
+        N_Vector y0IDA_;
+        N_Vector dy0IDA_;
+        N_Vector algebraicIDA_;
 
-            SUNMatrix A_;
+        SUNMatrix A_;
 
-            SUNLinearSolver LS_;
-            
-            std::vector<double> y0_;
-            std::vector<double> dy0_;
+        SUNLinearSolver LS_;
 
-            std::vector<double> algebraic_;
+        std::vector<double> y0_;
+        std::vector<double> dy0_;
 
-            std::vector<std::string> beer_;
+        std::vector<double> algebraic_;
 
-            int         checkFlag(void *flagvalue, int opt);
-            void        error();
-            std::string getBeer();
+        std::vector<std::string> beer_;
+
+        int checkFlag(void *flagvalue, int opt);
+        void error();
+        std::string getBeer();
     };
 
-    template<typename T>
+    template <typename T>
     bvpInterface<T>::bvpInterface()
     {
-        #include "shared/Beer.H"
+#include "shared/Beer.H"
 
-        yIDA_         = NULL;
-        dyIDA_        = NULL;
-        y0IDA_        = NULL;
-        dy0IDA_       = NULL;
+        yIDA_ = NULL;
+        dyIDA_ = NULL;
+        y0IDA_ = NULL;
+        dy0IDA_ = NULL;
         algebraicIDA_ = NULL;
-        ida_mem_      = NULL;
-        
-        constraints_  = false;
-        check_        = true;
+        ida_mem_ = NULL;
 
-        upperBand_    = 0.;
-        lowerBand_    = 0.;
-        relTol_       = 1.e-07;
-        absTol_       = 1.e-12;
-        t0_           = 0.;
+        constraints_ = false;
+        check_ = true;
+
+        upperBand_ = 0.;
+        lowerBand_ = 0.;
+        relTol_ = 1.e-07;
+        absTol_ = 1.e-12;
+        t0_ = 0.;
     }
 
-    template<typename T>
-    void bvpInterface<T>::setEquations(T* eq)
+    template <typename T>
+    void bvpInterface<T>::setEquations(T *eq)
     {
-        eq_  = eq;
+        eq_ = eq;
         NEQ_ = eq_->NumberOfEquations();
 
         y0IDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)y0IDA_, 0))        
+        if (checkFlag((void *)y0IDA_, 0))
         {
             this->error();
-        }    
+        }
 
         dy0IDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dy0IDA_, 0))       
+        if (checkFlag((void *)dy0IDA_, 0))
         {
             this->error();
-        }    
+        }
 
         yIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)yIDA_, 0))         
+        if (checkFlag((void *)yIDA_, 0))
         {
             this->error();
-        }    
+        }
 
         dyIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)dyIDA_, 0))        
+        if (checkFlag((void *)dyIDA_, 0))
         {
             this->error();
-        }    
+        }
 
         algebraicIDA_ = N_VNew_Serial(NEQ_);
-        if (checkFlag((void *)algebraicIDA_, 0)) 
+        if (checkFlag((void *)algebraicIDA_, 0))
         {
             this->error();
-        }    
+        }
 
         algebraic_.resize(NEQ_);
         y0_.resize(NEQ_);
         dy0_.resize(NEQ_);
     }
 
-    template<typename T>
+    template <typename T>
     void bvpInterface<T>::setBandDimensions(const double upperBand, const double lowerBand)
     {
         upperBand_ = upperBand;
         lowerBand_ = lowerBand;
     }
-    
-    template<typename T>
+
+    template <typename T>
     void bvpInterface<T>::setTollerance(const double absTol, const double relTol)
     {
         absTol_ = absTol;
         relTol_ = relTol;
     }
 
-    template<typename T>
+    template <typename T>
     void bvpInterface<T>::setConstraints(const bool constraints)
     {
         constraints_ = constraints;
     }
 
-    template<typename T>
+    template <typename T>
     void bvpInterface<T>::setAlgebraic(const std::vector<bool> algebraic)
     {
-        for (int i=0;i<NEQ_;i++)
+        for (int i = 0; i < NEQ_; i++)
         {
             algebraic_[i] = (algebraic[i] == true) ? 0.0 : 1.0;
         }
     }
 
-    template<typename T>
+    template <typename T>
     void bvpInterface<T>::setInitialConditions(double t0, std::vector<double> y0)
     {
         std::vector<double> dy0(NEQ_);
 
-        eq_->Equations(t0,y0,dy0_);
+        eq_->Equations(t0, y0, dy0_);
 
         t0_ = t0;
         y0_ = y0;
     }
 
-    template<typename T>
+    template <typename T>
     int equations(double t, N_Vector y, N_Vector dy, N_Vector f, void *user_data)
     {
-        T* data;
-        data = (T*)user_data;
+        T *data;
+        data = (T *)user_data;
 
-        double *ydata  = N_VGetArrayPointer_Serial(y);
+        double *ydata = N_VGetArrayPointer_Serial(y);
         double *dydata = N_VGetArrayPointer_Serial(dy);
-        double *fdata  = N_VGetArrayPointer_Serial(f);
-        
+        double *fdata = N_VGetArrayPointer_Serial(f);
+
         unsigned int N = data->NumberOfEquations();
 
         std::vector<double> y_(N);
         std::vector<double> dy_(N);
 
-        for (unsigned int i=0;i<N;i++)
+        for (unsigned int i = 0; i < N; i++)
         {
             y_[i] = ydata[i];
         }
 
-        int flag = data->Equations(t,y_,dy_);
+        int flag = data->Equations(t, y_, dy_);
 
-        for (unsigned int i=0;i<N;i++)
+        for (unsigned int i = 0; i < N; i++)
         {
             fdata[i] = dy_[i];
         }
 
-        for(unsigned int i=0;i<N;i++)
+        for (unsigned int i = 0; i < N; i++)
         {
             if (data->AlgebraicEquations()[i] == false)
             {
@@ -272,24 +268,24 @@ namespace ASALI
             }
         }
 
-        return(flag);
+        return (flag);
     }
 
-    template<typename T>
-    int bvpInterface<T>::solve(const double tf, std::vector<double>& yf)
+    template <typename T>
+    int bvpInterface<T>::solve(const double tf, std::vector<double> &yf)
     {
         int flag;
 
-        N_VSetArrayPointer_Serial(&dy0_[0],dy0IDA_);
-        N_VSetArrayPointer_Serial(&y0_[0],y0IDA_);
-        N_VSetArrayPointer_Serial(&algebraic_[0],algebraicIDA_);
+        N_VSetArrayPointer_Serial(&dy0_[0], dy0IDA_);
+        N_VSetArrayPointer_Serial(&y0_[0], y0IDA_);
+        N_VSetArrayPointer_Serial(&algebraic_[0], algebraicIDA_);
 
         ida_mem_ = IDACreate();
         if (checkFlag((void *)ida_mem_, 0))
         {
             this->error();
         }
-        
+
         flag = IDASetMaxNumSteps(ida_mem_, 5000000);
         if (checkFlag(&flag, 1))
         {
@@ -297,7 +293,7 @@ namespace ASALI
         }
 
         flag = IDASetUserData(ida_mem_, eq_);
-        if(checkFlag(&flag, 1))
+        if (checkFlag(&flag, 1))
         {
             this->error();
         }
@@ -322,20 +318,20 @@ namespace ASALI
 
         if (upperBand_ == 0 && lowerBand_ == 0)
         {
-            A_ = SUNDenseMatrix(NEQ_,NEQ_);
-            if (checkFlag((void *)A_, 0)) 
+            A_ = SUNDenseMatrix(NEQ_, NEQ_);
+            if (checkFlag((void *)A_, 0))
             {
                 this->error();
             }
-        
+
             LS_ = SUNDenseLinearSolver(yIDA_, A_);
-            if (checkFlag((void *)LS_, 0)) 
+            if (checkFlag((void *)LS_, 0))
             {
                 this->error();
             }
-            
+
             flag = IDADlsSetLinearSolver(ida_mem_, LS_, A_);
-            if(checkFlag(&flag, 1))
+            if (checkFlag(&flag, 1))
             {
                 this->error();
             }
@@ -343,38 +339,38 @@ namespace ASALI
         else
         {
             A_ = SUNBandMatrix(NEQ_, upperBand_, lowerBand_);
-            if (checkFlag((void *)A_, 0)) 
+            if (checkFlag((void *)A_, 0))
             {
                 this->error();
             }
 
             LS_ = SUNBandLinearSolver(yIDA_, A_);
-            if (checkFlag((void *)LS_, 0)) 
+            if (checkFlag((void *)LS_, 0))
             {
                 this->error();
             }
 
             flag = IDADlsSetLinearSolver(ida_mem_, LS_, A_);
-            if(checkFlag(&flag, 1))
+            if (checkFlag(&flag, 1))
             {
                 this->error();
             }
         }
-        
-        if ( constraints_ == true )
+
+        if (constraints_ == true)
         {
             N_Vector constraints = N_VNew_Serial(NEQ_);
             N_VConst(1.0, constraints);
             flag = IDASetConstraints(ida_mem_, constraints);
-            if(checkFlag(&flag, 1))
+            if (checkFlag(&flag, 1))
             {
                 this->error();
             }
             N_VDestroy_Serial(constraints);
         }
 
-        flag = IDASolve(ida_mem_,tf, &t0_, yIDA_, dyIDA_, IDA_NORMAL);
-        if(checkFlag(&flag, 1))
+        flag = IDASolve(ida_mem_, tf, &t0_, yIDA_, dyIDA_, IDA_NORMAL);
+        if (checkFlag(&flag, 1))
         {
             this->error();
         }
@@ -382,7 +378,7 @@ namespace ASALI
         yf.clear();
         yf.resize(NEQ_);
         double *sol = N_VGetArrayPointer_Serial(yIDA_);
-        for (int i=0;i<NEQ_;i++)
+        for (int i = 0; i < NEQ_; i++)
         {
             yf[i] = sol[i];
         }
@@ -390,49 +386,49 @@ namespace ASALI
         return flag;
     }
 
-    template<typename T>
+    template <typename T>
     int bvpInterface<T>::checkFlag(void *flagvalue, int opt)
     {
         int *errflag;
 
         if (opt == 0 && flagvalue == NULL)
         {
-            return(1);
+            return (1);
         }
         else if (opt == 1)
         {
-            errflag = (int *) flagvalue;
+            errflag = (int *)flagvalue;
             if (*errflag < 0)
             {
-                return(1); 
+                return (1);
             }
         }
         else if (opt == 2 && flagvalue == NULL)
         {
-            return(1);
+            return (1);
         }
 
-        return(0);
+        return (0);
     }
 
-    template<typename T>
+    template <typename T>
     void bvpInterface<T>::error()
     {
         check_ = false;
-        Gtk::MessageDialog dialog(*this,"Ops, something wrong happend!",true,Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(),true);
+        Gtk::MessageDialog dialog(*this, "Ops, something wrong happend!", true, Gtk::MESSAGE_ERROR);
+        dialog.set_secondary_text(this->getBeer(), true);
         dialog.run();
     }
 
-    template<typename T>
+    template <typename T>
     std::string bvpInterface<T>::getBeer()
     {
         unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
+        int i = rand_r(&seed) % beer_.size();
         return beer_[i];
     }
 
-    template<typename T>
+    template <typename T>
     bvpInterface<T>::~bvpInterface(void)
     {
         N_VDestroy_Serial(yIDA_);

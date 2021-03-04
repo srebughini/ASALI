@@ -40,8 +40,7 @@
 
 namespace ASALI
 {
-    asaliInterface::asaliInterface():
-    basicInterface()
+    asaliInterface::asaliInterface() : basicInterface()
     {
         asali_ = new ASALI::Asali();
         names_ = asali_->allSpeciesName();
@@ -52,26 +51,26 @@ namespace ASALI
         T_ = T;
         asali_->setTemperature(T_);
     }
-    
+
     void asaliInterface::setPressure(const double p)
     {
         p_ = p;
         asali_->setPressure(p_);
     }
 
-    void asaliInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name)
+    void asaliInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
     {
         asali_->setSpecies(name);
         this->setStateFromMoleFraction(x.data(), T_, p_);
     }
 
-    void asaliInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name)
+    void asaliInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name)
     {
         asali_->setSpecies(name);
         this->setStateFromMassFraction(y.data(), T_, p_);
     }
-    
-    void asaliInterface::setStateFromMassFraction(const double* y, const double T, const double p)
+
+    void asaliInterface::setStateFromMassFraction(const double *y, const double T, const double p)
     {
         this->resize();
         T_ = T;
@@ -88,22 +87,22 @@ namespace ASALI
 
         x_ = mole_.data();
         y_ = mass_.data();
-        
-        for(unsigned int i=0;i<NS_;i++)
+
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            n_[i]  = asali_->speciesName()[i];
+            n_[i] = asali_->speciesName()[i];
             MW_[i] = asali_->speciesMolecularWeight()[i];
         }
     }
-    
-    void asaliInterface::setStateFromMoleFraction(const double* x, const double T, const double p)
+
+    void asaliInterface::setStateFromMoleFraction(const double *x, const double T, const double p)
     {
         this->resize();
         T_ = T;
         p_ = p;
-        
+
         std::vector<double> dummy(x, x + NS_);
-        
+
         asali_->setMoleFraction(dummy);
         asali_->setTemperature(T_);
         asali_->setPressure(p_);
@@ -113,79 +112,79 @@ namespace ASALI
 
         x_ = mole_.data();
         y_ = mass_.data();
-        
-        for(unsigned int i=0;i<NS_;i++)
+
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            n_[i]  = asali_->speciesName()[i];
+            n_[i] = asali_->speciesName()[i];
             MW_[i] = asali_->speciesMolecularWeight()[i];
         }
     }
 
     void asaliInterface::vacuumCalculate()
     {
-		l_ = asali_->meanFreePath();
-		v_ = asali_->arithmeticMeanGasVelocity();
+        l_ = asali_->meanFreePath();
+        v_ = asali_->arithmeticMeanGasVelocity();
     }
 
     void asaliInterface::thermoCalculate()
     {
         std::vector<double> mw = asali_->speciesMolecularWeight();
-        std::vector<double> h  = asali_->speciesMolarEnthalpy();
-        std::vector<double> s  = asali_->speciesMolarEntropy();
+        std::vector<double> h = asali_->speciesMolarEnthalpy();
+        std::vector<double> s = asali_->speciesMolarEntropy();
         std::vector<double> cp = asali_->speciesMolarCp();
 
         std::vector<std::string> n = asali_->speciesName();
 
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            n_[i]  = n[i];
-            h_[i]  = h[i];
-            s_[i]  = s[i];
+            n_[i] = n[i];
+            h_[i] = h[i];
+            s_[i] = s[i];
             cp_[i] = cp[i];
             MW_[i] = mw[i];
         }
 
-        n_[NS_]  = "mix";
-        h_[NS_]  = asali_->mixtureMolarEnthalpy();     //J/Kmol
-        s_[NS_]  = asali_->mixtureMolarEntropy();      //J/Kmol/K
-        cp_[NS_] = asali_->mixtureMolarCp();           //J/Kmol/K
+        n_[NS_] = "mix";
+        h_[NS_] = asali_->mixtureMolarEnthalpy(); //J/Kmol
+        s_[NS_] = asali_->mixtureMolarEntropy();  //J/Kmol/K
+        cp_[NS_] = asali_->mixtureMolarCp();      //J/Kmol/K
         MW_[NS_] = asali_->mixtureMolecularWeight();
     }
 
     void asaliInterface::transportCalculate()
     {
-        std::vector<double> mu    = asali_->speciesViscosity();
-        std::vector<double> mw    = asali_->speciesMolecularWeight();
+        std::vector<double> mu = asali_->speciesViscosity();
+        std::vector<double> mw = asali_->speciesMolecularWeight();
         std::vector<double> diffM = asali_->mixtureDiffusion();
-        std::vector<double> cond  = asali_->speciesThermalConductivity();
-        
-        std::vector<std::vector<double> > diff = asali_->binaryDiffusion();
-        
+        std::vector<double> cond = asali_->speciesThermalConductivity();
+
+        std::vector<std::vector<double>> diff = asali_->binaryDiffusion();
+
         std::vector<std::string> n = asali_->speciesName();
 
-        for (unsigned int i=0;i<(NS_+1);i++)
+        for (unsigned int i = 0; i < (NS_ + 1); i++)
         {
-            if ( i == NS_ ) 
+            if (i == NS_)
             {
-                n_[i]     = "mix";
-                mu_[i]    = asali_->mixtureViscosity();             //Pas
-                cond_[i]  = asali_->mixtureThermalConductivity();   //W/m/K
-                MW_[i]    = asali_->mixtureMolecularWeight();
-                for (unsigned int j=0;j<(NS_+1);j++)
+                n_[i] = "mix";
+                mu_[i] = asali_->mixtureViscosity();             //Pas
+                cond_[i] = asali_->mixtureThermalConductivity(); //W/m/K
+                MW_[i] = asali_->mixtureMolecularWeight();
+                for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
                     diff_[i][j] = -1.;
                 }
             }
             else
             {
-                n_[i]    = n[i];
-                mu_[i]   = mu[i];
-                MW_[i]   = mw[i];
+                n_[i] = n[i];
+                mu_[i] = mu[i];
+                MW_[i] = mw[i];
                 cond_[i] = cond[i];
 
-                for (unsigned int j=0;j<(NS_+1);j++)
+                for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
-                    if ( j == NS_ )
+                    if (j == NS_)
                     {
                         diff_[i][j] = diffM[i];
                     }
@@ -197,12 +196,12 @@ namespace ASALI
             }
         }
     }
-    
+
     double asaliInterface::getTemperature()
     {
         return T_;
     }
-    
+
     double asaliInterface::getDensity()
     {
         return asali_->density();
@@ -212,24 +211,24 @@ namespace ASALI
     {
         return asali_->mixtureMassCp();
     }
-    
+
     double asaliInterface::getCpMoleMix()
     {
         return asali_->mixtureMolarCp();
     }
-    
+
     double asaliInterface::getMWmix()
     {
         return asali_->mixtureMolecularWeight();
     }
 
-    int  asaliInterface::checkNames(std::string name)
+    int asaliInterface::checkNames(std::string name)
     {
         int check = 1;
         this->convertToCaption(name);
-        for (unsigned int j=0;j<names_.size();j++)
+        for (unsigned int j = 0; j < names_.size(); j++)
         {
-            if ( name == names_[j] )
+            if (name == names_[j])
             {
                 check = 0;
                 break;
@@ -268,16 +267,16 @@ namespace ASALI
         return asali_->speciesMolarCp();
     }
 
-    std::vector<int>  asaliInterface::checkNames(std::vector<std::string> &name)
+    std::vector<int> asaliInterface::checkNames(std::vector<std::string> &name)
     {
         std::vector<int> check(name.size());
-        for (unsigned int i=0;i<name.size();i++)
+        for (unsigned int i = 0; i < name.size(); i++)
         {
             this->convertToCaption(name[i]);
             check[i] = 1;
-            for (unsigned int j=0;j<names_.size();j++)
+            for (unsigned int j = 0; j < names_.size(); j++)
             {
-                if ( name[i] == names_[j] )
+                if (name[i] == names_[j])
                 {
                     check[i] = 0;
                     break;

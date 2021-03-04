@@ -41,14 +41,14 @@
 namespace ASALI
 {
     catalystProperties::catalystProperties()
-    : het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
-      mainBox_(Gtk::ORIENTATION_VERTICAL),
-      rhoLabel_("Density"),
-      condLabel_("Thermal conductivity"),
-      cpLabel_("Specific heat"),
-      loadLabel_("Load"),
-      TLabel_("Temperature"),
-      doneButton_("Done")
+        : het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
+          mainBox_(Gtk::ORIENTATION_VERTICAL),
+          rhoLabel_("Density"),
+          condLabel_("Thermal conductivity"),
+          cpLabel_("Specific heat"),
+          loadLabel_("Load"),
+          TLabel_("Temperature"),
+          doneButton_("Done")
     {
         this->set_border_width(15);
         this->set_title("ASALI: catalyst input");
@@ -63,23 +63,23 @@ namespace ASALI
         mainBox_.pack_start(het1dLogo_, Gtk::PACK_SHRINK);
         mainBox_.pack_start(mainGrid_, Gtk::PACK_SHRINK);
 
-        mainGrid_.attach(rhoLabel_,0,0,1,1);
-        mainGrid_.attach(condLabel_,0,1,1,1);
-        mainGrid_.attach(cpLabel_,0,2,1,1);
-        mainGrid_.attach(loadLabel_,0,3,1,1);
-        mainGrid_.attach(TLabel_,0,4,1,1);
+        mainGrid_.attach(rhoLabel_, 0, 0, 1, 1);
+        mainGrid_.attach(condLabel_, 0, 1, 1, 1);
+        mainGrid_.attach(cpLabel_, 0, 2, 1, 1);
+        mainGrid_.attach(loadLabel_, 0, 3, 1, 1);
+        mainGrid_.attach(TLabel_, 0, 4, 1, 1);
 
-        mainGrid_.attach(rhoEntry_,1,0,1,1);
-        mainGrid_.attach(condEntry_,1,1,1,1);
-        mainGrid_.attach(cpEntry_,1,2,1,1);
-        mainGrid_.attach(loadEntry_,1,3,1,1);
-        mainGrid_.attach(TEntry_,1,4,1,1);
+        mainGrid_.attach(rhoEntry_, 1, 0, 1, 1);
+        mainGrid_.attach(condEntry_, 1, 1, 1, 1);
+        mainGrid_.attach(cpEntry_, 1, 2, 1, 1);
+        mainGrid_.attach(loadEntry_, 1, 3, 1, 1);
+        mainGrid_.attach(TEntry_, 1, 4, 1, 1);
 
-        mainGrid_.attach(rhoCombo_,2,0,1,1);
-        mainGrid_.attach(condCombo_,2,1,1,1);
-        mainGrid_.attach(cpCombo_,2,2,1,1);
-        mainGrid_.attach(loadCombo_,2,3,1,1);
-        mainGrid_.attach(TCombo_,2,4,1,1);
+        mainGrid_.attach(rhoCombo_, 2, 0, 1, 1);
+        mainGrid_.attach(condCombo_, 2, 1, 1, 1);
+        mainGrid_.attach(cpCombo_, 2, 2, 1, 1);
+        mainGrid_.attach(loadCombo_, 2, 3, 1, 1);
+        mainGrid_.attach(TCombo_, 2, 4, 1, 1);
 
         {
             mainGrid_.set_column_homogeneous(true);
@@ -117,31 +117,31 @@ namespace ASALI
         }
 
         {
-            mainBox_.pack_end(doneButton_,Gtk::PACK_SHRINK);
-            doneButton_.signal_clicked().connect(sigc::mem_fun(*this,&catalystProperties::doneInput));
+            mainBox_.pack_end(doneButton_, Gtk::PACK_SHRINK);
+            doneButton_.signal_clicked().connect(sigc::mem_fun(*this, &catalystProperties::doneInput));
         }
 
-        this->resize(mainBox_.get_width(),mainBox_.get_height ());
+        this->resize(mainBox_.get_width(), mainBox_.get_height());
         this->show_all_children();
     }
 
     void catalystProperties::doneInput()
     {
-        cp_   = Glib::Ascii::strtod(cpEntry_.get_text());
-        rho_  = Glib::Ascii::strtod(rhoEntry_.get_text());
+        cp_ = Glib::Ascii::strtod(cpEntry_.get_text());
+        rho_ = Glib::Ascii::strtod(rhoEntry_.get_text());
         cond_ = Glib::Ascii::strtod(condEntry_.get_text());
         alfa_ = Glib::Ascii::strtod(loadEntry_.get_text());
-        T_    = Glib::Ascii::strtod(TEntry_.get_text());
+        T_ = Glib::Ascii::strtod(TEntry_.get_text());
 
-        ConvertsToOneOverMeter(alfa_,loadCombo_.get_active_text());
-        ConvertsToJoulePerKgPerKelvin(cp_,cpCombo_.get_active_text());
-        ConvertsToKgPerCubeMeter(rho_,rhoCombo_.get_active_text());
-        ConvertsToKelvin(T_,TCombo_.get_active_text());
-        ConvertsToWattPerMeterPerKelving(cond_,condCombo_.get_active_text());
+        ConvertsToOneOverMeter(alfa_, loadCombo_.get_active_text());
+        ConvertsToJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
+        ConvertsToKgPerCubeMeter(rho_, rhoCombo_.get_active_text());
+        ConvertsToKelvin(T_, TCombo_.get_active_text());
+        ConvertsToWattPerMeterPerKelving(cond_, condCombo_.get_active_text());
 
         this->hide();
     }
- 
+
     catalystProperties::~catalystProperties()
     {
     }

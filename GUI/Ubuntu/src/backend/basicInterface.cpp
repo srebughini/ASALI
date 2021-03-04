@@ -41,19 +41,20 @@
 namespace ASALI
 {
     basicInterface::basicInterface()
-    {}
-    
+    {
+    }
+
     void basicInterface::resize()
     {
-        T_        = 0.;
-        p_        = 0.;
-        
-        NS_      = this->numberOfGasSpecies();
+        T_ = 0.;
+        p_ = 0.;
+
+        NS_ = this->numberOfGasSpecies();
         SURF_NS_ = this->numberOfSurfaceSpecies();
-        
-        y_       = new double[NS_];
-        x_       = new double[NS_];
-        
+
+        y_ = new double[NS_];
+        x_ = new double[NS_];
+
         mole_.resize(NS_);
         mass_.resize(NS_);
 
@@ -66,13 +67,13 @@ namespace ASALI
         n_.resize(NS_ + 1);
         mu_.resize(NS_ + 1);
         cond_.resize(NS_ + 1);
-        
+
         diff_.resize(NS_ + 1);
-        for (unsigned int i=0;i<(NS_+1);i++)
+        for (unsigned int i = 0; i < (NS_ + 1); i++)
         {
             diff_[i].resize(NS_ + 1);
         }
-        
+
         nc_.resize(SURF_NS_);
     }
 
@@ -80,114 +81,114 @@ namespace ASALI
     {
         T_ = T;
     }
-    
+
     void basicInterface::setPressure(const double p)
     {
         p_ = p;
     }
 
-    void basicInterface::convertToCaption(std::string& n)
+    void basicInterface::convertToCaption(std::string &n)
     {
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
 
-    double basicInterface::specieProperty(std::string p,std::string n)
+    double basicInterface::specieProperty(std::string p, std::string n)
     {
-        if ( n != "mix" )
+        if (n != "mix")
         {
             this->convertToCaption(n);
         }
 
         double r = 0;
-        
-        if ( p == "h" )
+
+        if (p == "h")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = h_[i];
                     break;
                 }
             }
         }
-        else if ( p == "s" )
+        else if (p == "s")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = s_[i];
                     break;
                 }
             }
         }
-        else if ( p == "cp" )
+        else if (p == "cp")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = cp_[i];
                     break;
                 }
             }
         }
-        else if ( p == "cond" )
+        else if (p == "cond")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = cond_[i];
                     break;
                 }
             }
         }
-        else if ( p == "mu" )
+        else if (p == "mu")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = mu_[i];
                     break;
                 }
             }
         }
-        else if ( p == "mw" )
+        else if (p == "mw")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = MW_[i];
                     break;
                 }
             }
         }
-        else if ( p == "diff" )
+        else if (p == "diff")
         {
-            for (unsigned int i=0;i<=NS_;i++)
+            for (unsigned int i = 0; i <= NS_; i++)
             {
-                if ( n_[i] == n )
+                if (n_[i] == n)
                 {
                     r = diff_[i][NS_];
                     break;
                 }
             }
         }
-        
+
         return r;
     }
-    
-    void basicInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name) {}
 
-    void basicInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name) {}
+    void basicInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name) {}
 
-    void basicInterface::setStateFromMassFraction(const double* y, const double T, const double P) {}
-    
-    void basicInterface::setStateFromMoleFraction(const double* x, const double T, const double P) {}
+    void basicInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name) {}
+
+    void basicInterface::setStateFromMassFraction(const double *y, const double T, const double P) {}
+
+    void basicInterface::setStateFromMoleFraction(const double *x, const double T, const double P) {}
 
     void basicInterface::vacuumCalculate() {}
 
@@ -196,38 +197,66 @@ namespace ASALI
     void basicInterface::transportCalculate() {}
 
     double basicInterface::getTemperature() { return 0.; }
-    
+
     double basicInterface::getDensity() { return 0.; }
 
     double basicInterface::getCpMassMix() { return 0.; }
-    
+
     double basicInterface::getCpMoleMix() { return 0.; }
-    
+
     double basicInterface::getMWmix() { return 0.; }
-    
+
     double basicInterface::getCondMix() { return 0.; }
-    
+
     double basicInterface::getMuMix() { return 0.; }
-    
-    int  basicInterface::checkNames(std::string name) { return 0; }
 
-    unsigned int basicInterface::numberOfGasSpecies()     { return 0; }
-    
+    int basicInterface::checkNames(std::string name) { return 0; }
+
+    unsigned int basicInterface::numberOfGasSpecies() { return 0; }
+
     unsigned int basicInterface::numberOfSurfaceSpecies() { return 0; }
-    
-    std::vector<double> basicInterface::getMW() { std::vector<double> dummy; return dummy; }
-    
-    std::vector<double> basicInterface::getHmole() { std::vector<double> dummy; return dummy; }
-    
-    std::vector<double> basicInterface::getSmole() { std::vector<double> dummy; return dummy; }
-    
-    std::vector<double> basicInterface::getCpMole() { std::vector<double> dummy; return dummy; }
-    
-    std::vector<double> basicInterface::getDiffMix() { std::vector<double> dummy; return dummy; }
-    
-    std::vector<double> basicInterface::getBinaryDiffVector() { std::vector<double> dummy; return dummy; }
 
-    std::vector<int>  basicInterface::checkNames(std::vector<std::string> &name) { std::vector<int> dummy; return dummy; }
+    std::vector<double> basicInterface::getMW()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<double> basicInterface::getHmole()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<double> basicInterface::getSmole()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<double> basicInterface::getCpMole()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<double> basicInterface::getDiffMix()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<double> basicInterface::getBinaryDiffVector()
+    {
+        std::vector<double> dummy;
+        return dummy;
+    }
+
+    std::vector<int> basicInterface::checkNames(std::vector<std::string> &name)
+    {
+        std::vector<int> dummy;
+        return dummy;
+    }
 
     basicInterface::~basicInterface()
     {

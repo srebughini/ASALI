@@ -43,57 +43,53 @@
 
 namespace ASALI
 {
-class ph1dEquations : public ASALI::catalyticReactorsEquations
-{
+    class ph1dEquations : public ASALI::catalyticReactorsEquations
+    {
     public:
-
         ph1dEquations();
 
-       
-        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+        void setEnergy(const bool flag) { energyEquation_ = flag; }
 
         void setLength(const double L);
-        
-        void setSpecificMassFlowRate(const double G);
 
+        void setSpecificMassFlowRate(const double G);
 
         void setPressure(const double P);
 
         void setTemperature(const double T);
-        
+
         void setCatalystLoad(const double alfa);
-        
+
         void setResolutionType(const std::string resolution);
 
         void setInletConditions(const std::vector<double> omega0, const double T0);
-        
+
         void setIntegrationTime(const double tF);
-        
+
         void setNumberOfPoints(const double NP);
 
-        std::vector<double> getLength()      const {return Length_;};
-        std::vector<double> getTime()        const {return Time_;};
-        std::vector<double> getPressure()    const {return Pressure_;};
-        std::vector<double> getTemperature() const {return Temperature_;};
+        std::vector<double> getLength() const { return Length_; };
+        std::vector<double> getTime() const { return Time_; };
+        std::vector<double> getPressure() const { return Pressure_; };
+        std::vector<double> getTemperature() const { return Temperature_; };
 
-        std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
-        std::vector<std::vector<double> > getSite()        const {return Site_;};
+        std::vector<std::vector<double>> getSpecie() const { return Specie_; };
+        std::vector<std::vector<double>> getSite() const { return Site_; };
 
-        std::vector<std::vector<double> > getTemperatureTransient() const {return TemperatureTransient_;};
+        std::vector<std::vector<double>> getTemperatureTransient() const { return TemperatureTransient_; };
 
-        std::vector<std::vector<std::vector<double> > > getSpecieTransient()      const {return SpecieTransient_;};
-        std::vector<std::vector<std::vector<double> > > getSiteTransient()        const {return SiteTransient_;};
+        std::vector<std::vector<std::vector<double>>> getSpecieTransient() const { return SpecieTransient_; };
+        std::vector<std::vector<std::vector<double>>> getSiteTransient() const { return SiteTransient_; };
 
         virtual void store(const double tf, const std::vector<double> xf);
 
         virtual void resize();
 
-        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
-        
-        std::vector<bool> AlgebraicEquations() const {return algb_;};
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
+
+        std::vector<bool> AlgebraicEquations() const { return algb_; };
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -107,7 +103,7 @@ class ph1dEquations : public ASALI::catalyticReactorsEquations
         double SD_;
         double T0_;
         double dz_;
-        
+
         unsigned int SURF_NC_;
         unsigned int NP_;
 
@@ -132,25 +128,25 @@ class ph1dEquations : public ASALI::catalyticReactorsEquations
         std::vector<double> QfromGasVector_;
         std::vector<double> QfromSurfaceVector_;
 
-        std::vector<std::vector<double> > omegaMatrix_;
-        std::vector<std::vector<double> > Zmatrix_;
-        std::vector<std::vector<double> > diffMatrix_;
-        std::vector<std::vector<double> > RfromGasMatrix_;
-        std::vector<std::vector<double> > RfromSurfaceMatrix_;
-        std::vector<std::vector<double> > RsurfaceMatrix_;
+        std::vector<std::vector<double>> omegaMatrix_;
+        std::vector<std::vector<double>> Zmatrix_;
+        std::vector<std::vector<double>> diffMatrix_;
+        std::vector<std::vector<double>> RfromGasMatrix_;
+        std::vector<std::vector<double>> RfromSurfaceMatrix_;
+        std::vector<std::vector<double>> RsurfaceMatrix_;
 
         std::vector<double> Length_;
         std::vector<double> Time_;
         std::vector<double> Pressure_;
         std::vector<double> Temperature_;
-        std::vector<std::vector<double> > Specie_;
-        std::vector<std::vector<double> > Site_;
+        std::vector<std::vector<double>> Specie_;
+        std::vector<std::vector<double>> Site_;
 
-        std::vector<std::vector<double> > TemperatureTransient_;
-        std::vector<std::vector<std::vector<double> > > SpecieTransient_;
-        std::vector<std::vector<std::vector<double> > > SiteTransient_;
+        std::vector<std::vector<double>> TemperatureTransient_;
+        std::vector<std::vector<std::vector<double>>> SpecieTransient_;
+        std::vector<std::vector<std::vector<double>>> SiteTransient_;
 
-        std::vector<bool>   algb_;
+        std::vector<bool> algb_;
     };
 }
 

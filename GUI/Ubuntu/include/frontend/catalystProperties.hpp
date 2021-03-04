@@ -56,56 +56,57 @@ namespace ASALI
 {
     class catalystProperties : public Gtk::Window
     {
-        public:
-            catalystProperties();
-            
-            void doneInput();
+    public:
+        catalystProperties();
 
-            #include "shared/UnitConversion.H"
-            #include "shared/FileManager.H"
-            
-            double get_rho()  {return rho_;};
-            double get_cond() {return cond_;};
-            double get_cp()   {return cp_;};
-            double get_load() {return alfa_;};
-            double get_T()    {return T_;};
+        void doneInput();
 
-            virtual ~catalystProperties();
-            
-        private:
+#include "shared/UnitConversion.H"
+#include "shared/FileManager.H"
 
-            Gtk::Image        het1dLogo_;
+        double get_rho()
+        {
+            return rho_;
+        };
+        double get_cond() { return cond_; };
+        double get_cp() { return cp_; };
+        double get_load() { return alfa_; };
+        double get_T() { return T_; };
 
-            Gtk::Box          mainBox_;
+        virtual ~catalystProperties();
 
-            Gtk::Grid         mainGrid_;
+    private:
+        Gtk::Image het1dLogo_;
 
+        Gtk::Box mainBox_;
 
-            Gtk::Label        rhoLabel_;
-            Gtk::Label        condLabel_;
-            Gtk::Label        cpLabel_;
-            Gtk::Label        loadLabel_;
-            Gtk::Label        TLabel_;
+        Gtk::Grid mainGrid_;
 
-            Gtk::Button       doneButton_;
-            
-            Gtk::ComboBoxText rhoCombo_;
-            Gtk::ComboBoxText condCombo_;
-            Gtk::ComboBoxText cpCombo_;
-            Gtk::ComboBoxText loadCombo_;
-            Gtk::ComboBoxText TCombo_;
+        Gtk::Label rhoLabel_;
+        Gtk::Label condLabel_;
+        Gtk::Label cpLabel_;
+        Gtk::Label loadLabel_;
+        Gtk::Label TLabel_;
 
-            Gtk::Entry        rhoEntry_;
-            Gtk::Entry        condEntry_;
-            Gtk::Entry        cpEntry_;
-            Gtk::Entry        loadEntry_;
-            Gtk::Entry        TEntry_;
+        Gtk::Button doneButton_;
 
-            double rho_;
-            double cp_;
-            double cond_;
-            double alfa_;
-            double T_;
+        Gtk::ComboBoxText rhoCombo_;
+        Gtk::ComboBoxText condCombo_;
+        Gtk::ComboBoxText cpCombo_;
+        Gtk::ComboBoxText loadCombo_;
+        Gtk::ComboBoxText TCombo_;
+
+        Gtk::Entry rhoEntry_;
+        Gtk::Entry condEntry_;
+        Gtk::Entry cpEntry_;
+        Gtk::Entry loadEntry_;
+        Gtk::Entry TEntry_;
+
+        double rho_;
+        double cp_;
+        double cond_;
+        double alfa_;
+        double T_;
     };
 }
 

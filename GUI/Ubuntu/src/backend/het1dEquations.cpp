@@ -41,29 +41,30 @@
 namespace ASALI
 {
     het1dEquations::het1dEquations()
-    {}
+    {
+    }
 
     void het1dEquations::resize()
     {
-        if ( type_ == "CANTERA" )
+        if (type_ == "CANTERA")
         {
-            NC_      = chemistryInterface_->numberOfGasSpecies();
+            NC_ = chemistryInterface_->numberOfGasSpecies();
             SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
-            NE_      = NP_*(NC_ + NC_ + SURF_NC_ + 1 + 1);
+            NE_ = NP_ * (NC_ + NC_ + SURF_NC_ + 1 + 1);
 
             canteraIndex_.resize(NC_);
-            for (unsigned int i=0;i<NC_;i++)
+            for (unsigned int i = 0; i < NC_; i++)
             {
                 canteraIndex_[i] = i;
             }
         }
-        else if ( type_ == "ASALI" )
+        else if (type_ == "ASALI")
         {
-            NC_      = canteraIndex_.size();
+            NC_ = canteraIndex_.size();
             SURF_NC_ = 0;
-            NE_      = NP_*(NC_ + NC_ + SURF_NC_ + 1 + 1);
+            NE_ = NP_ * (NC_ + NC_ + SURF_NC_ + 1 + 1);
         }
-        
+
         {
             x_.resize(NC_);
             omega_.resize(NC_);
@@ -93,7 +94,7 @@ namespace ASALI
             RfromGasMatrix_.resize(NP_);
             RfromSurfaceMatrix_.resize(NP_);
             RsurfaceMatrix_.resize(NP_);
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
                 omegaBMatrix_[i].resize(NC_);
                 omegaWMatrix_[i].resize(NC_);
@@ -104,8 +105,7 @@ namespace ASALI
                 Zmatrix_[i].resize(SURF_NC_);
                 RsurfaceMatrix_[i].resize(SURF_NC_);
             }
-            
-            
+
             algb_.resize(NE_);
 
             SD_ = 1.;
@@ -130,12 +130,12 @@ namespace ASALI
 
     void het1dEquations::setLength(const double L)
     {
-        L_  = L;
-        dz_ = L_/double(NP_-1);
+        L_ = L;
+        dz_ = L_ / double(NP_ - 1);
         z_.resize(NP_);
-        for (unsigned int i=0;i<NP_;i++)
+        for (unsigned int i = 0; i < NP_; i++)
         {
-            z_[i] = i*dz_;
+            z_[i] = i * dz_;
         }
     }
 
@@ -149,62 +149,62 @@ namespace ASALI
         resolution_ = resolution;
     }
 
-    void het1dEquations::setPackedBed(const double Dt,const double Dp, const double epsi)
+    void het1dEquations::setPackedBed(const double Dt, const double Dp, const double epsi)
     {
-        Dt_   = Dt;
-        Dp_   = Dp;
+        Dt_ = Dt;
+        Dp_ = Dp;
         epsi_ = epsi;
-        av_   = 6.*(1. - epsi_)/Dp_;
+        av_ = 6. * (1. - epsi_) / Dp_;
     }
-    
-    void het1dEquations::setTubular(const double Dt,const double tw, const std::string section)
+
+    void het1dEquations::setTubular(const double Dt, const double tw, const std::string section)
     {
-        Dt_ = Dt - 2.*tw;
-        av_ = 4./Dt;
-        if ( section == "circle" )
+        Dt_ = Dt - 2. * tw;
+        av_ = 4. / Dt;
+        if (section == "circle")
         {
             Nuinf_ = 3.659;
             Shinf_ = 3.659;
         }
-        else if ( section == "square" )
+        else if (section == "square")
         {
             Nuinf_ = 2.977;
             Shinf_ = 2.977;
         }
-        else if ( section == "triangle" )
+        else if (section == "triangle")
         {
             Nuinf_ = 2.494;
             Shinf_ = 2.494;
         }
-        epsi_ = std::pow(Dt_/Dt,2.);
+        epsi_ = std::pow(Dt_ / Dt, 2.);
     }
 
     void het1dEquations::setHoneyComb(const double cpsi, const double tw, const std::string section)
     {
-        if ( section == "circle" )
+        if (section == "circle")
         {
             Nuinf_ = 3.659;
             Shinf_ = 3.659;
         }
-        else if ( section == "square" )
+        else if (section == "square")
         {
             Nuinf_ = 2.977;
             Shinf_ = 2.977;
         }
-        else if ( section == "triangle" )
+        else if (section == "triangle")
         {
             Nuinf_ = 2.494;
             Shinf_ = 2.494;
         }
-        Dt_ = sqrt(1./cpsi)*2.54*1e-02 - tw; //[m]
+        Dt_ = sqrt(1. / cpsi) * 2.54 * 1e-02 - tw; //[m]
 
-        epsi_ = std::pow(Dt_,2.)/std::pow(Dt_ + tw,2.);
-        av_   = 4.*epsi_/Dt_;
+        epsi_ = std::pow(Dt_, 2.) / std::pow(Dt_ + tw, 2.);
+        av_ = 4. * epsi_ / Dt_;
     }
 
     void het1dEquations::setSpecificMassFlowRate(const double G)
     {
-        G_ = G/epsi_;
+        G_ = G / epsi_;
     }
 
     void het1dEquations::setNumberOfPoints(const double NP)
@@ -214,13 +214,12 @@ namespace ASALI
 
     void het1dEquations::setCatalystProperties(const double alfa, const double rhos, const double cps, const double conds)
     {
-        alfa_  = alfa;
-        rhos_  = rhos;
-        cps_   = cps;
+        alfa_ = alfa;
+        rhos_ = rhos;
+        cps_ = cps;
         conds_ = conds;
     }
 
-   
     void het1dEquations::setInert(const unsigned int inertIndex)
     {
         inertIndex_ = inertIndex;
@@ -229,27 +228,27 @@ namespace ASALI
     void het1dEquations::setInletConditions(const std::vector<double> omega0, const double T0)
     {
         omega0_ = omega0;
-        T0_     = T0;
+        T0_ = T0;
     }
 
-    int het1dEquations::Equations(double& t, std::vector<double>& y, std::vector<double>& dy)
+    int het1dEquations::Equations(double &t, std::vector<double> &y, std::vector<double> &dy)
     {
         // Recover unknowns
         {
-            unsigned int counter=0;
-            for (unsigned int i=0;i<NP_;i++)
+            unsigned int counter = 0;
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                for(unsigned int j=0;j<NC_;j++)
+                for (unsigned int j = 0; j < NC_; j++)
                 {
                     omegaBMatrix_[i][j] = y[counter++];
                 }
 
-                for(unsigned int j=0;j<NC_;j++)
+                for (unsigned int j = 0; j < NC_; j++)
                 {
                     omegaWMatrix_[i][j] = y[counter++];
                 }
 
-                for(unsigned int j=0;j<SURF_NC_;j++)
+                for (unsigned int j = 0; j < SURF_NC_; j++)
                 {
                     Zmatrix_[i][j] = y[counter++];
                 }
@@ -259,133 +258,132 @@ namespace ASALI
             }
         }
 
-        for (unsigned int i=0;i<NP_;i++)
+        for (unsigned int i = 0; i < NP_; i++)
         {
             omega_ = omegaBMatrix_[i];
-            T_     = TBvector_[i];
-            
+            T_ = TBvector_[i];
+
             // Calculates the volume and the concentrations of species
-            if ( userCheck_ == false )
+            if (userCheck_ == false)
             {
                 MWmix_ = chemistryInterface_->getMWmix();
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
+                cTot_ = P_ / (8314. * T_);
+                rho_ = cTot_ * MWmix_;
 
-				chemistryInterface_->setStateFromMassFraction(omega_.data(), T_,P_);
-				
-				std::vector<double> mole = chemistryInterface_->mole();
-				std::vector<double> mw   = chemistryInterface_->getMW();
+                chemistryInterface_->setStateFromMassFraction(omega_.data(), T_, P_);
 
-				for (unsigned int i=0;i<NC_;i++)
-				{
-					MW_[i] = mw[canteraIndex_[i]];
-					x_[i]  = mole[canteraIndex_[i]];
-				}
+                std::vector<double> mole = chemistryInterface_->mole();
+                std::vector<double> mw = chemistryInterface_->getMW();
+
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    MW_[i] = mw[canteraIndex_[i]];
+                    x_[i] = mole[canteraIndex_[i]];
+                }
 
                 std::vector<double> diffMix = chemistryInterface_->getDiffMix();
 
-                for (unsigned int j=0;j<NC_;j++)
+                for (unsigned int j = 0; j < NC_; j++)
                 {
                     diff_[j] = diffMix[canteraIndex_[j]];
                 }
 
-                cp_   = chemistryInterface_->getCpMassMix();
+                cp_ = chemistryInterface_->getCpMassMix();
                 cond_ = chemistryInterface_->getCondMix();
-                mu_   = chemistryInterface_->getMuMix();
+                mu_ = chemistryInterface_->getMuMix();
             }
             else
             {
-                MWmix_ = this->meanMolecularWeight(omega_,MW_);
-                x_     = this->moleFraction(omega_,MW_,MWmix_);
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
+                MWmix_ = this->meanMolecularWeight(omega_, MW_);
+                x_ = this->moleFraction(omega_, MW_, MWmix_);
+                cTot_ = P_ / (8314. * T_);
+                rho_ = cTot_ * MWmix_;
             }
 
             // Calculates homogeneous kinetics
             {
-                #include "shared/HomogeneousReactions.H"
+#include "shared/HomogeneousReactions.H"
             }
 
             omega_ = omegaWMatrix_[i];
-            T_     = TWvector_[i];
+            T_ = TWvector_[i];
 
-            if ( SURF_NC_ != 0 )
+            if (SURF_NC_ != 0)
             {
-                Z_     = Zmatrix_[i];
+                Z_ = Zmatrix_[i];
             }
 
             // Calculates heterogeneous kinetics
             {
-                #include "shared/HeterogeneousReactions.H"
+#include "shared/HeterogeneousReactions.H"
             }
-
 
             //Calculate transport properties
             {
-                kMat_  = this->massTransferCoefficient(z_[i],mu_,rho_,diff_);
+                kMat_ = this->massTransferCoefficient(z_[i], mu_, rho_, diff_);
 
-                if ( energyEquation_ == true )
+                if (energyEquation_ == true)
                 {
-                    kHeat_ = this->heatTransferCoefficient(z_[i],mu_,cond_,cp_);
+                    kHeat_ = this->heatTransferCoefficient(z_[i], mu_, cond_, cp_);
                 }
             }
 
-            rhoVector_[i]          = rho_;
-            cpVector_[i]           = cp_;
-            condVector_[i]         = cond_;
-            diffMatrix_[i]         = diff_;
-            kMatMatrix_[i]         = kMat_;
-            RfromGasMatrix_[i]     = RfromGas_;
-            QfromGasVector_[i]     = QfromGas_;
+            rhoVector_[i] = rho_;
+            cpVector_[i] = cp_;
+            condVector_[i] = cond_;
+            diffMatrix_[i] = diff_;
+            kMatMatrix_[i] = kMat_;
+            RfromGasMatrix_[i] = RfromGas_;
+            QfromGasVector_[i] = QfromGas_;
             RfromSurfaceMatrix_[i] = RfromSurface_;
             QfromSurfaceVector_[i] = QfromSurface_;
-            kHeatVector_[i]        = kHeat_;
-            if ( SURF_NC_ != 0 )
+            kHeatVector_[i] = kHeat_;
+            if (SURF_NC_ != 0)
             {
                 RsurfaceMatrix_[i] = Rsurface_;
             }
         }
 
-        if ( resolution_ == "initial" )
+        if (resolution_ == "initial")
         {
             unsigned int counter = 0;
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                if ( i == 0 )
+                if (i == 0)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
                             dy[counter++] = omega0_[j] - omegaBMatrix_[i][j];
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
                         }
                     }
 
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter++] = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                            dy[counter++] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
                         }
                     }
-                    
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter++] = 0.;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
                         dy[counter++] = T0_ - TBvector_[i];
-                        dy[counter++] = TWvector_[i+1] - TWvector_[i];
+                        dy[counter++] = TWvector_[i + 1] - TWvector_[i];
                     }
                     else
                     {
@@ -393,41 +391,41 @@ namespace ASALI
                         dy[counter++] = 0.;
                     }
                 }
-                else if ( i == (NP_ - 1) )
+                else if (i == (NP_ - 1))
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
                             dy[counter++] = 0.;
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
                         }
                     }
 
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter++] = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                            dy[counter++] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
                         }
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter++] = 0.;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
                         dy[counter++] = 0.;
-                        dy[counter++] = TWvector_[i+1] - TWvector_[i];
+                        dy[counter++] = TWvector_[i + 1] - TWvector_[i];
                     }
                     else
                     {
@@ -437,36 +435,36 @@ namespace ASALI
                 }
                 else
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
                             dy[counter++] = 0.;
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
                         }
                     }
 
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter++] = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                            dy[counter++] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                         }
                         else
                         {
-                            dy[counter++] = 1e03*(1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
                         }
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter++] = 0.;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
                         dy[counter++] = 0.;
                         dy[counter++] = 0.;
@@ -479,42 +477,42 @@ namespace ASALI
                 }
             }
         }
-        else if ( resolution_ == "model" )
+        else if (resolution_ == "model")
         {
             unsigned int counter = 0;
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                if ( i == 0 )
+                if (i == 0)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter]    = omega0_[j] - omegaBMatrix_[i][j];
+                            dy[counter] = omega0_[j] - omegaBMatrix_[i][j];
                             algb_[counter] = true;
                             counter++;
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
                     }
 
-                    if ( SURF_NC_ == 0 )
+                    if (SURF_NC_ == 0)
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                                dy[counter] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                                 algb_[counter] = true;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -522,82 +520,80 @@ namespace ASALI
                     }
                     else
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = (1./(0.75*rhoVector_[i]))*(av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j]);
+                                dy[counter] = (1. / (0.75 * rhoVector_[i])) * (av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j]);
                                 algb_[counter] = false;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
                         }
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
-                        dy[counter]    = T0_ - TBvector_[i];
+                        dy[counter] = T0_ - TBvector_[i];
                         algb_[counter] = true;
                         counter++;
-                        dy[counter]    = TWvector_[i+1] - TWvector_[i];
+                        dy[counter] = TWvector_[i + 1] - TWvector_[i];
                         algb_[counter] = true;
                         counter++;
                     }
                     else
                     {
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
                     }
                 }
-                else if ( i == (NP_ - 1) )
+                else if (i == (NP_ - 1))
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter]    = -(G_/(rhoVector_[i]*epsi_))*(omegaBMatrix_[i][j] - omegaBMatrix_[i-1][j])/dz_
-                                             - av_*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])/epsi_
-                                             + RfromGasMatrix_[i][j]/rhoVector_[i];
+                            dy[counter] = -(G_ / (rhoVector_[i] * epsi_)) * (omegaBMatrix_[i][j] - omegaBMatrix_[i - 1][j]) / dz_ - av_ * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) / epsi_ + RfromGasMatrix_[i][j] / rhoVector_[i];
                             algb_[counter] = false;
                             counter++;
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
                     }
 
-                    if ( SURF_NC_ == 0 )
+                    if (SURF_NC_ == 0)
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                                dy[counter] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                                 algb_[counter] = true;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -605,84 +601,80 @@ namespace ASALI
                     }
                     else
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = (1./(0.75*rhoVector_[i]))*(av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j]);
+                                dy[counter] = (1. / (0.75 * rhoVector_[i])) * (av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j]);
                                 algb_[counter] = false;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
                         }
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
-                        dy[counter]    = -(G_/(rhoVector_[i]*epsi_))*(TBvector_[i] - TBvector_[i-1])/dz_
-                                         + kHeatVector_[i]*av_*(TBvector_[i] - TWvector_[i])/(epsi_*rhoVector_[i]*cpVector_[i])
-                                         + QfromGasVector_[i]/(rhoVector_[i]*cpVector_[i]);
+                        dy[counter] = -(G_ / (rhoVector_[i] * epsi_)) * (TBvector_[i] - TBvector_[i - 1]) / dz_ + kHeatVector_[i] * av_ * (TBvector_[i] - TWvector_[i]) / (epsi_ * rhoVector_[i] * cpVector_[i]) + QfromGasVector_[i] / (rhoVector_[i] * cpVector_[i]);
                         algb_[counter] = false;
                         counter++;
-                        dy[counter]    = TWvector_[i+1] - TWvector_[i];
+                        dy[counter] = TWvector_[i + 1] - TWvector_[i];
                         algb_[counter] = true;
                         counter++;
                     }
                     else
                     {
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
                     }
                 }
                 else
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        if ( j != inertIndex_ )
+                        if (j != inertIndex_)
                         {
-                            dy[counter]    = -(G_/(rhoVector_[i]*epsi_))*(omegaBMatrix_[i][j] - omegaBMatrix_[i-1][j])/dz_
-                                             - av_*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])/epsi_
-                                             + RfromGasMatrix_[i][j]/rhoVector_[i];
+                            dy[counter] = -(G_ / (rhoVector_[i] * epsi_)) * (omegaBMatrix_[i][j] - omegaBMatrix_[i - 1][j]) / dz_ - av_ * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) / epsi_ + RfromGasMatrix_[i][j] / rhoVector_[i];
                             algb_[counter] = false;
                             counter++;
                         }
                         else
                         {
-                            dy[counter]    = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
                     }
 
-                    if ( SURF_NC_ == 0 )
+                    if (SURF_NC_ == 0)
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j];
+                                dy[counter] = av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j];
                                 algb_[counter] = true;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -690,49 +682,45 @@ namespace ASALI
                     }
                     else
                     {
-                        for (unsigned int j=0;j<NC_;j++)
+                        for (unsigned int j = 0; j < NC_; j++)
                         {
-                            if ( j != inertIndex_ )
+                            if (j != inertIndex_)
                             {
-                                dy[counter]    = (1./(0.75*rhoVector_[i]))*(av_*rhoVector_[i]*kMatMatrix_[i][j]*(omegaBMatrix_[i][j] - omegaWMatrix_[i][j])*epsi_ + alfa_*epsi_*RfromSurfaceMatrix_[i][j]*MW_[j]);
+                                dy[counter] = (1. / (0.75 * rhoVector_[i])) * (av_ * rhoVector_[i] * kMatMatrix_[i][j] * (omegaBMatrix_[i][j] - omegaWMatrix_[i][j]) * epsi_ + alfa_ * epsi_ * RfromSurfaceMatrix_[i][j] * MW_[j]);
                                 algb_[counter] = false;
                                 counter++;
                             }
                             else
                             {
-                                dy[counter]    = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
                         }
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
 
-                    if ( energyEquation_ == true )
+                    if (energyEquation_ == true)
                     {
-                        dy[counter]    = -(G_/(rhoVector_[i]*epsi_))*(TBvector_[i] - TBvector_[i-1])/dz_
-                                         - kHeatVector_[i]*av_*(TBvector_[i] - TWvector_[i])/(epsi_*rhoVector_[i]*cpVector_[i])
-                                         + QfromGasVector_[i]/(rhoVector_[i]*cpVector_[i]);
+                        dy[counter] = -(G_ / (rhoVector_[i] * epsi_)) * (TBvector_[i] - TBvector_[i - 1]) / dz_ - kHeatVector_[i] * av_ * (TBvector_[i] - TWvector_[i]) / (epsi_ * rhoVector_[i] * cpVector_[i]) + QfromGasVector_[i] / (rhoVector_[i] * cpVector_[i]);
                         algb_[counter] = false;
                         counter++;
-                        dy[counter]    =  (conds_/(rhos_*cp_))*(TWvector_[i+1] - 2*TWvector_[i] + TWvector_[i-1])/(dz_*dz_)
-                                         + kHeatVector_[i]*av_*(TBvector_[i] - TWvector_[i])/((1. - epsi_)*rhos_*cps_)
-                                         + alfa_*QfromSurfaceVector_[i]/((1. - epsi_)*rhos_*cps_);
+                        dy[counter] = (conds_ / (rhos_ * cp_)) * (TWvector_[i + 1] - 2 * TWvector_[i] + TWvector_[i - 1]) / (dz_ * dz_) + kHeatVector_[i] * av_ * (TBvector_[i] - TWvector_[i]) / ((1. - epsi_) * rhos_ * cps_) + alfa_ * QfromSurfaceVector_[i] / ((1. - epsi_) * rhos_ * cps_);
                         algb_[counter] = false;
                         counter++;
                     }
                     else
                     {
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
-                        dy[counter]    = 0.;
+                        dy[counter] = 0.;
                         algb_[counter] = false;
                         counter++;
                     }
@@ -742,24 +730,24 @@ namespace ASALI
         return 0;
     }
 
-    void het1dEquations::store(const double tf,const std::vector<double> xf)
+    void het1dEquations::store(const double tf, const std::vector<double> xf)
     {
         // Recover unknowns
         {
-            unsigned int counter=0;
-            for (unsigned int i=0;i<NP_;i++)
+            unsigned int counter = 0;
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                for(unsigned int j=0;j<NC_;j++)
+                for (unsigned int j = 0; j < NC_; j++)
                 {
                     omegaBMatrix_[i][j] = xf[counter++];
                 }
 
-                for(unsigned int j=0;j<NC_;j++)
+                for (unsigned int j = 0; j < NC_; j++)
                 {
                     omegaWMatrix_[i][j] = xf[counter++];
                 }
 
-                for(unsigned int j=0;j<SURF_NC_;j++)
+                for (unsigned int j = 0; j < SURF_NC_; j++)
                 {
                     Zmatrix_[i][j] = xf[counter++];
                 }
@@ -777,22 +765,21 @@ namespace ASALI
         TemperatureW_.push_back(TWvector_);
     }
 
-
     std::vector<double> het1dEquations::massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d)
     {
         std::vector<double> kMat(NC_);
-        if ( reactorType_ == "honeycomb" || 
-             reactorType_ == "tubular" )
+        if (reactorType_ == "honeycomb" ||
+            reactorType_ == "tubular")
         {
-            double Re = G_*Dt_/(mu*epsi_);
-            for (unsigned int i=0;i<NC_;i++)
+            double Re = G_ * Dt_ / (mu * epsi_);
+            for (unsigned int i = 0; i < NC_; i++)
             {
-                if ( d[i] != 0. )
+                if (d[i] != 0.)
                 {
-                    double Sc      = mu/(rho*d[i]);
-                    double zStar   = std::fabs(std::max(z,1e-06)/(Dt_*Re*Sc));
-                    double Sh      = Shinf_ + 6.874*std::pow((1000.*zStar),-0.488)*std::exp(-57.2*zStar);
-                           kMat[i] = Sh*d[i]/Dt_;
+                    double Sc = mu / (rho * d[i]);
+                    double zStar = std::fabs(std::max(z, 1e-06) / (Dt_ * Re * Sc));
+                    double Sh = Shinf_ + 6.874 * std::pow((1000. * zStar), -0.488) * std::exp(-57.2 * zStar);
+                    kMat[i] = Sh * d[i] / Dt_;
                 }
                 else
                 {
@@ -800,30 +787,30 @@ namespace ASALI
                 }
             }
         }
-        else if ( reactorType_ == "packedBed" )
+        else if (reactorType_ == "packedBed")
         {
-            //Yoshida et al. 
-            double Re     = G_*Dt_/(mu_*(1. - epsi_)*6.);
-            double ReReal = G_*Dt_/mu_;
+            //Yoshida et al.
+            double Re = G_ * Dt_ / (mu_ * (1. - epsi_) * 6.);
+            double ReReal = G_ * Dt_ / mu_;
             double Sc;
             double Sh;
             double jM;
-            for (unsigned int i=0;i<NC_;i++)
+            for (unsigned int i = 0; i < NC_; i++)
             {
-                if ( diff_[i] != 0. )
+                if (diff_[i] != 0.)
                 {
-                    Sc = mu_/(rho_*diff_[i]);
-                    if ( Re < 50. )
+                    Sc = mu_ / (rho_ * diff_[i]);
+                    if (Re < 50.)
                     {
-                        jM      = 0.91/(std::pow(Re,0.51));
-                        Sh      = jM*std::pow(Sc,(1./3.))*ReReal;
-                        kMat[i] = Sh*diff_[i]/Dt_;
+                        jM = 0.91 / (std::pow(Re, 0.51));
+                        Sh = jM * std::pow(Sc, (1. / 3.)) * ReReal;
+                        kMat[i] = Sh * diff_[i] / Dt_;
                     }
                     else
                     {
-                        jM      = 0.61/(std::pow(Re,0.41));
-                        Sh      = jM*std::pow(Sc,(1./3.))*ReReal;
-                        kMat[i] = Sh*diff_[i]/Dt_;
+                        jM = 0.61 / (std::pow(Re, 0.41));
+                        Sh = jM * std::pow(Sc, (1. / 3.)) * ReReal;
+                        kMat[i] = Sh * diff_[i] / Dt_;
                     }
                 }
                 else
@@ -832,39 +819,39 @@ namespace ASALI
                 }
             }
         }
-        
+
         return kMat;
     }
 
     double het1dEquations::heatTransferCoefficient(const double z, const double mu, const double cond, const double cp)
     {
         double kHeat = 0.;
-        if ( reactorType_ == "honeycomb" || 
-             reactorType_ == "tubular" )
+        if (reactorType_ == "honeycomb" ||
+            reactorType_ == "tubular")
         {
-            double Re     = G_*Dt_/(mu*epsi_);
-            double Pr     = cp*mu/cond;
-            double zStar  = std::fabs(std::max(z,1e-06)/(Dt_*Re*Pr));
-            double Nu     = Nuinf_ + 8.827*std::pow((1000.*zStar),-0.545)*std::exp(-48.2*zStar);
-                   kHeat  = Nu*cond/Dt_;
+            double Re = G_ * Dt_ / (mu * epsi_);
+            double Pr = cp * mu / cond;
+            double zStar = std::fabs(std::max(z, 1e-06) / (Dt_ * Re * Pr));
+            double Nu = Nuinf_ + 8.827 * std::pow((1000. * zStar), -0.545) * std::exp(-48.2 * zStar);
+            kHeat = Nu * cond / Dt_;
         }
-        else if ( reactorType_ == "packed bed" )
+        else if (reactorType_ == "packed bed")
         {
-            //Yoshida et al. 
-            double Re     = G_*Dt_/(mu*(1. - epsi_)*6.);
-            double ReReal = G_*Dt_/mu;
-            double Pr     = cp*mu/cond;
-            if ( Re < 50. )
+            //Yoshida et al.
+            double Re = G_ * Dt_ / (mu * (1. - epsi_) * 6.);
+            double ReReal = G_ * Dt_ / mu;
+            double Pr = cp * mu / cond;
+            if (Re < 50.)
             {
-                double jM    = 0.91/(std::pow(Re,0.51));
-                double Nu    = jM*std::pow(Pr,(1./3.))*ReReal;
-                       kHeat = Nu*cond/Dt_;
+                double jM = 0.91 / (std::pow(Re, 0.51));
+                double Nu = jM * std::pow(Pr, (1. / 3.)) * ReReal;
+                kHeat = Nu * cond / Dt_;
             }
             else
             {
-                double jM    = 0.61/(std::pow(Re,0.41));
-                double Nu    = jM*std::pow(Pr,(1./3.))*ReReal;
-                       kHeat = Nu*cond/Dt_;
+                double jM = 0.61 / (std::pow(Re, 0.41));
+                double Nu = jM * std::pow(Pr, (1. / 3.)) * ReReal;
+                kHeat = Nu * cond / Dt_;
             }
         }
         return kHeat;

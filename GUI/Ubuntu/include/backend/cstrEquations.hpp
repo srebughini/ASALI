@@ -43,43 +43,40 @@
 
 namespace ASALI
 {
-class cstrEquations : public ASALI::catalyticReactorsEquations
-{
+    class cstrEquations : public ASALI::catalyticReactorsEquations
+    {
     public:
-
         cstrEquations();
 
-       
-        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+        void setEnergy(const bool flag) { energyEquation_ = flag; }
 
         void setVolume(const double V);
-        
+
         void setFlow(const double Q);
 
         void setPressure(const double P);
 
         void setTemperature(const double T);
-        
+
         void setCatalystLoad(const double alfa);
 
         void setIntegrationTime(const double tF);
-        
+
         void setInletConditions(const std::vector<double> omega0, const double T0);
 
-        std::vector<double> getTime()        const {return Time_;};
-        std::vector<double> getTemperature() const {return Temperature_;};
+        std::vector<double> getTime() const { return Time_; };
+        std::vector<double> getTemperature() const { return Temperature_; };
 
-        std::vector<std::vector<double> > getSpecie()      const {return Specie_;};
-        std::vector<std::vector<double> > getSite()        const {return Site_;};
+        std::vector<std::vector<double>> getSpecie() const { return Specie_; };
+        std::vector<std::vector<double>> getSite() const { return Site_; };
 
         virtual void store(const double tf, const std::vector<double> xf);
 
         virtual void resize();
 
-        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -94,7 +91,7 @@ class cstrEquations : public ASALI::catalyticReactorsEquations
         double QfromSurface_;
         double SD_;
         double dt_;
-        
+
         unsigned int SURF_NC_;
         unsigned int TC_;
 
@@ -113,8 +110,8 @@ class cstrEquations : public ASALI::catalyticReactorsEquations
 
         std::vector<double> Time_;
         std::vector<double> Temperature_;
-        std::vector<std::vector<double> > Specie_;
-        std::vector<std::vector<double> > Site_;
+        std::vector<std::vector<double>> Specie_;
+        std::vector<std::vector<double>> Site_;
     };
 }
 

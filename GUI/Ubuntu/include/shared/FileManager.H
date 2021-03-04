@@ -36,7 +36,6 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
 std::string save_file(gpointer window, std::string current_file_name)
 {
     GtkWindow *parent_window = GTK_WINDOW(window);
@@ -52,7 +51,7 @@ std::string save_file(gpointer window, std::string current_file_name)
         char *filename;
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
         filename = gtk_file_chooser_get_filename(chooser);
-        g_object_unref (native);
+        g_object_unref(native);
         return std::string(filename);
     }
     else
@@ -61,7 +60,6 @@ std::string save_file(gpointer window, std::string current_file_name)
     }
 }
 
-
 std::string open_file(gpointer window)
 {
     GtkWindow *parent_window = GTK_WINDOW(window);
@@ -69,12 +67,12 @@ std::string open_file(gpointer window)
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gint res;
 
-    native = gtk_file_chooser_native_new ("Open File", parent_window, action, "_Open", "_Cancel");
-    res = gtk_native_dialog_run (GTK_NATIVE_DIALOG (native));
+    native = gtk_file_chooser_native_new("Open File", parent_window, action, "_Open", "_Cancel");
+    res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(native));
     if (res == GTK_RESPONSE_ACCEPT)
     {
-        char* filename;
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (native);
+        char *filename;
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
         filename = gtk_file_chooser_get_filename(chooser);
         g_object_unref(native);
         return std::string(filename);
@@ -87,5 +85,5 @@ std::string open_file(gpointer window)
 
 std::string relative_path_to_absolute_path(std::string relpath)
 {
-    return std::string(g_build_filename(COMPILING_PATH,relpath.c_str(),NULL));
+    return std::string(g_build_filename(COMPILING_PATH, relpath.c_str(), NULL));
 }

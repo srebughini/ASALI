@@ -44,57 +44,55 @@
 
 namespace ASALI
 {
-class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
-{
+    class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
+    {
     public:
-
         catalyticPelletEquations();
 
         void setPressure(const double P);
-        
+
         void setTemperature(const double T);
 
-        void setCatalystProperties(const double alfa,const double tau,const double epsi);
-        
+        void setCatalystProperties(const double alfa, const double tau, const double epsi);
+
         void setPoreDiameter(const double dp);
 
         void setInert(const unsigned int inertIndex);
 
         void setInletConditions(const std::vector<double> omega0);
-        
+
         void setIntegrationTime(const double tF);
-        
+
         void setNumberOfPoints(const double NP);
-        
+
         void setPelletType(const std::string pelletType);
-        
+
         void setDiffusionModel(const std::string modelType);
-        
+
         void setResolutionType(const std::string resolution);
-        
+
         void setSlab(const double tw);
-        
+
         void setSphere(const double D);
-        
+
         void setCylinder(const double D);
 
-        std::vector<double> getTime()            const {return Time_;};
+        std::vector<double> getTime() const { return Time_; };
 
-        std::vector<std::vector<std::vector<double> > > getSpecie()      const {return Specie_;};
-        std::vector<std::vector<std::vector<double> > > getSite()        const {return Site_;};
+        std::vector<std::vector<std::vector<double>>> getSpecie() const { return Specie_; };
+        std::vector<std::vector<std::vector<double>>> getSite() const { return Site_; };
 
         virtual void store(const double tf, const std::vector<double> xf);
 
         virtual void resize();
 
-        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
-        
-        std::vector<bool> AlgebraicEquations() const {return algb_;};
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
+
+        std::vector<bool> AlgebraicEquations() const { return algb_; };
 
         double getLength();
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -112,7 +110,7 @@ class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
         double tau_;
         double tw_;
         double dp_;
-        
+
         unsigned int SURF_NC_;
         unsigned int NP_;
         unsigned int inertIndex_;
@@ -136,35 +134,34 @@ class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
         std::vector<double> omega0_;
         std::vector<double> rhoVector_;
 
-        std::vector<std::vector<double> > omegaMatrix_;
-        std::vector<std::vector<double> > xMatrix_;
-        std::vector<std::vector<double> > Zmatrix_;
-        std::vector<std::vector<double> > diffMatrix_;
-        std::vector<std::vector<double> > fluxMatrix_;
-        std::vector<std::vector<double> > RfromSurfaceMatrix_;
-        std::vector<std::vector<double> > RfromGasMatrix_;
-        std::vector<std::vector<double> > RsurfaceMatrix_;
-        std::vector<std::vector<double> > MwMatrix_;
-        
-        std::vector<std::vector<std::vector<double> > > diffBinaryMatrix_;
+        std::vector<std::vector<double>> omegaMatrix_;
+        std::vector<std::vector<double>> xMatrix_;
+        std::vector<std::vector<double>> Zmatrix_;
+        std::vector<std::vector<double>> diffMatrix_;
+        std::vector<std::vector<double>> fluxMatrix_;
+        std::vector<std::vector<double>> RfromSurfaceMatrix_;
+        std::vector<std::vector<double>> RfromGasMatrix_;
+        std::vector<std::vector<double>> RsurfaceMatrix_;
+        std::vector<std::vector<double>> MwMatrix_;
 
-        std::vector<std::vector<double> > epsi_tau_model(const std::vector<std::vector<double> > diff,const std::vector<std::vector<double> > omega);
-        std::vector<std::vector<double> > dusty_gas_model(const std::vector<std::vector<std::vector<double> > > diff,const std::vector<std::vector<double> > omega,const std::vector<std::vector<double> > MW);
-        void                              properties(std::vector<double>& y);
-        void                              slabOde(std::vector<double>& dy);
-        void                              slab(std::vector<double>& dy);
-        void                              sphereOde(std::vector<double>& dy);
-        void                              sphere(std::vector<double>& dy);
-        void                              cylinderOde(std::vector<double>& dy);
-        void                              cylinder(std::vector<double>& dy);
+        std::vector<std::vector<std::vector<double>>> diffBinaryMatrix_;
 
+        std::vector<std::vector<double>> epsi_tau_model(const std::vector<std::vector<double>> diff, const std::vector<std::vector<double>> omega);
+        std::vector<std::vector<double>> dusty_gas_model(const std::vector<std::vector<std::vector<double>>> diff, const std::vector<std::vector<double>> omega, const std::vector<std::vector<double>> MW);
+        void properties(std::vector<double> &y);
+        void slabOde(std::vector<double> &dy);
+        void slab(std::vector<double> &dy);
+        void sphereOde(std::vector<double> &dy);
+        void sphere(std::vector<double> &dy);
+        void cylinderOde(std::vector<double> &dy);
+        void cylinder(std::vector<double> &dy);
 
         std::vector<double> Length_;
         std::vector<double> Time_;
-        std::vector<std::vector<std::vector<double> > > Specie_;
-        std::vector<std::vector<std::vector<double> > > Site_;
+        std::vector<std::vector<std::vector<double>>> Specie_;
+        std::vector<std::vector<std::vector<double>>> Site_;
 
-        std::vector<bool>   algb_;
+        std::vector<bool> algb_;
     };
 }
 

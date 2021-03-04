@@ -41,40 +41,41 @@
 namespace ASALI
 {
     ph1dEquations::ph1dEquations()
-    {}
+    {
+    }
 
     void ph1dEquations::resize()
     {
-        if ( resolution_ == "steady state" )
+        if (resolution_ == "steady state")
         {
-            if ( type_ == "CANTERA" )
+            if (type_ == "CANTERA")
             {
-                NC_      = chemistryInterface_->numberOfGasSpecies();
+                NC_ = chemistryInterface_->numberOfGasSpecies();
                 SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
-                NE_      = NC_ + SURF_NC_ + 1;
+                NE_ = NC_ + SURF_NC_ + 1;
 
                 x_.resize(NC_);
                 omega_.resize(NC_);
                 MW_.resize(NC_);
                 RfromGas_.resize(NC_);
                 RfromSurface_.resize(NC_);
-                
+
                 Z_.resize(SURF_NC_);
                 Rsurface_.resize(SURF_NC_);
 
                 SD_ = 1.;
-                
+
                 canteraIndex_.resize(NC_);
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     canteraIndex_[i] = i;
-                }                
+                }
             }
-            else if ( type_ == "ASALI" )
+            else if (type_ == "ASALI")
             {
-                NC_      = canteraIndex_.size();
+                NC_ = canteraIndex_.size();
                 SURF_NC_ = 0;
-                NE_      = NC_ + SURF_NC_ + 1;
+                NE_ = NC_ + SURF_NC_ + 1;
 
                 x_.resize(NC_);
                 omega_.resize(NC_);
@@ -83,18 +84,18 @@ namespace ASALI
                 RfromSurface_.resize(NC_);
                 h_.resize(NC_);
 
-                SD_   = 1.;
+                SD_ = 1.;
                 alfa_ = 1.;
             }
         }
-        else if ( resolution_ == "transient" ||
-                  resolution_ == "initial")
+        else if (resolution_ == "transient" ||
+                 resolution_ == "initial")
         {
-            if ( type_ == "CANTERA" )
+            if (type_ == "CANTERA")
             {
-                NC_      = chemistryInterface_->numberOfGasSpecies();
+                NC_ = chemistryInterface_->numberOfGasSpecies();
                 SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
-                NE_      = NP_*(NC_ + SURF_NC_ + 1);
+                NE_ = NP_ * (NC_ + SURF_NC_ + 1);
 
                 x_.resize(NC_);
                 omega_.resize(NC_);
@@ -106,7 +107,7 @@ namespace ASALI
 
                 Z_.resize(SURF_NC_);
                 Rsurface_.resize(SURF_NC_);
-                
+
                 Tvector_.resize(NP_);
                 rhoVector_.resize(NP_);
                 cpVector_.resize(NP_);
@@ -119,7 +120,7 @@ namespace ASALI
                 RfromGasMatrix_.resize(NP_);
                 RfromSurfaceMatrix_.resize(NP_);
                 RsurfaceMatrix_.resize(NP_);
-                for (unsigned int i=0;i<NP_;i++)
+                for (unsigned int i = 0; i < NP_; i++)
                 {
                     omegaMatrix_[i].resize(NC_);
                     diffMatrix_[i].resize(NC_);
@@ -128,23 +129,22 @@ namespace ASALI
                     Zmatrix_[i].resize(SURF_NC_);
                     RsurfaceMatrix_[i].resize(SURF_NC_);
                 }
-                
-                
+
                 algb_.resize(NE_);
 
                 SD_ = 1.;
-                
+
                 canteraIndex_.resize(NC_);
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     canteraIndex_[i] = i;
-                }                
+                }
             }
-            else if ( type_ == "ASALI" )
+            else if (type_ == "ASALI")
             {
-                NC_      = canteraIndex_.size();
+                NC_ = canteraIndex_.size();
                 SURF_NC_ = 0;
-                NE_      = NP_*(NC_ + SURF_NC_ + 1);
+                NE_ = NP_ * (NC_ + SURF_NC_ + 1);
 
                 x_.resize(NC_);
                 omega_.resize(NC_);
@@ -153,7 +153,7 @@ namespace ASALI
                 RfromGas_.resize(NC_);
                 RfromSurface_.resize(NC_);
                 h_.resize(NC_);
-                
+
                 Tvector_.resize(NP_);
                 rhoVector_.resize(NP_);
                 cpVector_.resize(NP_);
@@ -164,7 +164,7 @@ namespace ASALI
                 diffMatrix_.resize(NP_);
                 RfromGasMatrix_.resize(NP_);
                 RfromSurfaceMatrix_.resize(NP_);
-                for (unsigned int i=0;i<NP_;i++)
+                for (unsigned int i = 0; i < NP_; i++)
                 {
                     omegaMatrix_[i].resize(NC_);
                     diffMatrix_[i].resize(NC_);
@@ -174,7 +174,7 @@ namespace ASALI
 
                 algb_.resize(NE_);
 
-                SD_   = 1.;
+                SD_ = 1.;
                 alfa_ = 1.;
             }
         }
@@ -197,15 +197,15 @@ namespace ASALI
         P_ = P;
     }
 
-    void ph1dEquations::setTemperature (const double T)
+    void ph1dEquations::setTemperature(const double T)
     {
         T_ = T;
     }
 
     void ph1dEquations::setLength(const double L)
     {
-        L_  = L;
-        dz_ = L_/double(NP_-1);
+        L_ = L;
+        dz_ = L_ / double(NP_ - 1);
     }
 
     void ph1dEquations::setSpecificMassFlowRate(const double G)
@@ -228,96 +228,94 @@ namespace ASALI
         resolution_ = resolution;
     }
 
-
     void ph1dEquations::setInletConditions(const std::vector<double> omega0, const double T0)
     {
         omega0_ = omega0;
-        T0_     = T0;
+        T0_ = T0;
     }
 
-
-    int ph1dEquations::Equations(double& t, std::vector<double>& y, std::vector<double>& dy)
+    int ph1dEquations::Equations(double &t, std::vector<double> &y, std::vector<double> &dy)
     {
-        if ( resolution_ == "steady state" )
+        if (resolution_ == "steady state")
         {
             // Recover unknowns
             {
-                unsigned int counter=0;
+                unsigned int counter = 0;
 
-                for(unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                     omega_[i] = y[counter++];
 
-                for(unsigned int i=0;i<SURF_NC_;i++)
+                for (unsigned int i = 0; i < SURF_NC_; i++)
                     Z_[i] = y[counter++];
 
                 T_ = y[counter++];
             }
 
             // Calculates the volume and the concentrations of species
-            if ( userCheck_ == false )
+            if (userCheck_ == false)
             {
                 double canteraArray[chemistryInterface_->numberOfGasSpecies()];
-                memset(canteraArray,0.,sizeof(canteraArray));
-                for (unsigned int i=0;i<NC_;i++)
+                memset(canteraArray, 0., sizeof(canteraArray));
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     canteraArray[canteraIndex_[i]] = omega_[i];
                 }
-                
+
                 MWmix_ = chemistryInterface_->getMWmix();
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
+                cTot_ = P_ / (8314. * T_);
+                rho_ = cTot_ * MWmix_;
 
                 chemistryInterface_->setStateFromMassFraction(canteraArray, T_, P_);
 
-                std::vector<double> mw   = chemistryInterface_->getMW();
+                std::vector<double> mw = chemistryInterface_->getMW();
                 std::vector<double> mole = chemistryInterface_->mole();
 
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     MW_[i] = mw[canteraIndex_[i]];
-                    x_[i]  = mole[canteraIndex_[i]];
+                    x_[i] = mole[canteraIndex_[i]];
                 }
 
                 cp_ = chemistryInterface_->getCpMassMix();
             }
             else
             {
-                MWmix_ = this->meanMolecularWeight(omega_,MW_);
-                x_     = this->moleFraction(omega_,MW_,MWmix_);
-                cTot_  = P_/(8314.*T_);
-                rho_   = cTot_*MWmix_;
+                MWmix_ = this->meanMolecularWeight(omega_, MW_);
+                x_ = this->moleFraction(omega_, MW_, MWmix_);
+                cTot_ = P_ / (8314. * T_);
+                rho_ = cTot_ * MWmix_;
             }
 
             // Calculates homogeneous kinetics
             {
-                #include "shared/HomogeneousReactions.H"
+#include "shared/HomogeneousReactions.H"
             }
 
             // Calculates heterogeneous kinetics
             {
-                #include "shared/HeterogeneousReactions.H"
+#include "shared/HeterogeneousReactions.H"
             }
 
             // Recovering residuals
             {
-                unsigned int counter=0;
-            
+                unsigned int counter = 0;
+
                 // Gas phase species
-                for (unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                 {
-                    dy[counter++] = (MW_[i]*RfromGas_[i] + alfa_*RfromSurface_[i]*MW_[i])/(G_);
+                    dy[counter++] = (MW_[i] * RfromGas_[i] + alfa_ * RfromSurface_[i] * MW_[i]) / (G_);
                 }
 
                 // Surface site species
-                for (unsigned int i=0;i<SURF_NC_;i++)    
+                for (unsigned int i = 0; i < SURF_NC_; i++)
                 {
-                    dy[counter++] = 1e03*(Rsurface_[i]/SD_);
+                    dy[counter++] = 1e03 * (Rsurface_[i] / SD_);
                 }
 
                 // Energy equation
                 if (energyEquation_ == true)
                 {
-                    dy[counter++] = (QfromGas_+ alfa_*QfromSurface_)/(G_*cp_);
+                    dy[counter++] = (QfromGas_ + alfa_ * QfromSurface_) / (G_ * cp_);
                 }
                 else
                 {
@@ -325,19 +323,19 @@ namespace ASALI
                 }
             }
         }
-        else if ( resolution_ == "transient" )
+        else if (resolution_ == "transient")
         {
             // Recover unknowns
             {
-                unsigned int counter=0;
-                for (unsigned int i=0;i<NP_;i++)
+                unsigned int counter = 0;
+                for (unsigned int i = 0; i < NP_; i++)
                 {
-                    for(unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         omegaMatrix_[i][j] = y[counter++];
                     }
 
-                    for(unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         Zmatrix_[i][j] = y[counter++];
                     }
@@ -346,45 +344,45 @@ namespace ASALI
                 }
             }
 
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                
-                omega_ = omegaMatrix_[i];
-                T_     = Tvector_[i];
 
-                if ( SURF_NC_ != 0 )
+                omega_ = omegaMatrix_[i];
+                T_ = Tvector_[i];
+
+                if (SURF_NC_ != 0)
                 {
-                    Z_     = Zmatrix_[i];
+                    Z_ = Zmatrix_[i];
                 }
 
                 // Calculates the volume and the concentrations of species
-                if ( userCheck_ == false )
+                if (userCheck_ == false)
                 {
                     double canteraArray[chemistryInterface_->numberOfGasSpecies()];
-                    memset(canteraArray,0.,sizeof(canteraArray));
-                    for (unsigned int j=0;j<NC_;j++)
+                    memset(canteraArray, 0., sizeof(canteraArray));
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         canteraArray[canteraIndex_[j]] = omega_[j];
                     }
 
                     MWmix_ = chemistryInterface_->getMWmix();
-                    cTot_  = P_/(8314.*T_);
-                    rho_   = cTot_*MWmix_;
+                    cTot_ = P_ / (8314. * T_);
+                    rho_ = cTot_ * MWmix_;
 
                     chemistryInterface_->setStateFromMassFraction(canteraArray, T_, P_);
 
-                    std::vector<double> mw   = chemistryInterface_->getMW();
+                    std::vector<double> mw = chemistryInterface_->getMW();
                     std::vector<double> mole = chemistryInterface_->mole();
 
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         MW_[j] = mw[canteraIndex_[j]];
-                        x_[j]  = mole[canteraIndex_[j]];
+                        x_[j] = mole[canteraIndex_[j]];
                     }
 
                     std::vector<double> diff = chemistryInterface_->getDiffMix();
 
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         diff_[j] = diff[canteraIndex_[j]];
                     }
@@ -394,120 +392,114 @@ namespace ASALI
                 }
                 else
                 {
-                    MWmix_ = this->meanMolecularWeight(omega_,MW_);
-                    x_     = this->moleFraction(omega_,MW_,MWmix_);
-                    cTot_  = P_/(8314.*T_);
-                    rho_   = cTot_*MWmix_;
+                    MWmix_ = this->meanMolecularWeight(omega_, MW_);
+                    x_ = this->moleFraction(omega_, MW_, MWmix_);
+                    cTot_ = P_ / (8314. * T_);
+                    rho_ = cTot_ * MWmix_;
                 }
 
                 // Calculates homogeneous kinetics
                 {
-                    #include "shared/HomogeneousReactions.H"
+#include "shared/HomogeneousReactions.H"
                 }
 
                 // Calculates heterogeneous kinetics
                 {
-                    #include "shared/HeterogeneousReactions.H"
+#include "shared/HeterogeneousReactions.H"
                 }
 
-                rhoVector_[i]          = rho_;
-                cpVector_[i]           = cp_;
-                condVector_[i]         = cond_;
-                diffMatrix_[i]         = diff_;
-                RfromGasMatrix_[i]     = RfromGas_;
-                QfromGasVector_[i]     = QfromGas_;
+                rhoVector_[i] = rho_;
+                cpVector_[i] = cp_;
+                condVector_[i] = cond_;
+                diffMatrix_[i] = diff_;
+                RfromGasMatrix_[i] = RfromGas_;
+                QfromGasVector_[i] = QfromGas_;
                 RfromSurfaceMatrix_[i] = RfromSurface_;
                 QfromSurfaceVector_[i] = QfromSurface_;
-                if ( SURF_NC_ != 0 )
+                if (SURF_NC_ != 0)
                 {
                     RsurfaceMatrix_[i] = Rsurface_;
                 }
             }
 
             unsigned int counter = 0;
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                if ( i == 0 )
+                if (i == 0)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        dy[counter]    = omega0_[j] - omegaMatrix_[i][j];
+                        dy[counter] = omega0_[j] - omegaMatrix_[i][j];
                         algb_[counter] = true;
                         counter++;
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
-                    
-                    dy[counter]    = T0_ - Tvector_[i];
+
+                    dy[counter] = T0_ - Tvector_[i];
                     algb_[counter] = true;
                     counter++;
                 }
-                else if ( i == NP_ - 1)
+                else if (i == NP_ - 1)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        dy[counter]    = omegaMatrix_[i][j] - omegaMatrix_[i-1][j];
+                        dy[counter] = omegaMatrix_[i][j] - omegaMatrix_[i - 1][j];
                         algb_[counter] = true;
                         counter++;
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
-                    
-                    dy[counter]    = Tvector_[i] - Tvector_[i-1];
+
+                    dy[counter] = Tvector_[i] - Tvector_[i - 1];
                     algb_[counter] = true;
                     counter++;
                 }
                 else
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        dy[counter]    = -(G_/rhoVector_[i])*(omegaMatrix_[i][j] - omegaMatrix_[i-1][j])/dz_
-                                         + diffMatrix_[i][j]*(omegaMatrix_[i+1][j] -2.*omegaMatrix_[i][j] + omegaMatrix_[i-1][j])/(dz_*dz_)
-                                         + RfromGasMatrix_[i][j]/rhoVector_[i]
-                                         + alfa_*RfromSurfaceMatrix_[i][j]*MW_[j]/rhoVector_[i];
+                        dy[counter] = -(G_ / rhoVector_[i]) * (omegaMatrix_[i][j] - omegaMatrix_[i - 1][j]) / dz_ + diffMatrix_[i][j] * (omegaMatrix_[i + 1][j] - 2. * omegaMatrix_[i][j] + omegaMatrix_[i - 1][j]) / (dz_ * dz_) + RfromGasMatrix_[i][j] / rhoVector_[i] + alfa_ * RfromSurfaceMatrix_[i][j] * MW_[j] / rhoVector_[i];
                         algb_[counter] = false;
                         counter++;
                     }
-                    
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
-                        dy[counter]    = RsurfaceMatrix_[i][j]/SD_;
+                        dy[counter] = RsurfaceMatrix_[i][j] / SD_;
                         algb_[counter] = false;
                         counter++;
                     }
-                    
-                    dy[counter]    = -(G_/(cpVector_[i]*rhoVector_[i]))*(Tvector_[i] - Tvector_[i-1])/dz_
-                                     +(condVector_[i]/(rhoVector_[i]*cpVector_[i]))*(Tvector_[i+1] -2.*Tvector_[i] + Tvector_[i-1])/(dz_*dz_)
-                                     + QfromGasVector_[i]/(cpVector_[i]*rhoVector_[i])
-                                     + alfa_*QfromSurfaceVector_[i]/(cpVector_[i]*rhoVector_[i]);
+
+                    dy[counter] = -(G_ / (cpVector_[i] * rhoVector_[i])) * (Tvector_[i] - Tvector_[i - 1]) / dz_ + (condVector_[i] / (rhoVector_[i] * cpVector_[i])) * (Tvector_[i + 1] - 2. * Tvector_[i] + Tvector_[i - 1]) / (dz_ * dz_) + QfromGasVector_[i] / (cpVector_[i] * rhoVector_[i]) + alfa_ * QfromSurfaceVector_[i] / (cpVector_[i] * rhoVector_[i]);
                     algb_[counter] = false;
                     counter++;
                 }
             }
         }
-        else if ( resolution_ == "initial" )
+        else if (resolution_ == "initial")
         {
             // Recover unknowns
             {
-                unsigned int counter=0;
-                for (unsigned int i=0;i<NP_;i++)
+                unsigned int counter = 0;
+                for (unsigned int i = 0; i < NP_; i++)
                 {
-                    for(unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         omegaMatrix_[i][j] = y[counter++];
                     }
 
-                    for(unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         Zmatrix_[i][j] = y[counter++];
                     }
@@ -517,56 +509,56 @@ namespace ASALI
             }
 
             unsigned int counter = 0;
-            for (unsigned int i=0;i<NP_;i++)
+            for (unsigned int i = 0; i < NP_; i++)
             {
-                if ( i == 0 )
+                if (i == 0)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        dy[counter] = 1e03*(omega0_[j] - omegaMatrix_[i][j]);
+                        dy[counter] = 1e03 * (omega0_[j] - omegaMatrix_[i][j]);
                         counter++;
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter] = 0.;
                         counter++;
                     }
-                    
-                    dy[counter]    = 1e03*(T0_ - Tvector_[i]);
+
+                    dy[counter] = 1e03 * (T0_ - Tvector_[i]);
                     counter++;
                 }
-                else if ( i == NP_ - 1)
+                else if (i == NP_ - 1)
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
-                        dy[counter] = 1e03*(omegaMatrix_[i][j] - omegaMatrix_[i-1][j]);
+                        dy[counter] = 1e03 * (omegaMatrix_[i][j] - omegaMatrix_[i - 1][j]);
                         counter++;
                     }
 
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter] = 0.;
                         counter++;
                     }
-                    
-                    dy[counter] = 1e03*(Tvector_[i] - Tvector_[i-1]);
+
+                    dy[counter] = 1e03 * (Tvector_[i] - Tvector_[i - 1]);
                     counter++;
                 }
                 else
                 {
-                    for (unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         dy[counter] = 0.;
                         counter++;
                     }
-                    
-                    for (unsigned int j=0;j<SURF_NC_;j++)
+
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         dy[counter] = 0.;
                         counter++;
                     }
-                
+
                     dy[counter] = 0.;
                     counter++;
                 }
@@ -576,21 +568,21 @@ namespace ASALI
         return 0;
     }
 
-    void ph1dEquations::store(const double tf,const std::vector<double> xf)
+    void ph1dEquations::store(const double tf, const std::vector<double> xf)
     {
-        if ( resolution_ == "transient" )
+        if (resolution_ == "transient")
         {
             // Recover unknowns
             {
-                unsigned int counter=0;
-                for (unsigned int i=0;i<NP_;i++)
+                unsigned int counter = 0;
+                for (unsigned int i = 0; i < NP_; i++)
                 {
-                    for(unsigned int j=0;j<NC_;j++)
+                    for (unsigned int j = 0; j < NC_; j++)
                     {
                         omegaMatrix_[i][j] = xf[counter++];
                     }
 
-                    for(unsigned int j=0;j<SURF_NC_;j++)
+                    for (unsigned int j = 0; j < SURF_NC_; j++)
                     {
                         Zmatrix_[i][j] = xf[counter++];
                     }
@@ -604,26 +596,26 @@ namespace ASALI
             SiteTransient_.push_back(Zmatrix_);
             TemperatureTransient_.push_back(Tvector_);
         }
-        else if ( resolution_ == "steady state" )
+        else if (resolution_ == "steady state")
         {
             // Recover unknowns
             {
-                unsigned int counter=0;
+                unsigned int counter = 0;
 
-                for(unsigned int i=0;i<NC_;i++)
+                for (unsigned int i = 0; i < NC_; i++)
                     omega_[i] = xf[counter++];
 
-                for(unsigned int i=0;i<SURF_NC_;i++)
+                for (unsigned int i = 0; i < SURF_NC_; i++)
                     Z_[i] = xf[counter++];
 
                 T_ = xf[counter++];
             }
-            
+
             Length_.push_back(tf);
             Specie_.push_back(omega_);
             Site_.push_back(Z_);
             Temperature_.push_back(T_);
         }
     }
-    
+
 }

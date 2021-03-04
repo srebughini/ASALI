@@ -52,125 +52,124 @@
 #include <algorithm>
 #include <limits>
 
-
 namespace ASALI
 {
     /// Class to estimate homogenous and heterogeneous reaction rates from python file
     class pythonInterface
     {
-        public:
-            /// Class constructor
-            pythonInterface();
+    public:
+        /// Class constructor
+        pythonInterface();
 
-            /// Set temperature in [K]
-            void setTemperature(const double T);
-            
-            /// Set mole fraction
-            void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
-            
-            /// Convert string from lower case to upper case
-            void convertToCaption(std::string& n);
+        /// Set temperature in [K]
+        void setTemperature(const double T);
 
-            /// Initialize PyObject
-            std::string initialize(const std::string function, const std::string path);
-            
-            /// Estimate species homogeneous and heterogeneous reaction rates
-            void run();
-            
-            /// Estimate species homogeneous reaction rates
-            void runHomogeneous();
-            
-            /// Estimate species heterogeneous reaction rates
-            void runHeterogeneous();
-            
-            /// Estimate homogeneous reaction rates
-            void runAllHomogeneous();
-            
-            /// Estimate heterogeneous reaction rates
-            void runAllHeterogeneous();
-            
-            /// Estimate net homogeneous reaction rates
-            void runNetHomogeneous();
-            
-            /// Estimate net heterogeneous reaction rates
-            void runNetHeterogeneous();
-            
-            /// Destroy PyObject
-            void close();
+        /// Set mole fraction
+        void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
 
-            /// Return species heterogeneous reaction rates
-            std::vector<double>      getHetReactionRate()  {return Rhet_;};
-            
-            /// Return species homogeneous reaction rates
-            std::vector<double>      getHomReactionRate()  {return Rhom_;};
-            
-            /// Return net heterogeneous reaction rates
-            std::vector<double>      getHetNetRate()       {return RhetNet_;};
-            
-            /// Return net homogeneous reaction rates
-            std::vector<double>      getHomNetRate()       {return RhomNet_;};
-            
-            /// Return species names
-            std::vector<std::string> getSpeciesName()      {return n_;};
+        /// Convert string from lower case to upper case
+        void convertToCaption(std::string &n);
 
-            /// Check single species name
-            int                      checkNames(std::string name);
-            
-            /// Check species names
-            std::vector<int>         checkNames(std::vector<std::string> &name);
-            
-            /// Return number of homogeneous reactions
-            unsigned int             getNumberOfHomReactions() {return Nhom_;};
-            
-            /// Return number of heterogeneous reactions
-            unsigned int             getNumberOfHetReactions() {return Nhet_;};
-            
-            /// Return number of heterogeneous and homogeneous reactions
-            unsigned int             getNumberOfReactions()    {return (Nhet_+Nhom_);};
+        /// Initialize PyObject
+        std::string initialize(const std::string function, const std::string path);
 
-            /// Return heterogeneous reaction rates
-            std::vector<std::vector<double> >  getAllHetReactionRate()  {return RallHet_;};
-            
-            /// Return homogeneous reaction rates
-            std::vector<std::vector<double> >  getAllHomReactionRate()  {return RallHom_;};
+        /// Estimate species homogeneous and heterogeneous reaction rates
+        void run();
 
-            /// Class destructor 
-            virtual ~pythonInterface();
-            
-        private:
-            std::vector<double> Rhet_;    /// Heterogeneous reactions vector
-            std::vector<double> Rhom_;    /// Homogeneous reactions vector
-            std::vector<double> RhetNet_; /// Net heterogeneous reactions vector
-            std::vector<double> RhomNet_; /// Net homogeneous reactions vector
-            
-            std::vector<std::string> n_; /// Species name
+        /// Estimate species homogeneous reaction rates
+        void runHomogeneous();
 
-            unsigned int Nhet_; /// Number of heterogeneous reactions
-            unsigned int Nhom_; /// Number of homogeneous reactions
-            
-            std::vector<std::vector<double> > RallHet_; /// Heterogeneous reactions matrix
-            std::vector<std::vector<double> > RallHom_; /// Homogeneous reactions matrix
+        /// Estimate species heterogeneous reaction rates
+        void runHeterogeneous();
 
-            PyObject *pModule;              /// Python module
-            PyObject *pClass;               /// Python class
-            PyObject *pInstance;            /// Python instance
-            PyObject *pName;                /// Python method to get species names
-            PyObject *pNhom;                /// Python method to get number of homogeneous reactions
-            PyObject *pNhet;                /// Python method to get number of heterogeneous reactions
-            PyObject *pHomReaction;         /// Python method to get species homogeneous reactions
-            PyObject *pHetReaction;         /// Python method to get species heterogeneous reactions
-            PyObject *pAllHomReaction;      /// Python method to get homogeneous reactions
-            PyObject *pAllHetReaction;      /// Python method to get heterogeneous reactions
-            PyObject *pHomNet;              /// Python method to get net homogeneous reactions
-            PyObject *pHetNet;              /// Python method to get net heterogeneous reactions
-            PyObject *pTemperature;         /// Python float
-            PyObject *pMassFraction;        /// Python list
-            PyObject *pHomReactionRate;     /// Python list
-            PyObject *pHetReactionRate;     /// Python list
-            PyObject *pAllHomReactionRate;  /// Python list
-            PyObject *pAllHetReactionRate;  /// Python list
-            PyObject *pHomNetRate;          /// Python list
-            PyObject *pHetNetRate;          /// Python list
+        /// Estimate homogeneous reaction rates
+        void runAllHomogeneous();
+
+        /// Estimate heterogeneous reaction rates
+        void runAllHeterogeneous();
+
+        /// Estimate net homogeneous reaction rates
+        void runNetHomogeneous();
+
+        /// Estimate net heterogeneous reaction rates
+        void runNetHeterogeneous();
+
+        /// Destroy PyObject
+        void close();
+
+        /// Return species heterogeneous reaction rates
+        std::vector<double> getHetReactionRate() { return Rhet_; };
+
+        /// Return species homogeneous reaction rates
+        std::vector<double> getHomReactionRate() { return Rhom_; };
+
+        /// Return net heterogeneous reaction rates
+        std::vector<double> getHetNetRate() { return RhetNet_; };
+
+        /// Return net homogeneous reaction rates
+        std::vector<double> getHomNetRate() { return RhomNet_; };
+
+        /// Return species names
+        std::vector<std::string> getSpeciesName() { return n_; };
+
+        /// Check single species name
+        int checkNames(std::string name);
+
+        /// Check species names
+        std::vector<int> checkNames(std::vector<std::string> &name);
+
+        /// Return number of homogeneous reactions
+        unsigned int getNumberOfHomReactions() { return Nhom_; };
+
+        /// Return number of heterogeneous reactions
+        unsigned int getNumberOfHetReactions() { return Nhet_; };
+
+        /// Return number of heterogeneous and homogeneous reactions
+        unsigned int getNumberOfReactions() { return (Nhet_ + Nhom_); };
+
+        /// Return heterogeneous reaction rates
+        std::vector<std::vector<double>> getAllHetReactionRate() { return RallHet_; };
+
+        /// Return homogeneous reaction rates
+        std::vector<std::vector<double>> getAllHomReactionRate() { return RallHom_; };
+
+        /// Class destructor
+        virtual ~pythonInterface();
+
+    private:
+        std::vector<double> Rhet_;    /// Heterogeneous reactions vector
+        std::vector<double> Rhom_;    /// Homogeneous reactions vector
+        std::vector<double> RhetNet_; /// Net heterogeneous reactions vector
+        std::vector<double> RhomNet_; /// Net homogeneous reactions vector
+
+        std::vector<std::string> n_; /// Species name
+
+        unsigned int Nhet_; /// Number of heterogeneous reactions
+        unsigned int Nhom_; /// Number of homogeneous reactions
+
+        std::vector<std::vector<double>> RallHet_; /// Heterogeneous reactions matrix
+        std::vector<std::vector<double>> RallHom_; /// Homogeneous reactions matrix
+
+        PyObject *pModule;             /// Python module
+        PyObject *pClass;              /// Python class
+        PyObject *pInstance;           /// Python instance
+        PyObject *pName;               /// Python method to get species names
+        PyObject *pNhom;               /// Python method to get number of homogeneous reactions
+        PyObject *pNhet;               /// Python method to get number of heterogeneous reactions
+        PyObject *pHomReaction;        /// Python method to get species homogeneous reactions
+        PyObject *pHetReaction;        /// Python method to get species heterogeneous reactions
+        PyObject *pAllHomReaction;     /// Python method to get homogeneous reactions
+        PyObject *pAllHetReaction;     /// Python method to get heterogeneous reactions
+        PyObject *pHomNet;             /// Python method to get net homogeneous reactions
+        PyObject *pHetNet;             /// Python method to get net heterogeneous reactions
+        PyObject *pTemperature;        /// Python float
+        PyObject *pMassFraction;       /// Python list
+        PyObject *pHomReactionRate;    /// Python list
+        PyObject *pHetReactionRate;    /// Python list
+        PyObject *pAllHomReactionRate; /// Python list
+        PyObject *pAllHetReactionRate; /// Python list
+        PyObject *pHomNetRate;         /// Python list
+        PyObject *pHetNetRate;         /// Python list
     };
 }
 

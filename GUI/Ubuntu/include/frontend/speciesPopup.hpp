@@ -56,23 +56,20 @@ namespace ASALI
 {
     class speciesPopup : public Gtk::Window
     {
-        public:
-            speciesPopup();
+    public:
+        speciesPopup();
 
-            #include "shared/FileManager.H"
+#include "shared/FileManager.H"
 
-            virtual ~speciesPopup();
-            
-        private:
-        
-            void exit();
+        virtual ~speciesPopup();
 
-            Gtk::Button              closeButton_;
-            Gtk::ScrolledWindow      scrolledWindow_;
-            Gtk::Box                 mainBox_;
-            Gtk::Image               speciesImage_;
-            
-        
+    private:
+        void exit();
+
+        Gtk::Button closeButton_;
+        Gtk::ScrolledWindow scrolledWindow_;
+        Gtk::Box mainBox_;
+        Gtk::Image speciesImage_;
     };
 }
 

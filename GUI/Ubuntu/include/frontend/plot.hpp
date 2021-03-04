@@ -57,105 +57,99 @@ namespace ASALI
 {
     class plot : public Gtk::Window
     {
-        public:
-            plot();
-            
-            #include "shared/UnitConversion.H"
-            #include "shared/FileManager.H"
-            
-            void setSpecieNames(const std::vector<std::string> n);
-            void setSiteNames(const std::vector<std::string> nc);
-            
-            void setTime(const std::vector<double> t);
-            void setVolume(const std::vector<double> V);
-            void setLength(const std::vector<double> L, const std::string Lud);
-            
-            void setSpecie(const std::vector<std::vector<double> > y,const std::vector<std::vector<double> > x);
-            void setSpecie(const std::vector<std::vector<std::vector<double> > > y, const std::vector<std::vector<std::vector<double>> > x);
-            void setSpecie(const std::vector<std::vector<std::vector<double> > > yb,const std::vector<std::vector<std::vector<double> > > xb,
-                           const std::vector<std::vector<std::vector<double> > > yw,const std::vector<std::vector<std::vector<double> > > xw);
+    public:
+        plot();
 
-            void setSite(const std::vector<std::vector<double> > z);
-            void setSite(const std::vector<std::vector<std::vector<double>> > z);
-            
-            void setTemperature(const std::vector<double> T);
-            void setTemperature(const std::vector<std::vector<double> > T);
-            void setTemperature(const std::vector<std::vector<double> > Tb,
-                                const std::vector<std::vector<double> > Tw);
-                                   
-            
-            
+#include "shared/UnitConversion.H"
+#include "shared/FileManager.H"
 
-            void setType(const std::string type);
-            void setResolutionType(const std::string resolution);
-            
-            void build();
-            void destroy();
-            void runPlot();
-            void exit();
+        void setSpecieNames(const std::vector<std::string> n);
+        void setSiteNames(const std::vector<std::string> nc);
 
-            virtual ~plot();
-            
-        private:
-        
-            Gtk::Button                       plotButton_;
-            Gtk::Button                       exitButton_;
-            
-            Gtk::ButtonBox                    buttonBox_;
+        void setTime(const std::vector<double> t);
+        void setVolume(const std::vector<double> V);
+        void setLength(const std::vector<double> L, const std::string Lud);
 
-            Gtk::Grid                         mainGrid_;
-            Gtk::Grid                         moleGrid_;
-            Gtk::Grid                         massGrid_;
-            Gtk::Grid                         siteGrid_;
-            Gtk::Grid                         otherGrid_;
-            
-            Gtk::Label                        moleLabel_;
-            Gtk::Label                        massLabel_;
-            Gtk::Label                        siteLabel_;
-            Gtk::Label                        otherLabel_;
+        void setSpecie(const std::vector<std::vector<double>> y, const std::vector<std::vector<double>> x);
+        void setSpecie(const std::vector<std::vector<std::vector<double>>> y, const std::vector<std::vector<std::vector<double>>> x);
+        void setSpecie(const std::vector<std::vector<std::vector<double>>> yb, const std::vector<std::vector<std::vector<double>>> xb,
+                       const std::vector<std::vector<std::vector<double>>> yw, const std::vector<std::vector<std::vector<double>>> xw);
 
-            std::vector<Gtk::CheckButton *>   moleButton_;
-            std::vector<Gtk::CheckButton *>   massButton_;
-            std::vector<Gtk::CheckButton *>   siteButton_;
-            std::vector<Gtk::CheckButton *>   otherButton_;
+        void setSite(const std::vector<std::vector<double>> z);
+        void setSite(const std::vector<std::vector<std::vector<double>>> z);
 
-            unsigned int NC_;
-            unsigned int SURF_NC_;
-            unsigned int NP_;
+        void setTemperature(const std::vector<double> T);
+        void setTemperature(const std::vector<std::vector<double>> T);
+        void setTemperature(const std::vector<std::vector<double>> Tb,
+                            const std::vector<std::vector<double>> Tw);
 
-            std::string  type_;
-            std::string  resolution_;
-            std::string  Lud_;
+        void setType(const std::string type);
+        void setResolutionType(const std::string resolution);
 
-            std::vector<double> t_;
-            std::vector<double> T_;
-            std::vector<double> L_;
-            std::vector<double> V_;
-            
-            std::vector<std::vector<double> > y_;
-            std::vector<std::vector<double> > x_;
-            std::vector<std::vector<double> > z_;
-            std::vector<std::vector<double> > Tt_;
-            std::vector<std::vector<double> > Tb_;
-            std::vector<std::vector<double> > Tw_;
+        void build();
+        void destroy();
+        void runPlot();
+        void exit();
 
-            std::vector<std::vector<std::vector<double> > > yt_;
-            std::vector<std::vector<std::vector<double> > > xt_;
-            std::vector<std::vector<std::vector<double> > > zt_;
+        virtual ~plot();
 
-            std::vector<std::string> n_;
-            std::vector<std::string> nc_;
-            
-            void batchplot();
-            void cstrplot();
-            void het1dplot();
-            void pelletplot();
-            void ph1dplot(const std::string resolution);
-            void setPythonPath();
+    private:
+        Gtk::Button plotButton_;
+        Gtk::Button exitButton_;
 
-            bool isChecked(std::vector<Gtk::CheckButton *> button);
+        Gtk::ButtonBox buttonBox_;
 
+        Gtk::Grid mainGrid_;
+        Gtk::Grid moleGrid_;
+        Gtk::Grid massGrid_;
+        Gtk::Grid siteGrid_;
+        Gtk::Grid otherGrid_;
 
+        Gtk::Label moleLabel_;
+        Gtk::Label massLabel_;
+        Gtk::Label siteLabel_;
+        Gtk::Label otherLabel_;
+
+        std::vector<Gtk::CheckButton *> moleButton_;
+        std::vector<Gtk::CheckButton *> massButton_;
+        std::vector<Gtk::CheckButton *> siteButton_;
+        std::vector<Gtk::CheckButton *> otherButton_;
+
+        unsigned int NC_;
+        unsigned int SURF_NC_;
+        unsigned int NP_;
+
+        std::string type_;
+        std::string resolution_;
+        std::string Lud_;
+
+        std::vector<double> t_;
+        std::vector<double> T_;
+        std::vector<double> L_;
+        std::vector<double> V_;
+
+        std::vector<std::vector<double>> y_;
+        std::vector<std::vector<double>> x_;
+        std::vector<std::vector<double>> z_;
+        std::vector<std::vector<double>> Tt_;
+        std::vector<std::vector<double>> Tb_;
+        std::vector<std::vector<double>> Tw_;
+
+        std::vector<std::vector<std::vector<double>>> yt_;
+        std::vector<std::vector<std::vector<double>>> xt_;
+        std::vector<std::vector<std::vector<double>>> zt_;
+
+        std::vector<std::string> n_;
+        std::vector<std::string> nc_;
+
+        void batchplot();
+        void cstrplot();
+        void het1dplot();
+        void pelletplot();
+        void ph1dplot(const std::string resolution);
+        void setPythonPath();
+
+        bool isChecked(std::vector<Gtk::CheckButton *> button);
     };
 }
 

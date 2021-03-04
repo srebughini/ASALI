@@ -40,41 +40,40 @@
 
 namespace ASALI
 {
-    canteraInterface::canteraInterface(Cantera::ThermoPhase*       thermo,
-                                       Cantera::Transport*         transport,
-                                       Cantera::Kinetics*          kinetic,
-                                       Cantera::SurfPhase*         surface,
-                                       Cantera::InterfaceKinetics* surface_kinetic):
-    basicInterface(),
-    thermo_(thermo),
-    transport_(transport),
-    kinetic_(kinetic),
-    surface_(surface),
-    surface_kinetic_(surface_kinetic)
+    canteraInterface::canteraInterface(Cantera::ThermoPhase *thermo,
+                                       Cantera::Transport *transport,
+                                       Cantera::Kinetics *kinetic,
+                                       Cantera::SurfPhase *surface,
+                                       Cantera::InterfaceKinetics *surface_kinetic) : basicInterface(),
+                                                                                      thermo_(thermo),
+                                                                                      transport_(transport),
+                                                                                      kinetic_(kinetic),
+                                                                                      surface_(surface),
+                                                                                      surface_kinetic_(surface_kinetic)
     {
         this->resize();
-        
-        QfromGas_     = 0.;
+
+        QfromGas_ = 0.;
         QfromSurface_ = 0.;
-        
+
         RfromGas_.resize(NS_);
         RfromSurface_.resize(NS_);
         Rsurface_.resize(NS_);
-        
-        for (unsigned int i=0;i<SURF_NS_;i++)
+
+        for (unsigned int i = 0; i < SURF_NS_; i++)
         {
             nc_[i] = surface_->speciesName(i);
         }
     }
 
-    void canteraInterface::setMoleFraction(const std::vector<double> x,const std::vector<std::string> name)
+    void canteraInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
     {
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             x_[i] = 0.;
-            for (unsigned int j=0;j<name.size();j++)
+            for (unsigned int j = 0; j < name.size(); j++)
             {
-                if ( name[j] == thermo_->speciesName(i) )
+                if (name[j] == thermo_->speciesName(i))
                 {
                     x_[i] = x[j];
                     break;
@@ -84,14 +83,14 @@ namespace ASALI
         this->setStateFromMoleFraction(x_, T_, p_);
     }
 
-    void canteraInterface::setMassFraction(const std::vector<double> y,const std::vector<std::string> name)
+    void canteraInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name)
     {
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             y_[i] = 0.;
-            for (unsigned int j=0;j<name.size();j++)
+            for (unsigned int j = 0; j < name.size(); j++)
             {
-                if ( name[j] == thermo_->speciesName(i) )
+                if (name[j] == thermo_->speciesName(i))
                 {
                     y_[i] = y[j];
                     break;
@@ -100,38 +99,38 @@ namespace ASALI
         }
         this->setStateFromMassFraction(y_, T_, p_);
     }
-    
-    void canteraInterface::setStateFromMassFraction(const double* y, const double T, double p)
+
+    void canteraInterface::setStateFromMassFraction(const double *y, const double T, double p)
     {
         T_ = T;
         p_ = p;
-        thermo_->setState_TPY(T_,p_,y);
+        thermo_->setState_TPY(T_, p_, y);
         thermo_->getMoleFractions(x_);
 
-        for(unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            y_[i]    = y[i];
+            y_[i] = y[i];
             mass_[i] = y_[i];
             mole_[i] = x_[i];
-            n_[i]    = thermo_->speciesName(i);
-            MW_[i]   = thermo_->molecularWeight(i);
+            n_[i] = thermo_->speciesName(i);
+            MW_[i] = thermo_->molecularWeight(i);
         }
     }
-    
-    void canteraInterface::setStateFromMoleFraction(const double* x, const double T, double p)
+
+    void canteraInterface::setStateFromMoleFraction(const double *x, const double T, double p)
     {
         T_ = T;
         p_ = p;
-        thermo_->setState_TPX(T_,p_,x);
+        thermo_->setState_TPX(T_, p_, x);
         thermo_->getMassFractions(y_);
-        
-        for(unsigned int i=0;i<NS_;i++)
+
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            x_[i]    = x[i];
+            x_[i] = x[i];
             mass_[i] = y_[i];
             mole_[i] = x_[i];
-            n_[i]    = thermo_->speciesName(i);
-            MW_[i]   = thermo_->molecularWeight(i);
+            n_[i] = thermo_->speciesName(i);
+            MW_[i] = thermo_->molecularWeight(i);
         }
     }
 
@@ -140,22 +139,22 @@ namespace ASALI
         thermo_->equilibrate(type);
         thermo_->getMassFractions(y_);
         thermo_->getMoleFractions(x_);
-        
-        for(unsigned int i=0;i<NS_;i++)
+
+        for (unsigned int i = 0; i < NS_; i++)
         {
             mass_[i] = y_[i];
             mole_[i] = x_[i];
-            n_[i]    = thermo_->speciesName(i);
+            n_[i] = thermo_->speciesName(i);
         }
     }
 
     void canteraInterface::vacuumCalculate()
     {
-        for(unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            const Cantera::GasTransportData* transportData = dynamic_cast<Cantera::GasTransportData*>(thermo_->species(n_[i])->transport.get());
-            v_[i] = std::sqrt(8.*8314.*T_/(pi_*MW_[i]));
-            l_[i] = 1.38064852*1e-23*T_/(std::sqrt(2)*p_*std::pow(transportData->diameter,2.));
+            const Cantera::GasTransportData *transportData = dynamic_cast<Cantera::GasTransportData *>(thermo_->species(n_[i])->transport.get());
+            v_[i] = std::sqrt(8. * 8314. * T_ / (pi_ * MW_[i]));
+            l_[i] = 1.38064852 * 1e-23 * T_ / (std::sqrt(2) * p_ * std::pow(transportData->diameter, 2.));
         }
     }
 
@@ -171,55 +170,55 @@ namespace ASALI
         thermo_->getPartialMolarEntropies(s);
         thermo_->getPartialMolarCp(cp);
 
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
-            n_[i]  = thermo_->speciesName(i);
-            h_[i]  = h[i];
-            s_[i]  = s[i];
+            n_[i] = thermo_->speciesName(i);
+            h_[i] = h[i];
+            s_[i] = s[i];
             cp_[i] = cp[i];
             MW_[i] = mw[i];
         }
 
-        n_[NS_]  = "mix";
-        h_[NS_]  = thermo_->enthalpy_mole();       //J/Kmol
-        s_[NS_]  = thermo_->entropy_mole();        //J/Kmol/K
-        cp_[NS_] = this->getCpMoleMix();             //J/Kmol/K
+        n_[NS_] = "mix";
+        h_[NS_] = thermo_->enthalpy_mole(); //J/Kmol
+        s_[NS_] = thermo_->entropy_mole();  //J/Kmol/K
+        cp_[NS_] = this->getCpMoleMix();    //J/Kmol/K
         MW_[NS_] = this->getMWmix();
     }
 
     void canteraInterface::transportCalculate()
     {
         double mu[NS_];
-        double diff[NS_*NS_];
+        double diff[NS_ * NS_];
         double diffM[NS_];
-        
+
         transport_->getSpeciesViscosities(mu);
-        transport_->getBinaryDiffCoeffs(NS_,diff);
+        transport_->getBinaryDiffCoeffs(NS_, diff);
         transport_->getMixDiffCoeffs(diffM);
 
         unsigned int counter = 0;
-        for (unsigned int i=0;i<(NS_+1);i++)
+        for (unsigned int i = 0; i < (NS_ + 1); i++)
         {
-            if ( i == NS_ ) 
+            if (i == NS_)
             {
-                n_[i]     = "mix";
-                mu_[i]    = transport_->viscosity();             //Pas
-                cond_[i]  = transport_->thermalConductivity();   //W/m/K
-                MW_[i]    = thermo_->meanMolecularWeight();
-                for (unsigned int j=0;j<(NS_+1);j++)
+                n_[i] = "mix";
+                mu_[i] = transport_->viscosity();             //Pas
+                cond_[i] = transport_->thermalConductivity(); //W/m/K
+                MW_[i] = thermo_->meanMolecularWeight();
+                for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
                     diff_[i][j] = -1.;
                 }
             }
             else
             {
-                n_[i]  = thermo_->speciesName(i);
+                n_[i] = thermo_->speciesName(i);
                 mu_[i] = mu[i];
                 MW_[i] = thermo_->molecularWeight(i);
 
-                for (unsigned int j=0;j<(NS_+1);j++)
+                for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
-                    if ( j == NS_ )
+                    if (j == NS_)
                     {
                         diff_[i][j] = diffM[i];
                     }
@@ -230,15 +229,14 @@ namespace ASALI
                 }
             }
         }
-        
-        
+
         {
             double X[NS_];
-            for (unsigned int i=0;i<NS_;i++)
+            for (unsigned int i = 0; i < NS_; i++)
             {
-                for (unsigned int j=0;j<NS_;j++)
+                for (unsigned int j = 0; j < NS_; j++)
                 {
-                    if (j==i)
+                    if (j == i)
                     {
                         X[j] = 1.;
                     }
@@ -248,17 +246,17 @@ namespace ASALI
                     }
                 }
 
-                thermo_->setState_TPY(T_,p_,X);
+                thermo_->setState_TPY(T_, p_, X);
                 cond_[i] = transport_->thermalConductivity();
             }
         }
     }
-    
+
     double canteraInterface::getTemperature()
     {
         return thermo_->temperature();
     }
-    
+
     double canteraInterface::getDensity()
     {
         return thermo_->density();
@@ -268,35 +266,35 @@ namespace ASALI
     {
         return thermo_->cp_mass();
     }
-    
+
     double canteraInterface::getCpMoleMix()
     {
         return thermo_->cp_mole();
     }
-    
+
     double canteraInterface::getMWmix()
     {
         return thermo_->meanMolecularWeight();
     }
-    
+
     double canteraInterface::getCondMix()
     {
         return transport_->thermalConductivity();
     }
-    
+
     double canteraInterface::getMuMix()
     {
         return transport_->viscosity();
     }
 
-    int  canteraInterface::checkNames(std::string name)
+    int canteraInterface::checkNames(std::string name)
     {
         int check = 1;
 
         this->convertToCaption(name);
-        for (unsigned int j=0;j<NS_;j++)
+        for (unsigned int j = 0; j < NS_; j++)
         {
-            if ( name == thermo_->speciesName(j) )
+            if (name == thermo_->speciesName(j))
             {
                 check = 0;
                 break;
@@ -339,11 +337,11 @@ namespace ASALI
         thermo_->getMolecularWeights(mw);
 
         std::vector<double> dummy(NS_);
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             dummy[i] = mw[i];
         }
-        
+
         return dummy;
     }
 
@@ -351,9 +349,9 @@ namespace ASALI
     {
         double h[NS_];
         thermo_->getPartialMolarEnthalpies(h);
-        
+
         std::vector<double> dummy(NS_);
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             dummy[i] = h[i];
         }
@@ -367,7 +365,7 @@ namespace ASALI
         thermo_->getPartialMolarEntropies(s);
 
         std::vector<double> dummy(NS_);
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             dummy[i] = s[i];
         }
@@ -381,14 +379,14 @@ namespace ASALI
         thermo_->getPartialMolarCp(cp);
 
         std::vector<double> dummy(NS_);
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             dummy[i] = cp[i];
         }
 
         return dummy;
     }
-    
+
     std::vector<double> canteraInterface::getDiffMix()
     {
         double diff[NS_];
@@ -396,7 +394,7 @@ namespace ASALI
         transport_->getMixDiffCoeffs(diff);
 
         std::vector<double> dummy(NS_);
-        for (unsigned int i=0;i<NS_;i++)
+        for (unsigned int i = 0; i < NS_; i++)
         {
             dummy[i] = diff[i];
         }
@@ -406,12 +404,12 @@ namespace ASALI
 
     std::vector<double> canteraInterface::getBinaryDiffVector()
     {
-        double diff[NS_*NS_];
+        double diff[NS_ * NS_];
 
-        transport_->getBinaryDiffCoeffs(NS_,diff);
+        transport_->getBinaryDiffCoeffs(NS_, diff);
 
-        std::vector<double> dummy(NS_*NS_);
-        for (unsigned int i=0;i<NS_*NS_;i++)
+        std::vector<double> dummy(NS_ * NS_);
+        for (unsigned int i = 0; i < NS_ * NS_; i++)
         {
             dummy[i] = diff[i];
         }
@@ -419,17 +417,17 @@ namespace ASALI
         return dummy;
     }
 
-    std::vector<int>  canteraInterface::checkNames(std::vector<std::string> &name)
+    std::vector<int> canteraInterface::checkNames(std::vector<std::string> &name)
     {
         std::vector<int> check(name.size());
-        
-        for (unsigned int i=0;i<name.size();i++)
+
+        for (unsigned int i = 0; i < name.size(); i++)
         {
             this->convertToCaption(name[i]);
             check[i] = 1;
-            for (unsigned int j=0;j<NS_;j++)
+            for (unsigned int j = 0; j < NS_; j++)
             {
-                if ( name[i] == thermo_->speciesName(j) )
+                if (name[i] == thermo_->speciesName(j))
                 {
                     check[i] = 0;
                     break;
@@ -442,14 +440,14 @@ namespace ASALI
 
     void canteraInterface::calculateHomogeneousReactions(std::vector<double> omega, double T, double p)
     {
-        double* bulkArray = omega.data();
-        double  canteraArray[NS_];
+        double *bulkArray = omega.data();
+        double canteraArray[NS_];
 
         this->setStateFromMassFraction(bulkArray, T, p);
 
         kinetic_->getNetProductionRates(canteraArray);
 
-        for (unsigned int j=0;j<NS_;j++)
+        for (unsigned int j = 0; j < NS_; j++)
         {
             RfromGas_[j] = canteraArray[j]; //kmol/m2/s
         }
@@ -459,9 +457,9 @@ namespace ASALI
         kinetic_->getNetRatesOfProgress(reactionArray);
         kinetic_->getDeltaEnthalpy(enthalpyArray);
         QfromGas_ = 0.;
-        for (unsigned int j=0;j<kinetic_->nReactions();j++)
-        {   
-            QfromGas_ = QfromGas_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/k
+        for (unsigned int j = 0; j < kinetic_->nReactions(); j++)
+        {
+            QfromGas_ = QfromGas_ + reactionArray[j] * enthalpyArray[j]; //J/kmol/k
         }
         QfromGas_ = -QfromGas_;
     }
@@ -469,9 +467,9 @@ namespace ASALI
     void canteraInterface::calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p)
     {
         {
-            double* bulkArray     = omega.data();
-            double* coverageArray = Z.data();
-            double  reactionArray[NS_+SURF_NS_];
+            double *bulkArray = omega.data();
+            double *coverageArray = Z.data();
+            double reactionArray[NS_ + SURF_NS_];
 
             this->setStateFromMassFraction(bulkArray, T, p);
 
@@ -481,26 +479,26 @@ namespace ASALI
             surface_kinetic_->getNetProductionRates(reactionArray);
 
             unsigned int rcounter = 0;
-            for (unsigned int j=0;j<NS_;j++)
+            for (unsigned int j = 0; j < NS_; j++)
             {
                 RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
             }
 
-            for (unsigned int j=0;j<SURF_NS_;j++)
+            for (unsigned int j = 0; j < SURF_NS_; j++)
             {
                 Rsurface_[j] = reactionArray[rcounter++];
             }
         }
-        
+
         {
             double reactionArray[surface_kinetic_->nReactions()];
             double enthalpyArray[surface_kinetic_->nReactions()];
             surface_kinetic_->getNetRatesOfProgress(reactionArray);
             surface_kinetic_->getDeltaEnthalpy(enthalpyArray);
             QfromSurface_ = 0.;
-            for (unsigned int j=0;j<surface_kinetic_->nReactions();j++)
+            for (unsigned int j = 0; j < surface_kinetic_->nReactions(); j++)
             {
-                QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/s
+                QfromSurface_ = QfromSurface_ + reactionArray[j] * enthalpyArray[j]; //J/kmol/s
             }
 
             QfromSurface_ = -QfromSurface_;

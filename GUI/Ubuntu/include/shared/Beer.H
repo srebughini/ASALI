@@ -36,7 +36,6 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
 {
     beer_.push_back("<i>Now is the time to drink!</i>\n[Horace]");
     beer_.push_back("<i>Beer is the proof that god loves us and wants us to be happy.</i>\n[B. Franklin]");
@@ -193,8 +192,5 @@
     beer_.push_back("<i>There is nothing which has been yet contrived by man,\nby which so much happiness is produced as by a good tavern or inn.</i>\n[S. Johnson]");
     beer_.push_back("<i>How much of our literature, our political life,\nour friendships and love affairs, depend on being able to talk peacefully in a bar!</i>\n[J. Wain]");
     beer_.push_back("<i>The pub is the internet. It’s where information is gathered, collated and addressed.</i>\n[R. Ifans]");
-    beer_.push_back("<i>Shoulder the sky, my lad, and drink you ale.</i>\n[A. E. Housman]"); 
+    beer_.push_back("<i>Shoulder the sky, my lad, and drink you ale.</i>\n[A. E. Housman]");
 }
-
-
-

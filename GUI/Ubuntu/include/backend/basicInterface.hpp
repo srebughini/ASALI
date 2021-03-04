@@ -54,91 +54,92 @@ namespace ASALI
 {
     class basicInterface
     {
-        public:
-            basicInterface();
+    public:
+        basicInterface();
 
-            void convertToCaption(std::string& n);
-            void resize();
+        void convertToCaption(std::string &n);
+        void resize();
 
-            double specieProperty(std::string p,std::string n);
-            
-            virtual void setTemperature(const double T);
-            virtual void setPressure(const double p);
-            virtual void setMoleFraction(const std::vector<double> x,const std::vector<std::string> name);
-            virtual void setMassFraction(const std::vector<double> y,const std::vector<std::string> name);
-            virtual void setStateFromMassFraction(const double* y, const double T, const double p);
-            virtual void setStateFromMoleFraction(const double* x, const double T, const double p);
+        double specieProperty(std::string p, std::string n);
 
-            virtual void thermoCalculate();
-            virtual void transportCalculate();
-            virtual void vacuumCalculate();
+        virtual void setTemperature(const double T);
+        virtual void setPressure(const double p);
+        virtual void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        virtual void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
+        virtual void setStateFromMassFraction(const double *y, const double T, const double p);
+        virtual void setStateFromMoleFraction(const double *x, const double T, const double p);
 
-            virtual double getTemperature();
-            virtual double getDensity();
-            virtual double getCpMassMix();
-            virtual double getCpMoleMix();
-            virtual double getMWmix();
-            virtual double getCondMix();
-            virtual double getMuMix();
+        virtual void thermoCalculate();
+        virtual void transportCalculate();
+        virtual void vacuumCalculate();
 
-            virtual std::vector<double> getMW();
-            virtual std::vector<double> getHmole();
-            virtual std::vector<double> getSmole();
-            virtual std::vector<double> getCpMole();
-            virtual std::vector<double> getDiffMix();
-            virtual std::vector<double> getBinaryDiffVector();
+        virtual double getTemperature();
+        virtual double getDensity();
+        virtual double getCpMassMix();
+        virtual double getCpMoleMix();
+        virtual double getMWmix();
+        virtual double getCondMix();
+        virtual double getMuMix();
 
-            virtual std::vector<int>  checkNames(std::vector<std::string>& name);
-            virtual int               checkNames(std::string name);
-            virtual unsigned int      numberOfGasSpecies();
-            virtual unsigned int      numberOfSurfaceSpecies();
-            
-            inline std::vector<double> getMoleFraction()        {return mole_;};
-            inline std::vector<double> getMassFraction()        {return mass_;};
-            inline std::vector<double> h()                      {return h_;};
-            inline std::vector<double> s()                      {return s_;};
-            inline std::vector<double> cp()                     {return cp_;};
-            inline std::vector<double> MW()                     {return MW_;};
-            inline std::vector<double> mu()                     {return mu_;};
-            inline std::vector<double> cond()                   {return cond_;};
-            inline std::vector<double> mole()                   {return mole_;};
-            inline std::vector<double> mass()                   {return mass_;};
-            inline std::vector<double> vm()                     {return v_;};
-            inline std::vector<double> l()                      {return l_;};
+        virtual std::vector<double> getMW();
+        virtual std::vector<double> getHmole();
+        virtual std::vector<double> getSmole();
+        virtual std::vector<double> getCpMole();
+        virtual std::vector<double> getDiffMix();
+        virtual std::vector<double> getBinaryDiffVector();
 
-            inline std::vector<std::vector<double> > diff()     {return diff_;};
-            
-            inline std::vector<std::string> names()             {return n_;};
-            inline std::vector<std::string> coverageNames()     {return nc_;};
+        virtual std::vector<int> checkNames(std::vector<std::string> &name);
+        virtual int checkNames(std::string name);
+        virtual unsigned int numberOfGasSpecies();
+        virtual unsigned int numberOfSurfaceSpecies();
 
-            virtual ~basicInterface();
-            
-            double                 T_;
-            double                 p_;
-            double                *x_;
-            double                *y_;
+        inline std::vector<double> getMoleFraction() { return mole_; };
+        inline std::vector<double> getMassFraction() { return mass_; };
+        inline std::vector<double> h() { return h_; };
+        inline std::vector<double> s() { return s_; };
+        inline std::vector<double> cp() { return cp_; };
+        inline std::vector<double> MW() { return MW_; };
+        inline std::vector<double> mu() { return mu_; };
+        inline std::vector<double> cond() { return cond_; };
+        inline std::vector<double> mole() { return mole_; };
+        inline std::vector<double> mass() { return mass_; };
+        inline std::vector<double> vm() { return v_; };
+        inline std::vector<double> l() { return l_; };
 
-            unsigned int          NS_;
-            unsigned int          SURF_NS_;
+        inline std::vector<std::vector<double>> diff() { return diff_; };
 
-            std::vector<double>   h_;
-            std::vector<double>   s_;
-            std::vector<double>   cp_;
-            std::vector<double>   v_;
-            std::vector<double>   l_;
-            std::vector<double>   MW_;
-            std::vector<double>   mu_;
-            std::vector<double>   cond_;
-            std::vector<double>   mole_;
-            std::vector<double>   mass_;
-            
-            std::vector<std::vector<double> > diff_;
-            
-            std::vector<std::string> n_;
-            std::vector<std::string> nc_;
+        inline std::vector<std::string> names() { return n_; };
+        inline std::vector<std::string> coverageNames() { return nc_; };
 
-            const double pi_ = 3.14159265358979323846;
-        private:
+        virtual ~basicInterface();
+
+        double T_;
+        double p_;
+        double *x_;
+        double *y_;
+
+        unsigned int NS_;
+        unsigned int SURF_NS_;
+
+        std::vector<double> h_;
+        std::vector<double> s_;
+        std::vector<double> cp_;
+        std::vector<double> v_;
+        std::vector<double> l_;
+        std::vector<double> MW_;
+        std::vector<double> mu_;
+        std::vector<double> cond_;
+        std::vector<double> mole_;
+        std::vector<double> mass_;
+
+        std::vector<std::vector<double>> diff_;
+
+        std::vector<std::string> n_;
+        std::vector<std::string> nc_;
+
+        const double pi_ = 3.14159265358979323846;
+
+    private:
     };
 }
 

@@ -43,18 +43,17 @@
 
 namespace ASALI
 {
-class het1dEquations : public ASALI::catalyticReactorsEquations
-{
+    class het1dEquations : public ASALI::catalyticReactorsEquations
+    {
     public:
-
         het1dEquations();
 
-        void setEnergy(const bool flag)                 {energyEquation_        = flag;}
+        void setEnergy(const bool flag) { energyEquation_ = flag; }
 
         void setLength(const double L);
-        
+
         void setSpecificMassFlowRate(const double G);
-        
+
         void setPressure(const double P);
 
         void setCatalystProperties(const double alfa, const double rhos, const double cps, const double conds);
@@ -62,41 +61,40 @@ class het1dEquations : public ASALI::catalyticReactorsEquations
         void setInert(const unsigned int inertIndex);
 
         void setInletConditions(const std::vector<double> omega0, const double T0);
-        
+
         void setIntegrationTime(const double tF);
-        
+
         void setNumberOfPoints(const double NP);
-        
+
         void setReactorType(const std::string reactorType);
-        
+
         void setResolutionType(const std::string resolution);
-        
-        void setPackedBed(const double Dt,const double Dp, const double epsi);
-        
-        void setTubular(const double Dt,const double tw, const std::string section);
-        
+
+        void setPackedBed(const double Dt, const double Dp, const double epsi);
+
+        void setTubular(const double Dt, const double tw, const std::string section);
+
         void setHoneyComb(const double cpsi, const double tw, const std::string section);
 
-        std::vector<double> getLength()          const {return Length_;};
-        std::vector<double> getTime()            const {return Time_;};
+        std::vector<double> getLength() const { return Length_; };
+        std::vector<double> getTime() const { return Time_; };
 
-        std::vector<std::vector<double> > getBulkTemperature() const {return TemperatureB_;};
-        std::vector<std::vector<double> > getWallTemperature() const {return TemperatureW_;};
+        std::vector<std::vector<double>> getBulkTemperature() const { return TemperatureB_; };
+        std::vector<std::vector<double>> getWallTemperature() const { return TemperatureW_; };
 
-        std::vector<std::vector<std::vector<double> > > getBulkSpecie()      const {return SpecieB_;};
-        std::vector<std::vector<std::vector<double> > > getWallSpecie()      const {return SpecieW_;};
-        std::vector<std::vector<std::vector<double> > > getSite()            const {return Site_;};
+        std::vector<std::vector<std::vector<double>>> getBulkSpecie() const { return SpecieB_; };
+        std::vector<std::vector<std::vector<double>>> getWallSpecie() const { return SpecieW_; };
+        std::vector<std::vector<std::vector<double>>> getSite() const { return Site_; };
 
         virtual void store(const double tf, const std::vector<double> xf);
 
         virtual void resize();
 
-        virtual int Equations(double& t, std::vector<double>& y, std::vector<double>& dy);
-        
-        std::vector<bool> AlgebraicEquations() const {return algb_;};
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
+
+        std::vector<bool> AlgebraicEquations() const { return algb_; };
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -120,7 +118,7 @@ class het1dEquations : public ASALI::catalyticReactorsEquations
         double cps_;
         double conds_;
         double kHeat_;
-        
+
         unsigned int SURF_NC_;
         unsigned int NP_;
         unsigned int inertIndex_;
@@ -151,28 +149,28 @@ class het1dEquations : public ASALI::catalyticReactorsEquations
         std::vector<double> QfromGasVector_;
         std::vector<double> QfromSurfaceVector_;
 
-        std::vector<std::vector<double> > omegaBMatrix_;
-        std::vector<std::vector<double> > omegaWMatrix_;
-        std::vector<std::vector<double> > Zmatrix_;
-        std::vector<std::vector<double> > diffMatrix_;
-        std::vector<std::vector<double> > RfromGasMatrix_;
-        std::vector<std::vector<double> > kMatMatrix_;
-        std::vector<std::vector<double> > RfromSurfaceMatrix_;
-        std::vector<std::vector<double> > RsurfaceMatrix_;
+        std::vector<std::vector<double>> omegaBMatrix_;
+        std::vector<std::vector<double>> omegaWMatrix_;
+        std::vector<std::vector<double>> Zmatrix_;
+        std::vector<std::vector<double>> diffMatrix_;
+        std::vector<std::vector<double>> RfromGasMatrix_;
+        std::vector<std::vector<double>> kMatMatrix_;
+        std::vector<std::vector<double>> RfromSurfaceMatrix_;
+        std::vector<std::vector<double>> RsurfaceMatrix_;
 
         std::vector<double> massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d);
-        double              heatTransferCoefficient(const double z, const double mu, const double cond, const double cp);
+        double heatTransferCoefficient(const double z, const double mu, const double cond, const double cp);
 
         std::vector<double> Length_;
         std::vector<double> Time_;
         std::vector<double> Pressure_;
-        std::vector<std::vector<double> > TemperatureB_;
-        std::vector<std::vector<double> > TemperatureW_;
-        std::vector<std::vector<std::vector<double> > > SpecieB_;
-        std::vector<std::vector<std::vector<double> > > SpecieW_;
-        std::vector<std::vector<std::vector<double> > > Site_;
+        std::vector<std::vector<double>> TemperatureB_;
+        std::vector<std::vector<double>> TemperatureW_;
+        std::vector<std::vector<std::vector<double>>> SpecieB_;
+        std::vector<std::vector<std::vector<double>>> SpecieW_;
+        std::vector<std::vector<std::vector<double>>> Site_;
 
-        std::vector<bool>   algb_;
+        std::vector<bool> algb_;
     };
 }
 

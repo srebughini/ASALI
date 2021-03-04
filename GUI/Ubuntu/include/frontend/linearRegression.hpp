@@ -36,7 +36,6 @@
 #                                                                                              #
 ##############################################################################################*/
 
-
 #ifndef LINEARREGRESSION_H
 #define LINEARREGRESSION_H
 
@@ -46,68 +45,66 @@ namespace ASALI
 {
     class linearRegression : public ASALI::thermoProperties
     {
-        public:
-            linearRegression(ASALI::speciesPopup            *speciesNames,
-                             std::string                     kineticType);
-            
-            #include "shared/Vector.H"
-            
-            virtual ~linearRegression();
+    public:
+        linearRegression(ASALI::speciesPopup *speciesNames,
+                         std::string kineticType);
 
-            virtual void results();
+#include "shared/Vector.H"
 
-        private:
+        virtual ~linearRegression();
 
-            void cleanInput();
-            void uploadLayout();
-            void run();
-            void leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2);
-            void condUnitDimensions(double &p);
-            void muUnitDimensions(double &p);
-            void cpUnitDimensions(double &p);
-            void sUnitDimensions(double &p);
-            void hUnitDimensions(double &p);
-            void diffUnitDimensions(double &p);
+        virtual void results();
 
-            Gtk::Box          tempBox_;
+    private:
+        void cleanInput();
+        void uploadLayout();
+        void run();
+        void leastSquareFitting(const std::vector<double> x, const std::vector<double> y, double &m, double &q, double &r2);
+        void condUnitDimensions(double &p);
+        void muUnitDimensions(double &p);
+        void cpUnitDimensions(double &p);
+        void sUnitDimensions(double &p);
+        void hUnitDimensions(double &p);
+        void diffUnitDimensions(double &p);
 
-            Gtk::Button       exitButton2_;
-            Gtk::Button       backButton_;
-            Gtk::Button       calculateButton_;
-            
-            Gtk::Grid         resultsGrid_;
+        Gtk::Box tempBox_;
 
-            Gtk::Label        tempRangeLabel_;
-            Gtk::Label        propertyLabel_;
-            Gtk::Label        mLabel_;
-            Gtk::Label        mValueLabel_;
-            Gtk::Label        qLabel_;
-            Gtk::Label        qValueLabel_;
-            Gtk::Label        rLabel_;
-            Gtk::Label        rValueLabel_;
-            
-            Gtk::Entry        tempEntry1_;
-            Gtk::Entry        tempEntry2_;
+        Gtk::Button exitButton2_;
+        Gtk::Button backButton_;
+        Gtk::Button calculateButton_;
 
-            Gtk::ComboBoxText tempRangeCombo_;
-            Gtk::ComboBoxText propertyCombo_;
-            Gtk::ComboBoxText unitDimensionCombo_;
-            Gtk::ComboBoxText specieCombo_;
+        Gtk::Grid resultsGrid_;
 
-            Gtk::Image        logo_;
-            Gtk::Image        regressionImage_;
-            
-            std::vector<double> Tv_;
-            std::vector<double> pv_;
+        Gtk::Label tempRangeLabel_;
+        Gtk::Label propertyLabel_;
+        Gtk::Label mLabel_;
+        Gtk::Label mValueLabel_;
+        Gtk::Label qLabel_;
+        Gtk::Label qValueLabel_;
+        Gtk::Label rLabel_;
+        Gtk::Label rValueLabel_;
 
-            std::string name_;
-            
-            double      m_;
-            double      q_;
-            double      r2_;
+        Gtk::Entry tempEntry1_;
+        Gtk::Entry tempEntry2_;
 
-            bool        diffCheck_;
+        Gtk::ComboBoxText tempRangeCombo_;
+        Gtk::ComboBoxText propertyCombo_;
+        Gtk::ComboBoxText unitDimensionCombo_;
+        Gtk::ComboBoxText specieCombo_;
 
+        Gtk::Image logo_;
+        Gtk::Image regressionImage_;
+
+        std::vector<double> Tv_;
+        std::vector<double> pv_;
+
+        std::string name_;
+
+        double m_;
+        double q_;
+        double r2_;
+
+        bool diffCheck_;
     };
 }
 

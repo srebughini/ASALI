@@ -41,9 +41,10 @@
 namespace ASALI
 {
     catalyticReactorsEquations::catalyticReactorsEquations()
-    {}
+    {
+    }
 
-    void catalyticReactorsEquations::setInterface(ASALI::canteraInterface* chemistryInterface)
+    void catalyticReactorsEquations::setInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
@@ -53,19 +54,18 @@ namespace ASALI
         type_ = type;
     }
 
-    void catalyticReactorsEquations::setAsaliKinetic(ASALI::pythonInterface* pi, const std::vector<int> canteraIndex, const std::vector<std::string> n)
+    void catalyticReactorsEquations::setAsaliKinetic(ASALI::pythonInterface *pi, const std::vector<int> canteraIndex, const std::vector<std::string> n)
     {
-        pi_           = pi;
+        pi_ = pi;
         canteraIndex_ = canteraIndex;
-        n_            = n;
+        n_ = n;
     }
 
     void catalyticReactorsEquations::turnOnUserDefined(const bool check)
     {
         userCheck_ = check;
     }
-    
-    
+
     void catalyticReactorsEquations::set_MW(const std::vector<double> MW)
     {
         MW_ = MW;
@@ -101,17 +101,17 @@ namespace ASALI
         cond_ = cond;
     }
 
-    std::vector<double> catalyticReactorsEquations::reactionRate(const std::vector<double> x,const double T,const std::string type)
+    std::vector<double> catalyticReactorsEquations::reactionRate(const std::vector<double> x, const double T, const std::string type)
     {
         std::vector<double> R;
         pi_->setTemperature(T);
-        pi_->setMoleFraction(x,n_);
-        if ( type == "heterogeneous" )
+        pi_->setMoleFraction(x, n_);
+        if (type == "heterogeneous")
         {
             pi_->runHeterogeneous();
             R = pi_->getHetReactionRate();
         }
-        else if ( type == "homogeneous" )
+        else if (type == "homogeneous")
         {
             pi_->runHomogeneous();
             R = pi_->getHomReactionRate();
@@ -119,61 +119,61 @@ namespace ASALI
         return R;
     }
 
-    double catalyticReactorsEquations::heatOfReaction(const std::vector<double> x,const double T, const std::vector<double> h,const std::string type)
+    double catalyticReactorsEquations::heatOfReaction(const std::vector<double> x, const double T, const std::vector<double> h, const std::string type)
     {
         double Q = 0;
         pi_->setTemperature(T);
-        pi_->setMoleFraction(x,n_);
+        pi_->setMoleFraction(x, n_);
 
-        if ( type == "heterogeneous" )
+        if (type == "heterogeneous")
         {
-            if ( userCheck_ == false )
+            if (userCheck_ == false)
             {
                 pi_->runAllHeterogeneous();
-                std::vector<std::vector<double> > R = pi_->getAllHetReactionRate();
-                for (unsigned int i=0;i<NC_;i++)
+                std::vector<std::vector<double>> R = pi_->getAllHetReactionRate();
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     double Rtot = 0;
-                    for (unsigned int j=0;j<pi_->getNumberOfHetReactions();j++)
+                    for (unsigned int j = 0; j < pi_->getNumberOfHetReactions(); j++)
                     {
                         Rtot = Rtot + R[j][i];
                     }
-                    Q = Q + Rtot*h[i];
+                    Q = Q + Rtot * h[i];
                 }
             }
             else
             {
                 pi_->runNetHeterogeneous();
                 std::vector<double> R = pi_->getHetNetRate();
-                for (unsigned int j=0;j<R.size();j++)
+                for (unsigned int j = 0; j < R.size(); j++)
                 {
-                    Q = Q + R[j]*QuserHet_[j];
+                    Q = Q + R[j] * QuserHet_[j];
                 }
             }
         }
-        else if ( type == "homogeneous" )
+        else if (type == "homogeneous")
         {
-            if ( userCheck_ == false )
+            if (userCheck_ == false)
             {
                 pi_->runAllHomogeneous();
-                std::vector<std::vector<double> > R = pi_->getAllHomReactionRate();
-                for (unsigned int i=0;i<NC_;i++)
+                std::vector<std::vector<double>> R = pi_->getAllHomReactionRate();
+                for (unsigned int i = 0; i < NC_; i++)
                 {
                     double Rtot = 0;
-                    for (unsigned int j=0;j<pi_->getNumberOfHomReactions();j++)
+                    for (unsigned int j = 0; j < pi_->getNumberOfHomReactions(); j++)
                     {
                         Rtot = Rtot + R[j][i];
                     }
-                    Q = Q + Rtot*h[i];
+                    Q = Q + Rtot * h[i];
                 }
             }
             else
             {
                 pi_->runNetHomogeneous();
                 std::vector<double> R = pi_->getHomNetRate();
-                for (unsigned int j=0;j<R.size();j++)
+                for (unsigned int j = 0; j < R.size(); j++)
                 {
-                    Q = Q + R[j]*QuserHom_[j];
+                    Q = Q + R[j] * QuserHom_[j];
                 }
             }
         }
@@ -181,31 +181,31 @@ namespace ASALI
         return -Q;
     }
 
-    double catalyticReactorsEquations::meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW)
+    double catalyticReactorsEquations::meanMolecularWeight(const std::vector<double> omega, const std::vector<double> MW)
     {
         double MWmix = 0.;
-        for (unsigned int i=0;i<NC_;i++)
+        for (unsigned int i = 0; i < NC_; i++)
         {
-            MWmix = MWmix + omega[i]/MW[i];
+            MWmix = MWmix + omega[i] / MW[i];
         }
-        return 1./MWmix;
+        return 1. / MWmix;
     }
-    
-    std::vector<double> catalyticReactorsEquations::moleFraction(const std::vector<double> omega,const std::vector<double> MW, double MWmix)
+
+    std::vector<double> catalyticReactorsEquations::moleFraction(const std::vector<double> omega, const std::vector<double> MW, double MWmix)
     {
         std::vector<double> x = omega;
-        
-        for (unsigned int i=0;i<NC_;i++)
+
+        for (unsigned int i = 0; i < NC_; i++)
         {
-            x[i] = omega[i]*MWmix/MW[i];
+            x[i] = omega[i] * MWmix / MW[i];
         }
-        
+
         return x;
     }
 
     void catalyticReactorsEquations::resize() {}
-    
-    void catalyticReactorsEquations::store(const double tf,const std::vector<double> xf) {}
 
-    int catalyticReactorsEquations::Equations(double& t, std::vector<double>& y, std::vector<double>& dy) {return 0;}
+    void catalyticReactorsEquations::store(const double tf, const std::vector<double> xf) {}
+
+    int catalyticReactorsEquations::Equations(double &t, std::vector<double> &y, std::vector<double> &dy) { return 0; }
 }
