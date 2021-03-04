@@ -96,6 +96,11 @@ namespace ASALI
         }
     }
 
+    void batchEquations::setEnergy(const bool flag)
+    {
+        energyEquation_ = flag;
+    }
+
     void batchEquations::setPressure(const double P)
     {
         P_ = P;
@@ -176,12 +181,12 @@ namespace ASALI
 
         // Calculates homogeneous kinetics
         {
-#include "shared/HomogeneousReactions.H"
+            #include "shared/HomogeneousReactions.H"
         }
 
         // Calculates heterogeneous kinetics
         {
-#include "shared/HeterogeneousReactions.H"
+            #include "shared/HeterogeneousReactions.H"
         }
 
         // Variation of gas mass in the reactor
@@ -244,5 +249,9 @@ namespace ASALI
             Volume_.push_back(V_);
             Mass_.push_back(mass_);
         }
+    }
+
+    batchEquations::~batchEquations()
+    {
     }
 }

@@ -45,76 +45,104 @@
 
 namespace ASALI
 {
+    /// Abstract class that describes catalytic reactors equations
     class catalyticReactorsEquations
     {
     public:
         catalyticReactorsEquations();
 
-#include "shared/Vector.H"
+         #include "shared/Vector.H"
 
+        /// Set gas mixture chemistry interface
         void setInterface(ASALI::canteraInterface *chemistryInterface);
 
-        void setHomogeneousReactions(const bool flag) { homogeneousReactions_ = flag; }
+        /// Set bool to enable or disable homogeneous reactions
+        void setHomogeneousReactions(const bool flag);
 
-        void setHeterogeneusReactions(const bool flag) { heterogeneusReactions_ = flag; }
+        /// Set bool to enable or disable homogeneous reactions
+        void setHeterogeneusReactions(const bool flag);
 
-        void setAsaliKinetic(ASALI::pythonInterface *pi, const std::vector<int> canteraIndex, const std::vector<std::string> n);
-
+        /// Set type of kinetic scheme used
         void setKineticType(const std::string type);
 
+        /// Enable used defined properties
         void turnOnUserDefined(const bool check);
 
-        void set_QfromSurface(const std::vector<double> Q);
+        /// Set ASALI kinetic parameters
+        void setAsaliKinetic(ASALI::pythonInterface *pi, const std::vector<int> canteraIndex, const std::vector<std::string> n);
 
-        void set_QfromGas(const std::vector<double> Q);
+        /// Set user defined heterogeneous heat of reactions in [W/m2]
+        void setQfromSurface(const std::vector<double> Q);
 
-        void set_MW(const std::vector<double> MW);
+        /// Set user defined homogeneous heat of reactions in [W/m3]
+        void setQfromGas(const std::vector<double> Q);
 
-        void set_diff(const std::vector<double> diff);
+        /// Set user defined species molecular weight in [g/mol]
+        void setMW(const std::vector<double> MW);
 
-        void set_cp(const double cp);
+        /// Set user defined species mixture diffusion coefficient in [m2/s]
+        void setDiffMix(const std::vector<double> diff);
 
-        void set_cond(const double cond);
+        /// Set user defined gas mixture mass specific heat in [J/kg/K]
+        void setCpMassMix(const double cp);
 
-        void set_mu(const double mu);
+        /// Set user defined gas mixture thermal conductivity in [W/m/K]
+        void setCondMix(const double cond);
 
-        unsigned int NumberOfEquations() const { return NE_; };
+        /// Set user defined gas mixture viscosity in [Pas]
+        void setMuMix(const double mu);
 
-        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
-
-        virtual void resize();
-
-        virtual void store(const double tf, const std::vector<double> xf);
-
-        double cp_;
-        double mu_;
-        double cond_;
-
-        unsigned int NE_;
-        unsigned int NC_;
-
-        std::string type_;
-
-        bool homogeneousReactions_;
-        bool heterogeneusReactions_;
-        bool userCheck_;
-
-        ASALI::pythonInterface *pi_;
-        ASALI::canteraInterface *chemistryInterface_;
-
-        std::vector<double> QuserHom_;
-        std::vector<double> QuserHet_;
-        std::vector<double> MW_;
-        std::vector<double> diff_;
-
-        std::vector<int> canteraIndex_;
-
-        std::vector<std::string> n_;
-
+        /// Estimate reaction rates using python interface
         std::vector<double> reactionRate(const std::vector<double> omega, const double T, const std::string type);
+        
+        /// Estimate mole fraction from mass fraction and mean molecular weight
         std::vector<double> moleFraction(const std::vector<double> omega, const std::vector<double> MW, double MWmix);
+        
+        /// Estimate heat of reaction using python interface
         double heatOfReaction(const std::vector<double> omega, const double T, const std::vector<double> h, const std::string type);
+        
+        /// Estimate mean molecular weight [g/mol]
         double meanMolecularWeight(const std::vector<double> omega, const std::vector<double> MW);
+
+        /// Return number of reactions 
+        inline unsigned int NumberOfEquations() { return NE_; };
+
+        /// Equations describing the catalytic reactors
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy) = 0;
+
+        /// Resize variables based
+        virtual void resize() = 0;
+
+        /// Store results for plottnig and saving
+        virtual void store(const double tf, const std::vector<double> xf) = 0;
+
+        /// Class destructor
+        virtual ~catalyticReactorsEquations();
+
+        double cp_;    /// Gas mixture mass specific heat in [J/kg/K]
+        double mu_;    /// Gas mixture viscosity in [Pas]
+        double cond_;  /// Gas mixture thermal conductivity in [W/m/K]
+
+        unsigned int NE_; /// Number of equations
+        unsigned int NC_; /// Number of gas species
+
+        std::string type_; /// Kinetic type
+
+        bool homogeneousReactions_;  /// Bool to enable/disable homogeneous reactions
+        bool heterogeneusReactions_; /// Bool to enable/disable heterogeneous reactions
+        bool userCheck_;             /// Bool to enable/disable user defined gas mixture properties
+
+        ASALI::pythonInterface *pi_;                  /// Python interface pointer
+        ASALI::canteraInterface *chemistryInterface_; /// Gas mixture chemistry interface pointer
+
+        std::vector<double> QuserHom_; /// User defined homogeneous heat of reactions in [W/m3]
+        std::vector<double> QuserHet_; /// User defined heterogeneous heat of reactions in [W/m2]
+        std::vector<double> MW_;       /// Species molecular weight in [g/mol]
+        std::vector<double> diff_;     /// Species mixture diffusion coefficient in [m2/s]
+
+        std::vector<int> canteraIndex_; /// Cantera index to order species
+
+        std::vector<std::string> n_;    /// Species names
 
     private:
     };

@@ -49,6 +49,16 @@ namespace ASALI
         chemistryInterface_ = chemistryInterface;
     }
 
+    void catalyticReactorsEquations::setHomogeneousReactions(const bool flag)
+    {
+        homogeneousReactions_ = flag;
+    }
+
+    void catalyticReactorsEquations::setHeterogeneusReactions(const bool flag) { 
+    {
+        heterogeneusReactions_ = flag;
+    }
+
     void catalyticReactorsEquations::setKineticType(const std::string type)
     {
         type_ = type;
@@ -66,37 +76,37 @@ namespace ASALI
         userCheck_ = check;
     }
 
-    void catalyticReactorsEquations::set_MW(const std::vector<double> MW)
+    void catalyticReactorsEquations::setMW(const std::vector<double> MW)
     {
         MW_ = MW;
     }
 
-    void catalyticReactorsEquations::set_diff(const std::vector<double> diff)
+    void catalyticReactorsEquations::setDiffMix(const std::vector<double> diff)
     {
         diff_ = diff;
     }
 
-    void catalyticReactorsEquations::set_QfromSurface(const std::vector<double> Q)
+    void catalyticReactorsEquations::setQfromSurface(const std::vector<double> Q)
     {
         QuserHet_ = Q;
     }
 
-    void catalyticReactorsEquations::set_QfromGas(const std::vector<double> Q)
+    void catalyticReactorsEquations::setQfromGas(const std::vector<double> Q)
     {
         QuserHom_ = Q;
     }
 
-    void catalyticReactorsEquations::set_cp(const double cp)
+    void catalyticReactorsEquations::setCpMix(const double cp)
     {
         cp_ = cp;
     }
 
-    void catalyticReactorsEquations::set_mu(const double mu)
+    void catalyticReactorsEquations::setMuMix(const double mu)
     {
         mu_ = mu;
     }
 
-    void catalyticReactorsEquations::set_cond(const double cond)
+    void catalyticReactorsEquations::setCondMix(const double cond)
     {
         cond_ = cond;
     }
@@ -202,10 +212,8 @@ namespace ASALI
 
         return x;
     }
-
-    void catalyticReactorsEquations::resize() {}
-
-    void catalyticReactorsEquations::store(const double tf, const std::vector<double> xf) {}
-
-    int catalyticReactorsEquations::Equations(double &t, std::vector<double> &y, std::vector<double> &dy) { return 0; }
+    
+    catalyticReactorsEquations::~catalyticReactorsEquations()
+    {
+    }
 }
