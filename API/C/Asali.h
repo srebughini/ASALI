@@ -135,7 +135,6 @@ typedef struct
     AsaliVector l_;
    
     AsaliMatrix diff_;
-    
 } Asali;
 
 void initialize(Asali* asali_);

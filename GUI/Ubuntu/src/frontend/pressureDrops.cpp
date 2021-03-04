@@ -71,7 +71,6 @@ namespace ASALI
           packedBedDpBool_(false),
           Ndp_(3)
     {
-
         //Set up packed bed
         {
             dpPackedBed_.resize(Ndp_);
@@ -301,7 +300,6 @@ namespace ASALI
         }
         else if (reactorTypeCombo_.get_active_row_number() == 2)
         {
-
             propertiesGrid_.attach(honeyCombCPSILabel_, 0, 4, 1, 1);
             propertiesGrid_.attach(honeyCombCPSIEntry_, 1, 4, 1, 1);
 

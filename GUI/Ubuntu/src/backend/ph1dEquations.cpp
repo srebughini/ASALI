@@ -346,7 +346,6 @@ namespace ASALI
 
             for (unsigned int i = 0; i < NP_; i++)
             {
-
                 omega_ = omegaMatrix_[i];
                 T_ = Tvector_[i];
 

@@ -53,7 +53,6 @@ namespace ASALI
           hLabel_("Enthalpy"),
           sLabel_("Entropy")
     {
-
         //Input menu
         {
             this->set_border_width(15);

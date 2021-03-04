@@ -182,7 +182,6 @@ namespace ASALI
 
         // Recovering residuals
         {
-
             unsigned int counter = 0;
 
             // Gas phase species

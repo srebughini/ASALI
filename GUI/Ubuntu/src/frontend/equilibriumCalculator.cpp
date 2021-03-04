@@ -49,7 +49,6 @@ namespace ASALI
           initialStateLabel_("Initial state"),
           finalStateLabel_("Final state")
     {
-
         //Input
         {
             this->remove();

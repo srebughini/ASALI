@@ -53,52 +53,6 @@ if (heterogeneusReactions_ == true && alfa_ != 0.)
         {
             QfromSurface_ = 0.;
         }
-
-        /*{
-            double* bulkArray     = omega_.data();
-            double* coverageArray = Z_.data();
-            double  reactionArray[NC_+SURF_NC_];
-
-            gas_->setState_TPY(T_,P_,bulkArray);
-
-            surface_->setTemperature(T_);
-            surface_->setCoveragesNoNorm(coverageArray);
-            surface_->getNetProductionRates(reactionArray);
-
-            unsigned int rcounter = 0;
-            for (unsigned int j=0;j<NC_;j++)
-            {
-                RfromSurface_[j] = reactionArray[rcounter++]; //kmol/m2/s
-            }
-
-            for (unsigned int j=0;j<SURF_NC_;j++)
-            {
-                Rsurface_[j] = reactionArray[rcounter++];
-            }
-        }
-        
-        if ( energyEquation_ == true )
-        {
-            double reactionArray[surface_->nReactions()];
-            double enthalpyArray[surface_->nReactions()];
-            surface_->getNetRatesOfProgress(reactionArray);
-            surface_->getDeltaEnthalpy(enthalpyArray);
-            QfromSurface_ = 0.;
-            for (unsigned int j=0;j<surface_->nReactions();j++)
-            {
-                QfromSurface_ = QfromSurface_ + reactionArray[j]*enthalpyArray[j];  //J/kmol/s
-            }
-
-            QfromSurface_ = -QfromSurface_;
-
-            SD_ = surface_->siteDensity();
-        }
-        else
-        {
-            QfromSurface_ = 0.;
-
-            SD_ = surface_->siteDensity();
-        }*/
     }
     else if (type_ == "ASALI")
     {
