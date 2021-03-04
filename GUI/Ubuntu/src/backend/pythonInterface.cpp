@@ -42,34 +42,6 @@ namespace ASALI
 {
     pythonInterface::pythonInterface()
     {
-        small.resize(26);    big.resize(26);
-        small[0]  = "a";    big[0]  = "A";
-        small[1]  = "b";    big[1]  = "B";
-        small[2]  = "c";    big[2]  = "C";
-        small[3]  = "d";    big[3]  = "D";
-        small[4]  = "e";    big[4]  = "E";
-        small[5]  = "f";    big[5]  = "F";
-        small[6]  = "g";    big[6]  = "G";
-        small[7]  = "h";    big[7]  = "H";
-        small[8]  = "i";    big[8]  = "I";
-        small[9]  = "j";    big[9]  = "J";
-        small[10] = "k";    big[10] = "K";
-        small[11] = "l";    big[11] = "L";
-        small[12] = "m";    big[12] = "M";
-        small[13] = "n";    big[13] = "N";
-        small[14] = "o";    big[14] = "O";
-        small[15] = "p";    big[15] = "P";
-        small[16] = "q";    big[16] = "Q";
-        small[17] = "r";    big[17] = "R";
-        small[18] = "s";    big[18] = "S";
-        small[19] = "t";    big[19] = "T";
-        small[20] = "u";    big[20] = "U";
-        small[21] = "v";    big[21] = "V";
-        small[22] = "w";    big[22] = "W";
-        small[23] = "x";    big[23] = "X";
-        small[24] = "y";    big[24] = "Y";
-        small[25] = "z";    big[25] = "Z";
-        
         Nhet_ = 0;
         Nhom_ = 0;
     }
@@ -328,10 +300,7 @@ namespace ASALI
 
     void pythonInterface::convertToCaption(std::string& n)
     {
-        for(unsigned int i=0;i<26;i++)
-        {
-            std::replace(n.begin(),n.end(),*small[i].c_str(),*big[i].c_str());
-        }
+		std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
     
     void pythonInterface::close()

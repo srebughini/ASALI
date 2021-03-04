@@ -137,9 +137,6 @@ namespace ASALI
             std::vector<std::string> n_;
             std::vector<std::string> nc_;
 
-            std::vector<std::string> small;
-            std::vector<std::string> big;
-            
             const double pi_ = 3.14159265358979323846;
         private:
     };
