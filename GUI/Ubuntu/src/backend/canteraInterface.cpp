@@ -66,6 +66,16 @@ namespace ASALI
         }
     }
 
+    void canteraInterface::setTemperature(const double T)
+    {
+        T_ = T;
+    }
+
+    void canteraInterface::setPressure(const double p)
+    {
+        p_ = p;
+    }
+
     void canteraInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
     {
         for (unsigned int i = 0; i < NS_; i++)
@@ -330,91 +340,57 @@ namespace ASALI
     {
         return thermo_->speciesIndex(name);
     }
+    
+    std::vector<double> canteraInterface::doubleVectorToStdVector(double* double_vector, unsigned int vector_size)
+    {
+        std::vector<double> std_vector(vector_size);
+        for (unsigned int i = 0; i < vector_size; i++)
+        {
+            std_vector[i] = double_vector[i];
+        }
+        return std_vector;
+    }
 
     std::vector<double> canteraInterface::getMW()
     {
         double mw[NS_];
         thermo_->getMolecularWeights(mw);
-
-        std::vector<double> dummy(NS_);
-        for (unsigned int i = 0; i < NS_; i++)
-        {
-            dummy[i] = mw[i];
-        }
-
-        return dummy;
+        return this->doubleVectorToStdVector(mw, NS_);
     }
 
     std::vector<double> canteraInterface::getHmole()
     {
         double h[NS_];
         thermo_->getPartialMolarEnthalpies(h);
-
-        std::vector<double> dummy(NS_);
-        for (unsigned int i = 0; i < NS_; i++)
-        {
-            dummy[i] = h[i];
-        }
-
-        return dummy;
+        return this->doubleVectorToStdVector(h, NS_);
     }
 
     std::vector<double> canteraInterface::getSmole()
     {
         double s[NS_];
         thermo_->getPartialMolarEntropies(s);
-
-        std::vector<double> dummy(NS_);
-        for (unsigned int i = 0; i < NS_; i++)
-        {
-            dummy[i] = s[i];
-        }
-
-        return dummy;
+        return this->doubleVectorToStdVector(s, NS_);
     }
 
     std::vector<double> canteraInterface::getCpMole()
     {
         double cp[NS_];
         thermo_->getPartialMolarCp(cp);
-
-        std::vector<double> dummy(NS_);
-        for (unsigned int i = 0; i < NS_; i++)
-        {
-            dummy[i] = cp[i];
-        }
-
-        return dummy;
+        return this->doubleVectorToStdVector(cp, NS_);
     }
 
     std::vector<double> canteraInterface::getDiffMix()
     {
         double diff[NS_];
-
         transport_->getMixDiffCoeffs(diff);
-
-        std::vector<double> dummy(NS_);
-        for (unsigned int i = 0; i < NS_; i++)
-        {
-            dummy[i] = diff[i];
-        }
-
-        return dummy;
+        return this->doubleVectorToStdVector(diff, NS_);
     }
 
     std::vector<double> canteraInterface::getBinaryDiffVector()
     {
         double diff[NS_ * NS_];
-
-        transport_->getBinaryDiffCoeffs(NS_, diff);
-
-        std::vector<double> dummy(NS_ * NS_);
-        for (unsigned int i = 0; i < NS_ * NS_; i++)
-        {
-            dummy[i] = diff[i];
-        }
-
-        return dummy;
+        transport_->getBinaryDiffCoeffs(NS_ * NS_, diff);
+        return this->doubleVectorToStdVector(diff, NS_ * NS_);
     }
 
     std::vector<int> canteraInterface::checkNames(std::vector<std::string> &name)
@@ -434,7 +410,6 @@ namespace ASALI
                 }
             }
         }
-
         return check;
     }
 

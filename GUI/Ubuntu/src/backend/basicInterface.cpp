@@ -77,16 +77,6 @@ namespace ASALI
         nc_.resize(SURF_NS_);
     }
 
-    void basicInterface::setTemperature(const double T)
-    {
-        T_ = T;
-    }
-
-    void basicInterface::setPressure(const double p)
-    {
-        p_ = p;
-    }
-
     void basicInterface::convertToCaption(std::string &n)
     {
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
@@ -180,82 +170,6 @@ namespace ASALI
         }
 
         return r;
-    }
-
-    void basicInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name) {}
-
-    void basicInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name) {}
-
-    void basicInterface::setStateFromMassFraction(const double *y, const double T, const double P) {}
-
-    void basicInterface::setStateFromMoleFraction(const double *x, const double T, const double P) {}
-
-    void basicInterface::vacuumCalculate() {}
-
-    void basicInterface::thermoCalculate() {}
-
-    void basicInterface::transportCalculate() {}
-
-    double basicInterface::getTemperature() { return 0.; }
-
-    double basicInterface::getDensity() { return 0.; }
-
-    double basicInterface::getCpMassMix() { return 0.; }
-
-    double basicInterface::getCpMoleMix() { return 0.; }
-
-    double basicInterface::getMWmix() { return 0.; }
-
-    double basicInterface::getCondMix() { return 0.; }
-
-    double basicInterface::getMuMix() { return 0.; }
-
-    int basicInterface::checkNames(std::string name) { return 0; }
-
-    unsigned int basicInterface::numberOfGasSpecies() { return 0; }
-
-    unsigned int basicInterface::numberOfSurfaceSpecies() { return 0; }
-
-    std::vector<double> basicInterface::getMW()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<double> basicInterface::getHmole()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<double> basicInterface::getSmole()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<double> basicInterface::getCpMole()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<double> basicInterface::getDiffMix()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<double> basicInterface::getBinaryDiffVector()
-    {
-        std::vector<double> dummy;
-        return dummy;
-    }
-
-    std::vector<int> basicInterface::checkNames(std::vector<std::string> &name)
-    {
-        std::vector<int> dummy;
-        return dummy;
     }
 
     basicInterface::~basicInterface()

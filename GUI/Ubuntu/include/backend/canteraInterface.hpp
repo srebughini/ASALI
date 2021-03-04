@@ -48,74 +48,142 @@
 
 namespace ASALI
 {
+    /// Class to estimate gas mixture properties based on Cantera (https://cantera.org)
     class canteraInterface : public ASALI::basicInterface
     {
     public:
+        /// Class constructor
         canteraInterface(Cantera::ThermoPhase *thermo,
                          Cantera::Transport *transport,
                          Cantera::Kinetics *kinetic,
                          Cantera::SurfPhase *surface,
                          Cantera::InterfaceKinetics *surface_kinetic);
 
-        virtual void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
-        virtual void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
-        virtual void setStateFromMassFraction(const double *y, const double T, const double p);
-        virtual void setStateFromMoleFraction(const double *x, const double T, const double p);
+        /// Set temperature in [K]
+        void setTemperature(const double T);
+        
+        /// Set pressure in [Pa]
+        void setPressure(const double p);
 
-        virtual void thermoCalculate();
-        virtual void transportCalculate();
-        virtual void vacuumCalculate();
+        /// Set mass fraction
+        void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        
+        /// Set mole fraction
+        void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
+        
+        /// Set mass fraction, temperature in [K] and pressure in [Pa]
+        void setStateFromMassFraction(const double *y, const double T, const double p);
+        
+        /// Set mole fraction, temperature in [K] and pressure in [Pa]
+        void setStateFromMoleFraction(const double *x, const double T, const double p);
 
-        virtual double getTemperature();
-        virtual double getDensity();
-        virtual double getCpMassMix();
-        virtual double getCpMoleMix();
-        virtual double getMWmix();
-        virtual double getCondMix();
-        virtual double getMuMix();
+        /// Calculate thermodynamic properties
+        void thermoCalculate();
+        
+        /// Calculate transport properties
+        void transportCalculate();
+        
+        /// Calculate vacuum properties
+        void vacuumCalculate();
 
-        virtual std::vector<double> getMW();
-        virtual std::vector<double> getHmole();
-        virtual std::vector<double> getSmole();
-        virtual std::vector<double> getCpMole();
-        virtual std::vector<double> getDiffMix();
-        virtual std::vector<double> getBinaryDiffVector();
+        /// Get gas mixture temperature in [K]
+        double getTemperature();
+        
+        /// Get gas mixture density in [kg/m3]
+        double getDensity();
+        
+        /// Get gas mixture mass specific heat in [J/kg/K]
+        double getCpMassMix();
+        
+        /// Get gas mixture molar specific heat in [J/kmol/K]
+        double getCpMoleMix();
+        
+        /// Get gas mixture molecular weight in [g/mol]
+        double getMWmix();
+        
+        /// Get gas mixture thermal conductivity in [W/m/K]
+        double getCondMix();
+        
+        /// Get gas mixture viscosity in [Pas]
+        double getMuMix();
 
-        virtual std::vector<int> checkNames(std::vector<std::string> &name);
-        virtual int checkNames(std::string name);
-        virtual unsigned int numberOfGasSpecies();
-        virtual unsigned int numberOfSurfaceSpecies();
-
-        unsigned int numberOfHomogeneousReactions();
-        unsigned int getGasSpecieIndex(std::string name);
-
+        /// Get species molecular weight in [g/mol]
+        std::vector<double> getMW();
+        
+        /// Get species molar enthalpy in [J/kmol]
+        std::vector<double> getHmole();
+        
+        /// Get species molar entropy in [J/kmol/K]
+        std::vector<double> getSmole();
+        
+        /// Get species molar specific heat in [J/kmol/K]
+        std::vector<double> getCpMole();
+        
+        /// Get species mixture diffusion coefficient in [m2/s]
+        std::vector<double> getDiffMix();
+        
+        /// Get species binary diffusion coefficient in [m2/s] as vector
+        std::vector<double> getBinaryDiffVector();
+        
+        /// Check species names        
+        std::vector<int> checkNames(std::vector<std::string> &name);
+        
+        /// Check single species name
+        int checkNames(std::string name);
+        
+        /// Return number of gas species in the gas mixture
+        unsigned int numberOfGasSpecies();
+        
+        /// Return number of coverage species
+        unsigned int numberOfSurfaceSpecies();
+        
+        /// Calculate species homogeneous reactions
         void calculateHomogeneousReactions(std::vector<double> omega, double T, double p);
+        
+        /// Calculate species heterogeneous reactions
         void calculateHeterogeneousReactions(std::vector<double> omega, std::vector<double> Z, double T, double p);
+        
+        /// Calculate chemical equilibrium
         void equilibriumCalculate(std::string type);
 
+        /// Convert double* to std::vector<double>
+        std::vector<double> doubleVectorToStdVector(double* double_vector, unsigned int vector_size);
+
+        /// Return species homogeneous reactions in [kg/m3/s]
         inline std::vector<double> RfromGas() { return RfromGas_; };
+        
+        /// Return species heterogeneous reactions in [kg/m2/s]
         inline std::vector<double> RfromSurface() { return RfromSurface_; };
+        
+        /// Return coverage reactions in [kg/m2/s]
         inline std::vector<double> Rsurface() { return Rsurface_; };
+        
+        /// Return homogeneous heat of reactions in [W/m3]
         inline double QfromGas() { return QfromGas_; };
+        
+        /// Return heterogeneous heat of reactions in [W/m2]
         inline double QfromSurface() { return QfromSurface_; };
+        
+        /// Return site density in [1/m2]
         inline double siteDensity() { return SD_; };
 
-        virtual ~canteraInterface();
+        /// Class destructor
+        ~canteraInterface();
 
     private:
-        Cantera::ThermoPhase *thermo_;
-        Cantera::Transport *transport_;
-        Cantera::Kinetics *kinetic_;
-        Cantera::SurfPhase *surface_;
-        Cantera::InterfaceKinetics *surface_kinetic_;
+        Cantera::ThermoPhase *thermo_;                ///Cantera library thermo phase pointer
+        Cantera::Transport *transport_;               ///Cantera library transport phase pointer
+        Cantera::Kinetics *kinetic_;                  ///Cantera library homogeneous kinetic pointer
+        Cantera::SurfPhase *surface_;                 ///Cantera library surface phase pointer
+        Cantera::InterfaceKinetics *surface_kinetic_; ///Cantera library heterogeneous kinetic pointer
 
-        double QfromGas_;
-        double QfromSurface_;
-        double SD_;
+        double QfromGas_;     /// Homogeneous heat of reactions in [W/m3]
+        double QfromSurface_; /// Heterogeneous heat of reactions in [W/m2]
+        double SD_;           /// Site density in [1/m2]
 
-        std::vector<double> RfromGas_;
-        std::vector<double> RfromSurface_;
-        std::vector<double> Rsurface_;
+        std::vector<double> RfromGas_;     /// Species homogeneous reactions in [kg/m3/s]
+        std::vector<double> RfromSurface_; /// Species heterogeneous reactions in [kg/m2/s]
+        std::vector<double> Rsurface_;     /// Coverage reactions in [kg/m2/s]
     };
 }
 

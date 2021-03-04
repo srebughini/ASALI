@@ -96,6 +96,9 @@ namespace ASALI
 
         /// Destroy PyObject
         void close();
+        
+        /// Set PYTHONPATH enviorment variable
+        void setPythonPath(std::string path);
 
         /// Return species heterogeneous reaction rates
         std::vector<double> getHetReactionRate() { return Rhet_; };
@@ -162,14 +165,14 @@ namespace ASALI
         PyObject *pAllHetReaction;     /// Python method to get heterogeneous reactions
         PyObject *pHomNet;             /// Python method to get net homogeneous reactions
         PyObject *pHetNet;             /// Python method to get net heterogeneous reactions
-        PyObject *pTemperature;        /// Python float
-        PyObject *pMassFraction;       /// Python list
-        PyObject *pHomReactionRate;    /// Python list
-        PyObject *pHetReactionRate;    /// Python list
-        PyObject *pAllHomReactionRate; /// Python list
-        PyObject *pAllHetReactionRate; /// Python list
-        PyObject *pHomNetRate;         /// Python list
-        PyObject *pHetNetRate;         /// Python list
+        PyObject *pTemperature;        /// Python float for temperature
+        PyObject *pMassFraction;       /// Python list for mass fraction
+        PyObject *pHomReactionRate;    /// Python list for species homogeneous reaction rates
+        PyObject *pHetReactionRate;    /// Python list for species heterogeneous reaction rates
+        PyObject *pAllHomReactionRate; /// Python list for homogeneous reaction rates
+        PyObject *pAllHetReactionRate; /// Python list for heterogeneous reaction rates
+        PyObject *pHomNetRate;         /// Python list for net homogeneous reaction rates
+        PyObject *pHetNetRate;         /// Python list for net heterogeneous reaction rates
     };
 }
 

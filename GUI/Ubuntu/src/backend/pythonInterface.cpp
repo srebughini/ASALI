@@ -73,6 +73,15 @@ namespace ASALI
         }
     }
 
+    void pythonInterface::setPythonPath(std::string path)
+    {
+        #if ASALI_ON_WINDOW == 1
+        _putenv_s("PYTHONPATH", path.c_str());
+        #else
+        setenv("PYTHONPATH", path.c_str(), 1);
+        #endif
+    }
+
     int pythonInterface::checkNames(std::string name)
     {
         int check = 1;
@@ -113,11 +122,7 @@ namespace ASALI
 
     std::string pythonInterface::initialize(const std::string function, const std::string path)
     {
-#if ASALI_ON_WINDOW == 1
-        _putenv_s("PYTHONPATH", path.c_str());
-#else
-        setenv("PYTHONPATH", path.c_str(), 1);
-#endif
+        this->setPythonPath(path);
 
         Py_Initialize();
 

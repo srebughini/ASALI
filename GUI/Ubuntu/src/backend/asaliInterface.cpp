@@ -221,11 +221,23 @@ namespace ASALI
     {
         return asali_->mixtureMolecularWeight();
     }
+    
+    double asaliInterface::getCondMix()
+    {
+        return asali_->mixtureThermalConductivity();
+    }
+
+    double asaliInterface::getMuMix()
+    {
+        return asali_->mixtureViscosity();
+    }
 
     int asaliInterface::checkNames(std::string name)
     {
         int check = 1;
+        std::cout << name << std::endl;
         this->convertToCaption(name);
+        std::cout << name << std::endl;
         for (unsigned int j = 0; j < names_.size(); j++)
         {
             if (name == names_[j])
@@ -265,6 +277,29 @@ namespace ASALI
     std::vector<double> asaliInterface::getCpMole()
     {
         return asali_->speciesMolarCp();
+    }
+
+    std::vector<double> asaliInterface::getDiffMix()
+    {
+        return asali_->mixtureDiffusion();
+    }
+
+    std::vector<double> asaliInterface::getBinaryDiffVector()
+    {
+        std::vector<std::vector<double> > diffMatrix = asali_->binaryDiffusion();
+        std::vector<double> diffVector(NS_*NS_);
+        
+        unsigned int counter = 0;
+        for (unsigned int i = 0; i < NS_; i++)
+        {
+            for (unsigned int j = 0; j < NS_; j++)
+            {
+                diffVector[counter] = diffMatrix[i][j];
+                counter++;
+            }
+        }
+        
+        return diffVector;
     }
 
     std::vector<int> asaliInterface::checkNames(std::vector<std::string> &name)
