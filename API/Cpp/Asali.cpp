@@ -830,6 +830,5 @@ namespace ASALI
         return smass_mix_;
     }
 
-    Asali::~Asali(void)
-    {}
+    Asali::~Asali(void) {}
 }
