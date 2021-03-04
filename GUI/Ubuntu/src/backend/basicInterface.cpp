@@ -81,6 +81,18 @@ namespace ASALI
     {
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
+    
+    int basicInterface::getSpecieIndex(std::string n)
+    {
+        for (unsigned int i = 0; i <= NS_; i++)
+        {
+            if (n_[i] == n)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     double basicInterface::specieProperty(std::string p, std::string n)
     {
@@ -89,87 +101,40 @@ namespace ASALI
             this->convertToCaption(n);
         }
 
-        double r = 0;
+        int idx = this->getSpecieIndex(n);
 
         if (p == "h")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = h_[i];
-                    break;
-                }
-            }
+            return h_[idx];
         }
         else if (p == "s")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = s_[i];
-                    break;
-                }
-            }
+            return s_[idx];
         }
         else if (p == "cp")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = cp_[i];
-                    break;
-                }
-            }
+            return cp_[idx];
         }
         else if (p == "cond")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = cond_[i];
-                    break;
-                }
-            }
+            return cond_[idx];
         }
         else if (p == "mu")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = mu_[i];
-                    break;
-                }
-            }
+            return mu_[idx];
         }
         else if (p == "mw")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = MW_[i];
-                    break;
-                }
-            }
+            return MW_[idx];
         }
         else if (p == "diff")
         {
-            for (unsigned int i = 0; i <= NS_; i++)
-            {
-                if (n_[i] == n)
-                {
-                    r = diff_[i][NS_];
-                    break;
-                }
-            }
+            return diff_[idx][NS_];
         }
-
-        return r;
+        else
+        {
+            return 0;
+        }
     }
 
     basicInterface::~basicInterface()
