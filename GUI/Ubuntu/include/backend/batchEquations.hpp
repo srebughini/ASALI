@@ -47,6 +47,7 @@ namespace ASALI
     class batchEquations : public ASALI::catalyticReactorsEquations
     {
     public:
+        /// Class constructor
         batchEquations();
 
         /// Enable/disable energy balance

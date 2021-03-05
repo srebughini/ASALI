@@ -123,6 +123,11 @@ namespace ASALI
         }
     }
 
+    void het1dEquations::setEnergy(const bool flag)
+    {
+        energyEquation_ = flag;
+    }
+
     void het1dEquations::setPressure(const double P)
     {
         P_ = P;

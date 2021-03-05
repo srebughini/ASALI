@@ -96,6 +96,11 @@ namespace ASALI
         }
     }
 
+    void cstrEquations::setEnergy(const bool flag)
+    {
+        energyEquation_ = flag;
+    }
+
     void cstrEquations::setPressure(const double P)
     {
         P_ = P;
