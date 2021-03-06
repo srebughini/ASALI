@@ -414,7 +414,7 @@ namespace ASALI
         Cantera::Kinetics *kinetic;
         {
             std::vector<Cantera::ThermoPhase *> gas_phases{thermo};
-            kinetic = Cantera::newKineticsMgr(thermo->xml(), phases);
+            kinetic = Cantera::newKineticsMgr(thermo->xml(), gas_phases);
         }
 
         // Create surface phase as SurfPhase and surface kinetic as InterfaceKinetics

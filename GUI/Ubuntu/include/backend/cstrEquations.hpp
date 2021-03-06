@@ -105,6 +105,7 @@ namespace ASALI
         double V_;            /// Reactor volume in [m3]
         double alfa_;         /// Catalytic load in [m2/m3]
         double mass_;         /// Total mass in [kg]
+        double Q_;            /// Inlet mass flow rate [kg/s]
         double QfromGas_;     /// Homogeneous heat of reactions in [W/m3]
         double QfromSurface_; /// Heterogeneous heat of reactions in [W/m2]
         double SD_;           /// Site density in [1/m2]

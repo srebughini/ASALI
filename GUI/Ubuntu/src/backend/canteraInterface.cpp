@@ -62,6 +62,7 @@ namespace ASALI
 
         for (unsigned int i = 0; i < SURF_NS_; i++)
         {
+            std::cout << i << std::endl;
             nc_[i] = surface_->speciesName(i);
         }
     }
