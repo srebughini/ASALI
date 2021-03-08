@@ -158,49 +158,52 @@ namespace ASALI
 
         bool energyEquation_;     /// Bool to enable/disable energy balance
 
-        std::vector<double> omega_;         /// Mass fraction
-        std::vector<double> x_;             /// Mole fraction
-        std::vector<double> z_;             /// Discretized length
-        std::vector<double> kMat_;          /// Mass transfer coefficient
-        std::vector<double> RfromGas_;      /// Species homogeneous reactions in [kg/m3/s]
-        std::vector<double> RfromSurface_;  /// Species heterogeneous reactions in [kg/m2/s]
-        std::vector<double> Z_;             /// Coverage
-        std::vector<double> Rsurface_;      /// Coverage heterogeneous reactions in [kg/m2/s]
-        std::vector<double> dy_;            /// Accumulation term of mass and energy balance
-        std::vector<double> y_;             /// Integration variables
-        std::vector<double> h_;             /// Species mass enthalpy in [J/kg]
-        std::vector<double> omega0_;        /// Initial mass fraction
-        std::vector<double> kHeatVector_;   /// Heat transfer coefficient 
-        std::vector<double> TBvector_;      /// Gas temperature in [K]
-        std::vector<double> TWvector_;      /// Catalyst temperature in [K]
-        std::vector<double> rhoVector_;     /// Gas density in [kg/m3]
-        std::vector<double> cpVector_;      /// Gas specific heat in [J/kg/K]
-        std::vector<double> condVector_;    /// Gas thermal conductivity in [W/m2/K]
-        std::vector<double> QfromGasVector_;
-        std::vector<double> QfromSurfaceVector_;
+        std::vector<double> omega_;              /// Mass fraction
+        std::vector<double> x_;                  /// Mole fraction
+        std::vector<double> z_;                  /// Discretized length
+        std::vector<double> kMat_;               /// Mass transfer coefficient
+        std::vector<double> RfromGas_;           /// Species homogeneous reactions in [kg/m3/s]
+        std::vector<double> RfromSurface_;       /// Species heterogeneous reactions in [kg/m2/s]
+        std::vector<double> Z_;                  /// Coverage
+        std::vector<double> Rsurface_;           /// Coverage heterogeneous reactions in [kg/m2/s]
+        std::vector<double> dy_;                 /// Accumulation term of mass and energy balance
+        std::vector<double> y_;                  /// Integration variables
+        std::vector<double> h_;                  /// Species mass enthalpy in [J/kg]
+        std::vector<double> omega0_;             /// Initial mass fraction
+        std::vector<double> kHeatVector_;        /// Heat transfer coefficient 
+        std::vector<double> TBvector_;           /// Gas temperature in [K]
+        std::vector<double> TWvector_;           /// Catalyst temperature in [K]
+        std::vector<double> rhoVector_;          /// Gas density in [kg/m3]
+        std::vector<double> cpVector_;           /// Gas specific heat in [J/kg/K]
+        std::vector<double> condVector_;         /// Gas thermal conductivity in [W/m2/K]
+        std::vector<double> QfromGasVector_;     /// Homogeneous heat of reactions in [W/m3]
+        std::vector<double> QfromSurfaceVector_; /// Heterogeneous heat of reactions in [W/m2]
+        std::vector<double> Length_;             /// Discretized reactor length in [m]
+        std::vector<double> Time_;               /// Integration time vector [s]
+        std::vector<double> Pressure_;           /// Pressure at different integration times in [Pa]
+        
+        std::vector<bool> algb_;                 /// Algebraic equations flags
+        
+        std::vector<std::vector<double>> omegaBMatrix_;       /// Mass fraction in the gas phase
+        std::vector<std::vector<double>> omegaWMatrix_;       /// Mole fraction on the catalyst
+        std::vector<std::vector<double>> Zmatrix_;            /// Coverage
+        std::vector<std::vector<double>> diffMatrix_;         /// Mixture diffusion coefficients in [m2/s]
+        std::vector<std::vector<double>> RfromGasMatrix_;     /// Species homogeneous reactions in [kg/m3/s] 
+        std::vector<std::vector<double>> kMatMatrix_;         /// Heat transfer coefficient 
+        std::vector<std::vector<double>> RfromSurfaceMatrix_; /// Species heterogeneous reactions in [kg/m2/s]
+        std::vector<std::vector<double>> RsurfaceMatrix_;     /// Coverage heterogeneous reactions in [kg/m2/s]
+        std::vector<std::vector<double>> TemperatureB_;       /// Gas phase temperature at different integration times in [K]
+        std::vector<std::vector<double>> TemperatureW_;       /// Catalyst temperature at different integration times in [K]
 
-        std::vector<std::vector<double>> omegaBMatrix_;
-        std::vector<std::vector<double>> omegaWMatrix_;
-        std::vector<std::vector<double>> Zmatrix_;
-        std::vector<std::vector<double>> diffMatrix_;
-        std::vector<std::vector<double>> RfromGasMatrix_;
-        std::vector<std::vector<double>> kMatMatrix_;
-        std::vector<std::vector<double>> RfromSurfaceMatrix_;
-        std::vector<std::vector<double>> RsurfaceMatrix_;
+        std::vector<std::vector<std::vector<double>>> SpecieB_; /// Gas phase mass fraction at different integration time
+        std::vector<std::vector<std::vector<double>>> SpecieW_; /// Catalyst phase mass fraction at different integration time
+        std::vector<std::vector<std::vector<double>>> Site_;    /// Coverage at different integration time
 
+        /// Estimate mass transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], density [kg/m3], diffusivity [m2/s]
         std::vector<double> massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d);
+        
+        /// Estimate heat transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], thermal condutivity [W/m2/K], specific heat [J/kg/K]
         double heatTransferCoefficient(const double z, const double mu, const double cond, const double cp);
-
-        std::vector<double> Length_;
-        std::vector<double> Time_;
-        std::vector<double> Pressure_;
-        std::vector<std::vector<double>> TemperatureB_;
-        std::vector<std::vector<double>> TemperatureW_;
-        std::vector<std::vector<std::vector<double>>> SpecieB_;
-        std::vector<std::vector<std::vector<double>>> SpecieW_;
-        std::vector<std::vector<std::vector<double>>> Site_;
-
-        std::vector<bool> algb_;
     };
 }
 
