@@ -19,3 +19,11 @@ redirect_from: /docs/index.html
         <a class="btn btn-primary btn" href="https://github.com/srebughini/JASALI" role="button">Learn more</a>
     </p>
 </div>
+<div class="row">
+    <h3 class="text-center">BEERQ<br></h3>
+    <p class="text-center"><a href="https://srebughini.github.io/BEERQ/">BEERQ</a> is a JavaScript library to generate random beer related quotes in different languages. It is available as <a href="https://www.npmjs.com/package/beerq">npm package</a> allowing JavaScript developers to easily include it in their own projects and it is always looking for new contributors.
+    </p>
+    <p class="text-center">
+        <a class="btn btn-primary btn" href="https://srebughini.github.io/BEERQ/" role="button">Learn more</a>
+    </p>
+</div>
