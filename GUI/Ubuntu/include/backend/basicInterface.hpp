@@ -49,6 +49,8 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include <numeric>
+#include <functional>
 
 namespace ASALI
 {
