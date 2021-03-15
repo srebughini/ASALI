@@ -39,11 +39,11 @@
 #ifndef TRANSPORTPROPERTIES_H
 #define TRANSPORTPROPERTIES_H
 
-#include "frontend/basicProperties.hpp"
+#include "frontend/thermoTransportProperties.hpp"
 
 namespace ASALI
 {
-    class transportProperties : public ASALI::basicProperties
+    class transportProperties : public ASALI::thermoTransportProperties
     {
     public:
         transportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
@@ -53,34 +53,9 @@ namespace ASALI
         void results();
         void save();
         void clean();
-        void condUnitConversion(bool check);
-        void muUnitConversion(bool check);
-        void diffUnitConversion(bool check);
-        void diffSpecies(unsigned int row);
+        void update();
 
     private:
-        Gtk::Box condBox_;
-        Gtk::Box muBox_;
-        Gtk::Box diffBox_;
-
-        Gtk::Button exitButton2_;
-        Gtk::Button saveButton_;
-        Gtk::Button backButton_;
-
-        Gtk::Label condLabel_;
-        Gtk::Label muLabel_;
-        Gtk::Label diffLabel_;
-
-        Gtk::ComboBoxText condCombo_;
-        Gtk::ComboBoxText diffCombo_;
-        Gtk::ComboBoxText muCombo_;
-
-
-        std::vector<Gtk::Label *> condVector_;
-        std::vector<Gtk::Label *> muVector_;
-        std::vector<Gtk::Label *> diffVector_;
-        std::vector<Gtk::ComboBoxText *> speciesCombo_;
-        std::vector<Gtk::Box *> diffBoxVector_;
     };
 }
 

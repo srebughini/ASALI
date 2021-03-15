@@ -40,21 +40,17 @@
 
 namespace ASALI
 {
-    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames,
-                                       std::string kineticType)
-        : transportProperties(speciesNames, kineticType),
+    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+        : basicProperties(speciesNames, kineticType),
           exitButton_("Exit"),
           saveButton_("Save"),
           calculateButton_("Calculate"),
-          helpButton_("Available species"),
           tempBox_(Gtk::ORIENTATION_VERTICAL),
           pressBox_(Gtk::ORIENTATION_VERTICAL),
           lengthBox_(Gtk::ORIENTATION_VERTICAL),
           diffBox_(Gtk::ORIENTATION_VERTICAL),
           velocityBox_(Gtk::ORIENTATION_VERTICAL),
           pathBox_(Gtk::ORIENTATION_VERTICAL),
-          tempLabel_("Temperature"),
-          pressLabel_("Pressure"),
           lengthLabel_("Length"),
           diffLabel_("Diffusivity"),
           specieLabel_("Specie"),
@@ -71,9 +67,16 @@ namespace ASALI
         this->set_title("ASALI: Vacuum properties");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->createInputGrid();
+    }
 
+    vacuumProperties::~vacuumProperties()
+    {
+    }
+
+    void vacuumProperties::createInputGrid()
+    {
         this->add(grid_);
-
         grid_.set_column_homogeneous(true);
         grid_.set_column_spacing(10);
         grid_.set_row_spacing(10);
@@ -141,7 +144,7 @@ namespace ASALI
         diffCombo_.append("m\u00b2/s");
         diffCombo_.append("cm\u00b2/s");
         diffCombo_.set_active(0);
-        diffCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::run));
+        diffCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
         //Add velocity selector
         grid_.attach(velocityBox_, 1, 2, 1, 1);
@@ -153,7 +156,7 @@ namespace ASALI
         velocityCombo_.append("m/s");
         velocityCombo_.append("cm/s");
         velocityCombo_.set_active(1);
-        velocityCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::run));
+        velocityCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
         //Add path selector
         grid_.attach(pathBox_, 2, 2, 1, 1);
@@ -170,7 +173,7 @@ namespace ASALI
         pathCombo_.append("nm");
         pathCombo_.append("pm");
         pathCombo_.set_active(1);
-        pathCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::run));
+        pathCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
         //Add results
         grid_.attach(diffResults_, 0, 3, 1, 1);
@@ -182,7 +185,7 @@ namespace ASALI
         grid_.attach(knudsenLabel_, 3, 2, 1, 1);
         grid_.attach(calculateButton_, 0, 5, 1, 1);
         grid_.attach(saveButton_, 2, 5, 1, 1);
-        calculateButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::run));
+        calculateButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::results));
         saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::save));
         grid_.attach(exitButton_, 3, 5, 1, 1);
         exitButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::exit));
@@ -193,15 +196,10 @@ namespace ASALI
             grid_.attach(helpButton_, 1, 5, 1, 1);
             helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::availableSpecies));
         }
-
         this->show_all_children();
     }
 
-    vacuumProperties::~vacuumProperties()
-    {
-    }
-
-    void vacuumProperties::read()
+    void vacuumProperties::inputReader()
     {
         T_ = Glib::Ascii::strtod(tempEntry_.get_text());
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
@@ -267,9 +265,9 @@ namespace ASALI
         }
     }
 
-    void vacuumProperties::run()
+    void vacuumProperties::results()
     {
-        this->read();
+        this->inputReader();
         if (checkInput_.second == false)
         {
             this->checkInput(checkInput_.first);
@@ -423,7 +421,7 @@ namespace ASALI
     {
         if (diffResults_.get_text() == "?")
         {
-            this->run();
+            this->results();
         }
 
         std::string filename = this->save_file(this->get_toplevel()->gobj(), "vacuum.asali");

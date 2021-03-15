@@ -39,11 +39,11 @@
 #ifndef THERMOPROPERTIES_H
 #define THERMOPROPERTIES_H
 
-#include "frontend/basicProperties.hpp"
+#include "frontend/thermoTransportProperties.hpp"
 
 namespace ASALI
 {
-    class thermoProperties : public ASALI::basicProperties
+    class thermoProperties : public ASALI::thermoTransportProperties
     {
     public:
         thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
@@ -53,35 +53,9 @@ namespace ASALI
         void results();
         void save();
         void clean();
-        void cpUnitConversion(bool check);
-        void hUnitConversion(bool check);
-        void sUnitConversion(bool check);
-
-        std::vector<double> cp_;
-        std::vector<double> h_;
-        std::vector<double> s_;
+        void update();
 
     private:
-        Gtk::Box cpBox_;
-        Gtk::Box hBox_;
-        Gtk::Box sBox_;
-
-        Gtk::Button exitButton2_;
-        Gtk::Button saveButton_;
-        Gtk::Button backButton_;
-
-        Gtk::Label cpLabel_;
-        Gtk::Label hLabel_;
-        Gtk::Label sLabel_;
-
-        Gtk::ComboBoxText cpCombo_;
-        Gtk::ComboBoxText hCombo_;
-        Gtk::ComboBoxText sCombo_;
-
-        std::vector<Gtk::Label *> cpVector_;
-        std::vector<Gtk::Label *> hVector_;
-        std::vector<Gtk::Label *> sVector_;
-        std::vector<Gtk::ComboBoxText *> speciesCombo_;
     };
 }
 

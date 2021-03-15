@@ -42,7 +42,7 @@ namespace ASALI
 {
     linearRegression::linearRegression(ASALI::speciesPopup *speciesNames,
                                        std::string kineticType)
-        : thermoProperties(speciesNames, kineticType),
+        : basicProperties(speciesNames, kineticType),
           tempBox_(Gtk::ORIENTATION_VERTICAL),
           exitButton2_("Exit"),
           backButton_("Back"),
@@ -69,6 +69,7 @@ namespace ASALI
             this->set_title("ASALI: Linear regression");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->createInputGrid();
             this->cleanInput();
         }
 
@@ -565,4 +566,6 @@ namespace ASALI
             p = p; //m2/s
         }
     }
+
+    void linearRegression::save() {}
 }

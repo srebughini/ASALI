@@ -41,16 +41,7 @@
 namespace ASALI
 {
     thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
-        : basicProperties(speciesNames, kineticType),
-          cpBox_(Gtk::ORIENTATION_VERTICAL),
-          hBox_(Gtk::ORIENTATION_VERTICAL),
-          sBox_(Gtk::ORIENTATION_VERTICAL),
-          exitButton2_("Exit"),
-          saveButton_("Save"),
-          backButton_("Back"),
-          cpLabel_("Specific Heat"),
-          hLabel_("Enthalpy"),
-          sLabel_("Entropy")
+        : thermoTransportProperties(speciesNames, kineticType)
     {
         //Input menu
         {
@@ -59,72 +50,6 @@ namespace ASALI
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
             this->input();
-        }
-
-        //Results
-        {
-            resultsGrid_.set_column_homogeneous(true);
-            resultsGrid_.set_column_spacing(10);
-            resultsGrid_.set_row_spacing(10);
-
-            //Specific heat
-            cpBox_.pack_start(cpLabel_, Gtk::PACK_SHRINK);
-            cpBox_.pack_start(cpCombo_, Gtk::PACK_SHRINK);
-            cpBox_.set_spacing(5);
-            cpBox_.set_halign(Gtk::ALIGN_CENTER);
-            cpCombo_.append("J/kmol/K");
-            cpCombo_.append("J/mol/K");
-            cpCombo_.append("J/kg/K");
-            cpCombo_.append("cal/mol/K");
-            cpCombo_.append("cal/kmol/K");
-            cpCombo_.append("cal/kg/K");
-            cpCombo_.set_active(0);
-            cpCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::cpUnitConversion), true));
-
-            //Entropy
-            sBox_.pack_start(sLabel_, Gtk::PACK_SHRINK);
-            sBox_.pack_start(sCombo_, Gtk::PACK_SHRINK);
-            sBox_.set_spacing(5);
-            sBox_.set_halign(Gtk::ALIGN_CENTER);
-            sCombo_.append("J/kmol/K");
-            sCombo_.append("J/mol/K");
-            sCombo_.append("J/kg/K");
-            sCombo_.append("cal/mol/K");
-            sCombo_.append("cal/kmol/K");
-            sCombo_.append("cal/kg/K");
-            sCombo_.set_active(0);
-            sCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::sUnitConversion), true));
-
-            //Enthalpy
-            hBox_.pack_start(hLabel_, Gtk::PACK_SHRINK);
-            hBox_.pack_start(hCombo_, Gtk::PACK_SHRINK);
-            hBox_.set_spacing(5);
-            hBox_.set_halign(Gtk::ALIGN_CENTER);
-            hCombo_.append("J/kmol");
-            hCombo_.append("J/mol");
-            hCombo_.append("J/kg");
-            hCombo_.append("cal/kmol");
-            hCombo_.append("cal/mol");
-            hCombo_.append("cal/kg");
-            hCombo_.set_active(0);
-            hCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::hUnitConversion), true));
-
-            //Add heading
-            resultsGrid_.attach(cpBox_, 1, 0, 1, 1);
-            resultsGrid_.attach(hBox_, 2, 0, 1, 1);
-            resultsGrid_.attach(sBox_, 3, 0, 1, 1);
-
-            //Add back button
-            resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
-            backButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::input));
-
-            //Add print on file
-            resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
-            saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::save));
-
-            //Add exit button
-            resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
-            exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::exit));
         }
     }
 
@@ -252,224 +177,77 @@ namespace ASALI
                 this->add(resultsGrid_);
                 this->resize(resultsGrid_.get_width(), resultsGrid_.get_height());
                 this->showAtomNames();
-                this->cpUnitConversion(false);
-                this->hUnitConversion(false);
-                this->sUnitConversion(false);
+                this->cpUnitConversion(false, 1);
+                this->hUnitConversion(false, 2);
+                this->sUnitConversion(false, 3);
             }
         }
     }
 
-    void thermoProperties::cpUnitConversion(bool check)
+    void thermoProperties::update()
     {
-        if (check == true)
-        {
-            if (cpVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < cpVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*cpVector_[i]);
-                }
-            }
-        }
+        resultsGrid_.set_column_homogeneous(true);
+        resultsGrid_.set_column_spacing(10);
+        resultsGrid_.set_row_spacing(10);
 
-        cpVector_.clear();
-        cpVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
+        //Specific heat
+        cpBox_.pack_start(cpLabel_, Gtk::PACK_SHRINK);
+        cpBox_.pack_start(cpCombo_, Gtk::PACK_SHRINK);
+        cpBox_.set_spacing(5);
+        cpBox_.set_halign(Gtk::ALIGN_CENTER);
+        cpCombo_.append("J/kmol/K");
+        cpCombo_.append("J/mol/K");
+        cpCombo_.append("J/kg/K");
+        cpCombo_.append("cal/mol/K");
+        cpCombo_.append("cal/kmol/K");
+        cpCombo_.append("cal/kg/K");
+        cpCombo_.set_active(0);
+        cpCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::cpUnitConversion), true, 1));
 
-        if (cpCombo_.get_active_row_number() == 0)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1.; //J/kmol/K
-            }
-        }
-        else if (cpCombo_.get_active_row_number() == 1)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 1.e03; //J/mol/K
-            }
-        }
-        else if (cpCombo_.get_active_row_number() == 2)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / MW_[i]; //J/kg/K
-            }
-        }
-        else if (cpCombo_.get_active_row_number() == 3)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 4.186; //cal/kmol/K
-            }
-        }
-        else if (cpCombo_.get_active_row_number() == 4)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol/K
-            }
-        }
-        else if (cpCombo_.get_active_row_number() == 5)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg/K
-            }
-        }
+        //Enthalpy
+        hBox_.pack_start(hLabel_, Gtk::PACK_SHRINK);
+        hBox_.pack_start(hCombo_, Gtk::PACK_SHRINK);
+        hBox_.set_spacing(5);
+        hBox_.set_halign(Gtk::ALIGN_CENTER);
+        hCombo_.append("J/kmol");
+        hCombo_.append("J/mol");
+        hCombo_.append("J/kg");
+        hCombo_.append("cal/kmol");
+        hCombo_.append("cal/mol");
+        hCombo_.append("cal/kg");
+        hCombo_.set_active(0);
+        hCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::hUnitConversion), true, 2));
 
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            std::stringstream cp;
-            cp << std::scientific << std::setprecision(OP_) << cp_[i] * converter[i];
-            cpVector_[i] = new Gtk::Label(cp.str());
-            resultsGrid_.attach(*cpVector_[i], 1, i + 1, 1, 1);
-        }
+        //Entropy
+        sBox_.pack_start(sLabel_, Gtk::PACK_SHRINK);
+        sBox_.pack_start(sCombo_, Gtk::PACK_SHRINK);
+        sBox_.set_spacing(5);
+        sBox_.set_halign(Gtk::ALIGN_CENTER);
+        sCombo_.append("J/kmol/K");
+        sCombo_.append("J/mol/K");
+        sCombo_.append("J/kg/K");
+        sCombo_.append("cal/mol/K");
+        sCombo_.append("cal/kmol/K");
+        sCombo_.append("cal/kg/K");
+        sCombo_.set_active(0);
+        sCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::sUnitConversion), true, 3));
 
-        this->show_all_children();
-    }
+        //Add heading
+        resultsGrid_.attach(cpBox_, 1, 0, 1, 1);
+        resultsGrid_.attach(hBox_, 2, 0, 1, 1);
+        resultsGrid_.attach(sBox_, 3, 0, 1, 1);
 
-    void thermoProperties::hUnitConversion(bool check)
-    {
-        if (check == true)
-        {
-            if (hVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < hVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*hVector_[i]);
-                }
-            }
-        }
+        //Add back button
+        resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
+        backButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::input));
 
-        hVector_.clear();
-        hVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
+        //Add print on file
+        resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
+        saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::save));
 
-        if (hCombo_.get_active_row_number() == 0)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1.; //J/kmol
-            }
-        }
-        else if (hCombo_.get_active_row_number() == 1)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 1.e03; //J/mol
-            }
-        }
-        else if (hCombo_.get_active_row_number() == 2)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / MW_[i]; //J/kg
-            }
-        }
-        else if (hCombo_.get_active_row_number() == 3)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 4.186; //cal/kmol
-            }
-        }
-        else if (hCombo_.get_active_row_number() == 4)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol
-            }
-        }
-        else if (hCombo_.get_active_row_number() == 5)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg
-            }
-        }
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            std::stringstream h;
-            h << std::scientific << std::setprecision(OP_) << h_[i] * converter[i];
-            hVector_[i] = new Gtk::Label(h.str());
-            resultsGrid_.attach(*hVector_[i], 2, i + 1, 1, 1);
-        }
-
-        this->show_all_children();
-    }
-
-    void thermoProperties::sUnitConversion(bool check)
-    {
-        if (check == true)
-        {
-            if (sVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < sVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*sVector_[i]);
-                }
-            }
-        }
-
-        sVector_.clear();
-        sVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
-
-        if (sCombo_.get_active_row_number() == 0)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1.; //J/kmol/K
-            }
-        }
-        else if (sCombo_.get_active_row_number() == 1)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 1.e03; //J/mol/K
-            }
-        }
-        else if (sCombo_.get_active_row_number() == 2)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / MW_[i]; //J/kg/K
-            }
-        }
-        else if (sCombo_.get_active_row_number() == 3)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 4.186; //cal/kmol/K
-            }
-        }
-        else if (sCombo_.get_active_row_number() == 4)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol/K
-            }
-        }
-        else if (sCombo_.get_active_row_number() == 5)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg/K
-            }
-        }
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            std::stringstream s;
-            s << std::scientific << std::setprecision(OP_) << std::setprecision(OP_) << s_[i] * converter[i];
-            sVector_[i] = new Gtk::Label(s.str());
-            resultsGrid_.attach(*sVector_[i], 3, i + 1, 1, 1);
-        }
-
-        this->show_all_children();
+        //Add exit button
+        resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
+        exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::exit));
     }
 
     void thermoProperties::save()

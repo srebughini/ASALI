@@ -76,16 +76,15 @@ namespace ASALI
 
         virtual ~basicProperties();
 
-        virtual void results();
-        virtual void save();
-        virtual void clean();
-        virtual void showAtomNames();
+        virtual void results() = 0;
+        virtual void save() = 0;
 
         void exit();
         void availableSpecies();
         void input();
         void savedMessage();
         void inputReader();
+        void createInputGrid();
         void checkInput(unsigned int i);
 
         #if ASALI_USING_CANTERA == 1

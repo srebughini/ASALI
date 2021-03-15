@@ -43,17 +43,17 @@
 
 namespace ASALI
 {
-    class linearRegression : public ASALI::thermoProperties
+    class linearRegression : public ASALI::basicProperties
     {
     public:
-        linearRegression(ASALI::speciesPopup *speciesNames,
-                         std::string kineticType);
+        linearRegression(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
-#include "shared/Vector.H"
+        #include "shared/Vector.H"
 
         virtual ~linearRegression();
 
-        virtual void results();
+        void results();
+        void save();
 
     private:
         void cleanInput();

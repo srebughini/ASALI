@@ -40,18 +40,8 @@
 
 namespace ASALI
 {
-    transportProperties::transportProperties(ASALI::speciesPopup *speciesNames,
-                                             std::string kineticType)
-        : basicProperties(speciesNames, kineticType),
-          condBox_(Gtk::ORIENTATION_VERTICAL),
-          muBox_(Gtk::ORIENTATION_VERTICAL),
-          diffBox_(Gtk::ORIENTATION_VERTICAL),
-          exitButton2_("Exit"),
-          saveButton_("Save"),
-          backButton_("Back"),
-          condLabel_("Thermal conductivity"),
-          muLabel_("Viscosity"),
-          diffLabel_("Diffusivity")
+    transportProperties::transportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+        : thermoTransportProperties(speciesNames, kineticType)
     {
         //Input menu
         {
@@ -60,59 +50,6 @@ namespace ASALI
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
             this->input();
-        }
-
-        //Results
-        {
-            resultsGrid_.set_column_homogeneous(true);
-            resultsGrid_.set_column_spacing(10);
-            resultsGrid_.set_row_spacing(10);
-
-            //Thermal conductivity
-            condBox_.pack_start(condLabel_, Gtk::PACK_SHRINK);
-            condBox_.pack_start(condCombo_, Gtk::PACK_SHRINK);
-            condBox_.set_spacing(5);
-            condBox_.set_halign(Gtk::ALIGN_CENTER);
-            condCombo_.append("W/m/K");
-            condCombo_.append("cal/m/s/k");
-            condCombo_.set_active(0);
-            condCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::condUnitConversion), true));
-
-            //Viscosity
-            muBox_.pack_start(muLabel_, Gtk::PACK_SHRINK);
-            muBox_.pack_start(muCombo_, Gtk::PACK_SHRINK);
-            muBox_.set_spacing(5);
-            muBox_.set_halign(Gtk::ALIGN_CENTER);
-            muCombo_.append("Pas");
-            muCombo_.append("cP");
-            muCombo_.set_active(0);
-            muCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::muUnitConversion), true));
-
-            //Diffusivity
-            diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
-            diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
-            diffBox_.set_spacing(5);
-            diffBox_.set_halign(Gtk::ALIGN_CENTER);
-            diffCombo_.append("m\u00b2/s");
-            diffCombo_.set_active(0);
-            diffCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::diffUnitConversion), true));
-
-            //Add heading
-            resultsGrid_.attach(condBox_, 1, 0, 1, 1);
-            resultsGrid_.attach(muBox_, 2, 0, 1, 1);
-            resultsGrid_.attach(diffBox_, 3, 0, 1, 1);
-
-            //Add back button
-            resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
-            backButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::input));
-
-            //Add print on file
-            resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
-            saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::save));
-
-            //Add exit button
-            resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
-            exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::exit));
         }
     }
 
@@ -251,187 +188,63 @@ namespace ASALI
             this->add(resultsGrid_);
             this->resize(resultsGrid_.get_width(), resultsGrid_.get_height());
             this->showAtomNames();
-            this->condUnitConversion(false);
-            this->muUnitConversion(false);
-            this->diffUnitConversion(false);
+            this->condUnitConversion(false, 1);
+            this->muUnitConversion(false, 2);
+            this->diffUnitConversion(false, 3);
         }
     }
 
-    void transportProperties::condUnitConversion(bool check)
+    void transportProperties::update()
     {
-        if (check == true)
-        {
-            if (condVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < condVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*condVector_[i]);
-                }
-            }
-        }
+        resultsGrid_.set_column_homogeneous(true);
+        resultsGrid_.set_column_spacing(10);
+        resultsGrid_.set_row_spacing(10);
 
-        condVector_.clear();
-        condVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
+        //Thermal conductivity
+        condBox_.pack_start(condLabel_, Gtk::PACK_SHRINK);
+        condBox_.pack_start(condCombo_, Gtk::PACK_SHRINK);
+        condBox_.set_spacing(5);
+        condBox_.set_halign(Gtk::ALIGN_CENTER);
+        condCombo_.append("W/m/K");
+        condCombo_.append("cal/m/s/k");
+        condCombo_.set_active(0);
+        condCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::condUnitConversion), true, 1));
 
-        if (condCombo_.get_active_row_number() == 0)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1.; //W/m/K
-            }
-        }
-        else if (condCombo_.get_active_row_number() == 1)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1. / 4.186; //cal/m/s/K
-            }
-        }
+        //Viscosity
+        muBox_.pack_start(muLabel_, Gtk::PACK_SHRINK);
+        muBox_.pack_start(muCombo_, Gtk::PACK_SHRINK);
+        muBox_.set_spacing(5);
+        muBox_.set_halign(Gtk::ALIGN_CENTER);
+        muCombo_.append("Pas");
+        muCombo_.append("cP");
+        muCombo_.set_active(0);
+        muCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::muUnitConversion), true, 2));
 
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            std::stringstream cond;
-            cond << std::scientific << std::setprecision(OP_) << cond_[i] * converter[i];
-            condVector_[i] = new Gtk::Label(cond.str());
-            resultsGrid_.attach(*condVector_[i], 1, i + 1, 1, 1);
-        }
+        //Diffusivity
+        diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
+        diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
+        diffBox_.set_spacing(5);
+        diffBox_.set_halign(Gtk::ALIGN_CENTER);
+        diffCombo_.append("m\u00b2/s");
+        diffCombo_.set_active(0);
+        diffCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::diffUnitConversion), true, 3));
 
-        this->show_all_children();
-    }
+        //Add heading
+        resultsGrid_.attach(condBox_, 1, 0, 1, 1);
+        resultsGrid_.attach(muBox_, 2, 0, 1, 1);
+        resultsGrid_.attach(diffBox_, 3, 0, 1, 1);
 
-    void transportProperties::muUnitConversion(bool check)
-    {
-        if (check == true)
-        {
-            if (muVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < muVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*muVector_[i]);
-                }
-            }
-        }
+        //Add back button
+        resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
+        backButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::input));
 
-        muVector_.clear();
-        muVector_.resize(n_.size());
-        std::vector<double> converter(n_.size());
+        //Add print on file
+        resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
+        saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::save));
 
-        if (muCombo_.get_active_row_number() == 0)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1.; //Pa
-            }
-        }
-        else if (muCombo_.get_active_row_number() == 1)
-        {
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                converter[i] = 1e03; //cP
-            }
-        }
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            std::stringstream mu;
-            mu << std::scientific << std::setprecision(OP_) << mu_[i] * converter[i];
-            muVector_[i] = new Gtk::Label(mu.str());
-            resultsGrid_.attach(*muVector_[i], 2, i + 1, 1, 1);
-        }
-
-        this->show_all_children();
-    }
-
-    void transportProperties::diffUnitConversion(bool check)
-    {
-        if (check == true)
-        {
-            if (diffBoxVector_.size() != 0)
-            {
-                for (unsigned int i = 0; i < diffBoxVector_.size(); i++)
-                {
-                    resultsGrid_.remove(*diffBoxVector_[i]);
-                }
-            }
-        }
-
-        speciesCombo_.clear();
-        diffBoxVector_.clear();
-        diffVector_.clear();
-        speciesCombo_.resize(n_.size());
-        diffBoxVector_.resize(n_.size());
-        diffVector_.resize(n_.size());
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            speciesCombo_[i] = new Gtk::ComboBoxText();
-            diffBoxVector_[i] = new Gtk::Box();
-            for (unsigned int j = 0; j < n_.size(); j++)
-            {
-                speciesCombo_[i]->append(n_[j]);
-                speciesCombo_[i]->set_active(j);
-            }
-            speciesCombo_[i]->signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this, &transportProperties::diffSpecies), i));
-            diffBoxVector_[i]->pack_end(*speciesCombo_[i]);
-        }
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            this->diffSpecies(i);
-            resultsGrid_.attach(*diffBoxVector_[i], 3, i + 1, 1, 1);
-        }
-
-        this->show_all_children();
-    }
-
-    void transportProperties::diffSpecies(unsigned int row)
-    {
-        double converter = 0.;
-        if (diffCombo_.get_active_row_number() == 0)
-        {
-            converter = 1.; //m2/s
-        }
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            if (speciesCombo_[row]->get_active_row_number() == int(i))
-            {
-                std::string diffstr = "";
-
-                if (diff_[row][i] == -1)
-                {
-                    diffstr = "n.a.";
-                    if (diffBoxVector_[row]->get_children().size() == 1)
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                    }
-                    else if (diffBoxVector_[row]->get_children().size() == 2)
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[1]);
-                    }
-                }
-                else
-                {
-                    std::stringstream diff;
-                    diff << std::scientific << std::setprecision(OP_) << diff_[row][i] * converter;
-                    diffstr = diffstr + diff.str() + " in ";
-
-                    if (diffBoxVector_[row]->get_children().size() > 1)
-                    {
-                        diffBoxVector_[row]->remove(*diffBoxVector_[row]->get_children()[0]);
-                    }
-                }
-
-                diffVector_[i] = new Gtk::Label(diffstr);
-                diffBoxVector_[row]->pack_start(*diffVector_[i]);
-
-                break;
-            }
-        }
-
-        this->show_all_children();
+        //Add exit button
+        resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
+        exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::exit));
     }
 
     void transportProperties::save()

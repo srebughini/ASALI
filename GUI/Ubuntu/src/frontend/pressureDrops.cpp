@@ -42,7 +42,7 @@ namespace ASALI
 {
     pressureDrops::pressureDrops(ASALI::speciesPopup *speciesNames,
                                  std::string kineticType)
-        : transportProperties(speciesNames, kineticType),
+        : basicProperties(speciesNames, kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           calculateButton_("Calculate"),
           backButton3_("Back"),
@@ -613,4 +613,9 @@ namespace ASALI
         }
     }
 
+
+    void pressureDrops::save()
+    {
+        
+    }
 }

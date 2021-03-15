@@ -61,82 +61,6 @@ namespace ASALI
             this->set_title("ASALI: Basic properties");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
-
-            //Add background grid
-            this->add(inputGrid_);
-
-            inputGrid_.set_column_homogeneous(true);
-            inputGrid_.set_column_spacing(10);
-            inputGrid_.set_row_homogeneous(true);
-            inputGrid_.set_row_spacing(10);
-
-            //Add temperature selector
-            inputGrid_.attach(tempLabel_, 0, 0, 1, 1);
-            inputGrid_.attach(tempEntry_, 1, 0, 1, 1);
-            tempEntry_.set_max_length(10);
-            tempEntry_.set_text("298.15");
-            inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
-            tempCombo_.append("K");
-            tempCombo_.append("°C");
-            tempCombo_.append("°F");
-            tempCombo_.set_active(0);
-
-            //Add temperature selector
-            inputGrid_.attach(pressLabel_, 0, 1, 1, 1);
-            inputGrid_.attach(pressEntry_, 1, 1, 1, 1);
-            pressEntry_.set_max_length(10);
-            pressEntry_.set_text("101325");
-            inputGrid_.attach(pressCombo_, 2, 1, 1, 1);
-            pressCombo_.append("Pa");
-            pressCombo_.append("GPa");
-            pressCombo_.append("MPa");
-            pressCombo_.append("kPa");
-            pressCombo_.append("bar");
-            pressCombo_.append("torr");
-            pressCombo_.append("mmHg");
-            pressCombo_.append("atm");
-            pressCombo_.set_active(0);
-
-            //Add mole or mass fraction selection
-            inputGrid_.attach(fractionCombo_, 1, 2, 1, 1);
-            fractionCombo_.append("Mole fraction");
-            fractionCombo_.append("Mass fraction");
-            fractionCombo_.set_active(0);
-
-            nameEntry_.resize(NS_);
-            fractionEntry_.resize(NS_);
-            for (unsigned int i = 0; i < NS_; i++)
-            {
-                nameEntry_[i] = new Gtk::Entry();
-                fractionEntry_[i] = new Gtk::Entry();
-
-                inputGrid_.attach(*nameEntry_[i], 0, 3 + i, 1, 1);
-                nameEntry_[i]->set_max_length(10);
-                inputGrid_.attach(*fractionEntry_[i], 1, 3 + i, 1, 1);
-                fractionEntry_[i]->set_max_length(10);
-                if (i == 0)
-                {
-                    nameEntry_[i]->set_text("AR");
-                    fractionEntry_[i]->set_text("1");
-                }
-            }
-
-            //Add help button
-            if (kineticType_ == "default")
-            {
-                inputGrid_.attach(helpButton_, 1, 13, 1, 1);
-                helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::availableSpecies));
-            }
-
-            //Add back button
-            inputGrid_.attach(exitButton1_, 0, 13, 1, 1);
-            exitButton1_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::exit));
-
-            //Done buttons
-            inputGrid_.attach(doneButton_, 2, 13, 1, 1);
-            doneButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::results));
-
-            this->show_all_children();
         }
     }
 
@@ -155,6 +79,93 @@ namespace ASALI
         chemistryInterface_ = chemistryInterface;
     }
     #endif
+
+    void basicProperties::createInputGrid()
+    {
+        //Add background grid
+        this->add(inputGrid_);
+
+        inputGrid_.set_column_homogeneous(true);
+        inputGrid_.set_column_spacing(10);
+        inputGrid_.set_row_homogeneous(true);
+        inputGrid_.set_row_spacing(10);
+
+        //Add temperature selector
+        inputGrid_.attach(tempLabel_, 0, 0, 1, 1);
+        inputGrid_.attach(tempEntry_, 1, 0, 1, 1);
+        tempEntry_.set_max_length(10);
+        tempEntry_.set_text("298.15");
+        inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
+        tempCombo_.append("K");
+        tempCombo_.append("°C");
+        tempCombo_.append("°F");
+        tempCombo_.set_active(0);
+
+        //Add temperature selector
+        inputGrid_.attach(pressLabel_, 0, 1, 1, 1);
+        inputGrid_.attach(pressEntry_, 1, 1, 1, 1);
+        pressEntry_.set_max_length(10);
+        pressEntry_.set_text("101325");
+        inputGrid_.attach(pressCombo_, 2, 1, 1, 1);
+        pressCombo_.append("Pa");
+        pressCombo_.append("GPa");
+        pressCombo_.append("MPa");
+        pressCombo_.append("kPa");
+        pressCombo_.append("bar");
+        pressCombo_.append("torr");
+        pressCombo_.append("mmHg");
+        pressCombo_.append("atm");
+        pressCombo_.set_active(0);
+
+        //Add mole or mass fraction selection
+        inputGrid_.attach(fractionCombo_, 1, 2, 1, 1);
+        fractionCombo_.append("Mole fraction");
+        fractionCombo_.append("Mass fraction");
+        fractionCombo_.set_active(0);
+
+        nameEntry_.resize(NS_);
+        fractionEntry_.resize(NS_);
+        for (unsigned int i = 0; i < NS_; i++)
+        {
+            nameEntry_[i] = new Gtk::Entry();
+            fractionEntry_[i] = new Gtk::Entry();
+
+            inputGrid_.attach(*nameEntry_[i], 0, 3 + i, 1, 1);
+            nameEntry_[i]->set_max_length(10);
+            inputGrid_.attach(*fractionEntry_[i], 1, 3 + i, 1, 1);
+            fractionEntry_[i]->set_max_length(10);
+            if (i == 0)
+            {
+                nameEntry_[i]->set_text("AR");
+                fractionEntry_[i]->set_text("1");
+            }
+        }
+
+        //Add help button
+        if (kineticType_ == "default")
+        {
+            inputGrid_.attach(helpButton_, 1, 13, 1, 1);
+            helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::availableSpecies));
+        }
+
+        //Add back button
+        inputGrid_.attach(exitButton1_, 0, 13, 1, 1);
+        exitButton1_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::exit));
+
+        //Done buttons
+        inputGrid_.attach(doneButton_, 2, 13, 1, 1);
+        doneButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::results));
+
+        this->show_all_children();
+    }
+
+    void basicProperties::input()
+    {
+        this->remove();
+        this->add(inputGrid_);
+        this->resize(inputGrid_.get_width(),inputGrid_.get_height());
+        this->show_all_children();
+    }
 
     void basicProperties::availableSpecies()
     {
@@ -278,26 +289,6 @@ namespace ASALI
         dialog.run();
     }
 
-    void basicProperties::showAtomNames()
-    {
-        if (nameVector_.size() != 0)
-        {
-            for (unsigned int i = 0; i < nameVector_.size(); i++)
-            {
-                resultsGrid_.remove(*nameVector_[i]);
-            }
-        }
-
-        nameVector_.clear();
-        nameVector_.resize(n_.size());
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            nameVector_[i] = new Gtk::Label(n_[i]);
-            resultsGrid_.attach(*nameVector_[i], 0, i + 1, 1, 1);
-        }
-    }
-
     std::string basicProperties::getBeer()
     {
         unsigned int seed = time(NULL);
@@ -311,10 +302,4 @@ namespace ASALI
         int i = rand_r(&seed) % beerShort_.size();
         return beerShort_[i];
     }
-
-    virtual void basicProperties::clean() {}
-
-    virtual void basicProperties::results() {}
-
-    virtual void basicProperties::save() {}
 }

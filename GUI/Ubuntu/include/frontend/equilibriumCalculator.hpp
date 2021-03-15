@@ -43,39 +43,30 @@
 
 namespace ASALI
 {
-    class equilibriumCalculator : public ASALI::transportProperties
+    class equilibriumCalculator : public ASALI::thermoTransportProperties
     {
     public:
-        equilibriumCalculator(ASALI::speciesPopup *speciesNames,
-                              std::string kineticType);
-
-#include "shared/FileManager.H"
+        equilibriumCalculator(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
         virtual ~equilibriumCalculator();
 
-        virtual void save();
-        virtual void results();
-        virtual void showAtomNames();
+        void save();
+        void results();
+        void clean();
+        void update();
+        void showAtomNames();
 
     private:
-        void clean();
         void initialFractionUnitConversion();
         void finalFractionUnitConversion();
 
-        Gtk::Button exitButton2_;
-        Gtk::Button saveButton_;
-        Gtk::Button backButton_;
-
         Gtk::Label initialStateLabel_;
         Gtk::Label finalStateLabel_;
-
-        Gtk::Grid resultsGrid_;
 
         Gtk::ComboBoxText equilibriumCombo_;
         Gtk::ComboBoxText initialFractionCombo_;
         Gtk::ComboBoxText finalFractionCombo_;
 
-        std::vector<Gtk::Label *> nameVector_;
         std::vector<Gtk::Label *> initialFractionVector_;
         std::vector<Gtk::Label *> finalFractionVector_;
 

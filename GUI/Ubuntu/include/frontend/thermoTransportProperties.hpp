@@ -39,31 +39,31 @@
 #ifndef THERMOTRANSPORTPROPERTIES_H
 #define THERMOTRANSPORTPROPERTIES_H
 
-#include "frontend/thermoProperties.hpp"
+#include "frontend/basicProperties.hpp"
 
 namespace ASALI
 {
-    class thermoTransportProperties : public ASALI::thermoProperties
+    class thermoTransportProperties : public ASALI::basicProperties
     {
     public:
-        thermoTransportProperties(ASALI::speciesPopup *speciesNames,
-                                  std::string kineticType);
+        thermoTransportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
         virtual ~thermoTransportProperties();
 
         virtual void results();
         virtual void save();
         virtual void clean();
-        virtual void showAtomNames();
-        virtual void condUnitConversion(bool check);
-        virtual void muUnitConversion(bool check);
-        virtual void diffUnitConversion(bool check);
-        virtual void diffSpecies(unsigned int row);
-        virtual void cpUnitConversion(bool check);
-        virtual void hUnitConversion(bool check);
-        virtual void sUnitConversion(bool check);
+        virtual void update();
+        
+        void showAtomNames();
+        void diffSpecies(unsigned int row);
+        void condUnitConversion(bool check, unsigned int col);
+        void muUnitConversion(bool check, unsigned int col);
+        void diffUnitConversion(bool check, unsigned int col);
+        void cpUnitConversion(bool check, unsigned int col);
+        void hUnitConversion(bool check, unsigned int col);
+        void sUnitConversion(bool check, unsigned int col);
 
-    private:
         Gtk::Box condBox_;
         Gtk::Box muBox_;
         Gtk::Box diffBox_;
@@ -100,6 +100,12 @@ namespace ASALI
         std::vector<Gtk::Label *> sVector_;
         std::vector<Gtk::ComboBoxText *> speciesCombo_;
         std::vector<Gtk::Box *> diffBoxVector_;
+
+        std::vector<double> cp_;
+        std::vector<double> h_;
+        std::vector<double> s_;
+
+    private:
     };
 }
 

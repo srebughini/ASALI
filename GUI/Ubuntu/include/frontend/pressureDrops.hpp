@@ -39,19 +39,19 @@
 #ifndef PRESSUREDROPS_H
 #define PRESSUREDROPS_H
 
-#include "frontend/transportProperties.hpp"
+#include "frontend/basicProperties.hpp"
 
 namespace ASALI
 {
-    class pressureDrops : public ASALI::transportProperties
+    class pressureDrops : public ASALI::basicProperties
     {
     public:
-        pressureDrops(ASALI::speciesPopup *speciesNames,
-                      std::string kineticType);
+        pressureDrops(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
         virtual ~pressureDrops();
 
-        virtual void results();
+        void results();
+        void save();
 
     private:
         void read();

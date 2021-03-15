@@ -84,12 +84,16 @@ namespace ASALI
     
     double basicInterface::specieProperty(std::string p, std::string n)
     {
+        int idx = 0;
         if (n != "mix")
         {
             this->convertToCaption(n);
+            idx = this->getSpecieIndex(n);
         }
-
-        int idx = this->getSpecieIndex(n);
+        else
+        {
+            idx = int(NS_);
+        }
 
         if (p == "h")
         {

@@ -39,30 +39,28 @@
 #ifndef VACUUMPROPERTIES_H
 #define VACUUMPROPERTIES_H
 
-#include "frontend/transportProperties.hpp"
+#include "frontend/basicProperties.hpp"
 
 namespace ASALI
 {
-    class vacuumProperties : public ASALI::transportProperties
+    class vacuumProperties : public ASALI::basicProperties
     {
     public:
-        vacuumProperties(ASALI::speciesPopup *speciesNames,
-                         std::string kineticType);
+        vacuumProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
         virtual ~vacuumProperties();
 
-        virtual void save();
+        void results();
+        void save();
+        void inputReader();
+        void createInputGrid();
 
     private:
-        void run();
-        void read();
-
         Gtk::Grid grid_;
 
         Gtk::Button exitButton_;
         Gtk::Button saveButton_;
         Gtk::Button calculateButton_;
-        Gtk::Button helpButton_;
 
         Gtk::Box tempBox_;
         Gtk::Box pressBox_;
@@ -71,8 +69,6 @@ namespace ASALI
         Gtk::Box velocityBox_;
         Gtk::Box pathBox_;
 
-        Gtk::Label tempLabel_;
-        Gtk::Label pressLabel_;
         Gtk::Label lengthLabel_;
         Gtk::Label diffLabel_;
         Gtk::Label specieLabel_;
@@ -84,9 +80,7 @@ namespace ASALI
         Gtk::Label pathResults_;
         Gtk::Label knudsenResults_;
 
-        Gtk::ComboBoxText pressCombo_;
         Gtk::ComboBoxText lengthCombo_;
-        Gtk::ComboBoxText tempCombo_;
         Gtk::ComboBoxText diffCombo_;
         Gtk::ComboBoxText velocityCombo_;
         Gtk::ComboBoxText pathCombo_;
