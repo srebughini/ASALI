@@ -222,7 +222,7 @@ do
         ;;
         -c|--clean)
         CheckCommand python3
-        CheckCommand python-config
+        CheckCommand python3-config
         CheckCommand make
         Clean
         ;;
@@ -262,7 +262,7 @@ done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 CheckCommand python3
-CheckCommand python-config
+CheckCommand python3-config
 CheckCommand make
 CheckOperatingSystem "$operating_system"
 CheckCantera "$with_cantera" "$cantera_path" "$folder_api"
