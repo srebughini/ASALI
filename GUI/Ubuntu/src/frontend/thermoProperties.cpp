@@ -40,9 +40,8 @@
 
 namespace ASALI
 {
-    thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames,
-                                       std::string kineticType)
-        : transportProperties(speciesNames, kineticType),
+    thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+        : basicProperties(speciesNames, kineticType),
           cpBox_(Gtk::ORIENTATION_VERTICAL),
           hBox_(Gtk::ORIENTATION_VERTICAL),
           sBox_(Gtk::ORIENTATION_VERTICAL),
@@ -257,26 +256,6 @@ namespace ASALI
                 this->hUnitConversion(false);
                 this->sUnitConversion(false);
             }
-        }
-    }
-
-    void thermoProperties::showAtomNames()
-    {
-        if (nameVector_.size() != 0)
-        {
-            for (unsigned int i = 0; i < nameVector_.size(); i++)
-            {
-                resultsGrid_.remove(*nameVector_[i]);
-            }
-        }
-
-        nameVector_.clear();
-        nameVector_.resize(n_.size());
-
-        for (unsigned int i = 0; i < n_.size(); i++)
-        {
-            nameVector_[i] = new Gtk::Label(n_[i]);
-            resultsGrid_.attach(*nameVector_[i], 0, i + 1, 1, 1);
         }
     }
 

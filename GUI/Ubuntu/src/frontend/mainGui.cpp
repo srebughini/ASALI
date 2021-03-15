@@ -611,7 +611,7 @@ namespace ASALI
         }
     }
 
-#if ASALI_USING_CANTERA == 1
+    #if ASALI_USING_CANTERA == 1
     void mainGui::chemkin()
     {
         if (!converter_)
@@ -965,7 +965,7 @@ namespace ASALI
         dpMenu_->setChemistryInterface(chemistryInterface_);
         dpMenu_->show();
     }
-#endif
+    #endif
 
     void mainGui::exit()
     {

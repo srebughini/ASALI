@@ -38,6 +38,14 @@
 
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
+/*
+#include "cantera/thermo.h"
+#include "cantera/transport.h"
+#include "cantera/kinetics.h"
+#include "cantera/transport/TransportData.h"
+#include "cantera/thermo/SurfPhase.h"
+#include "cantera/kinetics/InterfaceKinetics.h"
+#include "backend/basicInterface.hpp"*/
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"

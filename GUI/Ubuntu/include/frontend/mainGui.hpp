@@ -94,7 +94,7 @@ namespace ASALI
 
         bool chemistryMenu1(GdkEventButton *);
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         void chemkin();
         void loadCanteraInput();
         void equilibrium();
@@ -105,7 +105,7 @@ namespace ASALI
         void ph1d();
         void het1d();
         void dp();
-#endif
+        #endif
 
         std::string getBeer();
         std::string getBeerShort();
@@ -191,7 +191,7 @@ namespace ASALI
         ASALI::linearRegression *linearRegressionMenu_;
         ASALI::kineticMaker *kineticMakerMenu_;
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         ASALI::chemkinConverter *converter_;
         ASALI::canteraInterface *chemistryInterface_;
         ASALI::equilibriumCalculator *equilibriumMenu_;
@@ -201,8 +201,8 @@ namespace ASALI
         ASALI::het1dReactor *het1dMenu_;
         ASALI::pressureDrops *dpMenu_;
         ASALI::catalyticPellet *pelletMenu_;
-#else
+        #else
         ASALI::asaliInterface *chemistryInterface_;
-#endif
+        #endif
     };
 }

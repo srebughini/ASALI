@@ -39,119 +39,24 @@
 #ifndef TRANSPORTPROPERTIES_H
 #define TRANSPORTPROPERTIES_H
 
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
-#include <numeric>
-#include <functional>
-
-#include "frontend/speciesPopup.hpp"
-
-#if ASALI_USING_CANTERA == 1
-#include "backend/canteraInterface.hpp"
-#else
-#include "backend/asaliInterface.hpp"
-#endif
+#include "frontend/basicProperties.hpp"
 
 namespace ASALI
 {
-    class transportProperties : public Gtk::Window
+    class transportProperties : public ASALI::basicProperties
     {
     public:
-        transportProperties(ASALI::speciesPopup *speciesNames,
-                            std::string kineticType);
-
-#include "shared/FileManager.H"
+        transportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
         virtual ~transportProperties();
 
-        virtual void results();
-        virtual void save();
-        virtual void clean();
-        virtual void showAtomNames();
-        virtual void condUnitConversion(bool check);
-        virtual void muUnitConversion(bool check);
-        virtual void diffUnitConversion(bool check);
-        virtual void diffSpecies(unsigned int row);
-
-#include "shared/UnitConversion.H"
-#include "shared/Vector.H"
-
-        void exit();
-        void availableSpecies();
-        void input();
-        void savedMessage();
-        void inputReader();
-        void checkInput(unsigned int i);
-
-#if ASALI_USING_CANTERA == 1
-        void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
-#else
-        void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
-#endif
-
-        std::string getBeer();
-        std::string getBeerShort();
-
-        Gtk::Button helpButton_;
-        Gtk::Button exitButton1_;
-        Gtk::Button doneButton_;
-
-        Gtk::Grid inputGrid_;
-
-        Gtk::Label tempLabel_;
-        Gtk::Label pressLabel_;
-        Gtk::Label fractionLabel_;
-
-        Gtk::Entry tempEntry_;
-        Gtk::Entry pressEntry_;
-
-        Gtk::ComboBoxText tempCombo_;
-        Gtk::ComboBoxText pressCombo_;
-        Gtk::ComboBoxText fractionCombo_;
-
-        std::vector<Gtk::Entry *> nameEntry_;
-        std::vector<Gtk::Entry *> fractionEntry_;
-
-        unsigned int NS_;
-        unsigned int OP_;
-
-        double T_;
-        double p_;
-
-        std::pair<unsigned int, bool> checkInput_;
-
-        std::vector<double> x_;
-        std::vector<double> y_;
-        std::vector<double> MW_;
-        std::vector<double> cond_;
-        std::vector<double> mu_;
-
-        std::vector<std::vector<double>> diff_;
-
-        std::vector<std::string> n_;
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
-
-        std::string kineticType_;
-
-        ASALI::speciesPopup *speciesNames_;
-
-#if ASALI_USING_CANTERA == 1
-        ASALI::canteraInterface *chemistryInterface_;
-#else
-        ASALI::asaliInterface *chemistryInterface_;
-#endif
+        void results();
+        void save();
+        void clean();
+        void condUnitConversion(bool check);
+        void muUnitConversion(bool check);
+        void diffUnitConversion(bool check);
+        void diffSpecies(unsigned int row);
 
     private:
         Gtk::Box condBox_;
@@ -162,8 +67,6 @@ namespace ASALI
         Gtk::Button saveButton_;
         Gtk::Button backButton_;
 
-        Gtk::Grid resultsGrid_;
-
         Gtk::Label condLabel_;
         Gtk::Label muLabel_;
         Gtk::Label diffLabel_;
@@ -172,7 +75,7 @@ namespace ASALI
         Gtk::ComboBoxText diffCombo_;
         Gtk::ComboBoxText muCombo_;
 
-        std::vector<Gtk::Label *> nameVector_;
+
         std::vector<Gtk::Label *> condVector_;
         std::vector<Gtk::Label *> muVector_;
         std::vector<Gtk::Label *> diffVector_;

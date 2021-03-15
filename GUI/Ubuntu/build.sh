@@ -1,7 +1,5 @@
 #bin/bash
 
-folder_api=$(cd '../../API/Cpp'; pwd)
-
 function echoRed {
     echo -e "\e[31m$1\e[0m"
 }
@@ -121,10 +119,11 @@ function CheckCantera()
         asali_using_cantera=1
         fi
     else
+        local folder_api=$(cd '../../API/Cpp'; pwd)
         mkdir -p ext/shared/
-        cp -u $3/shared/* ext/shared/.
-        cp -u $3/Asali.cpp ext/.
-        cp -u $3/Asali.hpp ext/.
+        cp -u $folder_api/shared/* ext/shared/.
+        cp -u $folder_api/Asali.cpp ext/.
+        cp -u $folder_api/Asali.hpp ext/.
         asali_using_cantera=0
     fi
 }

@@ -36,52 +36,121 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#ifndef THERMOPROPERTIES_H
-#define THERMOPROPERTIES_H
+#ifndef BASICPROPERTIES_H
+#define BASICPROPERTIES_H
 
-#include "frontend/basicProperties.hpp"
+#include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+#include <thread>
+#include <numeric>
+#include <functional>
+
+#include "frontend/speciesPopup.hpp"
+
+#if ASALI_USING_CANTERA == 1
+#include "backend/canteraInterface.hpp"
+#else
+#include "backend/asaliInterface.hpp"
+#endif
 
 namespace ASALI
 {
-    class thermoProperties : public ASALI::basicProperties
+    class basicProperties : public Gtk::Window
     {
     public:
-        thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
+        basicProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
-        virtual ~thermoProperties();
+        #include "shared/FileManager.H"
+        #include "shared/UnitConversion.H"
+        #include "shared/Vector.H"
 
-        void results();
-        void save();
-        void clean();
-        void cpUnitConversion(bool check);
-        void hUnitConversion(bool check);
-        void sUnitConversion(bool check);
+        virtual ~basicProperties();
 
-        std::vector<double> cp_;
-        std::vector<double> h_;
-        std::vector<double> s_;
+        virtual void results();
+        virtual void save();
+        virtual void clean();
+        virtual void showAtomNames();
+
+        void exit();
+        void availableSpecies();
+        void input();
+        void savedMessage();
+        void inputReader();
+        void checkInput(unsigned int i);
+
+        #if ASALI_USING_CANTERA == 1
+        void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
+        #else
+        void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
+        #endif
+
+        std::string getBeer();
+        std::string getBeerShort();
+
+        Gtk::Button helpButton_;
+        Gtk::Button exitButton1_;
+        Gtk::Button doneButton_;
+
+        Gtk::Grid inputGrid_;
+        Gtk::Grid resultsGrid_;
+
+        Gtk::Label tempLabel_;
+        Gtk::Label pressLabel_;
+        Gtk::Label fractionLabel_;
+
+        Gtk::Entry tempEntry_;
+        Gtk::Entry pressEntry_;
+
+        Gtk::ComboBoxText tempCombo_;
+        Gtk::ComboBoxText pressCombo_;
+        Gtk::ComboBoxText fractionCombo_;
+
+        std::vector<Gtk::Entry *> nameEntry_;
+        std::vector<Gtk::Entry *> fractionEntry_;
+
+        std::vector<Gtk::Label *> nameVector_;
+
+        unsigned int NS_;
+        unsigned int OP_;
+
+        double T_;
+        double p_;
+
+        std::pair<unsigned int, bool> checkInput_;
+
+        std::vector<double> x_;
+        std::vector<double> y_;
+        std::vector<double> MW_;
+        std::vector<double> cond_;
+        std::vector<double> mu_;
+
+        std::vector<std::vector<double>> diff_;
+
+        std::vector<std::string> n_;
+        std::vector<std::string> beer_;
+        std::vector<std::string> beerShort_;
+
+        std::string kineticType_;
+
+        ASALI::speciesPopup *speciesNames_;
+
+        #if ASALI_USING_CANTERA == 1
+        ASALI::canteraInterface *chemistryInterface_;
+        #else
+        ASALI::asaliInterface *chemistryInterface_;
+        #endif
 
     private:
-        Gtk::Box cpBox_;
-        Gtk::Box hBox_;
-        Gtk::Box sBox_;
-
-        Gtk::Button exitButton2_;
-        Gtk::Button saveButton_;
-        Gtk::Button backButton_;
-
-        Gtk::Label cpLabel_;
-        Gtk::Label hLabel_;
-        Gtk::Label sLabel_;
-
-        Gtk::ComboBoxText cpCombo_;
-        Gtk::ComboBoxText hCombo_;
-        Gtk::ComboBoxText sCombo_;
-
-        std::vector<Gtk::Label *> cpVector_;
-        std::vector<Gtk::Label *> hVector_;
-        std::vector<Gtk::Label *> sVector_;
-        std::vector<Gtk::ComboBoxText *> speciesCombo_;
     };
 }
 
