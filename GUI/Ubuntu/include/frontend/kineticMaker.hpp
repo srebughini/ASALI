@@ -55,7 +55,7 @@
 #include <numeric>
 #include <functional>
 
-#if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA==1
 #include "backend/canteraInterface.hpp"
 #else
 #include "backend/asaliInterface.hpp"
@@ -68,8 +68,9 @@ namespace ASALI
     public:
         kineticMaker();
 
-#include "shared/FileManager.H"
-
+        #include "shared/FileManager.H"
+        #include "shared/Vector.H"
+        
         void species();
         void reactionNumber();
         void reaction();
@@ -78,22 +79,20 @@ namespace ASALI
         void save();
         void exit();
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
-#else
+        #else
         void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
-#endif
+        #endif
 
         std::string getBeer();
         std::string getBeerShort();
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         ASALI::canteraInterface *chemistryInterface_;
-#else
+        #else
         ASALI::asaliInterface *chemistryInterface_;
-#endif
-
-#include "shared/Vector.H"
+        #endif
 
         virtual ~kineticMaker();
 

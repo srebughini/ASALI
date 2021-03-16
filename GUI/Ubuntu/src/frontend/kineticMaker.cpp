@@ -88,8 +88,8 @@ namespace ASALI
             op_.push_back(".");
         }
 
-#include "shared/Beer.H"
-#include "shared/BeerShort.H"
+        #include "shared/Beer.H"
+        #include "shared/BeerShort.H"
 
         //Reaction number
         {
@@ -245,17 +245,17 @@ namespace ASALI
         }
     }
 
-#if ASALI_USING_CANTERA == 1
+    #if ASALI_USING_CANTERA==1
     void kineticMaker::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-#else
+    #else
     void kineticMaker::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-#endif
+    #endif
 
     void kineticMaker::species()
     {
