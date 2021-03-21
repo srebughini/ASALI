@@ -131,12 +131,15 @@ namespace ASALI
         /// Return number of coverage species
         unsigned int numberOfSurfaceSpecies();
 
+        /// Return the flag for surface species and reactions
+        bool isSurface();
+
         /// Class destructor
         ~asaliInterface();
 
     private:
-        ASALI::Asali *asali_;            /// ASALI/API object
-        std::vector<std::string> names_; /// Gas species names in the ASALI/API database
+        ASALI::Asali *asali_;               /// ASALI/API object
+        std::vector<std::string> allNames_; /// Gas species names in the ASALI/API database
     };
 }
 

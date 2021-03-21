@@ -110,8 +110,11 @@ namespace ASALI
         inline std::vector<double> mass() { return mass_; };
 
         /// Return gas species names
-        inline std::vector<std::string> names() { return n_; };
-        
+        inline std::vector<std::string> names() { return names_; };
+
+        /// Return gas species names and mixture
+        inline std::vector<std::string> mixtureNames() { return n_; };
+
         /// Return coverage species names
         inline std::vector<std::string> coverageNames() { return nc_; };
 
@@ -196,6 +199,9 @@ namespace ASALI
         /// Return number of coverage species
         virtual unsigned int numberOfSurfaceSpecies() = 0;
 
+        /// Return the flag for surface species and reactions
+        virtual bool isSurface() = 0;
+
         /// Class destructor
         virtual ~basicInterface();
 
@@ -220,8 +226,9 @@ namespace ASALI
 
         std::vector<std::vector<double>> diff_; /// Species binary and mixture diffusion coefficients [m2/s]
 
-        std::vector<std::string> n_;  /// Gas species names
-        std::vector<std::string> nc_; /// Coverage species names
+        std::vector<std::string> names_;  /// Gas species names
+        std::vector<std::string> n_;      /// Gas species names including "mix"
+        std::vector<std::string> nc_;     /// Coverage species names
 
         const double pi_ = 3.14159265358979323846; /// Pi
 

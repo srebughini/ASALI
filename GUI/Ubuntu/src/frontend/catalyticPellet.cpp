@@ -467,10 +467,6 @@ namespace ASALI
 
     void catalyticPellet::input()
     {
-        {
-            signal.disconnect();
-            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticPellet::kineticShow));
-        }
         this->switchTo();
         this->remove();
         this->add(mainBox_);
@@ -722,7 +718,7 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->setMW(constantProperties_->get_MW());
+                eq_->setMW(constantProperties_->getMW());
                 eq_->setHomogeneousReactions(true);
             }
             else
@@ -767,7 +763,7 @@ namespace ASALI
             std::vector<double> xInlet(x_.size());
             if (fractionCombo_.get_active_row_number() == 0)
             {
-                xInlet = constantProperties_->get_mass_fraction(constantProperties_->get_MW(), x_);
+                xInlet = constantProperties_->getMassFraction(constantProperties_->getMW(), x_);
             }
             else if (fractionCombo_.get_active_row_number() == 1)
             {
@@ -1073,10 +1069,10 @@ namespace ASALI
         this->compositionReader();
         this->kineticReader();
         constantProperties_->destroy();
-        constantProperties_->set_type("pellet");
-        constantProperties_->set_energy("off");
-        constantProperties_->set_n(n_);
-        constantProperties_->set_reactions(pi_->getNumberOfHomReactions(), pi_->getNumberOfHetReactions());
+        constantProperties_->setType("pellet");
+        constantProperties_->setEnergy("off");
+        constantProperties_->setSpeciesNames(n_);
+        constantProperties_->setReactions(pi_->getNumberOfHomReactions(), pi_->getNumberOfHetReactions());
         constantProperties_->build();
         constantProperties_->show();
 
@@ -1126,7 +1122,7 @@ namespace ASALI
                                     x[i] = y[j][k][i];
                                 }
 
-                                x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), x);
+                                x = constantProperties_->getMoleFraction(constantProperties_->getMW(), x);
 
                                 for (unsigned int i = 0; i < n_.size(); i++)
                                 {
@@ -1303,94 +1299,54 @@ namespace ASALI
         plot_ = new ASALI::plot();
         plot_->setTime(eq_->getTime());
 
-        if (kineticCombo_.get_active_text() == "ASALI")
         {
             std::vector<double> t = eq_->getTime();
             std::vector<std::vector<std::vector<double>>> y = eq_->getSpecie();
 
             //Conversion from mass to mole
             std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
+            
+            std::vector<std::string> n = chemistryInterface_->names();
+            unsigned int NS = chemistryInterface_->numberOfGasSpecies();
+ 
+            if (kineticType_ == "none")
             {
-                if (kineticType_ == "none")
+                for (unsigned int j = 0; j < t.size(); j++)
                 {
-                    for (unsigned int j = 0; j < t.size(); j++)
+                    for (unsigned int k = 0; k < NP_; k++)
                     {
-                        for (unsigned int k = 0; k < NP_; k++)
+                        std::vector<double> x(n.size());
+                        for (unsigned int i = 0; i < n.size(); i++)
                         {
-                            std::vector<double> x(n_.size());
-                            for (unsigned int i = 0; i < n_.size(); i++)
-                            {
-                                x[i] = y[j][k][i];
-                            }
-
-                            x = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), x);
-
-                            for (unsigned int i = 0; i < n_.size(); i++)
-                            {
-                                mole[j][k][i] = x[i];
-                            }
+                            x[i] = y[j][k][i];
                         }
-                    }
-                }
-                else
-                {
-                    for (unsigned int j = 0; j < t.size(); j++)
-                    {
-                        for (unsigned int k = 0; k < NP_; k++)
+
+                        x = constantProperties_->getMoleFraction(constantProperties_->getMW(), x);
+
+                        for (unsigned int i = 0; i < n.size(); i++)
                         {
-                            chemistryInterface_->setTemperature(T_);
-                            chemistryInterface_->setPressure(p_);
-                            std::vector<double> x(n_.size());
-
-                            for (unsigned int i = 0; i < n_.size(); i++)
-                            {
-                                x[i] = y[j][k][i];
-                            }
-                            chemistryInterface_->setMassFraction(x, n_);
-
-                            for (unsigned int i = 0; i < n_.size(); i++)
-                            {
-                                for (unsigned int q = 0; q < chemistryInterface_->names().size(); q++)
-                                {
-                                    if (n_[i] == chemistryInterface_->names()[q])
-                                    {
-                                        mole[j][k][i] = chemistryInterface_->mole()[q];
-                                        break;
-                                    }
-                                }
-                            }
+                            mole[j][k][i] = x[i];
                         }
                     }
                 }
             }
-
-            plot_->setSpecieNames(n_);
-            plot_->setSpecie(y, mole);
-        }
-        else if (kineticCombo_.get_active_text() == "CANTERA")
-        {
-            std::vector<double> t = eq_->getTime();
-            std::vector<std::vector<std::vector<double>>> y = eq_->getSpecie();
-
-            //Conversion from mass to mole
-            std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
+            else
             {
-                std::vector<std::string> n = chemistryInterface_->names();
                 for (unsigned int j = 0; j < t.size(); j++)
                 {
                     for (unsigned int k = 0; k < NP_; k++)
                     {
                         chemistryInterface_->setTemperature(T_);
                         chemistryInterface_->setPressure(p_);
-                        std::vector<double> x(chemistryInterface_->numberOfGasSpecies());
-                        for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
+                        std::vector<double> x(NS);
+                        for (unsigned int i = 0; i < NS; i++)
                         {
                             x[i] = y[j][k][i];
                         }
                         chemistryInterface_->setMassFraction(x, n);
                         x = chemistryInterface_->mole();
 
-                        for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
+                        for (unsigned int i = 0; i < NS; i++)
                         {
                             mole[j][k][i] = x[i];
                         }
@@ -1398,10 +1354,14 @@ namespace ASALI
                 }
             }
 
-            plot_->setSpecieNames(chemistryInterface_->names());
+            plot_->setSpecieNames(n);
             plot_->setSpecie(y, mole);
-            plot_->setSiteNames(chemistryInterface_->coverageNames());
-            plot_->setSite(eq_->getSite());
+            
+            if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+            {
+                plot_->setSiteNames(chemistryInterface_->coverageNames());
+                plot_->setSite(eq_->getSite());
+            }
         }
 
         //Length

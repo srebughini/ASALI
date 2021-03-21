@@ -40,17 +40,43 @@
 
 namespace ASALI
 {
-    canteraInterface::canteraInterface(Cantera::ThermoPhase *thermo,
-                                       Cantera::Transport *transport,
-                                       Cantera::Kinetics *kinetic,
-                                       Cantera::SurfPhase *surface,
-                                       Cantera::InterfaceKinetics *surface_kinetic) : basicInterface(),
-                                                                                      thermo_(thermo),
-                                                                                      transport_(transport),
-                                                                                      kinetic_(kinetic),
-                                                                                      surface_(surface),
-                                                                                      surface_kinetic_(surface_kinetic)
+    canteraInterface::canteraInterface(std::string filepath, 
+                                       std::string gasPhaseName,
+                                       std::string surfPhaseName)
+    : basicInterface()
     {
+        // Create gas phase as ThermoPhase
+        {
+            thermo_ = Cantera::newPhase(filepath, gasPhaseName);
+        }
+
+        // Create gas Transport from thermo
+        {
+            transport_ = Cantera::newDefaultTransportMgr(thermo_);
+        }
+
+        // Create gas kinetic reactions as Kinetics from thermo
+        {
+            std::vector<Cantera::ThermoPhase *> gas_phases{thermo_};
+            kinetic_ = Cantera::newKineticsMgr(thermo_->xml(), gas_phases);
+        }
+
+        // Create surface phase as SurfPhase and surface kinetic as InterfaceKinetics
+        if (surfPhaseName != "none")
+        {
+            std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath, surfPhaseName));
+            std::vector<Cantera::ThermoPhase *> gas_and_surface_phases{thermo_, surface_as_thermo.get()};
+            std::shared_ptr<Cantera::Kinetics> surface_as_kinetic(Cantera::newKinetics(gas_and_surface_phases, filepath, surfPhaseName));
+
+            surface_         = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
+            surface_kinetic_ = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
+            is_surface_ = true;
+        }
+        else
+        {
+            is_surface_ = false;
+        }
+
         this->resize();
 
         QfromGas_ = 0.;
@@ -123,6 +149,7 @@ namespace ASALI
             mass_[i] = y_[i];
             mole_[i] = x_[i];
             n_[i] = thermo_->speciesName(i);
+            names_[i] = n_[i];
             MW_[i] = thermo_->molecularWeight(i);
         }
     }
@@ -140,6 +167,7 @@ namespace ASALI
             mass_[i] = y_[i];
             mole_[i] = x_[i];
             n_[i] = thermo_->speciesName(i);
+            names_[i] = n_[i];
             MW_[i] = thermo_->molecularWeight(i);
         }
     }
@@ -155,6 +183,7 @@ namespace ASALI
             mass_[i] = y_[i];
             mole_[i] = x_[i];
             n_[i] = thermo_->speciesName(i);
+            names_[i] = n_[i];
         }
     }
 
@@ -326,7 +355,7 @@ namespace ASALI
 
     unsigned int canteraInterface::numberOfSurfaceSpecies()
     {
-        if (surface_)
+        if (is_surface_)
         {
             return surface_->nSpecies();
         }
@@ -334,6 +363,11 @@ namespace ASALI
         {
             return 0;
         }
+    }
+
+    bool canteraInterface::isSurface()
+    {
+        return is_surface_;
     }
 
     unsigned int canteraInterface::numberOfHomogeneousReactions()
@@ -448,8 +482,7 @@ namespace ASALI
 
             this->setStateFromMassFraction(bulkArray, T, p);
 
-            surface_->setTemperature(T);
-            surface_->setPressure(p);
+            surface_->setState_TP(T, p);
             surface_->setCoveragesNoNorm(coverageArray);
             surface_kinetic_->getNetProductionRates(reactionArray);
 

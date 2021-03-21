@@ -307,16 +307,16 @@ namespace ASALI
                     chemistryInterface_->transportCalculate();
                     for (unsigned int i = 0; i < n_.size(); i++)
                     {
-                        for (unsigned int j = 0; j < chemistryInterface_->names().size(); j++)
+                        for (unsigned int j = 0; j < chemistryInterface_->mixtureNames().size(); j++)
                         {
                             if (n_[i] == chemistryInterface_->names()[j])
                             {
                                 vK_ = vm[j];
                                 for (unsigned int k = 0; k < n_.size(); k++)
                                 {
-                                    for (unsigned int h = 0; h < chemistryInterface_->names().size(); h++)
+                                    for (unsigned int h = 0; h < chemistryInterface_->mixtureNames().size(); h++)
                                     {
-                                        if (n_[k] == chemistryInterface_->names()[h])
+                                        if (n_[k] == chemistryInterface_->mixtureNames()[h])
                                         {
                                             diffK_ = chemistryInterface_->diff()[j][h];
                                             break;

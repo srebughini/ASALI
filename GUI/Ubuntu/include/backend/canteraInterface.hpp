@@ -38,14 +38,7 @@
 
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
-/*
-#include "cantera/thermo.h"
-#include "cantera/transport.h"
-#include "cantera/kinetics.h"
-#include "cantera/transport/TransportData.h"
-#include "cantera/thermo/SurfPhase.h"
-#include "cantera/kinetics/InterfaceKinetics.h"
-#include "backend/basicInterface.hpp"*/
+
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
@@ -61,11 +54,9 @@ namespace ASALI
     {
     public:
         /// Class constructor
-        canteraInterface(Cantera::ThermoPhase *thermo,
-                         Cantera::Transport *transport,
-                         Cantera::Kinetics *kinetic,
-                         Cantera::SurfPhase *surface,
-                         Cantera::InterfaceKinetics *surface_kinetic);
+        canteraInterface(std::string filepath, 
+                         std::string gasPhaseName,
+                         std::string surfPhaseName);
 
         /// Set temperature in [K]
         void setTemperature(const double T);
@@ -147,7 +138,10 @@ namespace ASALI
         
         /// Return number of coverage species
         unsigned int numberOfSurfaceSpecies();
-        
+
+        /// Return the flag for surface species and reactions
+        bool isSurface();
+
         /// Return number of homogeneous reactions
         unsigned int numberOfHomogeneousReactions();
         
@@ -185,11 +179,11 @@ namespace ASALI
         ~canteraInterface();
 
     private:
-        Cantera::ThermoPhase *thermo_;                ///Cantera library thermo phase pointer
-        Cantera::Transport *transport_;               ///Cantera library transport phase pointer
-        Cantera::Kinetics *kinetic_;                  ///Cantera library homogeneous kinetic pointer
-        Cantera::SurfPhase *surface_;                 ///Cantera library surface phase pointer
-        Cantera::InterfaceKinetics *surface_kinetic_; ///Cantera library heterogeneous kinetic pointer
+        Cantera::ThermoPhase* thermo_;                                /// Cantera library thermo phase pointer
+        Cantera::Transport* transport_;                               /// Cantera library transport phase pointer
+        Cantera::Kinetics* kinetic_;                                  /// Cantera library homogeneous kinetic pointer
+        std::shared_ptr<Cantera::SurfPhase> surface_;                 /// Cantera library surface phase pointer
+        std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_; /// Cantera library heterogeneous kinetic pointer
 
         double QfromGas_;     /// Homogeneous heat of reactions in [W/m3]
         double QfromSurface_; /// Heterogeneous heat of reactions in [W/m2]
@@ -198,6 +192,8 @@ namespace ASALI
         std::vector<double> RfromGas_;     /// Species homogeneous reactions in [kg/m3/s]
         std::vector<double> RfromSurface_; /// Species heterogeneous reactions in [kg/m2/s]
         std::vector<double> Rsurface_;     /// Coverage reactions in [kg/m2/s]
+        
+        bool is_surface_; /// Flag that enable surface species
     };
 }
 

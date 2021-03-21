@@ -378,15 +378,7 @@ namespace ASALI
         }
 
         #if ASALI_USING_CANTERA == 1
-        Cantera::ThermoPhase *thermo;
-        Cantera::Transport *transport;
-        Cantera::Kinetics *kinetic;
-        Cantera::SurfPhase *surface;
-        Cantera::InterfaceKinetics *surface_kinetic;
-
-        thermo = Cantera::newPhase(basicXMLfilepath_, basicGasPhase_);
-        transport = Cantera::newDefaultTransportMgr(thermo);
-        chemistryInterface_ = new ASALI::canteraInterface(thermo, transport, kinetic, surface, surface_kinetic);
+        chemistryInterface_ = new ASALI::canteraInterface(basicXMLfilepath_, basicGasPhase_, "none");
         #else
         chemistryInterface_ = new ASALI::asaliInterface();
         #endif
@@ -400,46 +392,7 @@ namespace ASALI
         }
 
         #if ASALI_USING_CANTERA == 1
-        // Create gas phase as ThermoPhase
-        Cantera::ThermoPhase *thermo;
-        {
-            thermo = Cantera::newPhase(filepath, gasPhase);
-        }
-
-        // Create gas Transport from thermo
-        Cantera::Transport *transport;
-        {
-            transport = Cantera::newDefaultTransportMgr(thermo);
-        }
-
-        // Create gas kinetic reactions as Kinetics from thermo
-        Cantera::Kinetics *kinetic;
-        {
-            std::vector<Cantera::ThermoPhase *> gas_phases{thermo};
-            kinetic = Cantera::newKineticsMgr(thermo->xml(), gas_phases);
-        }
-
-        // Create surface phase as SurfPhase and surface kinetic as InterfaceKinetics
-        if (surfPhase != "none")
-        {
-            Cantera::SurfPhase *surface;
-            Cantera::InterfaceKinetics *surface_kinetic;
-            std::shared_ptr<Cantera::ThermoPhase> surface_as_thermo(Cantera::newPhase(filepath, surfPhase));
-            std::vector<Cantera::ThermoPhase *> gas_and_surface_phases{thermo, surface_as_thermo.get()};
-            std::shared_ptr<Cantera::Kinetics> surface_as_kinetic(Cantera::newKinetics(gas_and_surface_phases, filepath, surfPhase));
-
-            std::shared_ptr<Cantera::SurfPhase>         surface_ptr         = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
-            std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_ptr = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
-            surface = surface_ptr.get();
-            surface_kinetic = surface_kinetic_ptr.get();
-            chemistryInterface_ = new ASALI::canteraInterface(thermo, transport, kinetic, surface, surface_kinetic);
-        }
-        else
-        {
-            Cantera::SurfPhase *surface;
-            Cantera::InterfaceKinetics *surface_kinetic;
-            chemistryInterface_ = new ASALI::canteraInterface(thermo, transport, kinetic, surface, surface_kinetic);
-        }
+        chemistryInterface_ = new ASALI::canteraInterface(filepath, gasPhase, surfPhase);
         #else
         chemistryInterface_ = new ASALI::asaliInterface();
         #endif
@@ -761,10 +714,6 @@ namespace ASALI
                         }
                         else
                         {
-                            /*thermo_           = Cantera::newPhase(filename,type);
-                                transport_        = Cantera::newDefaultTransportMgr(thermo_);
-                                chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
-                                */
                             this->updateChemistryInterface(filename, type, "none");
                             speciesNames_ = new ASALI::speciesPopup();
                             kineticType_ = "nokinetic";
@@ -852,22 +801,6 @@ namespace ASALI
                     }
                     else
                     {
-                        /*thermo_     = Cantera::newPhase(filename,type[0]);
-                        surface_    = Cantera::newPhase(filename,type[1]);
-                        
-                        {
-                            std::vector<Cantera::ThermoPhase*>  phases{thermo_};
-                            transport_  = Cantera::newDefaultTransportMgr(thermo_);
-                            kinetic_    = Cantera::newKineticsMgr(thermo_->xml(), phases);
-                        }
-                        
-                        {
-                            std::vector<Cantera::ThermoPhase*>  phases{surface_, thermo_};
-                            surface_kinetic_ = Cantera::newKineticsMgr(surface_->xml(), phases);
-                        }
-
-                        chemistryInterface_ = new ASALI::canteraInterface(thermo_,transport_, kinetic_, surface_, surface_kinetic_);
-                        */
                         this->updateChemistryInterface(filename, type[0], type[1]);
                         kineticType_ = "load";
                         this->mainMenu();

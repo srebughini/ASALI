@@ -149,9 +149,9 @@ namespace ASALI
 
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                for (unsigned int j = 0; j < chemistryInterface_->names().size(); j++)
+                for (unsigned int j = 0; j < chemistryInterface_->mixtureNames().size(); j++)
                 {
-                    if (n_[i] == chemistryInterface_->names()[j])
+                    if (n_[i] == chemistryInterface_->mixtureNames()[j])
                     {
                         h_[i] = chemistryInterface_->h()[j];
                         s_[i] = chemistryInterface_->s()[j];

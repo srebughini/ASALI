@@ -57,7 +57,7 @@ namespace ASALI
           doneButton_("Done"),
           type_("zero")
     {
-#include "shared/Beer.H"
+        #include "shared/Beer.H"
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
@@ -171,17 +171,17 @@ namespace ASALI
         }
     }
 
-    void constantProperties::set_energy(const std::string energy)
+    void constantProperties::setEnergy(const std::string energy)
     {
         energy_ = energy;
     }
 
-    void constantProperties::set_type(const std::string type)
+    void constantProperties::setType(const std::string type)
     {
         type_ = type;
     }
 
-    void constantProperties::set_n(const std::vector<std::string> n)
+    void constantProperties::setSpeciesNames(const std::vector<std::string> n)
     {
         n_ = n;
         NC_ = n.size();
@@ -193,7 +193,7 @@ namespace ASALI
         speciesDiffEntry_.resize(NC_);
     }
 
-    void constantProperties::set_reactions(const unsigned int Nhom, const unsigned int Nhet)
+    void constantProperties::setReactions(const unsigned int Nhom, const unsigned int Nhet)
     {
         Nhom_ = Nhom;
         Nhet_ = Nhet;
@@ -1085,7 +1085,7 @@ namespace ASALI
         }
     }
 
-    std::vector<double> constantProperties::get_mass_fraction(const std::vector<double> MW, const std::vector<double> x)
+    std::vector<double> constantProperties::getMassFraction(const std::vector<double> MW, const std::vector<double> x)
     {
         std::vector<double> y(x.size());
         double MWmix = 0.;
@@ -1102,7 +1102,7 @@ namespace ASALI
         return y;
     }
 
-    std::vector<double> constantProperties::get_mole_fraction(const std::vector<double> MW, const std::vector<double> y)
+    std::vector<double> constantProperties::getMoleFraction(const std::vector<double> MW, const std::vector<double> y)
     {
         std::vector<double> x(y.size());
         double MWmix = 0.;
@@ -1119,7 +1119,7 @@ namespace ASALI
         return x;
     }
 
-    double constantProperties::get_MWmix(const std::vector<double> MW, const std::vector<double> y)
+    double constantProperties::getMWmix(const std::vector<double> MW, const std::vector<double> y)
     {
         double MWmix = 0.;
 

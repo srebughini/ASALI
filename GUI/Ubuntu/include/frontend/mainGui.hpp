@@ -69,8 +69,8 @@ namespace ASALI
 
         virtual ~mainGui();
 
-#include "shared/UnitConversion.H"
-#include "shared/FileManager.H"
+        #include "shared/UnitConversion.H"
+        #include "shared/FileManager.H"
 
     private:
         void exit();

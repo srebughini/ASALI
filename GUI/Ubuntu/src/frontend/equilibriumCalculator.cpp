@@ -101,7 +101,7 @@ namespace ASALI
                 {
                     for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
                     {
-                        if (n_[i] == chemistryInterface_->names()[j])
+                        if (n_[i] == chemistryInterface_->mixtureNames()[j])
                         {
                             x_[i] = x[j];
                             y_[i] = y[j];
@@ -132,7 +132,7 @@ namespace ASALI
                 {
                     for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
                     {
-                        if (n_[i] == chemistryInterface_->names()[j])
+                        if (n_[i] == chemistryInterface_->mixtureNames()[j])
                         {
                             xeq_[i] = x[j];
                             yeq_[i] = y[j];

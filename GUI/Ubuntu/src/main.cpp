@@ -36,6 +36,7 @@
 #                                                                                              #
 ##############################################################################################*/
 
+
 #include "frontend/mainGui.hpp"
 
 int main(int argc, char *argv[])
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
 }
 
 /*
+#include <iostream>
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
@@ -55,7 +57,7 @@ int main(int argc, char *argv[])
 #include "cantera/kinetics/InterfaceKinetics.h"
 
 int main(int argc, char** argv) {
-    std::string filepath = "H2-O2-Rh.xml";
+    std::string filepath = "database/H2-O2-Rh.xml";
     std::string gasPhase = "gas";
     std::string surfPhase = "Rh_surface";
 
@@ -93,6 +95,11 @@ int main(int argc, char** argv) {
         for (auto& name : surface->speciesNames()) {
             Cantera::writelog("{}\n", name);
         }
+        
+        surface->setTemperature(298.15);
+        surface->setPressure(101325);
+        std::cout << "Done" << std::endl;
+        
     }
   return 0;
 }

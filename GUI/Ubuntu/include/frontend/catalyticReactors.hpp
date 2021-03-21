@@ -59,9 +59,9 @@ namespace ASALI
     public:
         catalyticReactors(std::string kineticType);
 
-#include "shared/UnitConversion.H"
-#include "shared/Vector.H"
-#include "shared/FileManager.H"
+        #include "shared/UnitConversion.H"
+        #include "shared/Vector.H"
+        #include "shared/FileManager.H"
 
         virtual ~catalyticReactors();
 
@@ -89,11 +89,11 @@ namespace ASALI
 
         void bar(const double fraction, const std::string tm);
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
-#else
+        #else
         void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
-#endif
+        #endif
 
         unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
 
@@ -162,11 +162,11 @@ namespace ASALI
         std::vector<std::string> beer_;
         std::vector<std::string> beerShort_;
 
-#if ASALI_USING_CANTERA == 1
+        #if ASALI_USING_CANTERA == 1
         ASALI::canteraInterface *chemistryInterface_;
-#else
+        #else
         ASALI::asaliInterface *chemistryInterface_;
-#endif
+        #endif
 
         ASALI::speciesPopup *speciesNames_;
         ASALI::constantProperties *constantProperties_;

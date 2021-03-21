@@ -57,36 +57,40 @@ namespace ASALI
     class constantProperties : public Gtk::Window
     {
     public:
-#include "shared/UnitConversion.H"
-#include "shared/FileManager.H"
+        #include "shared/UnitConversion.H"
+        #include "shared/FileManager.H"
 
         constantProperties();
 
         void destroy();
         void build();
         void savedMessage();
-        void set_type(const std::string type);
-        void set_n(const std::vector<std::string> n);
-        void set_reactions(const unsigned int Nhom, const unsigned int Nhet);
-        void set_energy(const std::string energy);
+        void setType(const std::string type);
+        void setSpeciesNames(const std::vector<std::string> n);
+        void setReactions(const unsigned int Nhom, const unsigned int Nhet);
+        void setEnergy(const std::string energy);
 
         void doneInput();
         void convertToCaption(std::string &n);
 
-        std::vector<double> get_MW() { return MW_; };
-        std::vector<double> get_diff() { return diff_; };
-        std::vector<double> get_Qhom() { return Qhom_; };
-        std::vector<double> get_Qhet() { return Qhet_; };
+        std::vector<double> getMassFraction(const std::vector<double> MW, const std::vector<double> x);
+        std::vector<double> getMoleFraction(const std::vector<double> MW, const std::vector<double> y);
+        double getMWmix(const std::vector<double> MW, const std::vector<double> x);
 
-        double get_cp() { return cp_; };
-        double get_cond() { return cond_; };
-        double get_mu() { return mu_; };
+        inline std::vector<double> getMW() { return MW_; };
+        inline std::vector<double> getDiffMix() { return diff_; };
+        inline std::vector<double> getHomogeneousHeatOfReaction() { return Qhom_; };
+        inline std::vector<double> getHeterogeneousHeatOfReaction() { return Qhet_; };
+        
+        inline std::vector<std::string> names() { return n_;};
 
-        std::vector<double> get_mass_fraction(const std::vector<double> MW, const std::vector<double> x);
-        std::vector<double> get_mole_fraction(const std::vector<double> MW, const std::vector<double> y);
-        double get_MWmix(const std::vector<double> MW, const std::vector<double> x);
+        inline double getCpMassMix() { return cp_; };
+        inline double getCondMix() { return cond_; };
+        inline double getMuMix() { return mu_; };
+        
+        inline unsigned int numberOfGasSpecies() { return n_.size(); }
 
-        std::string get_type() { return type_; };
+        inline std::string get_type() { return type_; };
 
         virtual ~constantProperties();
 

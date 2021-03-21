@@ -617,10 +617,7 @@ namespace ASALI
 
     void het1dReactor::input()
     {
-        {
-            signal.disconnect();
-            signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &het1dReactor::kineticShow));
-        }
+        this->switchTo();
         this->remove();
         this->options();
         this->add(mainBox_);
@@ -910,10 +907,10 @@ namespace ASALI
                 this->kineticReader();
                 eq_->turnOnUserDefined(true);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->setMW(constantProperties_->get_MW());
-                eq_->setQfromSurface(constantProperties_->get_Qhet());
-                eq_->setQfromGas(constantProperties_->get_Qhom());
-                eq_->setCpMassMix(constantProperties_->get_cp());
+                eq_->setMW(constantProperties_->getMW());
+                eq_->setQfromSurface(constantProperties_->getHeterogeneousHeatOfReaction());
+                eq_->setQfromGas(constantProperties_->getHomogeneousHeatOfReaction());
+                eq_->setCpMassMix(constantProperties_->getCpMassMix());
                 eq_->setHomogeneousReactions(true);
             }
             else
@@ -970,8 +967,8 @@ namespace ASALI
             std::vector<double> xInlet(x_.size());
             if (fractionCombo_.get_active_row_number() == 0)
             {
-                xInlet = constantProperties_->get_mass_fraction(constantProperties_->get_MW(), x_);
-                MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(), xInlet);
+                xInlet = constantProperties_->getMassFraction(constantProperties_->getMW(), x_);
+                MWmix = constantProperties_->getMWmix(constantProperties_->getMW(), xInlet);
             }
             else if (fractionCombo_.get_active_row_number() == 1)
             {
@@ -979,7 +976,7 @@ namespace ASALI
                 {
                     xInlet[i] = x_[i];
                 }
-                MWmix = constantProperties_->get_MWmix(constantProperties_->get_MW(), xInlet);
+                MWmix = constantProperties_->getMWmix(constantProperties_->getMW(), xInlet);
             }
 
             std::vector<double> xInside(x_.size());
@@ -1275,10 +1272,10 @@ namespace ASALI
         this->compositionReader();
         this->kineticReader();
         constantProperties_->destroy();
-        constantProperties_->set_type("het1d");
-        constantProperties_->set_energy(energy_);
-        constantProperties_->set_n(n_);
-        constantProperties_->set_reactions(pi_->getNumberOfHomReactions(), pi_->getNumberOfHetReactions());
+        constantProperties_->setType("het1d");
+        constantProperties_->setEnergy(energy_);
+        constantProperties_->setSpeciesNames(n_);
+        constantProperties_->setReactions(pi_->getNumberOfHomReactions(), pi_->getNumberOfHetReactions());
         constantProperties_->build();
         constantProperties_->show();
 
@@ -1342,8 +1339,8 @@ namespace ASALI
                                     xw[i] = yw[j][k][i];
                                 }
 
-                                xb = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), xb);
-                                xw = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), xw);
+                                xb = constantProperties_->getMoleFraction(constantProperties_->getMW(), xb);
+                                xw = constantProperties_->getMoleFraction(constantProperties_->getMW(), xw);
 
                                 for (unsigned int i = 0; i < n_.size(); i++)
                                 {
@@ -1765,7 +1762,6 @@ namespace ASALI
         plot_ = new ASALI::plot();
         plot_->setTime(eq_->getTime());
 
-        if (kineticCombo_.get_active_text() == "ASALI")
         {
             std::vector<double> t = eq_->getTime();
             std::vector<std::vector<double>> Tb = eq_->getBulkTemperature();
@@ -1776,6 +1772,9 @@ namespace ASALI
             //Conversion from mass to mole
             std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
             std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
+            std::vector<std::string> n = chemistryInterface_->names();
+            
+            unsigned int NS = chemistryInterface_->numberOfGasSpecies();
             {
                 if (kineticType_ == "none")
                 {
@@ -1791,8 +1790,8 @@ namespace ASALI
                                 xw[i] = yw[j][k][i];
                             }
 
-                            xb = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), xb);
-                            xw = constantProperties_->get_mole_fraction(constantProperties_->get_MW(), xw);
+                            xb = constantProperties_->getMoleFraction(constantProperties_->getMW(), xb);
+                            xw = constantProperties_->getMoleFraction(constantProperties_->getMW(), xw);
 
                             for (unsigned int i = 0; i < n_.size(); i++)
                             {
@@ -1812,45 +1811,34 @@ namespace ASALI
                             {
                                 chemistryInterface_->setTemperature(Tb[j][k]);
                                 chemistryInterface_->setPressure(p_);
-                                std::vector<double> x(n_.size());
-                                for (unsigned int i = 0; i < n_.size(); i++)
+                                std::vector<double> x(NS);
+                                for (unsigned int i = 0; i < NS; i++)
                                 {
                                     x[i] = yb[j][k][i];
                                 }
-                                chemistryInterface_->setMassFraction(x, n_);
-                                for (unsigned int i = 0; i < n_.size(); i++)
+                                chemistryInterface_->setMassFraction(x, n);
+                                x = chemistryInterface_->mole();
+
+                                for (unsigned int i = 0; i < NS; i++)
                                 {
-                                    for (unsigned int q = 0; q < chemistryInterface_->names().size(); q++)
-                                    {
-                                        if (n_[i] == chemistryInterface_->names()[q])
-                                        {
-                                            moleb[j][k][i] = chemistryInterface_->mole()[q];
-                                            break;
-                                        }
-                                    }
+                                    moleb[j][k][i] = x[i];
                                 }
                             }
-
                             //Wall
                             {
                                 chemistryInterface_->setTemperature(Tw[j][k]);
                                 chemistryInterface_->setPressure(p_);
-                                std::vector<double> x(n_.size());
-                                for (unsigned int i = 0; i < n_.size(); i++)
+                                std::vector<double> x(NS);
+                                for (unsigned int i = 0; i < NS; i++)
                                 {
                                     x[i] = yw[j][k][i];
                                 }
-                                chemistryInterface_->setMassFraction(x, n_);
-                                for (unsigned int i = 0; i < n_.size(); i++)
+                                chemistryInterface_->setMassFraction(x, n);
+                                x = chemistryInterface_->mole();
+
+                                for (unsigned int i = 0; i < NS; i++)
                                 {
-                                    for (unsigned int q = 0; q < chemistryInterface_->names().size(); q++)
-                                    {
-                                        if (n_[i] == chemistryInterface_->names()[q])
-                                        {
-                                            molew[j][k][i] = chemistryInterface_->mole()[q];
-                                            break;
-                                        }
-                                    }
+                                    molew[j][k][i] = x[i];
                                 }
                             }
                         }
@@ -1858,89 +1846,23 @@ namespace ASALI
                 }
             }
 
-            std::vector<std::string> n(n_.size() * 2);
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                n[i] = n_[i] + "(bulk)";
-            }
-            for (unsigned int i = 0; i < n_.size(); i++)
-            {
-                n[i + n_.size()] = n_[i] + "(wall)";
-            }
-
-            plot_->setSpecieNames(n);
-            plot_->setSpecie(yb, moleb, yw, molew);
-            plot_->setTemperature(Tb, Tw);
-        }
-        else if (kineticCombo_.get_active_text() == "CANTERA")
-        {
-            std::vector<double> t = eq_->getTime();
-            std::vector<std::vector<double>> Tb = eq_->getBulkTemperature();
-            std::vector<std::vector<double>> Tw = eq_->getWallTemperature();
-            std::vector<std::vector<std::vector<double>>> yb = eq_->getBulkSpecie();
-            std::vector<std::vector<std::vector<double>>> yw = eq_->getWallSpecie();
-
-            //Conversion from mass to mole
-            std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
-            std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
-            std::vector<std::string> n = chemistryInterface_->names();
-            {
-                for (unsigned int j = 0; j < t.size(); j++)
-                {
-                    for (unsigned int k = 0; k < NP_; k++)
-                    {
-                        //Bulk
-                        {
-                            chemistryInterface_->setTemperature(Tb[j][k]);
-                            chemistryInterface_->setPressure(p_);
-                            std::vector<double> x(chemistryInterface_->numberOfGasSpecies());
-                            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
-                            {
-                                x[i] = yb[j][k][i];
-                            }
-                            chemistryInterface_->setMassFraction(x, n);
-                            x = chemistryInterface_->mole();
-
-                            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
-                            {
-                                moleb[j][k][i] = x[i];
-                            }
-                        }
-                        //Wall
-                        {
-                            chemistryInterface_->setTemperature(Tw[j][k]);
-                            chemistryInterface_->setPressure(p_);
-                            std::vector<double> x(chemistryInterface_->numberOfGasSpecies());
-                            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
-                            {
-                                x[i] = yw[j][k][i];
-                            }
-                            chemistryInterface_->setMassFraction(x, n);
-                            x = chemistryInterface_->mole();
-
-                            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
-                            {
-                                molew[j][k][i] = x[i];
-                            }
-                        }
-                    }
-                }
-            }
-
-            n.resize(chemistryInterface_->numberOfGasSpecies() * 2);
-            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
+            n.resize(NS * 2);
+            for (unsigned int i = 0; i < NS; i++)
             {
                 n[i] = chemistryInterface_->names()[i] + "(bulk)";
             }
-            for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
+            for (unsigned int i = 0; i < NS; i++)
             {
-                n[i + chemistryInterface_->numberOfGasSpecies()] = chemistryInterface_->names()[i] + "(wall)";
+                n[i + NS] = chemistryInterface_->names()[i] + "(wall)";
             }
 
             plot_->setSpecieNames(n);
             plot_->setSpecie(yb, moleb, yw, molew);
-            plot_->setSiteNames(chemistryInterface_->coverageNames());
-            plot_->setSite(eq_->getSite());
+            if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+            {
+                plot_->setSiteNames(chemistryInterface_->coverageNames());
+                plot_->setSite(eq_->getSite());
+            }
             plot_->setTemperature(Tb, Tw);
         }
 

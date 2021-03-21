@@ -57,6 +57,7 @@ namespace ASALI
 
         mole_.resize(NS_);
         mass_.resize(NS_);
+        names_.resize(NS_);
 
         v_.resize(NS_);
         l_.resize(NS_);

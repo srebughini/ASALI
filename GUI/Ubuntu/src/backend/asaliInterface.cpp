@@ -43,7 +43,8 @@ namespace ASALI
     asaliInterface::asaliInterface() : basicInterface()
     {
         asali_ = new ASALI::Asali();
-        names_ = asali_->allSpeciesName();
+        allNames_ = asali_->allSpeciesName();
+        is_surface_ = false;
     }
 
     void asaliInterface::setTemperature(const double T)
@@ -91,6 +92,7 @@ namespace ASALI
         for (unsigned int i = 0; i < NS_; i++)
         {
             n_[i] = asali_->speciesName()[i];
+            names_[i] = n_[i];
             MW_[i] = asali_->speciesMolecularWeight()[i];
         }
     }
@@ -116,6 +118,7 @@ namespace ASALI
         for (unsigned int i = 0; i < NS_; i++)
         {
             n_[i] = asali_->speciesName()[i];
+            names_[i] = n_[i];
             MW_[i] = asali_->speciesMolecularWeight()[i];
         }
     }
@@ -247,12 +250,10 @@ namespace ASALI
     int asaliInterface::checkNames(std::string name)
     {
         int check = 1;
-        std::cout << name << std::endl;
         this->convertToCaption(name);
-        std::cout << name << std::endl;
-        for (unsigned int j = 0; j < names_.size(); j++)
+        for (unsigned int j = 0; j < allNames_.size(); j++)
         {
-            if (name == names_[j])
+            if (name == allNames_[j])
             {
                 check = 0;
                 break;
@@ -269,6 +270,11 @@ namespace ASALI
     unsigned int asaliInterface::numberOfSurfaceSpecies()
     {
         return 0.;
+    }
+    
+    bool asaliInterface::isSurface()
+    {
+        return false;
     }
 
     std::vector<double> asaliInterface::getMW()
@@ -321,9 +327,9 @@ namespace ASALI
         {
             this->convertToCaption(name[i]);
             check[i] = 1;
-            for (unsigned int j = 0; j < names_.size(); j++)
+            for (unsigned int j = 0; j < allNames_.size(); j++)
             {
-                if (name[i] == names_[j])
+                if (name[i] == allNames_[j])
                 {
                     check[i] = 0;
                     break;
