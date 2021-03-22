@@ -179,15 +179,15 @@ namespace ASALI
             V_ = mass_ / rho_;
         }
 
-        // Calculates homogeneous kinetics
-        {
-            #include "shared/HomogeneousReactions.H"
-        }
+		// Calculates homogeneous kinetics
+		{
+			this->updateHomogenousChemistry();
+		}
 
-        // Calculates heterogeneous kinetics
-        {
-            #include "shared/HeterogeneousReactions.H"
-        }
+		// Calculates heterogeneous kinetics
+		{
+			this->updateHeterogeneousChemistry();
+		}
 
         // Variation of gas mass in the reactor
         const double dm_over_dt = V_ * alfa_ * DotProduct(RfromSurface_, MW_);

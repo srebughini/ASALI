@@ -111,6 +111,135 @@ namespace ASALI
         cond_ = cond;
     }
 
+    void catalyticReactorsEquations::updateHomogenousChemistry()
+    {
+		if (homogeneousReactions_ == true)
+		{
+			if (type_ == "CANTERA")
+			{
+				chemistryInterface_->calculateHomogeneousReactions(omega_, T_, P_);
+				RfromGas_ = chemistryInterface_->RfromGas();
+				if (energyEquation_ == true)
+				{
+					QfromGas_ = chemistryInterface_->QfromGas();
+				}
+				else
+				{
+					QfromGas_ = 0.;
+				}
+			}
+			else if (type_ == "ASALI")
+			{
+				RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); //kmol/m3/s
+
+				if (energyEquation_ == true)
+				{
+					if (userCheck_ == false)
+					{
+						chemistryInterface_->setStateFromMoleFraction(x_.data(), T_, P_);
+						std::vector<double> hArray = chemistryInterface_->getHmole();
+
+						for (unsigned int i = 0; i < NC_; i++)
+						{
+							h_[i] = hArray[canteraIndex_[i]];
+						}
+
+						QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+					}
+					else
+					{
+
+						for (unsigned int i = 0; i < NC_; i++)
+						{
+							h_[i] = 0.;
+						}
+						QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+					}
+				}
+				else
+				{
+					QfromGas_ = 0.;
+				}
+			}
+		}
+		else
+		{
+			for (unsigned int j = 0; j < NC_; j++)
+			{
+				RfromGas_[j] = 0.; //kmol/m2/s
+			}
+			QfromGas_ = 0.;
+		}
+	}
+
+    void catalyticReactorsEquations::updateHeterogeneousChemistry()
+    {
+		if (heterogeneusReactions_ == true && alfa_ != 0.)
+		{
+			if (type_ == "CANTERA")
+			{
+				chemistryInterface_->calculateHeterogeneousReactions(omega_, Z_, T_, P_);
+				RfromSurface_ = chemistryInterface_->RfromSurface();
+				Rsurface_ = chemistryInterface_->Rsurface();
+				SD_ = chemistryInterface_->siteDensity();
+
+				if (energyEquation_ == true)
+				{
+					QfromSurface_ = chemistryInterface_->QfromSurface();
+				}
+				else
+				{
+					QfromSurface_ = 0.;
+				}
+			}
+			else if (type_ == "ASALI")
+			{
+				RfromSurface_ = this->reactionRate(x_, T_, "heterogeneous"); //kmol/m3/s
+
+				if (energyEquation_ == true)
+				{
+					if (userCheck_ == false)
+					{
+						chemistryInterface_->setStateFromMoleFraction(x_.data(), T_, P_);
+						std::vector<double> hArray = chemistryInterface_->getHmole();
+
+						for (unsigned int i = 0; i < NC_; i++)
+						{
+							h_[i] = hArray[canteraIndex_[i]];
+						}
+
+						QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+					}
+					else
+					{
+						for (unsigned int i = 0; i < NC_; i++)
+						{
+							h_[i] = 0.;
+						}
+						QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+					}
+				}
+				else
+				{
+					QfromSurface_ = 0.;
+				}
+			}
+		}
+		else
+		{
+			for (unsigned int j = 0; j < NC_; j++)
+			{
+				RfromSurface_[j] = 0.;
+			}
+			for (unsigned int j = 0; j < SURF_NC_; j++)
+			{
+				Rsurface_[j] = 0.;
+			}
+
+			QfromSurface_ = 0.;
+		}
+	}
+
     std::vector<double> catalyticReactorsEquations::reactionRate(const std::vector<double> x, const double T, const std::string type)
     {
         std::vector<double> R;

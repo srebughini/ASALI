@@ -128,14 +128,8 @@ namespace ASALI
         double MWmix_;        /// Gas mixture molecular weight in [g/mol]
         double cTot_;         /// Gas mixture concentration in [kmol/m3]
         double rho_;          /// Gas mixture density in [kg/m3]
-        double P_;            /// Gas mixture pressure in [Pa]
-        double T_;            /// Gas mixture temperature in [K]
         double T0_;           /// Gas mixture initial temperature in [K]
         double L_;            /// Reactor length in [m]
-        double alfa_;         /// Catalytic load in [m2/m3]
-        double QfromGas_;     /// Homogeneous heat of reactions in [W/m3]
-        double QfromSurface_; /// Heterogeneous heat of reactions in [W/m2]
-        double SD_;           /// Site density in [1/m2]
         double G_;            /// Specific mass flow rate [kg/m2/s]
         double dz_;           /// Discretization step for length [m]
         double Dp_;           /// Particle diameter [m]
@@ -149,26 +143,16 @@ namespace ASALI
         double conds_;        /// Catalyst thermal conductivity [W/m/K]
         double kHeat_;        /// Heat transfer coefficient
 
-        unsigned int SURF_NC_;    /// Number of coverage species
         unsigned int NP_;         /// Number of discretization points
         unsigned int inertIndex_; /// Inert specie index
 
         std::string reactorType_; /// Reactor type
         std::string resolution_;  /// Resolution method
 
-        bool energyEquation_;     /// Bool to enable/disable energy balance
-
-        std::vector<double> omega_;              /// Mass fraction
-        std::vector<double> x_;                  /// Mole fraction
         std::vector<double> z_;                  /// Discretized length
         std::vector<double> kMat_;               /// Mass transfer coefficient
-        std::vector<double> RfromGas_;           /// Species homogeneous reactions in [kg/m3/s]
-        std::vector<double> RfromSurface_;       /// Species heterogeneous reactions in [kg/m2/s]
-        std::vector<double> Z_;                  /// Coverage
-        std::vector<double> Rsurface_;           /// Coverage heterogeneous reactions in [kg/m2/s]
         std::vector<double> dy_;                 /// Accumulation term of mass and energy balance
         std::vector<double> y_;                  /// Integration variables
-        std::vector<double> h_;                  /// Species mass enthalpy in [J/kg]
         std::vector<double> omega0_;             /// Initial mass fraction
         std::vector<double> kHeatVector_;        /// Heat transfer coefficient 
         std::vector<double> TBvector_;           /// Gas temperature in [K]

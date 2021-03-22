@@ -99,33 +99,17 @@ namespace ASALI
         double MWmix_;        /// Gas mixture molecular weight in [g/mol]
         double cTot_;         /// Gas mixture concentration in [kmol/m3]
         double rho_;          /// Gas mixture density in [kg/m3]
-        double P_;            /// Gas mixture pressure in [Pa]
-        double T_;            /// Gas mixture temperature in [K]
         double T0_;           /// Gas mixture initial temperature in [K]
         double V_;            /// Reactor volume in [m3]
-        double alfa_;         /// Catalytic load in [m2/m3]
         double mass_;         /// Total mass in [kg]
         double Q_;            /// Inlet mass flow rate [kg/s]
-        double QfromGas_;     /// Homogeneous heat of reactions in [W/m3]
-        double QfromSurface_; /// Heterogeneous heat of reactions in [W/m2]
-        double SD_;           /// Site density in [1/m2]
         double dt_;           /// Integration time step [s]
 
-        unsigned int SURF_NC_; /// Number of coverage species
         unsigned int TC_;      /// Number of integration steps
 
-        bool energyEquation_;  /// Bool to enable/disable energy balance
-
-        std::vector<double> omega_;         /// Mass fraction
         std::vector<double> omega0_;        /// Initial mass fraction
-        std::vector<double> x_;             /// Mole fraction
-        std::vector<double> RfromGas_;      /// Species homogeneous reactions in [kg/m3/s]
-        std::vector<double> RfromSurface_;  /// Species heterogeneous reactions in [kg/m2/s]
-        std::vector<double> Z_;             /// Coverage
-        std::vector<double> Rsurface_;      /// Coverage heterogeneous reactions in [kg/m2/s]
         std::vector<double> dy_;            /// Accumulation term of mass and energy balance
         std::vector<double> y_;             /// Integration variables
-        std::vector<double> h_;             /// Species mass enthalpy in [J/kg]
 
         std::vector<double> Time_;                /// Integration time vector [s]
         std::vector<double> Temperature_;         /// Temperature at different integration times in [K]

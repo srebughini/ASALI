@@ -91,6 +91,12 @@ namespace ASALI
 
         /// Set user defined gas mixture viscosity in [Pas]
         void setMuMix(const double mu);
+        
+        /// Update homogeneous reaction rate and heat of reaction based on actual reactor conditions
+        void updateHomogenousChemistry();
+
+        /// Update heterogeneous reaction rate and heat of reaction based on actual reactor conditions
+        void updateHeterogeneousChemistry();
 
         /// Estimate reaction rates using python interface
         std::vector<double> reactionRate(const std::vector<double> omega, const double T, const std::string type);
@@ -119,26 +125,41 @@ namespace ASALI
         /// Class destructor
         virtual ~catalyticReactorsEquations();
 
-        double cp_;    /// Gas mixture mass specific heat in [J/kg/K]
-        double mu_;    /// Gas mixture viscosity in [Pas]
-        double cond_;  /// Gas mixture thermal conductivity in [W/m/K]
+        double cp_;           /// Gas mixture mass specific heat in [J/kg/K]
+        double mu_;           /// Gas mixture viscosity in [Pas]
+        double cond_;         /// Gas mixture thermal conductivity in [W/m/K]
+        double T_;            /// Temperature [K]
+        double P_;            /// Pressure [Pa]
+        double QfromGas_;     /// Homogeneous heat of reaction [W/m3]
+        double QfromSurface_; /// Heterogeneous heat of reaction [W/m2]
+        double alfa_;         /// Catalyst load [m3/m2]
+        double SD_;           /// Site density in [1/m2]
 
-        unsigned int NE_; /// Number of equations
-        unsigned int NC_; /// Number of gas species
+        unsigned int NE_;      /// Number of equations
+        unsigned int NC_;      /// Number of gas species
+        unsigned int SURF_NC_; /// Number of coverage species
 
         std::string type_; /// Kinetic type
 
         bool homogeneousReactions_;  /// Bool to enable/disable homogeneous reactions
         bool heterogeneusReactions_; /// Bool to enable/disable heterogeneous reactions
         bool userCheck_;             /// Bool to enable/disable user defined gas mixture properties
+        bool energyEquation_;        /// Bool to enable/disable energy balance
 
         ASALI::pythonInterface *pi_;                  /// Python interface pointer
         ASALI::canteraInterface *chemistryInterface_; /// Gas mixture chemistry interface pointer
 
-        std::vector<double> QuserHom_; /// User defined homogeneous heat of reactions in [W/m3]
-        std::vector<double> QuserHet_; /// User defined heterogeneous heat of reactions in [W/m2]
-        std::vector<double> MW_;       /// Species molecular weight in [g/mol]
-        std::vector<double> diff_;     /// Species mixture diffusion coefficient in [m2/s]
+        std::vector<double> QuserHom_;     /// User defined homogeneous heat of reactions in [W/m3]
+        std::vector<double> QuserHet_;     /// User defined heterogeneous heat of reactions in [W/m2]
+        std::vector<double> MW_;           /// Species molecular weight in [g/mol]
+        std::vector<double> diff_;         /// Species mixture diffusion coefficient in [m2/s]
+        std::vector<double> omega_;        /// Gas species mass fraction
+        std::vector<double> x_;            /// Gas species mole fraction
+        std::vector<double> Z_;            /// Coverage composition
+        std::vector<double> h_;            /// Species enthalpy [J/kg]
+        std::vector<double> RfromGas_;     /// Homogeneous reaction rates [kg/m3/s]
+        std::vector<double> RfromSurface_; /// Heterogeneous reaction rates [kg/m2/s]
+        std::vector<double> Rsurface_;     /// Coverage reaction rates [kg/m2/s]
 
         std::vector<int> canteraIndex_; /// Cantera index to order species
 

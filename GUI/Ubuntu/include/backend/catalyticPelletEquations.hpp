@@ -96,13 +96,7 @@ namespace ASALI
         double MWmix_;
         double cTot_;
         double rho_;
-        double P_;
-        double T_;
         double L_;
-        double alfa_;
-        double QfromGas_;
-        double QfromSurface_;
-        double SD_;
         double dz_;
         double D_;
         double r_;
@@ -111,7 +105,6 @@ namespace ASALI
         double tw_;
         double dp_;
 
-        unsigned int SURF_NC_;
         unsigned int NP_;
         unsigned int inertIndex_;
 
@@ -119,17 +112,8 @@ namespace ASALI
         std::string modelType_;
         std::string resolution_;
 
-        bool energyEquation_;
-
-        std::vector<double> omega_;
-        std::vector<double> x_;
         std::vector<double> z_;
-        std::vector<double> RfromSurface_;
-        std::vector<double> RfromGas_;
-        std::vector<double> Z_;
-        std::vector<double> Rsurface_;
         std::vector<double> dy_;
-        std::vector<double> h_;
         std::vector<double> y_;
         std::vector<double> omega0_;
         std::vector<double> rhoVector_;
