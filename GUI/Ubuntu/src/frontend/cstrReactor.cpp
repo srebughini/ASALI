@@ -282,7 +282,7 @@ namespace ASALI
 
                     //Buttons
                     recapGrid_.attach(backButton3_, 0, 10, 1, 1);
-                    backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &cstrReactor::input));
+                    backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &cstrReactor::composition));
                     recapGrid_.attach(exitButton4_, 2, 10, 1, 1);
                     exitButton4_.signal_clicked().connect(sigc::mem_fun(*this, &cstrReactor::exit));
                 }
@@ -500,7 +500,6 @@ namespace ASALI
                 eq_->setQfromSurface(constantProperties_->getHeterogeneousHeatOfReaction());
                 eq_->setQfromGas(constantProperties_->getHomogeneousHeatOfReaction());
                 eq_->setCpMassMix(constantProperties_->getCpMassMix());
-                eq_->setHomogeneousReactions(true);
             }
             else
             {
@@ -509,13 +508,11 @@ namespace ASALI
                 eq_->setInterface(chemistryInterface_);
                 eq_->turnOnUserDefined(false);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->setHomogeneousReactions(true);
             }
         }
 
         eq_->setKineticType(kineticCombo_.get_active_text());
         eq_->resize();
-        eq_->setHeterogeneusReactions(true);
 
         if (energy_ == "on")
         {
@@ -715,7 +712,7 @@ namespace ASALI
         this->compositionReader();
         this->kineticReader();
         constantProperties_->destroy();
-        constantProperties_->setType("batch");
+        constantProperties_->setType("cstr");
         constantProperties_->setEnergy(energy_);
         constantProperties_->setSpeciesNames(n_);
         constantProperties_->setReactions(pi_->getNumberOfHomReactions(), pi_->getNumberOfHetReactions());
@@ -915,14 +912,15 @@ namespace ASALI
         plot_->destroy();
         plot_->setTime(eq_->getTime());
         plot_->setTemperature(eq_->getTemperature());
+
         {
             std::vector<double> t = eq_->getTime();
             std::vector<double> T = eq_->getTemperature();
-            std::vector<std::vector<double>> y = eq_->getSpecie();
             std::vector<std::vector<double>> x = eq_->getSpecie();
-
-            unsigned int NS = chemistryInterface_->numberOfGasSpecies();
-            std::vector<std::string> name = chemistryInterface_->names();
+            std::vector<std::vector<double>> y = eq_->getSpecie();
+            
+            unsigned int             NS   = this->numberOfGasSpecies();
+            std::vector<std::string> name = this->gasSpeciesNames();
 
             for (unsigned int j = 0; j < t.size(); j++)
             {
@@ -938,6 +936,7 @@ namespace ASALI
                     chemistryInterface_->setMassFraction(y[j], name);
                     mole = chemistryInterface_->mole();
                 }
+
                 for (unsigned int i = 0; i < NS; i++)
                 {
                     x[j][i] = mole[i];
@@ -946,10 +945,14 @@ namespace ASALI
 
             plot_->setSpecieNames(name);
             plot_->setSpecie(y, x);
-            if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+
+            if (kineticType_ != "none")
             {
-                plot_->setSiteNames(chemistryInterface_->coverageNames());
-                plot_->setSite(eq_->getSite());
+                if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                {
+                    plot_->setSiteNames(chemistryInterface_->coverageNames());
+                    plot_->setSite(eq_->getSite());
+                }
             }
         }
 

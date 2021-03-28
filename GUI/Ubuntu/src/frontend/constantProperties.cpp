@@ -201,7 +201,7 @@ namespace ASALI
 
     void constantProperties::destroy()
     {
-        if (type_ == "batch")
+        if (type_ == "batch" || type_ == "cstr")
         {
             if (energy_ == "on")
             {
@@ -363,7 +363,7 @@ namespace ASALI
     void constantProperties::build()
     {
         NR_ = 0;
-        if (type_ == "batch")
+        if (type_ == "batch" || type_ == "cstr")
         {
             mainGrid_.set_column_homogeneous(true);
             mainBox_.pack_start(batchLogo_, Gtk::PACK_SHRINK);
@@ -717,7 +717,7 @@ namespace ASALI
 
     void constantProperties::doneInput()
     {
-        if (type_ == "batch")
+        if (type_ == "batch" || type_ == "cstr")
         {
             MW_.clear();
             MW_.resize(NC_);
