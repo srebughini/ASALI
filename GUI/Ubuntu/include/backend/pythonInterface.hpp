@@ -122,19 +122,22 @@ namespace ASALI
         std::vector<int> checkNames(std::vector<std::string> &name);
 
         /// Return number of homogeneous reactions
-        unsigned int getNumberOfHomReactions() { return Nhom_; };
+        inline unsigned int getNumberOfHomReactions() { return Nhom_; };
 
         /// Return number of heterogeneous reactions
-        unsigned int getNumberOfHetReactions() { return Nhet_; };
+        inline unsigned int getNumberOfHetReactions() { return Nhet_; };
 
         /// Return number of heterogeneous and homogeneous reactions
-        unsigned int getNumberOfReactions() { return (Nhet_ + Nhom_); };
+        inline unsigned int getNumberOfReactions() { return (Nhet_ + Nhom_); };
 
         /// Return heterogeneous reaction rates
-        std::vector<std::vector<double>> getAllHetReactionRate() { return RallHet_; };
+        inline std::vector<std::vector<double>> getAllHetReactionRate() { return RallHet_; };
 
         /// Return homogeneous reaction rates
-        std::vector<std::vector<double>> getAllHomReactionRate() { return RallHom_; };
+        inline std::vector<std::vector<double>> getAllHomReactionRate() { return RallHom_; };
+        
+        /// Return species names
+        inline std::vector<std::string> names() { return n_; };
 
         /// Class destructor
         virtual ~pythonInterface();

@@ -467,7 +467,6 @@ namespace ASALI
                 eq_->setQfromSurface(constantProperties_->getHeterogeneousHeatOfReaction());
                 eq_->setQfromGas(constantProperties_->getHomogeneousHeatOfReaction());
                 eq_->setCpMassMix(constantProperties_->getCpMassMix());
-                eq_->setHomogeneousReactions(true);
             }
             else
             {
@@ -476,13 +475,11 @@ namespace ASALI
                 eq_->setInterface(chemistryInterface_);
                 eq_->turnOnUserDefined(false);
                 eq_->setAsaliKinetic(pi_, canteraIndex_, n_);
-                eq_->setHomogeneousReactions(true);
             }
         }
 
         eq_->setKineticType(kineticCombo_.get_active_text());
         eq_->resize();
-        eq_->setHeterogeneusReactions(true);
 
         if (energy_ == "on")
         {
@@ -902,18 +899,8 @@ namespace ASALI
             std::vector<std::vector<double>> x = eq_->getSpecie();
             std::vector<std::vector<double>> y = eq_->getSpecie();
             
-            unsigned int NS;
-            std::vector<std::string> name;
-            if (kineticType_ == "none")
-            {
-				name = constantProperties_->names();
-				NS = constantProperties_->numberOfGasSpecies();
-			}
-			else
-			{
-				name = chemistryInterface_->names();
-				NS = chemistryInterface_->numberOfGasSpecies();
-            }
+            unsigned int             NS   = this->numberOfGasSpecies();
+            std::vector<std::string> name = this->gasSpeciesNames();
 
             for (unsigned int j = 0; j < t.size(); j++)
             {
@@ -938,17 +925,16 @@ namespace ASALI
 
             plot_->setSpecieNames(name);
             plot_->setSpecie(y, x);
-            
-            if (kineticType_ != "none")
-            { 
-				if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
-				{
-					plot_->setSiteNames(chemistryInterface_->coverageNames());
-					plot_->setSite(eq_->getSite());
-				}
-			}
-        }
 
+            if (kineticType_ != "none")
+            {
+                if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                {
+                    plot_->setSiteNames(chemistryInterface_->coverageNames());
+                    plot_->setSite(eq_->getSite());
+                }
+            }
+        }
         plot_->setType("batch");
         plot_->build();
         plot_->show();

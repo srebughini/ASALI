@@ -766,6 +766,26 @@ namespace ASALI
         return id;
     }
 
+    unsigned int catalyticReactors::numberOfGasSpecies()
+    {
+        if (kineticType_ == "none")
+        {
+            return constantProperties_->numberOfGasSpecies();
+        }
+        else
+        {
+            if (kineticCombo_.get_active_text() == "CANTERA")
+            {
+                return chemistryInterface_->numberOfGasSpecies();
+            }
+            else
+            {
+                std::vector<std::string> name = pi_->names();
+                return name.size();
+            }
+        }
+    }
+
     std::vector<std::string> catalyticReactors::splitString(const std::string txt, std::string ch)
     {
         std::vector<std::string> strs;
@@ -785,6 +805,26 @@ namespace ASALI
         strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
 
         return strs;
+    }
+
+
+    std::vector<std::string> catalyticReactors::gasSpeciesNames()
+    {
+        if (kineticType_ == "none")
+        {
+            return constantProperties_->names();
+        }
+        else
+        {
+            if (kineticCombo_.get_active_text() == "CANTERA")
+            {
+                return chemistryInterface_->names();
+            }
+            else
+            {
+                return pi_->names();
+            }
+        }
     }
 
     void catalyticReactors::bar(const double fraction, const std::string tm)

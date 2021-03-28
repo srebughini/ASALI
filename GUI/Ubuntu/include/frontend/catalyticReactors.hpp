@@ -96,12 +96,14 @@ namespace ASALI
         #endif
 
         unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
+        unsigned int numberOfGasSpecies();
 
         std::string getBeer();
         std::string getBeerShort();
         std::string convertToTimeFormat(double t);
 
         std::vector<std::string> splitString(const std::string txt, std::string ch);
+        std::vector<std::string> gasSpeciesNames();
 
         Gtk::Box coverageBox_;
 
