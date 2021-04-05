@@ -50,7 +50,7 @@ namespace ASALI
         {
             NC_ = chemistryInterface_->numberOfGasSpecies();
             SURF_NC_ = chemistryInterface_->numberOfSurfaceSpecies();
-            NE_ = NC_ + SURF_NC_ + 1 + 1;
+            NE_ = NC_ + SURF_NC_ + 1;
 
             x_.resize(NC_);
             omega_.resize(NC_);
@@ -74,7 +74,7 @@ namespace ASALI
         {
             NC_ = canteraIndex_.size();
             SURF_NC_ = 0;
-            NE_ = NC_ + SURF_NC_ + 1 + 1;
+            NE_ = NC_ + SURF_NC_ + 1;
 
             x_.resize(NC_);
             omega_.resize(NC_);
@@ -150,19 +150,26 @@ namespace ASALI
         // Calculates the volume and the concentrations of species
         if (userCheck_ == false)
         {
+            double canteraArray[chemistryInterface_->numberOfGasSpecies()];
+            memset(canteraArray, 0., sizeof(canteraArray));
+            for (unsigned int i = 0; i < NC_; i++)
+            {
+                canteraArray[canteraIndex_[i]] = omega_[i];
+            }
+
             MWmix_ = chemistryInterface_->getMWmix();
             cTot_ = P_ / (8314. * T_);
             rho_ = cTot_ * MWmix_;
 
-            chemistryInterface_->setStateFromMassFraction(omega_.data(), T_, P_);
+            chemistryInterface_->setStateFromMassFraction(canteraArray, T_, P_);
 
-            std::vector<double> mole = chemistryInterface_->mole();
+            std::vector<double> x = chemistryInterface_->mole();
             std::vector<double> mw = chemistryInterface_->getMW();
 
             for (unsigned int i = 0; i < NC_; i++)
             {
                 MW_[i] = mw[canteraIndex_[i]];
-                x_[i] = mole[canteraIndex_[i]];
+                x_[i] = x[canteraIndex_[i]];
             }
 
             cp_ = chemistryInterface_->getCpMassMix();
@@ -175,15 +182,15 @@ namespace ASALI
             rho_ = cTot_ * MWmix_;
         }
 
-		// Calculates homogeneous kinetics
-		{
-			this->updateHomogenousChemistry();
-		}
+        // Calculates homogeneous kinetics
+        {
+            this->updateHomogenousChemistry();
+        }
 
-		// Calculates heterogeneous kinetics
-		{
-			this->updateHeterogeneousChemistry();
-		}
+        // Calculates heterogeneous kinetics
+        {
+            this->updateHeterogeneousChemistry();
+        }
 
         // Recovering residuals
         {

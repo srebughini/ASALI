@@ -69,7 +69,13 @@ namespace ASALI
 
         /// Return the property of a specie from species name and property name
         double specieProperty(std::string p, std::string n);
-        
+
+        /// Return mole fraction from names
+        std::vector<double> getMoleFractionFromNames(const std::vector<std::string> names);
+
+        /// Return mass fraction from names
+        std::vector<double> getMassFractionFromNames(const std::vector<std::string> names);
+
         /// Return mole fraction
         inline std::vector<double> getMoleFraction() { return mole_; };
         

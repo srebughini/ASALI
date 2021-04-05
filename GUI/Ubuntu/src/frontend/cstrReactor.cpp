@@ -934,7 +934,7 @@ namespace ASALI
                     chemistryInterface_->setTemperature(T[j]);
                     chemistryInterface_->setPressure(p_);
                     chemistryInterface_->setMassFraction(y[j], name);
-                    mole = chemistryInterface_->mole();
+                    mole = chemistryInterface_->getMoleFractionFromNames(name);
                 }
 
                 for (unsigned int i = 0; i < NS; i++)
