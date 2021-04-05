@@ -575,7 +575,7 @@ namespace ASALI
                 }
 
                 {
-                    std::vector<double> y = chemistryInterface_->mass();
+                    std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
                     std::vector<double> y0(eq_->NumberOfEquations() - 1);
 
                     for (unsigned int i = 0; i < n_.size(); i++)
@@ -609,7 +609,7 @@ namespace ASALI
                 }
 
                 {
-                    std::vector<double> y = chemistryInterface_->mass();
+                    std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
                     for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
                     {
                         x0[i] = y[i];
