@@ -522,9 +522,9 @@ namespace ASALI
                         reaction = s.str() + " (homogeneous)";
                     }
                     reactionNumberLabel_[i] = new Gtk::Label(reaction);
-                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 4 + i, 1, 1);
                     speciesHeatEntry_[i] = new Gtk::Entry();
-                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 4 + i, 1, 1);
                     speciesHeatEntry_[i]->set_text("1");
                 }
 
@@ -537,9 +537,9 @@ namespace ASALI
                         reaction = s.str() + " (heterogeneous)";
                     }
                     reactionNumberLabel_[i] = new Gtk::Label(reaction);
-                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 4 + i, 1, 1);
                     speciesHeatEntry_[i] = new Gtk::Entry();
-                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 4 + i, 1, 1);
                     speciesHeatEntry_[i]->set_text("1");
                 }
             }
@@ -629,9 +629,9 @@ namespace ASALI
                         reaction = s.str() + " (homogeneous)";
                     }
                     reactionNumberLabel_[i] = new Gtk::Label(reaction);
-                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 5 + i, 1, 1);
                     speciesHeatEntry_[i] = new Gtk::Entry();
-                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 5 + i, 1, 1);
                     speciesHeatEntry_[i]->set_text("1");
                 }
 
@@ -644,9 +644,9 @@ namespace ASALI
                         reaction = s.str() + " (heterogeneous)";
                     }
                     reactionNumberLabel_[i] = new Gtk::Label(reaction);
-                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*reactionNumberLabel_[i], 0, NC_ + 5 + i, 1, 1);
                     speciesHeatEntry_[i] = new Gtk::Entry();
-                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 3 + i, 1, 1);
+                    mainGrid_.attach(*speciesHeatEntry_[i], 1, NC_ + 5 + i, 1, 1);
                     speciesHeatEntry_[i]->set_text("1");
                 }
             }

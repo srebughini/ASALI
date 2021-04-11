@@ -640,17 +640,9 @@ namespace ASALI
 
                     {
                         std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
-
                         for (unsigned int i = 0; i < n_.size(); i++)
                         {
-                            for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
-                            {
-                                if (n_[i] == chemistryInterface_->names()[j])
-                                {
-                                    x0[i] = y[j];
-                                    break;
-                                }
-                            }
+							x0[i] = y[i];
                         }
                     }
 
@@ -672,7 +664,7 @@ namespace ASALI
                     }
 
                     {
-                        std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
+                        std::vector<double> y = chemistryInterface_->getMassFraction();
                         for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
                         {
                             x0[i] = y[i];
@@ -846,21 +838,7 @@ namespace ASALI
                         chemistryInterface_->setMassFraction(x_, n_);
                     }
 
-                    std::vector<double> xInlet(x_.size());
-                    {
-                        std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
-                        for (unsigned int i = 0; i < n_.size(); i++)
-                        {
-                            for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
-                            {
-                                if (n_[i] == chemistryInterface_->names()[j])
-                                {
-                                    xInlet[i] = y[j];
-                                    break;
-                                }
-                            }
-                        }
-                    }
+                    std::vector<double> xInlet = chemistryInterface_->getMassFractionFromNames(n_);
 
                     std::vector<double> xInside(x_.size());
                     for (unsigned int i = 0; i < x_.size(); i++)
@@ -912,7 +890,7 @@ namespace ASALI
                     std::vector<double> xInlet(chemistryInterface_->numberOfGasSpecies());
                     std::vector<double> xInside(chemistryInterface_->numberOfGasSpecies());
                     {
-                        std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
+                        std::vector<double> y = chemistryInterface_->getMassFraction();
                         for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
                         {
                             if (chemistryInterface_->names()[i] == inert_)
@@ -1517,7 +1495,6 @@ namespace ASALI
 
         unsigned int             NS   = this->numberOfGasSpecies();
         std::vector<std::string> name = this->gasSpeciesNames();
-        std::cout << resolution_ << std::endl;
 
         if (resolution_ == "steady state")
         {
