@@ -91,6 +91,7 @@ namespace ASALI
 
         //Input composition
         {
+            this->createInputGrid();
             this->set_border_width(15);
             this->set_title("ASALI: Pressure drops");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
@@ -234,6 +235,7 @@ namespace ASALI
                 calculateButton_.signal_clicked().connect(sigc::mem_fun(*this, &pressureDrops::results));
             }
         }
+        std::cout << "sono qui" << std::endl;
     }
 
     pressureDrops::~pressureDrops()
@@ -613,9 +615,7 @@ namespace ASALI
         }
     }
 
-
     void pressureDrops::save()
     {
-        
     }
 }
