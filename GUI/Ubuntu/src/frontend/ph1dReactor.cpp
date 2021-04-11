@@ -158,7 +158,9 @@ namespace ASALI
                 propertiesGrid_.attach(resolutionLabel_, 0, 7, 1, 1);
                 propertiesGrid_.attach(resolutionCombo_, 1, 7, 1, 1);
                 resolutionCombo_.append("steady state");
+                #if ASALI_NEXT_VERSION == 1
                 resolutionCombo_.append("transient");
+                #endif
                 resolutionCombo_.set_active(0);
 
                 //Energy
@@ -642,7 +644,7 @@ namespace ASALI
                         std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
                         for (unsigned int i = 0; i < n_.size(); i++)
                         {
-							x0[i] = y[i];
+                            x0[i] = y[i];
                         }
                     }
 
@@ -1507,37 +1509,37 @@ namespace ASALI
                 std::vector<std::vector<double>> y = eq_->getSpecie();
                 std::vector<std::vector<double>> x = eq_->getSpecie();
 
-				for (unsigned int j = 0; j < L.size(); j++)
-				{
-					std::vector<double> mole(NS);
-					if (kineticType_ == "none")
-					{
-						mole = constantProperties_->getMoleFraction(constantProperties_->getMW(), y[j]);
-					}
-					else
-					{
-						chemistryInterface_->setTemperature(T[j]);
-						chemistryInterface_->setPressure(p_);
-						chemistryInterface_->setMassFraction(y[j], name);
-						mole = chemistryInterface_->getMoleFractionFromNames(name);
-					}
+                for (unsigned int j = 0; j < L.size(); j++)
+                {
+                    std::vector<double> mole(NS);
+                    if (kineticType_ == "none")
+                    {
+                        mole = constantProperties_->getMoleFraction(constantProperties_->getMW(), y[j]);
+                    }
+                    else
+                    {
+                        chemistryInterface_->setTemperature(T[j]);
+                        chemistryInterface_->setPressure(p_);
+                        chemistryInterface_->setMassFraction(y[j], name);
+                        mole = chemistryInterface_->getMoleFractionFromNames(name);
+                    }
 
-					for (unsigned int i = 0; i < NS; i++)
-					{
-						x[j][i] = mole[i];
-					}
-				}
+                    for (unsigned int i = 0; i < NS; i++)
+                    {
+                        x[j][i] = mole[i];
+                    }
+                }
 
                 plot_->setSpecieNames(name);
                 plot_->setSpecie(y, x);
                 if (kineticType_ != "none")
-				{
-					if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
-					{
-						plot_->setSiteNames(chemistryInterface_->coverageNames());
-						plot_->setSite(eq_->getSite());
-					}
-				}
+                {
+                    if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                    {
+                        plot_->setSiteNames(chemistryInterface_->coverageNames());
+                        plot_->setSite(eq_->getSite());
+                    }
+                }
             }
         }
         else if (resolution_ == "transient")
@@ -1610,12 +1612,12 @@ namespace ASALI
                     plot_->setSpecie(y, mole);
                     if (kineticType_ != "none")
                     {
-						if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
-						{
-							plot_->setSiteNames(chemistryInterface_->coverageNames());
-							plot_->setSite(eq_->getSiteTransient());
-						}
-					}
+                        if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                        {
+                            plot_->setSiteNames(chemistryInterface_->coverageNames());
+                            plot_->setSite(eq_->getSiteTransient());
+                        }
+                    }
                 }
 
                 //Length

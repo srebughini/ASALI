@@ -17,6 +17,7 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
 
 CFLAGS := -fPIC -Os -s -std=c++11 \
           -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
+          -DASALI_NEXT_VERSION=${ASALI_NEXT_VERSION} \
           -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 

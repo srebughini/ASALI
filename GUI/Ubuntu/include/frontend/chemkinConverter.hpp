@@ -52,10 +52,6 @@
 #include <algorithm>
 #include <limits>
 
-#if ASALI_ON_WINDOW == 1
-#include <windows.h>
-#endif
-
 namespace ASALI
 {
     class chemkinConverter : public Gtk::Window
@@ -63,7 +59,7 @@ namespace ASALI
     public:
         chemkinConverter();
 
-#include "shared/FileManager.H"
+        #include "shared/FileManager.H"
 
         virtual ~chemkinConverter();
 

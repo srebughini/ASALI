@@ -179,9 +179,11 @@ namespace ASALI
             chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
             noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
             noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
+            #if ASALI_ON_WINDOWS == 0
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
+            #endif
             #endif
             chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::kineticAsali));
@@ -261,9 +263,11 @@ namespace ASALI
             menuButtonBox_.pack_start(reactorsButton_, Gtk::PACK_SHRINK);
             reactorsButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::reactors));
             reactorsButton_.set_tooltip_text("Solvers for different catalytic reactor geometries");
+            #if ASALI_NEXT_VERSION == 1
             menuButtonBox_.pack_start(pelletButton_, Gtk::PACK_SHRINK);
             pelletButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::pellets));
             pelletButton_.set_tooltip_text("Solvers for different catalytic pellet geometries");
+            #endif
             #endif
 
             //Adding exit button
@@ -290,8 +294,10 @@ namespace ASALI
             cstrButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::cstr));
             reactorButtonBox_.pack_start(ph1dButton_, Gtk::PACK_SHRINK);
             ph1dButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::ph1d));
+            #if ASALI_NEXT_VERSION == 1
             reactorButtonBox_.pack_start(het1dButton_, Gtk::PACK_SHRINK);
             het1dButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::het1d));
+            #endif
             reactorButtonBox_.pack_start(dpButton_, Gtk::PACK_SHRINK);
             dpButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::dp));
 

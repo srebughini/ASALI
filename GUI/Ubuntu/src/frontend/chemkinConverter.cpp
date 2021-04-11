@@ -47,8 +47,8 @@ namespace ASALI
           exit_("Exit"),
           logo_(this->relative_path_to_absolute_path("images/SmallLogo.png"))
     {
-#include "shared/Beer.H"
-#include "shared/BeerShort.H"
+        #include "shared/Beer.H"
+        #include "shared/BeerShort.H"
 
         files_.resize(5);
 
@@ -142,107 +142,24 @@ namespace ASALI
                 this->eraseSubString(dialogname, ".cti");
                 std::string filename = dialogname + ".cti";
                 {
-#if ASALI_ON_WINDOW == 1
-                    files_[4] = "--output=\"" + filename + "\"";
-#else
                     files_[4] = "--output=" + filename;
-#endif
                 }
 
-#if ASALI_ON_WINDOW == 1
-                {
-                    std::string cmd = "bin/ck2cti-asali.exe " + files_[0] + " " + files_[1] + " " + files_[2] + " " + files_[3] + " " + files_[4];
-
-                    // Declare and initialize process blocks
-                    PROCESS_INFORMATION processInformation;
-                    STARTUPINFO startupInfo;
-
-                    memset(&processInformation, 0, sizeof(processInformation));
-                    memset(&startupInfo, 0, sizeof(startupInfo));
-                    startupInfo.cb = sizeof(startupInfo);
-
-                    // Call the executable program
-                    TCHAR *tcmd = new TCHAR[cmd.size() + 1];
-                    tcmd[cmd.size()] = 0;
-                    std::copy(cmd.begin(), cmd.end(), tcmd);
-
-                    bool result = ::CreateProcess(NULL, tcmd, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
-
-                    if (result)
-                    {
-                        // Successfully created the process.  Wait for it to finish.
-                        WaitForSingleObject(processInformation.hProcess, INFINITE);
-
-                        // Close the handles.
-                        CloseHandle(processInformation.hProcess);
-                        CloseHandle(processInformation.hThread);
-                    }
-                }
-#else
                 {
                     std::string cmd = "ck2cti " + files_[0] + " " + files_[1] + " " + files_[2] + " " + files_[3] + " " + files_[4];
                     system(cmd.c_str());
                 }
-#endif
 
+                if (bool(std::ifstream(filename)))
                 {
-                    if (bool(std::ifstream(filename)))
-                    {
-#if ASALI_ON_WINDOW == 1
-                        {
-                            std::string cmd = "bin/ctml_writer-asali.exe " + filename + " " + dialogname + ".xml";
-
-                            // Declare and initialize process blocks
-                            PROCESS_INFORMATION processInformation;
-                            STARTUPINFO startupInfo;
-
-                            memset(&processInformation, 0, sizeof(processInformation));
-                            memset(&startupInfo, 0, sizeof(startupInfo));
-                            startupInfo.cb = sizeof(startupInfo);
-
-                            // Call the executable program
-                            TCHAR *tcmd = new TCHAR[cmd.size() + 1];
-                            tcmd[cmd.size()] = 0;
-                            std::copy(cmd.begin(), cmd.end(), tcmd);
-
-                            bool result = ::CreateProcess(NULL, tcmd, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
-
-                            if (result)
-                            {
-                                // Successfully created the process.  Wait for it to finish.
-                                WaitForSingleObject(processInformation.hProcess, INFINITE);
-
-                                // Close the handles.
-                                CloseHandle(processInformation.hProcess);
-                                CloseHandle(processInformation.hThread);
-                            }
-
-                            dialogname = dialogname + ".xml";
-                            if (this->checkConvertedFile(dialogname))
-                            {
-                                std::remove(filename.c_str());
-                                this->savedMessage();
-                            }
-                            else
-                            {
-                                std::remove(filename.c_str());
-                                std::remove(dialogname.c_str());
-                                this->notSavedMessage();
-                            }
-                        }
-#else
-                        {
-                            std::string cmd = "ctml_writer " + filename + " " + dialogname + ".xml";
-                            system(cmd.c_str());
-                            std::remove(filename.c_str());
-                            this->savedMessage();
-                        }
-#endif
-                    }
-                    else
-                    {
-                        this->notSavedMessage();
-                    }
+                    std::string cmd = "ctml_writer " + filename + " " + dialogname + ".xml";
+                    system(cmd.c_str());
+                    std::remove(filename.c_str());
+                    this->savedMessage();
+                }
+                else
+                {
+                    this->notSavedMessage();
                 }
             }
         }
@@ -257,38 +174,22 @@ namespace ASALI
             if (index == 0)
             {
                 kinetic_.set_label(filename);
-#if ASALI_ON_WINDOW == 1
-                command = "--input=\"" + filename + "\"";
-#else
                 command = "--input=" + filename;
-#endif
             }
             else if (index == 1)
             {
                 thermo_.set_label(filename);
-#if ASALI_ON_WINDOW == 1
-                command = "--thermo=\"" + filename + "\"";
-#else
                 command = "--thermo=" + filename;
-#endif
             }
             else if (index == 2)
             {
                 transport_.set_label(filename);
-#if ASALI_ON_WINDOW == 1
-                command = "--transport=\"" + filename + "\"";
-#else
                 command = "--transport=" + filename;
-#endif
             }
             else if (index == 3)
             {
                 surface_.set_label(filename);
-#if ASALI_ON_WINDOW == 1
-                command = "--surface=\"" + filename + "\"";
-#else
                 command = "--surface=" + filename;
-#endif
             }
 
             files_[index] = command;
@@ -320,15 +221,9 @@ namespace ASALI
 
     void chemkinConverter::notSavedMessage()
     {
-#if ASALI_ON_WINDOW == 0
         Gtk::MessageDialog dialog(*this, "Conversion stopped! The most common reasons for that are:\n1/Something is wrong with your input files.\n2/You have not load CANTERA enviornment", true, Gtk::MESSAGE_ERROR);
         dialog.set_secondary_text(this->getBeerShort(), true);
         dialog.run();
-#else
-        Gtk::MessageDialog dialog(*this, "Conversion stopped!\nSomething is wrong with your input files.", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeerShort(), true);
-        dialog.run();
-#endif
     }
 
     bool chemkinConverter::checkConvertedFile(std::string filename)

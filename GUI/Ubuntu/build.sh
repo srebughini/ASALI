@@ -23,12 +23,14 @@ function Help()
     echo "          --os                     Operating system (Default: ubuntu)"
     echo "          --output-folder          Target folder    (Default: .)"
     echo "          --symbolic-link          Create symbolic link in /usr/local/bin/"
-    echo "          --without-cantera        Install ASALI without cantera"
     echo "          --no-interaction         Ignore human interaction"
     echo " "
     echo "   available options:"
     echo "          --os                     ubuntu/windows"
     echo " "
+    echo "   developer options:"
+    echo "          --without-cantera        Install ASALI without cantera"
+    echo "          --next-version           Enable next version features"
     exit
 }
 
@@ -167,12 +169,16 @@ function CreateSymbolicLink()
 
 function Compile()
 {
+    if [ "$7" == 1 ]; then
+    	echoRed "Next version is not tested, yet :)"
+    fi 
+
     if [ "$1" == "true" ]; then
-        make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
+        make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     else
-        echoRed "This version is not available, yet :)"
+        echoRed "Only ASALI version is not tested, yet :)"
         make all -f Makefile.libs
-        make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6
+        make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     fi
 }
 
@@ -212,6 +218,7 @@ output_folder=$PWD
 symbolic_link="false"
 compiling_folder=$output_folder
 human_interaction="true"
+next_version=0
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -252,6 +259,10 @@ do
         human_interaction="false"
         shift # past argument
         ;;
+        --next-version)
+        next_version=1
+        shift # past argument
+        ;;
         *)    # unknown option
         POSITIONAL+=("$1") # save it in an array for later
         shift # past argument
@@ -272,7 +283,7 @@ CheckSymbolicLink "$symbolic_link" "$python_config_command"
 compile=$(Continue)
 
 if [ "$compile" == "true" ]; then
-   Compile "$with_cantera" "$cantera_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder"
+   Compile "$with_cantera" "$cantera_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder" "$next_version"
    Copy "$output_folder"
    CreateSymbolicLink "$symbolic_link" "$output_folder"
 else
