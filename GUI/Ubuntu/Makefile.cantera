@@ -9,7 +9,7 @@ SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wi
 
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --cflags)\
+CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --cflags)\
             $(shell python3-config ${PYTHON_CONFIG} --cflags)\
             -I$(CANTERA_PREFIX)include\
             -I$(CANTERA_PREFIX)include/cantera/ext\
@@ -22,10 +22,11 @@ CFLAGS := -fPIC -Os -s -std=c++11 \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
-LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 --libs)\
+LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
           -lcantera\
           -lcantera_fortran\
+          -lplplotcxx\
           -lgfortran\
           -lpthread\
           -lm
