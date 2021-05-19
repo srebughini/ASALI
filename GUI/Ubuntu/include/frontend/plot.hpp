@@ -39,19 +39,8 @@
 #ifndef PLOT_H
 #define PLOT_H
 
-#include "libs/matplotlibcpp.h"
+#include "backend/plotInterface.hpp"
 #include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
 
 namespace ASALI
 {
@@ -141,13 +130,14 @@ namespace ASALI
 
         std::vector<std::string> n_;
         std::vector<std::string> nc_;
+        
+        ASALI::plotInterface *plotInterface_;
 
         void batchplot();
         void cstrplot();
         void het1dplot();
         void pelletplot();
         void ph1dplot(const std::string resolution);
-        void setPythonPath();
 
         bool isChecked(std::vector<Gtk::CheckButton *> button);
     };

@@ -51,6 +51,8 @@ namespace ASALI
           SURF_NC_(0),
           NP_(0)
     {
+		plotInterface_ = new ASALI::plotInterface();
+
         this->set_border_width(15);
         this->set_title("ASALI: plotting");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
@@ -348,11 +350,11 @@ namespace ASALI
 
     void plot::runPlot()
     {
-        this->setPythonPath();
         if (type_ == "batch")
         {
             this->batchplot();
         }
+        /*
         else if (type_ == "ph1d")
         {
             this->ph1dplot(resolution_);
@@ -368,16 +370,15 @@ namespace ASALI
         else if (type_ == "pellet")
         {
             this->pelletplot();
-        }
+        }*/
     }
 
     void plot::batchplot()
     {
-        unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
-            matplotlibcpp::figure(nFig++);
-            std::vector<double> y(t_.size());
+			plotInterface_->newFigure();
+			std::vector<double> y(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (massButton_[i]->get_active())
@@ -386,18 +387,24 @@ namespace ASALI
                     {
                         y[j] = std::max(0., y_[j][i]);
                     }
-                    matplotlibcpp::named_plot(n_[i], t_, y);
+                    plotInterface_->setData(t_, y, n_[i]);
                 }
             }
-            matplotlibcpp::title("MASS FRACTION");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Mass fraction [-]");
-            matplotlibcpp::legend("best", false);
+			plotInterface_->setXlabel("Time [s]");
+			plotInterface_->setYlabel("Mass fraction [-]");
+			plotInterface_->setTitle("MASS FRACTION");
+			plotInterface_->setLegendPosition("left");
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(moleButton_))
         {
-            matplotlibcpp::figure(nFig++);
+            plotInterface_->newFigure();
             std::vector<double> x(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -407,18 +414,23 @@ namespace ASALI
                     {
                         x[j] = std::max(0., x_[j][i]);
                     }
-                    matplotlibcpp::named_plot(n_[i], t_, x);
+                    plotInterface_->setData(t_,x, n_[i]);
                 }
             }
-            matplotlibcpp::title("MOLE FRACTION");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Mole fraction [-]");
-            matplotlibcpp::legend("best", false);
+            plotInterface_->setTitle("MOLE FRACTION");
+            plotInterface_->setXlabel("Time [s]");
+            plotInterface_->setYlabel("Mole fraction [-]");
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(siteButton_))
         {
-            matplotlibcpp::figure(nFig++);
+            plotInterface_->newFigure();
             std::vector<double> z(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -428,46 +440,52 @@ namespace ASALI
                     {
                         z[j] = std::max(0., z_[j][i]);
                     }
-                    matplotlibcpp::named_plot(nc_[i], t_, z);
+                    plotInterface_->setData(t_, z, nc_[i]);
                 }
             }
-            matplotlibcpp::title("COVERAGE");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Coverage [-]");
-            matplotlibcpp::legend("best", false);
+            plotInterface_->setTitle("COVERAGE");
+            plotInterface_->setXlabel("Time [s]");
+            plotInterface_->setYlabel("Coverage [-]");
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(otherButton_))
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                matplotlibcpp::figure(nFig++);
-                matplotlibcpp::plot(t_, T_);
-                matplotlibcpp::title("TEMPERATURE");
-                matplotlibcpp::xlabel("Time [s]");
-                matplotlibcpp::ylabel("Temperature [K]");
+                plotInterface_->newFigure();
+                plotInterface_->setData(t_, T_, "");
+                plotInterface_->setTitle("TEMPERATURE");
+                plotInterface_->setXlabel("Time [s]");
+                plotInterface_->setYlabel("Temperature [K]");
             }
 
             if (otherButton_[1]->get_active()) //Volume
             {
-                matplotlibcpp::figure(nFig++);
-                matplotlibcpp::plot(t_, V_);
-                matplotlibcpp::title("VOLUME");
-                matplotlibcpp::xlabel("Time [s]");
-                matplotlibcpp::ylabel("Volume [m3]");
+                plotInterface_->newFigure();
+                plotInterface_->setData(t_, V_, "");
+                plotInterface_->setTitle("VOLUME");
+                plotInterface_->setXlabel("Time [s]");
+                plotInterface_->setYlabel("Volume [m3]");
             }
         }
-        matplotlibcpp::show();
+        plotInterface_->show();
     }
 
     void plot::ph1dplot(const std::string resolution)
     {
+		/*
         if (resolution == "steady state")
         {
             unsigned int nFig = 1;
             if (this->isChecked(massButton_))
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 std::vector<double> y(L_.size());
                 for (unsigned int i = 0; i < NC_; i++)
                 {
@@ -480,15 +498,15 @@ namespace ASALI
                         matplotlibcpp::named_plot(n_[i], L_, y);
                     }
                 }
-                matplotlibcpp::title("MASS FRACTION");
-                matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                matplotlibcpp::ylabel("Mass fraction [-]");
-                matplotlibcpp::legend("best", false);
+                plotInterface_->setTitle("MASS FRACTION");
+                plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                plotInterface_->setYlabel("Mass fraction [-]");
+                plotInterface_->legend();
             }
 
             if (this->isChecked(moleButton_))
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 std::vector<double> x(L_.size());
                 for (unsigned int i = 0; i < NC_; i++)
                 {
@@ -501,15 +519,15 @@ namespace ASALI
                         matplotlibcpp::named_plot(n_[i], L_, x);
                     }
                 }
-                matplotlibcpp::title("MOLE FRACTION");
-                matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                matplotlibcpp::ylabel("Mole fraction [-]");
-                matplotlibcpp::legend("best", false);
+                plotInterface_->setTitle("MOLE FRACTION");
+                plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                plotInterface_->setYlabel("Mole fraction [-]");
+                plotInterface_->legend();
             }
 
             if (this->isChecked(siteButton_))
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 std::vector<double> z(L_.size());
                 for (unsigned int i = 0; i < NC_; i++)
                 {
@@ -522,21 +540,21 @@ namespace ASALI
                         matplotlibcpp::named_plot(nc_[i], L_, z);
                     }
                 }
-                matplotlibcpp::title("COVERAGE");
-                matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                matplotlibcpp::ylabel("Coverage [-]");
-                matplotlibcpp::legend("best", false);
+                plotInterface_->setTitle("COVERAGE");
+                plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                plotInterface_->setYlabel("Coverage [-]");
+                plotInterface_->legend();
             }
 
             if (this->isChecked(otherButton_))
             {
                 if (otherButton_[0]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     matplotlibcpp::plot(L_, T_);
-                    matplotlibcpp::title("TEMPERATURE");
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Temperature [K]");
+                    plotInterface_->setTitle("TEMPERATURE");
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Temperature [K]");
                 }
             }
         }
@@ -549,7 +567,7 @@ namespace ASALI
                 {
                     if (massButton_[i]->get_active())
                     {
-                        matplotlibcpp::figure(nFig++);
+                        plotInterface_->newFigure();
                         std::vector<double> y(L_.size());
                         for (unsigned int k = 0; k < t_.size(); k++)
                         {
@@ -559,9 +577,9 @@ namespace ASALI
                             }
                             matplotlibcpp::plot(L_, y);
                         }
-                        matplotlibcpp::title(n_[i]);
-                        matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                        matplotlibcpp::ylabel("Mass fraction [-]");
+                        plotInterface_->setTitle(n_[i]);
+                        plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface_->setYlabel("Mass fraction [-]");
                     }
                 }
             }
@@ -572,7 +590,7 @@ namespace ASALI
                 {
                     if (moleButton_[i]->get_active())
                     {
-                        matplotlibcpp::figure(nFig++);
+                        plotInterface_->newFigure();
                         std::vector<double> x(L_.size());
                         for (unsigned int k = 0; k < t_.size(); k++)
                         {
@@ -582,9 +600,9 @@ namespace ASALI
                             }
                             matplotlibcpp::plot(L_, x);
                         }
-                        matplotlibcpp::title(n_[i]);
-                        matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                        matplotlibcpp::ylabel("Mole fraction [-]");
+                        plotInterface_->setTitle(n_[i]);
+                        plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface_->setYlabel("Mole fraction [-]");
                     }
                 }
             }
@@ -595,7 +613,7 @@ namespace ASALI
                 {
                     if (siteButton_[i]->get_active())
                     {
-                        matplotlibcpp::figure(nFig++);
+                        plotInterface_->newFigure();
                         std::vector<double> z(L_.size());
                         for (unsigned int k = 0; k < t_.size(); k++)
                         {
@@ -605,9 +623,9 @@ namespace ASALI
                             }
                             matplotlibcpp::plot(L_, z);
                         }
-                        matplotlibcpp::title(nc_[i]);
-                        matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                        matplotlibcpp::ylabel("Coverage [-]");
+                        plotInterface_->setTitle(nc_[i]);
+                        plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface_->setYlabel("Coverage [-]");
                     }
                 }
             }
@@ -616,7 +634,7 @@ namespace ASALI
             {
                 if (otherButton_[0]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> T(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -626,21 +644,23 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, T);
                     }
-                    matplotlibcpp::title("TEMPERATURE");
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Temperature [K]");
+                    plotInterface_->setTitle("TEMPERATURE");
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Temperature [K]");
                 }
             }
         }
         matplotlibcpp::show();
+        */
     }
 
     void plot::cstrplot()
     {
+		/*
         unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
-            matplotlibcpp::figure(nFig++);
+            plotInterface_->newFigure();
             std::vector<double> y(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -653,15 +673,15 @@ namespace ASALI
                     matplotlibcpp::named_plot(n_[i], t_, y);
                 }
             }
-            matplotlibcpp::title("MASS FRACTION");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Mass fraction [-]");
-            matplotlibcpp::legend("best", false);
+            plotInterface_->setTitle("MASS FRACTION");
+            plotInterface_->setXlabel("Time [s]");
+            plotInterface_->setYlabel("Mass fraction [-]");
+            plotInterface_->legend();
         }
 
         if (this->isChecked(moleButton_))
         {
-            matplotlibcpp::figure(nFig++);
+            plotInterface_->newFigure();
             std::vector<double> x(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -674,15 +694,15 @@ namespace ASALI
                     matplotlibcpp::named_plot(n_[i], t_, x);
                 }
             }
-            matplotlibcpp::title("MOLE FRACTION");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Mole fraction [-]");
-            matplotlibcpp::legend("best", false);
+            plotInterface_->setTitle("MOLE FRACTION");
+            plotInterface_->setXlabel("Time [s]");
+            plotInterface_->setYlabel("Mole fraction [-]");
+            plotInterface_->legend();
         }
 
         if (this->isChecked(siteButton_))
         {
-            matplotlibcpp::figure(nFig++);
+            plotInterface_->newFigure();
             std::vector<double> z(t_.size());
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -695,36 +715,36 @@ namespace ASALI
                     matplotlibcpp::named_plot(nc_[i], t_, z);
                 }
             }
-            matplotlibcpp::title("COVERAGE");
-            matplotlibcpp::xlabel("Time [s]");
-            matplotlibcpp::ylabel("Coverage [-]");
-            matplotlibcpp::legend("best", false);
+            plotInterface_->setTitle("COVERAGE");
+            plotInterface_->setXlabel("Time [s]");
+            plotInterface_->setYlabel("Coverage [-]");
+            plotInterface_->legend();
         }
 
         if (this->isChecked(otherButton_))
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 matplotlibcpp::plot(t_, T_);
-                matplotlibcpp::title("TEMPERATURE");
-                matplotlibcpp::xlabel("Time [s]");
-                matplotlibcpp::ylabel("Temperature [K]");
+                plotInterface_->setTitle("TEMPERATURE");
+                plotInterface_->setXlabel("Time [s]");
+                plotInterface_->setYlabel("Temperature [K]");
             }
         }
-        matplotlibcpp::show();
+        matplotlibcpp::show();*/
     }
 
     void plot::het1dplot()
     {
-        unsigned int nFig = 1;
+        /*unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (massButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> y(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -734,9 +754,9 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, y);
                     }
-                    matplotlibcpp::title(n_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Mass fraction [-]");
+                    plotInterface_->setTitle(n_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Mass fraction [-]");
                 }
             }
         }
@@ -747,7 +767,7 @@ namespace ASALI
             {
                 if (moleButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> x(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -757,9 +777,9 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, x);
                     }
-                    matplotlibcpp::title(n_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Mole fraction [-]");
+                    plotInterface_->setTitle(n_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Mole fraction [-]");
                 }
             }
         }
@@ -770,7 +790,7 @@ namespace ASALI
             {
                 if (siteButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> z(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -780,9 +800,9 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, z);
                     }
-                    matplotlibcpp::title(nc_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Coverage [-]");
+                    plotInterface_->setTitle(nc_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Coverage [-]");
                 }
             }
         }
@@ -791,7 +811,7 @@ namespace ASALI
         {
             if (otherButton_[0]->get_active())
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 std::vector<double> T(L_.size());
                 for (unsigned int k = 0; k < t_.size(); k++)
                 {
@@ -801,14 +821,14 @@ namespace ASALI
                     }
                     matplotlibcpp::plot(L_, T);
                 }
-                matplotlibcpp::title("BULK TEMPERATURE");
-                matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                matplotlibcpp::ylabel("Temperature [K]");
+                plotInterface_->setTitle("BULK TEMPERATURE");
+                plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                plotInterface_->setYlabel("Temperature [K]");
             }
 
             if (otherButton_[1]->get_active())
             {
-                matplotlibcpp::figure(nFig++);
+                plotInterface_->newFigure();
                 std::vector<double> T(L_.size());
                 for (unsigned int k = 0; k < t_.size(); k++)
                 {
@@ -818,24 +838,24 @@ namespace ASALI
                     }
                     matplotlibcpp::plot(L_, T);
                 }
-                matplotlibcpp::title("WALL TEMPERATURE");
-                matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                matplotlibcpp::ylabel("Temperature [K]");
+                plotInterface_->setTitle("WALL TEMPERATURE");
+                plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                plotInterface_->setYlabel("Temperature [K]");
             }
         }
-        matplotlibcpp::show();
+        matplotlibcpp::show();*/
     }
 
     void plot::pelletplot()
     {
-        unsigned int nFig = 1;
+        /*unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (massButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> y(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -845,9 +865,9 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, y);
                     }
-                    matplotlibcpp::title(n_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Mass fraction [-]");
+                    plotInterface_->setTitle(n_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Mass fraction [-]");
                 }
             }
         }
@@ -858,7 +878,7 @@ namespace ASALI
             {
                 if (moleButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> x(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -868,9 +888,9 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, x);
                     }
-                    matplotlibcpp::title(n_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Mole fraction [-]");
+                    plotInterface_->setTitle(n_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Mole fraction [-]");
                 }
             }
         }
@@ -881,7 +901,7 @@ namespace ASALI
             {
                 if (siteButton_[i]->get_active())
                 {
-                    matplotlibcpp::figure(nFig++);
+                    plotInterface_->newFigure();
                     std::vector<double> z(L_.size());
                     for (unsigned int k = 0; k < t_.size(); k++)
                     {
@@ -891,13 +911,13 @@ namespace ASALI
                         }
                         matplotlibcpp::plot(L_, z);
                     }
-                    matplotlibcpp::title(nc_[i]);
-                    matplotlibcpp::xlabel("Length [" + Lud_ + "]");
-                    matplotlibcpp::ylabel("Coverage [-]");
+                    plotInterface_->setTitle(nc_[i]);
+                    plotInterface_->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface_->setYlabel("Coverage [-]");
                 }
             }
         }
-        matplotlibcpp::show();
+        matplotlibcpp::show();*/
     }
 
     void plot::destroy()
@@ -943,17 +963,6 @@ namespace ASALI
             }
         }
         return false;
-    }
-
-    void plot::setPythonPath()
-    {
-#if ASALI_ON_WINDOW == 1
-        std::string python_path = "python/";
-        _putenv_s("PYTHONPATH", python_path.c_str());
-        size_t python_path_size = strlen(python_path.c_str());
-        const wchar_t *python_path_char = Py_DecodeLocale(python_path.c_str(), &python_path_size);
-        Py_SetPythonHome(python_path_char);
-#endif
     }
 
     plot::~plot()
