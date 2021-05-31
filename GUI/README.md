@@ -60,7 +60,7 @@ Asali is based on different open-source codes:
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
 * [Sundials libraries](https://computation.llnl.gov/projects/sundials): IDA and CVODE solvers for Ordinay Differentional Equation (ODE) and Differential and Algebraic Equation (DAE) systems
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
-* [Matplotlib](https://matplotlib.org/): a comprehensive library for creating static, animated, and interactive visualizations in Python
+* [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
 
@@ -80,12 +80,12 @@ sudo apt-get install libgtkmm-3.0-dev
 ```
 More details can be found at: https://www.gtkmm.org/en/  
 
-##### 2.1.3 How to install Matplotlib
-[Matplotlib](https://matplotlib.org/) can be installed with the following command:  
+##### 2.1.3 How to install PLplot
+[PLplot](http://plplot.org/) can be installed with the following command:  
 ```bash
-sudo apt-get install python3-matplotlib  
+sudo apt-get install libplplot-dev plplot-driver-cairo  
 ```
-Details can be found at: https://matplotlib.org/
+Details can be found at: http://plplot.org/
 
 ##### 2.1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    

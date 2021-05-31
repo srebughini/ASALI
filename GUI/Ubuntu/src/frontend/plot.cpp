@@ -354,7 +354,6 @@ namespace ASALI
         {
             this->batchplot();
         }
-        /*
         else if (type_ == "ph1d")
         {
             this->ph1dplot(resolution_);
@@ -370,7 +369,7 @@ namespace ASALI
         else if (type_ == "pellet")
         {
             this->pelletplot();
-        }*/
+        }
     }
 
     void plot::batchplot()
@@ -479,7 +478,6 @@ namespace ASALI
 
     void plot::ph1dplot(const std::string resolution)
     {
-		/*
         if (resolution == "steady state")
         {
             unsigned int nFig = 1;
@@ -495,12 +493,17 @@ namespace ASALI
                         {
                             y[j] = std::max(0., y_[j][i]);
                         }
-                        matplotlibcpp::named_plot(n_[i], L_, y);
+                        plotInterface_->setData(L_, y, n_[i]);
                     }
                 }
                 plotInterface_->setTitle("MASS FRACTION");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Mass fraction [-]");
+                #if ASALI_ON_WINDOW == 1
+                plotInterface_->setOutputFormat("wingdi");
+                #else
+                plotInterface_->setOutputFormat("xcairo");
+                #endif
                 plotInterface_->legend();
             }
 
@@ -516,12 +519,17 @@ namespace ASALI
                         {
                             x[j] = std::max(0., x_[j][i]);
                         }
-                        matplotlibcpp::named_plot(n_[i], L_, x);
+                        plotInterface_->setData(L_, x, n_[i]);
                     }
                 }
                 plotInterface_->setTitle("MOLE FRACTION");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Mole fraction [-]");
+                #if ASALI_ON_WINDOW == 1
+                plotInterface_->setOutputFormat("wingdi");
+                #else
+                plotInterface_->setOutputFormat("xcairo");
+                #endif
                 plotInterface_->legend();
             }
 
@@ -537,12 +545,17 @@ namespace ASALI
                         {
                             z[j] = std::max(0., z_[j][i]);
                         }
-                        matplotlibcpp::named_plot(nc_[i], L_, z);
+                        plotInterface_->setData(L_, z, nc_[i]);
                     }
                 }
                 plotInterface_->setTitle("COVERAGE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Coverage [-]");
+                #if ASALI_ON_WINDOW == 1
+                plotInterface_->setOutputFormat("wingdi");
+                #else
+                plotInterface_->setOutputFormat("xcairo");
+                #endif
                 plotInterface_->legend();
             }
 
@@ -551,7 +564,7 @@ namespace ASALI
                 if (otherButton_[0]->get_active())
                 {
                     plotInterface_->newFigure();
-                    matplotlibcpp::plot(L_, T_);
+                    plotInterface_->setData(L_, T_, "");
                     plotInterface_->setTitle("TEMPERATURE");
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
                     plotInterface_->setYlabel("Temperature [K]");
@@ -575,7 +588,7 @@ namespace ASALI
                             {
                                 y[j] = std::max(0., yt_[k][j][i]);
                             }
-                            matplotlibcpp::plot(L_, y);
+                            plotInterface_->setData(L_, y, "");
                         }
                         plotInterface_->setTitle(n_[i]);
                         plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -598,7 +611,7 @@ namespace ASALI
                             {
                                 x[j] = std::max(0., xt_[k][j][i]);
                             }
-                            matplotlibcpp::plot(L_, x);
+                            plotInterface_->setData(L_, x, "");
                         }
                         plotInterface_->setTitle(n_[i]);
                         plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -621,7 +634,7 @@ namespace ASALI
                             {
                                 z[j] = std::max(0., zt_[k][j][i]);
                             }
-                            matplotlibcpp::plot(L_, z);
+                            plotInterface_->setData(L_, z, "");
                         }
                         plotInterface_->setTitle(nc_[i]);
                         plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -642,7 +655,7 @@ namespace ASALI
                         {
                             T[j] = std::max(0., Tt_[k][j]);
                         }
-                        matplotlibcpp::plot(L_, T);
+                        plotInterface_->setData(L_, T, "");
                     }
                     plotInterface_->setTitle("TEMPERATURE");
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -650,14 +663,11 @@ namespace ASALI
                 }
             }
         }
-        matplotlibcpp::show();
-        */
+        plotInterface_->show();
     }
 
     void plot::cstrplot()
     {
-		/*
-        unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
             plotInterface_->newFigure();
@@ -670,13 +680,18 @@ namespace ASALI
                     {
                         y[j] = std::max(0., y_[j][i]);
                     }
-                    matplotlibcpp::named_plot(n_[i], t_, y);
+                    plotInterface_->setData(t_, y, n_[i]);
                 }
             }
             plotInterface_->setTitle("MASS FRACTION");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Mass fraction [-]");
-            plotInterface_->legend();
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(moleButton_))
@@ -691,13 +706,18 @@ namespace ASALI
                     {
                         x[j] = std::max(0., x_[j][i]);
                     }
-                    matplotlibcpp::named_plot(n_[i], t_, x);
+                    plotInterface_->setData(t_, x, n_[i]);
                 }
             }
             plotInterface_->setTitle("MOLE FRACTION");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Mole fraction [-]");
-            plotInterface_->legend();
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(siteButton_))
@@ -712,13 +732,18 @@ namespace ASALI
                     {
                         z[j] = std::max(0., z_[j][i]);
                     }
-                    matplotlibcpp::named_plot(nc_[i], t_, z);
+                    plotInterface_->setData(t_, z, nc_[i]);
                 }
             }
             plotInterface_->setTitle("COVERAGE");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Coverage [-]");
-            plotInterface_->legend();
+			#if ASALI_ON_WINDOW == 1
+			plotInterface_->setOutputFormat("wingdi");
+			#else
+			plotInterface_->setOutputFormat("xcairo");
+			#endif
+			plotInterface_->legend();
         }
 
         if (this->isChecked(otherButton_))
@@ -726,18 +751,17 @@ namespace ASALI
             if (otherButton_[0]->get_active()) //Temperature
             {
                 plotInterface_->newFigure();
-                matplotlibcpp::plot(t_, T_);
+                plotInterface_->setData(t_, T_, "");
                 plotInterface_->setTitle("TEMPERATURE");
                 plotInterface_->setXlabel("Time [s]");
                 plotInterface_->setYlabel("Temperature [K]");
             }
         }
-        matplotlibcpp::show();*/
+        plotInterface_->show();
     }
 
     void plot::het1dplot()
     {
-        /*unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
@@ -752,7 +776,7 @@ namespace ASALI
                         {
                             y[j] = std::max(0., yt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, y);
+                        plotInterface_->setData(L_, y, "");
                     }
                     plotInterface_->setTitle(n_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -775,7 +799,7 @@ namespace ASALI
                         {
                             x[j] = std::max(0., xt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, x);
+                        plotInterface_->setData(L_, x, "");
                     }
                     plotInterface_->setTitle(n_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -798,7 +822,7 @@ namespace ASALI
                         {
                             z[j] = std::max(0., zt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, z);
+                        plotInterface_->setData(L_, z, "");
                     }
                     plotInterface_->setTitle(nc_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -819,7 +843,7 @@ namespace ASALI
                     {
                         T[j] = std::max(0., Tb_[k][j]);
                     }
-                    matplotlibcpp::plot(L_, T);
+                    plotInterface_->setData(L_, T, "");
                 }
                 plotInterface_->setTitle("BULK TEMPERATURE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -836,19 +860,18 @@ namespace ASALI
                     {
                         T[j] = std::max(0., Tw_[k][j]);
                     }
-                    matplotlibcpp::plot(L_, T);
+                    plotInterface_->setData(L_, T, "");
                 }
                 plotInterface_->setTitle("WALL TEMPERATURE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Temperature [K]");
             }
         }
-        matplotlibcpp::show();*/
+        plotInterface_->show();
     }
 
     void plot::pelletplot()
     {
-        /*unsigned int nFig = 1;
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
@@ -863,7 +886,7 @@ namespace ASALI
                         {
                             y[j] = std::max(0., yt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, y);
+                        plotInterface_->setData(L_, y, "");
                     }
                     plotInterface_->setTitle(n_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -886,7 +909,7 @@ namespace ASALI
                         {
                             x[j] = std::max(0., xt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, x);
+                        plotInterface_->setData(L_, x, "");
                     }
                     plotInterface_->setTitle(n_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -909,7 +932,7 @@ namespace ASALI
                         {
                             z[j] = std::max(0., zt_[k][j][i]);
                         }
-                        matplotlibcpp::plot(L_, z);
+                        plotInterface_->setData(L_, z, "");
                     }
                     plotInterface_->setTitle(nc_[i]);
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
@@ -917,7 +940,7 @@ namespace ASALI
                 }
             }
         }
-        matplotlibcpp::show();*/
+        plotInterface_->show();
     }
 
     void plot::destroy()
