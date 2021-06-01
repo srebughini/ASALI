@@ -480,7 +480,6 @@ namespace ASALI
     {
         if (resolution == "steady state")
         {
-            unsigned int nFig = 1;
             if (this->isChecked(massButton_))
             {
                 plotInterface_->newFigure();
@@ -573,7 +572,6 @@ namespace ASALI
         }
         else if (resolution == "transient")
         {
-            unsigned int nFig = 1;
             if (this->isChecked(massButton_))
             {
                 for (unsigned int i = 0; i < NC_; i++)
