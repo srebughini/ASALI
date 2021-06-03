@@ -62,63 +62,13 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
-##### 2.1.1 Pre-requisites installation
-The Linux based external libraries can be installed by typing these commands:  
-```bash
-sudo apt-get update  
-sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3  
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
-```
-
-##### 2.1.2 How to install Gtkmm libraries
-[Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
-```bash
-sudo apt-get install libgtkmm-3.0-dev  
-```
-More details can be found at: https://www.gtkmm.org/en/  
-
-##### 2.1.3 How to install PLplot
-[PLplot](http://plplot.org/) can be installed with the following command:  
-```bash
-sudo apt-get install libplplot-dev plplot-driver-cairo  
-```
-Details can be found at: http://plplot.org/
-
-##### 2.1.4 How to install Cantera
-[Cantera](https://cantera.org/) can be downloaded with the following command:    
-```bash
-git clone https://github.com/Cantera/cantera.git   
-```
-To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
-```bash
-scons build system_sundials=n  
-sudo scons install  
-```
-More details can be found at: https://cantera.org/install/compiling-install.html 
-
-##### 2.1.5 How to install ASALI
-To install Asali run the following command.  
-```bash
-./build  
-```
-The installation can be customized with the following options:  
-|Option|Comment|  
-|--------|-----|
-|`--help`|Show help message|
-|`--clean`|Clean installation folder|
-|`--cantera-path`|Select Cantera path|
-|`--os`|Select operating system|
-|`--output-folder`|Select target folder|
-|`--symbolic-link`|Create symbolic link in `/usr/local/bin/`|
-|`--no-interaction`|Disable human interaction|
-  
-To run Asali:  
-```bash
-./Asali  
-```
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS. and Debian Wheez. Installation instructions can be found [here](LINUX.md).
+### 2.3 Mingw-w64 on Windows
+[Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
+Installation instructions can be found [here](MINGW64.md).
 
 ### 2.2 Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
