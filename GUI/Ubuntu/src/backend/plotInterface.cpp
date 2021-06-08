@@ -42,6 +42,8 @@ namespace ASALI
 {
     #if ASALI_ON_WINDOW == 1
     plotInterface::plotInterface() : nFig_(-1),
+                                     defaultTextColor_({255, 255, 235}),
+                                     defaultBgColor_({0, 0, 0}),
                                      onScreenOutputFormats_({"wingcc", "wingid"})
     {
         _putenv_s("PLPLOT_LIB", "share/plplot5.15.0");
@@ -49,6 +51,8 @@ namespace ASALI
     }
     #else
     plotInterface::plotInterface() : nFig_(-1),
+                                     defaultTextColor_({255, 255, 235}),
+                                     defaultBgColor_({0, 0, 0}),
                                      onScreenOutputFormats_({"xcairo", "wxwidgets", "qtwidget"})
     {
     }
@@ -94,6 +98,22 @@ namespace ASALI
         return min;
     }
 
+
+    void plotInterface::setDefaultBackgroundColor(int r, int b, int g)
+    {
+        std::cout << defaultBgColor_.size() << std::endl;
+        defaultBgColor_[0] = r;
+        defaultBgColor_[1] = b;
+        defaultBgColor_[2] = g;
+    }
+
+    void plotInterface::setDefaultTextColor(int r, int b, int g)
+    {
+        defaultTextColor_[0] = r;
+        defaultTextColor_[1] = b;
+        defaultTextColor_[2] = g;
+    }
+
     void plotInterface::newFigure()
     {
         nFig_++;
@@ -114,14 +134,13 @@ namespace ASALI
         xmin_.push_back(DBL_MAX);
         ymax_.push_back(DBL_MIN);
         ymin_.push_back(DBL_MAX);
-        textColor_.push_back({255, 255, 235});
-        bgColor_.push_back({0, 0, 0});
+        textColor_.push_back(defaultTextColor_);
+        bgColor_.push_back(defaultBgColor_);
         textColors_.push_back({0});
         lineColors_.push_back({0});
         lineStyles_.push_back({0});
         lineWidths_.push_back({0});
         optArray_.push_back({0});
-
         legendTextForSingleFigure_.clear();
         xForSingleFig_.clear();
         yForSingleFig_.clear();
@@ -129,12 +148,22 @@ namespace ASALI
 
     void plotInterface::setXlimits(double xmax, double xmin)
     {
+        if ( xmax == xmin )
+        {
+            xmin = 0.;
+        }
+
         xmin_[nFig_] = std::min(xmin, xmin_[nFig_]);
         xmax_[nFig_] = std::max(xmax, xmax_[nFig_]);
     }
 
     void plotInterface::setYlimits(double ymax, double ymin)
     {
+        if ( ymax == ymin )
+        {
+            ymin = 0.;
+        }
+
         ymin_[nFig_] = std::min(ymin, ymin_[nFig_]);
         ymax_[nFig_] = std::max(ymax, ymax_[nFig_]);
     }
@@ -253,6 +282,12 @@ namespace ASALI
         {
             nCol_[nFig_] = nLegend_[nFig_];
         }
+    }
+    
+    void plotInterface::setLegendGrid(int ncol, int nrow)
+    {
+        nCol_[nFig_] = ncol;
+        nRow_[nFig_] = nrow;
     }
 
     void plotInterface::setOutputFormat(std::string outputFormat)

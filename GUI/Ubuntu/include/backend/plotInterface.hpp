@@ -73,8 +73,11 @@ namespace ASALI
         void setYlabel(std::string ylabel);
         void setTitle(std::string title);
         void setTextColor(int r, int b, int g);
+        void setDefaultTextColor(int r, int b, int g);
         void setBackgroundColor(int r, int b, int g);
+        void setDefaultBackgroundColor(int r, int b, int g);
         void setLegendPosition(const std::string position);
+        void setLegendGrid(int ncol, int nrow);
         void setOutputFormat(const std::string outputFormat);
         void setOutputFileName(const std::string fileName);
         void legend();
@@ -100,6 +103,8 @@ namespace ASALI
 
         std::vector<int> nSize_;
         std::vector<int> nLegend_;
+        std::vector<int> defaultTextColor_;
+        std::vector<int> defaultBgColor_;
 
         std::vector<std::string> xLabel_;
         std::vector<std::string> yLabel_;

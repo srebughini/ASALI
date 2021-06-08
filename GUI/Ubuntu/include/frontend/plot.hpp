@@ -107,6 +107,8 @@ namespace ASALI
         unsigned int NC_;
         unsigned int SURF_NC_;
         unsigned int NP_;
+        
+        int MAX_COL_;
 
         std::string type_;
         std::string resolution_;
@@ -130,10 +132,12 @@ namespace ASALI
 
         std::vector<std::string> n_;
         std::vector<std::string> nc_;
-        
-        ASALI::plotInterface *plotInterface_;
 
-        void batchplot();
+        void output(ASALI::plotInterface *plotInterface);
+        void defaultcolors(ASALI::plotInterface *plotInterface);
+        void legend(ASALI::plotInterface *plotInterface, int ndata);
+        
+        void batchplot(ASALI::plotInterface *plotInterface);
         void cstrplot();
         void het1dplot();
         void pelletplot();

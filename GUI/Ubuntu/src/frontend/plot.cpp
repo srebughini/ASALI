@@ -49,10 +49,9 @@ namespace ASALI
           otherLabel_("Others"),
           NC_(0),
           SURF_NC_(0),
-          NP_(0)
+          NP_(0),
+          MAX_COL_(4)
     {
-		plotInterface_ = new ASALI::plotInterface();
-
         this->set_border_width(15);
         this->set_title("ASALI: plotting");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
@@ -350,9 +349,13 @@ namespace ASALI
 
     void plot::runPlot()
     {
+        ASALI::plotInterface *plotInterface;
+        plotInterface = new ASALI::plotInterface();
+        this->defaultcolors(plotInterface);
+
         if (type_ == "batch")
         {
-            this->batchplot();
+            this->batchplot(plotInterface);
         }
         else if (type_ == "ph1d")
         {
@@ -370,14 +373,45 @@ namespace ASALI
         {
             this->pelletplot();
         }
+        delete plotInterface;
     }
 
-    void plot::batchplot()
+
+    void plot::defaultcolors(ASALI::plotInterface *plotInterface)
+    {
+        plotInterface->setDefaultTextColor(220,230,242);
+        plotInterface->setDefaultBackgroundColor(16,37,63);
+    }
+
+    void plot::legend(ASALI::plotInterface *plotInterface, int ndata)
+    {
+        if ( ndata <= MAX_COL_ )
+        {
+            plotInterface->setLegendPosition("top");
+        }
+        else
+        {
+            plotInterface->setLegendPosition("top");
+            plotInterface->setLegendGrid(MAX_COL_, ndata/MAX_COL_);
+        }
+    }
+    
+    void plot::output(ASALI::plotInterface *plotInterface)
+    {
+        #if ASALI_ON_WINDOW == 1
+        plotInterface->setOutputFormat("wingdi");
+        #else
+        plotInterface->setOutputFormat("qtwidget");
+        #endif
+    }
+
+    void plot::batchplot(ASALI::plotInterface *plotInterface)
     {
         if (this->isChecked(massButton_))
         {
-			plotInterface_->newFigure();
-			std::vector<double> y(t_.size());
+            plotInterface->newFigure();
+            std::vector<double> y(t_.size());
+            int ndata = 0;
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (massButton_[i]->get_active())
@@ -386,25 +420,22 @@ namespace ASALI
                     {
                         y[j] = std::max(0., y_[j][i]);
                     }
-                    plotInterface_->setData(t_, y, n_[i]);
+                    plotInterface->setData(t_, y, n_[i]);
+                    ndata++;
                 }
             }
-			plotInterface_->setXlabel("Time [s]");
-			plotInterface_->setYlabel("Mass fraction [-]");
-			plotInterface_->setTitle("MASS FRACTION");
-			plotInterface_->setLegendPosition("left");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            plotInterface->setXlabel("Time [s]");
+            plotInterface->setYlabel("Mass fraction [-]");
+            this->legend(plotInterface, ndata);
+            this->output(plotInterface);
+            plotInterface->legend();
         }
 
         if (this->isChecked(moleButton_))
         {
-            plotInterface_->newFigure();
+            plotInterface->newFigure();
             std::vector<double> x(t_.size());
+            int ndata = 0;
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (moleButton_[i]->get_active())
@@ -413,24 +444,22 @@ namespace ASALI
                     {
                         x[j] = std::max(0., x_[j][i]);
                     }
-                    plotInterface_->setData(t_,x, n_[i]);
+                    plotInterface->setData(t_,x, n_[i]);
+                    ndata++;
                 }
             }
-            plotInterface_->setTitle("MOLE FRACTION");
-            plotInterface_->setXlabel("Time [s]");
-            plotInterface_->setYlabel("Mole fraction [-]");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            plotInterface->setXlabel("Time [s]");
+            plotInterface->setYlabel("Mole fraction [-]");
+            this->legend(plotInterface, ndata);
+            this->output(plotInterface);
+            plotInterface->legend();
         }
 
         if (this->isChecked(siteButton_))
         {
-            plotInterface_->newFigure();
+            plotInterface->newFigure();
             std::vector<double> z(t_.size());
+            int ndata = 0;
             for (unsigned int i = 0; i < NC_; i++)
             {
                 if (siteButton_[i]->get_active())
@@ -439,45 +468,43 @@ namespace ASALI
                     {
                         z[j] = std::max(0., z_[j][i]);
                     }
-                    plotInterface_->setData(t_, z, nc_[i]);
+                    plotInterface->setData(t_, z, nc_[i]);
+                    ndata++;
                 }
             }
-            plotInterface_->setTitle("COVERAGE");
-            plotInterface_->setXlabel("Time [s]");
-            plotInterface_->setYlabel("Coverage [-]");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            plotInterface->setXlabel("Time [s]");
+            plotInterface->setYlabel("Coverage [-]");
+            this->legend(plotInterface, ndata);
+            this->output(plotInterface);
+            plotInterface->legend();
         }
 
         if (this->isChecked(otherButton_))
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                plotInterface_->newFigure();
-                plotInterface_->setData(t_, T_, "");
-                plotInterface_->setTitle("TEMPERATURE");
-                plotInterface_->setXlabel("Time [s]");
-                plotInterface_->setYlabel("Temperature [K]");
+                plotInterface->newFigure();
+                plotInterface->setData(t_, T_, "");
+                plotInterface->setXlabel("Time [s]");
+                plotInterface->setYlabel("Temperature [K]");
+                this->output(plotInterface);
             }
 
             if (otherButton_[1]->get_active()) //Volume
             {
-                plotInterface_->newFigure();
-                plotInterface_->setData(t_, V_, "");
-                plotInterface_->setTitle("VOLUME");
-                plotInterface_->setXlabel("Time [s]");
-                plotInterface_->setYlabel("Volume [m3]");
+                plotInterface->newFigure();
+                plotInterface->setData(t_, V_, "");
+                plotInterface->setXlabel("Time [s]");
+                plotInterface->setYlabel("Volume [m3]");
+                this->output(plotInterface);
             }
         }
-        plotInterface_->show();
+        plotInterface->show();
     }
 
     void plot::ph1dplot(const std::string resolution)
     {
+        /*
         if (resolution == "steady state")
         {
             if (this->isChecked(massButton_))
@@ -495,7 +522,6 @@ namespace ASALI
                         plotInterface_->setData(L_, y, n_[i]);
                     }
                 }
-                plotInterface_->setTitle("MASS FRACTION");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Mass fraction [-]");
                 #if ASALI_ON_WINDOW == 1
@@ -521,7 +547,6 @@ namespace ASALI
                         plotInterface_->setData(L_, x, n_[i]);
                     }
                 }
-                plotInterface_->setTitle("MOLE FRACTION");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Mole fraction [-]");
                 #if ASALI_ON_WINDOW == 1
@@ -547,7 +572,6 @@ namespace ASALI
                         plotInterface_->setData(L_, z, nc_[i]);
                     }
                 }
-                plotInterface_->setTitle("COVERAGE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
                 plotInterface_->setYlabel("Coverage [-]");
                 #if ASALI_ON_WINDOW == 1
@@ -564,7 +588,6 @@ namespace ASALI
                 {
                     plotInterface_->newFigure();
                     plotInterface_->setData(L_, T_, "");
-                    plotInterface_->setTitle("TEMPERATURE");
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
                     plotInterface_->setYlabel("Temperature [K]");
                 }
@@ -655,17 +678,17 @@ namespace ASALI
                         }
                         plotInterface_->setData(L_, T, "");
                     }
-                    plotInterface_->setTitle("TEMPERATURE");
                     plotInterface_->setXlabel("Length [" + Lud_ + "]");
                     plotInterface_->setYlabel("Temperature [K]");
                 }
             }
         }
-        plotInterface_->show();
+        plotInterface_->show();*/
     }
 
     void plot::cstrplot()
     {
+        /*
         if (this->isChecked(massButton_))
         {
             plotInterface_->newFigure();
@@ -681,15 +704,14 @@ namespace ASALI
                     plotInterface_->setData(t_, y, n_[i]);
                 }
             }
-            plotInterface_->setTitle("MASS FRACTION");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Mass fraction [-]");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            #if ASALI_ON_WINDOW == 1
+            plotInterface_->setOutputFormat("wingdi");
+            #else
+            plotInterface_->setOutputFormat("xcairo");
+            #endif
+            plotInterface_->legend();
         }
 
         if (this->isChecked(moleButton_))
@@ -707,15 +729,14 @@ namespace ASALI
                     plotInterface_->setData(t_, x, n_[i]);
                 }
             }
-            plotInterface_->setTitle("MOLE FRACTION");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Mole fraction [-]");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            #if ASALI_ON_WINDOW == 1
+            plotInterface_->setOutputFormat("wingdi");
+            #else
+            plotInterface_->setOutputFormat("xcairo");
+            #endif
+            plotInterface_->legend();
         }
 
         if (this->isChecked(siteButton_))
@@ -733,15 +754,14 @@ namespace ASALI
                     plotInterface_->setData(t_, z, nc_[i]);
                 }
             }
-            plotInterface_->setTitle("COVERAGE");
             plotInterface_->setXlabel("Time [s]");
             plotInterface_->setYlabel("Coverage [-]");
-			#if ASALI_ON_WINDOW == 1
-			plotInterface_->setOutputFormat("wingdi");
-			#else
-			plotInterface_->setOutputFormat("xcairo");
-			#endif
-			plotInterface_->legend();
+            #if ASALI_ON_WINDOW == 1
+            plotInterface_->setOutputFormat("wingdi");
+            #else
+            plotInterface_->setOutputFormat("xcairo");
+            #endif
+            plotInterface_->legend();
         }
 
         if (this->isChecked(otherButton_))
@@ -750,16 +770,16 @@ namespace ASALI
             {
                 plotInterface_->newFigure();
                 plotInterface_->setData(t_, T_, "");
-                plotInterface_->setTitle("TEMPERATURE");
                 plotInterface_->setXlabel("Time [s]");
                 plotInterface_->setYlabel("Temperature [K]");
             }
         }
-        plotInterface_->show();
+        plotInterface_->show();*/
     }
 
     void plot::het1dplot()
     {
+        /*
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
@@ -843,9 +863,8 @@ namespace ASALI
                     }
                     plotInterface_->setData(L_, T, "");
                 }
-                plotInterface_->setTitle("BULK TEMPERATURE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
-                plotInterface_->setYlabel("Temperature [K]");
+                plotInterface_->setYlabel("Bulk temperature [K]");
             }
 
             if (otherButton_[1]->get_active())
@@ -860,17 +879,16 @@ namespace ASALI
                     }
                     plotInterface_->setData(L_, T, "");
                 }
-                plotInterface_->setTitle("WALL TEMPERATURE");
                 plotInterface_->setXlabel("Length [" + Lud_ + "]");
-                plotInterface_->setYlabel("Temperature [K]");
+                plotInterface_->setYlabel("Wall temperature [K]");
             }
         }
-        plotInterface_->show();
+        plotInterface_->show();*/
     }
 
     void plot::pelletplot()
     {
-        if (this->isChecked(massButton_))
+        /*if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -938,7 +956,7 @@ namespace ASALI
                 }
             }
         }
-        plotInterface_->show();
+        plotInterface_->show();*/
     }
 
     void plot::destroy()

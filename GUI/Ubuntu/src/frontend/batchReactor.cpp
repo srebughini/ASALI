@@ -547,17 +547,9 @@ namespace ASALI
 
                 {
                     std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
-
                     for (unsigned int i = 0; i < n_.size(); i++)
                     {
-                        for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
-                        {
-                            if (n_[i] == chemistryInterface_->names()[j])
-                            {
-                                x0[i] = y[j];
-                                break;
-                            }
-                        }
+                        x0[i] = y[i];
                     }
                 }
 
@@ -642,7 +634,7 @@ namespace ASALI
                 solver.setInitialConditions(ti, x0);
                 solver.solve(tf, x0);
                 td += dt;
-
+                
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
                     eq_->store(tf, x0);
