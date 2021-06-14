@@ -42,6 +42,7 @@ namespace ASALI
 {
     #if ASALI_ON_WINDOW == 1
     plotInterface::plotInterface() : nFig_(-1),
+                                     defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
                                      defaultBgColor_({0, 0, 0}),
                                      onScreenOutputFormats_({"wingcc", "wingid"})
@@ -51,6 +52,7 @@ namespace ASALI
     }
     #else
     plotInterface::plotInterface() : nFig_(-1),
+                                     defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
                                      defaultBgColor_({0, 0, 0}),
                                      onScreenOutputFormats_({"xcairo", "wxwidgets", "qtwidget"})
@@ -101,7 +103,6 @@ namespace ASALI
 
     void plotInterface::setDefaultBackgroundColor(int r, int b, int g)
     {
-        std::cout << defaultBgColor_.size() << std::endl;
         defaultBgColor_[0] = r;
         defaultBgColor_[1] = b;
         defaultBgColor_[2] = g;
@@ -130,12 +131,15 @@ namespace ASALI
         nLegend_.push_back(0);
         legendWidth_.push_back(0.);
         legendHeight_.push_back(0.);
+        legendXoffset_.push_back(0.05);
+        legendYoffset_.push_back(0.05);
         xmax_.push_back(DBL_MIN);
         xmin_.push_back(DBL_MAX);
         ymax_.push_back(DBL_MIN);
         ymin_.push_back(DBL_MAX);
         textColor_.push_back(defaultTextColor_);
         bgColor_.push_back(defaultBgColor_);
+        geometry_.push_back(defaultGeometry_);
         textColors_.push_back({0});
         lineColors_.push_back({0});
         lineStyles_.push_back({0});
@@ -242,41 +246,57 @@ namespace ASALI
         {
             legendPosition_[nFig_] = PL_POSITION_OUTSIDE | PL_POSITION_TOP;
             nCol_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.0;
+            legendYoffset_[nFig_] = 0.1;
         }
         else if (position == "bottom")
         {
             legendPosition_[nFig_] = PL_POSITION_OUTSIDE | PL_POSITION_BOTTOM;
             nCol_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.0;
+            legendYoffset_[nFig_] = 0.1;
         }
         else if (position == "left")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_LEFT;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.0;
         }
         else if (position == "right")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_RIGHT;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.0;
         }
         else if (position == "left_top")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_LEFT | PL_POSITION_TOP;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.1;
         }
         else if (position == "right_top")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_RIGHT | PL_POSITION_TOP;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.1;
         }
         else if (position == "left_bottom")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_LEFT | PL_POSITION_BOTTOM;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.1;
         }
         else if (position == "right_bottom")
         {
             legendPosition_[nFig_] = PL_POSITION_INSIDE | PL_POSITION_RIGHT | PL_POSITION_BOTTOM;
             nRow_[nFig_] = nLegend_[nFig_];
+            legendXoffset_[nFig_] = 0.1;
+            legendYoffset_[nFig_] = 0.1;
         }
         else
         {
@@ -372,6 +392,9 @@ namespace ASALI
         // Set Text Color
         pls->scol0(1, textColor_[figIndex][0], textColor_[figIndex][1], textColor_[figIndex][2]);
 
+		// Set geometry
+		pls->setopt("geometry", geometry_[figIndex].c_str());
+
         // Create output format
         pls->sdev(outputFormat_[figIndex].c_str());
         if (!fileName_.empty())
@@ -389,7 +412,20 @@ namespace ASALI
     void plotInterface::plot(plstream *pls, int figIndex)
     {
         // Create a labelled box to hold the plot.
-        pls->env(xmin_[figIndex], xmax_[figIndex], ymin_[figIndex], ymax_[figIndex], 0, 0);
+        pls->adv(0);
+
+        if (isLegend_[figIndex] == true)
+        {
+			pls->vpor(0.2, 0.8, 0.2, 0.8);
+			pls->wind(0.0, 1.0, 0.0, 1.0);
+		}
+		else
+		{
+			pls->vpor(0.05, 0.95, 0.05, 0.95);
+			pls->wind(0.0, 1.0, 0.0, 1.0);
+		}
+
+		pls->box( "bcnst", 0, 0, "bcnstv", 0, 0);
         pls->lab(xLabel_[figIndex].c_str(), yLabel_[figIndex].c_str(), title_[figIndex].c_str());
 
         // Plot the data that was prepared above.
@@ -429,8 +465,8 @@ namespace ASALI
                         &legendHeight_[figIndex],  //p_legend_height
                         optBase_[figIndex],        //opt
                         legendPosition_[figIndex], //position
-                        0.05,                      //x
-                        0.05,                      //y
+                        legendXoffset_[figIndex],  //x
+                        legendYoffset_[figIndex],  //y
                         0.1,                       //plot_width
                         0,                         //bg_color
                         0,                         //bb_color

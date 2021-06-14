@@ -98,6 +98,8 @@ namespace ASALI
         int maxElement(const std::vector<int> v);
 
         int nFig_;
+        
+        std::string defaultGeometry_;
 
         std::vector<plstream *> pls;
 
@@ -113,6 +115,7 @@ namespace ASALI
         std::vector<std::string> fileName_;
         std::vector<std::string> onScreenOutputFormats_;
         std::vector<std::string> legendTextForSingleFigure_;
+        std::vector<std::string> geometry_;
 
         std::vector<bool> isLegend_;
         std::vector<bool> isOnFile_;
@@ -128,6 +131,8 @@ namespace ASALI
         std::vector<PLFLT> ymin_;
         std::vector<PLFLT> legendWidth_;
         std::vector<PLFLT> legendHeight_;
+        std::vector<PLFLT> legendXoffset_;
+        std::vector<PLFLT> legendYoffset_;
 
         std::vector<std::vector<std::string>> legendText_;
 
