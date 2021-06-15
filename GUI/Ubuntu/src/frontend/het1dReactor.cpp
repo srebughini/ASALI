@@ -1116,7 +1116,7 @@ namespace ASALI
                 std::vector<double> xInlet(chemistryInterface_->numberOfGasSpecies());
                 std::vector<double> xInside(chemistryInterface_->numberOfGasSpecies());
                 {
-                    std::vector<double> y = chemistryInterface_->mass();
+                    std::vector<double> y = chemistryInterface_->getMassFraction();
                     for (unsigned int i = 0; i < chemistryInterface_->numberOfGasSpecies(); i++)
                     {
                         if (chemistryInterface_->names()[i] == inert_)

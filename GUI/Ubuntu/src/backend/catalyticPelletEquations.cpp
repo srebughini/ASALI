@@ -441,15 +441,15 @@ namespace ASALI
                 rho_ = cTot_ * MWmix_;
             }
 
-			// Calculates homogeneous kinetics
-			{
-				this->updateHomogenousChemistry();
-			}
+            // Calculates homogeneous kinetics
+            {
+                this->updateHomogenousChemistry();
+            }
 
-			// Calculates heterogeneous kinetics
-			{
-				this->updateHeterogeneousChemistry();
-			}
+            // Calculates heterogeneous kinetics
+            {
+                this->updateHeterogeneousChemistry();
+            }
 
             rhoVector_[i] = rho_;
             RfromGasMatrix_[i] = RfromGas_;

@@ -154,7 +154,17 @@ namespace ASALI
     {
         if ( xmax == xmin )
         {
-            xmin = 0.;
+            double xv = xmax;
+            if ( xv == 0)
+            {
+                xmin = -0.1;
+                xmax = 0.1;
+            }
+            else
+            {
+                xmin = xv - 0.1*xv;
+                xmax = xv + 0.1*xv;
+            }
         }
 
         xmin_[nFig_] = std::min(xmin, xmin_[nFig_]);
@@ -165,7 +175,17 @@ namespace ASALI
     {
         if ( ymax == ymin )
         {
-            ymin = 0.;
+            double yv = ymax;
+            if ( yv == 0)
+            {
+                ymin = -0.1;
+                ymax = 0.1;
+            }
+            else
+            {
+                ymin = yv - 0.1*yv;
+                ymax = yv + 0.1*yv;
+            }
         }
 
         ymin_[nFig_] = std::min(ymin, ymin_[nFig_]);
@@ -392,8 +412,8 @@ namespace ASALI
         // Set Text Color
         pls->scol0(1, textColor_[figIndex][0], textColor_[figIndex][1], textColor_[figIndex][2]);
 
-		// Set geometry
-		pls->setopt("geometry", geometry_[figIndex].c_str());
+        // Set geometry
+        pls->setopt("geometry", geometry_[figIndex].c_str());
 
         // Create output format
         pls->sdev(outputFormat_[figIndex].c_str());
@@ -416,16 +436,16 @@ namespace ASALI
 
         if (isLegend_[figIndex] == true)
         {
-			pls->vpor(0.2, 0.8, 0.2, 0.8);
-			pls->wind(0.0, 1.0, 0.0, 1.0);
-		}
-		else
-		{
-			pls->vpor(0.05, 0.95, 0.05, 0.95);
-			pls->wind(0.0, 1.0, 0.0, 1.0);
-		}
+            pls->vpor(0.2, 0.8, 0.2, 0.8);
+            pls->wind(xmin_[figIndex], xmax_[figIndex], ymin_[figIndex], ymax_[figIndex]);
+        }
+        else
+        {
+            pls->vpor(0.15, 0.85, 0.15, 0.85);
+            pls->wind(xmin_[figIndex], xmax_[figIndex], ymin_[figIndex], ymax_[figIndex]);
+        }
 
-		pls->box( "bcnst", 0, 0, "bcnstv", 0, 0);
+        pls->box("bcnst", 0, 0, "bcnstv", 0, 0);
         pls->lab(xLabel_[figIndex].c_str(), yLabel_[figIndex].c_str(), title_[figIndex].c_str());
 
         // Plot the data that was prepared above.

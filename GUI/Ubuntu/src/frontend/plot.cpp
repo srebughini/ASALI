@@ -483,7 +483,7 @@ namespace ASALI
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                plotInterface->newFigure();
+                plotInterface->newFigure();              
                 plotInterface->setData(t_, T_, "");
                 plotInterface->setXlabel("Time [s]");
                 plotInterface->setYlabel("Temperature [K]");
