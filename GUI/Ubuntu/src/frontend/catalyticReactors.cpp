@@ -483,7 +483,7 @@ namespace ASALI
                 std::vector<int> check(nc_.size());
                 {
                     std::vector<std::string> coverageName = chemistryInterface_->coverageNames();
-                    
+
                     for (unsigned int i = 0; i < nc_.size(); i++)
                     {
                         check[i] = 1;
@@ -670,16 +670,35 @@ namespace ASALI
 
             switch (resultsBig)
             {
-                default:
+            default:
+            {
+                dialogBig.hide();
+                std::string filename = this->open_file(this->get_toplevel()->gobj());
+                if (filename != "")
                 {
-                    dialogBig.hide();
-                    std::string filename = this->open_file(this->get_toplevel()->gobj());
-                    if (filename != "")
+                    std::ifstream input;
+                    const char *path = filename.c_str();
+                    input.open(path);
+                    if (filename.substr(filename.length() - 3, filename.length()) != ".py")
                     {
-                        std::ifstream input;
-                        const char *path = filename.c_str();
-                        input.open(path);
-                        if (filename.substr(filename.length() - 3, filename.length()) != ".py")
+                        Gtk::MessageDialog dialogSmall(*this, "Something is wrong in your ASALI kinetic file!", true, Gtk::MESSAGE_ERROR);
+                        dialogSmall.set_secondary_text(this->getBeer(), true);
+                        dialogSmall.run();
+                    }
+                    else
+                    {
+                        #if ASALI_ON_WINDOW == 0
+                        std::vector<std::string> filevector = this->splitString(filename, "/");
+                        #else
+                        std::vector<std::string> filevector = this->splitString(filename, "\\");
+                        #endif
+
+                        std::string function = filevector.back().substr(0, filevector.back().length() - 3);
+                        std::string path = filename.substr(0, filename.length() - function.length() - 3);
+
+                        std::string check = pi_->initialize(function, path);
+
+                        if (check != "done")
                         {
                             Gtk::MessageDialog dialogSmall(*this, "Something is wrong in your ASALI kinetic file!", true, Gtk::MESSAGE_ERROR);
                             dialogSmall.set_secondary_text(this->getBeer(), true);
@@ -687,67 +706,48 @@ namespace ASALI
                         }
                         else
                         {
-                            #if ASALI_ON_WINDOW == 0
-                            std::vector<std::string> filevector = this->splitString(filename, "/");
-                            #else
-                            std::vector<std::string> filevector = this->splitString(filename, "\\");
-                            #endif
+                            Gtk::MessageDialog dialogSmall(*this, "Your ASALI kinetic is loaded!", true, Gtk::MESSAGE_INFO);
+                            dialogSmall.set_secondary_text(this->getBeer(), true);
+                            dialogSmall.run();
 
-                            std::string function = filevector.back().substr(0, filevector.back().length() - 3);
-                            std::string path = filename.substr(0, filename.length() - function.length() - 3);
-
-                            std::string check = pi_->initialize(function, path);
-
-                            if (check != "done")
+                            if (kineticType_ == "none")
                             {
-                                Gtk::MessageDialog dialogSmall(*this, "Something is wrong in your ASALI kinetic file!", true, Gtk::MESSAGE_ERROR);
-                                dialogSmall.set_secondary_text(this->getBeer(), true);
-                                dialogSmall.run();
-                            }
-                            else
-                            {
-                                Gtk::MessageDialog dialogSmall(*this, "Your ASALI kinetic is loaded!", true, Gtk::MESSAGE_INFO);
-                                dialogSmall.set_secondary_text(this->getBeer(), true);
-                                dialogSmall.run();
-
-                                if (kineticType_ == "none")
+                                if (pi_->checkNames(inert_) == 1 && inert_ != "NONE")
                                 {
-                                    if (pi_->checkNames(inert_) == 1 && inert_ != "NONE")
-                                    {
-                                        Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-                                        dialog.set_secondary_text(this->getBeerShort(), true);
-                                        dialog.run();
-                                    }
-                                    else
-                                    {
-                                        signal.disconnect();
-                                        signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::propertiesShow));
-                                    }
+                                    Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
+                                    dialog.set_secondary_text(this->getBeerShort(), true);
+                                    dialog.run();
                                 }
                                 else
                                 {
-                                    std::vector<std::string> n = pi_->getSpeciesName();
-                                    std::vector<int> check = chemistryInterface_->checkNames(n);
-                                    for (unsigned int i = 0; i < check.size(); i++)
+                                    signal.disconnect();
+                                    signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::propertiesShow));
+                                }
+                            }
+                            else
+                            {
+                                std::vector<std::string> n = pi_->getSpeciesName();
+                                std::vector<int> check = chemistryInterface_->checkNames(n);
+                                for (unsigned int i = 0; i < check.size(); i++)
+                                {
+                                    if (check[i] == 1)
                                     {
-                                        if (check[i] == 1)
-                                        {
-                                            Gtk::MessageDialog dialog(*this, pi_->getSpeciesName()[i] + " is missing in CANTERA transport/thermodynamic file!", true, Gtk::MESSAGE_WARNING);
-                                            dialog.set_secondary_text(this->getBeerShort(), true);
-                                            dialog.run();
-                                        }
+                                        Gtk::MessageDialog dialog(*this, pi_->getSpeciesName()[i] + " is missing in CANTERA transport/thermodynamic file!", true, Gtk::MESSAGE_WARNING);
+                                        dialog.set_secondary_text(this->getBeerShort(), true);
+                                        dialog.run();
                                     }
+                                }
 
-                                    if (MaxElement(check) == 0)
-                                    {
-                                        signal.disconnect();
-                                        signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
-                                    }
+                                if (MaxElement(check) == 0)
+                                {
+                                    signal.disconnect();
+                                    signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
                                 }
                             }
                         }
                     }
                 }
+            }
             }
         }
     }
@@ -806,7 +806,6 @@ namespace ASALI
 
         return strs;
     }
-
 
     std::vector<std::string> catalyticReactors::gasSpeciesNames()
     {

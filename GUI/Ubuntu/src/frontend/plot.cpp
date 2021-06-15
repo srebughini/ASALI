@@ -58,7 +58,6 @@ namespace ASALI
         this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
-
         this->add(mainGrid_);
 
         mainGrid_.set_column_homogeneous(true);
@@ -376,26 +375,25 @@ namespace ASALI
         delete plotInterface;
     }
 
-
     void plot::defaultcolors(ASALI::plotInterface *plotInterface)
     {
-        plotInterface->setDefaultTextColor(220,230,242);
-        plotInterface->setDefaultBackgroundColor(16,37,63);
+        plotInterface->setDefaultTextColor(220, 230, 242);
+        plotInterface->setDefaultBackgroundColor(16, 37, 63);
     }
 
     void plot::legend(ASALI::plotInterface *plotInterface, int ndata)
     {
-        if ( ndata <= MAX_COL_ )
+        if (ndata <= MAX_COL_)
         {
             plotInterface->setLegendPosition("top");
         }
         else
         {
             plotInterface->setLegendPosition("top");
-            plotInterface->setLegendGrid(MAX_COL_, ndata/MAX_COL_);
+            plotInterface->setLegendGrid(MAX_COL_, ndata / MAX_COL_);
         }
     }
-    
+
     void plot::output(ASALI::plotInterface *plotInterface)
     {
         #if ASALI_ON_WINDOW == 1
@@ -444,7 +442,7 @@ namespace ASALI
                     {
                         x[j] = std::max(0., x_[j][i]);
                     }
-                    plotInterface->setData(t_,x, n_[i]);
+                    plotInterface->setData(t_, x, n_[i]);
                     ndata++;
                 }
             }
@@ -483,7 +481,7 @@ namespace ASALI
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                plotInterface->newFigure();              
+                plotInterface->newFigure();
                 plotInterface->setData(t_, T_, "");
                 plotInterface->setXlabel("Time [s]");
                 plotInterface->setYlabel("Temperature [K]");
@@ -581,7 +579,7 @@ namespace ASALI
         {
             if (otherButton_[0]->get_active()) //Temperature
             {
-                plotInterface->newFigure();              
+                plotInterface->newFigure();
                 plotInterface->setData(t_, T_, "");
                 plotInterface->setXlabel("Time [s]");
                 plotInterface->setYlabel("Temperature [K]");
@@ -670,7 +668,7 @@ namespace ASALI
             {
                 if (otherButton_[0]->get_active())
                 {
-                    plotInterface->newFigure();              
+                    plotInterface->newFigure();
                     plotInterface->setData(L_, T_, "");
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Temperature [K]");
@@ -774,7 +772,6 @@ namespace ASALI
         }
         plotInterface->show();
     }
-
 
     void plot::het1dplot(ASALI::plotInterface *plotInterface)
     {
@@ -1013,5 +1010,4 @@ namespace ASALI
     plot::~plot()
     {
     }
-
 }

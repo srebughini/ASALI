@@ -54,7 +54,7 @@ namespace ASALI
         homogeneousReactions_ = flag;
     }
 
-    void catalyticReactorsEquations::setHeterogeneusReactions(const bool flag) 
+    void catalyticReactorsEquations::setHeterogeneusReactions(const bool flag)
     {
         heterogeneusReactions_ = flag;
     }
@@ -69,8 +69,8 @@ namespace ASALI
         pi_ = pi;
         canteraIndex_ = canteraIndex;
         n_ = n;
-        
-        if (pi_->getNumberOfHomReactions() > 0 )
+
+        if (pi_->getNumberOfHomReactions() > 0)
         {
             homogeneousReactions_ = true;
         }
@@ -78,8 +78,8 @@ namespace ASALI
         {
             homogeneousReactions_ = false;
         }
-        
-        if (pi_->getNumberOfHetReactions() > 0 )
+
+        if (pi_->getNumberOfHetReactions() > 0)
         {
             heterogeneusReactions_ = true;
         }
@@ -356,7 +356,7 @@ namespace ASALI
 
         return x;
     }
-    
+
     catalyticReactorsEquations::~catalyticReactorsEquations()
     {
     }

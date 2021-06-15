@@ -907,8 +907,8 @@ namespace ASALI
             std::vector<double> T = eq_->getTemperature();
             std::vector<std::vector<double>> x = eq_->getSpecie();
             std::vector<std::vector<double>> y = eq_->getSpecie();
-            
-            unsigned int             NS   = this->numberOfGasSpecies();
+
+            unsigned int NS = this->numberOfGasSpecies();
             std::vector<std::string> name = this->gasSpeciesNames();
 
             for (unsigned int j = 0; j < t.size(); j++)
@@ -937,7 +937,7 @@ namespace ASALI
 
             if (kineticType_ != "none")
             {
-                if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                if (chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
                 {
                     plot_->setSiteNames(chemistryInterface_->coverageNames());
                     plot_->setSite(eq_->getSite());
@@ -949,5 +949,4 @@ namespace ASALI
         plot_->build();
         plot_->show();
     }
-
 }

@@ -41,7 +41,7 @@
 namespace ASALI
 {
     basicProperties::basicProperties(ASALI::speciesPopup *speciesNames,
-                                             std::string kineticType)
+                                     std::string kineticType)
         : helpButton_("Available species"),
           exitButton1_("Exit"),
           doneButton_("Done"),
@@ -163,7 +163,7 @@ namespace ASALI
     {
         this->remove();
         this->add(inputGrid_);
-        this->resize(inputGrid_.get_width(),inputGrid_.get_height());
+        this->resize(inputGrid_.get_width(), inputGrid_.get_height());
         this->show_all_children();
     }
 

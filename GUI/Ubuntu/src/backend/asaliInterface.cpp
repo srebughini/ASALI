@@ -224,7 +224,7 @@ namespace ASALI
     {
         return asali_->mixtureMolecularWeight();
     }
-    
+
     double asaliInterface::getCondMix()
     {
         return asali_->mixtureThermalConductivity();
@@ -271,7 +271,7 @@ namespace ASALI
     {
         return 0.;
     }
-    
+
     bool asaliInterface::isSurface()
     {
         return false;
@@ -304,9 +304,9 @@ namespace ASALI
 
     std::vector<double> asaliInterface::getBinaryDiffVector()
     {
-        std::vector<std::vector<double> > diffMatrix = asali_->binaryDiffusion();
-        std::vector<double> diffVector(NS_*NS_);
-        
+        std::vector<std::vector<double>> diffMatrix = asali_->binaryDiffusion();
+        std::vector<double> diffVector(NS_ * NS_);
+
         unsigned int counter = 0;
         for (unsigned int i = 0; i < NS_; i++)
         {
@@ -316,7 +316,7 @@ namespace ASALI
                 counter++;
             }
         }
-        
+
         return diffVector;
     }
 

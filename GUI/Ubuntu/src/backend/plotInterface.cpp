@@ -100,7 +100,6 @@ namespace ASALI
         return min;
     }
 
-
     void plotInterface::setDefaultBackgroundColor(int r, int b, int g)
     {
         defaultBgColor_[0] = r;
@@ -152,18 +151,18 @@ namespace ASALI
 
     void plotInterface::setXlimits(double xmax, double xmin)
     {
-        if ( xmax == xmin )
+        if (xmax == xmin)
         {
             double xv = xmax;
-            if ( xv == 0)
+            if (xv == 0)
             {
                 xmin = -0.1;
                 xmax = 0.1;
             }
             else
             {
-                xmin = xv - 0.1*xv;
-                xmax = xv + 0.1*xv;
+                xmin = xv - 0.1 * xv;
+                xmax = xv + 0.1 * xv;
             }
         }
 
@@ -173,18 +172,18 @@ namespace ASALI
 
     void plotInterface::setYlimits(double ymax, double ymin)
     {
-        if ( ymax == ymin )
+        if (ymax == ymin)
         {
             double yv = ymax;
-            if ( yv == 0)
+            if (yv == 0)
             {
                 ymin = -0.1;
                 ymax = 0.1;
             }
             else
             {
-                ymin = yv - 0.1*yv;
-                ymax = yv + 0.1*yv;
+                ymin = yv - 0.1 * yv;
+                ymax = yv + 0.1 * yv;
             }
         }
 
@@ -227,7 +226,7 @@ namespace ASALI
         yForSingleFig_.push_back(y);
         legendTextForSingleFigure_.push_back(label);
 
-        if ( (int)x_.size() == nFig_)
+        if ((int)x_.size() == nFig_)
         {
             x_.push_back(xForSingleFig_);
         }
@@ -236,7 +235,7 @@ namespace ASALI
             x_[nFig_] = xForSingleFig_;
         }
 
-        if ( (int)y_.size() == nFig_)
+        if ((int)y_.size() == nFig_)
         {
             y_.push_back(yForSingleFig_);
         }
@@ -245,7 +244,7 @@ namespace ASALI
             y_[nFig_] = yForSingleFig_;
         }
 
-        if ( (int)legendText_.size() == nFig_)
+        if ((int)legendText_.size() == nFig_)
         {
             legendText_.push_back(legendTextForSingleFigure_);
         }
@@ -323,7 +322,7 @@ namespace ASALI
             nCol_[nFig_] = nLegend_[nFig_];
         }
     }
-    
+
     void plotInterface::setLegendGrid(int ncol, int nrow)
     {
         nCol_[nFig_] = ncol;
@@ -373,16 +372,16 @@ namespace ASALI
     void plotInterface::show()
     {
         pls.resize(nFig_ + 1);
-        for (int i=0; i<=nFig_; i++)
+        for (int i = 0; i <= nFig_; i++)
         {
             pls[i] = new plstream();
             this->initialize(pls[i], i);
             this->plot(pls[i], i);
-        } 
+        }
 
-        for (int i=0; i<=nFig_; i++)
+        for (int i = 0; i <= nFig_; i++)
         {
-            delete pls[i];            
+            delete pls[i];
         }
 
         pls.clear();
@@ -518,5 +517,4 @@ namespace ASALI
     plotInterface::~plotInterface()
     {
     }
-
 }

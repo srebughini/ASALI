@@ -40,10 +40,10 @@
 
 namespace ASALI
 {
-    canteraInterface::canteraInterface(std::string filepath, 
+    canteraInterface::canteraInterface(std::string filepath,
                                        std::string gasPhaseName,
                                        std::string surfPhaseName)
-    : basicInterface()
+        : basicInterface()
     {
         // Create gas phase as ThermoPhase
         {
@@ -68,7 +68,7 @@ namespace ASALI
             std::vector<Cantera::ThermoPhase *> gas_and_surface_phases{thermo_, surface_as_thermo.get()};
             std::shared_ptr<Cantera::Kinetics> surface_as_kinetic(Cantera::newKinetics(gas_and_surface_phases, filepath, surfPhaseName));
 
-            surface_         = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
+            surface_ = std::dynamic_pointer_cast<Cantera::SurfPhase>(surface_as_thermo);
             surface_kinetic_ = std::dynamic_pointer_cast<Cantera::InterfaceKinetics>(surface_as_kinetic);
             is_surface_ = true;
         }
@@ -375,7 +375,7 @@ namespace ASALI
         return kinetic_->nReactions();
     }
 
-    std::vector<double> canteraInterface::doubleVectorToStdVector(double* double_vector, unsigned int vector_size)
+    std::vector<double> canteraInterface::doubleVectorToStdVector(double *double_vector, unsigned int vector_size)
     {
         std::vector<double> std_vector(vector_size);
         for (unsigned int i = 0; i < vector_size; i++)

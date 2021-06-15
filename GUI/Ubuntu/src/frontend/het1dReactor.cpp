@@ -1773,7 +1773,7 @@ namespace ASALI
             std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
             std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
             std::vector<std::string> n = chemistryInterface_->names();
-            
+
             unsigned int NS = chemistryInterface_->numberOfGasSpecies();
             {
                 if (kineticType_ == "none")
@@ -1858,7 +1858,7 @@ namespace ASALI
 
             plot_->setSpecieNames(n);
             plot_->setSpecie(yb, moleb, yw, molew);
-            if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+            if (chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
             {
                 plot_->setSiteNames(chemistryInterface_->coverageNames());
                 plot_->setSite(eq_->getSite());
@@ -1881,5 +1881,4 @@ namespace ASALI
         plot_->build();
         plot_->show();
     }
-
 }

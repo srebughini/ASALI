@@ -347,10 +347,6 @@ namespace ASALI
         }
     }
 
-    catalyticPellet::~catalyticPellet()
-    {
-    }
-
     void catalyticPellet::pelletOptions()
     {
         {
@@ -1305,10 +1301,10 @@ namespace ASALI
 
             //Conversion from mass to mole
             std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
-            
+
             std::vector<std::string> n = chemistryInterface_->names();
             unsigned int NS = chemistryInterface_->numberOfGasSpecies();
- 
+
             if (kineticType_ == "none")
             {
                 for (unsigned int j = 0; j < t.size(); j++)
@@ -1356,8 +1352,8 @@ namespace ASALI
 
             plot_->setSpecieNames(n);
             plot_->setSpecie(y, mole);
-            
-            if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+
+            if (chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
             {
                 plot_->setSiteNames(chemistryInterface_->coverageNames());
                 plot_->setSite(eq_->getSite());
@@ -1378,5 +1374,10 @@ namespace ASALI
         plot_->setType("pellet");
         plot_->build();
         plot_->show();
+    }
+
+
+    catalyticPellet::~catalyticPellet()
+    {
     }
 }

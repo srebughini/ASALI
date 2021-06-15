@@ -885,5 +885,4 @@ namespace ASALI
     {
         return MaxElement(Length_);
     }
-
 }

@@ -245,7 +245,7 @@ namespace ASALI
         }
     }
 
-    #if ASALI_USING_CANTERA==1
+    #if ASALI_USING_CANTERA == 1
     void kineticMaker::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
@@ -1312,5 +1312,4 @@ namespace ASALI
     kineticMaker::~kineticMaker()
     {
     }
-
 }

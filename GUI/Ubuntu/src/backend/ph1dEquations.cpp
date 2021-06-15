@@ -286,15 +286,15 @@ namespace ASALI
                 rho_ = cTot_ * MWmix_;
             }
 
-			// Calculates homogeneous kinetics
-			{
-				this->updateHomogenousChemistry();
-			}
+            // Calculates homogeneous kinetics
+            {
+                this->updateHomogenousChemistry();
+            }
 
-			// Calculates heterogeneous kinetics
-			{
-				this->updateHeterogeneousChemistry();
-			}
+            // Calculates heterogeneous kinetics
+            {
+                this->updateHeterogeneousChemistry();
+            }
 
             // Recovering residuals
             {
@@ -399,12 +399,12 @@ namespace ASALI
 
                 // Calculates homogeneous kinetics
                 {
-					this->updateHomogenousChemistry();
+                    this->updateHomogenousChemistry();
                 }
 
                 // Calculates heterogeneous kinetics
                 {
-					this->updateHeterogeneousChemistry();
+                    this->updateHeterogeneousChemistry();
                 }
 
                 rhoVector_[i] = rho_;
@@ -616,5 +616,4 @@ namespace ASALI
             Temperature_.push_back(T_);
         }
     }
-
 }

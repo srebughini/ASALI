@@ -305,10 +305,10 @@ namespace ASALI
                 rho_ = cTot_ * MWmix_;
             }
 
-			// Calculates homogeneous kinetics
-			{
-				this->updateHomogenousChemistry();
-			}
+            // Calculates homogeneous kinetics
+            {
+                this->updateHomogenousChemistry();
+            }
 
             omega_ = omegaWMatrix_[i];
             T_ = TWvector_[i];
@@ -318,10 +318,10 @@ namespace ASALI
                 Z_ = Zmatrix_[i];
             }
 
-			// Calculates heterogeneous kinetics
-			{
-				this->updateHeterogeneousChemistry();
-			}
+            // Calculates heterogeneous kinetics
+            {
+                this->updateHeterogeneousChemistry();
+            }
 
             //Calculate transport properties
             {
@@ -861,5 +861,4 @@ namespace ASALI
         }
         return kHeat;
     }
-
 }

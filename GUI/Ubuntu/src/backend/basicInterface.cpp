@@ -82,7 +82,7 @@ namespace ASALI
     {
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
-    
+
     double basicInterface::specieProperty(std::string p, std::string n)
     {
         int idx = 0;
@@ -137,7 +137,7 @@ namespace ASALI
         {
             for (unsigned int j = 0; j < names_.size(); j++)
             {
-                if ( names[i] == names_[j] )
+                if (names[i] == names_[j])
                 {
                     x[i] = mole_[j];
                     break;
@@ -154,7 +154,7 @@ namespace ASALI
         {
             for (unsigned int j = 0; j < names_.size(); j++)
             {
-                if ( names[i] == names_[j] )
+                if (names[i] == names_[j])
                 {
                     y[i] = mass_[j];
                     break;
@@ -163,7 +163,6 @@ namespace ASALI
         }
         return y;
     }
-
 
     basicInterface::~basicInterface()
     {

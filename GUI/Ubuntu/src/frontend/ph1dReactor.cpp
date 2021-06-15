@@ -1495,7 +1495,7 @@ namespace ASALI
 
         plot_ = new ASALI::plot();
 
-        unsigned int             NS   = this->numberOfGasSpecies();
+        unsigned int NS = this->numberOfGasSpecies();
         std::vector<std::string> name = this->gasSpeciesNames();
 
         if (resolution_ == "steady state")
@@ -1534,7 +1534,7 @@ namespace ASALI
                 plot_->setSpecie(y, x);
                 if (kineticType_ != "none")
                 {
-                    if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                    if (chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
                     {
                         plot_->setSiteNames(chemistryInterface_->coverageNames());
                         plot_->setSite(eq_->getSite());
@@ -1612,7 +1612,7 @@ namespace ASALI
                     plot_->setSpecie(y, mole);
                     if (kineticType_ != "none")
                     {
-                        if ( chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
+                        if (chemistryInterface_->isSurface() && kineticCombo_.get_active_text() == "CANTERA")
                         {
                             plot_->setSiteNames(chemistryInterface_->coverageNames());
                             plot_->setSite(eq_->getSiteTransient());
@@ -1631,7 +1631,6 @@ namespace ASALI
                     plot_->setLength(l, lengthCombo_.get_active_text());
                 }
             }
-
         }
         plot_->setType("ph1d");
         plot_->build();
