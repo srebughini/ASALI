@@ -58,5 +58,4 @@ namespace ASALI
     private:
     };
 }
-
 #endif

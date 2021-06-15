@@ -76,13 +76,13 @@ namespace ASALI
 
         /// Return integration time vector in [s]
         inline std::vector<double> getTime() const { return Time_; };
-        
+
         /// Return temperature at different integration times in [K]
         inline std::vector<double> getTemperature() const { return Temperature_; };
 
         /// Return gas mixture mass fraction at different integration times
         inline std::vector<std::vector<double>> getSpecie() const { return Specie_; };
-        
+
         /// Return coverage at different integration times
         inline std::vector<std::vector<double>> getSite() const { return Site_; };
 
@@ -96,20 +96,20 @@ namespace ASALI
         void store(const double tf, const std::vector<double> xf);
 
     private:
-        double MWmix_;        /// Gas mixture molecular weight in [g/mol]
-        double cTot_;         /// Gas mixture concentration in [kmol/m3]
-        double rho_;          /// Gas mixture density in [kg/m3]
-        double T0_;           /// Gas mixture initial temperature in [K]
-        double V_;            /// Reactor volume in [m3]
-        double mass_;         /// Total mass in [kg]
-        double Q_;            /// Inlet mass flow rate [kg/s]
-        double dt_;           /// Integration time step [s]
+        double MWmix_; /// Gas mixture molecular weight in [g/mol]
+        double cTot_;  /// Gas mixture concentration in [kmol/m3]
+        double rho_;   /// Gas mixture density in [kg/m3]
+        double T0_;    /// Gas mixture initial temperature in [K]
+        double V_;     /// Reactor volume in [m3]
+        double mass_;  /// Total mass in [kg]
+        double Q_;     /// Inlet mass flow rate [kg/s]
+        double dt_;    /// Integration time step [s]
 
-        unsigned int TC_;      /// Number of integration steps
+        unsigned int TC_; /// Number of integration steps
 
-        std::vector<double> omega0_;        /// Initial mass fraction
-        std::vector<double> dy_;            /// Accumulation term of mass and energy balance
-        std::vector<double> y_;             /// Integration variables
+        std::vector<double> omega0_; /// Initial mass fraction
+        std::vector<double> dy_;     /// Accumulation term of mass and energy balance
+        std::vector<double> y_;      /// Integration variables
 
         std::vector<double> Time_;                /// Integration time vector [s]
         std::vector<double> Temperature_;         /// Temperature at different integration times in [K]
@@ -117,5 +117,4 @@ namespace ASALI
         std::vector<std::vector<double>> Site_;   /// Coverage at different integration times
     };
 }
-
 #endif

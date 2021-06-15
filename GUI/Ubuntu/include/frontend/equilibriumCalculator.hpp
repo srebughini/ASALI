@@ -76,5 +76,4 @@ namespace ASALI
         std::vector<double> yeq_;
     };
 }
-
 #endif

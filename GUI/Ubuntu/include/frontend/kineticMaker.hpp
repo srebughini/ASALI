@@ -55,7 +55,7 @@
 #include <numeric>
 #include <functional>
 
-#if ASALI_USING_CANTERA==1
+#if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"
 #else
 #include "backend/asaliInterface.hpp"
@@ -70,7 +70,7 @@ namespace ASALI
 
         #include "shared/FileManager.H"
         #include "shared/Vector.H"
-        
+
         void species();
         void reactionNumber();
         void reaction();
@@ -192,5 +192,4 @@ namespace ASALI
         int getSpecieIndex(std::string n, std::vector<std::string> nv);
     };
 }
-
 #endif

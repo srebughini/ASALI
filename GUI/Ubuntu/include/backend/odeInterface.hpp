@@ -62,8 +62,8 @@
 
 namespace ASALI
 {
-#define Ith(v, i) NV_Ith_S(v, i - 1)
-#define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
+    #define Ith(v, i) NV_Ith_S(v, i - 1)
+    #define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
     template <typename T>
     class odeInterface : public Gtk::Window
@@ -127,7 +127,7 @@ namespace ASALI
     template <typename T>
     odeInterface<T>::odeInterface()
     {
-#include "shared/Beer.H"
+        #include "shared/Beer.H"
 
         yCVODE_ = NULL;
         dyCVODE_ = NULL;
@@ -394,5 +394,4 @@ namespace ASALI
     }
 
 }
-
 #endif

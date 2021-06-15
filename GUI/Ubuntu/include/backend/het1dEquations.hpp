@@ -99,16 +99,16 @@ namespace ASALI
 
         /// Return gas temperature at different integration times in [K]
         inline std::vector<std::vector<double>> getBulkTemperature() const { return TemperatureB_; };
-        
+
         /// Return catalyst temperature at different integration times in [K]
         inline std::vector<std::vector<double>> getWallTemperature() const { return TemperatureW_; };
 
         /// Return gas mixture mass fraction in the gas phase at different integration times
         inline std::vector<std::vector<std::vector<double>>> getBulkSpecie() const { return SpecieB_; };
-        
+
         /// Return gas mixture mass fraction near the catalyst at different integration times
         inline std::vector<std::vector<std::vector<double>>> getWallSpecie() const { return SpecieW_; };
-        
+
         /// Return coverage at different integration times
         inline std::vector<std::vector<std::vector<double>>> getSite() const { return Site_; };
 
@@ -125,23 +125,23 @@ namespace ASALI
         std::vector<bool> AlgebraicEquations() const { return algb_; };
 
     private:
-        double MWmix_;        /// Gas mixture molecular weight in [g/mol]
-        double cTot_;         /// Gas mixture concentration in [kmol/m3]
-        double rho_;          /// Gas mixture density in [kg/m3]
-        double T0_;           /// Gas mixture initial temperature in [K]
-        double L_;            /// Reactor length in [m]
-        double G_;            /// Specific mass flow rate [kg/m2/s]
-        double dz_;           /// Discretization step for length [m]
-        double Dp_;           /// Particle diameter [m]
-        double Dt_;           /// Tube diameter [m]
-        double epsi_;         /// Void fraction
-        double Shinf_;        /// Sherwood number
-        double Nuinf_;        /// Nusselt number
-        double av_;           /// Reactor specific area [m2/m3]
-        double rhos_;         /// Catalyst density [kg/m3]
-        double cps_;          /// Catalyst specific heat [J/kg/K]
-        double conds_;        /// Catalyst thermal conductivity [W/m/K]
-        double kHeat_;        /// Heat transfer coefficient
+        double MWmix_; /// Gas mixture molecular weight in [g/mol]
+        double cTot_;  /// Gas mixture concentration in [kmol/m3]
+        double rho_;   /// Gas mixture density in [kg/m3]
+        double T0_;    /// Gas mixture initial temperature in [K]
+        double L_;     /// Reactor length in [m]
+        double G_;     /// Specific mass flow rate [kg/m2/s]
+        double dz_;    /// Discretization step for length [m]
+        double Dp_;    /// Particle diameter [m]
+        double Dt_;    /// Tube diameter [m]
+        double epsi_;  /// Void fraction
+        double Shinf_; /// Sherwood number
+        double Nuinf_; /// Nusselt number
+        double av_;    /// Reactor specific area [m2/m3]
+        double rhos_;  /// Catalyst density [kg/m3]
+        double cps_;   /// Catalyst specific heat [J/kg/K]
+        double conds_; /// Catalyst thermal conductivity [W/m/K]
+        double kHeat_; /// Heat transfer coefficient
 
         unsigned int NP_;         /// Number of discretization points
         unsigned int inertIndex_; /// Inert specie index
@@ -154,7 +154,7 @@ namespace ASALI
         std::vector<double> dy_;                 /// Accumulation term of mass and energy balance
         std::vector<double> y_;                  /// Integration variables
         std::vector<double> omega0_;             /// Initial mass fraction
-        std::vector<double> kHeatVector_;        /// Heat transfer coefficient 
+        std::vector<double> kHeatVector_;        /// Heat transfer coefficient
         std::vector<double> TBvector_;           /// Gas temperature in [K]
         std::vector<double> TWvector_;           /// Catalyst temperature in [K]
         std::vector<double> rhoVector_;          /// Gas density in [kg/m3]
@@ -165,15 +165,15 @@ namespace ASALI
         std::vector<double> Length_;             /// Discretized reactor length in [m]
         std::vector<double> Time_;               /// Integration time vector [s]
         std::vector<double> Pressure_;           /// Pressure at different integration times in [Pa]
-        
-        std::vector<bool> algb_;                 /// Algebraic equations flags
-        
+
+        std::vector<bool> algb_; /// Algebraic equations flags
+
         std::vector<std::vector<double>> omegaBMatrix_;       /// Mass fraction in the gas phase
         std::vector<std::vector<double>> omegaWMatrix_;       /// Mole fraction on the catalyst
         std::vector<std::vector<double>> Zmatrix_;            /// Coverage
         std::vector<std::vector<double>> diffMatrix_;         /// Mixture diffusion coefficients in [m2/s]
-        std::vector<std::vector<double>> RfromGasMatrix_;     /// Species homogeneous reactions in [kg/m3/s] 
-        std::vector<std::vector<double>> kMatMatrix_;         /// Heat transfer coefficient 
+        std::vector<std::vector<double>> RfromGasMatrix_;     /// Species homogeneous reactions in [kg/m3/s]
+        std::vector<std::vector<double>> kMatMatrix_;         /// Heat transfer coefficient
         std::vector<std::vector<double>> RfromSurfaceMatrix_; /// Species heterogeneous reactions in [kg/m2/s]
         std::vector<std::vector<double>> RsurfaceMatrix_;     /// Coverage heterogeneous reactions in [kg/m2/s]
         std::vector<std::vector<double>> TemperatureB_;       /// Gas phase temperature at different integration times in [K]
@@ -185,10 +185,9 @@ namespace ASALI
 
         /// Estimate mass transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], density [kg/m3], diffusivity [m2/s]
         std::vector<double> massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d);
-        
+
         /// Estimate heat transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], thermal condutivity [W/m2/K], specific heat [J/kg/K]
         double heatTransferCoefficient(const double z, const double mu, const double cond, const double cp);
     };
 }
-
 #endif

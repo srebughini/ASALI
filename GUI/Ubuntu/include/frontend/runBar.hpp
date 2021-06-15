@@ -65,7 +65,7 @@ namespace ASALI
 
         bool check() { return close_; };
 
-#include "shared/FileManager.H"
+        #include "shared/FileManager.H"
 
         virtual ~runBar();
 
@@ -79,5 +79,4 @@ namespace ASALI
         bool close_;
     };
 }
-
 #endif

@@ -107,5 +107,4 @@ namespace ASALI
         bool diffCheck_;
     };
 }
-
 #endif

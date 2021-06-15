@@ -54,7 +54,7 @@ namespace ASALI
         virtual void save();
         virtual void clean();
         virtual void update();
-        
+
         void showAtomNames();
         void diffSpecies(unsigned int row);
         void condUnitConversion(bool check, unsigned int col);
@@ -108,5 +108,4 @@ namespace ASALI
     private:
     };
 }
-
 #endif

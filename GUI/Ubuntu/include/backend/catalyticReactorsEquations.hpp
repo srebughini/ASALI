@@ -51,7 +51,7 @@ namespace ASALI
     public:
         catalyticReactorsEquations();
 
-         #include "shared/Vector.H"
+        #include "shared/Vector.H"
 
         /// Set gas mixture chemistry interface
         void setInterface(ASALI::canteraInterface *chemistryInterface);
@@ -91,7 +91,7 @@ namespace ASALI
 
         /// Set user defined gas mixture viscosity in [Pas]
         void setMuMix(const double mu);
-        
+
         /// Update homogeneous reaction rate and heat of reaction based on actual reactor conditions
         void updateHomogenousChemistry();
 
@@ -100,17 +100,17 @@ namespace ASALI
 
         /// Estimate reaction rates using python interface
         std::vector<double> reactionRate(const std::vector<double> omega, const double T, const std::string type);
-        
+
         /// Estimate mole fraction from mass fraction and mean molecular weight
         std::vector<double> moleFraction(const std::vector<double> omega, const std::vector<double> MW, double MWmix);
-        
+
         /// Estimate heat of reaction using python interface
         double heatOfReaction(const std::vector<double> omega, const double T, const std::vector<double> h, const std::string type);
-        
+
         /// Estimate mean molecular weight [g/mol]
         double meanMolecularWeight(const std::vector<double> omega, const std::vector<double> MW);
 
-        /// Return number of reactions 
+        /// Return number of reactions
         inline unsigned int NumberOfEquations() { return NE_; };
 
         /// Equations describing the catalytic reactors
@@ -163,10 +163,9 @@ namespace ASALI
 
         std::vector<int> canteraIndex_; /// Cantera index to order species
 
-        std::vector<std::string> n_;    /// Species names
+        std::vector<std::string> n_; /// Species names
 
     private:
     };
 }
-
 #endif

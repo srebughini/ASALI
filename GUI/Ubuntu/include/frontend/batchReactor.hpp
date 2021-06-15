@@ -136,5 +136,4 @@ namespace ASALI
         ASALI::batchEquations *eq_;
     };
 }
-
 #endif

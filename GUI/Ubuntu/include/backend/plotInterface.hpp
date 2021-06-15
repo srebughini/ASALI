@@ -98,7 +98,7 @@ namespace ASALI
         int maxElement(const std::vector<int> v);
 
         int nFig_;
-        
+
         std::string defaultGeometry_;
 
         std::vector<plstream *> pls;

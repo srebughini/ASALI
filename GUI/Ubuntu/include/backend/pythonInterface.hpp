@@ -96,7 +96,7 @@ namespace ASALI
 
         /// Destroy PyObject
         void close();
-        
+
         /// Set PYTHONPATH enviorment variable
         void setPythonPath(std::string path);
 
@@ -135,7 +135,7 @@ namespace ASALI
 
         /// Return homogeneous reaction rates
         inline std::vector<std::vector<double>> getAllHomReactionRate() { return RallHom_; };
-        
+
         /// Return species names
         inline std::vector<std::string> names() { return n_; };
 
@@ -178,5 +178,4 @@ namespace ASALI
         PyObject *pHetNetRate;         /// Python list for net heterogeneous reaction rates
     };
 }
-
 #endif

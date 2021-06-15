@@ -107,7 +107,7 @@ namespace ASALI
         unsigned int NC_;
         unsigned int SURF_NC_;
         unsigned int NP_;
-        
+
         int MAX_COL_;
 
         std::string type_;
@@ -136,16 +136,14 @@ namespace ASALI
         void output(ASALI::plotInterface *plotInterface);
         void defaultcolors(ASALI::plotInterface *plotInterface);
         void legend(ASALI::plotInterface *plotInterface, int ndata);
-        
+
         void batchplot(ASALI::plotInterface *plotInterface);
         void cstrplot(ASALI::plotInterface *plotInterface);
         void ph1dplot(ASALI::plotInterface *plotInterface, const std::string resolution);
         void het1dplot(ASALI::plotInterface *plotInterface);
         void pelletplot(ASALI::plotInterface *plotInterface);
-        
 
         bool isChecked(std::vector<Gtk::CheckButton *> button);
     };
 }
-
 #endif

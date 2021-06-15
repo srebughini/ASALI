@@ -97,5 +97,4 @@ namespace ASALI
         double lK_;
     };
 }
-
 #endif

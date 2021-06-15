@@ -152,5 +152,4 @@ namespace ASALI
     private:
     };
 }
-
 #endif

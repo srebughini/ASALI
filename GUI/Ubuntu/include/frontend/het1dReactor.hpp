@@ -218,5 +218,4 @@ namespace ASALI
         sigc::connection run_;
     };
 }
-
 #endif

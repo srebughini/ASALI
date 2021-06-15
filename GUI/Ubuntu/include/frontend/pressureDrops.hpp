@@ -143,5 +143,4 @@ namespace ASALI
         std::vector<Gtk::ComboBoxText *> packedBedDpCombo_;
     };
 }
-
 #endif

@@ -160,5 +160,4 @@ namespace ASALI
         ASALI::ph1dEquations *eq_;
     };
 }
-
 #endif

@@ -81,13 +81,13 @@ namespace ASALI
         inline std::vector<double> getDiffMix() { return diff_; };
         inline std::vector<double> getHomogeneousHeatOfReaction() { return Qhom_; };
         inline std::vector<double> getHeterogeneousHeatOfReaction() { return Qhet_; };
-        
-        inline std::vector<std::string> names() { return n_;};
+
+        inline std::vector<std::string> names() { return n_; };
 
         inline double getCpMassMix() { return cp_; };
         inline double getCondMix() { return cond_; };
         inline double getMuMix() { return mu_; };
-        
+
         inline unsigned int numberOfGasSpecies() { return n_.size(); }
 
         inline std::string get_type() { return type_; };
@@ -161,5 +161,4 @@ namespace ASALI
         double mu_;
     };
 }
-
 #endif

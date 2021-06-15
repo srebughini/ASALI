@@ -61,13 +61,10 @@ namespace ASALI
 
         void doneInput();
 
-#include "shared/UnitConversion.H"
-#include "shared/FileManager.H"
+        #include "shared/UnitConversion.H"
+        #include "shared/FileManager.H"
 
-        double get_rho()
-        {
-            return rho_;
-        };
+        double get_rho() { return rho_; };
         double get_cond() { return cond_; };
         double get_cp() { return cp_; };
         double get_load() { return alfa_; };
@@ -109,5 +106,4 @@ namespace ASALI
         double T_;
     };
 }
-
 #endif

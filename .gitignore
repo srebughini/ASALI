@@ -19,3 +19,5 @@ GUI/Ubuntu/ext/shared/omega11.H
 GUI/Ubuntu/ext/shared/omega22.H
 GUI/Ubuntu/ext/shared/transport.H
 GUI/Ubuntu/ext/shared/thermo.H
+
+GUI/Ubuntu/.vscode

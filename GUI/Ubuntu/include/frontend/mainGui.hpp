@@ -67,10 +67,10 @@ namespace ASALI
     public:
         mainGui();
 
-        virtual ~mainGui();
-
         #include "shared/UnitConversion.H"
         #include "shared/FileManager.H"
+
+        virtual ~mainGui();
 
     private:
         void exit();

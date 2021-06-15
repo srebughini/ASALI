@@ -98,5 +98,4 @@ namespace ASALI
         std::vector<std::string> beerShort_;
     };
 }
-
 #endif

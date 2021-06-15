@@ -175,5 +175,4 @@ namespace ASALI
         ASALI::catalyticPelletEquations *eq_;
     };
 }
-
 #endif

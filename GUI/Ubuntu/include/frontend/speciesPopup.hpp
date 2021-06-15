@@ -59,7 +59,7 @@ namespace ASALI
     public:
         speciesPopup();
 
-#include "shared/FileManager.H"
+        #include "shared/FileManager.H"
 
         virtual ~speciesPopup();
 
@@ -72,5 +72,4 @@ namespace ASALI
         Gtk::Image speciesImage_;
     };
 }
-
 #endif

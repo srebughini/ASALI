@@ -133,5 +133,4 @@ namespace ASALI
         std::vector<bool> algb_;
     };
 }
-
 #endif

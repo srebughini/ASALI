@@ -143,5 +143,4 @@ namespace ASALI
         ASALI::cstrEquations *eq_;
     };
 }
-
 #endif
