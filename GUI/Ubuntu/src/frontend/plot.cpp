@@ -357,21 +357,21 @@ namespace ASALI
         {
             this->batchplot(plotInterface);
         }
-        else if (type_ == "ph1d")
-        {
-            this->ph1dplot(resolution_);
-        }
         else if (type_ == "cstr")
         {
             this->cstrplot(plotInterface);
         }
+        else if (type_ == "ph1d")
+        {
+            this->ph1dplot(plotInterface, resolution_);
+        }
         else if (type_ == "het1d")
         {
-            this->het1dplot();
+            this->het1dplot(plotInterface);
         }
         else if (type_ == "pellet")
         {
-            this->pelletplot();
+            this->pelletplot(plotInterface);
         }
         delete plotInterface;
     }
@@ -502,190 +502,6 @@ namespace ASALI
         plotInterface->show();
     }
 
-    void plot::ph1dplot(const std::string resolution)
-    {
-        /*
-        if (resolution == "steady state")
-        {
-            if (this->isChecked(massButton_))
-            {
-                plotInterface->newFigure();
-                std::vector<double> y(L_.size());
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    if (massButton_[i]->get_active())
-                    {
-                        for (unsigned int j = 0; j < L_.size(); j++)
-                        {
-                            y[j] = std::max(0., y_[j][i]);
-                        }
-                        plotInterface->setData(L_, y, n_[i]);
-                    }
-                }
-                plotInterface->setXlabel("Length [" + Lud_ + "]");
-                plotInterface->setYlabel("Mass fraction [-]");
-                #if ASALI_ON_WINDOW == 1
-                plotInterface->setOutputFormat("wingdi");
-                #else
-                plotInterface->setOutputFormat("xcairo");
-                #endif
-                plotInterface->legend();
-            }
-
-            if (this->isChecked(moleButton_))
-            {
-                plotInterface->newFigure();
-                std::vector<double> x(L_.size());
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    if (moleButton_[i]->get_active())
-                    {
-                        for (unsigned int j = 0; j < L_.size(); j++)
-                        {
-                            x[j] = std::max(0., x_[j][i]);
-                        }
-                        plotInterface->setData(L_, x, n_[i]);
-                    }
-                }
-                plotInterface->setXlabel("Length [" + Lud_ + "]");
-                plotInterface->setYlabel("Mole fraction [-]");
-                #if ASALI_ON_WINDOW == 1
-                plotInterface->setOutputFormat("wingdi");
-                #else
-                plotInterface->setOutputFormat("xcairo");
-                #endif
-                plotInterface->legend();
-            }
-
-            if (this->isChecked(siteButton_))
-            {
-                plotInterface->newFigure();
-                std::vector<double> z(L_.size());
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    if (siteButton_[i]->get_active())
-                    {
-                        for (unsigned int j = 0; j < L_.size(); j++)
-                        {
-                            z[j] = std::max(0., z_[j][i]);
-                        }
-                        plotInterface->setData(L_, z, nc_[i]);
-                    }
-                }
-                plotInterface->setXlabel("Length [" + Lud_ + "]");
-                plotInterface->setYlabel("Coverage [-]");
-                #if ASALI_ON_WINDOW == 1
-                plotInterface->setOutputFormat("wingdi");
-                #else
-                plotInterface->setOutputFormat("xcairo");
-                #endif
-                plotInterface->legend();
-            }
-
-            if (this->isChecked(otherButton_))
-            {
-                if (otherButton_[0]->get_active())
-                {
-                    plotInterface->newFigure();
-                    plotInterface->setData(L_, T_, "");
-                    plotInterface->setXlabel("Length [" + Lud_ + "]");
-                    plotInterface->setYlabel("Temperature [K]");
-                }
-            }
-        }
-        else if (resolution == "transient")
-        {
-            if (this->isChecked(massButton_))
-            {
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    if (massButton_[i]->get_active())
-                    {
-                        plotInterface->newFigure();
-                        std::vector<double> y(L_.size());
-                        for (unsigned int k = 0; k < t_.size(); k++)
-                        {
-                            for (unsigned int j = 0; j < L_.size(); j++)
-                            {
-                                y[j] = std::max(0., yt_[k][j][i]);
-                            }
-                            plotInterface->setData(L_, y, "");
-                        }
-                        plotInterface->setTitle(n_[i]);
-                        plotInterface->setXlabel("Length [" + Lud_ + "]");
-                        plotInterface->setYlabel("Mass fraction [-]");
-                    }
-                }
-            }
-
-            if (this->isChecked(moleButton_))
-            {
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    if (moleButton_[i]->get_active())
-                    {
-                        plotInterface->newFigure();
-                        std::vector<double> x(L_.size());
-                        for (unsigned int k = 0; k < t_.size(); k++)
-                        {
-                            for (unsigned int j = 0; j < L_.size(); j++)
-                            {
-                                x[j] = std::max(0., xt_[k][j][i]);
-                            }
-                            plotInterface->setData(L_, x, "");
-                        }
-                        plotInterface->setTitle(n_[i]);
-                        plotInterface->setXlabel("Length [" + Lud_ + "]");
-                        plotInterface->setYlabel("Mole fraction [-]");
-                    }
-                }
-            }
-
-            if (this->isChecked(siteButton_))
-            {
-                for (unsigned int i = 0; i < SURF_NC_; i++)
-                {
-                    if (siteButton_[i]->get_active())
-                    {
-                        plotInterface->newFigure();
-                        std::vector<double> z(L_.size());
-                        for (unsigned int k = 0; k < t_.size(); k++)
-                        {
-                            for (unsigned int j = 0; j < L_.size(); j++)
-                            {
-                                z[j] = std::max(0., zt_[k][j][i]);
-                            }
-                            plotInterface->setData(L_, z, "");
-                        }
-                        plotInterface->setTitle(nc_[i]);
-                        plotInterface->setXlabel("Length [" + Lud_ + "]");
-                        plotInterface->setYlabel("Coverage [-]");
-                    }
-                }
-            }
-
-            if (this->isChecked(otherButton_))
-            {
-                if (otherButton_[0]->get_active())
-                {
-                    plotInterface->newFigure();
-                    std::vector<double> T(L_.size());
-                    for (unsigned int k = 0; k < t_.size(); k++)
-                    {
-                        for (unsigned int j = 0; j < L_.size(); j++)
-                        {
-                            T[j] = std::max(0., Tt_[k][j]);
-                        }
-                        plotInterface->setData(L_, T, "");
-                    }
-                    plotInterface->setXlabel("Length [" + Lud_ + "]");
-                    plotInterface->setYlabel("Temperature [K]");
-                }
-            }
-        }
-        plotInterface->show();*/
-    }
-
     void plot::cstrplot(ASALI::plotInterface *plotInterface)
     {
         if (this->isChecked(massButton_))
@@ -775,9 +591,193 @@ namespace ASALI
         plotInterface->show();
     }
 
-    void plot::het1dplot()
+    void plot::ph1dplot(ASALI::plotInterface *plotInterface, const std::string resolution)
     {
-        /*
+        if (resolution == "steady state")
+        {
+            if (this->isChecked(massButton_))
+            {
+                plotInterface->newFigure();
+                std::vector<double> y(L_.size());
+                int ndata = 0;
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    if (massButton_[i]->get_active())
+                    {
+                        for (unsigned int j = 0; j < L_.size(); j++)
+                        {
+                            y[j] = std::max(0., y_[j][i]);
+                        }
+                        plotInterface->setData(L_, y, n_[i]);
+                        ndata++;
+                    }
+                }
+                plotInterface->setXlabel("Length [" + Lud_ + "]");
+                plotInterface->setYlabel("Mass fraction [-]");
+                this->legend(plotInterface, ndata);
+                this->output(plotInterface);
+                plotInterface->legend();
+            }
+
+            if (this->isChecked(moleButton_))
+            {
+                plotInterface->newFigure();
+                std::vector<double> x(L_.size());
+                int ndata = 0;
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    if (moleButton_[i]->get_active())
+                    {
+                        for (unsigned int j = 0; j < L_.size(); j++)
+                        {
+                            x[j] = std::max(0., x_[j][i]);
+                        }
+                        plotInterface->setData(L_, x, n_[i]);
+                        ndata++;
+                    }
+                }
+                plotInterface->setXlabel("Length [" + Lud_ + "]");
+                plotInterface->setYlabel("Mole fraction [-]");
+                this->legend(plotInterface, ndata);
+                this->output(plotInterface);
+                plotInterface->legend();
+            }
+
+            if (this->isChecked(siteButton_))
+            {
+                plotInterface->newFigure();
+                std::vector<double> z(L_.size());
+                int ndata = 0;
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    if (siteButton_[i]->get_active())
+                    {
+                        for (unsigned int j = 0; j < L_.size(); j++)
+                        {
+                            z[j] = std::max(0., z_[j][i]);
+                        }
+                        plotInterface->setData(L_, z, nc_[i]);
+                        ndata++;
+                    }
+                }
+                plotInterface->setXlabel("Length [" + Lud_ + "]");
+                plotInterface->setYlabel("Coverage [-]");
+                this->legend(plotInterface, ndata);
+                this->output(plotInterface);
+            }
+
+            if (this->isChecked(otherButton_))
+            {
+                if (otherButton_[0]->get_active())
+                {
+                    plotInterface->newFigure();              
+                    plotInterface->setData(L_, T_, "");
+                    plotInterface->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface->setYlabel("Temperature [K]");
+                    this->output(plotInterface);
+                }
+            }
+        }
+        else if (resolution == "transient")
+        {
+            if (this->isChecked(massButton_))
+            {
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    if (massButton_[i]->get_active())
+                    {
+                        plotInterface->newFigure();
+                        std::vector<double> y(L_.size());
+                        for (unsigned int k = 0; k < t_.size(); k++)
+                        {
+                            for (unsigned int j = 0; j < L_.size(); j++)
+                            {
+                                y[j] = std::max(0., yt_[k][j][i]);
+                            }
+                            plotInterface->setData(L_, y, "");
+                        }
+                        plotInterface->setTitle(n_[i]);
+                        plotInterface->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface->setYlabel("Mass fraction [-]");
+                        this->output(plotInterface);
+                    }
+                }
+            }
+
+            if (this->isChecked(moleButton_))
+            {
+                for (unsigned int i = 0; i < NC_; i++)
+                {
+                    if (moleButton_[i]->get_active())
+                    {
+                        plotInterface->newFigure();
+                        std::vector<double> x(L_.size());
+                        for (unsigned int k = 0; k < t_.size(); k++)
+                        {
+                            for (unsigned int j = 0; j < L_.size(); j++)
+                            {
+                                x[j] = std::max(0., xt_[k][j][i]);
+                            }
+                            plotInterface->setData(L_, x, "");
+                        }
+                        plotInterface->setTitle(n_[i]);
+                        plotInterface->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface->setYlabel("Mole fraction [-]");
+                        this->output(plotInterface);
+                    }
+                }
+            }
+
+            if (this->isChecked(siteButton_))
+            {
+                for (unsigned int i = 0; i < SURF_NC_; i++)
+                {
+                    if (siteButton_[i]->get_active())
+                    {
+                        plotInterface->newFigure();
+                        std::vector<double> z(L_.size());
+                        for (unsigned int k = 0; k < t_.size(); k++)
+                        {
+                            for (unsigned int j = 0; j < L_.size(); j++)
+                            {
+                                z[j] = std::max(0., zt_[k][j][i]);
+                            }
+                            plotInterface->setData(L_, z, "");
+                        }
+                        plotInterface->setTitle(nc_[i]);
+                        plotInterface->setXlabel("Length [" + Lud_ + "]");
+                        plotInterface->setYlabel("Coverage [-]");
+                        this->output(plotInterface);
+                    }
+                }
+            }
+
+            if (this->isChecked(otherButton_))
+            {
+                if (otherButton_[0]->get_active())
+                {
+                    plotInterface->newFigure();
+                    std::vector<double> T(L_.size());
+                    for (unsigned int k = 0; k < t_.size(); k++)
+                    {
+                        for (unsigned int j = 0; j < L_.size(); j++)
+                        {
+                            T[j] = std::max(0., Tt_[k][j]);
+                        }
+                        plotInterface->setData(L_, T, "");
+                    }
+                    plotInterface->setXlabel("Length [" + Lud_ + "]");
+                    plotInterface->setYlabel("Temperature [K]");
+                    this->output(plotInterface);
+                }
+            }
+        }
+        plotInterface->show();
+    }
+
+
+    void plot::het1dplot(ASALI::plotInterface *plotInterface)
+    {
         if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
@@ -797,6 +797,7 @@ namespace ASALI
                     plotInterface->setTitle(n_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Mass fraction [-]");
+                    this->output(plotInterface);
                 }
             }
         }
@@ -820,6 +821,7 @@ namespace ASALI
                     plotInterface->setTitle(n_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Mole fraction [-]");
+                    this->output(plotInterface);
                 }
             }
         }
@@ -843,6 +845,7 @@ namespace ASALI
                     plotInterface->setTitle(nc_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Coverage [-]");
+                    this->output(plotInterface);
                 }
             }
         }
@@ -863,6 +866,7 @@ namespace ASALI
                 }
                 plotInterface->setXlabel("Length [" + Lud_ + "]");
                 plotInterface->setYlabel("Bulk temperature [K]");
+                this->output(plotInterface);
             }
 
             if (otherButton_[1]->get_active())
@@ -879,14 +883,15 @@ namespace ASALI
                 }
                 plotInterface->setXlabel("Length [" + Lud_ + "]");
                 plotInterface->setYlabel("Wall temperature [K]");
+                this->output(plotInterface);
             }
         }
-        plotInterface->show();*/
+        plotInterface->show();
     }
 
-    void plot::pelletplot()
+    void plot::pelletplot(ASALI::plotInterface *plotInterface)
     {
-        /*if (this->isChecked(massButton_))
+        if (this->isChecked(massButton_))
         {
             for (unsigned int i = 0; i < NC_; i++)
             {
@@ -905,6 +910,7 @@ namespace ASALI
                     plotInterface->setTitle(n_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Mass fraction [-]");
+                    this->output(plotInterface);
                 }
             }
         }
@@ -928,6 +934,7 @@ namespace ASALI
                     plotInterface->setTitle(n_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Mole fraction [-]");
+                    this->output(plotInterface);
                 }
             }
         }
@@ -951,10 +958,11 @@ namespace ASALI
                     plotInterface->setTitle(nc_[i]);
                     plotInterface->setXlabel("Length [" + Lud_ + "]");
                     plotInterface->setYlabel("Coverage [-]");
+                    this->output(plotInterface);
                 }
             }
         }
-        plotInterface->show();*/
+        plotInterface->show();
     }
 
     void plot::destroy()

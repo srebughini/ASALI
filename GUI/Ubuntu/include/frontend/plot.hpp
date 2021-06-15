@@ -139,9 +139,10 @@ namespace ASALI
         
         void batchplot(ASALI::plotInterface *plotInterface);
         void cstrplot(ASALI::plotInterface *plotInterface);
-        void het1dplot();
-        void pelletplot();
-        void ph1dplot(const std::string resolution);
+        void ph1dplot(ASALI::plotInterface *plotInterface, const std::string resolution);
+        void het1dplot(ASALI::plotInterface *plotInterface);
+        void pelletplot(ASALI::plotInterface *plotInterface);
+        
 
         bool isChecked(std::vector<Gtk::CheckButton *> button);
     };
