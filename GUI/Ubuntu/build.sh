@@ -170,13 +170,13 @@ function CreateSymbolicLink()
 function Compile()
 {
     if [ "$7" == 1 ]; then
-    	echoRed "Next version is not tested, yet :)"
+        echoRed "NOT TESTED, yet :)"
     fi 
 
     if [ "$1" == "true" ]; then
         make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     else
-        echoRed "Only ASALI version is not tested, yet :)"
+        echoRed "NOT TESTED, yet :)"
         make all -f Makefile.libs
         make all -f Makefile.asali ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     fi

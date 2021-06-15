@@ -140,6 +140,7 @@ namespace ASALI
     private:
         ASALI::Asali *asali_;               /// ASALI/API object
         std::vector<std::string> allNames_; /// Gas species names in the ASALI/API database
+        bool is_surface_;                   /// Bool to enable/disable surface reactions
     };
 }
 
