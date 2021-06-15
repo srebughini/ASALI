@@ -574,25 +574,14 @@ namespace ASALI
                     chemistryInterface_->setMassFraction(x_, n_);
                 }
 
-                {
+				{
                     std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
-                    std::vector<double> y0(eq_->NumberOfEquations() - 1);
-
                     for (unsigned int i = 0; i < n_.size(); i++)
                     {
-                        for (unsigned int j = 0; j < chemistryInterface_->numberOfGasSpecies(); j++)
-                        {
-                            if (n_[i] == chemistryInterface_->names()[j])
-                            {
-                                x0[i] = y[j];
-                                y0[i] = y[j];
-                                break;
-                            }
-                        }
+                        x0[i] = y[i];
                     }
-                    eq_->setInletConditions(y0, T_);
+                    eq_->setInletConditions(y, T_);
                 }
-
                 x0[x_.size()] = T_;
             }
             else

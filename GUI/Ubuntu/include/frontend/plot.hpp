@@ -138,7 +138,7 @@ namespace ASALI
         void legend(ASALI::plotInterface *plotInterface, int ndata);
         
         void batchplot(ASALI::plotInterface *plotInterface);
-        void cstrplot();
+        void cstrplot(ASALI::plotInterface *plotInterface);
         void het1dplot();
         void pelletplot();
         void ph1dplot(const std::string resolution);
