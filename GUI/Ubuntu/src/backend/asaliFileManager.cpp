@@ -36,13 +36,67 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#include "backend/asaliFileManager.hpp"
 
-int main(int argc, char *argv[])
+namespace ASALI
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+	asaliFileManager::asaliFileManager()
+	{
+	}
 
-    ASALI::mainGui asali;
+	std::string asaliFileManager::saveFile(gpointer window, std::string current_file_name)
+	{
+		GtkWindow *parent_window = GTK_WINDOW(window);
+		GtkFileChooserNative *native;
+		GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+		gint res;
 
-    return app->run(asali);
+		native = gtk_file_chooser_native_new("Save File", parent_window, action, "_Save", "_Cancel");
+		gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(native), current_file_name.c_str());
+		res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(native));
+		if (res == GTK_RESPONSE_ACCEPT)
+		{
+			char *filename;
+			GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
+			filename = gtk_file_chooser_get_filename(chooser);
+			g_object_unref(native);
+			return std::string(filename);
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	std::string asaliFileManager::openFile(gpointer window)
+	{
+		GtkWindow *parent_window = GTK_WINDOW(window);
+		GtkFileChooserNative *native;
+		GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+		gint res;
+
+		native = gtk_file_chooser_native_new("Open File", parent_window, action, "_Open", "_Cancel");
+		res = gtk_native_dialog_run(GTK_NATIVE_DIALOG(native));
+		if (res == GTK_RESPONSE_ACCEPT)
+		{
+			char *filename;
+			GtkFileChooser *chooser = GTK_FILE_CHOOSER(native);
+			filename = gtk_file_chooser_get_filename(chooser);
+			g_object_unref(native);
+			return std::string(filename);
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	std::string asaliFileManager::relative_path_to_absolute_path(std::string relpath)
+	{
+		return std::string(g_build_filename(COMPILING_PATH, relpath.c_str(), NULL));
+	}
+
+	asaliFileManager::~asaliFileManager()
+	{
+	}
 }

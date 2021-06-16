@@ -36,13 +36,75 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#include "backend/asaliVectorUtils.hpp"
 
-int main(int argc, char *argv[])
+namespace ASALI
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    asaliVectorUtils::asaliVectorUtils()
+    {
+    }
 
-    ASALI::mainGui asali;
+    double asaliVectorUtils::MaxElement(const std::vector<double> v)
+    {
+        double max = 0.;
 
-    return app->run(asali);
+        for (unsigned int i = 0; i < v.size(); i++)
+            max = std::max(v[i], max);
+
+        return max;
+    }
+
+    int asaliVectorUtils::MaxElement(const std::vector<int> v)
+    {
+        int max = 0.;
+
+        for (unsigned int i = 0; i < v.size(); i++)
+            max = std::max(v[i], max);
+
+        return max;
+    }
+
+    double asaliVectorUtils::MinElement(const std::vector<double> v)
+    {
+        double min = 1e64;
+
+        for (unsigned int i = 0; i < v.size(); i++)
+            min = std::min(v[i], min);
+
+        return min;
+    }
+
+    double asaliVectorUtils::SumElements(const std::vector<double> v)
+    {
+        double sum = 0.;
+
+        for (unsigned int i = 0; i < v.size(); i++)
+            sum = sum + v[i];
+
+        return sum;
+    }
+
+    double asaliVectorUtils::MeanValue(const std::vector<double> v)
+    {
+        return this->SumElements(v) / v.size();
+    }
+
+    double asaliVectorUtils::DotProduct(const std::vector<double> a, const std::vector<double> b)
+    {
+        return std::inner_product(a.begin(), a.end(), b.begin(), 0);
+    }
+
+    std::vector<double> asaliVectorUtils::ElementByElementProduct(const std::vector<double> a, const std::vector<double> b)
+    {
+        std::vector<double> c(a.size());
+
+        for (unsigned int i = 0; i < a.size(); i++)
+            c[i] = a[i] * b[i];
+
+        return c;
+    }
+
+    asaliVectorUtils::~asaliVectorUtils()
+    {
+    }
 }

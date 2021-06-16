@@ -36,94 +36,59 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#include "frontend/runBar.hpp"
 
-int main()
+namespace ASALI
 {
-    ASALI::Asali asali;
-    std::vector<std::string> names(3);
-    std::vector<double> x(3);
-
-    names[0] = "H2";
-    names[1] = "O2";
-    names[2] = "N2";
-
-    x[0] = 0.1;
-    x[1] = 0.2;
-    x[2] = 1. - x[0] - x[1];
-    
-    asali.setSpecies(names);
-
-    asali.setTemperature(393.15); //K
-
-    asali.setPressure(4e05); //Pa
-
-    asali.setMoleFraction(x);
-
-    std::cout << "Mixture molecular weight:     " << asali.mixtureMolecularWeight() << " [kg/kmol]" << std::endl;
-    std::cout << "Density:                      " << asali.density() << " [kg/m3]" << std::endl;
-    std::cout << "Mixture viscosity:            " << asali.mixtureViscosity() << " [Pas]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMassCp() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMolarCp() << " [J/kmol/K]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMassEnthalpy() << " [J/kg]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMolarEnthalpy() << " [J/kmol]" << std::endl;
-    std::cout << "Mixture thermal conductivity: " << asali.mixtureThermalConductivity() << " [W/m/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMassEntropy() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMolarEntropy() << " [J/kmol/K]" << std::endl;
-
-    std::cout << "\nSpecies viscosity [Pas]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    runBar::runBar()
+        : mainBox_(Gtk::ORIENTATION_VERTICAL),
+          closeButton_("Cancel"),
+          solvingLabel_("ASALI is solving...please wait!")
     {
-        std::cout << names[i] << ": " << asali.speciesViscosity()[i] << std::endl;
-    }
-    
-    std::cout << "\nSpecies binary diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.binaryDiffusion()[i][0] << "," << asali.binaryDiffusion()[i][1] << "," << asali.binaryDiffusion()[i][2] << std::endl;
+        this->set_border_width(15);
+        this->set_title("ASALI");
+        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
+        this->add(mainBox_);
+        mainBox_.set_spacing(10);
+        mainBox_.pack_start(solvingLabel_, Gtk::PACK_SHRINK);
+        mainBox_.pack_start(timeLabel_, Gtk::PACK_SHRINK);
+        mainBox_.pack_start(runBar_, Gtk::PACK_SHRINK);
+        mainBox_.pack_start(closeButton_, Gtk::PACK_SHRINK);
+        closeButton_.signal_clicked().connect(sigc::mem_fun(*this, &runBar::close));
+        this->resize(mainBox_.get_width(), mainBox_.get_height());
+        this->show_all_children();
     }
 
-    std::cout << "\nSpecies specific heat [J/kg/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    void runBar::update(const double fraction, const std::string tm)
     {
-        std::cout << names[i] << ": " << asali.speciesMassCp()[i] << std::endl;
+        if (fraction == 0)
+        {
+            close_ = true;
+        }
+
+        runBar_.set_fraction(fraction);
+        {
+            std::ostringstream s;
+            s << fraction;
+            runBar_.set_text(s.str());
+        }
+
+        timeLabel_.set_text(tm);
     }
 
-    std::cout << "\nSpecies enthalpy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    void runBar::close()
     {
-        std::cout << names[i] << ": " << asali.speciesMassEnthalpy()[i] << std::endl;
+        close_ = false;
+        this->hide();
     }
 
-    std::cout << "\nSpecies entropy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    void runBar::exit()
     {
-        std::cout << names[i] << ": " << asali.speciesMassEntropy()[i] << std::endl;
+        this->hide();
     }
 
-    std::cout << "\nSpecies thermal conductivity [W/m/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    runBar::~runBar()
     {
-        std::cout << names[i] << ": " << asali.speciesThermalConductivity()[i] << std::endl;
     }
-
-    std::cout << "\nMixture diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.mixtureDiffusion()[i] << std::endl;
-    }
-
-    std::cout << "\nMean gas velocity [m/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.arithmeticMeanGasVelocity()[i] << std::endl;
-    }
-
-    std::cout << "\nMean free path [m]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.meanFreePath()[i] << std::endl;
-    }
-
-    return 0;
 }

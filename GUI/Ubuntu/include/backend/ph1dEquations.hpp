@@ -36,94 +36,101 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#ifndef PH1DEQUATIONS_H
+#define PH1DEQUATIONS_H
 
-int main()
+#include "backend/catalyticReactorsEquations.hpp"
+
+namespace ASALI
 {
-    ASALI::Asali asali;
-    std::vector<std::string> names(3);
-    std::vector<double> x(3);
-
-    names[0] = "H2";
-    names[1] = "O2";
-    names[2] = "N2";
-
-    x[0] = 0.1;
-    x[1] = 0.2;
-    x[2] = 1. - x[0] - x[1];
-    
-    asali.setSpecies(names);
-
-    asali.setTemperature(393.15); //K
-
-    asali.setPressure(4e05); //Pa
-
-    asali.setMoleFraction(x);
-
-    std::cout << "Mixture molecular weight:     " << asali.mixtureMolecularWeight() << " [kg/kmol]" << std::endl;
-    std::cout << "Density:                      " << asali.density() << " [kg/m3]" << std::endl;
-    std::cout << "Mixture viscosity:            " << asali.mixtureViscosity() << " [Pas]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMassCp() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMolarCp() << " [J/kmol/K]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMassEnthalpy() << " [J/kg]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMolarEnthalpy() << " [J/kmol]" << std::endl;
-    std::cout << "Mixture thermal conductivity: " << asali.mixtureThermalConductivity() << " [W/m/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMassEntropy() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMolarEntropy() << " [J/kmol/K]" << std::endl;
-
-    std::cout << "\nSpecies viscosity [Pas]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    class ph1dEquations : public ASALI::catalyticReactorsEquations
     {
-        std::cout << names[i] << ": " << asali.speciesViscosity()[i] << std::endl;
-    }
-    
-    std::cout << "\nSpecies binary diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.binaryDiffusion()[i][0] << "," << asali.binaryDiffusion()[i][1] << "," << asali.binaryDiffusion()[i][2] << std::endl;
-    }
+    public:
+        ph1dEquations();
 
-    std::cout << "\nSpecies specific heat [J/kg/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassCp()[i] << std::endl;
-    }
+        void setEnergy(const bool flag) { energyEquation_ = flag; }
 
-    std::cout << "\nSpecies enthalpy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEnthalpy()[i] << std::endl;
-    }
+        void setLength(const double L);
 
-    std::cout << "\nSpecies entropy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEntropy()[i] << std::endl;
-    }
+        void setSpecificMassFlowRate(const double G);
 
-    std::cout << "\nSpecies thermal conductivity [W/m/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesThermalConductivity()[i] << std::endl;
-    }
+        void setPressure(const double P);
 
-    std::cout << "\nMixture diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.mixtureDiffusion()[i] << std::endl;
-    }
+        void setTemperature(const double T);
 
-    std::cout << "\nMean gas velocity [m/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.arithmeticMeanGasVelocity()[i] << std::endl;
-    }
+        void setCatalystLoad(const double alfa);
 
-    std::cout << "\nMean free path [m]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.meanFreePath()[i] << std::endl;
-    }
+        void setResolutionType(const std::string resolution);
 
-    return 0;
+        void setInletConditions(const std::vector<double> omega0, const double T0);
+
+        void setIntegrationTime(const double tF);
+
+        void setNumberOfPoints(const double NP);
+
+        std::vector<double> getLength() const { return Length_; };
+        std::vector<double> getTime() const { return Time_; };
+        std::vector<double> getPressure() const { return Pressure_; };
+        std::vector<double> getTemperature() const { return Temperature_; };
+
+        std::vector<std::vector<double>> getSpecie() const { return Specie_; };
+        std::vector<std::vector<double>> getSite() const { return Site_; };
+
+        std::vector<std::vector<double>> getTemperatureTransient() const { return TemperatureTransient_; };
+
+        std::vector<std::vector<std::vector<double>>> getSpecieTransient() const { return SpecieTransient_; };
+        std::vector<std::vector<std::vector<double>>> getSiteTransient() const { return SiteTransient_; };
+
+        virtual void store(const double tf, const std::vector<double> xf);
+
+        virtual void resize();
+
+        virtual int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
+
+        std::vector<bool> AlgebraicEquations() const { return algb_; };
+
+    private:
+        double MWmix_;
+        double cTot_;
+        double rho_;
+        double L_;
+        double G_;
+        double T0_;
+        double dz_;
+
+        unsigned int NP_;
+
+        std::string resolution_;
+
+        std::vector<double> dy_;
+        std::vector<double> y_;
+        std::vector<double> omega0_;
+        std::vector<double> Tvector_;
+        std::vector<double> rhoVector_;
+        std::vector<double> cpVector_;
+        std::vector<double> condVector_;
+        std::vector<double> QfromGasVector_;
+        std::vector<double> QfromSurfaceVector_;
+
+        std::vector<std::vector<double>> omegaMatrix_;
+        std::vector<std::vector<double>> Zmatrix_;
+        std::vector<std::vector<double>> diffMatrix_;
+        std::vector<std::vector<double>> RfromGasMatrix_;
+        std::vector<std::vector<double>> RfromSurfaceMatrix_;
+        std::vector<std::vector<double>> RsurfaceMatrix_;
+
+        std::vector<double> Length_;
+        std::vector<double> Time_;
+        std::vector<double> Pressure_;
+        std::vector<double> Temperature_;
+        std::vector<std::vector<double>> Specie_;
+        std::vector<std::vector<double>> Site_;
+
+        std::vector<std::vector<double>> TemperatureTransient_;
+        std::vector<std::vector<std::vector<double>>> SpecieTransient_;
+        std::vector<std::vector<std::vector<double>>> SiteTransient_;
+
+        std::vector<bool> algb_;
+    };
 }
+#endif

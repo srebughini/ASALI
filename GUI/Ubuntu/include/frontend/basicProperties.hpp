@@ -36,94 +36,125 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#ifndef BASICPROPERTIES_H
+#define BASICPROPERTIES_H
 
-int main()
+#include <gtkmm.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+#include <thread>
+#include <numeric>
+#include <functional>
+
+#include "frontend/speciesPopup.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
+#include "backend/asaliVectorUtils.hpp"
+
+#if ASALI_USING_CANTERA == 1
+#include "backend/canteraInterface.hpp"
+#else
+#include "backend/asaliInterface.hpp"
+#endif
+
+namespace ASALI
 {
-    ASALI::Asali asali;
-    std::vector<std::string> names(3);
-    std::vector<double> x(3);
-
-    names[0] = "H2";
-    names[1] = "O2";
-    names[2] = "N2";
-
-    x[0] = 0.1;
-    x[1] = 0.2;
-    x[2] = 1. - x[0] - x[1];
-    
-    asali.setSpecies(names);
-
-    asali.setTemperature(393.15); //K
-
-    asali.setPressure(4e05); //Pa
-
-    asali.setMoleFraction(x);
-
-    std::cout << "Mixture molecular weight:     " << asali.mixtureMolecularWeight() << " [kg/kmol]" << std::endl;
-    std::cout << "Density:                      " << asali.density() << " [kg/m3]" << std::endl;
-    std::cout << "Mixture viscosity:            " << asali.mixtureViscosity() << " [Pas]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMassCp() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMolarCp() << " [J/kmol/K]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMassEnthalpy() << " [J/kg]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMolarEnthalpy() << " [J/kmol]" << std::endl;
-    std::cout << "Mixture thermal conductivity: " << asali.mixtureThermalConductivity() << " [W/m/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMassEntropy() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMolarEntropy() << " [J/kmol/K]" << std::endl;
-
-    std::cout << "\nSpecies viscosity [Pas]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    class basicProperties : public Gtk::Window
     {
-        std::cout << names[i] << ": " << asali.speciesViscosity()[i] << std::endl;
-    }
-    
-    std::cout << "\nSpecies binary diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.binaryDiffusion()[i][0] << "," << asali.binaryDiffusion()[i][1] << "," << asali.binaryDiffusion()[i][2] << std::endl;
-    }
+    public:
+        basicProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
 
-    std::cout << "\nSpecies specific heat [J/kg/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassCp()[i] << std::endl;
-    }
+        virtual ~basicProperties();
 
-    std::cout << "\nSpecies enthalpy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEnthalpy()[i] << std::endl;
-    }
+        virtual void results() = 0;
+        virtual void save() = 0;
 
-    std::cout << "\nSpecies entropy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEntropy()[i] << std::endl;
-    }
+        void exit();
+        void availableSpecies();
+        void input();
+        void savedMessage();
+        void inputReader();
+        void createInputGrid();
+        void checkInput(unsigned int i);
 
-    std::cout << "\nSpecies thermal conductivity [W/m/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesThermalConductivity()[i] << std::endl;
-    }
+        #if ASALI_USING_CANTERA == 1
+        void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
+        #else
+        void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
+        #endif
 
-    std::cout << "\nMixture diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.mixtureDiffusion()[i] << std::endl;
-    }
+        std::string getBeer();
+        std::string getBeerShort();
 
-    std::cout << "\nMean gas velocity [m/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.arithmeticMeanGasVelocity()[i] << std::endl;
-    }
+        Gtk::Button helpButton_;
+        Gtk::Button exitButton1_;
+        Gtk::Button doneButton_;
 
-    std::cout << "\nMean free path [m]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.meanFreePath()[i] << std::endl;
-    }
+        Gtk::Grid inputGrid_;
+        Gtk::Grid resultsGrid_;
 
-    return 0;
+        Gtk::Label tempLabel_;
+        Gtk::Label pressLabel_;
+        Gtk::Label fractionLabel_;
+
+        Gtk::Entry tempEntry_;
+        Gtk::Entry pressEntry_;
+
+        Gtk::ComboBoxText tempCombo_;
+        Gtk::ComboBoxText pressCombo_;
+        Gtk::ComboBoxText fractionCombo_;
+
+        std::vector<Gtk::Entry *> nameEntry_;
+        std::vector<Gtk::Entry *> fractionEntry_;
+
+        std::vector<Gtk::Label *> nameVector_;
+
+        unsigned int NS_;
+        unsigned int OP_;
+
+        double T_;
+        double p_;
+
+        std::pair<unsigned int, bool> checkInput_;
+
+        std::vector<double> x_;
+        std::vector<double> y_;
+        std::vector<double> MW_;
+        std::vector<double> cond_;
+        std::vector<double> mu_;
+
+        std::vector<std::vector<double>> diff_;
+
+        std::vector<std::string> n_;
+        std::vector<std::string> beer_;
+        std::vector<std::string> beerShort_;
+
+        std::string kineticType_;
+
+        ASALI::speciesPopup *speciesNames_;
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+        ASALI::asaliVectorUtils *vectorUtils_;
+
+        ASALI::asaliFileManager fileManager_;
+
+        #if ASALI_USING_CANTERA == 1
+        ASALI::canteraInterface *chemistryInterface_;
+        #else
+        ASALI::asaliInterface *chemistryInterface_;
+        #endif
+
+    private:
+    };
 }
+#endif

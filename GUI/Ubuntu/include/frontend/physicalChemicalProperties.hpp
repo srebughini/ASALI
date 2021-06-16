@@ -36,13 +36,51 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#ifndef PHYSICALCHEMICALPROPERTIES_H
+#define PHYSICALCHEMICALPROPERTIES_H
 
-int main(int argc, char *argv[])
+#include "frontend/basicProperties.hpp"
+
+namespace ASALI
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class physicalChemicalProperties : public ASALI::basicProperties
+    {
+    public:
+        physicalChemicalProperties(ASALI::speciesPopup *speciesNames,std::string kineticType);
 
-    ASALI::mainGui asali;
+        virtual ~physicalChemicalProperties();
 
-    return app->run(asali);
+        virtual void results();
+        virtual void save();
+        virtual void clean();
+        virtual void update();       
+
+        void showAtomNames();
+        void mwUnitConversion(bool check);
+        void rhoUnitConversion(bool check);
+
+        std::vector<double> MW_;
+        std::vector<double> rho_;
+
+    private:
+        Gtk::Box rhoBox_;
+        Gtk::Box mwBox_;
+
+        Gtk::Button exitButton2_;
+        Gtk::Button saveButton_;
+        Gtk::Button backButton_;
+
+        Gtk::Grid resultsGrid_;
+
+        Gtk::Label rhoLabel_;
+        Gtk::Label mwLabel_;
+
+        Gtk::ComboBoxText rhoCombo_;
+        Gtk::ComboBoxText mwCombo_;
+
+        std::vector<Gtk::Label *> nameVector_;
+        std::vector<Gtk::Label *> rhoVector_;
+        std::vector<Gtk::Label *> mwVector_;
+    };
 }
+#endif

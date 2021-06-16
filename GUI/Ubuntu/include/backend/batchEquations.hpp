@@ -36,94 +36,87 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "Asali.hpp"
+#ifndef BATCHEQUATIONS_H
+#define BATCHEQUATIONS_H
 
-int main()
+#include "backend/catalyticReactorsEquations.hpp"
+
+namespace ASALI
 {
-    ASALI::Asali asali;
-    std::vector<std::string> names(3);
-    std::vector<double> x(3);
-
-    names[0] = "H2";
-    names[1] = "O2";
-    names[2] = "N2";
-
-    x[0] = 0.1;
-    x[1] = 0.2;
-    x[2] = 1. - x[0] - x[1];
-    
-    asali.setSpecies(names);
-
-    asali.setTemperature(393.15); //K
-
-    asali.setPressure(4e05); //Pa
-
-    asali.setMoleFraction(x);
-
-    std::cout << "Mixture molecular weight:     " << asali.mixtureMolecularWeight() << " [kg/kmol]" << std::endl;
-    std::cout << "Density:                      " << asali.density() << " [kg/m3]" << std::endl;
-    std::cout << "Mixture viscosity:            " << asali.mixtureViscosity() << " [Pas]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMassCp() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture specific heat:        " << asali.mixtureMolarCp() << " [J/kmol/K]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMassEnthalpy() << " [J/kg]" << std::endl;
-    std::cout << "Mixture enthalpy:             " << asali.mixtureMolarEnthalpy() << " [J/kmol]" << std::endl;
-    std::cout << "Mixture thermal conductivity: " << asali.mixtureThermalConductivity() << " [W/m/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMassEntropy() << " [J/kg/K]" << std::endl;
-    std::cout << "Mixture entropy:              " << asali.mixtureMolarEntropy() << " [J/kmol/K]" << std::endl;
-
-    std::cout << "\nSpecies viscosity [Pas]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
+    /// Class that describes BATCH reactor equations
+    class batchEquations : public ASALI::catalyticReactorsEquations
     {
-        std::cout << names[i] << ": " << asali.speciesViscosity()[i] << std::endl;
-    }
-    
-    std::cout << "\nSpecies binary diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.binaryDiffusion()[i][0] << "," << asali.binaryDiffusion()[i][1] << "," << asali.binaryDiffusion()[i][2] << std::endl;
-    }
+    public:
+        /// Class constructor
+        batchEquations();
 
-    std::cout << "\nSpecies specific heat [J/kg/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassCp()[i] << std::endl;
-    }
+        /// Enable/disable energy balance
+        void setEnergy(const bool flag);
 
-    std::cout << "\nSpecies enthalpy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEnthalpy()[i] << std::endl;
-    }
+        /// Set reactor volume in [m3]
+        void setVolume(const double V);
 
-    std::cout << "\nSpecies entropy [J/kg]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesMassEntropy()[i] << std::endl;
-    }
+        /// Set pressure in [Pa]
+        void setPressure(const double P);
 
-    std::cout << "\nSpecies thermal conductivity [W/m/K]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.speciesThermalConductivity()[i] << std::endl;
-    }
+        /// Set temperature in [K]
+        void setTemperature(const double T);
 
-    std::cout << "\nMixture diffusion coefficient [m2/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.mixtureDiffusion()[i] << std::endl;
-    }
+        /// Set catalytic load in [m2/m3]
+        void setCatalystLoad(const double alfa);
 
-    std::cout << "\nMean gas velocity [m/s]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.arithmeticMeanGasVelocity()[i] << std::endl;
-    }
+        /// Set integration time in [s]
+        void setIntegrationTime(const double tF);
 
-    std::cout << "\nMean free path [m]" << std::endl;
-    for (unsigned int i=0;i<3;i++)
-    {
-        std::cout << names[i] << ": " << asali.meanFreePath()[i] << std::endl;
-    }
+        /// Return integration time vector in [s]
+        inline std::vector<double> getTime() const { return Time_; };
 
-    return 0;
+        /// Return total mass at different integration times in [kg]
+        inline std::vector<double> getMass() const { return Mass_; };
+
+        /// Return total volume at different integration times in [m3]
+        inline std::vector<double> getVolume() const { return Volume_; };
+
+        /// Return temperature at different integration times in [K]
+        inline std::vector<double> getTemperature() const { return Temperature_; };
+
+        /// Return gas mixture mass fraction at different integration times
+        inline std::vector<std::vector<double>> getSpecie() const { return Specie_; };
+
+        /// Return coverage at different integration times
+        inline std::vector<std::vector<double>> getSite() const { return Site_; };
+
+        /// Equations describing the catalytic reactors
+        int Equations(double &t, std::vector<double> &y, std::vector<double> &dy);
+
+        /// Resize variables based
+        void resize();
+
+        /// Store results for plottnig and saving
+        void store(const double tf, const std::vector<double> xf);
+
+        /// Class destructor
+        ~batchEquations();
+
+    private:
+        double MWmix_; /// Gas mixture molecular weight in [g/mol]
+        double cTot_;  /// Gas mixture concentration in [kmol/m3]
+        double rho_;   /// Gas mixture density in [kg/m3]
+        double V_;     /// Reactor volume in [m3]
+        double mass_;  /// Total mass in [kg]
+        double dt_;    /// Integration time step [s]
+
+        unsigned int TC_; /// Number of integration steps
+
+        std::vector<double> dy_; /// Accumulation term of mass and energy balance
+        std::vector<double> y_;  /// Integration variables
+
+        std::vector<double> Time_;                /// Integration time vector [s]
+        std::vector<double> Mass_;                /// Total mass at different integration times in [kg]
+        std::vector<double> Volume_;              /// Total volume at different integration times in [m3]
+        std::vector<double> Temperature_;         /// Temperature at different integration times in [K]
+        std::vector<std::vector<double>> Specie_; /// Gas mixture mass fraction at different integration times
+        std::vector<std::vector<double>> Site_;   /// Coverage at different integration times
+    };
 }
+#endif

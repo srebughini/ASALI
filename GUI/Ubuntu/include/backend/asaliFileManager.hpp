@@ -36,13 +36,36 @@
 #                                                                                              #
 ##############################################################################################*/
 
-#include "frontend/mainGui.hpp"
+#ifndef ASALIFILEMANAGER_H
+#define ASALIFILEMANAGER_H
 
-int main(int argc, char *argv[])
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+#include <numeric>
+#include <functional>
+#include <gtk/gtk.h>
+
+namespace ASALI
 {
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "ASALI.CODE");
+    class asaliFileManager
+    {
+    public:
+        asaliFileManager();
 
-    ASALI::mainGui asali;
+        std::string saveFile(gpointer window, std::string current_file_name);
+        std::string openFile(gpointer window);
+        std::string relative_path_to_absolute_path(std::string relpath);
 
-    return app->run(asali);
+        virtual ~asaliFileManager();
+    };
 }
+#endif

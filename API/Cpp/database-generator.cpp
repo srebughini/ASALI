@@ -108,9 +108,9 @@ int main()
                 }
             }
 
-            remove("transport.H");
+            remove("shared/transport.H");
             std::ofstream output;
-            output.open("transport.H",std::ios::out);
+            output.open("shared/transport.H",std::ios::out);
             output << "/*##############################################################################################" << std::endl;
             output << "#                                                                                              #" << std::endl;
             output << "#     #############       #############       #############       ####                ####     #" << std::endl;
@@ -213,9 +213,9 @@ int main()
                 omega22[i] = allv[i];
             }
 
-            remove("omega22.H");
+            remove("shared/omega22.H");
             std::ofstream output;
-            output.open("omega22.H",std::ios::out);
+            output.open("shared/omega22.H",std::ios::out);
             output << "/*##############################################################################################" << std::endl;
             output << "#                                                                                              #" << std::endl;
             output << "#     #############       #############       #############       ####                ####     #" << std::endl;
@@ -325,9 +325,9 @@ int main()
                 }
             }
 
-            remove("omega11.H");
+            remove("shared/omega11.H");
             std::ofstream output;
-            output.open("omega11.H",std::ios::out);
+            output.open("shared/omega11.H",std::ios::out);
             output << "/*##############################################################################################" << std::endl;
             output << "#                                                                                              #" << std::endl;
             output << "#     #############       #############       #############       ####                ####     #" << std::endl;
@@ -487,9 +487,9 @@ int main()
             }
             
             
-            remove("thermo.H");
+            remove("shared/thermo.H");
             std::ofstream output;
-            output.open("thermo.H",std::ios::out);
+            output.open("shared/thermo.H",std::ios::out);
             output << "/*##############################################################################################" << std::endl;
             output << "#                                                                                              #" << std::endl;
             output << "#     #############       #############       #############       ####                ####     #" << std::endl;
