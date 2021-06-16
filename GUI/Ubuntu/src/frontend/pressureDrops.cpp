@@ -235,7 +235,6 @@ namespace ASALI
                 calculateButton_.signal_clicked().connect(sigc::mem_fun(*this, &pressureDrops::results));
             }
         }
-        std::cout << "sono qui" << std::endl;
     }
 
     pressureDrops::~pressureDrops()

@@ -561,7 +561,7 @@ namespace ASALI
                 delete physicalChemicalMenu_;
             }
             physicalChemicalMenu_ = new ASALI::physicalChemicalProperties(speciesNames_,kineticType_);
-            vacuumMenu_->setChemistryInterface(chemistryInterface_);
+            physicalChemicalMenu_->setChemistryInterface(chemistryInterface_);
             physicalChemicalMenu_->show();
         }
     }

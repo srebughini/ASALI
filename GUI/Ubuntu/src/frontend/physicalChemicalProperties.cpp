@@ -57,51 +57,50 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->input();
-    }
 
-    void physicalChemicalProperties::update()
-    {
-        resultsGrid_.set_column_homogeneous(true);
-        resultsGrid_.set_column_spacing(10);
-        resultsGrid_.set_row_spacing(10);
+        {
+            resultsGrid_.set_column_homogeneous(true);
+            resultsGrid_.set_column_spacing(10);
+            resultsGrid_.set_row_spacing(10);
 
-        //Molecular weight
-        mwBox_.pack_start(mwLabel_, Gtk::PACK_SHRINK);
-        mwBox_.pack_start(mwCombo_, Gtk::PACK_SHRINK);
-        mwBox_.set_spacing(5);
-        mwBox_.set_halign(Gtk::ALIGN_CENTER);
-        mwCombo_.append("g/mol");
-        mwCombo_.append("kg/mol");
-        mwCombo_.append("g/kmol");
-        mwCombo_.append("kg/kmol");
-        mwCombo_.set_active(0);
-        mwCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::mwUnitConversion), true));
+            //Molecular weight
+            mwBox_.pack_start(mwLabel_, Gtk::PACK_SHRINK);
+            mwBox_.pack_start(mwCombo_, Gtk::PACK_SHRINK);
+            mwBox_.set_spacing(5);
+            mwBox_.set_halign(Gtk::ALIGN_CENTER);
+            mwCombo_.append("g/mol");
+            mwCombo_.append("kg/mol");
+            mwCombo_.append("g/kmol");
+            mwCombo_.append("kg/kmol");
+            mwCombo_.set_active(0);
+            mwCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::mwUnitConversion), true));
 
-        //Density
-        rhoBox_.pack_start(rhoLabel_, Gtk::PACK_SHRINK);
-        rhoBox_.pack_start(rhoCombo_, Gtk::PACK_SHRINK);
-        rhoBox_.set_spacing(5);
-        rhoBox_.set_halign(Gtk::ALIGN_CENTER);
-        rhoCombo_.append("kg/m\u00b3");
-        rhoCombo_.append("g/cm\u00b3");
-        rhoCombo_.set_active(0);
-        rhoCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::rhoUnitConversion), true));
+            //Density
+            rhoBox_.pack_start(rhoLabel_, Gtk::PACK_SHRINK);
+            rhoBox_.pack_start(rhoCombo_, Gtk::PACK_SHRINK);
+            rhoBox_.set_spacing(5);
+            rhoBox_.set_halign(Gtk::ALIGN_CENTER);
+            rhoCombo_.append("kg/m\u00b3");
+            rhoCombo_.append("g/cm\u00b3");
+            rhoCombo_.set_active(0);
+            rhoCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::rhoUnitConversion), true));
 
-        //Add heading
-        resultsGrid_.attach(mwBox_, 1, 0, 1, 1);
-        resultsGrid_.attach(rhoBox_, 2, 0, 1, 1);
+            //Add heading
+            resultsGrid_.attach(mwBox_, 1, 0, 1, 1);
+            resultsGrid_.attach(rhoBox_, 2, 0, 1, 1);
 
-        //Add back button
-        resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
-        backButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::input));
+            //Add back button
+            resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
+            backButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::input));
 
-        //Add print on file
-        resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
-        saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::save));
+            //Add print on file
+            resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
+            saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::save));
 
-        //Add exit button
-        resultsGrid_.attach(exitButton2_, 2, n_.size() + 2, 1, 1);
-        exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::exit));
+            //Add exit button
+            resultsGrid_.attach(exitButton2_, 2, n_.size() + 2, 1, 1);
+            exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::exit));
+        }
     }
 
     physicalChemicalProperties::~physicalChemicalProperties()
@@ -162,15 +161,10 @@ namespace ASALI
                 y_ = chemistryInterface_->getMassFractionFromNames(n_);
             }
 
-            if (n_.size() > 1)
-            {
-                n_.push_back("mix");
-            }
-
-            rho_.clear();
             MW_.clear();
-            rho_.resize(n_.size());
+            rho_.clear();
             MW_.resize(n_.size());
+            rho_.resize(n_.size());
 
             for (unsigned int i = 0; i < n_.size(); i++)
             {
@@ -184,6 +178,14 @@ namespace ASALI
                     }
                 }
             }
+
+            if (n_.size() > 1)
+            {
+                n_.push_back("mix");
+            }
+
+            MW_.push_back(chemistryInterface_->getMWmix());
+            rho_.push_back(chemistryInterface_->getMWmix() * p_ / (8314. * T_));
 
             //Add back button
             resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);

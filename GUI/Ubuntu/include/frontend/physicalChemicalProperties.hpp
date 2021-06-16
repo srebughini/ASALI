@@ -53,7 +53,6 @@ namespace ASALI
         virtual void results();
         virtual void save();
         virtual void clean();
-        virtual void update();       
 
         void showAtomNames();
         void mwUnitConversion(bool check);
