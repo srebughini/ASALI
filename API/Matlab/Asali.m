@@ -389,12 +389,12 @@ classdef Asali
         function s = get.MixtureMassEntropy(obj)
             [obj.smole, obj.smass] = obj.species_s_(obj);
             if ~obj.smass_mix_updated_
-                Y   = obj.y;
+                X   = obj.x;
                 s  = 0;
-                for i=1:length(Y)
-                    s = s + Y(i)*obj.smass(i);
+                for i=1:length(X)
+                    s = s + X(i)*obj.smole(i);
                 end
-                obj.smass_mix = s;
+                obj.smass_mix = s/obj.MWmix;
                 obj.smass_mix_updated_ = true;
             else
                 s = obj.smass_mix;
@@ -552,14 +552,16 @@ classdef Asali
             if ~obj.s_updated_
                 s = zeros(length(obj.index),1);
                 T = obj.Temperature;
+                X = obj.x;
                 for i=1:length(obj.index)
                     if ( obj.Temperature > 1000 )
                         s(i) = obj.data.thermo(obj.index(i),1)*log(T) + obj.data.thermo(obj.index(i),2)*T + obj.data.thermo(obj.index(i),3)*T*T/2 + obj.data.thermo(obj.index(i),4)*T*T*T/3 + obj.data.thermo(obj.index(i),5)*T*T*T*T/4 + obj.data.thermo(obj.index(i),7);
                     else
                         s(i) = obj.data.thermo(obj.index(i),8)*log(T) + obj.data.thermo(obj.index(i),9)*T + obj.data.thermo(obj.index(i),10)*T*T/2 + obj.data.thermo(obj.index(i),11)*T*T*T/3 + obj.data.thermo(obj.index(i),12)*T*T*T*T/4 + obj.data.thermo(obj.index(i),14);
                     end
+                    s(i) = 8314*(s(i) - log(obj.Pressure*X(i)/1.0e05));
                 end
-                smole = s*8314;
+                smole = s;
                 smass = smole./obj.MW';
                 obj.s_updated_ = true;
             else

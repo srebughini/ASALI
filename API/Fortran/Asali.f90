@@ -71,7 +71,6 @@ module asali
     logical :: hmole_mix_update_  = .FALSE.
     logical :: hmass_mix_update_  = .FALSE.
     logical :: smole_mix_update_  = .FALSE.
-    logical :: smass_mix_update_  = .FALSE.
 
     contains      
     include "transport_subroutine.f90"
@@ -99,7 +98,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_temperature
     
@@ -124,7 +122,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_pressure
     
@@ -184,7 +181,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_species_names
     
@@ -225,7 +221,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_mass_fraction
 
@@ -264,7 +259,6 @@ module asali
             hmole_mix_update_  = .FALSE.
             hmass_mix_update_  = .FALSE.
             smole_mix_update_  = .FALSE.
-            smass_mix_update_  = .FALSE.
         end if
     end subroutine set_mole_fraction
     
@@ -493,7 +487,7 @@ module asali
                               + thermo_(index_(i))%high(7)
                 end if
                 
-                smole_(i) = smole_(i)*8314.  !J/Kmol/K
+                smole_(i) = 8314.*(smole_(i) - log(P_*x_(i)/1.e05)) !J/Kmol/K
                 smass_(i) = smole_(i)/MW_(i) !J/Kg/K
             end do
             s_update_ = .TRUE.
@@ -737,7 +731,7 @@ module asali
             call species_s_()
             smole_mix_ = 0.
             do i=1,NC_
-                smole_mix_ = smole_mix_ + x_(i)*smole_(i);
+                smole_mix_ = smole_mix_ + x_(i)*smole_(i)
             end do
             smole_mix_update_ = .TRUE.
         end if
@@ -748,14 +742,15 @@ module asali
     function get_mixture_mass_entropy()
         real    :: get_mixture_mass_entropy
         integer :: i
-        if ( smass_mix_update_ .EQV. .FALSE. ) then
+        if ( smole_mix_update_ .EQV. .FALSE. ) then
             call species_s_()
-            smass_mix_ = 0.
+            smole_mix_ = 0.
             do i=1,NC_
-                smass_mix_ = smass_mix_ + y_(i)*smass_(i);
+                smole_mix_ = smole_mix_ + x_(i)*smole_(i)
             end do
-            smass_mix_update_ = .TRUE.
+            smole_mix_update_ = .TRUE.
         end if
+        smass_mix_ = smole_mix_/MWmix_
         get_mixture_mass_entropy = smass_mix_
         return
     end function get_mixture_mass_entropy
@@ -786,7 +781,7 @@ module asali
         real, intent(in)  :: Tr, dr
         real              :: sigma
         
-        real, dimension(4) :: b
+        real, dimension(4) :: b, x
         real, dimension(4,4) :: A
 
         integer :: Ta, Tb, da, db, ok, pivot(4), j
@@ -833,22 +828,34 @@ module asali
             end if
         end if
 
-
         A(1,:) = (/1.,Tsigma22_(Ta),dsigma22_(da),Tsigma22_(Ta)*dsigma22_(da)/)
         A(2,:) = (/1.,Tsigma22_(Ta),dsigma22_(db),Tsigma22_(Ta)*dsigma22_(db)/)
         A(3,:) = (/1.,Tsigma22_(Tb),dsigma22_(da),Tsigma22_(Tb)*dsigma22_(da)/)
         A(4,:) = (/1.,Tsigma22_(Tb),dsigma22_(db),Tsigma22_(Tb)*dsigma22_(db)/)
 
-
         b(1) = sigmaMatrix22_(Ta,da)
         b(2) = sigmaMatrix22_(Ta,db)
         b(3) = sigmaMatrix22_(Tb,da)
         b(4) = sigmaMatrix22_(Tb,db)
-    
-        
-        call SGESV(4, 1, A, 4, pivot, b, 4, ok)
 
-        sigma = b(1) + b(2)*Tr + b(3)*dr + b(4)*Tr*dr
+        x(4) = (b(1) - b(2)- b(3) + b(4))/(Tsigma22_(Ta)*dsigma22_(da) &
+               - Tsigma22_(Ta)*dsigma22_(db)                           &
+               - Tsigma22_(Tb)*dsigma22_(da)                           &
+               + Tsigma22_(Tb)*dsigma22_(db))
+               
+        x(3) = (-x(4)*(Tsigma22_(Ta)*dsigma22_(da)                     &
+                     - Tsigma22_(Ta)*dsigma22_(db))                    &
+                     - b(2) + b(1))/(dsigma22_(da) - dsigma22_(db))
+
+        x(2) = (-x(4)*(Tsigma22_(Ta)*dsigma22_(da)                     &
+                     - Tsigma22_(Tb)*dsigma22_(da))                    &
+                     - b(3) + b(1))/(Tsigma22_(Ta) - Tsigma22_(Tb))
+                     
+        x(1) = -x(2)*Tsigma22_(Ta)                                     &
+               -x(3)*dsigma22_(da)                                     &
+               -x(4)*Tsigma22_(Ta)*dsigma22_(da) + b(1)
+
+        sigma = x(1) + x(2)*Tr + x(3)*dr + x(4)*Tr*dr
 
     end function collision_integrals_22
 
@@ -856,7 +863,7 @@ module asali
         real, intent(in)  :: Tr, dr
         real              :: sigma
         
-        real, dimension(4) :: b
+        real, dimension(4) :: b, x
         real, dimension(4,4) :: A
 
         integer :: Ta, Tb, da, db, ok, pivot(4), j
@@ -902,22 +909,35 @@ module asali
                 db = size(dsigma11_)
             end if
         end if
-        
 
         A(1,:) = (/1.,Tsigma11_(Ta),dsigma11_(da),Tsigma11_(Ta)*dsigma11_(da)/)
         A(2,:) = (/1.,Tsigma11_(Ta),dsigma11_(db),Tsigma11_(Ta)*dsigma11_(db)/)
         A(3,:) = (/1.,Tsigma11_(Tb),dsigma11_(da),Tsigma11_(Tb)*dsigma11_(da)/)
         A(4,:) = (/1.,Tsigma11_(Tb),dsigma11_(db),Tsigma11_(Tb)*dsigma11_(db)/)
 
-
         b(1) = sigmaMatrix11_(Ta,da)
         b(2) = sigmaMatrix11_(Ta,db)
         b(3) = sigmaMatrix11_(Tb,da)
         b(4) = sigmaMatrix11_(Tb,db)
-           
-        call SGESV(4, 1, A, 4, pivot, b, 4, ok)
 
-        sigma = b(1) + b(2)*Tr + b(3)*dr + b(4)*Tr*dr
+        x(4) = (b(1) - b(2)- b(3) + b(4))/(Tsigma11_(Ta)*dsigma11_(da) &
+               - Tsigma11_(Ta)*dsigma11_(db)                           &
+               - Tsigma11_(Tb)*dsigma11_(da)                           &
+               + Tsigma11_(Tb)*dsigma11_(db))
+               
+        x(3) = (-x(4)*(Tsigma11_(Ta)*dsigma11_(da)                     &
+                     - Tsigma11_(Ta)*dsigma11_(db))                    &
+                     - b(2) + b(1))/(dsigma11_(da) - dsigma11_(db))
+
+        x(2) = (-x(4)*(Tsigma11_(Ta)*dsigma11_(da)                     &
+                     - Tsigma11_(Tb)*dsigma11_(da))                    &
+                     - b(3) + b(1))/(Tsigma11_(Ta) - Tsigma11_(Tb))
+                     
+        x(1) = -x(2)*Tsigma11_(Ta)                                     &
+               -x(3)*dsigma11_(da)                                     &
+               -x(4)*Tsigma11_(Ta)*dsigma11_(da) + b(1)
+
+        sigma = x(1) + x(2)*Tr + x(3)*dr + x(4)*Tr*dr
 
     end function collision_integrals_11
 end module asali

@@ -1,4 +1,5 @@
 # **ASALI: Modeling and beyond**
+
 The Asali version with **Graphical User Interface** is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. From one side, thanks to its user-friendly interface, Asali is very helpful for those approaching the modeling of gas phase mixture for the first time. On the other side, the deep interaction with [Cantera](https://cantera.org/)  allows more expert users in performing detailed simulations without losing time in coding their own models.
 ## **1. Introduction**
 Let's go straight to the point! Asali main features are:
@@ -61,7 +62,7 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [Matplotlib](https://matplotlib.org/): a comprehensive library for creating static, animated, and interactive visualizations in Python
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
 
 ### 2.1 Linux OS
 ##### 2.1.1 Pre-requisites installation
