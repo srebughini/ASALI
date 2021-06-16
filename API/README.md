@@ -1,6 +1,6 @@
 # **ASALI: Modeling and beyond**
-The Asali version with **Application Programming Interface** is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. This version of Asali is very helpful for those who need a reliable, simple and perfoming library for the estimation of thermodynamic and transport properties of ideal gas mixture.  
-If you are looking for something more advanced and with higher performance, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
+The Asali version with **Application Programming Interface** is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture. This version of Asali is very helpful for those who need a reliable, simple and perfoming library for the estimation of thermodynamic and transport properties of ideal gas mixture. Moreover, the [elapsed time comparison](https://github.com/srebughini/ASALI/tree/api/API/elapsedTimeComparison) can be helpful to select the correct programming language based on its performance.  
+However, if you are looking for something more advanced and more stable, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
 
 ## **1. Thermodynamic and transport properties**
 Let's go straight to the point! Asali library can estimate:
@@ -13,6 +13,7 @@ Let's go straight to the point! Asali library can estimate:
 * Specific heat at constant pressure
 
 Asali estimates the transport properties with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
+
 ## **2. Matlab and Octave version**
 The [Matlab](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) and [Octave](https://www.gnu.org/software/octave/) API can be inlcuded in your code as follow:
 ```Matlab
@@ -29,11 +30,8 @@ p.MoleFraction = [0.1 0.2 0.7];
 cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
+
 ## **3. Fortran version**
-The Fortran API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
-
-`sudo apt-get install liblapack-dev`  
-
 This version can be included in your code as follow:  
 ```fortran
 !Include library
@@ -72,10 +70,6 @@ Example and database generator can be compiled by typing `./compile.sh`
 To convert the Asali database into Fortran code run `./database-generator`
 
 ## **4. C version**
-The C API requires the [Lapack libraries](http://www.netlib.org/lapack/) which can be install with the following command:
-
-`sudo apt-get install liblapack-dev`  
-
 This version can be included in your code as follow:  
 ```c
 //Include library
@@ -116,3 +110,43 @@ int main()
 Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into C code run `./database-generator`
+
+## **5. C++ version**
+This version can be included in your code as follow:  
+```cpp
+//Include library
+#include "Asali.h"
+
+//Main
+int main()
+{
+    //Create composition using std vectors
+    std::vector<std::string> names(3);
+    std::vector<double> x(3);
+
+    names[0] = "H2";
+    names[1] = "O2";
+    names[2] = "N2";
+
+    x[0] = 0.1;
+    x[1] = 0.2;
+    x[2] = 1. - x[0] - x[1];
+
+    //Initialize Asali
+    ASALI::Asali asali;
+
+    //Set up composition/pressure and temperature
+    asali.setSpecies(names);
+    asali.setTemperature(393.15); //K
+    asali.setPressure(4e05); //Pa
+    asali.setMoleFraction(x);
+
+    //Properties evaluation
+    std::vector<std::vector<double>> diff = asali.binaryDiffusion();
+    std::vector<double>              cp   = asali.speciesMassCp();
+    return 0;
+}
+```
+Example and database generator can be compiled by typing `./compile.sh`
+
+To convert the Asali database into C++ code run `./database-generator`

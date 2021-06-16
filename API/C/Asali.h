@@ -116,7 +116,6 @@ typedef struct
     bool   hmole_mix_updated_;
     bool   hmass_mix_updated_;
     bool   smole_mix_updated_;
-    bool   smass_mix_updated_;
     
     AsaliVector name_;
     AsaliVector index_;
