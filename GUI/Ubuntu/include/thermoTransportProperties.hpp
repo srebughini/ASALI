@@ -66,7 +66,6 @@ namespace ASALI
             virtual void sUnitConversion(bool check);
 
         private:
-
             Gtk::Box          condBox_;
             Gtk::Box          muBox_;
             Gtk::Box          diffBox_;
@@ -103,12 +102,6 @@ namespace ASALI
             std::vector<Gtk::Label *>          sVector_;
             std::vector<Gtk::ComboBoxText *>   speciesCombo_;
             std::vector<Gtk::Box *>            diffBoxVector_;
-
-            std::string kineticType_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

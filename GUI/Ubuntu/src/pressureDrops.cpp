@@ -70,10 +70,8 @@ namespace ASALI
       tubularDpBool_(false),
       honeyCombDpBool_(false),
       packedBedDpBool_(false),
-      Ndp_(3),
-      canteraInterface_(canteraInterface)
+      Ndp_(3)
     {
-
         //Set up packed bed
         {
             dpPackedBed_.resize(Ndp_);
@@ -90,15 +88,11 @@ namespace ASALI
             packedBedDpLabel_[0] = new Gtk::Label("Ergun S. et al.   (1949)");
             packedBedDpLabel_[1] = new Gtk::Label("Tallmadge J. A.   (1970)");
             packedBedDpLabel_[2] = new Gtk::Label("Eisfeld B. et al. (2001)");
-
         }
 
         //Input composition
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Pressure drops");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Pressure drops");
             doneButton_.set_label("Next");
             this->input();
         }
@@ -227,8 +221,6 @@ namespace ASALI
                         packedBedDpCombo_[i]->set_active(0);
                         packedBedDpCombo_[i]->signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this,&pressureDrops::dpConversion),i));
                     }
-                    
-                    
                 }
 
                 //Buttons
@@ -264,7 +256,6 @@ namespace ASALI
             propertiesGrid_.remove(tubularWallThicknessLabel_);
             propertiesGrid_.remove(tubularWallThicknessEntry_);
             propertiesGrid_.remove(tubularWallThicknessCombo_);
-
         }
         else if ( reactorType_ == "packed bed" )
         {
@@ -307,7 +298,6 @@ namespace ASALI
         }
         else if ( reactorTypeCombo_.get_active_row_number() == 2 )
         {
-
             propertiesGrid_.attach(honeyCombCPSILabel_,0,4,1,1);
             propertiesGrid_.attach(honeyCombCPSIEntry_,1,4,1,1);
 
@@ -327,8 +317,8 @@ namespace ASALI
         L_     = Glib::Ascii::strtod(lengthEntry_.get_text());
         v_     = Glib::Ascii::strtod(velocityEntry_.get_text());
 
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_,velocityCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_,velocityCombo_.get_active_text());
 
         reactorType_ = reactorTypeCombo_.get_active_text();
         
@@ -336,11 +326,11 @@ namespace ASALI
         {
             Dt_ = Glib::Ascii::strtod(tubularTubeEntry_.get_text());
 
-            ConvertsToMeter(Dt_,tubularTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,tubularTubeCombo_.get_active_text());
 
             tw_      = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,tubularWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,tubularWallThicknessCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "packed bed" )
         {
@@ -348,15 +338,15 @@ namespace ASALI
             Dp_   = Glib::Ascii::strtod(packedBedParticleEntry_.get_text());
             epsi_ = Glib::Ascii::strtod(packedBedVoidFractionEntry_.get_text());
 
-            ConvertsToMeter(Dt_,packedBedTubeCombo_.get_active_text());
-            ConvertsToMeter(Dp_,packedBedParticleCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,packedBedTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dp_,packedBedParticleCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "honeycomb" )
         {
             cpsi_    = Glib::Ascii::strtod(honeyCombCPSIEntry_.get_text());
             tw_      = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
         }
     }
 
@@ -463,7 +453,7 @@ namespace ASALI
             this->add(mainBox_);
 
             this->run();
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -587,14 +577,14 @@ namespace ASALI
     
     void pressureDrops::dpConversion(unsigned int i)
     {
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
         if ( reactorType_ == "tubular")
         {
             double dp = dpTubular_;
-            ConvertsFromPascal(dp,tubularDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp,tubularDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -604,7 +594,7 @@ namespace ASALI
         else if ( reactorType_ == "honeycomb")
         {
             double dp = dpHoneyComb_;
-            ConvertsFromPascal(dp,honeyCombDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp,honeyCombDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -614,7 +604,7 @@ namespace ASALI
         else if ( reactorType_ == "packed bed")
         {
             double dp = dpPackedBed_[i];
-            ConvertsFromPascal(dp,packedBedDpCombo_[i]->get_active_text());
+            unitConversion_->fromPascal(dp,packedBedDpCombo_[i]->get_active_text());
             {
                 std::ostringstream s;
                 s << dp;

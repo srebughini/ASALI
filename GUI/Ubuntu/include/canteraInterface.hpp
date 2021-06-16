@@ -101,7 +101,6 @@ namespace ASALI
             virtual ~canteraInterface();
             
         private:
-        
             Cantera::ThermoPhase* thermo_;
             Cantera::Transport*   transport_;
 
@@ -111,7 +110,6 @@ namespace ASALI
             double                *y_;
 
             unsigned int          NS_;
-            
             
             std::vector<double>   h_;
             std::vector<double>   s_;
@@ -128,12 +126,10 @@ namespace ASALI
             
             std::vector<std::string> n_;
             
-            
             std::vector<std::string> small;
             std::vector<std::string> big;
             
             const double pi_ = 3.14159265358979323846;
-
     };
 }
 

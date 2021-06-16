@@ -51,6 +51,8 @@ namespace ASALI
       SURF_NC_(0),
       NP_(0)
     {
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+
         this->set_border_width(15);
         this->set_title("ASALI: plotting");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
@@ -59,7 +61,6 @@ namespace ASALI
         //Add background grid
 
         this->add(mainGrid_);
-
 
         mainGrid_.set_column_homogeneous(true);
         mainGrid_.set_column_spacing(10);
@@ -206,7 +207,7 @@ namespace ASALI
 
         for (unsigned int i=0;i<NP_;i++)
         {
-            ConvertsFromMeter(L_[i],Lud_);
+            unitConversion_->fromMeter(L_[i],Lud_);
         }
     }
 

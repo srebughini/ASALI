@@ -51,15 +51,14 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "beerQuote.hpp"
+#include "asaliUnitConversionUtils.hpp"
 
 namespace ASALI
 {
     class asaliProperties : public Gtk::Window
     {
         public:
-        
-            #include "shared/UnitConversion.H"
-        
             asaliProperties();
             
             void destroy();
@@ -69,7 +68,6 @@ namespace ASALI
             void set_n(const std::vector<std::string> n);
             void set_reactions(const unsigned int Nhom, const unsigned int Nhet);
             void set_energy(const std::string energy);
-                               
 
             void doneInput();
             void convertToCaption(std::string& n);
@@ -89,13 +87,9 @@ namespace ASALI
             
             std::string          get_type() {return type_;};
 
-
             virtual ~asaliProperties();
             
         private:
-        
-            std::string       getBeer();
-        
             Gtk::Image        batchLogo_;
             Gtk::Image        ph1dLogo_;
             Gtk::Image        het1dLogo_;
@@ -144,7 +138,6 @@ namespace ASALI
             unsigned int              NC_;
             
             std::vector<std::string>  n_;
-            std::vector<std::string>  beer_;
             std::vector<std::string>  small;
             std::vector<std::string>  big;
             
@@ -160,6 +153,9 @@ namespace ASALI
             double                    cp_;
             double                    cond_;
             double                    mu_;
+            
+            ASALI::beerQuote                  *beerQuote_;
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
     };
 }
 

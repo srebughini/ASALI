@@ -41,17 +41,17 @@
 
 #include <gtkmm.h>
 #include "canteraInterface.hpp"
+#include "beerQuote.hpp"
+#include "asaliVectorUtils.hpp"
+#include "asaliFileManager.hpp"
 
 namespace ASALI
 {
     class asaliKineticMaker : public Gtk::Window
     {
         public:
-
             asaliKineticMaker();
-            
-            #include "shared/FileManager.H"
-            
+
             void species();
             void reactionNumber();
             void reaction();
@@ -60,16 +60,9 @@ namespace ASALI
             void save();
             void exit();
 
-            std::string       getBeer();
-            std::string       getBeerShort();
-
-
-            #include "shared/Vector.H"
-
             virtual ~asaliKineticMaker();
             
         private:
-        
             Gtk::Box          reactionNumberBox_;
             Gtk::Box          speciesBox_;
             Gtk::Box          reactionBox_;
@@ -129,8 +122,6 @@ namespace ASALI
             std::vector<Gtk::Entry *>         reactionEntry_;
             std::vector<Gtk::Entry *>         equationEntry_;
 
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
             std::vector<std::string>  n_;
             std::vector<std::string>  Rhet_;
             std::vector<std::string>  Rhom_;
@@ -142,6 +133,9 @@ namespace ASALI
             Cantera::ThermoPhase      *thermo_;
             Cantera::Transport        *transport_;
             ASALI::canteraInterface   *canteraInterface_;
+            ASALI::beerQuote          *beerQuote_;
+            ASALI::asaliVectorUtils   *vectorUtils_;
+            ASALI::asaliFileManager   *fileManager_;
 
             unsigned int NR_;
             unsigned int NC_;
@@ -170,7 +164,6 @@ namespace ASALI
             std::vector<std::string> splitString(const std::string txt, std::string ch);
 
             int getSpecieIndex(std::string n, std::vector<std::string> nv);
-
     };
 }
 

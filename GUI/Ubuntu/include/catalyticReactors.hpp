@@ -47,6 +47,8 @@
 #include "asaliCatalystProperties.hpp"
 #include "asaliPlot.hpp"
 #include "runBar.hpp"
+#include "asaliVectorUtils.hpp"
+#include "asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -58,10 +60,6 @@ namespace ASALI
                               Cantera::Kinetics    *kinetic,
                               Cantera::Interface   *surface,
                               std::string           kineticType);
-
-            #include "shared/UnitConversion.H"
-            #include "shared/Vector.H"
-            #include "shared/FileManager.H"
 
             virtual ~catalyticReactors();
 
@@ -91,8 +89,6 @@ namespace ASALI
             
             unsigned int specieIndex(const std::string n, const std::vector<std::string> v);
 
-            std::string getBeer();
-            std::string getBeerShort();
             std::string convertToTimeFormat(double t);
             
             std::vector<std::string> splitString(const std::string txt, std::string ch);
@@ -154,16 +150,18 @@ namespace ASALI
 
             std::vector<std::string>  n_;
             std::vector<std::string>  nc_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
 
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-            ASALI::asaliProperties         *asaliProperties_;
-            ASALI::asaliCatalystProperties *asaliCatalystProperties_;
-            ASALI::asaliPlot               *asaliPlot_;
-            ASALI::runBar                  *bar_;
-            ASALI::pythonInterface         *pi_;
+            ASALI::canteraInterface          *canteraInterface_;
+            ASALI::speciesPopup              *speciesNames_;
+            ASALI::asaliProperties           *asaliProperties_;
+            ASALI::asaliCatalystProperties   *asaliCatalystProperties_;
+            ASALI::asaliPlot                 *asaliPlot_;
+            ASALI::runBar                    *bar_;
+            ASALI::pythonInterface           *pi_;
+            ASALI::beerQuote                 *beerQuote_;
+            ASALI::asaliVectorUtils          *vectorUtils_;
+            ASALI::asaliUnitConversionUtils  *unitConversion_;
+            ASALI::asaliFileManager          *fileManager_;
             
             Cantera::ThermoPhase     *thermo_;
             Cantera::Transport       *transport_;
@@ -174,10 +172,6 @@ namespace ASALI
             std::string inert_;
 
             sigc::connection signal;
-
-        private:
-
-
     };
 }
 

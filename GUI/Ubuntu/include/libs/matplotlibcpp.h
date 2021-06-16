@@ -1874,6 +1874,7 @@ private:
             Py_DECREF(set_data_fct);
     }
 
+
     PyObject* line = nullptr;
     PyObject* set_data_fct = nullptr;
 };

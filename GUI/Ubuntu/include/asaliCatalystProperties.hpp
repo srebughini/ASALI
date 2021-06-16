@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "asaliUnitConversionUtils.hpp"
 
 namespace ASALI
 {
@@ -61,8 +62,6 @@ namespace ASALI
             
             void doneInput();
 
-            #include "shared/UnitConversion.H"
-            
             double get_rho()  {return rho_;};
             double get_cond() {return cond_;};
             double get_cp()   {return cp_;};
@@ -72,13 +71,11 @@ namespace ASALI
             virtual ~asaliCatalystProperties();
             
         private:
-
             Gtk::Image        het1dLogo_;
 
             Gtk::Box          mainBox_;
 
             Gtk::Grid         mainGrid_;
-
 
             Gtk::Label        rhoLabel_;
             Gtk::Label        condLabel_;
@@ -105,6 +102,9 @@ namespace ASALI
             double cond_;
             double alfa_;
             double T_;
+
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
+
     };
 }
 

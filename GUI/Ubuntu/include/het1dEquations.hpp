@@ -46,7 +46,6 @@ namespace ASALI
 class het1dEquations : public ASALI::catalyticReactorsEquations
 {
     public:
-
         het1dEquations();
 
         void setEnergy(const bool flag)                 {energyEquation_        = flag;}
@@ -96,7 +95,6 @@ class het1dEquations : public ASALI::catalyticReactorsEquations
         std::vector<bool> AlgebraicEquations() const {return algb_;};
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;

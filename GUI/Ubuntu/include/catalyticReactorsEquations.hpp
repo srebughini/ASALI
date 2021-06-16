@@ -45,16 +45,14 @@
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
+#include "asaliVectorUtils.hpp"
 
 namespace ASALI
 {
 class catalyticReactorsEquations
 {
     public:
-
         catalyticReactorsEquations();
-
-        #include "shared/Vector.H"
 
         void setCanteraThermo(Cantera::ThermoPhase*    gas);
         
@@ -109,11 +107,12 @@ class catalyticReactorsEquations
         bool heterogeneusReactions_;
         bool userCheck_;
 
-        Cantera::ThermoPhase*   gas_;
-        Cantera::Interface*     surface_;
-        Cantera::Kinetics*      kinetic_;
-        Cantera::Transport*     transport_;
-        ASALI::pythonInterface* pi_;
+        Cantera::ThermoPhase*    gas_;
+        Cantera::Interface*      surface_;
+        Cantera::Kinetics*       kinetic_;
+        Cantera::Transport*      transport_;
+        ASALI::pythonInterface*  pi_;
+        ASALI::asaliVectorUtils* vectorUtils_;
 
         std::vector<double>      QuserHom_;
         std::vector<double>      QuserHet_;
@@ -128,9 +127,6 @@ class catalyticReactorsEquations
         std::vector<double> moleFraction(const std::vector<double> omega,const std::vector<double> MW, double MWmix);
         double              heatOfReaction(const std::vector<double> omega,const double T, const std::vector<double> h, const std::string type);
         double              meanMolecularWeight(const std::vector<double> omega,const std::vector<double> MW);
-
-    private:
-
     };
 }
 

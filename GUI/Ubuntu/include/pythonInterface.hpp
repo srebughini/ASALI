@@ -52,13 +52,11 @@
 #include <algorithm>
 #include <limits>
 
-
 namespace ASALI
 {
     class pythonInterface
     {
         public:
-
             pythonInterface();
 
             void setTemperature(const double T);
@@ -97,7 +95,6 @@ namespace ASALI
             virtual ~pythonInterface();
             
         private:
-
             std::vector<double> Rhet_;
             std::vector<double> Rhom_;
             std::vector<double> RhetNet_;

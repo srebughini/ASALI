@@ -47,7 +47,6 @@ namespace ASALI
 class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
 {
     public:
-
         catalyticPelletEquations();
 
         void setPressure(const double P);
@@ -94,7 +93,6 @@ class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
         double getLength();
 
     private:
-
         double MWmix_;
         double cTot_;
         double rho_;
@@ -157,7 +155,6 @@ class catalyticPelletEquations : public ASALI::catalyticReactorsEquations
         void                              sphere(std::vector<double>& dy);
         void                              cylinderOde(std::vector<double>& dy);
         void                              cylinder(std::vector<double>& dy);
-
 
         std::vector<double> Length_;
         std::vector<double> Time_;

@@ -58,17 +58,11 @@ namespace ASALI
       diffLabel_("Diffusivity"),
       cpLabel_("Specific Heat"),
       hLabel_("Enthalpy"),
-      sLabel_("Entropy"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      sLabel_("Entropy")
     {
         //Input menu
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Thermodynamic and transport properties");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Thermodynamic and transport properties");
             this->input();
         }
         
@@ -772,7 +766,7 @@ namespace ASALI
 
     void thermoTransportProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "properties.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "properties.asali");
         if ( filename != "" )
         {
             std::ofstream output;

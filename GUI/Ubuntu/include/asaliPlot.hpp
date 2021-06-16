@@ -52,6 +52,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "asaliUnitConversionUtils.hpp"
 
 namespace ASALI
 {
@@ -59,8 +60,6 @@ namespace ASALI
     {
         public:
             asaliPlot();
-            
-            #include "shared/UnitConversion.H"
             
             void setSpecieNames(const std::vector<std::string> n);
             void setSiteNames(const std::vector<std::string> nc);
@@ -81,9 +80,6 @@ namespace ASALI
             void setTemperature(const std::vector<std::vector<double> > T);
             void setTemperature(const std::vector<std::vector<double> > Tb,
                                 const std::vector<std::vector<double> > Tw);
-                                   
-            
-            
 
             void setType(const std::string type);
             void setResolutionType(const std::string resolution);
@@ -96,7 +92,6 @@ namespace ASALI
             virtual ~asaliPlot();
             
         private:
-        
             Gtk::Button                       plotButton_;
             Gtk::Button                       exitButton_;
             
@@ -153,8 +148,8 @@ namespace ASALI
             void setPythonPath();
 
             bool isChecked(std::vector<Gtk::CheckButton *> button);
-
-
+            
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
     };
 }
 

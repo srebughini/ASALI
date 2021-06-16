@@ -41,13 +41,13 @@
 #define PRESSUREDROPS_H
 
 #include "transportProperties.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
     class pressureDrops : public ASALI::transportProperties
     {
         public:
-
             pressureDrops(ASALI::canteraInterface        *canteraInterface,
                           ASALI::speciesPopup            *speciesNames,
                           std::string                     kineticType);
@@ -57,7 +57,6 @@ namespace ASALI
             virtual void results();
 
         private:
-
             void read();
             void run();
             void main();
@@ -145,9 +144,8 @@ namespace ASALI
             std::vector<Gtk::Label*>        packedBedDpLabel_;
             std::vector<Gtk::Label*>        packedBedDpValueLabel_;
             std::vector<Gtk::ComboBoxText*> packedBedDpCombo_;
-
-
-            ASALI::canteraInterface        *canteraInterface_;
+            
+            ASALI::beerQuote *beerQuote_;
     };
 }
 

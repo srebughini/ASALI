@@ -47,12 +47,9 @@ namespace ASALI
     class equilibriumCalculator : public ASALI::transportProperties
     {
         public:
-
             equilibriumCalculator(ASALI::canteraInterface        *canteraInterface,
                                   ASALI::speciesPopup            *speciesNames,
                                   std::string                     kineticType);
-            
-            #include "shared/FileManager.H"
             
             virtual ~equilibriumCalculator();
             
@@ -61,7 +58,6 @@ namespace ASALI
             virtual void showAtomNames();
 
         private:
-        
             void clean();
             void initialFractionUnitConversion();
             void finalFractionUnitConversion();
@@ -89,12 +85,6 @@ namespace ASALI
 
             std::vector<double>      xeq_;
             std::vector<double>      yeq_;
-
-            std::string kineticType_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

@@ -48,19 +48,12 @@ namespace ASALI
       saveButton_("Save"),
       backButton_("Back"),
       initialStateLabel_("Initial state"),
-      finalStateLabel_("Final state"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      finalStateLabel_("Final state")
     {
-
         //Input
         {
             this->remove();
-            this->set_border_width(15);
-            this->set_title("ASALI: Equilibrium calculator");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Equilibrium calculator");
             this->input();
         }
 
@@ -105,7 +98,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,2,n_.size()+3,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&equilibriumCalculator::exit));
         }
-        
     }
 
     equilibriumCalculator::~equilibriumCalculator()
@@ -322,7 +314,7 @@ namespace ASALI
 
     void equilibriumCalculator::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "equilibrium.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "equilibrium.asali");
         if ( filename != "" )
         {
             std::ofstream output;

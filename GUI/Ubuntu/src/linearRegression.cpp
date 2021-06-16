@@ -57,11 +57,8 @@ namespace ASALI
       rLabel_("R\u00b2:\t"),
       rValueLabel_("n.a."),
       logo_("images/RegressionLogo.png"),
-      kineticType_(kineticType),
-      diffCheck_(false),
-      canteraInterface_(canteraInterface)
+      diffCheck_(false)
     {
-
         {
             Tv_.resize(10);
             pv_.resize(10);
@@ -69,10 +66,7 @@ namespace ASALI
 
         //Input menu
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Linear regression");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Linear regression");
             this->cleanInput();
         }
         
@@ -129,8 +123,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,3,6,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&linearRegression::exit));
         }
-
-
     }
 
     linearRegression::~linearRegression()
@@ -292,8 +284,8 @@ namespace ASALI
             {
                 double T1 = Glib::Ascii::strtod(tempEntry1_.get_text());
                 double T2 = Glib::Ascii::strtod(tempEntry2_.get_text());
-                ConvertsToKelvin(T1,tempCombo_.get_active_text());
-                ConvertsToKelvin(T2,tempCombo_.get_active_text());
+                unitConversion_->toKelvin(T1,tempCombo_.get_active_text());
+                unitConversion_->toKelvin(T2,tempCombo_.get_active_text());
                 
                 double Tmax = std::max(T1,T2);
                 double Tmin = std::min(T1,T2);
@@ -445,19 +437,18 @@ namespace ASALI
 
     void linearRegression::leastSquareFitting(const std::vector<double> x, const std::vector<double> y,double &m, double &q, double &r2)
     {
-        m = (x.size()*SumElements(ElementByElementProduct(x,y)) - SumElements(x)*SumElements(y))/(x.size()*SumElements(ElementByElementProduct(x,x)) - std::pow(SumElements(x),2.));
-        q = (SumElements(y)*SumElements(ElementByElementProduct(x,x)) - SumElements(x)*SumElements(ElementByElementProduct(x,y)))/(x.size()*SumElements(ElementByElementProduct(x,x)) - std::pow(SumElements(x),2.));
+        m = (x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,y)) - vectorUtils_->SumElements(x)*vectorUtils_->SumElements(y))/(x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - std::pow(vectorUtils_->SumElements(x),2.));
+        q = (vectorUtils_->SumElements(y)*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - vectorUtils_->SumElements(x)*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,y)))/(x.size()*vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x,x)) - std::pow(vectorUtils_->SumElements(x),2.));
 
         double tss = 0.;
         double rss = 0.;
         for (unsigned int i=0;i<x.size();i++)
         {
-            tss = tss + std::pow((y[i] - MeanValue(y)),2.);
+            tss = tss + std::pow((y[i] - vectorUtils_->MeanValue(y)),2.);
             rss = rss + std::pow((y[i] - m*x[i] - q),2.);
         }
 
         r2 = 1. - rss/tss;
-
     }
     
     void linearRegression::condUnitDimensions(double &p)
@@ -532,7 +523,6 @@ namespace ASALI
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 4 )
         {
-
             p = p/(1.e03*4.186); //cal/mol
         }
         else if ( unitDimensionCombo_.get_active_row_number() == 5 )

@@ -106,7 +106,6 @@ if ( heterogeneusReactions_ == true && alfa_ != 0.)
             }
             else
             {
-
                 for (unsigned int i=0;i<NC_;i++)
                 {
                     h_[i] = 0.;

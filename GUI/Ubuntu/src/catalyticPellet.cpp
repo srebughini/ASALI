@@ -141,7 +141,7 @@ namespace ASALI
 
                 //Beer
                 propertiesGrid_.attach(beerLabel_,0,4,3,2);
-                beerLabel_.set_text(this->getBeerShort());
+                beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                 beerLabel_.set_use_markup(true);
                 beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -358,7 +358,7 @@ namespace ASALI
     void catalyticPellet::pelletOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -385,7 +385,7 @@ namespace ASALI
     void catalyticPellet::modelOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -435,7 +435,7 @@ namespace ASALI
         {
             recapButtonBox_.remove(asaliPlotButton_);
             plotButtonBool_ = false;
-        }        
+        }
     }
 
     void catalyticPellet::read()
@@ -448,10 +448,10 @@ namespace ASALI
         tau_   = Glib::Ascii::strtod(tauEntry_.get_text());
         L_     = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        ConvertsToSecond(tf_,timeCombo_.get_active_text());
-        ConvertsToSecond(dt_,saveCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_,loadCombo_.get_active_text());
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toSecond(tf_,timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_,saveCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_,loadCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
 
         pelletType_  = pelletTypeCombo_.get_active_text();
         modelType_   = modelTypeCombo_.get_active_text();
@@ -465,7 +465,7 @@ namespace ASALI
         else if ( modelTypeCombo_.get_active_row_number() == 1 )
         {
             dp_ = Glib::Ascii::strtod(poreEntry_.get_text());
-            ConvertsToMeter(dp_,poreCombo_.get_active_text());
+            unitConversion_->toMeter(dp_,poreCombo_.get_active_text());
         }
     }
 
@@ -691,7 +691,7 @@ namespace ASALI
             if ( kinetic_->nReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = smallDialog.run();
 
                 //Handle the response:
@@ -1094,7 +1094,7 @@ namespace ASALI
     
     void catalyticPellet::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "pellet.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "pellet.asali");
         if ( filename != "" )
         {
             std::ofstream output;
@@ -1442,4 +1442,5 @@ namespace ASALI
         asaliPlot_->build();
         asaliPlot_->show();
     }
+
 }

@@ -66,7 +66,6 @@ namespace ASALI
             std::vector<double>      s_;
             
         private:
-
             Gtk::Box          cpBox_;
             Gtk::Box          hBox_;
             Gtk::Box          sBox_;
@@ -90,12 +89,6 @@ namespace ASALI
             std::vector<Gtk::Label *>          hVector_;
             std::vector<Gtk::Label *>          sVector_;
             std::vector<Gtk::ComboBoxText *>   speciesCombo_;
-
-            std::string kineticType_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

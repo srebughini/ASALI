@@ -62,15 +62,12 @@ namespace ASALI
             virtual ~speciesPopup();
             
         private:
-        
             void exit();
 
             Gtk::Button              closeButton_;
             Gtk::ScrolledWindow      scrolledWindow_;
             Gtk::Box                 mainBox_;
             Gtk::Image               speciesImage_;
-            
-        
     };
 }
 

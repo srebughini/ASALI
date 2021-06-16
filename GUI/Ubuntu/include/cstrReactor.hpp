@@ -43,13 +43,13 @@
 #include "catalyticReactors.hpp"
 #include "odeInterface.hpp"
 #include "cstrEquations.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
     class cstrReactor : public ASALI::catalyticReactors
     {
         public:
-
             cstrReactor(Cantera::ThermoPhase *thermo,
                         Cantera::Transport   *transport,
                         Cantera::Kinetics    *kinetic,
@@ -67,7 +67,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void clean();
 
             Gtk::Box          mainBox_;
@@ -149,8 +148,7 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::cstrEquations *eq_;
-
-
+            ASALI::beerQuote     *beerQuote_;
     };
 }
 

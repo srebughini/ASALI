@@ -67,7 +67,6 @@ namespace ASALI
             {
                 canteraIndex_[i] = i;
             }
-            
         }
         else if ( type_ == "ASALI" )
         {
@@ -184,11 +183,10 @@ namespace ASALI
         }
 
         // Variation of gas mass in the reactor
-        const double dm_over_dt = V_*alfa_*DotProduct(RfromSurface_, MW_);
+        const double dm_over_dt = V_*alfa_*vectorUtils_->DotProduct(RfromSurface_, MW_);
 
         // Recovering residuals
         {
-
             unsigned int counter=0;
         
             // Gas phase species

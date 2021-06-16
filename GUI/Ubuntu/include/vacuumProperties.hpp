@@ -47,7 +47,6 @@ namespace ASALI
     class vacuumProperties : public ASALI::transportProperties
     {
         public:
-
             vacuumProperties(ASALI::canteraInterface        *canteraInterface,
                              ASALI::speciesPopup            *speciesNames,
                              std::string                     kineticType);
@@ -57,7 +56,6 @@ namespace ASALI
             virtual void save();
 
         private:
-        
             void run();
             void read();
 
@@ -100,17 +98,11 @@ namespace ASALI
             Gtk::Entry pressEntry_;
             Gtk::Entry lengthEntry_;
 
-            std::string kineticType_;
-
             double Kn_;
             double diffK_;
             double vK_;
             double d_;
             double lK_;
-
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

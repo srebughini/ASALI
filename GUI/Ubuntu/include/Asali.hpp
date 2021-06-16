@@ -43,6 +43,7 @@
 #include "transportProperties.hpp"
 #include "thermoProperties.hpp"
 #include "thermoTransportProperties.hpp"
+#include "physicalChemicalProperties.hpp"
 #include "vacuumProperties.hpp"
 #include "equilibriumCalculator.hpp"
 #include "batchReactor.hpp"
@@ -53,6 +54,9 @@
 #include "linearRegression.hpp"
 #include "catalyticPellet.hpp"
 #include "asaliKineticMaker.hpp"
+#include "beerQuote.hpp"
+#include "asaliUnitConversionUtils.hpp"
+#include "asaliFileManager.hpp"
 #include <gtk/gtk.h>
 
 namespace ASALI
@@ -63,12 +67,8 @@ namespace ASALI
             Asali();
             
             virtual ~Asali();
-            
-            #include "shared/UnitConversion.H"
-            #include "shared/FileManager.H"
-            
-        private:
 
+        private:
             void exit();
             void discrimer();
             void mainMenu();
@@ -85,6 +85,7 @@ namespace ASALI
             void transport();
             void thermo();
             void thermoTransport();
+            void physicalChemical();
             void vacuum();
             void equilibrium();
             void linearRegression();
@@ -96,9 +97,6 @@ namespace ASALI
             void het1d();
             void dp();
             bool chemistryMenu1(GdkEventButton*);
-
-            std::string       getBeer();
-            std::string       getBeerShort();
             
             std::vector<std::string> splitString(const std::string txt, std::string ch);
 
@@ -119,6 +117,7 @@ namespace ASALI
             Gtk::Button       transportButton_;
             Gtk::Button       thermoButton_;
             Gtk::Button       thermoTransportButton_;
+            Gtk::Button       physicalChemicalButton_;
             Gtk::Button       equilibriumButton_;
             Gtk::Button       linearRegressionButton_;
             Gtk::Button       reactorsButton_;
@@ -169,9 +168,6 @@ namespace ASALI
             
             std::string       kineticType_;
 
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
-
             Cantera::ThermoPhase              *thermo_;
             Cantera::Transport                *transport_;
             Cantera::Kinetics                 *kinetic_;
@@ -182,6 +178,7 @@ namespace ASALI
             ASALI::transportProperties        *transportMenu_;
             ASALI::thermoProperties           *thermoMenu_;
             ASALI::thermoTransportProperties  *thermoTransportMenu_;
+            ASALI::physicalChemicalProperties *physicalChemicalMenu_;
             ASALI::vacuumProperties           *vacuumMenu_;
             ASALI::equilibriumCalculator      *equilibriumMenu_;
             ASALI::linearRegression           *linearRegressionMenu_;
@@ -192,6 +189,8 @@ namespace ASALI
             ASALI::pressureDrops              *dpMenu_;
             ASALI::catalyticPellet            *pelletMenu_;
             ASALI::asaliKineticMaker          *asaliKineticMakerMenu_;
-
+            ASALI::beerQuote                  *beerQuote_;
+            ASALI::asaliUnitConversionUtils   *unitConversion_;
+            ASALI::asaliFileManager           *fileManager_;
     };
 }

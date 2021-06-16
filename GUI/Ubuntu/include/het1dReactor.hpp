@@ -45,12 +45,12 @@
 #include "bvpInterface.hpp"
 #include "het1dEquations.hpp"
 
+
 namespace ASALI
 {
     class het1dReactor : public ASALI::catalyticReactors
     {
         public:
-
             het1dReactor(Cantera::ThermoPhase *thermo,
                          Cantera::Transport   *transport,
                          Cantera::Kinetics    *kinetic,
@@ -69,7 +69,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void options();
             void clean();
 
@@ -222,10 +221,9 @@ namespace ASALI
             bool plotButtonBool_;
             
             ASALI::het1dEquations *eq_;
+            ASALI::beerQuote      *beerQuote_;
             
             sigc::connection run_;
-
-
     };
 }
 

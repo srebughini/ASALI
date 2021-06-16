@@ -58,6 +58,7 @@ namespace ASALI
       transportButton_("Transport properties"),
       thermoButton_("Thermodynamic properties"),
       thermoTransportButton_("Thermodynamic & Transport properties"),
+      physicalChemicalButton_("Physical & Chemical properties"),
       equilibriumButton_("Themodynamic equilibrium (CANTERA)"),
       linearRegressionButton_("Linear Regression of gas properties"),
       reactorsButton_("Catalytic reactors"),
@@ -76,7 +77,7 @@ namespace ASALI
       menuButtonBox_(Gtk::ORIENTATION_VERTICAL),
       reactorButtonBox_(Gtk::ORIENTATION_VERTICAL),
       kineticButtonBox_(Gtk::ORIENTATION_VERTICAL),
-      heading_("\nAuthor: Stefano Rebughini, PhD"
+      heading_("\nAuthor: Stefano Rebughini, Ph.D."
                "\nE-mail: ste.rebu@outlook.it"),
       kineticLabel_("<b>Please, load your CANTERA kinetic/propeties file</b>"
                     "<b>\nor select the default one (database/data.xml)</b>"
@@ -88,8 +89,9 @@ namespace ASALI
       smallLogo3_("images/SmallLogo.png"),
       smallLogo4_("images/SmallLogo.png")
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        beerQuote_      = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+        fileManager_    = new ASALI::asaliFileManager();
         
         //First window
         {
@@ -110,7 +112,7 @@ namespace ASALI
             logoEventBox_.signal_realize().connect(sigc::mem_fun(*this,&Asali::changeCursor));
 
             //Adding beer
-            beerLabel_.set_text(this->getBeer());
+            beerLabel_.set_text(beerQuote_->getRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
             grid_.attach(beerLabel_,1,1,1,1);
@@ -238,6 +240,9 @@ namespace ASALI
             menuButtonBox_.pack_start(thermoTransportButton_, Gtk::PACK_SHRINK);
             thermoTransportButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::thermoTransport));
             thermoTransportButton_.set_tooltip_text("Estimation of thermodynamic & transport properties\nat assigned Temperture, Pressure and Composition");
+            menuButtonBox_.pack_start(physicalChemicalButton_, Gtk::PACK_SHRINK);
+            physicalChemicalButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::physicalChemical));
+            physicalChemicalButton_.set_tooltip_text("Estimation of physical & chemical properties\nat assigned Temperture, Pressure and Composition");
             menuButtonBox_.pack_start(vacuumButton_, Gtk::PACK_SHRINK);
             vacuumButton_.signal_clicked().connect(sigc::mem_fun(*this,&Asali::vacuum));
             vacuumButton_.set_tooltip_text("Estimation of specie vacuum properties at assigned Temperture and Pressure");
@@ -351,7 +356,7 @@ namespace ASALI
     void Asali::noneInputError()
     {
         Gtk::MessageDialog dialog(*this,"This feauture is not available. To use it, please, select a CANTERA kinetic/properties file.",true,Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(),true);
+        dialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
         dialog.run();
     }
 
@@ -402,7 +407,7 @@ namespace ASALI
 
     void Asali::kineticCheck()
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
         if ( filename != "" )
         {
             std::ifstream input;
@@ -412,7 +417,7 @@ namespace ASALI
             if ( filename.substr(filename.length()-3,filename.length()) != ".py" )
             {
                 Gtk::MessageDialog dialogSmall(*this,"Something is wrong in your ASALI kinetic file!",true,Gtk::MESSAGE_ERROR);
-                dialogSmall.set_secondary_text(this->getBeer(),true);
+                dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                 dialogSmall.run();
             }
             else
@@ -433,13 +438,13 @@ namespace ASALI
                 if ( check != "done" )
                 {
                     Gtk::MessageDialog dialogSmall(*this,"Something is wrong in your ASALI kinetic file!",true,Gtk::MESSAGE_ERROR);
-                    dialogSmall.set_secondary_text(this->getBeer(),true);
+                    dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                     dialogSmall.run();
                 }
                 else
                 {
                     Gtk::MessageDialog dialogSmall(*this,"Your ASALI kinetic file is perfect!",true,Gtk::MESSAGE_INFO);
-                    dialogSmall.set_secondary_text(this->getBeer(),true);
+                    dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(),true);
                     dialogSmall.run();
                 }
             }
@@ -448,7 +453,7 @@ namespace ASALI
 
     void Asali::loadCanteraInput()
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_->openFile(this->get_toplevel()->gobj());
         if ( filename != "" )
         {
             std::ifstream input;
@@ -458,7 +463,7 @@ namespace ASALI
             if (filename.find("cti")!=std::string::npos)
             {
                 Gtk::MessageDialog errorDialog(*this,"Sorry, ASALI use only the xml version of CANTERA input file\nTo convert .cti to .xml use ctml_writer command",true,Gtk::MESSAGE_WARNING);
-                errorDialog.set_secondary_text(this->getBeer(),true);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(),true);
                 errorDialog.run();
             }
             else if (filename.find("xml")!=std::string::npos)
@@ -500,7 +505,7 @@ namespace ASALI
                      readed[1] == "none" )
                 {
                     Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                    smallDialog.set_secondary_text(this->getBeerShort(),true);
+                    smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                     int answer = smallDialog.run();
 
                     //Handle the response:
@@ -568,7 +573,7 @@ namespace ASALI
                             if ( type == "none")
                             {
                                 Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA input file.",true,Gtk::MESSAGE_WARNING);
-                                errorDialog.set_secondary_text(this->getBeerShort(),true);
+                                errorDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                                 errorDialog.run();
                                 smallDialog.hide();
                                 break;
@@ -659,7 +664,7 @@ namespace ASALI
                          type[1] == "none" )
                     {
                         Gtk::MessageDialog errorDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                        errorDialog.set_secondary_text(this->getBeerShort(),true);
+                        errorDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                         errorDialog.run();
                     }
                     else
@@ -678,7 +683,7 @@ namespace ASALI
             else
             {
                 Gtk::MessageDialog smallDialog(*this,"Something is wrong in your CANTERA kinetic file.",true,Gtk::MESSAGE_WARNING);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 smallDialog.run();
             }
         }
@@ -732,6 +737,23 @@ namespace ASALI
             }
             thermoTransportMenu_ = new ASALI::thermoTransportProperties(canteraInterface_,speciesNames_,kineticType_);
             thermoTransportMenu_->show();
+        }
+    }
+    
+    void Asali::physicalChemical()
+    {
+        if ( kineticType_ == "none" )
+        {
+            this->noneInputError();
+        }
+        else
+        {
+            if (!physicalChemicalMenu_)
+            {
+                delete physicalChemicalMenu_;
+            }
+            physicalChemicalMenu_ = new ASALI::physicalChemicalProperties(canteraInterface_,speciesNames_,kineticType_);
+            physicalChemicalMenu_->show();
         }
     }
 
@@ -860,20 +882,6 @@ namespace ASALI
         this->hide();
     }
     
-    std::string Asali::getBeer()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beer_.size();
-        return beer_[i];
-    }
-
-    std::string Asali::getBeerShort()
-    {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed)%beerShort_.size();
-        return beerShort_[i];
-    }
-
     std::vector<std::string> Asali::splitString(const std::string txt, std::string ch)
     {
         std::vector<std::string> strs;

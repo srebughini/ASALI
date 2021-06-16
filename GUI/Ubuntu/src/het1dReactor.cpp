@@ -221,7 +221,6 @@ namespace ASALI
                 //Packed bed
                 {
                     packedBedTubeEntry_.set_text("1");
-
                     packedBedTubeCombo_.append("m");
                     packedBedTubeCombo_.append("dm");
                     packedBedTubeCombo_.append("cm");
@@ -241,7 +240,7 @@ namespace ASALI
                 
                 //Beer
                 {
-                    beerLabel_.set_text(this->getBeerShort());
+                    beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                     beerLabel_.set_use_markup(true);
                     beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
                     propertiesGrid_.attach(beerLabel_,3,4,2,3);
@@ -468,7 +467,7 @@ namespace ASALI
             propertiesGrid_.remove(packedBedVoidFractionEntry_);
         }
 
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -579,10 +578,10 @@ namespace ASALI
         dt_    = Glib::Ascii::strtod(saveEntry_.get_text());
         NP_    = Glib::Ascii::strtod(pointsEntry_.get_text());
 
-        ConvertsToMeter(L_,lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_,velocityCombo_.get_active_text());
-        ConvertsToSecond(tf_,timeCombo_.get_active_text());
-        ConvertsToSecond(dt_,saveCombo_.get_active_text());
+        unitConversion_->toMeter(L_,lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_,velocityCombo_.get_active_text());
+        unitConversion_->toSecond(tf_,timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_,saveCombo_.get_active_text());
 
         reactorType_ = reactorTypeCombo_.get_active_text();
         energy_      = energyCombo_.get_active_text();
@@ -593,13 +592,13 @@ namespace ASALI
         {
             Dt_ = Glib::Ascii::strtod(tubularTubeEntry_.get_text());
 
-            ConvertsToMeter(Dt_,tubularTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,tubularTubeCombo_.get_active_text());
 
             section_ = tubularDuctCombo_.get_active_text();
             
             tw_      = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,tubularWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,tubularWallThicknessCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "packed bed" )
         {
@@ -607,15 +606,15 @@ namespace ASALI
             Dp_   = Glib::Ascii::strtod(packedBedParticleEntry_.get_text());
             epsi_ = Glib::Ascii::strtod(packedBedVoidFractionEntry_.get_text());
 
-            ConvertsToMeter(Dt_,packedBedTubeCombo_.get_active_text());
-            ConvertsToMeter(Dp_,packedBedParticleCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_,packedBedTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dp_,packedBedParticleCombo_.get_active_text());
         }
         else if ( reactorTypeCombo_.get_active_text() == "honeycomb" )
         {
             cpsi_    = Glib::Ascii::strtod(honeyCombCPSIEntry_.get_text());
             tw_      = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_,honeyCombWallThicknessCombo_.get_active_text());
 
             section_ = honeyCombDuctCombo_.get_active_text();
         }
@@ -881,7 +880,7 @@ namespace ASALI
             if ( kinetic_->nReactions() != 0. )
             {
                 Gtk::MessageDialog smallDialog(*this,"We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?",true,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(),true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(),true);
                 int answer = smallDialog.run();
 
                 //Handle the response:
@@ -1309,7 +1308,7 @@ namespace ASALI
 
     void het1dReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "het.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "het.asali");
         if ( filename != "" )
         {
             std::ofstream output;

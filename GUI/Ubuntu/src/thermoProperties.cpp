@@ -52,18 +52,11 @@ namespace ASALI
       backButton_("Back"),
       cpLabel_("Specific Heat"),
       hLabel_("Enthalpy"),
-      sLabel_("Entropy"),
-      kineticType_(kineticType),
-      canteraInterface_(canteraInterface),
-      speciesNames_(speciesNames)
+      sLabel_("Entropy")
     {
-
         //Input menu
         {
-            this->set_border_width(15);
-            this->set_title("ASALI: Thermodynamic properties");
-            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file("images/Icon.png");
+            this->title("ASALI: Thermodynamic properties");
             this->input();
         }
         
@@ -133,8 +126,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_,3,n_.size()+2,1,1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this,&thermoProperties::exit));
         }
-
-
     }
 
     thermoProperties::~thermoProperties()
@@ -301,7 +292,6 @@ namespace ASALI
                     resultsGrid_.remove(*cpVector_[i]);
                 }
             }
-
         }
 
         cpVector_.clear();
@@ -506,7 +496,7 @@ namespace ASALI
 
     void thermoProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "thermo.asali");
+        std::string filename = fileManager_->saveFile(this->get_toplevel()->gobj(), "thermo.asali");
         if ( filename != "" )
         {
             std::ofstream output;
@@ -524,7 +514,7 @@ namespace ASALI
             {
                 if ( i == n_.size() - 1)
                 {
-                    output << n_[i] << "\t" << "           " << "\t" << "           " << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << std::endl;
+                    output << n_[i] << "\t" << "            " << "\t" << "            " << "\t" << cp_[i]/1e03 << "\t" << h_[i]/1e03 << "\t" << s_[i]/1e03 << std::endl;
                 }
                 else
                 {

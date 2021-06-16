@@ -51,6 +51,8 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "beerQuote.hpp"
+#include "asaliFileManager.hpp"
 
 #if ASALI_ON_WINDOW == 1
 #include <windows.h>
@@ -62,13 +64,10 @@ namespace ASALI
     {
         public:
             chemkinConverter();
-            
-            #include "shared/FileManager.H"
-            
+
             virtual ~chemkinConverter();
             
         private:
-        
             void exit();
             void clean();
             void load(int index);
@@ -79,9 +78,6 @@ namespace ASALI
             void error(std::string type);
             void eraseSubString(std::string &mainStr, const std::string toErase);
             bool checkConvertedFile(std::string filename);
-
-            std::string getBeer();
-            std::string getBeerShort();
 
             Gtk::Box         mainBox_;
             Gtk::Box         buttonBox_;
@@ -96,13 +92,12 @@ namespace ASALI
             Gtk::Button      help_;
             Gtk::Button      exit_;
            
-            
             Gtk::Image       logo_;
             
             std::vector<std::string>  files_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
-        
+            
+            ASALI::beerQuote        *beerQuote_;
+            ASALI::asaliFileManager *fileManager_;
     };
 }
 

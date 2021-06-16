@@ -40,32 +40,17 @@
 #ifndef TRANSPORTPROPERTIES_H
 #define TRANSPORTPROPERTIES_H
 
-#include <gtkmm.h>
-#include <string>
-#include <iostream>
-#include <iomanip>
-#include <math.h>
-#include <ctime>
-#include <sstream>
-#include <fstream>
-#include <stdlib.h>
-#include <vector>
-#include <algorithm>
-#include <limits>
-#include <thread>
-#include "canteraInterface.hpp"
-#include "speciesPopup.hpp"
+#include "basicProperties.hpp"
 
 namespace ASALI
 {
-    class transportProperties : public Gtk::Window
+    class transportProperties : public ASALI::basicProperties
     {
         public:
             transportProperties(ASALI::canteraInterface        *canteraInterface,
                                 ASALI::speciesPopup            *speciesNames,
                                 std::string                     kineticType);
             
-            #include "shared/FileManager.H"
             
             virtual ~transportProperties();
 
@@ -78,62 +63,13 @@ namespace ASALI
             virtual void diffUnitConversion(bool check);
             virtual void diffSpecies(unsigned int row);
 
-            #include "shared/UnitConversion.H"
-            #include "shared/Vector.H"
-
-            void exit();
-            void availableSpecies();
-            void input();
-            void savedMessage();
-            void inputReader();
-            void checkInput(unsigned int i);
-            
-
-            std::string getBeer();
-            std::string getBeerShort();
-
-            Gtk::Button       helpButton_;
-            Gtk::Button       exitButton1_;
-            Gtk::Button       doneButton_;
-
-            Gtk::Grid         inputGrid_;
-
-            Gtk::Label        tempLabel_;
-            Gtk::Label        pressLabel_;
-            Gtk::Label        fractionLabel_;
-            
-            Gtk::Entry        tempEntry_;
-            Gtk::Entry        pressEntry_;
-
-            Gtk::ComboBoxText tempCombo_;
-            Gtk::ComboBoxText pressCombo_;
-            Gtk::ComboBoxText fractionCombo_;
-
-            std::vector<Gtk::Entry *> nameEntry_;
-            std::vector<Gtk::Entry *> fractionEntry_;
-
-            unsigned int NS_;
-            unsigned int OP_;
-            
-            double       T_;
-            double       p_;
-
-            std::pair<unsigned int,bool>  checkInput_;
-
-            std::vector<double>      x_;
-            std::vector<double>      y_;
             std::vector<double>      MW_;
             std::vector<double>      cond_;
             std::vector<double>      mu_;
 
             std::vector<std::vector<double> > diff_;
 
-            std::vector<std::string>  n_;
-            std::vector<std::string>  beer_;
-            std::vector<std::string>  beerShort_;
-
         private:
-
             Gtk::Box          condBox_;
             Gtk::Box          muBox_;
             Gtk::Box          diffBox_;
@@ -158,12 +94,6 @@ namespace ASALI
             std::vector<Gtk::Label *>          diffVector_;
             std::vector<Gtk::ComboBoxText *>   speciesCombo_;
             std::vector<Gtk::Box *>            diffBoxVector_;
-
-            std::string kineticType_;
-            
-            ASALI::canteraInterface        *canteraInterface_;
-            ASALI::speciesPopup            *speciesNames_;
-
     };
 }
 

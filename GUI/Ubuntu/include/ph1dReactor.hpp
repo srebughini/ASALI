@@ -44,13 +44,13 @@
 #include "odeInterface.hpp"
 #include "bvpInterface.hpp"
 #include "ph1dEquations.hpp"
+#include "beerQuote.hpp"
 
 namespace ASALI
 {
     class ph1dReactor : public ASALI::catalyticReactors
     {
         public:
-
             ph1dReactor(Cantera::ThermoPhase *thermo,
                         Cantera::Transport   *transport,
                         Cantera::Kinetics    *kinetic,
@@ -68,7 +68,6 @@ namespace ASALI
             virtual void plot();
 
         private:
-
             void clean();
 
             Gtk::Box          mainBox_;
@@ -166,8 +165,7 @@ namespace ASALI
             bool        plotButtonBool_;
 
             ASALI::ph1dEquations *eq_;
-
-
+            ASALI::beerQuote     *beerQuote_;
     };
 }
 

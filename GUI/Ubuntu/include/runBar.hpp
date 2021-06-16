@@ -68,8 +68,6 @@ namespace ASALI
             virtual ~runBar();
             
         private:
-        
-
             Gtk::Box                 mainBox_;
             Gtk::Button              closeButton_;
             Gtk::Label               solvingLabel_;
