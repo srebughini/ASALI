@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+    asali:
+        image: "asali:2.3.0"
+        build:
+            context: "./"
+            dockerfile: "./Dockerfile"
+        environment:
+            DISPLAY: ${DISPLAY}
+            NO_AT_BRIDGE: 1
+        user: 1000:1000
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix
