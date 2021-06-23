@@ -6,6 +6,8 @@ services:
         build:
             context: "./"
             dockerfile: "./Dockerfile"
+            args:
+                ASALI_USER: asaliuser
         environment:
             DISPLAY: ${DISPLAY}
             NO_AT_BRIDGE: 1
