@@ -11,6 +11,8 @@ services:
         environment:
             DISPLAY: ${DISPLAY}
             NO_AT_BRIDGE: 1
+            XDG_RUNTIME_DIR: /tmp/runtime-${USER}
         user: 1000:1000
         volumes:
             - /tmp/.X11-unix:/tmp/.X11-unix
+            - ./sharedFolder:/home/asaliuser/sharedFolder/

@@ -10,7 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -y && DEBIAN_FRONTEND=noninter
 
 USER $ASALI_USER
 
-RUN sudo DEBIAN_FRONTEND=noninteractive apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends apt-utils \
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get update -y \
+&& sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends apt-utils \
 git \
 pkg-config \
 scons \
@@ -27,8 +28,10 @@ libcanberra-gtk3-module \
 libboost-dev \
 dbus \
 dbus-x11 \
+plplot-driver-qt \
 libplplot-dev -y \
-&& sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+&& sudo DEBIAN_FRONTEND=noninteractive update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+&& mkdir /home/$ASALI_USER/sharedFolder
 
 WORKDIR /home/$ASALI_USER
 RUN git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1
@@ -39,6 +42,7 @@ WORKDIR /home/$ASALI_USER/cantera
 RUN scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n && sudo scons install 
 
 WORKDIR /home/$ASALI_USER/ASALI/GUI/Ubuntu 
-RUN bash -c "./build.sh --no-interaction"
+RUN bash -c "./build.sh --no-interaction --symbolic-link"
 
-CMD [ "./Asali" ]
+WORKDIR /home/$ASALI_USER/sharedFolder
+CMD [ "Asali" ]
