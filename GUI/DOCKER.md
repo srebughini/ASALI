@@ -10,7 +10,8 @@ Asali is based on different open-source codes:
 All these codes will be automatically installed while building the container.
 
 ### 1.1 Requirements installation
-The docker version of Asali requires [docker](https://docs.docker.com/), whose installation instruction can be found [here](https://docs.docker.com/engine/install/). 
+The docker version of Asali requires [docker](https://docs.docker.com/), whose installation instruction can be found [here](https://docs.docker.com/engine/install/).  
+Due to the graphical interface libraries, this version of Asali requires **2GB** of free disk.
 
 ### 1.2 How to build and run the container
 The following command builds the Asali container:  
