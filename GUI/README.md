@@ -65,7 +65,7 @@ Asali is based on different open-source codes:
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS. and Debian Wheez. Installation instructions can be found [here](LINUX.md).
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS and Debian Wheez. Installation instructions can be found [here](LINUX.md).
 ### 2.3 Mingw-w64 on Windows
 [Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
 Installation instructions can be found [here](MINGW64.md).

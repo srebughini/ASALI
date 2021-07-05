@@ -11,18 +11,20 @@ Asali is based on different open-source codes:
 ### 1.1 Requirements installation
 The required libraries can be installed by typing these commands:  
 ```bash
-pacman -Syu mingw64/mingw-w64-x86_64-scons mingw64/mingw-w64-x86_64-python mingw64/mingw-w64-x86_64-boost mingw64/mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-python-setuptools mingw64/mingw-w64-x86_64-python-fmt mingw64/mingw-w64-x86_64-libopenmpt mingw64/mingw-w64-x86_64-openmp mingw64/mingw-w64-x86_64-python-ruamel-yaml mingw64/mingw-w64-x86_64-yaml-cpp mingw64/mingw-w64-x86_64-libyaml mingw64/mingw-w64-x86_64-cython git 
+pacman -Syu
+pacman -S scons python-setuptools
+pacman -S mingw64/mingw-w64-x86_64-python mingw64/mingw-w64-x86_64-boost mingw64/mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-python-setuptools mingw64/mingw-w64-x86_64-libopenmpt mingw64/mingw-w64-x86_64-openmp mingw64/mingw-w64-x86_64-python-ruamel-yaml mingw64/mingw-w64-x86_64-yaml-cpp mingw64/mingw-w64-x86_64-libyaml mingw64/mingw-w64-x86_64-cython git 
 ```
 ### 1.2 How to install Gtkmm libraries
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
 ```bash
-pacman -Syu mingw64/mingw-w64-x86_64-gtkmm3
+pacman -S mingw64/mingw-w64-x86_64-gtkmm3
 ```
 More details can be found at: https://www.gtkmm.org/en/  
 ### 1.3 How to install PLplot
 [PLplot](http://plplot.org/) can be installed with the following command:  
 ```bash
-pacman -Syu mingw64/mingw-w64-x86_64-plplot
+pacman -S mingw64/mingw-w64-x86_64-plplot
 ```
 Details can be found at: http://plplot.org/
 ### 1.4 How to install Cantera
@@ -32,7 +34,7 @@ git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1
 ```
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n toolchain=mingw
+scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n python_cmd=/mingw64/bin/python
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html 
