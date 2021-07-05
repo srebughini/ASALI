@@ -12,7 +12,7 @@ Asali is based on different open-source codes:
 The required libraries can be installed by typing these commands:  
 ```bash
 pacman -Syu
-pacman -S scons python-setuptools
+pacman -S scons python-setuptools make
 pacman -S mingw64/mingw-w64-x86_64-python mingw64/mingw-w64-x86_64-boost mingw64/mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-python-setuptools mingw64/mingw-w64-x86_64-libopenmpt mingw64/mingw-w64-x86_64-openmp mingw64/mingw-w64-x86_64-python-ruamel-yaml mingw64/mingw-w64-x86_64-yaml-cpp mingw64/mingw-w64-x86_64-libyaml mingw64/mingw-w64-x86_64-cython git 
 ```
 ### 1.2 How to install Gtkmm libraries
