@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include <random>
 
 namespace ASALI
 {

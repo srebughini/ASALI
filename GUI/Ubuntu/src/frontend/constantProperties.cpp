@@ -1072,8 +1072,10 @@ namespace ASALI
 
     std::string constantProperties::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed) % beer_.size();
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
+        int i = distribution(gen);
         return beer_[i];
     }
 
