@@ -2,7 +2,7 @@
   docs:
   - gui-introduction
   - gui-installation-linux
-  - gui-installation-mingw64
+  - gui-installation-mingw-w64
   - gui-installation-windows
   - gui-examples
 

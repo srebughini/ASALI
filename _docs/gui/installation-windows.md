@@ -10,5 +10,5 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Windows 10 and Windows 8. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
+Asali has been tested on Windows 10 and Windows 8. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).  
 To install Asali on **Windows** just `double click` on `Asali-Setup.exe` and follow the instructions.
