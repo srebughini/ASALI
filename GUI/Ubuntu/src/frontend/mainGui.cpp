@@ -179,7 +179,7 @@ namespace ASALI
             chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
             noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
             noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
-            #if ASALI_ON_WINDOWS == 0
+            #if ASALI_ON_WINDOW == 0
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
