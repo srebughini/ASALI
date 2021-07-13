@@ -39,59 +39,59 @@
 double MaxElement(const std::vector<double> v)
 {
     double max = 0.;
-    
-    for (unsigned int i=0;i<v.size();i++)
-        max = std::max(v[i],max);
-        
+
+    for (unsigned int i = 0; i < v.size(); i++)
+        max = std::max(v[i], max);
+
     return max;
 }
 
 int MaxElement(const std::vector<int> v)
 {
     int max = 0.;
-    
-    for (unsigned int i=0;i<v.size();i++)
-        max = std::max(v[i],max);
-        
+
+    for (unsigned int i = 0; i < v.size(); i++)
+        max = std::max(v[i], max);
+
     return max;
 }
 
 double MinElement(const std::vector<double> v)
 {
     double min = 1e64;
-    
-    for (unsigned int i=0;i<v.size();i++)
-        min = std::min(v[i],min);
-        
+
+    for (unsigned int i = 0; i < v.size(); i++)
+        min = std::min(v[i], min);
+
     return min;
 }
 
 double SumElements(const std::vector<double> v)
 {
     double sum = 0.;
-    
-    for (unsigned int i=0;i<v.size();i++)
+
+    for (unsigned int i = 0; i < v.size(); i++)
         sum = sum + v[i];
-        
+
     return sum;
 }
 
 double MeanValue(const std::vector<double> v)
 {
-    return SumElements(v)/v.size();
+    return SumElements(v) / v.size();
 }
 
-double DotProduct(const std::vector<double> a,const std::vector<double> b)
+double DotProduct(const std::vector<double> a, const std::vector<double> b)
 {
-    return std::inner_product(a.begin(), a.end(), b.begin(),0);
+    return std::inner_product(a.begin(), a.end(), b.begin(), 0);
 }
 
-std::vector<double> ElementByElementProduct(const std::vector<double> a,const std::vector<double> b)
+std::vector<double> ElementByElementProduct(const std::vector<double> a, const std::vector<double> b)
 {
     std::vector<double> c(a.size());
 
-    for (unsigned int i=0;i<a.size();i++)
-        c[i] = a[i]*b[i];
+    for (unsigned int i = 0; i < a.size(); i++)
+        c[i] = a[i] * b[i];
 
     return c;
 }
