@@ -55,7 +55,7 @@ namespace ASALI
           qValueLabel_("n.a."),
           rLabel_("R\u00b2:\t"),
           rValueLabel_("n.a."),
-          logo_("images/RegressionLogo.png"),
+          logo_(this->relative_path_to_absolute_path("images/RegressionLogo.png")),
           diffCheck_(false)
     {
         {
