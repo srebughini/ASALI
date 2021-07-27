@@ -2,7 +2,7 @@ version: "3"
 
 services:
     asali:
-        image: "asali:2.3.0"
+        image: "asali:2.4.0"
         build:
             context: "./"
             dockerfile: "./Dockerfile"
