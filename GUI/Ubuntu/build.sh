@@ -161,10 +161,8 @@ function CheckSymbolicLink()
 function CreateSymbolicLink()
 {
     if [[ $1 == "true" ]]; then
-        if [[ $3 == "true" ]]; then
-            echo " "
-            echoYellow "Please, enter sudo password to create the symbolic link in /usr/local/bin "
-        fi
+        echo " "
+        echoYellow "Please, enter sudo password to create the symbolic link in /usr/local/bin "
         sudo ln -s $2/Asali /usr/local/bin/Asali
     fi
 }
@@ -280,7 +278,7 @@ CheckOperatingSystem "$operating_system"
 CheckCantera "$with_cantera" "$cantera_path" "$folder_api"
 CheckPython
 BuildingOptions "$operating_system" "$python_version" "$with_cantera" "$cantera_path" "$output_folder" "$symbolic_link" "$human_interaction"
-CheckSymbolicLink "$symbolic_link" "$python_config_command" "$human_interaction"
+CheckSymbolicLink "$symbolic_link" "$python_config_command"
 
 compile=$(Continue)
 

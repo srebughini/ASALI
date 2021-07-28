@@ -54,6 +54,7 @@
 #include <thread>
 #include <numeric>
 #include <functional>
+#include <random>
 
 #include "frontend/speciesPopup.hpp"
 

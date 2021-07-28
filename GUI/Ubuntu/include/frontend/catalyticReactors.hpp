@@ -45,6 +45,7 @@
 #include "frontend/catalystProperties.hpp"
 #include "frontend/plot.hpp"
 #include "frontend/runBar.hpp"
+#include <random>
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"

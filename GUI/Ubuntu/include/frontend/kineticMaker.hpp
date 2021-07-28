@@ -54,6 +54,7 @@
 #include <thread>
 #include <numeric>
 #include <functional>
+#include <random>
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"

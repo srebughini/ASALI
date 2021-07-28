@@ -179,7 +179,7 @@ namespace ASALI
             chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
             noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
             noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
-            #if ASALI_ON_WINDOWS == 0
+            #if ASALI_ON_WINDOW == 0
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
@@ -924,15 +924,19 @@ namespace ASALI
 
     std::string mainGui::getBeer()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed) % beer_.size();
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
+        int i = distribution(gen);
         return beer_[i];
     }
 
     std::string mainGui::getBeerShort()
     {
-        unsigned int seed = time(NULL);
-        int i = rand_r(&seed) % beerShort_.size();
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<const unsigned int> distribution(0, beerShort_.size()-1);
+        int i = distribution(gen);
         return beerShort_[i];
     }
 
