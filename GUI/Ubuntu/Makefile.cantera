@@ -25,16 +25,8 @@ LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
           -lcantera\
-<<<<<<< HEAD
           -lplplotcxx\
           -lpthread\
-=======
-          -lcantera_fortran\
-          -lplplotcxx\
-          -lgfortran\
-          -lpthread\
-          -lyaml-cpp\
->>>>>>> origin/master
           -lm
 
 .PHONY: clean
