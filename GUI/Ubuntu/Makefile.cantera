@@ -50,8 +50,3 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 
 $(EXE): $(OBJ)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) $(CFLAGS) -o $@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> origin/master
