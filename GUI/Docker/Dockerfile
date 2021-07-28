@@ -11,9 +11,8 @@ USER $ASALI_USER
 
 WORKDIR /home/$ASALI_USER
 RUN sudo DEBIAN_FRONTEND=noninteractive apt-get update -y \
-&& sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends git g++ gfortran make -y \
-&& sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends libyaml-cpp-dev libgtkmm-3.0-dev libcanberra-gtk3-module dbus-x11 plplot-driver-qt libplplot-dev dbus -y \
-&& mkdir /home/$ASALI_USER/sharedFolder \
+&& sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends git g++ gfortran make \
+libyaml-cpp-dev libgtkmm-3.0-dev libcanberra-gtk3-module dbus-x11 plplot-driver-qt libplplot-dev dbus -y \
 && git clone https://github.com/srebughini/ASALI.git -b master --depth=1 \
 && rm -rf /home/$ASALI_USER/ASALI/API \
 && rm -rf /home/$ASALI_USER/ASALI/GUI/Windows
