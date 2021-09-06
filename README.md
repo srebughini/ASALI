@@ -2,15 +2,20 @@
   <a href="https://srebughini.github.io/ASALI/"><img src="https://i.imgur.com/T5W1buFm.png" title="source: imgur.com" /></a>
 </p>
 <p align="center">
+  <a href="https://github.com/srebughini/ASALI/blob/master/CONTRIBUTING.md"><img alt="Contributions welcome" src="https://img.shields.io/static/v1.svg?label=Contributions&message=Welcome&style=flat-square"></a>
   <a href="https://travis-ci.com/srebughini/ASALI"><img src="https://img.shields.io/travis/com/srebughini/ASALI?style=flat-square"></a>
   <a href="https://sourceforge.net/projects/asali/?source=directory"><img src="https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square"></a>
   <a href="https://twitter.com/ASALIcode"><img src="https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/stargazers"><img src="https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/blob/master/LICENSE"><img src="https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square"></a>
+</p>
+<p align="center">
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://www.codefactor.io/repository/github/srebughini/asali/overview/masters"><img src="https://img.shields.io/codefactor/grade/github/srebughini/ASALI?style=flat-square"></a>
+    <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/srebughini/ASALI?style=flat-square"></a>
 </p>
+
 
 # **ASALI: Modeling and beyond**
 Asali is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture.
