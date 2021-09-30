@@ -13,7 +13,7 @@
   <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/srebughini/ASALI?style=flat-square"></a>
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
-  <a href="https://www.codefactor.io/repository/github/srebughini/asali/overview/masters"><img src="https://img.shields.io/codefactor/grade/github/srebughini/ASALI?style=flat-square"></a>
+  <a href="https://www.codefactor.io/repository/github/srebughini/asali"><img src="https://img.shields.io/codefactor/grade/github/srebughini/ASALI?style=flat-square"></a>
     <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/srebughini/ASALI?style=flat-square"></a>
     <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/srebughini/ASALI?style=flat-square"></a>
 </p>

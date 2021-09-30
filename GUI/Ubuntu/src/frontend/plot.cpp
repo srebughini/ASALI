@@ -52,7 +52,6 @@ namespace ASALI
           NP_(0),
           MAX_COL_(4)
     {
-
         unitConversion_ = new ASALI::asaliUnitConversionUtils();
 
         this->set_border_width(15);

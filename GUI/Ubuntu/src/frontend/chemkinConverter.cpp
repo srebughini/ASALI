@@ -47,7 +47,6 @@ namespace ASALI
           exit_("Exit"),
           logo_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png"))
     {
-
         beerQuote_ = new ASALI::beerQuote();
 
         files_.resize(5);
