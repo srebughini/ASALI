@@ -41,6 +41,7 @@
 
 #include "backend/pythonInterface.hpp"
 #include "backend/canteraInterface.hpp"
+#include "backend/asaliVectorUtils.hpp"
 #include <gtkmm.h>
 
 namespace ASALI
@@ -50,8 +51,6 @@ namespace ASALI
     {
     public:
         catalyticReactorsEquations();
-
-        #include "shared/Vector.H"
 
         /// Set gas mixture chemistry interface
         void setInterface(ASALI::canteraInterface *chemistryInterface);
@@ -148,6 +147,7 @@ namespace ASALI
 
         ASALI::pythonInterface *pi_;                  /// Python interface pointer
         ASALI::canteraInterface *chemistryInterface_; /// Gas mixture chemistry interface pointer
+        ASALI::asaliVectorUtils *vectorUtils_;        /// Object to performe vector operations with std::vector
 
         std::vector<double> QuserHom_;     /// User defined homogeneous heat of reactions in [W/m3]
         std::vector<double> QuserHet_;     /// User defined heterogeneous heat of reactions in [W/m2]

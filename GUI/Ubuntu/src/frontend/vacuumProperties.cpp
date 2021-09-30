@@ -66,7 +66,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: Vacuum properties");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->createInputGrid();
     }
 
@@ -205,10 +205,10 @@ namespace ASALI
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
         d_ = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        ConvertsToKelvin(T_, tempCombo_.get_active_text());
-        ConvertsToPascal(p_, pressCombo_.get_active_text());
-        ConvertsToMeter(d_, lengthCombo_.get_active_text());
-
+        unitConversion_->toKelvin(T_,tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_,pressCombo_.get_active_text());
+        unitConversion_->toMeter(d_,lengthCombo_.get_active_text());
+        
         n_.resize(1);
         x_.resize(1);
 
@@ -424,8 +424,8 @@ namespace ASALI
             this->results();
         }
 
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "vacuum.asali");
-        if (filename != "")
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "vacuum.asali");
+        if ( filename != "" )
         {
             std::ofstream output;
             const char *path = filename.c_str();

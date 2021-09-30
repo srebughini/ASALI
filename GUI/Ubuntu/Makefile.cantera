@@ -29,7 +29,6 @@ LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --libs)\
           -lplplotcxx\
           -lgfortran\
           -lpthread\
-          -lyaml-cpp\
           -lm
 
 .PHONY: clean

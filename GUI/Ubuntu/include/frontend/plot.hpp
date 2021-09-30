@@ -40,6 +40,8 @@
 #define PLOT_H
 
 #include "backend/plotInterface.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
 #include <gtkmm.h>
 
 namespace ASALI
@@ -48,9 +50,6 @@ namespace ASALI
     {
     public:
         plot();
-
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
 
         void setSpecieNames(const std::vector<std::string> n);
         void setSiteNames(const std::vector<std::string> nc);
@@ -144,6 +143,11 @@ namespace ASALI
         void pelletplot(ASALI::plotInterface *plotInterface);
 
         bool isChecked(std::vector<Gtk::CheckButton *> button);
+
+
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

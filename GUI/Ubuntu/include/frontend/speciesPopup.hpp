@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -58,8 +59,6 @@ namespace ASALI
     {
     public:
         speciesPopup();
-
-        #include "shared/FileManager.H"
 
         virtual ~speciesPopup();
 
@@ -70,6 +69,8 @@ namespace ASALI
         Gtk::ScrolledWindow scrolledWindow_;
         Gtk::Box mainBox_;
         Gtk::Image speciesImage_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

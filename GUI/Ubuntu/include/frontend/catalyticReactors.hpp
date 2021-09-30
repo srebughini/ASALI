@@ -40,6 +40,10 @@
 #define CATALYTICREACTORS_H
 
 #include "backend/pythonInterface.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliVectorUtils.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
 #include "frontend/speciesPopup.hpp"
 #include "frontend/constantProperties.hpp"
 #include "frontend/catalystProperties.hpp"
@@ -59,10 +63,6 @@ namespace ASALI
     {
     public:
         catalyticReactors(std::string kineticType);
-
-        #include "shared/UnitConversion.H"
-        #include "shared/Vector.H"
-        #include "shared/FileManager.H"
 
         virtual ~catalyticReactors();
 
@@ -177,6 +177,11 @@ namespace ASALI
         ASALI::plot *plot_;
         ASALI::runBar *bar_;
         ASALI::pythonInterface *pi_;
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+        ASALI::asaliVectorUtils *vectorUtils_;
+
+        ASALI::asaliFileManager fileManager_;
 
         std::string kineticType_;
         std::string inert_;

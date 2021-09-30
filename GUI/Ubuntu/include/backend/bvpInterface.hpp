@@ -51,6 +51,8 @@
 #include <algorithm>
 #include <random>
 
+#include "backend/beerQuote.hpp"
+
 #include <ida/ida.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <ida/ida_direct.h>
@@ -128,14 +130,12 @@ namespace ASALI
 
         int checkFlag(void *flagvalue, int opt);
         void error();
-        std::string getBeer();
+        ASALI::beerQuote beerQuote_;
     };
 
     template <typename T>
     bvpInterface<T>::bvpInterface()
     {
-        #include "shared/Beer.H"
-
         yIDA_ = NULL;
         dyIDA_ = NULL;
         y0IDA_ = NULL;
@@ -417,18 +417,8 @@ namespace ASALI
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this, "Ops, something wrong happend!", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(), true);
+        dialog.set_secondary_text(beerQuote_.getRandomQuote(), true);
         dialog.run();
-    }
-
-    template <typename T>
-    std::string bvpInterface<T>::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
     }
 
     template <typename T>
@@ -438,7 +428,5 @@ namespace ASALI
         N_VDestroy_Serial(dyIDA_);
         IDAFree(&ida_mem_);
     }
-
 }
-
 #endif

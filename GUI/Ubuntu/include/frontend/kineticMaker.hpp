@@ -54,7 +54,9 @@
 #include <thread>
 #include <numeric>
 #include <functional>
-#include <random>
+#include "backend/asaliFileManager.hpp"
+#include "backend/asaliVectorUtils.hpp"
+#include "backend/beerQuote.hpp"
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"
@@ -69,9 +71,6 @@ namespace ASALI
     public:
         kineticMaker();
 
-        #include "shared/FileManager.H"
-        #include "shared/Vector.H"
-
         void species();
         void reactionNumber();
         void reaction();
@@ -85,9 +84,6 @@ namespace ASALI
         #else
         void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
         #endif
-
-        std::string getBeer();
-        std::string getBeerShort();
 
         #if ASALI_USING_CANTERA == 1
         ASALI::canteraInterface *chemistryInterface_;
@@ -191,6 +187,11 @@ namespace ASALI
         std::vector<std::string> splitString(const std::string txt, std::string ch);
 
         int getSpecieIndex(std::string n, std::vector<std::string> nv);
+
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliVectorUtils *vectorUtils_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

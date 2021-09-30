@@ -21,7 +21,7 @@
 #                                                                                              #
 #   This file is part of ASALI.                                                                #
 #                                                                                              #
-#   ASALI is free software you can redistribute it and/or modify                               #
+#   ASALI is free software: you can redistribute it and/or modify                              #
 #   it under the terms of the GNU General Public License as published by                       #
 #   the Free Software Foundation, either version 3 of the License, or                          #
 #   (at your option) any later version.                                                        #
@@ -36,62 +36,40 @@
 #                                                                                              #
 ##############################################################################################*/
 
-double MaxElement(const std::vector<double> v)
+#ifndef BEERQUOTE_H
+#define BEERQUOTE_H
+
+#include <string>
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <limits>
+#include <random>
+
+namespace ASALI
 {
-    double max = 0.;
+    class beerQuote
+    {
+    public:
+        beerQuote();
 
-    for (unsigned int i = 0; i < v.size(); i++)
-        max = std::max(v[i], max);
+        std::string getRandomQuote();
+        std::string getShortRandomQuote();
 
-    return max;
+        virtual ~beerQuote();
+
+    private:
+        unsigned int randomUnsignedInt(const unsigned int min, const unsigned int max);
+        unsigned int shortQuoteLength;
+
+        std::vector<std::string> beer_;
+        std::vector<std::string> beerShort_;
+    };
 }
-
-int MaxElement(const std::vector<int> v)
-{
-    int max = 0.;
-
-    for (unsigned int i = 0; i < v.size(); i++)
-        max = std::max(v[i], max);
-
-    return max;
-}
-
-double MinElement(const std::vector<double> v)
-{
-    double min = 1e64;
-
-    for (unsigned int i = 0; i < v.size(); i++)
-        min = std::min(v[i], min);
-
-    return min;
-}
-
-double SumElements(const std::vector<double> v)
-{
-    double sum = 0.;
-
-    for (unsigned int i = 0; i < v.size(); i++)
-        sum = sum + v[i];
-
-    return sum;
-}
-
-double MeanValue(const std::vector<double> v)
-{
-    return SumElements(v) / v.size();
-}
-
-double DotProduct(const std::vector<double> a, const std::vector<double> b)
-{
-    return std::inner_product(a.begin(), a.end(), b.begin(), 0);
-}
-
-std::vector<double> ElementByElementProduct(const std::vector<double> a, const std::vector<double> b)
-{
-    std::vector<double> c(a.size());
-
-    for (unsigned int i = 0; i < a.size(); i++)
-        c[i] = a[i] * b[i];
-
-    return c;
-}
+#endif

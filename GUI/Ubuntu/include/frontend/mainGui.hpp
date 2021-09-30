@@ -43,7 +43,10 @@
 #include "frontend/vacuumProperties.hpp"
 #include "frontend/linearRegression.hpp"
 #include "frontend/kineticMaker.hpp"
+#include "frontend/physicalChemicalProperties.hpp"
 #include "backend/pythonInterface.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
 #include <gtk/gtk.h>
 
 #if ASALI_USING_CANTERA == 1
@@ -67,9 +70,6 @@ namespace ASALI
     public:
         mainGui();
 
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
-
         virtual ~mainGui();
 
     private:
@@ -90,11 +90,12 @@ namespace ASALI
         void thermo();
         void thermoTransport();
         void vacuum();
+        void physicalChemical();
         void linearRegression();
 
         bool chemistryMenu1(GdkEventButton *);
 
-        #if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA == 1
         void chemkin();
         void loadCanteraInput();
         void equilibrium();
@@ -105,10 +106,7 @@ namespace ASALI
         void ph1d();
         void het1d();
         void dp();
-        #endif
-
-        std::string getBeer();
-        std::string getBeerShort();
+#endif
 
         std::vector<std::string> splitString(const std::string txt, std::string ch);
 
@@ -132,6 +130,7 @@ namespace ASALI
         Gtk::Button equilibriumButton_;
         Gtk::Button linearRegressionButton_;
         Gtk::Button reactorsButton_;
+        Gtk::Button physicalChemicalButton_;
         Gtk::Button vacuumButton_;
         Gtk::Button pelletButton_;
         Gtk::Button batchButton_;
@@ -190,8 +189,11 @@ namespace ASALI
         ASALI::vacuumProperties *vacuumMenu_;
         ASALI::linearRegression *linearRegressionMenu_;
         ASALI::kineticMaker *kineticMakerMenu_;
+        ASALI::physicalChemicalProperties *physicalChemicalMenu_;
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliFileManager fileManager_;
 
-        #if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA == 1
         ASALI::chemkinConverter *converter_;
         ASALI::canteraInterface *chemistryInterface_;
         ASALI::equilibriumCalculator *equilibriumMenu_;
@@ -201,8 +203,8 @@ namespace ASALI
         ASALI::het1dReactor *het1dMenu_;
         ASALI::pressureDrops *dpMenu_;
         ASALI::catalyticPellet *pelletMenu_;
-        #else
+#else
         ASALI::asaliInterface *chemistryInterface_;
-        #endif
+#endif
     };
 }

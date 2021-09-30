@@ -51,16 +51,15 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <random>
+#include "backend/asaliFileManager.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/beerQuote.hpp"
 
 namespace ASALI
 {
     class constantProperties : public Gtk::Window
     {
     public:
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
-
         constantProperties();
 
         void destroy();
@@ -160,6 +159,11 @@ namespace ASALI
         double cp_;
         double cond_;
         double mu_;
+
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

@@ -51,6 +51,8 @@
 #include <algorithm>
 #include <random>
 
+#include "backend/beerQuote.hpp"
+
 #include <cvodes/cvodes.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <cvodes/cvodes_direct.h>
@@ -63,8 +65,8 @@
 
 namespace ASALI
 {
-    #define Ith(v, i) NV_Ith_S(v, i - 1)
-    #define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
+#define Ith(v, i) NV_Ith_S(v, i - 1)
+#define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
     template <typename T>
     class odeInterface : public Gtk::Window
@@ -122,14 +124,12 @@ namespace ASALI
         int checkFlag(void *flagvalue, int opt);
 
         void error();
-        std::string getBeer();
+        ASALI::beerQuote beerQuote_;
     };
 
     template <typename T>
     odeInterface<T>::odeInterface()
     {
-        #include "shared/Beer.H"
-
         yCVODE_ = NULL;
         dyCVODE_ = NULL;
         y0CVODE_ = NULL;
@@ -374,18 +374,8 @@ namespace ASALI
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this, "Ops, something wrong happend!", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(), true);
+        dialog.set_secondary_text(beerQuote_.getRandomQuote(), true);
         dialog.run();
-    }
-
-    template <typename T>
-    std::string odeInterface<T>::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
     }
 
     template <typename T>
@@ -395,6 +385,5 @@ namespace ASALI
         N_VDestroy_Serial(dyCVODE_);
         CVodeFree(&cvode_mem_);
     }
-
 }
 #endif

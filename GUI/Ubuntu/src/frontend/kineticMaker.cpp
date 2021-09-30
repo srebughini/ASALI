@@ -68,35 +68,25 @@ namespace ASALI
           typeLabel1_("Type"),
           recapSpeciesLabel_("Species"),
           recapReactionLabel_("Reactions"),
-          logo1_(this->relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
-          logo3_(this->relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
-          logo4_(this->relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
-          logo5_(this->relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          logo3_(fileManager_.relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          logo4_(fileManager_.relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          logo5_(fileManager_.relative_path_to_absolute_path("images/KineticSchemeLogo.png")),
+          op_({"+", "-", "/", "*", ")", "(", ",", "."}),
           NR_(0),
           NC_(0),
           restart_(true)
     {
-        {
-            op_.push_back("+");
-            op_.push_back("-");
-            op_.push_back("/");
-            op_.push_back("*");
-            op_.push_back(")");
-            op_.push_back("(");
-            op_.push_back(",");
-            op_.push_back(".");
-        }
-
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        vectorUtils_ = new ASALI::asaliVectorUtils();
+        beerQuote_ = new ASALI::beerQuote();
 
         //Reaction number
         {
             this->set_border_width(15);
             this->set_title("ASALI: Kinetic scheme");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
             //Add background grid
             this->add(reactionNumberBox_);
@@ -127,6 +117,7 @@ namespace ASALI
                 reactionNumberGrid_.attach(nextButton1_, 1, 1, 1, 1);
                 nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &kineticMaker::species));
             }
+
             this->show_all_children();
         }
 
@@ -245,17 +236,17 @@ namespace ASALI
         }
     }
 
-    #if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA == 1
     void kineticMaker::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #else
+#else
     void kineticMaker::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #endif
+#endif
 
     void kineticMaker::species()
     {
@@ -465,7 +456,7 @@ namespace ASALI
             if (counter != 0)
             {
                 Gtk::MessageDialog dialog(*this, ni, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                dialog.set_secondary_text(this->getBeerShort(), true);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = dialog.run();
 
                 //Handle the response:
@@ -499,7 +490,7 @@ namespace ASALI
         else
         {
             Gtk::MessageDialog dialog(*this, "At least one species is required!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
             return false;
         }
@@ -965,7 +956,7 @@ namespace ASALI
             std::ostringstream s;
             s << double(index + 1);
             Gtk::MessageDialog dialog(*this, "Reaction number " + s.str() + " is empty!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
             return false;
         }
@@ -974,45 +965,27 @@ namespace ASALI
     void kineticMaker::helpReaction()
     {
         Gtk::MessageDialog dialog(*this, "Example:\nH2+0.5*O2=H2O", true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void kineticMaker::helpEquation()
     {
         Gtk::MessageDialog dialog(*this, "Example:\n100.*pow(H2,2)*exp(-500/T)*O2\nH2 is the mole fraction\nT is temperature in [K]\nThe reaction rate unit dimensions are kmol/m3/s or kmol/m2/s", true, Gtk::MESSAGE_INFO, Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void kineticMaker::errorEquation(const std::string error)
     {
         Gtk::MessageDialog dialog(*this, error, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void kineticMaker::exit()
     {
         this->hide();
-    }
-
-    std::string kineticMaker::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
-    }
-
-    std::string kineticMaker::getBeerShort()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beerShort_.size()-1);
-        int i = distribution(gen);
-        return beerShort_[i];
     }
 
     std::vector<std::string> kineticMaker::splitString(const std::string txt, std::string ch)
@@ -1066,20 +1039,20 @@ namespace ASALI
     void kineticMaker::missingSpecies(const std::string n)
     {
         Gtk::MessageDialog dialog(*this, n + " is missing!!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void kineticMaker::unknownOption(const std::string n)
     {
         Gtk::MessageDialog dialog(*this, n + " uknown option!!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void kineticMaker::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "kinetic.py");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "kinetic.py");
         if (filename != "")
         {
             if (filename.substr(filename.length() - 3, filename.length()) != ".py")
@@ -1309,7 +1282,7 @@ namespace ASALI
     void kineticMaker::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Your kinetic scheme has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 

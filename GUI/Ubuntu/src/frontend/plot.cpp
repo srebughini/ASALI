@@ -52,10 +52,13 @@ namespace ASALI
           NP_(0),
           MAX_COL_(4)
     {
+
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+
         this->set_border_width(15);
         this->set_title("ASALI: plotting");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
         this->add(mainGrid_);
@@ -203,7 +206,7 @@ namespace ASALI
 
         for (unsigned int i = 0; i < NP_; i++)
         {
-            ConvertsFromMeter(L_[i], Lud_);
+            unitConversion_->fromMeter(L_[i], Lud_);
         }
     }
 

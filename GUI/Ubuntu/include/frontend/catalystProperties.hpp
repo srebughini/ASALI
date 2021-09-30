@@ -51,6 +51,8 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -60,9 +62,6 @@ namespace ASALI
         catalystProperties();
 
         void doneInput();
-
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
 
         double get_rho() { return rho_; };
         double get_cond() { return cond_; };
@@ -104,6 +103,9 @@ namespace ASALI
         double cond_;
         double alfa_;
         double T_;
+        
+        ASALI::asaliUnitConversionUtils   *unitConversion_;
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

@@ -40,6 +40,7 @@
 #define LINEARREGRESSION_H
 
 #include "frontend/thermoProperties.hpp"
+#include "backend/asaliVectorUtils.hpp"
 
 namespace ASALI
 {
@@ -47,8 +48,6 @@ namespace ASALI
     {
     public:
         linearRegression(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        #include "shared/Vector.H"
 
         virtual ~linearRegression();
 

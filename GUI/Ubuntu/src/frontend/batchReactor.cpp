@@ -54,8 +54,8 @@ namespace ASALI
           timeLabel_("Integration time"),
           saveLabel_("Save solution every"),
           energyLabel_("Energy"),
-          logo1_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
           plotButtonBool_(false)
     {
         eq_ = new ASALI::batchEquations();
@@ -65,7 +65,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Batch reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
             //Add background grid
             this->add(mainBox_);
@@ -277,10 +277,10 @@ namespace ASALI
         tf_ = Glib::Ascii::strtod(timeEntry_.get_text());
         dt_ = Glib::Ascii::strtod(saveEntry_.get_text());
 
-        ConvertsToCubeMeter(V_, volumeCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_, loadCombo_.get_active_text());
-        ConvertsToSecond(tf_, timeCombo_.get_active_text());
-        ConvertsToSecond(dt_, saveCombo_.get_active_text());
+        unitConversion_->toCubeMeter(V_, volumeCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_, loadCombo_.get_active_text());
+        unitConversion_->toSecond(tf_, timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_, saveCombo_.get_active_text());
 
         energy_ = energyCombo_.get_active_text();
     }
@@ -425,7 +425,7 @@ namespace ASALI
             if (chemistryInterface_->numberOfHomogeneousReactions() != 0.)
             {
                 Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(), true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = smallDialog.run();
 
                 //Handle the response:
@@ -690,7 +690,7 @@ namespace ASALI
 
     void batchReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "batch.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "batch.asali");
         if (filename != "")
         {
             std::ofstream output;

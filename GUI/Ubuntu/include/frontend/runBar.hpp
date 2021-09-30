@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -65,8 +66,6 @@ namespace ASALI
 
         bool check() { return close_; };
 
-        #include "shared/FileManager.H"
-
         virtual ~runBar();
 
     private:
@@ -77,6 +76,8 @@ namespace ASALI
         Gtk::ProgressBar runBar_;
 
         bool close_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

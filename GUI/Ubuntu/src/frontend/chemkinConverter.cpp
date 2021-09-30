@@ -45,10 +45,10 @@ namespace ASALI
           output_("Convert"),
           help_("Help"),
           exit_("Exit"),
-          logo_(this->relative_path_to_absolute_path("images/SmallLogo.png"))
+          logo_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png"))
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+
+        beerQuote_ = new ASALI::beerQuote();
 
         files_.resize(5);
 
@@ -56,7 +56,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: CHEMKIN converter");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
         //Adding logo
         mainBox_.set_halign(Gtk::ALIGN_START);
@@ -135,7 +135,7 @@ namespace ASALI
         }
         else
         {
-            std::string dialogname = this->save_file(this->get_toplevel()->gobj(), "*.cti");
+            std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.cti");
             if (dialogname != "")
             {
                 this->eraseSubString(dialogname, ".xml");
@@ -167,7 +167,7 @@ namespace ASALI
 
     void chemkinConverter::load(int index)
     {
-        std::string filename = this->open_file(this->get_toplevel()->gobj());
+        std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
         if (filename != "")
         {
             std::string command;
@@ -201,28 +201,28 @@ namespace ASALI
     void chemkinConverter::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void chemkinConverter::help()
     {
         Gtk::MessageDialog dialog(*this, "Problem in converting your scheme into CANTERA format?\nSend it to: ste.rebu@outlook.it\nWe will be glad to help you!", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void chemkinConverter::error(std::string type)
     {
         Gtk::MessageDialog dialog(*this, type + " is missing!!", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
     void chemkinConverter::notSavedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Conversion stopped! The most common reasons for that are:\n1/Something is wrong with your input files.\n2/You have not load CANTERA enviornment", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
@@ -415,24 +415,6 @@ namespace ASALI
         {
             mainStr.erase(pos, toErase.length());
         }
-    }
-
-    std::string chemkinConverter::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
-    }
-
-    std::string chemkinConverter::getBeerShort()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beerShort_.size()-1);
-        int i = distribution(gen);
-        return beerShort_[i];
     }
 
     chemkinConverter::~chemkinConverter()

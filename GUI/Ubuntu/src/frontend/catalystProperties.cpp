@@ -41,7 +41,7 @@
 namespace ASALI
 {
     catalystProperties::catalystProperties()
-        : het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
+        : het1dLogo_(fileManager_.relative_path_to_absolute_path("images/Het1DLogo.png")),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           rhoLabel_("Density"),
           condLabel_("Thermal conductivity"),
@@ -50,10 +50,12 @@ namespace ASALI
           TLabel_("Temperature"),
           doneButton_("Done")
     {
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+
         this->set_border_width(15);
         this->set_title("ASALI: catalyst input");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);
@@ -133,11 +135,11 @@ namespace ASALI
         alfa_ = Glib::Ascii::strtod(loadEntry_.get_text());
         T_ = Glib::Ascii::strtod(TEntry_.get_text());
 
-        ConvertsToOneOverMeter(alfa_, loadCombo_.get_active_text());
-        ConvertsToJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
-        ConvertsToKgPerCubeMeter(rho_, rhoCombo_.get_active_text());
-        ConvertsToKelvin(T_, TCombo_.get_active_text());
-        ConvertsToWattPerMeterPerKelving(cond_, condCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_, loadCombo_.get_active_text());
+        unitConversion_->toJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
+        unitConversion_->toKgPerCubeMeter(rho_, rhoCombo_.get_active_text());
+        unitConversion_->toKelvin(T_, TCombo_.get_active_text());
+        unitConversion_->toWattPerMeterPerKelvin(cond_, condCombo_.get_active_text());
 
         this->hide();
     }

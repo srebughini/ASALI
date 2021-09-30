@@ -51,7 +51,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Equilibrium calculator");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             this->input();
         }
     }
@@ -162,25 +162,25 @@ namespace ASALI
 
     void equilibriumCalculator::showAtomNames()
     {
-        if ( nameVector_.size() != 0)
+        if (nameVector_.size() != 0)
         {
-            for (unsigned int i=0;i<nameVector_.size();i++)
+            for (unsigned int i = 0; i < nameVector_.size(); i++)
             {
                 resultsGrid_.remove(*nameVector_[i]);
             }
         }
 
         nameVector_.clear();
-        nameVector_.resize(n_.size()+1);
+        nameVector_.resize(n_.size() + 1);
 
-        for (unsigned int i=0;i<n_.size();i++)
-        { 
+        for (unsigned int i = 0; i < n_.size(); i++)
+        {
             nameVector_[i] = new Gtk::Label(n_[i]);
-            resultsGrid_.attach(*nameVector_[i],0,i+2,1,1);
+            resultsGrid_.attach(*nameVector_[i], 0, i + 2, 1, 1);
         }
-        
+
         nameVector_[n_.size()] = new Gtk::Label("Temperature [K]");
-        resultsGrid_.attach(*nameVector_[n_.size()],0,n_.size()+2,1,1);
+        resultsGrid_.attach(*nameVector_[n_.size()], 0, n_.size() + 2, 1, 1);
     }
 
     void equilibriumCalculator::update()
@@ -227,7 +227,7 @@ namespace ASALI
 
     void equilibriumCalculator::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "equilibrium.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "equilibrium.asali");
         if (filename != "")
         {
             std::ofstream output;

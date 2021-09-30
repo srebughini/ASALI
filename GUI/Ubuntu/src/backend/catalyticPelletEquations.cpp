@@ -488,7 +488,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -507,7 +507,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -526,7 +526,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -553,7 +553,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -572,7 +572,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -591,7 +591,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -625,7 +625,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -650,7 +650,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -675,7 +675,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -708,7 +708,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -733,7 +733,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -758,7 +758,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -791,7 +791,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -816,7 +816,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -841,7 +841,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -883,6 +883,6 @@ namespace ASALI
 
     double catalyticPelletEquations::getLength()
     {
-        return MaxElement(Length_);
+        return vectorUtils_->MaxElement(Length_);
     }
 }

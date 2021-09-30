@@ -41,10 +41,10 @@
 namespace ASALI
 {
     constantProperties::constantProperties()
-        : batchLogo_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
-          ph1dLogo_(this->relative_path_to_absolute_path("images/Ph1DLogo.png")),
-          het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
-          pelletLogo_(this->relative_path_to_absolute_path("images/PelletLogo.png")),
+        : batchLogo_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
+          ph1dLogo_(fileManager_.relative_path_to_absolute_path("images/Ph1DLogo.png")),
+          het1dLogo_(fileManager_.relative_path_to_absolute_path("images/Het1DLogo.png")),
+          pelletLogo_(fileManager_.relative_path_to_absolute_path("images/PelletLogo.png")),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           nameLabel_("Name"),
           mwLabel_("Molecular weight"),
@@ -57,12 +57,13 @@ namespace ASALI
           doneButton_("Done"),
           type_("zero")
     {
-        #include "shared/Beer.H"
+        beerQuote_ = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
         //Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);
@@ -711,7 +712,7 @@ namespace ASALI
     void constantProperties::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Your file has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeer(), true);
+        dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
         dialog.run();
     }
 
@@ -1019,7 +1020,7 @@ namespace ASALI
             }
 
             mu_ = Glib::Ascii::strtod(muEntry_.get_text());
-            ConvertsToPascalPerSecond(mu_, muCombo_.get_active_text());
+            unitConversion_->toPascalPerSecond(mu_, muCombo_.get_active_text());
 
             if (energy_ == "on")
             {
@@ -1068,15 +1069,6 @@ namespace ASALI
 
     constantProperties::~constantProperties()
     {
-    }
-
-    std::string constantProperties::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
     }
 
     void constantProperties::convertToCaption(std::string &n)

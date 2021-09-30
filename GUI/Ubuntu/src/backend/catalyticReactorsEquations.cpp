@@ -42,6 +42,7 @@ namespace ASALI
 {
     catalyticReactorsEquations::catalyticReactorsEquations()
     {
+        vectorUtils_ = new ASALI::asaliVectorUtils();
     }
 
     void catalyticReactorsEquations::setInterface(ASALI::canteraInterface *chemistryInterface)

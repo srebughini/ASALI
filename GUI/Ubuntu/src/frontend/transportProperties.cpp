@@ -48,7 +48,7 @@ namespace ASALI
             this->set_border_width(15);
             this->set_title("ASALI: Transport properties");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             this->input();
         }
     }
@@ -249,7 +249,7 @@ namespace ASALI
 
     void transportProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "transport.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "transport.asali");
         if (filename != "")
         {
             std::ofstream output;

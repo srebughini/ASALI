@@ -57,6 +57,10 @@
 #include <random>
 
 #include "frontend/speciesPopup.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
+#include "backend/asaliVectorUtils.hpp"
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"
@@ -70,10 +74,6 @@ namespace ASALI
     {
     public:
         basicProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        #include "shared/FileManager.H"
-        #include "shared/UnitConversion.H"
-        #include "shared/Vector.H"
 
         virtual ~basicProperties();
 
@@ -143,6 +143,11 @@ namespace ASALI
         std::string kineticType_;
 
         ASALI::speciesPopup *speciesNames_;
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+        ASALI::asaliVectorUtils *vectorUtils_;
+
+        ASALI::asaliFileManager fileManager_;
 
         #if ASALI_USING_CANTERA == 1
         ASALI::canteraInterface *chemistryInterface_;

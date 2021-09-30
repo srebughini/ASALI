@@ -51,7 +51,8 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <random>
+#include "backend/beerQuote.hpp"
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -59,8 +60,6 @@ namespace ASALI
     {
     public:
         chemkinConverter();
-
-        #include "shared/FileManager.H"
 
         virtual ~chemkinConverter();
 
@@ -75,9 +74,6 @@ namespace ASALI
         void error(std::string type);
         void eraseSubString(std::string &mainStr, const std::string toErase);
         bool checkConvertedFile(std::string filename);
-
-        std::string getBeer();
-        std::string getBeerShort();
 
         Gtk::Box mainBox_;
         Gtk::Box buttonBox_;
@@ -95,8 +91,9 @@ namespace ASALI
         Gtk::Image logo_;
 
         std::vector<std::string> files_;
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
+
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif
