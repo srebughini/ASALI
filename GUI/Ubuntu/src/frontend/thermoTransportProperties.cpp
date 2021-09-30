@@ -287,7 +287,6 @@ namespace ASALI
         diffCombo_.set_active(0);
         diffCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::diffUnitConversion), true, 3));
 
-
         //Specific heat
         cpBox_.pack_start(cpLabel_, Gtk::PACK_SHRINK);
         cpBox_.pack_start(cpCombo_, Gtk::PACK_SHRINK);

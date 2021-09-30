@@ -399,11 +399,11 @@ namespace ASALI
 
     void plot::output(ASALI::plotInterface *plotInterface)
     {
-        #if ASALI_ON_WINDOW == 1
+#if ASALI_ON_WINDOW == 1
         plotInterface->setOutputFormat("wingdi");
-        #else
+#else
         plotInterface->setOutputFormat("qtwidget");
-        #endif
+#endif
     }
 
     void plot::batchplot(ASALI::plotInterface *plotInterface)

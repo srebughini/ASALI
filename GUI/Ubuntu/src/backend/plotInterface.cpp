@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    #if ASALI_ON_WINDOW == 1
+#if ASALI_ON_WINDOW == 1
     plotInterface::plotInterface() : nFig_(-1),
                                      defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
@@ -50,7 +50,7 @@ namespace ASALI
         _putenv_s("PLPLOT_LIB", "share/plplot5.15.0");
         _putenv_s("WININSTALLDIR", ".");
     }
-    #else
+#else
     plotInterface::plotInterface() : nFig_(-1),
                                      defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
@@ -58,7 +58,7 @@ namespace ASALI
                                      onScreenOutputFormats_({"xcairo", "wxwidgets", "qtwidget"})
     {
     }
-    #endif
+#endif
 
     double plotInterface::maxElement(const std::vector<double> v)
     {

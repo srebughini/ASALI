@@ -205,10 +205,10 @@ namespace ASALI
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
         d_ = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        unitConversion_->toKelvin(T_,tempCombo_.get_active_text());
-        unitConversion_->toPascal(p_,pressCombo_.get_active_text());
-        unitConversion_->toMeter(d_,lengthCombo_.get_active_text());
-        
+        unitConversion_->toKelvin(T_, tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_, pressCombo_.get_active_text());
+        unitConversion_->toMeter(d_, lengthCombo_.get_active_text());
+
         n_.resize(1);
         x_.resize(1);
 
@@ -425,7 +425,7 @@ namespace ASALI
         }
 
         std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "vacuum.asali");
-        if ( filename != "" )
+        if (filename != "")
         {
             std::ofstream output;
             const char *path = filename.c_str();

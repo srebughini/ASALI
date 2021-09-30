@@ -158,9 +158,9 @@ namespace ASALI
                 propertiesGrid_.attach(resolutionLabel_, 0, 7, 1, 1);
                 propertiesGrid_.attach(resolutionCombo_, 1, 7, 1, 1);
                 resolutionCombo_.append("steady state");
-                #if ASALI_NEXT_VERSION == 1
+#if ASALI_NEXT_VERSION == 1
                 resolutionCombo_.append("transient");
-                #endif
+#endif
                 resolutionCombo_.set_active(0);
 
                 //Energy

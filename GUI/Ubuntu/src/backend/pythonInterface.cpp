@@ -75,11 +75,11 @@ namespace ASALI
 
     void pythonInterface::setPythonPath(std::string path)
     {
-        #if ASALI_ON_WINDOW == 1
+#if ASALI_ON_WINDOW == 1
         _putenv_s("PYTHONPATH", path.c_str());
-        #else
+#else
         setenv("PYTHONPATH", path.c_str(), 1);
-        #endif
+#endif
     }
 
     int pythonInterface::checkNames(std::string name)
