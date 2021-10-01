@@ -334,7 +334,6 @@ namespace ASALI
         this->add(chemistryBox_);
         this->resize(chemistryBox_.get_width(), chemistryBox_.get_height());
         this->show_all_children();
-
         return true;
     }
 
@@ -461,12 +460,7 @@ namespace ASALI
             }
             else
             {
-#if ASALI_ON_WINDOW == 0
-                std::vector<std::string> filevector = this->splitString(filename, "/");
-#else
-                std::vector<std::string> filevector = this->splitString(filename, "\\");
-#endif
-
+                std::vector<std::string> filevector = fileManager_.splitPath(filename);
                 std::string function = filevector.back().substr(0, filevector.back().length() - 3);
                 std::string path = filename.substr(0, filename.length() - function.length() - 3);
 
@@ -941,26 +935,5 @@ namespace ASALI
     void mainGui::exit()
     {
         this->hide();
-    }
-
-    std::vector<std::string> mainGui::splitString(const std::string txt, std::string ch)
-    {
-        std::vector<std::string> strs;
-        std::size_t pos = txt.find(ch);
-        std::size_t initialPos = 0;
-
-        strs.clear();
-
-        while (pos != std::string::npos)
-        {
-            strs.push_back(txt.substr(initialPos, pos - initialPos));
-            initialPos = pos + 1;
-
-            pos = txt.find(ch, initialPos);
-        }
-
-        strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
-
-        return strs;
     }
 }

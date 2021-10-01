@@ -673,12 +673,7 @@ namespace ASALI
                     }
                     else
                     {
-#if ASALI_ON_WINDOW == 0
-                        std::vector<std::string> filevector = this->splitString(filename, "/");
-#else
-                        std::vector<std::string> filevector = this->splitString(filename, "\\");
-#endif
-
+                        std::vector<std::string> filevector = fileManager_.splitPath(filename);
                         std::string function = filevector.back().substr(0, filevector.back().length() - 3);
                         std::string path = filename.substr(0, filename.length() - function.length() - 3);
 
@@ -770,27 +765,6 @@ namespace ASALI
                 return name.size();
             }
         }
-    }
-
-    std::vector<std::string> catalyticReactors::splitString(const std::string txt, std::string ch)
-    {
-        std::vector<std::string> strs;
-        std::size_t pos = txt.find(ch);
-        std::size_t initialPos = 0;
-
-        strs.clear();
-
-        while (pos != std::string::npos)
-        {
-            strs.push_back(txt.substr(initialPos, pos - initialPos));
-            initialPos = pos + 1;
-
-            pos = txt.find(ch, initialPos);
-        }
-
-        strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
-
-        return strs;
     }
 
     std::vector<std::string> catalyticReactors::gasSpeciesNames()

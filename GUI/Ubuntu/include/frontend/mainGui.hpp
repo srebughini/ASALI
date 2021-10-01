@@ -107,9 +107,6 @@ namespace ASALI
         void het1d();
         void dp();
 #endif
-
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
-
         Gtk::Button discrimerButton_;
         Gtk::Button exitButton1_;
         Gtk::Button exitButton2_;

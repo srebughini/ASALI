@@ -64,6 +64,8 @@ namespace ASALI
         std::string saveFile(gpointer window, std::string current_file_name);
         std::string openFile(gpointer window);
         std::string relative_path_to_absolute_path(std::string relpath);
+        std::vector<std::string> splitString(const std::string txt, std::string ch);
+        std::vector<std::string> splitPath(const std::string path);
 
         virtual ~asaliFileManager();
     };

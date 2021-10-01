@@ -184,8 +184,6 @@ namespace ASALI
         bool checkEquation();
         bool checkSpecies();
 
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
-
         int getSpecieIndex(std::string n, std::vector<std::string> nv);
 
         ASALI::beerQuote *beerQuote_;

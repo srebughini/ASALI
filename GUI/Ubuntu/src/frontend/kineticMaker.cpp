@@ -686,7 +686,7 @@ namespace ASALI
 
                 for (unsigned int i = 0; i < op_.size(); i++)
                 {
-                    std::vector<std::string> allv = this->splitString(all, op_[i]);
+                    std::vector<std::string> allv = fileManager_.splitString(all, op_[i]);
                     all.clear();
                     for (unsigned int j = 0; j < allv.size(); j++)
                     {
@@ -881,10 +881,10 @@ namespace ASALI
         {
             for (unsigned int k = 0; k < 2; k++)
             {
-                std::vector<std::string> r = this->splitString(this->splitString(all, "=")[k], "+");
+                std::vector<std::string> r = fileManager_.splitString(fileManager_.splitString(all, "=")[k], "+");
                 for (unsigned int i = 0; i < r.size(); i++)
                 {
-                    std::vector<std::string> s = this->splitString(r[i], "*");
+                    std::vector<std::string> s = fileManager_.splitString(r[i], "*");
                     if (s.size() == 1 && !std::isdigit(s[0].at(0)))
                     {
                         int q = this->getSpecieIndex(s[0], n_);
@@ -986,27 +986,6 @@ namespace ASALI
     void kineticMaker::exit()
     {
         this->hide();
-    }
-
-    std::vector<std::string> kineticMaker::splitString(const std::string txt, std::string ch)
-    {
-        std::vector<std::string> strs;
-        std::size_t pos = txt.find(ch);
-        std::size_t initialPos = 0;
-
-        strs.clear();
-
-        while (pos != std::string::npos)
-        {
-            strs.push_back(txt.substr(initialPos, pos - initialPos));
-            initialPos = pos + 1;
-
-            pos = txt.find(ch, initialPos);
-        }
-
-        strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
-
-        return strs;
     }
 
     void kineticMaker::replaceString(std::string &str, const std::string from, const std::string to)

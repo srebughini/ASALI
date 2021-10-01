@@ -103,7 +103,6 @@ namespace ASALI
         std::string getBeerShort();
         std::string convertToTimeFormat(double t);
 
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
         std::vector<std::string> gasSpeciesNames();
 
         Gtk::Box coverageBox_;
