@@ -3,7 +3,7 @@
 </p>
 <p align="center">
   <a href="https://github.com/srebughini/ASALI/blob/master/CONTRIBUTING.md"><img alt="Contributions welcome" src="https://img.shields.io/static/v1.svg?label=contributions&message=welcome&style=flat-square&color=red"></a>
-  <a href="https://travis-ci.com/srebughini/ASALI"><img src="https://img.shields.io/travis/com/srebughini/ASALI?style=flat-square"></a>
+  <a href="https://app.travis-ci.com/github/srebughini/ASALI"><img src="https://img.shields.io/travis/com/srebughini/ASALI?style=flat-square"></a>
   <a href="https://sourceforge.net/projects/asali/?source=directory"><img src="https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square"></a>
   <a href="https://twitter.com/ASALIcode"><img src="https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/stargazers"><img src="https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square"></a>
