@@ -50,28 +50,46 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include <climits>
 #include <numeric>
 #include <functional>
-
+#include <float.h>
 
 namespace ASALI
 {
+    /// Class to handle vectors
     class asaliVectorUtils
     {
-        public:
-            asaliVectorUtils();
+    public:
+        /// Class constructor
+        asaliVectorUtils();
 
-            double MaxElement(const std::vector<double> v);
-            double MinElement(const std::vector<double> v);
-            double SumElements(const std::vector<double> v);
-            double DotProduct(const std::vector<double> a,const std::vector<double> b);
-            double MeanValue(const std::vector<double> v);
+        /// Get maximum value of std::vector<double>
+        double MaxElement(const std::vector<double> v);
 
-            int MaxElement(const std::vector<int> v);
+        /// Get minimum value of std::vector<double>
+        double MinElement(const std::vector<double> v);
 
-            std::vector<double> ElementByElementProduct(const std::vector<double> a,const std::vector<double> b);
+        /// Get the sum of all elements of std::vector<double>
+        double SumElements(const std::vector<double> v);
 
-            virtual ~asaliVectorUtils();
+        /// Get dot product of two std::vector<double> vectors
+        double DotProduct(const std::vector<double> a, const std::vector<double> b);
+
+        /// Get mean value of std::vector<double>
+        double MeanValue(const std::vector<double> v);
+
+        /// Get maximum value of std::vector<int>
+        int MaxElement(const std::vector<int> v);
+
+        /// Get minimum value of std::vector<int>
+        int MinElement(const std::vector<int> v);
+
+        /// Get element by element product of two std::vector<double> vectors
+        std::vector<double> ElementByElementProduct(const std::vector<double> a, const std::vector<double> b);
+
+        /// Class destructor
+        virtual ~asaliVectorUtils();
     };
 }
 

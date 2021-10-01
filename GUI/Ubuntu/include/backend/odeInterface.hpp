@@ -69,62 +69,76 @@ namespace ASALI
 #define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
     template <typename T>
+    /// Class interface for SUNDIALS CVODE solver (https://computation.llnl.gov/projects/sundials)
     class odeInterface : public Gtk::Window
     {
     public:
+        /// Class constructor
         odeInterface();
 
+        /// Solve equations
         int solve(const double tf, std::vector<double> &yf);
 
+        /// Set system equations
         void setEquations(T *eq);
 
+        /// Set system initial conditions
         void setInitialConditions(double t0, std::vector<double> y0);
 
+        /// Set solver tollerance
         void setTollerance(const double absTol, const double relTol);
 
+        /// Set band matrix width
         void setBandDimensions(const double upperBand, const double lowerBand);
 
+        /// Set solver contrains
         void setConstraints(const bool constraints);
 
+        /// Return solver output
         bool check() { return check_; };
+
+        /// Refresh solver resolution
         void start() { check_ = true; };
 
+        /// Class destructor
         ~odeInterface(void);
 
     private:
-        void *cvode_mem_;
+        void *cvode_mem_; /// Pointer to the CVODE solver
 
-        T *eq_;
+        T *eq_; /// Template variable that describe the system equation
 
-        int NEQ_;
+        int NEQ_; /// Number of equations
 
-        double relTol_;
-        double absTol_;
-        double upperBand_;
-        double lowerBand_;
-        double t0_;
+        double relTol_;    /// Relative tollerance
+        double absTol_;    /// Absolute tollerance
+        double upperBand_; /// Upper matrix band width
+        double lowerBand_; /// Lower matrix band width
+        double t0_;        /// Integration variable initial conditions
 
-        bool constraints_;
-        bool check_;
+        bool check_;       /// Flag that shows the solver output
+        bool constraints_; /// Flag to enable/disable constraints
 
-        N_Vector yCVODE_;
-        N_Vector dyCVODE_;
-        N_Vector y0CVODE_;
-        N_Vector dy0CVODE_;
+        N_Vector yCVODE_;   /// SUNDIALS vector of integrated variables
+        N_Vector dyCVODE_;  /// SUNDIALS vector of residuals
+        N_Vector y0CVODE_;  /// SUNDIALS vector of initial conditions
+        N_Vector dy0CVODE_; /// SUNDIALS vector of initial residuals
 
-        SUNMatrix A_;
+        SUNMatrix A_; /// SUNDIALS matrix
 
-        SUNLinearSolver LS_;
+        SUNLinearSolver LS_; /// SUNDIALS linear solver
 
-        std::vector<double> y0_;
-        std::vector<double> dy0_;
+        std::vector<double> y0_;  /// std::vector of initial conditions
+        std::vector<double> dy0_; /// std::vector of initial residuals
 
-        std::vector<std::string> beer_;
+        std::vector<std::string> beer_; /// std::vector of beer quotes
+        ASALI::beerQuote beerQuote_;    /// Point of ASALI::beerQuote object
 
+        /// Check SUNDIALS output flags
         int checkFlag(void *flagvalue, int opt);
 
+        /// Show errors
         void error();
-        ASALI::beerQuote beerQuote_;
     };
 
     template <typename T>

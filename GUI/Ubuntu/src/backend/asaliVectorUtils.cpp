@@ -46,7 +46,7 @@ namespace ASALI
 
     double asaliVectorUtils::MaxElement(const std::vector<double> v)
     {
-        double max = 0.;
+        double max = DBL_MIN;
 
         for (unsigned int i = 0; i < v.size(); i++)
             max = std::max(v[i], max);
@@ -56,7 +56,7 @@ namespace ASALI
 
     int asaliVectorUtils::MaxElement(const std::vector<int> v)
     {
-        int max = 0.;
+        int max = INT_MIN;
 
         for (unsigned int i = 0; i < v.size(); i++)
             max = std::max(v[i], max);
@@ -66,7 +66,17 @@ namespace ASALI
 
     double asaliVectorUtils::MinElement(const std::vector<double> v)
     {
-        double min = 1e64;
+        double min = DBL_MAX;
+
+        for (unsigned int i = 0; i < v.size(); i++)
+            min = std::min(v[i], min);
+
+        return min;
+    }
+
+    int asaliVectorUtils::MinElement(const std::vector<int> v)
+    {
+        int min = INT_MAX;
 
         for (unsigned int i = 0; i < v.size(); i++)
             min = std::min(v[i], min);

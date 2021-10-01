@@ -60,46 +60,6 @@ namespace ASALI
     }
 #endif
 
-    double plotInterface::maxElement(const std::vector<double> v)
-    {
-        double max = DBL_MIN;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            max = std::max(v[i], max);
-
-        return max;
-    }
-
-    double plotInterface::minElement(const std::vector<double> v)
-    {
-        double min = DBL_MAX;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            min = std::min(v[i], min);
-
-        return min;
-    }
-
-    int plotInterface::maxElement(const std::vector<int> v)
-    {
-        int max = INT_MIN;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            max = std::max(v[i], max);
-
-        return max;
-    }
-
-    int plotInterface::minElement(const std::vector<int> v)
-    {
-        int min = INT_MAX;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            min = std::min(v[i], min);
-
-        return min;
-    }
-
     void plotInterface::setDefaultBackgroundColor(int r, int b, int g)
     {
         defaultBgColor_[0] = r;
@@ -255,8 +215,8 @@ namespace ASALI
 
         nLegend_[nFig_] = xForSingleFig_.size();
 
-        this->setXlimits(this->maxElement(x), this->minElement(x));
-        this->setYlimits(this->maxElement(y), this->minElement(y));
+        this->setXlimits(vectorUtils_.MaxElement(x), vectorUtils_.MinElement(x));
+        this->setYlimits(vectorUtils_.MaxElement(y), vectorUtils_.MinElement(y));
     }
 
     void plotInterface::setLegendPosition(const std::string position)

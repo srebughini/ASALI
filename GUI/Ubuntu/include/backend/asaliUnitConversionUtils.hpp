@@ -53,34 +53,66 @@
 #include <numeric>
 #include <functional>
 
-
 namespace ASALI
 {
-    class asaliUnitConversionUtils
-    {
-        public:
-            asaliUnitConversionUtils();
+	/// Class to convert unit dimensions
+	class asaliUnitConversionUtils
+	{
+	public:
+		/// Class constructor
+		asaliUnitConversionUtils();
 
-			void toMeter(double &v, std::string m);
-			void toKg(double &v, std::string m);
-			void toWattPerMeterPerKelvin(double &v, std::string m);
-			void toKgPerCubeMeter(double &v, std::string m);
-			void toJoulePerKgPerKelvin(double &v, std::string m);
-			void toPascalPerSecond(double &v, std::string m);
-			void toSecond(double &v, std::string m);
-			void toPascal(double &v, std::string m);
-			void toKelvin(double &v, std::string m);
-			void toCubeMeter(double &v, std::string m);
-			void toSquareMeter(double &v, std::string m);
-			void toOneOverMeter(double &v, std::string m);
-			void toMeterPerSecond(double &v, std::string m);
-			void toCubeMeterPerSecond(double &v, std::string m);
+		/// Convert length to [m]
+		void toMeter(double &v, std::string m);
 
-			void fromPascal(double &v, std::string m);
-			void fromMeter(double &v, std::string m);
+		/// Convert weight to [kg]
+		void toKg(double &v, std::string m);
 
-            virtual ~asaliUnitConversionUtils();
-    };
+		/// Convert to [W/m/K]
+		void toWattPerMeterPerKelvin(double &v, std::string m);
+
+		/// Convert to [kg/m3]
+		void toKgPerCubeMeter(double &v, std::string m);
+
+		/// Convert to [J/kg/K]
+		void toJoulePerKgPerKelvin(double &v, std::string m);
+
+		/// Convert to [Pa/s]
+		void toPascalPerSecond(double &v, std::string m);
+
+		/// Convert time to [s]
+		void toSecond(double &v, std::string m);
+
+		/// Convert pressure to [Pa]
+		void toPascal(double &v, std::string m);
+
+		/// Convert temperature to [K]
+		void toKelvin(double &v, std::string m);
+
+		/// Convert volume to [m3]
+		void toCubeMeter(double &v, std::string m);
+
+		/// Convert volume to [Sm3]
+		void toSquareMeter(double &v, std::string m);
+
+		/// Convert to [1/m]
+		void toOneOverMeter(double &v, std::string m);
+
+		/// Convert speed to [m/s]
+		void toMeterPerSecond(double &v, std::string m);
+
+		/// Convert flow rate to [m3/s]
+		void toCubeMeterPerSecond(double &v, std::string m);
+
+		/// Convert pressure from [Pa] to another unit dimension
+		void fromPascal(double &v, std::string m);
+
+		/// Convert length from [m] to another unit dimension
+		void fromMeter(double &v, std::string m);
+
+		/// Class destructor
+		virtual ~asaliUnitConversionUtils();
+	};
 }
 
 #endif

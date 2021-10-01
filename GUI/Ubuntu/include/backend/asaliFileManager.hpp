@@ -56,17 +56,29 @@
 
 namespace ASALI
 {
+    /// Class that handles file opening/closing
     class asaliFileManager
     {
     public:
+        /// Class constuctor
         asaliFileManager();
 
+        /// Save file
         std::string saveFile(gpointer window, std::string current_file_name);
+
+        /// Open file
         std::string openFile(gpointer window);
+
+        /// Convert relative to absolute path
         std::string relative_path_to_absolute_path(std::string relpath);
+
+        /// Split string based on character
         std::vector<std::string> splitString(const std::string txt, std::string ch);
+
+        /// Split path
         std::vector<std::string> splitPath(const std::string path);
 
+        /// Class destructor
         virtual ~asaliFileManager();
     };
 }

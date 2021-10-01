@@ -70,67 +70,81 @@ namespace ASALI
 #define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
     template <typename T>
+    /// Class interface for SUNDIALS IDA solver (https://computation.llnl.gov/projects/sundials)
     class bvpInterface : public Gtk::Window
     {
     public:
+        /// Class constructor
         bvpInterface();
 
+        /// Solve equations
         int solve(const double tf, std::vector<double> &yf);
 
+        /// Set system equations
         void setEquations(T *eq);
 
+        /// Set system initial conditions
         void setInitialConditions(double t0, std::vector<double> y0);
 
+        /// Set system algebraic equations flag
         void setAlgebraic(const std::vector<bool> algebraic);
 
+        /// Set solver tollerance
         void setTollerance(const double absTol, const double relTol);
 
+        /// Set band matrix width
         void setBandDimensions(const double upperBand, const double lowerBand);
 
+        /// Set solver contrains
         void setConstraints(const bool constraints);
 
+        /// Return solver output
         bool check() { return check_; };
+
+        /// Refresh solver resolution
         void start() { check_ = true; };
 
+        /// Class destructor
         ~bvpInterface(void);
 
     private:
-        void *ida_mem_;
+        void *ida_mem_; /// Pointer to the IDA solver
 
-        T *eq_;
+        T *eq_; /// Template variable that describe the system equation
 
-        int NEQ_;
+        int NEQ_; /// Number of equations
 
-        double relTol_;
-        double absTol_;
-        double upperBand_;
-        double lowerBand_;
-        double t0_;
+        double relTol_;    /// Relative tollerance
+        double absTol_;    /// Absolute tollerance
+        double upperBand_; /// Upper matrix band width
+        double lowerBand_; /// Lower matrix band width
+        double t0_;        /// Integration variable initial conditions
 
-        bool check_;
+        bool check_;       /// Flag that shows the solver output
+        bool constraints_; /// Flag to enable/disable constraints
 
-        bool constraints_;
+        N_Vector yIDA_;         /// SUNDIALS vector of integrated variables
+        N_Vector dyIDA_;        /// SUNDIALS vector of residuals
+        N_Vector y0IDA_;        /// SUNDIALS vector of initial conditions
+        N_Vector dy0IDA_;       /// SUNDIALS vector of initial residuals
+        N_Vector algebraicIDA_; /// SUNDIALS vector describing the algebraic equations
 
-        N_Vector yIDA_;
-        N_Vector dyIDA_;
-        N_Vector y0IDA_;
-        N_Vector dy0IDA_;
-        N_Vector algebraicIDA_;
+        SUNMatrix A_; /// SUNDIALS matrix
 
-        SUNMatrix A_;
+        SUNLinearSolver LS_; /// SUNDIALS linear solver
 
-        SUNLinearSolver LS_;
+        std::vector<double> y0_;        /// std::vector of initial conditions
+        std::vector<double> dy0_;       /// std::vector of initial residuals
+        std::vector<double> algebraic_; /// std::vector describing the algebraic equations
 
-        std::vector<double> y0_;
-        std::vector<double> dy0_;
+        std::vector<std::string> beer_; /// std::vector of beer quotes
+        ASALI::beerQuote beerQuote_;    /// Point of ASALI::beerQuote object
 
-        std::vector<double> algebraic_;
-
-        std::vector<std::string> beer_;
-
+        /// Check SUNDIALS output flags
         int checkFlag(void *flagvalue, int opt);
+
+        /// Show errors
         void error();
-        ASALI::beerQuote beerQuote_;
     };
 
     template <typename T>

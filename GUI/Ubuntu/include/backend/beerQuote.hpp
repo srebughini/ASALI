@@ -54,22 +54,30 @@
 
 namespace ASALI
 {
+    /// Class to get random beer quotes
     class beerQuote
     {
     public:
+        /// Class constructor
         beerQuote();
 
+        /// Get random beer quote
         std::string getRandomQuote();
+
+        /// Get random beer quote with a string length lower than shortQuoteLength
         std::string getShortRandomQuote();
 
+        /// Class destructor
         virtual ~beerQuote();
 
     private:
+        /// Get random unsigned int
         unsigned int randomUnsignedInt(const unsigned int min, const unsigned int max);
-        unsigned int shortQuoteLength;
 
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
+        unsigned int shortQuoteLength; /// Short beer quote maximum length
+
+        std::vector<std::string> beer_;      /// Beer quotes vector
+        std::vector<std::string> beerShort_; /// Beer quotes shorten than shortQuoteLength vector
     };
 }
 #endif

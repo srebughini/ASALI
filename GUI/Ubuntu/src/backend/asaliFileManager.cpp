@@ -96,37 +96,35 @@ namespace ASALI
 		return std::string(g_build_filename(COMPILING_PATH, relpath.c_str(), NULL));
 	}
 
+	std::vector<std::string> asaliFileManager::splitString(const std::string txt, std::string ch)
+	{
+		std::vector<std::string> strs;
+		std::size_t pos = txt.find(ch);
+		std::size_t initialPos = 0;
 
-    std::vector<std::string> asaliFileManager::splitString(const std::string txt, std::string ch)
-    {
-        std::vector<std::string> strs;
-        std::size_t pos = txt.find(ch);
-        std::size_t initialPos = 0;
+		strs.clear();
 
-        strs.clear();
+		while (pos != std::string::npos)
+		{
+			strs.push_back(txt.substr(initialPos, pos - initialPos));
+			initialPos = pos + 1;
 
-        while (pos != std::string::npos)
-        {
-            strs.push_back(txt.substr(initialPos, pos - initialPos));
-            initialPos = pos + 1;
+			pos = txt.find(ch, initialPos);
+		}
 
-            pos = txt.find(ch, initialPos);
-        }
+		strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
 
-        strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
+		return strs;
+	}
 
-        return strs;
-    }
-
-
-    std::vector<std::string> asaliFileManager::splitPath(const std::string path)
-    {
-        #if ASALI_ON_WINDOW == 0
-			return this->splitString(path, "/");
-		#else
-			return this->splitString(path, "\\");
-		#endif
-    }
+	std::vector<std::string> asaliFileManager::splitPath(const std::string path)
+	{
+#if ASALI_ON_WINDOW == 0
+		return this->splitString(path, "/");
+#else
+		return this->splitString(path, "\\");
+#endif
+	}
 
 	asaliFileManager::~asaliFileManager()
 	{

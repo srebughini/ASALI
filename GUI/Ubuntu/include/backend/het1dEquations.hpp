@@ -47,6 +47,7 @@ namespace ASALI
     class het1dEquations : public ASALI::catalyticReactorsEquations
     {
     public:
+        /// Class constructor
         het1dEquations();
 
         /// Enable/disable energy balance
