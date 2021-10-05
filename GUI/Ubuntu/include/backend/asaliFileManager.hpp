@@ -78,6 +78,12 @@ namespace ASALI
         /// Split path
         std::vector<std::string> splitPath(const std::string path);
 
+        /// Get Cantera interfaces
+        std::vector<std::string> getCanteraInterfaces(const std::string filename);
+
+        // Get Cantera phase name from interface
+        std::string getCanteraPhaseName(std::string interfaceName);
+
         /// Class destructor
         virtual ~asaliFileManager();
     };

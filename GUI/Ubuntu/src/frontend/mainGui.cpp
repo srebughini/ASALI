@@ -623,41 +623,10 @@ namespace ASALI
             }
             else if (filename.find("xml") != std::string::npos)
             {
-                std::vector<std::string> readed(2);
-                readed[0] = "none";
-                readed[1] = "none";
-                {
-                    std::vector<std::string> a;
-                    std::vector<std::string> b;
-                    while (!input.eof())
-                    {
-                        std::string line;
-                        getline(input, line);
-                        if (line.find("<phase ") != std::string::npos)
-                        {
-                            a.push_back(line);
-                        }
-                        else if (line.find("<kinetics ") != std::string::npos)
-                        {
-                            b.push_back(line);
-                        }
-                    }
+                std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
 
-                    for (unsigned int i = 0; i < b.size(); i++)
-                    {
-                        if (b[i].find("Interface") != std::string::npos)
-                        {
-                            readed[1] = a[i];
-                        }
-                        else if (b[i].find("GasKinetics") != std::string::npos)
-                        {
-                            readed[0] = a[i];
-                        }
-                    }
-                }
-
-                if (readed[0] == "none" ||
-                    readed[1] == "none")
+                if (interfaces[0] == "none" ||
+                    interfaces[1] == "none")
                 {
                     Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
                     smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
@@ -669,59 +638,11 @@ namespace ASALI
                     case (Gtk::RESPONSE_YES):
                     {
                         std::string type = "none";
-                        for (unsigned int i = 0; i < readed.size(); i++)
+                        for (unsigned int i = 0; i < interfaces.size(); i++)
                         {
-                            if (readed[i] != "none")
+                            if (interfaces[i] != "none")
                             {
-                                std::string dummyString = readed[i];
-
-                                for (std::size_t j = 0; j < dummyString.size(); j++)
-                                {
-                                    if (dummyString.substr(j, 1) == ">")
-                                    {
-                                        dummyString.replace(j, 1, " ");
-                                    }
-                                    else if (dummyString.substr(j, 1) == "\"")
-                                    {
-                                        dummyString.replace(j, 1, " ");
-                                    }
-                                    else if (dummyString.substr(j, 1) == "=")
-                                    {
-                                        dummyString.replace(j, 1, " ");
-                                    }
-                                }
-
-                                std::vector<std::string> dummyVector;
-                                dummyVector.clear();
-
-                                std::istringstream iss(dummyString);
-                                while (iss >> dummyString)
-                                {
-                                    dummyVector.push_back(dummyString);
-                                }
-
-                                if (dummyVector.size() > 4)
-                                {
-                                    for (unsigned int j = 0; j < dummyVector.size() - 1; j++)
-                                    {
-                                        if (dummyVector[j] == "<phase" &&
-                                            dummyVector[j + 1] == "dim" &&
-                                            dummyVector[j + 3] == "id")
-                                        {
-                                            type = dummyVector[j + 4];
-                                            type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
-                                            type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
-                                        }
-                                        else if (dummyVector[j] == "<phase" &&
-                                                 dummyVector[j + 1] == "id" &&
-                                                 dummyVector[j + 3] == "dim")
-                                        {
-                                            type = dummyVector[j + 2];
-                                            type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
-                                            type.erase(std::remove(type.begin(), type.end(), ' '), type.end());
-                                        }
-                                    }
-                                }
+                                type = fileManager_.getCanteraPhaseName(interfaces[i]);
                             }
                         }
 
@@ -755,57 +676,9 @@ namespace ASALI
                     std::vector<std::string> type(2);
                     type[0] = "none";
                     type[1] = "none";
-                    for (unsigned int i = 0; i < readed.size(); i++)
+                    for (unsigned int i = 0; i < interfaces.size(); i++)
                     {
-                        std::string dummyString = readed[i];
-
-                        for (std::size_t j = 0; j < dummyString.size(); j++)
-                        {
-                            if (dummyString.substr(j, 1) == ">")
-                            {
-                                dummyString.replace(j, 1, " ");
-                            }
-                            else if (dummyString.substr(j, 1) == "\"")
-                            {
-                                dummyString.replace(j, 1, " ");
-                            }
-                            else if (dummyString.substr(j, 1) == "=")
-                            {
-                                dummyString.replace(j, 1, " ");
-                            }
-                        }
-
-                        std::vector<std::string> dummyVector;
-                        dummyVector.clear();
-
-                        std::istringstream iss(dummyString);
-                        while (iss >> dummyString)
-                        {
-                            dummyVector.push_back(dummyString);
-                        }
-
-                        if (dummyVector.size() > 4)
-                        {
-                            for (unsigned int j = 0; j < dummyVector.size() - 1; j++)
-                            {
-                                if (dummyVector[j] == "<phase" &&
-                                    dummyVector[j + 1] == "dim" &&
-                                    dummyVector[j + 3] == "id")
-                                {
-                                    type[i] = dummyVector[j + 4];
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
-                                }
-                                else if (dummyVector[j] == "<phase" &&
-                                         dummyVector[j + 1] == "id" &&
-                                         dummyVector[j + 3] == "dim")
-                                {
-                                    type[i] = dummyVector[j + 2];
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), '"'), type[i].end());
-                                    type[i].erase(std::remove(type[i].begin(), type[i].end(), ' '), type[i].end());
-                                }
-                            }
-                        }
+                        type[i] = fileManager_.getCanteraPhaseName(interfaces[i]);
 
                         if (type[0] != "none" && type[1] != "none")
                         {

@@ -126,6 +126,101 @@ namespace ASALI
 #endif
 	}
 
+	std::vector<std::string> asaliFileManager::getCanteraInterfaces(const std::string filename)
+	{
+		const char *path = filename.c_str();
+		std::ifstream input;
+		input.open(path);
+		std::vector<std::string> readed(2);
+		readed[0] = "none";
+		readed[1] = "none";
+
+		std::vector<std::string> a;
+		std::vector<std::string> b;
+		while (!input.eof())
+		{
+			std::string line;
+			getline(input, line);
+			if (line.find("<phase ") != std::string::npos)
+			{
+				a.push_back(line);
+			}
+			else if (line.find("<kinetics ") != std::string::npos)
+			{
+				b.push_back(line);
+			}
+		}
+
+		for (unsigned int i = 0; i < b.size(); i++)
+		{
+			if (b[i].find("Interface") != std::string::npos)
+			{
+				readed[1] = a[i];
+			}
+			else if (b[i].find("GasKinetics") != std::string::npos)
+			{
+				readed[0] = a[i];
+			}
+		}
+		input.close();
+		return readed;
+	}
+
+	std::string asaliFileManager::getCanteraPhaseName(std::string interfaceName)
+	{
+		for (std::size_t j = 0; j < interfaceName.size(); j++)
+		{
+			if (interfaceName.substr(j, 1) == ">")
+			{
+				interfaceName.replace(j, 1, " ");
+			}
+			else if (interfaceName.substr(j, 1) == "\"")
+			{
+				interfaceName.replace(j, 1, " ");
+			}
+			else if (interfaceName.substr(j, 1) == "=")
+			{
+				interfaceName.replace(j, 1, " ");
+			}
+		}
+
+		std::vector<std::string> dummyVector;
+		dummyVector.clear();
+
+		std::istringstream iss(interfaceName);
+		while (iss >> interfaceName)
+		{
+			dummyVector.push_back(interfaceName);
+		}
+
+		std::string phaseName = "none";
+
+		if (dummyVector.size() > 4)
+		{
+			for (unsigned int j = 0; j < dummyVector.size() - 1; j++)
+			{
+				if (dummyVector[j] == "<phase" &&
+					dummyVector[j + 1] == "dim" &&
+					dummyVector[j + 3] == "id")
+				{
+					phaseName = dummyVector[j + 4];
+					phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), '"'), phaseName.end());
+					phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), ' '), phaseName.end());
+				}
+				else if (dummyVector[j] == "<phase" &&
+						 dummyVector[j + 1] == "id" &&
+						 dummyVector[j + 3] == "dim")
+				{
+					phaseName = dummyVector[j + 2];
+					phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), '"'), phaseName.end());
+					phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), ' '), phaseName.end());
+				}
+			}
+		}
+
+		return phaseName;
+	}
+
 	asaliFileManager::~asaliFileManager()
 	{
 	}
