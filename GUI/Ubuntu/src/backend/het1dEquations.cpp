@@ -469,16 +469,8 @@ namespace ASALI
                         dy[counter++] = 0.;
                     }
 
-                    if (energyEquation_ == true)
-                    {
-                        dy[counter++] = 0.;
-                        dy[counter++] = 0.;
-                    }
-                    else
-                    {
-                        dy[counter++] = 0.;
-                        dy[counter++] = 0.;
-                    }
+                    dy[counter++] = 0.;
+                    dy[counter++] = 0.;
                 }
             }
         }

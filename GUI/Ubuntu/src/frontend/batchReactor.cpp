@@ -88,47 +88,29 @@ namespace ASALI
                 propertiesGrid_.attach(volumeEntry_, 1, 0, 1, 1);
                 volumeEntry_.set_text("1");
                 propertiesGrid_.attach(volumeCombo_, 2, 0, 1, 1);
-                volumeCombo_.append("m\u00b3");
-                volumeCombo_.append("dm\u00b3");
-                volumeCombo_.append("cm\u00b3");
-                volumeCombo_.append("mm\u00b3");
-                volumeCombo_.append("cc");
-                volumeCombo_.append("l");
-                volumeCombo_.set_active(0);
+                unitConversion_->updateBox(volumeCombo_, "volume");
 
                 //Catalytic load
                 propertiesGrid_.attach(loadLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(loadEntry_, 1, 1, 1, 1);
                 loadEntry_.set_text("1");
                 propertiesGrid_.attach(loadCombo_, 2, 1, 1, 1);
-                loadCombo_.append("1/m");
-                loadCombo_.append("1/dm");
-                loadCombo_.append("1/cm");
-                loadCombo_.append("1/mm");
-                loadCombo_.set_active(0);
+                unitConversion_->updateBox(loadCombo_, "inverselength");
 
                 //Time
                 propertiesGrid_.attach(timeLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 2, 1, 1);
                 timeEntry_.set_text("1");
                 propertiesGrid_.attach(timeCombo_, 2, 2, 1, 1);
-                timeCombo_.append("s");
-                timeCombo_.append("min");
-                timeCombo_.append("h");
-                timeCombo_.append("d");
-                timeCombo_.set_active(0);
+                unitConversion_->updateBox(timeCombo_, "time");
 
                 //Save options
                 propertiesGrid_.attach(saveLabel_, 0, 3, 1, 1);
                 propertiesGrid_.attach(saveEntry_, 1, 3, 1, 1);
                 saveEntry_.set_text("0.1");
                 propertiesGrid_.attach(saveCombo_, 2, 3, 1, 1);
-                saveCombo_.append("s");
-                saveCombo_.append("min");
-                saveCombo_.append("h");
-                saveCombo_.append("d");
-                saveCombo_.set_active(0);
-
+                unitConversion_->updateBox(saveCombo_, "time");
+ 
                 //Energy
                 propertiesGrid_.attach(energyLabel_, 0, 4, 1, 1);
                 propertiesGrid_.attach(energyCombo_, 1, 4, 1, 1);
@@ -609,8 +591,6 @@ namespace ASALI
 
         //Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
             double dt = 0.;
 
             if (alfa_ != 0.)
@@ -622,6 +602,8 @@ namespace ASALI
                 dt = dt_ / 100.;
             }
 
+            double ti = 0.;
+            double tf = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
             double timef = 0.;

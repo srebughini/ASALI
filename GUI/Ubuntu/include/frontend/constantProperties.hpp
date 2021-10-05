@@ -144,9 +144,6 @@ namespace ASALI
         unsigned int NC_;
 
         std::vector<std::string> n_;
-        std::vector<std::string> beer_;
-        std::vector<std::string> small;
-        std::vector<std::string> big;
 
         std::vector<double> MW_;
         std::vector<double> diff_;
@@ -162,7 +159,6 @@ namespace ASALI
 
         ASALI::beerQuote *beerQuote_;
         ASALI::asaliUnitConversionUtils *unitConversion_;
-
         ASALI::asaliFileManager fileManager_;
     };
 }

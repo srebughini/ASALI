@@ -65,28 +65,28 @@ namespace ASALI
         asaliVectorUtils();
 
         /// Get maximum value of std::vector<double>
-        double MaxElement(const std::vector<double> v);
+        static double MaxElement(const std::vector<double> v);
 
         /// Get minimum value of std::vector<double>
-        double MinElement(const std::vector<double> v);
+        static double MinElement(const std::vector<double> v);
 
         /// Get the sum of all elements of std::vector<double>
-        double SumElements(const std::vector<double> v);
+        static double SumElements(const std::vector<double> v);
 
         /// Get dot product of two std::vector<double> vectors
-        double DotProduct(const std::vector<double> a, const std::vector<double> b);
+        static double DotProduct(const std::vector<double> a, const std::vector<double> b);
 
         /// Get mean value of std::vector<double>
         double MeanValue(const std::vector<double> v);
 
         /// Get maximum value of std::vector<int>
-        int MaxElement(const std::vector<int> v);
+        static int MaxElement(const std::vector<int> v);
 
         /// Get minimum value of std::vector<int>
-        int MinElement(const std::vector<int> v);
+        static int MinElement(const std::vector<int> v);
 
         /// Get element by element product of two std::vector<double> vectors
-        std::vector<double> ElementByElementProduct(const std::vector<double> a, const std::vector<double> b);
+        static std::vector<double> ElementByElementProduct(const std::vector<double> a, const std::vector<double> b);
 
         /// Class destructor
         virtual ~asaliVectorUtils();

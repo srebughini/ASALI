@@ -97,33 +97,21 @@ namespace ASALI
                 propertiesGrid_.attach(loadEntry_, 1, 0, 1, 1);
                 loadEntry_.set_text("1");
                 propertiesGrid_.attach(loadCombo_, 2, 0, 1, 1);
-                loadCombo_.append("1/m");
-                loadCombo_.append("1/dm");
-                loadCombo_.append("1/cm");
-                loadCombo_.append("1/mm");
-                loadCombo_.set_active(0);
+                unitConversion_->updateBox(loadCombo_, "inverselength");
 
-                //Time
+                 //Time
                 propertiesGrid_.attach(timeLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 1, 1, 1);
                 timeEntry_.set_text("1");
                 propertiesGrid_.attach(timeCombo_, 2, 1, 1, 1);
-                timeCombo_.append("s");
-                timeCombo_.append("min");
-                timeCombo_.append("h");
-                timeCombo_.append("d");
-                timeCombo_.set_active(0);
+                unitConversion_->updateBox(timeCombo_, "time");
 
                 //Save options
                 propertiesGrid_.attach(saveLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(saveEntry_, 1, 2, 1, 1);
                 saveEntry_.set_text("0.1");
                 propertiesGrid_.attach(saveCombo_, 2, 2, 1, 1);
-                saveCombo_.append("s");
-                saveCombo_.append("min");
-                saveCombo_.append("h");
-                saveCombo_.append("d");
-                saveCombo_.set_active(0);
+                unitConversion_->updateBox(saveCombo_, "time");
 
                 //Number of points
                 propertiesGrid_.attach(pointsLabel_, 3, 0, 1, 1);
@@ -174,19 +162,11 @@ namespace ASALI
                 propertiesGrid_.attach(lengthEntry_, 1, 3, 1, 1);
                 lengthEntry_.set_text("1");
                 propertiesGrid_.attach(lengthCombo_, 2, 3, 1, 1);
-                lengthCombo_.append("m");
-                lengthCombo_.append("dm");
-                lengthCombo_.append("cm");
-                lengthCombo_.append("mm");
-                lengthCombo_.append("\u03BCm");
-                lengthCombo_.set_active(2);
+                unitConversion_->updateBox(lengthCombo_, "length");
 
                 //Pore
                 poreEntry_.set_text("1");
-                poreCombo_.append("cm");
-                poreCombo_.append("mm");
-                poreCombo_.append("\u03BCm");
-                poreCombo_.set_active(2);
+                unitConversion_->updateBox(poreCombo_, "length");
 
                 //Buttons
                 propertiesGrid_.attach(exitButton3_, 0, 11, 2, 1);

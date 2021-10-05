@@ -89,10 +89,7 @@ namespace ASALI
             resultsGrid_.attach(tempEntry2_, 2, 1, 1, 1);
             tempEntry2_.set_text("398.15");
             resultsGrid_.attach(tempRangeCombo_, 3, 1, 1, 1);
-            tempRangeCombo_.append("K");
-            tempRangeCombo_.append("°C");
-            tempRangeCombo_.append("°F");
-            tempRangeCombo_.set_active(0);
+            unitConversion_->updateBox(tempRangeCombo_, "temperature");
 
             //Add properties selector
             resultsGrid_.attach(propertyLabel_, 0, 2, 1, 1);
@@ -163,101 +160,50 @@ namespace ASALI
             tempEntry_.set_max_length(10);
             tempEntry_.set_text("298.15");
             inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
-            tempCombo_.append("K");
-            tempCombo_.append("°C");
-            tempCombo_.append("°F");
-            tempCombo_.set_active(0);
+            unitConversion_->updateBox(tempCombo_, "temperature");
             doneButton_.set_label("Done");
         }
     }
 
     void linearRegression::uploadLayout()
     {
-        unitDimensionCombo_.remove_all();
-
+        std::string property;
         if (propertyCombo_.get_active_row_number() == 0)
         {
-            unitDimensionCombo_.append("W/m/K");
-            unitDimensionCombo_.append("cal/m/s/k");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionExponential.png"));
-
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+            property = "conductivity";
         }
         else if (propertyCombo_.get_active_row_number() == 1)
         {
-            unitDimensionCombo_.append("Pas");
-            unitDimensionCombo_.append("cP");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionExponential.png"));
-
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+            property = "viscosity";
         }
         else if (propertyCombo_.get_active_row_number() == 2)
         {
-            unitDimensionCombo_.append("J/kmol/K");
-            unitDimensionCombo_.append("J/mol/K");
-            unitDimensionCombo_.append("J/kg/K");
-            unitDimensionCombo_.append("cal/mol/K");
-            unitDimensionCombo_.append("cal/kmol/K");
-            unitDimensionCombo_.append("cal/kg/K");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionLinear.png"));
-
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+            property = "specificheat";
         }
         else if (propertyCombo_.get_active_row_number() == 3)
         {
-            unitDimensionCombo_.append("J/kmol");
-            unitDimensionCombo_.append("J/mol");
-            unitDimensionCombo_.append("J/kg");
-            unitDimensionCombo_.append("cal/kmol");
-            unitDimensionCombo_.append("cal/mol");
-            unitDimensionCombo_.append("cal/kg");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionLinear.png"));
-
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+            property = "enthalpy";
         }
         else if (propertyCombo_.get_active_row_number() == 4)
         {
-            unitDimensionCombo_.append("J/kmol/K");
-            unitDimensionCombo_.append("J/mol/K");
-            unitDimensionCombo_.append("J/kg/K");
-            unitDimensionCombo_.append("cal/mol/K");
-            unitDimensionCombo_.append("cal/kmol/K");
-            unitDimensionCombo_.append("cal/kg/K");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionExponential.png"));
-
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+            property = "entropy";
         }
         else if (propertyCombo_.get_active_row_number() == 5)
         {
-            unitDimensionCombo_.append("m\u00b2/s");
-            regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionExponential.png"));
+            property = "diffusivity";
+        }
 
-            if (diffCheck_)
-            {
-                resultsGrid_.remove(specieCombo_);
-                diffCheck_ = false;
-            }
+        unitConversion_->updateBox(unitDimensionCombo_, property);
+        regressionImage_.set(fileManager_.relative_path_to_absolute_path("images/RegressionExponential.png"));
 
+        if (diffCheck_)
+        {
+            resultsGrid_.remove(specieCombo_);
+            diffCheck_ = false;
+        }
+
+        if (propertyCombo_.get_active_row_number() == 5)
+        {
             specieCombo_.remove_all();
             for (unsigned int i = 0; i < n_.size(); i++)
             {
@@ -269,8 +215,6 @@ namespace ASALI
 
             diffCheck_ = true;
         }
-
-        unitDimensionCombo_.set_active(0);
     }
 
     void linearRegression::run()
@@ -453,118 +397,32 @@ namespace ASALI
 
     void linearRegression::condUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //W/m/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 1)
-        {
-            p = p / 4.186; //cal/m/s/K
-        }
+        unitConversion_->fromWattPerMeterPerKelvin(p, unitDimensionCombo_.get_active_text());
     }
 
     void linearRegression::muUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //Pas
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 1)
-        {
-            p = p * 1e03; //cP
-        }
+        unitConversion_->fromPascalPerSecond(p, unitDimensionCombo_.get_active_text());
     }
 
     void linearRegression::cpUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //J/kmol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 1)
-        {
-            p = p / 1.e03; //J/mol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 2)
-        {
-            p = p / chemistryInterface_->specieProperty("MW", name_); //J/kg/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 3)
-        {
-            p = p / 4.186; //cal/kmol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 4)
-        {
-            p = p / (1.e03 * 4.186); //cal/mol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 5)
-        {
-            p = p / (chemistryInterface_->specieProperty("MW", name_) * 4.186); //cal/kg/K
-        }
+        unitConversion_->fromJoulePerKmolePerKelvin(p, unitDimensionCombo_.get_active_text(), chemistryInterface_->specieProperty("MW", name_));
     }
 
     void linearRegression::hUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //J/kmol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 1)
-        {
-            p = p / 1.e03; //J/mol
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 2)
-        {
-            p = p / chemistryInterface_->specieProperty("MW", name_); //J/kg
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 3)
-        {
-            p = p / 4.186; //cal/kmol
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 4)
-        {
-            p = p / (1.e03 * 4.186); //cal/mol
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 5)
-        {
-            p = p / (chemistryInterface_->specieProperty("MW", name_) * 4.186); //cal/kg
-        }
+        unitConversion_->fromJoulePerKmole(p, unitDimensionCombo_.get_active_text(), chemistryInterface_->specieProperty("MW", name_));
     }
 
     void linearRegression::sUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //J/kmol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 1)
-        {
-            p = p / 1.e03; //J/mol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 2)
-        {
-            p = p / chemistryInterface_->specieProperty("MW", name_); //J/kg/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 3)
-        {
-            p = p / 4.186; //cal/kmol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 4)
-        {
-            p = p / (1.e03 * 4.186); //cal/mol/K
-        }
-        else if (unitDimensionCombo_.get_active_row_number() == 5)
-        {
-            p = p / (chemistryInterface_->specieProperty("MW", name_) * 4.186); //cal/kg/K
-        }
+        unitConversion_->fromJoulePerKmolePerKelvin(p, unitDimensionCombo_.get_active_text(), chemistryInterface_->specieProperty("MW", name_));
     }
 
     void linearRegression::diffUnitDimensions(double &p)
     {
-        if (unitDimensionCombo_.get_active_row_number() == 0)
-        {
-            p = p; //m2/s
-        }
+        unitConversion_->fromSquareMeterPerSecond(p, unitDimensionCombo_.get_active_text());
     }
 
     void linearRegression::save() {}

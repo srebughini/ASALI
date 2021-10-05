@@ -462,24 +462,21 @@ namespace ASALI
                 //Handle the response:
                 switch (answer)
                 {
-                case (Gtk::RESPONSE_YES):
-                {
-                    dialog.hide();
-                    return true;
-                    break;
-                }
-                case (Gtk::RESPONSE_NO):
-                {
-                    dialog.hide();
-                    return false;
-                    break;
-                }
-                default:
-                {
-                    dialog.hide();
-                    return false;
-                    break;
-                }
+                    case (Gtk::RESPONSE_YES):
+                    {
+                        dialog.hide();
+                        return true;
+                    }
+                    case (Gtk::RESPONSE_NO):
+                    {
+                        dialog.hide();
+                        return false;
+                    }
+                    default:
+                    {
+                        dialog.hide();
+                        return false;
+                    }
                 }
             }
             else

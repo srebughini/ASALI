@@ -87,29 +87,11 @@ namespace ASALI
             mainGrid_.set_column_homogeneous(true);
             mainGrid_.set_row_spacing(10);
             mainGrid_.set_column_spacing(10);
-
-            rhoCombo_.append("kg/m\u00b3");
-            rhoCombo_.append("g/cc");
-            rhoCombo_.set_active(0);
-
-            loadCombo_.append("1/m");
-            loadCombo_.append("1/dm");
-            loadCombo_.append("1/cm");
-            loadCombo_.append("1/mm");
-            loadCombo_.set_active(0);
-
-            cpCombo_.append("J/kg/K");
-            cpCombo_.append("kJ/kg/K");
-            cpCombo_.set_active(0);
-
-            condCombo_.append("W/m/K");
-            condCombo_.append("kW/m/K");
-            condCombo_.set_active(0);
-
-            TCombo_.append("K");
-            TCombo_.append("°C");
-            TCombo_.append("°F");
-            TCombo_.set_active(0);
+            unitConversion_->updateBox(rhoCombo_, "density");
+            unitConversion_->updateBox(loadCombo_, "inverselength");
+            unitConversion_->updateBox(cpCombo_, "specificheatonlymass");
+            unitConversion_->updateBox(condCombo_, "conducitivity");
+            unitConversion_->updateBox(TCombo_, "temperature");
 
             rhoEntry_.set_text("2700");
             cpEntry_.set_text("400");

@@ -77,52 +77,52 @@ namespace ASALI
         std::vector<double> getMassFractionFromNames(const std::vector<std::string> names);
 
         /// Return mole fraction
-        inline std::vector<double> getMoleFraction() { return mole_; };
+        inline const std::vector<double> getMoleFraction() { return mole_; };
 
         /// Return mass fraction
-        inline std::vector<double> getMassFraction() { return mass_; };
+        inline const std::vector<double> getMassFraction() { return mass_; };
 
         /// Return species and mixture enthalpy in [J/kmol]
-        inline std::vector<double> h() { return h_; };
+        inline const std::vector<double> h() { return h_; };
 
         /// Return species and mixture entropy in [J/kmol/K]
-        inline std::vector<double> s() { return s_; };
+        inline const std::vector<double> s() { return s_; };
 
         /// Return species and mixture molar specific heat in [J/kmol/K]
-        inline std::vector<double> cp() { return cp_; };
+        inline const std::vector<double> cp() { return cp_; };
 
         /// Return species and mixture molecular weight in [g/mol]
-        inline std::vector<double> MW() { return MW_; };
+        inline const std::vector<double> MW() { return MW_; };
 
         /// Return species and mixture viscosity in [Pas]
-        inline std::vector<double> mu() { return mu_; };
+        inline const std::vector<double> mu() { return mu_; };
 
         /// Return species and mixture thermal conductivity in [W/m/K]
-        inline std::vector<double> cond() { return cond_; };
+        inline const std::vector<double> cond() { return cond_; };
 
         /// Return species arithmetic mean gas velocity [m/s]
-        inline std::vector<double> vm() { return v_; };
+        inline const std::vector<double> vm() { return v_; };
 
         /// Return species binary and mixture diffusion coefficients [m2/s]
-        inline std::vector<std::vector<double>> diff() { return diff_; };
+        inline const std::vector<std::vector<double>> diff() { return diff_; };
 
         /// Return species mean free path [m]
-        inline std::vector<double> l() { return l_; };
+        inline const std::vector<double> l() { return l_; };
 
         /// Return mole fraction
-        inline std::vector<double> mole() { return mole_; };
+        inline const std::vector<double> mole() { return mole_; };
 
         /// Return mass fraction
-        inline std::vector<double> mass() { return mass_; };
+        inline const std::vector<double> mass() { return mass_; };
 
         /// Return gas species names
-        inline std::vector<std::string> names() { return names_; };
+        inline const std::vector<std::string> names() { return names_; };
 
         /// Return gas species names and mixture
-        inline std::vector<std::string> mixtureNames() { return n_; };
+        inline const std::vector<std::string> mixtureNames() { return n_; };
 
         /// Return coverage species names
-        inline std::vector<std::string> coverageNames() { return nc_; };
+        inline const std::vector<std::string> coverageNames() { return nc_; };
 
         /// Set temperature in [K]
         virtual void setTemperature(const double T) = 0;

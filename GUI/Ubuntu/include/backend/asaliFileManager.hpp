@@ -64,25 +64,25 @@ namespace ASALI
         asaliFileManager();
 
         /// Save file
-        std::string saveFile(gpointer window, std::string current_file_name);
+        static std::string saveFile(gpointer window, std::string current_file_name);
 
         /// Open file
-        std::string openFile(gpointer window);
+        static std::string openFile(gpointer window);
 
         /// Convert relative to absolute path
-        std::string relative_path_to_absolute_path(std::string relpath);
+        static std::string relative_path_to_absolute_path(std::string relpath);
 
         /// Split string based on character
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
+        static std::vector<std::string> splitString(std::string txt, std::string ch);
 
         /// Split path
-        std::vector<std::string> splitPath(const std::string path);
+        std::vector<std::string> splitPath(std::string path);
 
         /// Get Cantera interfaces
-        std::vector<std::string> getCanteraInterfaces(const std::string filename);
+        static std::vector<std::string> getCanteraInterfaces(std::string filename);
 
         // Get Cantera phase name from interface
-        std::string getCanteraPhaseName(std::string interfaceName);
+        static std::string getCanteraPhaseName(std::string interfaceName);
 
         /// Class destructor
         virtual ~asaliFileManager();

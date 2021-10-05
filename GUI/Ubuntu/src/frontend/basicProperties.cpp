@@ -67,6 +67,7 @@ namespace ASALI
 
     basicProperties::~basicProperties()
     {
+
     }
 
 #if ASALI_USING_CANTERA == 1
@@ -97,10 +98,7 @@ namespace ASALI
         tempEntry_.set_max_length(10);
         tempEntry_.set_text("298.15");
         inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
-        tempCombo_.append("K");
-        tempCombo_.append("°C");
-        tempCombo_.append("°F");
-        tempCombo_.set_active(0);
+        unitConversion_->updateBox(tempCombo_, "temperature");
 
         //Add temperature selector
         inputGrid_.attach(pressLabel_, 0, 1, 1, 1);
@@ -108,21 +106,11 @@ namespace ASALI
         pressEntry_.set_max_length(10);
         pressEntry_.set_text("101325");
         inputGrid_.attach(pressCombo_, 2, 1, 1, 1);
-        pressCombo_.append("Pa");
-        pressCombo_.append("GPa");
-        pressCombo_.append("MPa");
-        pressCombo_.append("kPa");
-        pressCombo_.append("bar");
-        pressCombo_.append("torr");
-        pressCombo_.append("mmHg");
-        pressCombo_.append("atm");
-        pressCombo_.set_active(0);
+        unitConversion_->updateBox(pressCombo_, "pressure");
 
         //Add mole or mass fraction selection
         inputGrid_.attach(fractionCombo_, 1, 2, 1, 1);
-        fractionCombo_.append("Mole fraction");
-        fractionCombo_.append("Mass fraction");
-        fractionCombo_.set_active(0);
+        unitConversion_->updateBox(fractionCombo_, "fraction");
 
         nameEntry_.resize(NS_);
         fractionEntry_.resize(NS_);

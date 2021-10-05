@@ -96,7 +96,7 @@ namespace ASALI
 		return std::string(g_build_filename(COMPILING_PATH, relpath.c_str(), NULL));
 	}
 
-	std::vector<std::string> asaliFileManager::splitString(const std::string txt, std::string ch)
+	std::vector<std::string> asaliFileManager::splitString(std::string txt, std::string ch)
 	{
 		std::vector<std::string> strs;
 		std::size_t pos = txt.find(ch);
@@ -117,7 +117,7 @@ namespace ASALI
 		return strs;
 	}
 
-	std::vector<std::string> asaliFileManager::splitPath(const std::string path)
+	std::vector<std::string> asaliFileManager::splitPath(std::string path)
 	{
 #if ASALI_ON_WINDOW == 0
 		return this->splitString(path, "/");
@@ -126,7 +126,7 @@ namespace ASALI
 #endif
 	}
 
-	std::vector<std::string> asaliFileManager::getCanteraInterfaces(const std::string filename)
+	std::vector<std::string> asaliFileManager::getCanteraInterfaces(std::string filename)
 	{
 		const char *path = filename.c_str();
 		std::ifstream input;
