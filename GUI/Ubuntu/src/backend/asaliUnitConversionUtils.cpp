@@ -501,73 +501,39 @@ namespace ASALI
 	{
 		std::vector<std::string> ud;
 		if (variable == "temperature")
-		{
 			ud = tempUd_;
-		}
 		else if (variable == "pressure")
-		{
 			ud = pressUd_;
-		}
 		else if (variable == "fraction")
-		{
 			ud = fractionUd_;
-		}
 		else if (variable == "length")
-		{
 			ud = lengthUd_;
-		}
 		else if (variable == "speed")
-		{
 			ud = speedUd_;
-		}
 		else if (variable == "diffusion")
-		{
 			ud = diffUd_;
-		}
 		else if (variable == "conductivity")
-		{
 			ud = condUd_;
-		}
 		else if (variable == "viscosity")
-		{
 			ud = muUd_;
-		}
 		else if (variable == "enthalpy")
-		{
 			ud = hUd_;
-		}
 		else if (variable == "entropy")
-		{
 			ud = sUd_;
-		}
 		else if (variable == "specificheat")
-		{
 			ud = cpUd_;
-		}
 		else if (variable == "specificheatonlymass")
-		{
 			ud = cpMassUd_;
-		}
 		else if (variable == "volume")
-		{
 			ud = volumeUd_;
-		}
 		else if (variable == "inverselength")
-		{
 			ud = inverseLengthUd_;
-		}
 		else if (variable == "time")
-		{
 			ud = timeUd_;
-		}
 		else if (variable == "density")
-		{
 			ud = densityUd_;
-		}
 		else if (variable == "heat")
-		{
 			ud = heatUd_;
-		}
 
 		box.remove_all();
 		for (unsigned int i = 0; i < ud.size(); i++)

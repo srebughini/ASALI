@@ -67,7 +67,6 @@ namespace ASALI
 
     basicProperties::~basicProperties()
     {
-
     }
 
 #if ASALI_USING_CANTERA == 1
