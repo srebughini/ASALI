@@ -69,10 +69,10 @@ namespace ASALI
         void setCatalystLoad(const double alfa);
 
         /// Set resolution method
-        void setResolutionType(const std::string resolution);
+        void setResolutionType(const std::string &resolution);
 
         /// Set reactor inlet conditions: mass fraction and temperature in [K]
-        void setInletConditions(const std::vector<double> omega0, const double T0);
+        void setInletConditions(const std::vector<double> &omega0, const double &T0);
 
         /// Set integration time in [s]
         void setIntegrationTime(const double tF);
@@ -108,7 +108,7 @@ namespace ASALI
         inline std::vector<std::vector<std::vector<double>>> getSiteTransient() const { return SiteTransient_; };
 
         /// Store results for plottnig and saving
-        virtual void store(const double tf, const std::vector<double> xf);
+        virtual void store(const double &tf, const std::vector<double> &xf);
 
         /// Resize variables based
         virtual void resize();

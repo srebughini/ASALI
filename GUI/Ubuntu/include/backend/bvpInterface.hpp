@@ -87,7 +87,7 @@ namespace ASALI
         void setInitialConditions(double t0, std::vector<double> y0);
 
         /// Set system algebraic equations flag
-        void setAlgebraic(const std::vector<bool> algebraic);
+        void setAlgebraic(const std::vector<bool> &algebraic);
 
         /// Set solver tollerance
         void setTollerance(const double absTol, const double relTol);
@@ -229,7 +229,7 @@ namespace ASALI
     }
 
     template <typename T>
-    void bvpInterface<T>::setAlgebraic(const std::vector<bool> algebraic)
+    void bvpInterface<T>::setAlgebraic(const std::vector<bool> &algebraic)
     {
         for (int i = 0; i < NEQ_; i++)
         {

@@ -46,9 +46,7 @@ namespace ASALI
     class thermoProperties : public ASALI::thermoTransportProperties
     {
     public:
-        thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~thermoProperties();
+        thermoProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         void results();
         void save();

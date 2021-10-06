@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    batchReactor::batchReactor(std::string kineticType)
+    batchReactor::batchReactor(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -110,7 +110,7 @@ namespace ASALI
                 saveEntry_.set_text("0.1");
                 propertiesGrid_.attach(saveCombo_, 2, 3, 1, 1);
                 unitConversion_->updateBox(saveCombo_, "time");
- 
+
                 //Energy
                 propertiesGrid_.attach(energyLabel_, 0, 4, 1, 1);
                 propertiesGrid_.attach(energyCombo_, 1, 4, 1, 1);
@@ -246,10 +246,6 @@ namespace ASALI
                 }
             }
         }
-    }
-
-    batchReactor::~batchReactor()
-    {
     }
 
     void batchReactor::read()
@@ -603,30 +599,24 @@ namespace ASALI
             }
 
             double ti = 0.;
-            double tf = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
-            double timef = 0.;
-            double tm = 0;
             int Nt = int(tf_ / dt) + 1;
             for (int i = 0; i < Nt; i++)
             {
-                tf = ti + dt;
-
                 solver.setInitialConditions(ti, x0);
-                solver.solve(tf, x0);
+                solver.solve(ti + dt, x0);
                 td += dt;
 
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
-                    eq_->store(tf, x0);
+                    eq_->store(ti + dt, x0);
                     td = 0.;
                 }
 
-                timef = double(std::clock() / CLOCKS_PER_SEC);
-                tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                ti = tf;
+                ti = ti + dt;
 
                 this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 

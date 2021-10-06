@@ -44,7 +44,7 @@ namespace ASALI
     {
     }
 
-    double asaliVectorUtils::MaxElement(const std::vector<double> v)
+    double asaliVectorUtils::MaxElement(const std::vector<double> &v)
     {
         double max = DBL_MIN;
 
@@ -54,7 +54,7 @@ namespace ASALI
         return max;
     }
 
-    int asaliVectorUtils::MaxElement(const std::vector<int> v)
+    int asaliVectorUtils::MaxElement(const std::vector<int> &v)
     {
         int max = INT_MIN;
 
@@ -64,7 +64,7 @@ namespace ASALI
         return max;
     }
 
-    double asaliVectorUtils::MinElement(const std::vector<double> v)
+    double asaliVectorUtils::MinElement(const std::vector<double> &v)
     {
         double min = DBL_MAX;
 
@@ -74,7 +74,7 @@ namespace ASALI
         return min;
     }
 
-    int asaliVectorUtils::MinElement(const std::vector<int> v)
+    int asaliVectorUtils::MinElement(const std::vector<int> &v)
     {
         int min = INT_MAX;
 
@@ -84,7 +84,7 @@ namespace ASALI
         return min;
     }
 
-    double asaliVectorUtils::SumElements(const std::vector<double> v)
+    double asaliVectorUtils::SumElements(const std::vector<double> &v)
     {
         double sum = 0.;
 
@@ -94,17 +94,17 @@ namespace ASALI
         return sum;
     }
 
-    double asaliVectorUtils::MeanValue(const std::vector<double> v)
+    double asaliVectorUtils::MeanValue(const std::vector<double> &v)
     {
         return this->SumElements(v) / v.size();
     }
 
-    double asaliVectorUtils::DotProduct(const std::vector<double> a, const std::vector<double> b)
+    double asaliVectorUtils::DotProduct(const std::vector<double> &a, const std::vector<double> &b)
     {
         return std::inner_product(a.begin(), a.end(), b.begin(), 0);
     }
 
-    std::vector<double> asaliVectorUtils::ElementByElementProduct(const std::vector<double> a, const std::vector<double> b)
+    std::vector<double> asaliVectorUtils::ElementByElementProduct(const std::vector<double> &a, const std::vector<double> &b)
     {
         std::vector<double> c(a.size());
 
@@ -112,9 +112,5 @@ namespace ASALI
             c[i] = a[i] * b[i];
 
         return c;
-    }
-
-    asaliVectorUtils::~asaliVectorUtils()
-    {
     }
 }

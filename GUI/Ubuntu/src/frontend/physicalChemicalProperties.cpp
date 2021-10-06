@@ -41,7 +41,7 @@
 namespace ASALI
 {
     physicalChemicalProperties::physicalChemicalProperties(ASALI::speciesPopup *speciesNames,
-                                                           std::string kineticType)
+                                                           const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           rhoBox_(Gtk::ORIENTATION_VERTICAL),
           mwBox_(Gtk::ORIENTATION_VERTICAL),
@@ -101,10 +101,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_, 2, n_.size() + 2, 1, 1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::exit));
         }
-    }
-
-    physicalChemicalProperties::~physicalChemicalProperties()
-    {
     }
 
     void physicalChemicalProperties::clean()

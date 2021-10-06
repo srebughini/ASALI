@@ -223,12 +223,12 @@ namespace ASALI
         alfa_ = alfa;
     }
 
-    void ph1dEquations::setResolutionType(const std::string resolution)
+    void ph1dEquations::setResolutionType(const std::string &resolution)
     {
         resolution_ = resolution;
     }
 
-    void ph1dEquations::setInletConditions(const std::vector<double> omega0, const double T0)
+    void ph1dEquations::setInletConditions(const std::vector<double> &omega0, const double &T0)
     {
         omega0_ = omega0;
         T0_ = T0;
@@ -567,7 +567,7 @@ namespace ASALI
         return 0;
     }
 
-    void ph1dEquations::store(const double tf, const std::vector<double> xf)
+    void ph1dEquations::store(const double &tf, const std::vector<double> &xf)
     {
         if (resolution_ == "transient")
         {

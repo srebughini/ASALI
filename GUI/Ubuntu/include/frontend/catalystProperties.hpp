@@ -61,6 +61,8 @@ namespace ASALI
     public:
         catalystProperties();
 
+        ~catalystProperties();
+
         void doneInput();
 
         double get_rho() { return rho_; };
@@ -68,8 +70,6 @@ namespace ASALI
         double get_cp() { return cp_; };
         double get_load() { return alfa_; };
         double get_T() { return T_; };
-
-        virtual ~catalystProperties();
 
     private:
         Gtk::Image het1dLogo_;
@@ -103,8 +103,8 @@ namespace ASALI
         double cond_;
         double alfa_;
         double T_;
-        
-        ASALI::asaliUnitConversionUtils   *unitConversion_;
+
+        ASALI::asaliUnitConversionUtils *unitConversion_;
         ASALI::asaliFileManager fileManager_;
     };
 }

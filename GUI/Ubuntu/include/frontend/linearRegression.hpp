@@ -47,9 +47,7 @@ namespace ASALI
     class linearRegression : public ASALI::basicProperties
     {
     public:
-        linearRegression(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~linearRegression();
+        linearRegression(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         void results();
         void save();
@@ -58,7 +56,7 @@ namespace ASALI
         void cleanInput();
         void uploadLayout();
         void run();
-        void leastSquareFitting(const std::vector<double> x, const std::vector<double> y, double &m, double &q, double &r2);
+        void leastSquareFitting(const std::vector<double> &x, const std::vector<double> &y, double &m, double &q, double &r2);
         void condUnitDimensions(double &p);
         void muUnitDimensions(double &p);
         void cpUnitDimensions(double &p);
@@ -71,8 +69,6 @@ namespace ASALI
         Gtk::Button exitButton2_;
         Gtk::Button backButton_;
         Gtk::Button calculateButton_;
-
-        Gtk::Grid resultsGrid_;
 
         Gtk::Label tempRangeLabel_;
         Gtk::Label propertyLabel_;

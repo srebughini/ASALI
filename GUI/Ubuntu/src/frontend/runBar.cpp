@@ -60,7 +60,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void runBar::update(const double fraction, const std::string tm)
+    void runBar::update(const double &fraction, const std::string &tm)
     {
         if (fraction == 0)
         {
@@ -86,9 +86,5 @@ namespace ASALI
     void runBar::exit()
     {
         this->hide();
-    }
-
-    runBar::~runBar()
-    {
     }
 }

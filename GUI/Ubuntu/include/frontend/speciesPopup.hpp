@@ -60,8 +60,6 @@ namespace ASALI
     public:
         speciesPopup();
 
-        virtual ~speciesPopup();
-
     private:
         void exit();
 

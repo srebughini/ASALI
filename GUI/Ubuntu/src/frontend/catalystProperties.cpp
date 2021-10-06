@@ -128,5 +128,6 @@ namespace ASALI
 
     catalystProperties::~catalystProperties()
     {
+        delete unitConversion_;
     }
 }

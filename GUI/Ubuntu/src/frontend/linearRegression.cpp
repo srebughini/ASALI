@@ -41,7 +41,7 @@
 namespace ASALI
 {
     linearRegression::linearRegression(ASALI::speciesPopup *speciesNames,
-                                       std::string kineticType)
+                                       const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           tempBox_(Gtk::ORIENTATION_VERTICAL),
           exitButton2_("Exit"),
@@ -123,10 +123,6 @@ namespace ASALI
             resultsGrid_.attach(exitButton2_, 3, 6, 1, 1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &linearRegression::exit));
         }
-    }
-
-    linearRegression::~linearRegression()
-    {
     }
 
     void linearRegression::cleanInput()
@@ -379,7 +375,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void linearRegression::leastSquareFitting(const std::vector<double> x, const std::vector<double> y, double &m, double &q, double &r2)
+    void linearRegression::leastSquareFitting(const std::vector<double> &x, const std::vector<double> &y, double &m, double &q, double &r2)
     {
         m = (x.size() * vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x, y)) - vectorUtils_->SumElements(x) * vectorUtils_->SumElements(y)) / (x.size() * vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x, x)) - std::pow(vectorUtils_->SumElements(x), 2.));
         q = (vectorUtils_->SumElements(y) * vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x, x)) - vectorUtils_->SumElements(x) * vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x, y))) / (x.size() * vectorUtils_->SumElements(vectorUtils_->ElementByElementProduct(x, x)) - std::pow(vectorUtils_->SumElements(x), 2.));

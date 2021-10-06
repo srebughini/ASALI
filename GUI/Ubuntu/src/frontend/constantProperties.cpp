@@ -98,17 +98,17 @@ namespace ASALI
         }
     }
 
-    void constantProperties::setEnergy(const std::string energy)
+    void constantProperties::setEnergy(const std::string &energy)
     {
         energy_ = energy;
     }
 
-    void constantProperties::setType(const std::string type)
+    void constantProperties::setType(const std::string &type)
     {
         type_ = type;
     }
 
-    void constantProperties::setSpeciesNames(const std::vector<std::string> n)
+    void constantProperties::setSpeciesNames(const std::vector<std::string> &n)
     {
         n_ = n;
         NC_ = n.size();
@@ -691,7 +691,7 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-                unitConversion_->toSquareMeterPerSecond(diff_[i],diffCombo_.get_active_text());
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
 
             Qhom_.clear();
@@ -736,7 +736,7 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-                unitConversion_->toSquareMeterPerSecond(diff_[i],diffCombo_.get_active_text());
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
 
             Qhom_.clear();
@@ -784,14 +784,10 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-                unitConversion_->toSquareMeterPerSecond(diff_[i],diffCombo_.get_active_text());
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
         }
         this->hide();
-    }
-
-    constantProperties::~constantProperties()
-    {
     }
 
     void constantProperties::convertToCaption(std::string &n)
@@ -799,7 +795,7 @@ namespace ASALI
         std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
 
-    std::vector<double> constantProperties::getMassFraction(const std::vector<double> MW, const std::vector<double> x)
+    std::vector<double> constantProperties::getMassFraction(const std::vector<double> &MW, const std::vector<double> &x)
     {
         std::vector<double> y(x.size());
         double MWmix = 0.;
@@ -816,7 +812,7 @@ namespace ASALI
         return y;
     }
 
-    std::vector<double> constantProperties::getMoleFraction(const std::vector<double> MW, const std::vector<double> y)
+    std::vector<double> constantProperties::getMoleFraction(const std::vector<double> &MW, const std::vector<double> &y)
     {
         std::vector<double> x(y.size());
         double MWmix = 0.;
@@ -833,7 +829,7 @@ namespace ASALI
         return x;
     }
 
-    double constantProperties::getMWmix(const std::vector<double> MW, const std::vector<double> y)
+    double constantProperties::getMWmix(const std::vector<double> &MW, const std::vector<double> &y)
     {
         double MWmix = 0.;
 
@@ -843,5 +839,11 @@ namespace ASALI
         }
 
         return 1. / MWmix;
+    }
+
+    constantProperties::~constantProperties()
+    {
+        delete beerQuote_;
+        delete unitConversion_;
     }
 }

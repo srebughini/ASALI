@@ -49,9 +49,7 @@ namespace ASALI
     class ph1dReactor : public ASALI::catalyticReactors
     {
     public:
-        ph1dReactor(std::string kineticType);
-
-        virtual ~ph1dReactor();
+        explicit ph1dReactor(const std::string &kineticType);
 
         virtual void input();
         virtual void read();

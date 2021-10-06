@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+    thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : thermoTransportProperties(speciesNames, kineticType)
     {
         //Input menu
@@ -51,10 +51,6 @@ namespace ASALI
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             this->input();
         }
-    }
-
-    thermoProperties::~thermoProperties()
-    {
     }
 
     void thermoProperties::clean()
@@ -293,5 +289,4 @@ namespace ASALI
             this->savedMessage();
         }
     }
-
 }

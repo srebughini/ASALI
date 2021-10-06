@@ -61,19 +61,19 @@ namespace ASALI
     public:
         chemkinConverter();
 
-        virtual ~chemkinConverter();
+        ~chemkinConverter();
 
     private:
         void exit();
         void clean();
-        void load(int index);
+        void load(const int index);
         void savedMessage();
         void notSavedMessage();
         void run();
         void help();
-        void error(std::string type);
-        void eraseSubString(std::string &mainStr, const std::string toErase);
-        bool checkConvertedFile(std::string filename);
+        void error(const std::string &type);
+        void eraseSubString(std::string &mainStr, const std::string &toErase);
+        bool checkConvertedFile(const std::string &filename);
 
         Gtk::Box mainBox_;
         Gtk::Box buttonBox_;

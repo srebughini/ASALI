@@ -48,9 +48,7 @@ namespace ASALI
     class batchReactor : public ASALI::catalyticReactors
     {
     public:
-        batchReactor(std::string kineticType);
-
-        virtual ~batchReactor();
+        explicit batchReactor(const std::string &kineticType);
 
         virtual void input();
         virtual void read();

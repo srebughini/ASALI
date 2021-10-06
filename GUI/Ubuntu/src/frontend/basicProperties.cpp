@@ -41,7 +41,7 @@
 namespace ASALI
 {
     basicProperties::basicProperties(ASALI::speciesPopup *speciesNames,
-                                     std::string kineticType)
+                                     const std::string &kineticType)
         : helpButton_("Available species"),
           exitButton1_("Exit"),
           doneButton_("Done"),
@@ -63,10 +63,6 @@ namespace ASALI
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         }
-    }
-
-    basicProperties::~basicProperties()
-    {
     }
 
 #if ASALI_USING_CANTERA == 1
@@ -275,5 +271,12 @@ namespace ASALI
         Gtk::MessageDialog dialog(*this, "Your file has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
         dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
+    }
+
+    basicProperties::~basicProperties()
+    {
+        delete beerQuote_;
+        delete unitConversion_;
+        delete vectorUtils_;
     }
 }

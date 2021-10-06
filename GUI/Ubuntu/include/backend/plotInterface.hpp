@@ -72,46 +72,46 @@ namespace ASALI
         void newFigure();
 
         /// Set data to be plotted: abscissa, ordinate, label
-        void setData(std::vector<double> x, std::vector<double> y, std::string label);
+        void setData(const std::vector<double> &x, const std::vector<double> &y, const std::string &label);
 
         /// Set abscissa lower and upper limit
-        void setXlimits(double xmin, double xmax);
+        void setXlimits(const double xmax, const double xmin);
 
         /// Set ordinate lower and upper limit
-        void setYlimits(double ymin, double ymax);
+        void setYlimits(const double ymax, const double ymin);
 
         /// Set abscissa axis label
-        void setXlabel(std::string xlabel);
+        void setXlabel(const std::string &xlabel);
 
         /// Set ordinate axis label
-        void setYlabel(std::string ylabel);
+        void setYlabel(const std::string &ylabel);
 
         /// Set title
-        void setTitle(std::string title);
+        void setTitle(const std::string &title);
 
         /// Set text color
-        void setTextColor(int r, int b, int g);
+        void setTextColor(const int r, const int b, const int g);
 
         /// Set default text color
-        void setDefaultTextColor(int r, int b, int g);
+        void setDefaultTextColor(const int r, const int b, const int g);
 
         /// Set background color
-        void setBackgroundColor(int r, int b, int g);
+        void setBackgroundColor(const int r, const int b, const int g);
 
         /// Set default background color
-        void setDefaultBackgroundColor(int r, int b, int g);
+        void setDefaultBackgroundColor(const int r, const int b, const int g);
 
         /// Set legend position
-        void setLegendPosition(const std::string position);
+        void setLegendPosition(const std::string &position);
 
         /// Set legend grid number of columns and rows
-        void setLegendGrid(int ncol, int nrow);
+        void setLegendGrid(const int ncol, const int nrow);
 
         /// Set output format
-        void setOutputFormat(const std::string outputFormat);
+        void setOutputFormat(const std::string &outputFormat);
 
         /// Set output file name
-        void setOutputFileName(const std::string fileName);
+        void setOutputFileName(const std::string &fileName);
 
         /// Enable/Disable legend
         void legend();
@@ -119,21 +119,18 @@ namespace ASALI
         /// Show plots
         void show();
 
-        /// Class destructor
-        virtual ~plotInterface();
-
     private:
         /// Convert std::vector<double> to Plplot vector of float
-        void convertToPLFLT(std::vector<double> v, PLFLT *p);
+        static void convertToPLFLT(const std::vector<double> &v, PLFLT *p);
 
         /// Convert std::vector<int> to Plplot vector of int
-        void convertToPLINT(std::vector<int> v, PLINT *p);
+        static void convertToPLINT(const std::vector<int> &v, PLINT *p);
 
         /// Plot single figure from index
-        void plot(plstream *pls, int figIndex);
+        void plot(plstream *pls, const int figIndex);
 
         /// Initialize figure from index
-        void initialize(plstream *pls, int figIndex);
+        void initialize(plstream *pls, const int figIndex);
 
         int nFig_; /// Number of figure counter
 

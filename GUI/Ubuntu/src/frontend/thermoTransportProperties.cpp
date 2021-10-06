@@ -41,7 +41,7 @@
 namespace ASALI
 {
     thermoTransportProperties::thermoTransportProperties(ASALI::speciesPopup *speciesNames,
-                                                         std::string kineticType)
+                                                         const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           condBox_(Gtk::ORIENTATION_VERTICAL),
           muBox_(Gtk::ORIENTATION_VERTICAL),
@@ -65,10 +65,6 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->input();
-    }
-
-    thermoTransportProperties::~thermoTransportProperties()
-    {
     }
 
     void thermoTransportProperties::clean()

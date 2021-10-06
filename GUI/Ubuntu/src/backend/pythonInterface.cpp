@@ -46,12 +46,12 @@ namespace ASALI
         Nhom_ = 0;
     }
 
-    void pythonInterface::setTemperature(const double T)
+    void pythonInterface::setTemperature(const double &T)
     {
         pTemperature = Py_BuildValue("d", T);
     }
 
-    void pythonInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
+    void pythonInterface::setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name)
     {
         pMassFraction = PyList_New(n_.size());
 
@@ -73,7 +73,7 @@ namespace ASALI
         }
     }
 
-    void pythonInterface::setPythonPath(std::string path)
+    void pythonInterface::setPythonPath(const std::string &path)
     {
 #if ASALI_ON_WINDOW == 1
         _putenv_s("PYTHONPATH", path.c_str());
@@ -120,7 +120,7 @@ namespace ASALI
         return check;
     }
 
-    std::string pythonInterface::initialize(const std::string function, const std::string path)
+    std::string pythonInterface::initialize(const std::string &function, const std::string &path)
     {
         this->setPythonPath(path);
 
@@ -310,9 +310,5 @@ namespace ASALI
     void pythonInterface::close()
     {
         Py_Finalize();
-    }
-
-    pythonInterface::~pythonInterface()
-    {
     }
 }

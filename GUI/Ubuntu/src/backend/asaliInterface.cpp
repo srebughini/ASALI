@@ -59,13 +59,13 @@ namespace ASALI
         asali_->setPressure(p_);
     }
 
-    void asaliInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
+    void asaliInterface::setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name)
     {
         asali_->setSpecies(name);
         this->setStateFromMoleFraction(x.data(), T_, p_);
     }
 
-    void asaliInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name)
+    void asaliInterface::setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name)
     {
         asali_->setSpecies(name);
         this->setStateFromMassFraction(y.data(), T_, p_);
@@ -235,7 +235,7 @@ namespace ASALI
         return asali_->mixtureViscosity();
     }
 
-    int asaliInterface::getSpecieIndex(std::string n)
+    int asaliInterface::getSpecieIndex(const std::string &n)
     {
         for (unsigned int i = 0; i <= NS_; i++)
         {
@@ -338,9 +338,5 @@ namespace ASALI
         }
 
         return check;
-    }
-
-    asaliInterface::~asaliInterface()
-    {
     }
 }

@@ -102,7 +102,7 @@ namespace ASALI
         p_ = p;
     }
 
-    void canteraInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
+    void canteraInterface::setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name)
     {
         for (unsigned int i = 0; i < NS_; i++)
         {
@@ -119,7 +119,7 @@ namespace ASALI
         this->setStateFromMoleFraction(x_, T_, p_);
     }
 
-    void canteraInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name)
+    void canteraInterface::setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name)
     {
         for (unsigned int i = 0; i < NS_; i++)
         {
@@ -512,9 +512,5 @@ namespace ASALI
             QfromSurface_ = -QfromSurface_;
             SD_ = surface_->siteDensity();
         }
-    }
-
-    canteraInterface::~canteraInterface()
-    {
     }
 }

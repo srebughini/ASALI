@@ -60,13 +60,11 @@ namespace ASALI
     public:
         runBar();
 
-        void update(const double fraction, const std::string tm);
+        void update(const double &fraction, const std::string &tm);
         void exit();
         void close();
 
         bool check() { return close_; };
-
-        virtual ~runBar();
 
     private:
         Gtk::Box mainBox_;

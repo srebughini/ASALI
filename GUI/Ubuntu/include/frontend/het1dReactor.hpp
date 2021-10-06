@@ -49,18 +49,17 @@ namespace ASALI
     class het1dReactor : public ASALI::catalyticReactors
     {
     public:
-        het1dReactor(std::string kineticType);
-
-        virtual ~het1dReactor();
+        explicit het1dReactor(const std::string &kineticType);
 
         virtual void input();
         virtual void read();
         virtual void recap();
         virtual void propertiesShow();
-        virtual void catalystPropertiesShow();
         virtual void run();
         virtual void save();
         virtual void plot();
+
+        void catalystPropertiesShow();
 
     private:
         void options();

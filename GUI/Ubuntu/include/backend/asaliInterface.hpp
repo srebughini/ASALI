@@ -57,10 +57,10 @@ namespace ASALI
         void setPressure(const double p);
 
         /// Set mass fraction
-        void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        void setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name);
 
         /// Set mole fraction
-        void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
+        void setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name);
 
         /// Set mass fraction, temperature in [K] and pressure in [Pa]
         void setStateFromMassFraction(const double *y, const double T, const double p);
@@ -123,7 +123,7 @@ namespace ASALI
         int checkNames(std::string name);
 
         /// Return specie index from specie name
-        int getSpecieIndex(std::string n);
+        int getSpecieIndex(const std::string &n);
 
         /// Return number of gas species in the gas mixture
         unsigned int numberOfGasSpecies();
@@ -133,9 +133,6 @@ namespace ASALI
 
         /// Return the flag for surface species and reactions
         bool isSurface();
-
-        /// Class destructor
-        ~asaliInterface();
 
     private:
         ASALI::Asali *asali_;               /// ASALI/API object

@@ -462,21 +462,21 @@ namespace ASALI
                 //Handle the response:
                 switch (answer)
                 {
-                    case (Gtk::RESPONSE_YES):
-                    {
-                        dialog.hide();
-                        return true;
-                    }
-                    case (Gtk::RESPONSE_NO):
-                    {
-                        dialog.hide();
-                        return false;
-                    }
-                    default:
-                    {
-                        dialog.hide();
-                        return false;
-                    }
+                case (Gtk::RESPONSE_YES):
+                {
+                    dialog.hide();
+                    return true;
+                }
+                case (Gtk::RESPONSE_NO):
+                {
+                    dialog.hide();
+                    return false;
+                }
+                default:
+                {
+                    dialog.hide();
+                    return false;
+                }
                 }
             }
             else
@@ -869,7 +869,7 @@ namespace ASALI
         }
     }
 
-    bool kineticMaker::readStoichiometryCoefficient(unsigned int index)
+    bool kineticMaker::readStoichiometryCoefficient(const unsigned int &index)
     {
         std::string all = reactionEntry_[index]->get_text();
         all.erase(std::remove_if(all.begin(), all.end(), ::isspace), all.end());
@@ -973,7 +973,7 @@ namespace ASALI
         dialog.run();
     }
 
-    void kineticMaker::errorEquation(const std::string error)
+    void kineticMaker::errorEquation(const std::string &error)
     {
         Gtk::MessageDialog dialog(*this, error, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
         dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
@@ -985,7 +985,7 @@ namespace ASALI
         this->hide();
     }
 
-    void kineticMaker::replaceString(std::string &str, const std::string from, const std::string to)
+    void kineticMaker::replaceString(std::string &str, const std::string &from, const std::string &to)
     {
         std::size_t pos = str.find(from);
 
@@ -997,7 +997,7 @@ namespace ASALI
         }
     }
 
-    int kineticMaker::getSpecieIndex(std::string n, std::vector<std::string> nv)
+    int kineticMaker::getSpecieIndex(const std::string &n, const std::vector<std::string> &nv)
     {
         int q = -1;
         for (unsigned int i = 0; i < nv.size(); i++)
@@ -1012,14 +1012,14 @@ namespace ASALI
         return q;
     }
 
-    void kineticMaker::missingSpecies(const std::string n)
+    void kineticMaker::missingSpecies(const std::string &n)
     {
         Gtk::MessageDialog dialog(*this, n + " is missing!!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
         dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
-    void kineticMaker::unknownOption(const std::string n)
+    void kineticMaker::unknownOption(const std::string &n)
     {
         Gtk::MessageDialog dialog(*this, n + " uknown option!!", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_CLOSE);
         dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
@@ -1260,9 +1260,5 @@ namespace ASALI
         Gtk::MessageDialog dialog(*this, "Your kinetic scheme has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
         dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
-    }
-
-    kineticMaker::~kineticMaker()
-    {
     }
 }

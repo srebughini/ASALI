@@ -220,8 +220,4 @@ namespace ASALI
 
 		return phaseName;
 	}
-
-	asaliFileManager::~asaliFileManager()
-	{
-	}
 }

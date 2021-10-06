@@ -67,7 +67,7 @@ namespace ASALI
         void setInert(const unsigned int inertIndex);
 
         /// Set reactor inlet conditions: mass fraction
-        void setInletConditions(const std::vector<double> omega0);
+        void setInletConditions(const std::vector<double> &omega0);
 
         /// Set integration time in [s]
         void setIntegrationTime(const double tF);
@@ -76,13 +76,13 @@ namespace ASALI
         void setNumberOfPoints(const double NP);
 
         /// Set pellet type
-        void setPelletType(const std::string pelletType);
+        void setPelletType(const std::string &pelletType);
 
         /// Set diffusion model
-        void setDiffusionModel(const std::string modelType);
+        void setDiffusionModel(const std::string &modelType);
 
         /// Set resolution type
-        void setResolutionType(const std::string resolution);
+        void setResolutionType(const std::string &resolution);
 
         /// Set slab thickness in [m]
         void setSlab(const double tw);
@@ -103,7 +103,7 @@ namespace ASALI
         std::vector<std::vector<std::vector<double>>> getSite() const { return Site_; };
 
         /// Store results for plottnig and saving
-        virtual void store(const double tf, const std::vector<double> xf);
+        virtual void store(const double &tf, const std::vector<double> &xf);
 
         /// Resize variables based
         virtual void resize();
@@ -162,10 +162,10 @@ namespace ASALI
         std::vector<std::vector<std::vector<double>>> diffBinaryMatrix_; /// Binary diffusion coefficients in [m2/s]
 
         /// Epsi-tau model to estimate diffusion fluxes in [kg/m2/s]
-        std::vector<std::vector<double>> epsi_tau_model(const std::vector<std::vector<double>> diff, const std::vector<std::vector<double>> omega);
+        std::vector<std::vector<double>> epsi_tau_model(const std::vector<std::vector<double>> &diff, const std::vector<std::vector<double>> &omega);
 
         /// Dusty gas model to estimate diffusion fluxes in [kg/m2/s]
-        std::vector<std::vector<double>> dusty_gas_model(const std::vector<std::vector<std::vector<double>>> diff, const std::vector<std::vector<double>> omega, const std::vector<std::vector<double>> MW);
+        std::vector<std::vector<double>> dusty_gas_model(const std::vector<std::vector<std::vector<double>>> &diff, const std::vector<std::vector<double>> &omega, const std::vector<std::vector<double>> &MW);
 
         /// Update gas mixture properties
         void properties(std::vector<double> &y);

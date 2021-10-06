@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    catalyticReactors::catalyticReactors(std::string kineticType)
+    catalyticReactors::catalyticReactors(const std::string &kineticType)
         : coverageBox_(Gtk::ORIENTATION_VERTICAL),
           helpButton_("Available species"),
           nextButton1_("Next"),
@@ -198,10 +198,6 @@ namespace ASALI
             coverageGrid_.attach(nextButton2_, 1, SURF_NS_ + 5, 1, 1);
             nextButton2_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
         }
-    }
-
-    catalyticReactors::~catalyticReactors()
-    {
     }
 
 #if ASALI_USING_CANTERA == 1
@@ -720,7 +716,7 @@ namespace ASALI
         }
     }
 
-    unsigned int catalyticReactors::specieIndex(const std::string n, const std::vector<std::string> v)
+    unsigned int catalyticReactors::specieIndex(const std::string &n, const std::vector<std::string> &v)
     {
         unsigned int id = 0;
         for (unsigned int i = 0; i < v.size(); i++)
@@ -773,7 +769,7 @@ namespace ASALI
         }
     }
 
-    void catalyticReactors::bar(const double fraction, const std::string tm)
+    void catalyticReactors::bar(const double &fraction, const std::string &tm)
     {
         //Update solving bar
         while (Gtk::Main::events_pending())
@@ -797,19 +793,10 @@ namespace ASALI
         this->hide();
     }
 
-    void catalyticReactors::input() {}
-
-    void catalyticReactors::read() {}
-
-    void catalyticReactors::recap() {}
-
-    void catalyticReactors::propertiesShow() {}
-
-    void catalyticReactors::catalystPropertiesShow() {}
-
-    void catalyticReactors::save() {}
-
-    void catalyticReactors::run() {}
-
-    void catalyticReactors::plot() {}
+    catalyticReactors::~catalyticReactors()
+    {
+        delete beerQuote_;
+        delete unitConversion_;
+        delete vectorUtils_;
+    }
 }

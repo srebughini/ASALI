@@ -228,8 +228,4 @@ namespace ASALI
         unsigned int i = this->randomUnsignedInt(0, beerShort_.size() - 1);
         return beerShort_[i];
     }
-
-    beerQuote::~beerQuote()
-    {
-    }
 }

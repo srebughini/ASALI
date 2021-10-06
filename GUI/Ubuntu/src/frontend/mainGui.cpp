@@ -318,10 +318,6 @@ namespace ASALI
         }
     }
 
-    mainGui::~mainGui()
-    {
-    }
-
     void mainGui::changeCursor()
     {
         logoEventBox_.get_window()->set_cursor(Gdk::Cursor::create(Gdk::HAND1));
@@ -392,7 +388,7 @@ namespace ASALI
 #endif
     }
 
-    void mainGui::updateChemistryInterface(std::string filepath, std::string gasPhase, std::string surfPhase)
+    void mainGui::updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase)
     {
         if (!chemistryInterface_)
         {

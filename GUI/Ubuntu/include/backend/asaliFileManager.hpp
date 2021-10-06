@@ -83,9 +83,6 @@ namespace ASALI
 
         // Get Cantera phase name from interface
         static std::string getCanteraPhaseName(std::string interfaceName);
-
-        /// Class destructor
-        virtual ~asaliFileManager();
     };
 }
 #endif

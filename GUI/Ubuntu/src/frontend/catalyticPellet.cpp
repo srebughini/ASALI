@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    catalyticPellet::catalyticPellet(std::string kineticType)
+    catalyticPellet::catalyticPellet(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -99,7 +99,7 @@ namespace ASALI
                 propertiesGrid_.attach(loadCombo_, 2, 0, 1, 1);
                 unitConversion_->updateBox(loadCombo_, "inverselength");
 
-                 //Time
+                //Time
                 propertiesGrid_.attach(timeLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 1, 1, 1);
                 timeEntry_.set_text("1");
@@ -976,10 +976,7 @@ namespace ASALI
 
         //Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
             double dt = 0.;
-
             if (alfa_ != 0.)
             {
                 dt = dt_ / (eq_->NumberOfEquations() * 5.);
@@ -989,30 +986,26 @@ namespace ASALI
                 dt = dt_ / 100.;
             }
 
+            double ti = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
-            double timef = 0.;
-            double tm = 0;
             int Nt = int(tf_ / dt) + 1;
             for (int i = 0; i < Nt; i++)
             {
-                tf = ti + dt;
-
                 bvp.setInitialConditions(ti, x0);
-                bvp.solve(tf, x0);
+                bvp.solve(ti + dt, x0);
 
                 td += dt;
 
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
-                    eq_->store(tf, x0);
+                    eq_->store(ti + dt, x0);
                     td = 0.;
                 }
 
-                timef = double(std::clock() / CLOCKS_PER_SEC);
-                tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                ti = tf;
+                ti = ti + dt;
 
                 this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -1355,9 +1348,4 @@ namespace ASALI
         plot_->build();
         plot_->show();
     }
-
-    catalyticPellet::~catalyticPellet()
-    {
-    }
-
 }

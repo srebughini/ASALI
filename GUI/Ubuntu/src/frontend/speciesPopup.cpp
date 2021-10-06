@@ -63,8 +63,4 @@ namespace ASALI
     {
         this->hide();
     }
-
-    speciesPopup::~speciesPopup()
-    {
-    }
 }

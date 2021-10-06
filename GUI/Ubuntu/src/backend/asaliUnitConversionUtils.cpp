@@ -497,7 +497,7 @@ namespace ASALI
 			v = v * (1e03 * 4.186);
 	}
 
-	void asaliUnitConversionUtils::updateBox(Gtk::ComboBoxText &box, std::string variable)
+	void asaliUnitConversionUtils::updateBox(Gtk::ComboBoxText &box, const std::string &variable)
 	{
 		std::vector<std::string> ud;
 		if (variable == "temperature")
@@ -541,9 +541,5 @@ namespace ASALI
 			box.append(ud[i]);
 		}
 		box.set_active(0);
-	}
-
-	asaliUnitConversionUtils::~asaliUnitConversionUtils()
-	{
 	}
 }

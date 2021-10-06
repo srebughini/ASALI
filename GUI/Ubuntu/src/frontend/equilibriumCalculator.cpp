@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    equilibriumCalculator::equilibriumCalculator(ASALI::speciesPopup *speciesNames, std::string kineticType)
+    equilibriumCalculator::equilibriumCalculator(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : thermoTransportProperties(speciesNames, kineticType),
           initialStateLabel_("Initial state"),
           finalStateLabel_("Final state")
@@ -54,10 +54,6 @@ namespace ASALI
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             this->input();
         }
-    }
-
-    equilibriumCalculator::~equilibriumCalculator()
-    {
     }
 
     void equilibriumCalculator::clean()

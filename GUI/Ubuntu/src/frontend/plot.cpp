@@ -177,13 +177,13 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void plot::setSpecieNames(const std::vector<std::string> n)
+    void plot::setSpecieNames(const std::vector<std::string> &n)
     {
         n_ = n;
         NC_ = n.size();
     }
 
-    void plot::setSiteNames(const std::vector<std::string> nc)
+    void plot::setSiteNames(const std::vector<std::string> &nc)
     {
         SURF_NC_ = nc.size();
         if (SURF_NC_ != 0)
@@ -192,12 +192,12 @@ namespace ASALI
         }
     }
 
-    void plot::setTime(const std::vector<double> t)
+    void plot::setTime(const std::vector<double> &t)
     {
         t_ = t;
     }
 
-    void plot::setLength(const std::vector<double> L, const std::string Lud)
+    void plot::setLength(const std::vector<double> &L, const std::string &Lud)
     {
         L_ = L;
         Lud_ = Lud;
@@ -209,12 +209,12 @@ namespace ASALI
         }
     }
 
-    void plot::setTemperature(const std::vector<double> T)
+    void plot::setTemperature(const std::vector<double> &T)
     {
         T_ = T;
     }
 
-    void plot::setTemperature(const std::vector<std::vector<double>> T)
+    void plot::setTemperature(const std::vector<std::vector<double>> &T)
     {
         Tt_.resize(T.size());
         for (unsigned int i = 0; i < T.size(); i++)
@@ -223,8 +223,8 @@ namespace ASALI
         }
     }
 
-    void plot::setTemperature(const std::vector<std::vector<double>> Tb,
-                              const std::vector<std::vector<double>> Tw)
+    void plot::setTemperature(const std::vector<std::vector<double>> &Tb,
+                              const std::vector<std::vector<double>> &Tw)
     {
         Tb_.resize(Tb.size());
         for (unsigned int i = 0; i < Tb.size(); i++)
@@ -239,12 +239,12 @@ namespace ASALI
         }
     }
 
-    void plot::setVolume(const std::vector<double> V)
+    void plot::setVolume(const std::vector<double> &V)
     {
         V_ = V;
     }
 
-    void plot::setSpecie(const std::vector<std::vector<double>> y, const std::vector<std::vector<double>> x)
+    void plot::setSpecie(const std::vector<std::vector<double>> &y, const std::vector<std::vector<double>> &x)
     {
         y_.resize(y.size());
         for (unsigned int i = 0; i < y.size(); i++)
@@ -259,7 +259,7 @@ namespace ASALI
         }
     }
 
-    void plot::setSpecie(const std::vector<std::vector<std::vector<double>>> y, const std::vector<std::vector<std::vector<double>>> x)
+    void plot::setSpecie(const std::vector<std::vector<std::vector<double>>> &y, const std::vector<std::vector<std::vector<double>>> &x)
     {
         yt_.resize(y.size());
         for (unsigned int i = 0; i < y.size(); i++)
@@ -282,8 +282,8 @@ namespace ASALI
         }
     }
 
-    void plot::setSpecie(const std::vector<std::vector<std::vector<double>>> yb, const std::vector<std::vector<std::vector<double>>> xb,
-                         const std::vector<std::vector<std::vector<double>>> yw, const std::vector<std::vector<std::vector<double>>> xw)
+    void plot::setSpecie(const std::vector<std::vector<std::vector<double>>> &yb, const std::vector<std::vector<std::vector<double>>> &xb,
+                         const std::vector<std::vector<std::vector<double>>> &yw, const std::vector<std::vector<std::vector<double>>> &xw)
     {
         yt_.resize(yb.size());
         xt_.resize(yb.size());
@@ -310,7 +310,7 @@ namespace ASALI
         }
     }
 
-    void plot::setSite(const std::vector<std::vector<double>> z)
+    void plot::setSite(const std::vector<std::vector<double>> &z)
     {
         z_.resize(z.size());
         for (unsigned int i = 0; i < z.size(); i++)
@@ -319,7 +319,7 @@ namespace ASALI
         }
     }
 
-    void plot::setSite(const std::vector<std::vector<std::vector<double>>> z)
+    void plot::setSite(const std::vector<std::vector<std::vector<double>>> &z)
     {
         zt_.resize(z.size());
         for (unsigned int i = 0; i < z.size(); i++)
@@ -332,12 +332,12 @@ namespace ASALI
         }
     }
 
-    void plot::setType(const std::string type)
+    void plot::setType(const std::string &type)
     {
         type_ = type;
     }
 
-    void plot::setResolutionType(const std::string resolution)
+    void plot::setResolutionType(const std::string &resolution)
     {
         resolution_ = resolution;
     }
@@ -383,7 +383,7 @@ namespace ASALI
         plotInterface->setDefaultBackgroundColor(16, 37, 63);
     }
 
-    void plot::legend(ASALI::plotInterface *plotInterface, int ndata)
+    void plot::legend(ASALI::plotInterface *plotInterface, const int &ndata)
     {
         if (ndata <= MAX_COL_)
         {
@@ -591,7 +591,7 @@ namespace ASALI
         plotInterface->show();
     }
 
-    void plot::ph1dplot(ASALI::plotInterface *plotInterface, const std::string resolution)
+    void plot::ph1dplot(ASALI::plotInterface *plotInterface, const std::string &resolution)
     {
         if (resolution == "steady state")
         {
@@ -1011,5 +1011,6 @@ namespace ASALI
 
     plot::~plot()
     {
+        delete unitConversion_;
     }
 }

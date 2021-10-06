@@ -46,9 +46,7 @@ namespace ASALI
     class physicalChemicalProperties : public ASALI::basicProperties
     {
     public:
-        physicalChemicalProperties(ASALI::speciesPopup *speciesNames,std::string kineticType);
-
-        virtual ~physicalChemicalProperties();
+        physicalChemicalProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         virtual void results();
         virtual void save();
@@ -58,7 +56,6 @@ namespace ASALI
         void mwUnitConversion(bool check);
         void rhoUnitConversion(bool check);
 
-        std::vector<double> MW_;
         std::vector<double> rho_;
 
     private:
@@ -69,15 +66,12 @@ namespace ASALI
         Gtk::Button saveButton_;
         Gtk::Button backButton_;
 
-        Gtk::Grid resultsGrid_;
-
         Gtk::Label rhoLabel_;
         Gtk::Label mwLabel_;
 
         Gtk::ComboBoxText rhoCombo_;
         Gtk::ComboBoxText mwCombo_;
 
-        std::vector<Gtk::Label *> nameVector_;
         std::vector<Gtk::Label *> rhoVector_;
         std::vector<Gtk::Label *> mwVector_;
     };

@@ -67,12 +67,9 @@ namespace ASALI
         /// Get random beer quote with a string length lower than shortQuoteLength
         std::string getShortRandomQuote();
 
-        /// Class destructor
-        virtual ~beerQuote();
-
     private:
         /// Get random unsigned int
-        unsigned int randomUnsignedInt(const unsigned int min, const unsigned int max);
+        static unsigned int randomUnsignedInt(const unsigned int min, const unsigned int max);
 
         unsigned int shortQuoteLength; /// Short beer quote maximum length
 

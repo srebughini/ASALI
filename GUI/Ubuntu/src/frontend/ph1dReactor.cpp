@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    ph1dReactor::ph1dReactor(std::string kineticType)
+    ph1dReactor::ph1dReactor(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -322,10 +322,6 @@ namespace ASALI
                 }
             }
         }
-    }
-
-    ph1dReactor::~ph1dReactor()
-    {
     }
 
     void ph1dReactor::read()
@@ -708,23 +704,17 @@ namespace ASALI
             //Start solving
             {
                 double ti = 0.;
-                double tf = 0.;
-                double tm = 0.;
-                double timef = 0.;
                 double time0 = double(std::clock() / CLOCKS_PER_SEC);
                 for (unsigned int i = 0; i < 100; i++)
                 {
-                    tf = ti + L_ / 100.;
-
                     ode.setInitialConditions(ti, x0);
-                    ode.solve(tf, x0);
+                    ode.solve(ti + L_ / 100., x0);
 
-                    eq_->store(tf, x0);
+                    eq_->store(ti + L_ / 100., x0);
 
-                    timef = double(std::clock() / CLOCKS_PER_SEC);
-                    tm = (timef - time0) * (100. - i + 1) / (i + 1);
+                    double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (100. - i + 1) / (i + 1);
 
-                    ti = tf;
+                    ti = ti + L_ / 100.;
 
                     this->bar(double(i + 1) * (L_ / 100.) / L_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -969,8 +959,6 @@ namespace ASALI
 
             //Start solving
             {
-                double ti = 0.;
-                double tf = 0.;
                 double dt = 0.;
 
                 if (alfa_ != 0.)
@@ -982,30 +970,26 @@ namespace ASALI
                     dt = dt_ / 100.;
                 }
 
+                double ti = 0.;
                 double td = 0;
-                double timef = 0.;
                 double time0 = double(std::clock() / CLOCKS_PER_SEC);
-                double tm = 0;
                 int Nt = int(tf_ / dt) + 1;
                 for (int i = 0; i < Nt; i++)
                 {
-                    tf = ti + dt;
-
                     bvp.setInitialConditions(ti, x0);
-                    bvp.solve(tf, x0);
+                    bvp.solve(ti + dt, x0);
 
                     td += dt;
 
                     if (std::fabs(td - dt_) < dt * 0.001)
                     {
-                        eq_->store(tf, x0);
+                        eq_->store(ti + dt, x0);
                         td = 0.;
                     }
 
-                    timef = double(std::clock() / CLOCKS_PER_SEC);
-                    tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                    double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                    ti = tf;
+                    ti = ti + dt;
 
                     this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -1548,13 +1532,7 @@ namespace ASALI
             plot_->setTime(eq_->getTime());
             plot_->setTemperature(eq_->getTemperatureTransient());
             {
-                std::vector<double> t = eq_->getTime();
-                std::vector<std::vector<double>> T = eq_->getTemperatureTransient();
-                std::vector<std::vector<std::vector<double>>> y = eq_->getSpecieTransient();
-                std::vector<std::vector<std::vector<double>>> Z = eq_->getSiteTransient();
-
                 //Conversion from mass to mole
-                std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecieTransient();
                 {
                     std::vector<double> t = eq_->getTime();
                     std::vector<std::vector<double>> T = eq_->getTemperatureTransient();

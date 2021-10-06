@@ -126,7 +126,7 @@ namespace ASALI
         alfa_ = alfa;
     }
 
-    void cstrEquations::setInletConditions(const std::vector<double> omega0, const double T0)
+    void cstrEquations::setInletConditions(const std::vector<double> &omega0, const double T0)
     {
         T0_ = T0;
         omega0_ = omega0;
@@ -221,7 +221,7 @@ namespace ASALI
         return 0;
     }
 
-    void cstrEquations::store(const double tf, const std::vector<double> xf)
+    void cstrEquations::store(const double &tf, const std::vector<double> &xf)
     {
         // Recover unknowns
         {

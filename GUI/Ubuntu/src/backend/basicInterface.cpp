@@ -132,7 +132,7 @@ namespace ASALI
         }
     }
 
-    std::vector<double> basicInterface::getMoleFractionFromNames(const std::vector<std::string> names)
+    std::vector<double> basicInterface::getMoleFractionFromNames(const std::vector<std::string> &names)
     {
         std::vector<double> x(names.size());
         for (unsigned int i = 0; i < names.size(); i++)
@@ -149,7 +149,7 @@ namespace ASALI
         return x;
     }
 
-    std::vector<double> basicInterface::getMassFractionFromNames(const std::vector<std::string> names)
+    std::vector<double> basicInterface::getMassFractionFromNames(const std::vector<std::string> &names)
     {
         std::vector<double> y(names.size());
         for (unsigned int i = 0; i < names.size(); i++)
@@ -168,5 +168,7 @@ namespace ASALI
 
     basicInterface::~basicInterface()
     {
+        delete[] x_;
+        delete[] y_;
     }
 }

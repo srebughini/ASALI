@@ -224,7 +224,7 @@ namespace ASALI
         return 0;
     }
 
-    void batchEquations::store(const double tf, const std::vector<double> xf)
+    void batchEquations::store(const double &tf, const std::vector<double> &xf)
     {
         // Recover unknowns
         {
@@ -249,9 +249,5 @@ namespace ASALI
             Volume_.push_back(V_);
             Mass_.push_back(mass_);
         }
-    }
-
-    batchEquations::~batchEquations()
-    {
     }
 }

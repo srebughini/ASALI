@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           exitButton_("Exit"),
           saveButton_("Save"),
@@ -68,10 +68,6 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->createInputGrid();
-    }
-
-    vacuumProperties::~vacuumProperties()
-    {
     }
 
     void vacuumProperties::createInputGrid()

@@ -46,9 +46,7 @@ namespace ASALI
     class equilibriumCalculator : public ASALI::thermoTransportProperties
     {
     public:
-        equilibriumCalculator(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~equilibriumCalculator();
+        equilibriumCalculator(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         void save();
         void results();

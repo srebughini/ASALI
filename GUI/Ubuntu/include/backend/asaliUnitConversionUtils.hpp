@@ -139,10 +139,7 @@ namespace ASALI
 		static void fromJoulePerKmole(double &v, std::string m, double mw);
 
 		/// Update unit dimensions box
-		void updateBox(Gtk::ComboBoxText &box, std::string variable);
-
-		/// Class destructor
-		virtual ~asaliUnitConversionUtils();
+		void updateBox(Gtk::ComboBoxText &box, const std::string &variable);
 
 	private:
 		std::vector<std::string> lengthUd_;		   /// Length unit dimensions vector
