@@ -81,8 +81,15 @@ namespace ASALI
         /// Get Cantera interfaces
         static std::vector<std::string> getCanteraInterfaces(std::string filename);
 
-        // Get Cantera phase name from interface
+        /// Get Cantera phase name from interface
         static std::string getCanteraPhaseName(std::string interfaceName);
+
+        /// Remove extension from file path
+        void removeFileExtension(std::string &filename, const std::string &extension);
+
+    private:
+        /// Remove substring from string
+        void eraseSubString(std::string &mainStr, const std::string &toErase);
     };
 }
 #endif

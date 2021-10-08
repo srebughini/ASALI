@@ -137,8 +137,8 @@ namespace ASALI
             std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.cti");
             if (dialogname != "")
             {
-                this->eraseSubString(dialogname, ".xml");
-                this->eraseSubString(dialogname, ".cti");
+                fileManager_.removeFileExtension(dialogname, ".xml");
+                fileManager_.removeFileExtension(dialogname, ".cti");
                 std::string filename = dialogname + ".cti";
                 {
                     files_[4] = "--output=" + filename;
@@ -276,16 +276,6 @@ namespace ASALI
             {
                 return true;
             }
-        }
-    }
-
-    void chemkinConverter::eraseSubString(std::string &mainStr, const std::string &toErase)
-    {
-        size_t pos = std::string::npos;
-
-        while ((pos = mainStr.find(toErase)) != std::string::npos)
-        {
-            mainStr.erase(pos, toErase.length());
         }
     }
 

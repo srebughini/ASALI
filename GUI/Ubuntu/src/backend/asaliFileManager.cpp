@@ -220,4 +220,19 @@ namespace ASALI
 
 		return phaseName;
 	}
+
+	void asaliFileManager::removeFileExtension(std::string &filename, const std::string &extension)
+	{
+		this->eraseSubString(filename, extension);
+	}
+
+	void asaliFileManager::eraseSubString(std::string &mainStr, const std::string &toErase)
+	{
+		size_t pos = std::string::npos;
+
+		while ((pos = mainStr.find(toErase)) != std::string::npos)
+		{
+			mainStr.erase(pos, toErase.length());
+		}
+	}
 }

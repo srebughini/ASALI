@@ -56,44 +56,63 @@
 
 namespace ASALI
 {
+    /// Class to convert Cantera (https://cantera.org) .cti input to .xml
     class chemkinConverter : public Gtk::Window
     {
     public:
+        /// Class constructor
         chemkinConverter();
 
+        /// Class destructor
         ~chemkinConverter();
 
     private:
+        /// Function to close the window
         void exit();
+
+        /// Function to clean input
         void clean();
+
+        /// Function to load input files
         void load(const int index);
+
+        /// Shows saving message popup
         void savedMessage();
+
+        /// Shows error message during saving popup
         void notSavedMessage();
+
+        /// Run conversion
         void run();
+
+        /// Shows message
         void help();
+
+        /// Shows error message
         void error(const std::string &type);
-        void eraseSubString(std::string &mainStr, const std::string &toErase);
+
+        /// Check converted file
         bool checkConvertedFile(const std::string &filename);
 
-        Gtk::Box mainBox_;
-        Gtk::Box buttonBox_;
+        Gtk::Box mainBox_;   /// Background box
+        Gtk::Box buttonBox_; /// Background button box
 
-        Gtk::Grid endGrid_;
+        Gtk::Grid endGrid_; /// Background grid
 
-        Gtk::Button kinetic_;
-        Gtk::Button thermo_;
-        Gtk::Button transport_;
-        Gtk::Button surface_;
-        Gtk::Button output_;
-        Gtk::Button help_;
-        Gtk::Button exit_;
+        Gtk::Button kinetic_;   /// Gas kinetic button
+        Gtk::Button thermo_;    /// Thermodinamic button
+        Gtk::Button transport_; /// Transport button
+        Gtk::Button surface_;   /// Surface kinetic button
+        Gtk::Button output_;    /// Output button
+        Gtk::Button help_;      /// Help button
+        Gtk::Button exit_;      /// Exit button
 
-        Gtk::Image logo_;
+        Gtk::Image logo_; /// Logo
 
-        std::vector<std::string> files_;
+        std::vector<std::string> files_; /// Vector of files name to be converted
 
-        ASALI::beerQuote *beerQuote_;
-        ASALI::asaliFileManager fileManager_;
+        ASALI::beerQuote *beerQuote_;         /// Object to get random beer quotes
+        ASALI::asaliFileManager fileManager_; /// Object to handle opening/closing of files
     };
 }
 #endif
