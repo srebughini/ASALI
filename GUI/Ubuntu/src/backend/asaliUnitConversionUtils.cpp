@@ -67,8 +67,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "\u03BCm")
 			v *= 0.000001;
 		else if (m == "mm")
@@ -87,8 +85,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::fromMeter(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "\u03BCm")
@@ -121,8 +117,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "kW/m/K")
 			v *= 1e03;
 		else if (m == "cal/m/s/K")
@@ -131,8 +125,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::fromWattPerMeterPerKelvin(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "kW/m/K")
@@ -145,8 +137,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "g/cc")
 			v *= 1e03;
 	}
@@ -155,16 +145,12 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "kJ/kg/K")
 			v *= 1e03;
 	}
 
 	void asaliUnitConversionUtils::fromJoulePerKmolePerKelvin(double &v, std::string m, double mw)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "J/mol/K")
@@ -185,8 +171,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "cP")
 			v *= 0.001;
 		else if (m == "P")
@@ -195,8 +179,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::fromPascalPerSecond(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "cP")
@@ -271,8 +253,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "mm\u00b3")
 			v *= 1e-09;
 		else if (m == "cm\u00b3")
@@ -289,8 +269,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "mm\u00b2")
 			v *= 1e-06;
 		else if (m == "cm\u00b2")
@@ -303,8 +281,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "1/dm")
 			v *= 1e01;
 		else if (m == "1/cm")
@@ -315,8 +291,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::toMeterPerSecond(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "dm/s")
@@ -347,8 +321,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "dm/s")
 			v = v / 1e-01;
 		else if (m == "cm/s")
@@ -375,8 +347,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::toCubeMeterPerSecond(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "mm\u00b3/s")
@@ -419,8 +389,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "mm\u00b2/s")
 			v *= 1e-06;
 		else if (m == "cm\u00b2/s")
@@ -433,8 +401,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "mm\u00b2/s")
 			v = v / 1e-06;
 		else if (m == "cm\u00b2/s")
@@ -445,8 +411,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::fromJoulePerKmole(double &v, std::string m, double mw)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "J/mol")
@@ -467,8 +431,6 @@ namespace ASALI
 	{
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		if (m == "J/mol")
 			v = v * 1e03;
 		else if (m == "cal/kmol")
@@ -485,8 +447,6 @@ namespace ASALI
 
 	void asaliUnitConversionUtils::toJoulePerKmole(double &v, std::string m)
 	{
-		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
-
 		m.erase(std::remove(m.begin(), m.end(), ' '), m.end());
 
 		if (m == "J/mol")

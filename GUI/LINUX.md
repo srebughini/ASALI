@@ -12,7 +12,7 @@ Asali is based on different open-source codes:
 The Linux based external libraries can be installed by typing these commands:  
 ```bash
 sudo apt-get update  
-sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3  
+sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev  
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
 ```
 ### 1.2 How to install Gtkmm libraries
