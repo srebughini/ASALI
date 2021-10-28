@@ -48,7 +48,6 @@ The installation can be customized with the following options:
 |--------|-----|
 |`--help`|Show help message|
 |`--clean`|Clean installation folder|
-|`--cantera-path`|Select Cantera path|
 |`--os`|Select operating system|
 |`--output-folder`|Select target folder|
 |`--symbolic-link`|Create symbolic link in `/usr/local/bin/`|

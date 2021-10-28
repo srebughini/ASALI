@@ -15,11 +15,10 @@ function echoYellow {
 function Help()
 {
     echo " "
-    echo "Syntax: ./build.sh --cantera-path /usr/local/ --os ubuntu"
+    echo "Syntax: ./build.sh --os ubuntu"
     echo "   options:"
     echo "          -h|--help                Help"
     echo "          -c|--clean               Clean installation folder"
-    echo "          --cantera-path           Cantera path     (Default: /usr/local/)"
     echo "          --os                     Operating system (Default: ubuntu)"
     echo "          --output-folder          Target folder    (Default: .)"
     echo "          --symbolic-link          Create symbolic link in /usr/local/bin/"
@@ -42,24 +41,23 @@ function BuildingOptions()
         echoGreen "- python version:    $2"
     if [ "$3" == "true" ]; then
         echoGreen "- cantera:           yes"
-        echoGreen "- cantera path:      $4"
     else
         echoGreen "- cantera:           no"
     fi
     
-    if [ "$5" == "actual" ]; then
+    if [ "$4" == "actual" ]; then
         echoGreen "- output folder:     $PWD"
     else
-        echoGreen "- output folder:     $5"
+        echoGreen "- output folder:     $4"
     fi
     
-    if [ "$6" == "true" ]; then
+    if [ "$5" == "true" ]; then
         echoGreen "- symbolic link:     yes"
     else
         echoGreen "- symbolic link:     no"
     fi
 
-    if [ "$7" == "true" ]; then
+    if [ "$6" == "true" ]; then
         echoGreen "- human interaction: yes"
     else
         echoGreen "- human interaction: no"
@@ -113,11 +111,12 @@ function CheckOperatingSystem()
 function CheckCantera()
 {
     if [ "$1" == "true" ]; then
-        if [ ! -d "$2/include/cantera" ]; then
+        if [[ $(pkg-config cantera --cflags > /dev/null 2>&1; echo $?) = 1 ]]; then
         echo " "
-        echoRed "Cantera is missing in: $2"
+        echoRed "Cantera is missing"
         Help
         else
+        sundials_path=$(echo $(pkg-config cantera --cflags | awk '{print $3}' | sed 's|-I||g')/cantera/ext)
         asali_using_cantera=1
         fi
     else
@@ -174,7 +173,7 @@ function Compile()
     fi 
 
     if [ "$1" == "true" ]; then
-        make all -f Makefile.cantera CANTERA_PREFIX=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
+        make all -f Makefile.cantera SUNDIALS_PATH=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     else
         echoRed "NOT TESTED, yet :)"
         make all -f Makefile.libs
@@ -211,7 +210,7 @@ function Clean()
 }
 
 POSITIONAL=()
-cantera_path="/usr/local/"
+sundials_path=""
 operating_system="ubuntu"
 with_cantera="true"
 output_folder=$PWD
@@ -231,11 +230,6 @@ do
         CheckCommand python3-config
         CheckCommand make
         Clean
-        ;;
-        --cantera-path)
-        cantera_path="$2"
-        shift # past argument
-        shift # past value
         ;;
         --os)
         operating_system="$2"
@@ -275,15 +269,15 @@ CheckCommand python3
 CheckCommand python3-config
 CheckCommand make
 CheckOperatingSystem "$operating_system"
-CheckCantera "$with_cantera" "$cantera_path" "$folder_api"
+CheckCantera "$with_cantera" "$folder_api"
 CheckPython
-BuildingOptions "$operating_system" "$python_version" "$with_cantera" "$cantera_path" "$output_folder" "$symbolic_link" "$human_interaction"
+BuildingOptions "$operating_system" "$python_version" "$with_cantera" "$output_folder" "$symbolic_link" "$human_interaction"
 CheckSymbolicLink "$symbolic_link" "$python_config_command"
 
 compile=$(Continue)
 
 if [ "$compile" == "true" ]; then
-   Compile "$with_cantera" "$cantera_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder" "$next_version"
+   Compile "$with_cantera" "$sundials_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder" "$next_version"
    Copy "$output_folder"
    CreateSymbolicLink "$symbolic_link" "$output_folder"
 else

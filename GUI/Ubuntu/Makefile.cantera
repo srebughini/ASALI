@@ -9,23 +9,20 @@ SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wi
 
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --cflags)\
+CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --cflags)\
             $(shell python3-config ${PYTHON_CONFIG} --cflags)\
-            -I$(CANTERA_PREFIX)include\
-            -I$(CANTERA_PREFIX)include/cantera/ext\
+            -I$(SUNDIALS_PATH)\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s -std=c++11 \
+CFLAGS := -fPIC -Os -s\
           -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
           -DASALI_NEXT_VERSION=${ASALI_NEXT_VERSION} \
           -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 
 LDFLAGS:= -L$(CANTERA_PREFIX)lib
-LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot --libs)\
+LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
-          -lcantera\
-          -lcantera_fortran\
           -lplplotcxx\
           -lgfortran\
           -lpthread\
