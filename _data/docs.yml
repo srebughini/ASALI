@@ -1,7 +1,9 @@
 - title: Graphical User Interface
   docs:
   - gui-introduction
-  - gui-installation
+  - gui-installation-linux
+  - gui-installation-mingw-w64
+  - gui-installation-windows
   - gui-examples
 
 - title: Application Programming Interface
