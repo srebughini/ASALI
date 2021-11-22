@@ -16,46 +16,88 @@ npm i jasali
 This example shows how to extract pure **oxygen** properties.
 
 ```javascript
-import { GasSpecie, GasState } from "jasali"
+import {
+  GasState,
+  GasSpecie
+} from "jasali"
 
 //Generate gas state object
-let state = GasState({ temperature: 393.15, pressure: 4e05 })
+let state = GasState({
+  temperature: 393.15,
+  pressure: 4e05
+})
 
 //Generate specie object
-let specie = GasSpecie({ name: "O2", gasState: state })
+let specie = GasSpecie({
+  name: "O2",
+  gasState: state
+})
 
 //Extract properties from the specie object
 let name = specie.getName()
 let molecularWeight = specie.getMolecularWeight()
 let viscosity = specie.getViscosity()
 ```
+
 ### Gas mixture: AIR
 This example shows how to extract **air** properties from its composition.
 
 ```javascript
-import { GasSpecie, GasState, GasMixtureComposition, GasMixture } from "jasali"
+import {
+  GasState,
+  GasMixture
+} from "jasali"
 
 //Generate gas state object
-let state = GasState({ temperature: 298.15, pressure: 101325 })
-
-//Generate pure gas specie objects
-let o2 = GasSpecie({ name: "O2", gasState: state })
-let n2 = GasSpecie({ name: "N2", gasState: state })
-let ar = GasSpecie({ name: "AR", gasState: state })
-
-//Generate mixture list
-let speciesList = [{ "specie": o2, "value": 0.21 }, { "specie": n2, "value": 0.78 }, { "specie": ar, "value": 0.01 }]
-
-//Generate mixture composition object
-let compositions = GasMixtureComposition(speciesList, "mole")
+let state = GasState({
+  temperature: 298.15,
+  pressure: 101325
+})
 
 //Generate mixture object
-let mixture = GasMixture({ gasState: state, mixtureComposition: compositions })
+let mixture = GasMixture({
+  mixtureComposition: {
+    "O2": 0.21,
+    "N2": 0.78,
+    "AR": 0.01
+  },
+  gasState: state,
+  compositionType: "mole"
+})
 
 //Extract properties from the mixture object
 let density = mixture.getDensity()
 let molecularWeight = mixture.getMolecularWeight()
 let viscosity = mixture.getViscosity()
+```
+### Gas mixture: Chemical equilibrium
+This example shows how to estimate the **chemical equilibrium at constant pressure and temperaure** for a gas mixture.
+
+```javascript
+import {
+  GasState,
+  GasMixture
+} from "jasali"
+
+//Generate gas state object
+let state = GasState({
+  temperature: 3000,
+  pressure: 4e05
+})
+
+//Generate mixture object
+let mixture = GasMixture({
+  mixtureComposition: {
+    "CO": 0.1,
+    "CO2": 0.2,
+    "O2": 0.7
+  },
+  gasState: state,
+  compositionType: "mole"
+})
+
+//Extract chemical equilibrium composition
+let x = mixture.calculateChemicalEquilibriumTP()
 ```
 
 ## **Available thermodynamic and transport properties**
@@ -63,10 +105,32 @@ let viscosity = mixture.getViscosity()
 
 | | |
 
+### `GasState` methods
+
+| | |
+|:-|:-|
+| **`getTemperature()`** | |
+| *Estimated property*|Temperature|
+| *Method of*         |`GasState`|
+| *Unit dimensions*   |K|
+| **`getPressure()`** | |
+| *Estimated property*|Pressure|
+| *Method of*         |`GasState`|
+| *Unit dimensions*   |Pa|
+| | |
+
 ### `GasSpecie` methods
 
 | | |
 |:-|:-|
+| **`updateGasState()`** | |
+| *Estimated property*|Update gas state|
+| *Method of*         |`GasSpecie`|
+| *Unit dimensions*   |n.a|
+| **`updateMoleFraction()`** | |
+| *Estimated property*|Update mole fraction|
+| *Method of*         |`GasSpecie`|
+| *Unit dimensions*   |n.a|
 | **`getName()`** | |
 | *Estimated property*|Specie name|
 | *Method of*         |`GasSpecie`|
@@ -89,10 +153,14 @@ let viscosity = mixture.getViscosity()
 
 | | |
 |:-|:-|
-| **`getSpecies()`** | |
-| *Estimated property*|Species in the mixture|
+| **`getTemperature()`** | |
+| *Estimated property*|Temperature|
 | *Method of*         |`GasMixture`|
-| *Unit dimensions*   |n.a|
+| *Unit dimensions*   |K|
+| **`getPressure()`** | |
+| *Estimated property*|Pressure|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |Pa|
 | **`getMassFraction()`** | |
 | *Estimated property*|Mass fraction|
 | *Method of*         |`GasMixture`|
@@ -109,6 +177,74 @@ let viscosity = mixture.getViscosity()
 | *Estimated property*|Mixture diffusivity|
 | *Method of*         |`GasMixture`|
 | *Unit dimensions*   |m<sup>2</sup>/s|
+| **`getSpeciesName()`** | |
+| *Estimated property*|Specie name|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |n.a|
+| **`getSpeciesArithmeticMeanGasVelocity()`** | |
+| *Estimated property*|Mean gas velocity|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |m/s|
+| **`getSpeciesMeanFreePath()`** | |
+| *Estimated property*|Mean free path|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |m|
+| **`getSpecies()`** | |
+| *Estimated property*|Species in the mixture|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |n.a|
+| **`getSpecieMolarSpecificHeat()`** | |
+| *Estimated property*|Specific heat|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kmol/K|
+| **`getSpecieMassSpecificHeat()`** | |
+| *Estimated property*|Specific heat|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kg/K|
+| **`getSpecieMolarEnthalpy()`** | |
+| *Estimated property*|Enthalpy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kmol|
+| **`getSpecieMassEnthalpy()`** | |
+| *Estimated property*|Enthalpy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kg|
+| **`getSpecieMolarEntropy()`** | |
+| *Estimated property*|Entropy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kmol/K|
+| **`getSpecieMassEntropy()`** | |
+| *Estimated property*|Entropy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kg/K|
+| **`getSpecieMolarInternalEnergy()`** | |
+| *Estimated property*|Internal energy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kmol|
+| **`getSpecieMassInternalEnergy()`** | |
+| *Estimated property*|Internal energy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kg|
+| **`getSpecieMolarGibbsFreeEnergy()`** | |
+| *Estimated property*|Gibbs free energy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kmol|
+| **`getSpecieMassGibbsFreeEnergy()`** | |
+| *Estimated property*|Gibbs free energy|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |J/kg|
+| **`getSpecieViscosity()`** | |
+| *Estimated property*|Viscosity|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |Pa*s|
+| **`getSpecieThermalConductivity()`** | |
+| *Estimated property*|Thermal conductivity|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |W/m/K|
+| **`calculateChemicalEquilibriumTP()`** | |
+| *Estimated property*|Chemical equilibrium|
+| *Method of*         |`GasMixture`|
+| *Unit dimensions*   |mole fraction|
 | | |
 
 ### `GasMixture` and `GasSpecie` methods
