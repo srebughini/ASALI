@@ -100,6 +100,6 @@ program example
 	
 	print '(A15)' ,'Fortran version'
 	print '(A21,A4)' ,'Initialization (s):  ', 'n.a.'
-	print '(A21,ES9.3)' ,'Estimation (s):      ', (tEnd - tStart)/N
+	print '(A21,ES9.3)' ,'Calculation (s):     ', (tEnd - tStart)/N
 
 end program example

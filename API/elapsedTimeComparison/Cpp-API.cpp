@@ -102,7 +102,7 @@ int main(int argc, char** argv)
     clock_t estimationEnd = clock();
     std::cout << "C++ version" << std::endl << std::scientific << std::setprecision(3);
     std::cout << "Initialization (s):  " << ((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
-    std::cout << "Estimation (s):      " << ((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
+    std::cout << "Calculation (s):     " << ((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/double(N) << std::endl;
 
     return 0;
 }
