@@ -14,3 +14,5 @@ API/elapsedTimeComparison/*.mod
 API/elapsedTimeComparison/asali-*
 API/elapsedTimeComparison/*.class
 API/elapsedTimeComparison/*.txt
+
+.vscode
