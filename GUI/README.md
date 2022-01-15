@@ -20,6 +20,8 @@ The thermodynamic and transport properties evaluated by Asali are:
 * Enthalpy
 * Entropy
 * Specific heat at constant pressure
+* Density
+* Molecular weight
 
 Asali can be considered as a powerful user-friendly interface of  [Cantera](https://cantera.org/), thus all the transport and thermodynamic properties are estimated following the approach implemented in  [Cantera](https://cantera.org/). The transport properties are evaluated with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
 ### 1.2 Linear regression
@@ -60,40 +62,15 @@ Asali is based on different open-source codes:
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
 * [Sundials libraries](https://computation.llnl.gov/projects/sundials): IDA and CVODE solvers for Ordinay Differentional Equation (ODE) and Differential and Algebraic Equation (DAE) systems
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
-* [Matplotlib](https://matplotlib.org/): a comprehensive library for creating static, animated, and interactive visualizations in Python
+* [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an email: ste.rebu@outlook.it
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
-##### 2.1.1 Pre-requisites installation
-The Linux based external libraries can be installed by typing these commands:  
-`sudo apt-get update`  
-`sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3`  
-`sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1`  
-
-##### 2.1.2 How to install Gtkmm libraries
-[Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
-`sudo apt-get install libgtkmm-3.0-dev`  
-More details can be found at: https://www.gtkmm.org/en/  
-
-##### 2.1.3 How to install Matplotlib
-[Matplotlib](https://matplotlib.org/) can be installed with the following command:  
-`sudo apt-get install python3-matplotlib`  
-Details can be found at: https://matplotlib.org/
-
-##### 2.1.4 How to install Cantera
-[Cantera](https://cantera.org/) can be downloaded with the following command:    
-`git clone https://github.com/Cantera/cantera.git`   
-To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
-`scons build system_sundials=n`   
-`sudo scons install`    
-More details can be found at: https://cantera.org/install/compiling-install.html 
-
-##### 2.1.5 How to install ASALI
-To install Asali run the following command, where `CANTERA_PREFIX` is the path of your [Cantera](https://cantera.org/) installation (usually `/usr/local/`).  
-`make all CANTERA_PREFIX=/usr/local/`  
-To run Asali:  
-`./Asali`  
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS and Debian Wheez. Installation instructions can be found [here](LINUX.md).
+### 2.3 Mingw-w64 on Windows
+[Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
+Installation instructions can be found [here](MINGW64.md).
 
 ### 2.2 Windows OS
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.

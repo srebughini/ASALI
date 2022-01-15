@@ -1,0 +1,40 @@
+name: Copy ASALI API
+on:
+  [ workflow_dispatch ]
+jobs:
+
+  build:
+    name: Copy ASALI API
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Copy Asali.cpp
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/Asali.cpp"
+        target: "GUI/src/Asali.cpp"
+    - name: Copy Asali.hpp
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/Asali.hpp"
+        target: "GUI/include/Asali.cpp"
+    - name: Copy thermo.H
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/shared/thermo.H"
+        target: "GUI/include/shared/thermo.H"
+    - name: Copy transport.H
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/shared/transport.H"
+        target: "GUI/include/shared/transport.H"
+    - name: Copy omega22.H
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/shared/omega22.H"
+        target: "GUI/include/shared/omega22.H"
+    - name: Copy omega11.H
+      uses: canastro/copy-file-action@master
+      with:
+        source: "API/Cpp/shared/omega11.H"
+        target: "GUI/include/shared/omega11.H"
