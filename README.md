@@ -1,27 +1,29 @@
-
-[![Travis (.org)](https://img.shields.io/travis/srebughini/ASALI.svg?style=popout-square)](https://travis-ci.org/srebughini/ASALI)
-[![SourceForge](https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square)](https://sourceforge.net/projects/asali/?source=directory)
-[![Twitter Follow](https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square)](https://twitter.com/ASALIcode)
-[![GitHub stars](https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/stargazers)
-[![GitHub license](https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/issues)
-[![GitHub release](https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square)](https://github.com/srebughini/ASALI/releases)
-[![CodeFactor](https://www.codefactor.io/repository/github/srebughini/asali/badge/master)](https://www.codefactor.io/repository/github/srebughini/asali/overview/master)
-
-
-
-# **ASALI: Modeling and beyond**
-Asali is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture.
-
-The GUI version of Asali, thanks to its user-friendly interface, is very helpful for those approaching the modeling of gas phase mixture for the first time. Moreover, its deep interaction with [Cantera](https://cantera.org/) allows more expert users in performing detailed simulations without losing time in coding their own models.
-
-Instead, the API version of Asali is designed for those approaching the modeling of gas phase mixture with the goal of becoming experts in the field. The API version can be easily integrated in different programming languages and it is the perfect starting point for everyone.
-
-If you are looking for something more advanced and with higher performance, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
-
-# Contacts
-For any question/issue contact us:  
-E-mail: ste.rebu@outlook.it  
-Facebook: [Asali](https://www.facebook.com/ASALIcode/)  
-Twitter: [@ASALIcode](https://twitter.com/ASALIcode)  
-LinkedIn: [Asalicode](https://www.linkedin.com/company/asalicode)  
+# **ASALI: Modeling and beyond**  
+## **APIs elapsed time comparison**  
+These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04.3 LTS*.  
+If you download ASALI, you can run the same test on your own computer using the following commands:  
+```bash  
+cd API/elapsedTimeComparison/  
+./run.sh -n 2000 -f test.md --compile  
+```  
+## Assumptions and operating conditions  
+The gas mixture operating conditions are reported in the following table:  
+|Property|Value|Unit dimension|  
+|--------|-----|--------------|  
+|Temperature|393.15|K|  
+|Pressure|4|bar|  
+|H<sub>2</sub>|0.1|Molar fraction|  
+|O<sub>2</sub>|0.2|Molar fraction|  
+|N<sub>2</sub>|0.7|Molar fraction|  
+ 
+The performance comparison has the following assumptions:  
+* Number of runs: **2000**  
+* Elapsed time to initialize **output variables** is **not considered**  
+## Results  
+The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
+|Language|Initialization (s)|Calculation (s)|  
+|--------|----------------|-------------------|  
+|C++|2.379e-03|6.867e-06| 
+|C|3.262e-04|3.017e-05| 
+|Fortran|n.a.|1.840e-06| 
+|Java|2.734e-04|1.472e-05| 

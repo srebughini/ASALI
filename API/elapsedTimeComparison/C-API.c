@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     clock_t estimationEnd = clock();
     printf("C version\n");
     printf("Initialization (s):  %.3e\n",((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/N);
-    printf("Estimation (s):      %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
+    printf("Calculation (s):     %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
     
     return 0;
 }
