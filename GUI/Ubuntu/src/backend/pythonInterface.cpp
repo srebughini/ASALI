@@ -46,6 +46,30 @@ namespace ASALI
         Nhom_ = 0;
     }
 
+	void pythonInterface::runScript(std::string filename, int argc, char *argv[])
+	{
+		FILE* file;
+
+		wchar_t** _argv = PyMem_New(wchar_t*, sizeof(wchar_t*)*argc);
+		for (int i=0; i<argc; i++)
+		{
+			wchar_t* arg = Py_DecodeLocale(argv[i], NULL);
+			_argv[i] = arg;
+		}
+
+		Py_Initialize();
+		
+		if ( argc > 0 )
+		{
+			PySys_SetArgv(argc, _argv);
+		}
+		
+		file = fopen(filename.c_str(),"r");
+		PyRun_SimpleFile(file, filename.c_str());
+		Py_Finalize();
+		PyMem_Del(_argv);
+	}
+
     void pythonInterface::setTemperature(const double &T)
     {
         pTemperature = Py_BuildValue("d", T);

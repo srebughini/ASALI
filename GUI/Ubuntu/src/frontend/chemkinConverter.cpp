@@ -145,14 +145,12 @@ namespace ASALI
                 }
 
                 {
-                    std::string cmd = "ck2cti " + files_[0] + " " + files_[1] + " " + files_[2] + " " + files_[3] + " " + files_[4];
-                    system(cmd.c_str());
+                    fileManager_.fromCkToCti(files_);
                 }
 
                 if (bool(std::ifstream(filename)))
                 {
-                    std::string cmd = "ctml_writer " + filename + " " + dialogname + ".xml";
-                    system(cmd.c_str());
+                    fileManager_.fromCtiToXml(filename);                    
                     std::remove(filename.c_str());
                     this->savedMessage();
                 }

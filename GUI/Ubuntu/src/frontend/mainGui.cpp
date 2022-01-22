@@ -52,6 +52,7 @@ namespace ASALI
           startButton_("Start"),
           defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
           loadCanteraInputButton_("Load CANTERA kinetic/properties file"),
+          convertCanteraFileButton_("CANTERA -> CANTERA converter"),
           noneInputButton_("User defined constant properties"),
           conversionButton_("CHEMKIN -> CANTERA converter"),
           canteraInputButton_("Select CANTERA kinetic/properties file"),
@@ -176,14 +177,17 @@ namespace ASALI
             chemistryButtonBox_.pack_start(loadCanteraInputButton_, Gtk::PACK_SHRINK);
             loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::loadCanteraInput));
             loadCanteraInputButton_.set_tooltip_text("Load CANTERA input file");
-            chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
-            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
-            noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
+            chemistryButtonBox_.pack_start(convertCanteraFileButton_, Gtk::PACK_SHRINK);
+            convertCanteraFileButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::convertCanteraInputFile));
+            convertCanteraFileButton_.set_tooltip_text("Converter CANTERA input files");
 #if ASALI_ON_WINDOW == 0
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
 #endif
+            chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
+            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
+            noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
 #endif
             chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::kineticAsali));
@@ -613,7 +617,7 @@ namespace ASALI
 
             if (filename.find("cti") != std::string::npos)
             {
-                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the xml version of CANTERA input file\nTo convert .cti to .xml use ctml_writer command", true, Gtk::MESSAGE_WARNING);
+                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the xml version of CANTERA input file\nConvert .cti to .xml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
                 errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
                 errorDialog.run();
             }
@@ -705,6 +709,31 @@ namespace ASALI
             }
         }
     }
+
+    void mainGui::convertCanteraInputFile()
+    {
+		std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
+        if (filename != "")
+        {
+            std::ifstream input;
+            const char *path = filename.c_str();
+            input.open(path);
+
+            if (filename.find("cti") != std::string::npos)
+            {
+				fileManager_.fromCtiToXml(filename);
+				Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
+				dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+				dialog.run();
+			}
+			else
+			{
+                Gtk::MessageDialog errorDialog(*this, "Sorry, not recognized CANTERA format", true, Gtk::MESSAGE_WARNING);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
+                errorDialog.run();
+            }
+		}
+	}
 
     void mainGui::equilibrium()
     {

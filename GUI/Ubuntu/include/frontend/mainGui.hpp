@@ -96,6 +96,7 @@ namespace ASALI
 #if ASALI_USING_CANTERA == 1
                 void chemkin();
                 void loadCanteraInput();
+                void convertCanteraInputFile();
                 void equilibrium();
                 void pellets();
                 void reactors();
@@ -116,6 +117,7 @@ namespace ASALI
                 Gtk::Button startButton_;
                 Gtk::Button defaultCanteraInputButton_;
                 Gtk::Button loadCanteraInputButton_;
+                Gtk::Button convertCanteraFileButton_;
                 Gtk::Button noneInputButton_;
                 Gtk::Button conversionButton_;
                 Gtk::Button canteraInputButton_;

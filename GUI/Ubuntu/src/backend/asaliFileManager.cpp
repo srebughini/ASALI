@@ -40,7 +40,9 @@
 
 namespace ASALI
 {
-	asaliFileManager::asaliFileManager()
+	asaliFileManager::asaliFileManager():
+		ctmlWriterfilepath_(this->relative_path_to_absolute_path("scripts/ctml_writer.py")),
+		ck2ctifilepath_(this->relative_path_to_absolute_path("scripts/ck2cti.py"))
 	{
 	}
 
@@ -221,6 +223,35 @@ namespace ASALI
 		return phaseName;
 	}
 
+#if ASALI_USING_CANTERA == 1
+	void asaliFileManager::fromCtiToXml(std::string ctiFilePath)
+	{
+		ASALI::pythonInterface pi_;
+		std::string xmlFilePath = this->replaceFileExtension(ctiFilePath, "xml");
+		int argc = 3;
+		char* argv[] = {strdup(ctmlWriterfilepath_.c_str()),
+			            strdup(ctiFilePath.c_str()),
+			            strdup(xmlFilePath.c_str())};
+
+		pi_.runScript(ctmlWriterfilepath_, argc, argv);
+	}
+
+
+	void asaliFileManager::fromCkToCti(std::vector<std::string> ckFilePaths)
+	{
+		ASALI::pythonInterface pi_;
+		int argc = 6;
+		char* argv[] = {strdup(ck2ctifilepath_.c_str()),
+			            strdup(ckFilePaths[0].c_str()),
+			            strdup(ckFilePaths[1].c_str()),
+			            strdup(ckFilePaths[2].c_str()),
+			            strdup(ckFilePaths[3].c_str()),
+			            strdup(ckFilePaths[4].c_str())};
+
+		pi_.runScript(ck2ctifilepath_, argc, argv);
+	}
+#endif
+
 	void asaliFileManager::removeFileExtension(std::string &filename, const std::string &extension)
 	{
 		this->eraseSubString(filename, extension);
@@ -233,6 +264,20 @@ namespace ASALI
 		while ((pos = mainStr.find(toErase)) != std::string::npos)
 		{
 			mainStr.erase(pos, toErase.length());
+		}
+	}
+	
+	std::string asaliFileManager::replaceFileExtension(const std::string mainStr, const std::string extension)
+	{
+		std::vector<std::string> mainStrVector = this->splitString(mainStr, ".");
+		
+		if (mainStrVector.size() == 2 )
+		{
+			return mainStrVector[0] + "." + extension;
+		}
+		else
+		{
+			return mainStr;
 		}
 	}
 }

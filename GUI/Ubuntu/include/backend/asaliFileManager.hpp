@@ -54,6 +54,10 @@
 #include <functional>
 #include <gtk/gtk.h>
 
+#if ASALI_USING_CANTERA == 1
+#include "backend/pythonInterface.hpp"
+#endif
+
 namespace ASALI
 {
     /// Class that handles file opening/closing
@@ -84,12 +88,29 @@ namespace ASALI
         /// Get Cantera phase name from interface
         static std::string getCanteraPhaseName(std::string interfaceName);
 
+        /// Replace file extension
+        std::string replaceFileExtension(std::string mainStr, const std::string extension);
+
         /// Remove extension from file path
         void removeFileExtension(std::string &filename, const std::string &extension);
+
+#if ASALI_USING_CANTERA == 1
+        /// Covert from Cantera .cti to Cantera .xml
+        void fromCtiToXml(std::string ctiFilePath);
+
+        /// Covert from CHEMKIN to Cantera .cti
+        void fromCkToCti(std::vector<std::string> ckFilePaths);
+#endif
 
     private:
         /// Remove substring from string
         void eraseSubString(std::string &mainStr, const std::string &toErase);
+        
+#if ASALI_USING_CANTERA == 1
+        std::string ctmlWriterfilepath_;
+        std::string ck2ctifilepath_;
+#endif
+        
     };
 }
 #endif
