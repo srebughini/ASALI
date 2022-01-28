@@ -41,7 +41,7 @@ cd ASALI/GUI/Windows/SConstruct cantera/.
    
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n optimize=yes
+scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n optimize=yes prefix=/usr/local/
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html 
