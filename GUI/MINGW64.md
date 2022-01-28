@@ -32,9 +32,16 @@ Details can be found at: http://plplot.org/
 ```bash
 git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1  
 ```
+  
+  
+***Due to an issue related to `os.system` on [Mingw-w64](https://www.msys2.org/), before installing [Cantera](https://cantera.org/) type the following command:***
+```bash
+cd ASALI/GUI/Windows/SConstruct cantera/.
+```
+   
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n python_cmd=/mingw64/bin/python
+scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n optimize=yes
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html 
