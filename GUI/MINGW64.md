@@ -48,6 +48,7 @@ More details can be found at: https://cantera.org/install/compiling-install.html
 ### 1.5 How to install ASALI
 To install Asali run the following command.  
 ```bash
+cd ASALI/GUI/Ubuntu
 ./build.sh --os windows  
 ```
 The installation can be customized with the following options:  
