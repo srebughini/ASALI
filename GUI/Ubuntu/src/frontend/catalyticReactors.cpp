@@ -78,14 +78,14 @@ namespace ASALI
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         }
 
-        //Species input menu
+        // Species input menu
         {
             inputGrid_.set_column_homogeneous(true);
             inputGrid_.set_column_spacing(10);
             inputGrid_.set_row_homogeneous(true);
             inputGrid_.set_row_spacing(10);
 
-            //Add kinetic selection
+            // Add kinetic selection
             inputGrid_.attach(kineticLabel_, 0, 0, 1, 1);
             inputGrid_.attach(kineticCombo_, 1, 0, 1, 1);
             kineticCombo_.append("ASALI");
@@ -100,7 +100,7 @@ namespace ASALI
             }
             kineticCombo_.signal_changed().connect(sigc::mem_fun(*this, &catalyticReactors::switchTo));
 
-            //Add temperature selector
+            // Add temperature selector
             inputGrid_.attach(tempLabel_, 0, 1, 1, 1);
             inputGrid_.attach(tempEntry_, 1, 1, 1, 1);
             tempEntry_.set_max_length(10);
@@ -108,7 +108,7 @@ namespace ASALI
             inputGrid_.attach(tempCombo_, 2, 1, 1, 1);
             unitConversion_->updateBox(tempCombo_, "temperature");
 
-            //Add pressure selector
+            // Add pressure selector
             inputGrid_.attach(pressLabel_, 0, 2, 1, 1);
             inputGrid_.attach(pressEntry_, 1, 2, 1, 1);
             pressEntry_.set_max_length(10);
@@ -116,7 +116,7 @@ namespace ASALI
             inputGrid_.attach(pressCombo_, 2, 2, 1, 1);
             unitConversion_->updateBox(pressCombo_, "pressure");
 
-            //Add mole or mass fraction selection
+            // Add mole or mass fraction selection
             inputGrid_.attach(fractionCombo_, 1, 3, 1, 1);
             unitConversion_->updateBox(fractionCombo_, "fraction");
 
@@ -138,14 +138,14 @@ namespace ASALI
                 }
             }
 
-            //Add help button
+            // Add help button
             if (kineticType_ == "default")
             {
                 inputGrid_.attach(helpButton_, 1, NS_ + 5, 1, 1);
                 helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::availableSpecies));
             }
 
-            //Add back button
+            // Add back button
             inputGrid_.attach(backButton1_, 0, NS_ + 5, 1, 1);
             backButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::input));
 
@@ -160,7 +160,7 @@ namespace ASALI
             }
         }
 
-        //Coverage input menu
+        // Coverage input menu
         {
             coverageBox_.set_halign(Gtk::ALIGN_START);
             coverageBox_.set_spacing(10);
@@ -190,11 +190,11 @@ namespace ASALI
                 }
             }
 
-            //Add back button
+            // Add back button
             coverageGrid_.attach(backButton2_, 0, SURF_NS_ + 5, 1, 1);
             backButton2_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::composition));
 
-            //Done buttons
+            // Done buttons
             coverageGrid_.attach(nextButton2_, 1, SURF_NS_ + 5, 1, 1);
             nextButton2_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
         }
@@ -301,33 +301,33 @@ namespace ASALI
         std::string ts;
         {
             std::ostringstream strs;
-            strs << h; //std::max(0.,h);
+            strs << h; // std::max(0.,h);
             ts = strs.str() + ":";
         }
 
         if (m > 9)
         {
             std::ostringstream strs;
-            strs << m; //std::max(0.,m);
+            strs << m; // std::max(0.,m);
             ts = ts + strs.str() + ":";
         }
         else
         {
             std::ostringstream strs;
-            strs << m; //std::max(0.,m);
+            strs << m; // std::max(0.,m);
             ts = ts + "0" + strs.str() + ":";
         }
 
         if (s > 9)
         {
             std::ostringstream strs;
-            strs << s; //std::max(0.,s);
+            strs << s; // std::max(0.,s);
             ts = ts + strs.str();
         }
         else
         {
             std::ostringstream strs;
-            strs << s; //std::max(0.,s);
+            strs << s; // std::max(0.,s);
             ts = ts + "0" + strs.str();
         }
 
@@ -771,7 +771,7 @@ namespace ASALI
 
     void catalyticReactors::bar(const double &fraction, const std::string &tm)
     {
-        //Update solving bar
+        // Update solving bar
         while (Gtk::Main::events_pending())
         {
             Gtk::Main::iteration();
@@ -781,7 +781,7 @@ namespace ASALI
 
         bar_->show();
 
-        //Update solving bar
+        // Update solving bar
         while (Gtk::Main::events_pending())
         {
             Gtk::Main::iteration();

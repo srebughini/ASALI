@@ -57,7 +57,7 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-        //Add background grid
+        // Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);
         mainBox_.set_spacing(10);
         this->add(mainBox_);

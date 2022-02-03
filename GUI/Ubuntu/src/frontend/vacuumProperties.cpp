@@ -77,13 +77,13 @@ namespace ASALI
         grid_.set_column_spacing(10);
         grid_.set_row_spacing(10);
 
-        //Add species
+        // Add species
         grid_.attach(specieLabel_, 0, 0, 1, 1);
         grid_.attach(specieEntry_, 0, 1, 1, 1);
         specieEntry_.set_max_length(10);
         specieEntry_.set_text("AR");
 
-        //Add temperature selector
+        // Add temperature selector
         grid_.attach(tempBox_, 1, 0, 1, 1);
         tempBox_.pack_start(tempLabel_, Gtk::PACK_SHRINK);
         tempBox_.pack_start(tempCombo_, Gtk::PACK_SHRINK);
@@ -94,7 +94,7 @@ namespace ASALI
         tempEntry_.set_max_length(10);
         tempEntry_.set_text("298.15");
 
-        //Add temperature selector
+        // Add temperature selector
         grid_.attach(pressBox_, 2, 0, 1, 1);
         pressBox_.pack_start(pressLabel_, Gtk::PACK_SHRINK);
         pressBox_.pack_start(pressCombo_, Gtk::PACK_SHRINK);
@@ -105,7 +105,7 @@ namespace ASALI
         pressEntry_.set_max_length(10);
         pressEntry_.set_text("1");
 
-        //Add length selector
+        // Add length selector
         grid_.attach(lengthBox_, 3, 0, 1, 1);
         lengthBox_.pack_start(lengthLabel_, Gtk::PACK_SHRINK);
         lengthBox_.pack_start(lengthCombo_, Gtk::PACK_SHRINK);
@@ -116,7 +116,7 @@ namespace ASALI
         lengthEntry_.set_max_length(10);
         lengthEntry_.set_text("1");
 
-        //Add diffusion selector
+        // Add diffusion selector
         grid_.attach(diffBox_, 0, 2, 1, 1);
         diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
         diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
@@ -125,7 +125,7 @@ namespace ASALI
         unitConversion_->updateBox(diffCombo_, "diffusion");
         diffCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add velocity selector
+        // Add velocity selector
         grid_.attach(velocityBox_, 1, 2, 1, 1);
         velocityBox_.pack_start(velocityLabel_, Gtk::PACK_SHRINK);
         velocityBox_.pack_start(velocityCombo_, Gtk::PACK_SHRINK);
@@ -134,7 +134,7 @@ namespace ASALI
         unitConversion_->updateBox(velocityCombo_, "speed");
         velocityCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add path selector
+        // Add path selector
         grid_.attach(pathBox_, 2, 2, 1, 1);
         pathBox_.pack_start(pathLabel_, Gtk::PACK_SHRINK);
         pathBox_.pack_start(pathCombo_, Gtk::PACK_SHRINK);
@@ -143,13 +143,13 @@ namespace ASALI
         unitConversion_->updateBox(pathCombo_, "length");
         pathCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add results
+        // Add results
         grid_.attach(diffResults_, 0, 3, 1, 1);
         grid_.attach(velocityResults_, 1, 3, 1, 1);
         grid_.attach(pathResults_, 2, 3, 1, 1);
         grid_.attach(knudsenResults_, 3, 3, 1, 1);
 
-        //Add Knudsen number
+        // Add Knudsen number
         grid_.attach(knudsenLabel_, 3, 2, 1, 1);
         grid_.attach(calculateButton_, 0, 5, 1, 1);
         grid_.attach(saveButton_, 2, 5, 1, 1);
@@ -158,7 +158,7 @@ namespace ASALI
         grid_.attach(exitButton_, 3, 5, 1, 1);
         exitButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::exit));
 
-        //Add help button
+        // Add help button
         if (kineticType_ == "default")
         {
             grid_.attach(helpButton_, 1, 5, 1, 1);
@@ -266,11 +266,11 @@ namespace ASALI
 
                 Kn_ = d_ / lK_;
 
-                if (Kn_ < 1.) //molecular
+                if (Kn_ < 1.) // molecular
                 {
                     diffK_ = vK_ * d_ / 3.;
                 }
-                else //viscous
+                else // viscous
                 {
                     chemistryInterface_->transportCalculate();
                     for (unsigned int i = 0; i < n_.size(); i++)

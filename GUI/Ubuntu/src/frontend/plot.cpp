@@ -59,7 +59,7 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-        //Add background grid
+        // Add background grid
         this->add(mainGrid_);
 
         mainGrid_.set_column_homogeneous(true);
@@ -481,7 +481,7 @@ namespace ASALI
 
         if (this->isChecked(otherButton_))
         {
-            if (otherButton_[0]->get_active()) //Temperature
+            if (otherButton_[0]->get_active()) // Temperature
             {
                 plotInterface->newFigure();
                 plotInterface->setData(t_, T_, "");
@@ -490,7 +490,7 @@ namespace ASALI
                 this->output(plotInterface);
             }
 
-            if (otherButton_[1]->get_active()) //Volume
+            if (otherButton_[1]->get_active()) // Volume
             {
                 plotInterface->newFigure();
                 plotInterface->setData(t_, V_, "");
@@ -579,7 +579,7 @@ namespace ASALI
 
         if (this->isChecked(otherButton_))
         {
-            if (otherButton_[0]->get_active()) //Temperature
+            if (otherButton_[0]->get_active()) // Temperature
             {
                 plotInterface->newFigure();
                 plotInterface->setData(t_, T_, "");

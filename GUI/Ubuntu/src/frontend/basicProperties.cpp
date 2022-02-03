@@ -56,7 +56,7 @@ namespace ASALI
         unitConversion_ = new ASALI::asaliUnitConversionUtils();
         vectorUtils_ = new ASALI::asaliVectorUtils();
 
-        //Input menu
+        // Input menu
         {
             this->set_border_width(15);
             this->set_title("ASALI: Basic properties");
@@ -79,7 +79,7 @@ namespace ASALI
 
     void basicProperties::createInputGrid()
     {
-        //Add background grid
+        // Add background grid
         this->add(inputGrid_);
 
         inputGrid_.set_column_homogeneous(true);
@@ -87,7 +87,7 @@ namespace ASALI
         inputGrid_.set_row_homogeneous(true);
         inputGrid_.set_row_spacing(10);
 
-        //Add temperature selector
+        // Add temperature selector
         inputGrid_.attach(tempLabel_, 0, 0, 1, 1);
         inputGrid_.attach(tempEntry_, 1, 0, 1, 1);
         tempEntry_.set_max_length(10);
@@ -95,7 +95,7 @@ namespace ASALI
         inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
         unitConversion_->updateBox(tempCombo_, "temperature");
 
-        //Add temperature selector
+        // Add temperature selector
         inputGrid_.attach(pressLabel_, 0, 1, 1, 1);
         inputGrid_.attach(pressEntry_, 1, 1, 1, 1);
         pressEntry_.set_max_length(10);
@@ -103,7 +103,7 @@ namespace ASALI
         inputGrid_.attach(pressCombo_, 2, 1, 1, 1);
         unitConversion_->updateBox(pressCombo_, "pressure");
 
-        //Add mole or mass fraction selection
+        // Add mole or mass fraction selection
         inputGrid_.attach(fractionCombo_, 1, 2, 1, 1);
         unitConversion_->updateBox(fractionCombo_, "fraction");
 
@@ -125,18 +125,18 @@ namespace ASALI
             }
         }
 
-        //Add help button
+        // Add help button
         if (kineticType_ == "default")
         {
             inputGrid_.attach(helpButton_, 1, 13, 1, 1);
             helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::availableSpecies));
         }
 
-        //Add back button
+        // Add back button
         inputGrid_.attach(exitButton1_, 0, 13, 1, 1);
         exitButton1_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::exit));
 
-        //Done buttons
+        // Done buttons
         inputGrid_.attach(doneButton_, 2, 13, 1, 1);
         doneButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::results));
 

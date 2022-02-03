@@ -97,17 +97,17 @@ namespace ASALI
     {
         beerQuote_ = new ASALI::beerQuote();
 
-        //First window
+        // First window
         {
             this->set_border_width(15);
             this->set_title("ASALI");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-            //Add background grid
+            // Add background grid
             this->add(grid_);
 
-            //Adding the logo (position 1,0)
+            // Adding the logo (position 1,0)
             grid_.attach(logoEventBox_, 1, 0, 1, 1);
             grid_.set_row_spacing(10);
             logoEventBox_.add(bigLogo_);
@@ -115,13 +115,13 @@ namespace ASALI
             logoEventBox_.signal_button_press_event().connect(sigc::mem_fun(*this, &mainGui::chemistryMenu1));
             logoEventBox_.signal_realize().connect(sigc::mem_fun(*this, &mainGui::changeCursor));
 
-            //Adding beer
+            // Adding beer
             beerLabel_.set_text(beerQuote_->getRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
             grid_.attach(beerLabel_, 1, 1, 1, 1);
 
-            //Adding the heading (position 1,1)
+            // Adding the heading (position 1,1)
             heading_.set_justify(Gtk::JUSTIFY_LEFT);
             grid_.attach(heading_, 1, 2, 1, 1);
             grid_.attach(linkButtonBox_, 1, 3, 1, 1);
@@ -135,19 +135,19 @@ namespace ASALI
             forgeButton_.set_uri("https://sourceforge.net/projects/asali");
 #endif
 
-            //Adding starting button (position 1,2)
+            // Adding starting button (position 1,2)
             grid_.attach(startButtonBox_, 1, 4, 1, 1);
             startButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             startButtonBox_.pack_start(startButton_, Gtk::PACK_SHRINK);
             startButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemistryMenu2));
 
-            //Adding discrimer button (position 0,2)
+            // Adding discrimer button (position 0,2)
             grid_.attach(discrimerButtonBox_, 0, 4, 1, 1);
             discrimerButtonBox_.set_layout(Gtk::BUTTONBOX_START);
             discrimerButtonBox_.pack_start(discrimerButton_, Gtk::PACK_SHRINK);
             discrimerButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::discrimer));
 
-            //Adding exit button (position 2,2)
+            // Adding exit button (position 2,2)
             grid_.attach(exitButtonBox_, 2, 4, 1, 1);
             exitButtonBox_.set_layout(Gtk::BUTTONBOX_END);
             exitButtonBox_.pack_start(exitButton1_, Gtk::PACK_SHRINK);
@@ -156,14 +156,14 @@ namespace ASALI
             this->show_all_children();
         }
 
-        //Chemistry menu
+        // Chemistry menu
         {
-            //Adding logo
+            // Adding logo
             chemistryBox_.set_halign(Gtk::ALIGN_START);
             chemistryBox_.set_spacing(10);
             chemistryBox_.pack_start(smallLogo1_, Gtk::PACK_SHRINK);
 
-            //Adding thermo and transport buttons
+            // Adding thermo and transport buttons
             chemistryBox_.pack_start(chemistryButtonBox_, Gtk::PACK_SHRINK);
             chemistryButtonBox_.set_valign(Gtk::ALIGN_CENTER);
             chemistryButtonBox_.set_spacing(10);
@@ -189,19 +189,19 @@ namespace ASALI
             asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::kineticAsali));
             asaliKineticButton_.set_tooltip_text("Write or check a kinetic scheme in ASALI format");
 
-            //Adding exit button
+            // Adding exit button
             chemistryButtonBox_.pack_start(exitButton2_, Gtk::PACK_SHRINK);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::exit));
         }
 
-        //Asali kinetic
+        // Asali kinetic
         {
-            //Adding logo
+            // Adding logo
             kineticBox_.set_halign(Gtk::ALIGN_START);
             kineticBox_.set_spacing(10);
             kineticBox_.pack_start(smallLogo4_, Gtk::PACK_SHRINK);
 
-            //Adding buttons
+            // Adding buttons
             kineticBox_.pack_start(kineticButtonBox_, Gtk::PACK_SHRINK);
             kineticButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             kineticButtonBox_.set_spacing(10);
@@ -213,7 +213,7 @@ namespace ASALI
             asaliKineticCheckButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::kineticCheck));
             asaliKineticCheckButton_.set_tooltip_text("Check a kinetic scheme in ASALI format");
 
-            //Adding exit button
+            // Adding exit button
             kineticButtonBox_.pack_start(kineticButtonGrid_, Gtk::PACK_SHRINK);
 
             kineticButtonGrid_.set_column_homogeneous(true);
@@ -225,14 +225,14 @@ namespace ASALI
             exitButton5_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::exit));
         }
 
-        //Main Menu
+        // Main Menu
         {
-            //Adding logo
+            // Adding logo
             menuBox_.set_halign(Gtk::ALIGN_START);
             menuBox_.set_spacing(10);
             menuBox_.pack_start(smallLogo2_, Gtk::PACK_SHRINK);
 
-            //Adding buttons
+            // Adding buttons
             menuBox_.pack_start(menuButtonBox_, Gtk::PACK_SHRINK);
             menuButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             menuButtonBox_.set_spacing(10);
@@ -273,20 +273,20 @@ namespace ASALI
 #endif
 #endif
 
-            //Adding exit button
+            // Adding exit button
             menuButtonBox_.pack_start(exitButton3_, Gtk::PACK_SHRINK);
             exitButton3_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::exit));
         }
 
-        //Catalytic reactor menu
+        // Catalytic reactor menu
         {
 #if ASALI_USING_CANTERA == 1
-            //Adding logo
+            // Adding logo
             reactorBox_.set_halign(Gtk::ALIGN_START);
             reactorBox_.set_spacing(10);
             reactorBox_.pack_start(smallLogo3_, Gtk::PACK_SHRINK);
 
-            //Adding buttons
+            // Adding buttons
             reactorBox_.pack_start(reactorButtonBox_, Gtk::PACK_SHRINK);
             reactorButtonBox_.set_layout(Gtk::BUTTONBOX_CENTER);
             reactorButtonBox_.set_spacing(10);
@@ -304,7 +304,7 @@ namespace ASALI
             reactorButtonBox_.pack_start(dpButton_, Gtk::PACK_SHRINK);
             dpButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::dp));
 
-            //Adding exit button
+            // Adding exit button
             reactorButtonBox_.pack_start(reactorButtonGrid_, Gtk::PACK_SHRINK);
 
             reactorButtonGrid_.set_column_homogeneous(true);
@@ -628,7 +628,7 @@ namespace ASALI
                     smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                     int answer = smallDialog.run();
 
-                    //Handle the response:
+                    // Handle the response:
                     switch (answer)
                     {
                     case (Gtk::RESPONSE_YES):
