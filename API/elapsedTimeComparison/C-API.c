@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         s = get_species_mass_entropy(&asali);
         cond = get_species_thermal_conductivity(&asali);
         diff_mix = get_mixture_diffusion(&asali);
-        v = get_aritmetic_mean_gas_velocity(&asali);
+        v = get_arithmetic_mean_gas_velocity(&asali);
         l = get_mean_free_path(&asali);
         MWmix = get_mixture_molecular_weight(&asali);
         rho = get_density(&asali);
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     clock_t estimationEnd = clock();
     printf("C version\n");
     printf("Initialization (s):  %.3e\n",((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/N);
-    printf("Estimation (s):      %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
+    printf("Calculation (s):     %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
     
     return 0;
 }

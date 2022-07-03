@@ -149,7 +149,7 @@ namespace ASALI
             }
             else if (type_ == "ASALI")
             {
-                RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); //kmol/m3/s
+                RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); // kmol/m3/s
                 if (energyEquation_ == true)
                 {
                     if (userCheck_ == false)
@@ -162,7 +162,7 @@ namespace ASALI
                             h_[i] = hArray[canteraIndex_[i]];
                         }
 
-                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); // W/m3
                     }
                     else
                     {
@@ -170,7 +170,7 @@ namespace ASALI
                         {
                             h_[i] = 0.;
                         }
-                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); // W/m3
                     }
                 }
                 else
@@ -183,7 +183,7 @@ namespace ASALI
         {
             for (unsigned int j = 0; j < NC_; j++)
             {
-                RfromGas_[j] = 0.; //kmol/m2/s
+                RfromGas_[j] = 0.; // kmol/m2/s
             }
             QfromGas_ = 0.;
         }
@@ -211,7 +211,7 @@ namespace ASALI
             }
             else if (type_ == "ASALI")
             {
-                RfromSurface_ = this->reactionRate(x_, T_, "heterogeneous"); //kmol/m3/s
+                RfromSurface_ = this->reactionRate(x_, T_, "heterogeneous"); // kmol/m3/s
 
                 if (energyEquation_ == true)
                 {
@@ -223,7 +223,7 @@ namespace ASALI
                         {
                             h_[i] = hArray[canteraIndex_[i]];
                         }
-                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); // W/m3
                     }
                     else
                     {
@@ -231,7 +231,7 @@ namespace ASALI
                         {
                             h_[i] = 0.;
                         }
-                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); // W/m3
                     }
                 }
                 else

@@ -178,7 +178,7 @@ AsaliVector get_species_molar_entropy(Asali* asali_);
 AsaliVector get_species_mass_entropy(Asali* asali_);
 AsaliVector get_species_thermal_conductivity(Asali* asali_);
 AsaliVector get_mixture_diffusion(Asali* asali_);
-AsaliVector get_aritmetic_mean_gas_velocity(Asali* asali_);
+AsaliVector get_arithmetic_mean_gas_velocity(Asali* asali_);
 AsaliVector get_mean_free_path(Asali* asali_);
 
 AsaliMatrix get_binary_diffusion(Asali* asali_);
