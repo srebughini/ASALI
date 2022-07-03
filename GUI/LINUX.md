@@ -34,7 +34,7 @@ git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1
 ```
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n  
+scons build system_sundials=n python_package=minimal 
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html 
