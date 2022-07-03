@@ -751,8 +751,11 @@ namespace ASALI
         {
             delete batchMenu_;
         }
+        std::cout << "Qui" << std::endl;
         batchMenu_ = new ASALI::batchReactor(kineticType_);
+        std::cout << "A" << std::endl;
         batchMenu_->setChemistryInterface(chemistryInterface_);
+        std::cout << "B" << std::endl;
         batchMenu_->show();
     }
 
