@@ -56,6 +56,7 @@
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/pythonInterface.hpp"
+#include "yaml-cpp/yaml.h"
 #endif
 
 namespace ASALI

@@ -131,6 +131,18 @@ namespace ASALI
 
     std::vector<std::string> asaliFileManager::getCanteraInterfaces(std::string filename)
     {
+		// TODO - Why not looking for a YAML reader in C++, this would make much easier find files names
+		
+		YAML::Node input = YAML::LoadFile(filename);
+		
+		
+		std::cout << input["phases"]["name"].as<std::string>() << std::endl;
+		
+		std::vector<std::string> readed(2);
+        readed[0] = "none";
+        readed[1] = "none";
+		
+		/*
         const char *path = filename.c_str();
         std::ifstream input;
         input.open(path);
@@ -144,10 +156,12 @@ namespace ASALI
         {
             std::string line;
             getline(input, line);
+            // TODO - search for the new phase keyword
             if (line.find("<phase ") != std::string::npos)
             {
                 a.push_back(line);
             }
+            // TODO - search for the kinetics word
             else if (line.find("<kinetics ") != std::string::npos)
             {
                 b.push_back(line);
@@ -166,6 +180,9 @@ namespace ASALI
             }
         }
         input.close();
+        */
+        
+        
         return readed;
     }
 

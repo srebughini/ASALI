@@ -617,11 +617,17 @@ namespace ASALI
 
             if (filename.find("cti") != std::string::npos)
             {
-                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the xml version of CANTERA input file\nConvert .cti to .xml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
+                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the yaml version of CANTERA input file\nConvert .cti to .yaml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
                 errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
                 errorDialog.run();
             }
             else if (filename.find("xml") != std::string::npos)
+            {
+                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the yaml version of CANTERA input file\nConvert .xml to .yaml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
+                errorDialog.run();
+            }
+            else if (filename.find("yaml") != std::string::npos)
             {
                 std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
 
