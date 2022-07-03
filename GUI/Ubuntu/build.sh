@@ -173,7 +173,7 @@ function Compile()
     fi 
 
     if [ "$1" == "true" ]; then
-        make all -f Makefile.cantera SUNDIALS_PATH=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
+    	make all -f Makefile.cantera SUNDIALS_PATH=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     else
         echoRed "NOT TESTED, yet :)"
         make all -f Makefile.libs

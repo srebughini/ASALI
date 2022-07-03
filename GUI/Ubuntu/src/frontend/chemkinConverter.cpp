@@ -128,36 +128,48 @@ namespace ASALI
         {
             this->error(transport_.get_label());
         }
-        else if (files_[3] == "")
-        {
-            this->error(surface_.get_label());
-        }
         else
         {
-            std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.cti");
-            if (dialogname != "")
+            bool is_surface = true;
+            int answer = Gtk::RESPONSE_YES;
+            Gtk::MessageDialog smallDialog(*this, "We detect that your CHEMKIN input file does not have a surface phase.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+            smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+            
+            if (files_[3] == "")
             {
-                fileManager_.removeFileExtension(dialogname, ".xml");
-                fileManager_.removeFileExtension(dialogname, ".cti");
-                std::string filename = dialogname + ".cti";
-                {
-                    files_[4] = "--output=" + filename;
-                }
+                answer = smallDialog.run();
+                is_surface = false;
+            }
 
+            //Handle the response:
+            switch (answer)
+            {
+            case (Gtk::RESPONSE_YES):
+            {
+                std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.yaml");
+                if (dialogname != "")
                 {
-                    fileManager_.fromCkToCti(files_);
-                }
+                    fileManager_.removeFileExtension(dialogname, ".yaml");
+                    std::string filename = dialogname + ".yaml";
+                    {
+                        files_[4] = "--output=" + filename;
+                    }
 
-                if (bool(std::ifstream(filename)))
-                {
-                    fileManager_.fromCtiToXml(filename);                    
-                    std::remove(filename.c_str());
-                    this->savedMessage();
+                    {
+                        fileManager_.fromCkToYaml(files_, is_surface);
+                        this->savedMessage();
+                    }
                 }
                 else
                 {
                     this->notSavedMessage();
                 }
+            }
+            default:
+            {
+                smallDialog.hide();
+                break;
+            }
             }
         }
     }

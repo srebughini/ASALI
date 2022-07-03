@@ -95,11 +95,14 @@ namespace ASALI
         void removeFileExtension(std::string &filename, const std::string &extension);
 
 #if ASALI_USING_CANTERA == 1
-        /// Covert from Cantera .cti to Cantera .xml
-        void fromCtiToXml(std::string ctiFilePath);
+        /// Covert from Cantera .xml to Cantera .yaml
+        void fromXmlToYaml(std::string xmlFilePath);
+        
+        /// Covert from Cantera .cti to Cantera .yaml
+        void fromCtiToYaml(std::string ctiFilePath);
 
-        /// Covert from CHEMKIN to Cantera .cti
-        void fromCkToCti(std::vector<std::string> ckFilePaths);
+        /// Covert from CHEMKIN to Cantera .yaml
+        void fromCkToYaml(std::vector<std::string> ckFilePaths, bool is_surface);
 #endif
 
     private:
@@ -107,8 +110,9 @@ namespace ASALI
         void eraseSubString(std::string &mainStr, const std::string &toErase);
         
 #if ASALI_USING_CANTERA == 1
-        std::string ctmlWriterfilepath_;
-        std::string ck2ctifilepath_;
+        std::string ck2yamlfilepath_;
+        std::string cti2yamlfilepath_;
+        std::string ctml2yamlfilepath_;
 #endif
         
     };

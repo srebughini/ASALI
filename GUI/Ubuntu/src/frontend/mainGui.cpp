@@ -712,7 +712,7 @@ namespace ASALI
 
     void mainGui::convertCanteraInputFile()
     {
-		std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
+        std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
         if (filename != "")
         {
             std::ifstream input;
@@ -721,19 +721,26 @@ namespace ASALI
 
             if (filename.find("cti") != std::string::npos)
             {
-				fileManager_.fromCtiToXml(filename);
-				Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-				dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
-				dialog.run();
-			}
-			else
-			{
+                fileManager_.fromCtiToYaml(filename);
+                Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                dialog.run();
+            }
+            else if (filename.find("xml") != std::string::npos)
+            {
+                fileManager_.fromXmlToYaml(filename);
+                Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                dialog.run();
+            }
+            else
+            {
                 Gtk::MessageDialog errorDialog(*this, "Sorry, not recognized CANTERA format", true, Gtk::MESSAGE_WARNING);
                 errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
                 errorDialog.run();
             }
-		}
-	}
+        }
+    }
 
     void mainGui::equilibrium()
     {
