@@ -179,7 +179,7 @@ namespace ASALI
     private:
         Cantera::ThermoPhase *thermo_;                                /// Cantera library thermo phase pointer
         Cantera::Transport *transport_;                               /// Cantera library transport phase pointer
-        Cantera::Kinetics *kinetic_;                                  /// Cantera library homogeneous kinetic pointer
+        std::shared_ptr<Cantera::Kinetics> kinetic_;                  /// Cantera library homogeneous kinetic pointer
         std::shared_ptr<Cantera::SurfPhase> surface_;                 /// Cantera library surface phase pointer
         std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_; /// Cantera library heterogeneous kinetic pointer
 

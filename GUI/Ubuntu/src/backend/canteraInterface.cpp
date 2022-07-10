@@ -59,10 +59,10 @@ namespace ASALI
         // Create gas kinetic reactions as Kinetics from thermo
         if ( isKinetic )
         {
-            std::cout << "a" << std::endl;
             std::vector<Cantera::ThermoPhase *> gas_phases{thermo_};
-            kinetic_ = Cantera::newKineticsMgr(thermo_->xml(), gas_phases);
-            std::cout << "non riesco con questa" << std::endl;
+            //std::shared_ptr<Cantera::Kinetics> gas_as_kinetic(Cantera::newKinetics(gas_phases, filepath, gasPhaseName));
+            //kinetic_ = std::dynamic_pointer_cast<Cantera::Kinetics>(gas_as_kinetic);
+            kinetic_ = Cantera::newKinetics(gas_phases, filepath, gasPhaseName);
         }
 
         // Create surface phase as SurfPhase and surface kinetic as InterfaceKinetics
