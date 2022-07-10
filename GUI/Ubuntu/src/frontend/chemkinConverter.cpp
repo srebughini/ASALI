@@ -242,51 +242,17 @@ namespace ASALI
         input.open(path);
         std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
 
-        if (interfaces[0] == "none" ||
-            interfaces[1] == "none")
-        {
-            std::string type = "none";
-            for (unsigned int i = 0; i < interfaces.size(); i++)
-            {
-                if (interfaces[i] != "none")
-                {
-                    type = fileManager_.getCanteraPhaseName(interfaces[i]);
-                }
-            }
-            if (type == "none")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+		std::string gasPhaseName = interfaces[0];
+		std::string surfacePhaseName = interfaces[1];
+		
+		if ( gasPhaseName == "none" )
+		{
+			return false;
+		}
         else
         {
-            std::vector<std::string> type(2);
-            type[0] = "none";
-            type[1] = "none";
-            for (unsigned int i = 0; i < interfaces.size(); i++)
-            {
-                type[i] = fileManager_.getCanteraPhaseName(interfaces[i]);
-
-                if (type[0] != "none" && type[1] != "none")
-                {
-                    break;
-                }
-            }
-
-            if (type[0] == "none" ||
-                type[1] == "none")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+			return true;
+		}
     }
 
     chemkinConverter::~chemkinConverter()

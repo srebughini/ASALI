@@ -11,7 +11,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --cflags)\
             $(shell python3-config ${PYTHON_CONFIG} --cflags)\
-            -I$(SUNDIALS_PATH)\
+            -I$(CANTERA_EXT_PATH)\
             -Iinclude
 
 CFLAGS := -fPIC -Os -s\

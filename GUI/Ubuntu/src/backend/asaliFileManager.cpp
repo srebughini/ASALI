@@ -131,120 +131,43 @@ namespace ASALI
 
     std::vector<std::string> asaliFileManager::getCanteraInterfaces(std::string filename)
     {
-		// TODO - Why not looking for a YAML reader in C++, this would make much easier find files names
-		
-		
-		std::cout << "ho iniziato a leggere il file" << std::endl;
-		
-		YAML::Node input = YAML::LoadFile(filename);
-		
-		std::cout << "sono riuscito a caricare il file" << std::endl;
-		
-		//std::cout << input["generator"].IsScalar()<< std::endl;
-		
-		std::cout << "ho finito di plottare" << std::endl;
-		
-		std::vector<std::string> readed(2);
-        readed[0] = "none";
-        readed[1] = "none";
-		
-		/*
-        const char *path = filename.c_str();
-        std::ifstream input;
-        input.open(path);
-        std::vector<std::string> readed(2);
-        readed[0] = "none";
-        readed[1] = "none";
+        YAML::Node input = YAML::LoadFile(filename);
 
-        std::vector<std::string> a;
-        std::vector<std::string> b;
-        while (!input.eof())
+        std::vector<std::string> interfaceNames(2);
+        interfaceNames[0] = "none";
+        interfaceNames[1] = "none";
+        
+        unsigned int n_phases = input["phases"].size();
+        
+        if (n_phases < 3)
         {
-            std::string line;
-            getline(input, line);
-            // TODO - search for the new phase keyword
-            if (line.find("<phase ") != std::string::npos)
+            for (unsigned int i=0;i<n_phases;i++)
             {
-                a.push_back(line);
-            }
-            // TODO - search for the kinetics word
-            else if (line.find("<kinetics ") != std::string::npos)
-            {
-                b.push_back(line);
+                if (input["phases"][i]["thermo"].as<std::string>() == "ideal-gas")
+                {
+                    interfaceNames[0] = input["phases"][i]["name"].as<std::string>();
+                }
+                else if (input["phases"][i]["thermo"].as<std::string>() == "ideal-surface")
+                {
+                    interfaceNames[1] = input["phases"][i]["name"].as<std::string>();
+                }
             }
         }
-
-        for (unsigned int i = 0; i < b.size(); i++)
-        {
-            if (b[i].find("Interface") != std::string::npos)
-            {
-                readed[1] = a[i];
-            }
-            else if (b[i].find("GasKinetics") != std::string::npos)
-            {
-                readed[0] = a[i];
-            }
-        }
-        input.close();
-        */
-        
-        
-        return readed;
+        return interfaceNames;
     }
 
-    std::string asaliFileManager::getCanteraPhaseName(std::string interfaceName)
+    bool asaliFileManager::areReactionsPresent(std::string filename)
     {
-        for (std::size_t j = 0; j < interfaceName.size(); j++)
+        YAML::Node input = YAML::LoadFile(filename);
+        
+        if (input["reactions"])
         {
-            if (interfaceName.substr(j, 1) == ">")
-            {
-                interfaceName.replace(j, 1, " ");
-            }
-            else if (interfaceName.substr(j, 1) == "\"")
-            {
-                interfaceName.replace(j, 1, " ");
-            }
-            else if (interfaceName.substr(j, 1) == "=")
-            {
-                interfaceName.replace(j, 1, " ");
-            }
+            return true;
         }
-
-        std::vector<std::string> dummyVector;
-        dummyVector.clear();
-
-        std::istringstream iss(interfaceName);
-        while (iss >> interfaceName)
+        else
         {
-            dummyVector.push_back(interfaceName);
+            return false;
         }
-
-        std::string phaseName = "none";
-
-        if (dummyVector.size() > 4)
-        {
-            for (unsigned int j = 0; j < dummyVector.size() - 1; j++)
-            {
-                if (dummyVector[j] == "<phase" &&
-                    dummyVector[j + 1] == "dim" &&
-                    dummyVector[j + 3] == "id")
-                {
-                    phaseName = dummyVector[j + 4];
-                    phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), '"'), phaseName.end());
-                    phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), ' '), phaseName.end());
-                }
-                else if (dummyVector[j] == "<phase" &&
-                         dummyVector[j + 1] == "id" &&
-                         dummyVector[j + 3] == "dim")
-                {
-                    phaseName = dummyVector[j + 2];
-                    phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), '"'), phaseName.end());
-                    phaseName.erase(std::remove(phaseName.begin(), phaseName.end(), ' '), phaseName.end());
-                }
-            }
-        }
-
-        return phaseName;
     }
 
 #if ASALI_USING_CANTERA == 1
