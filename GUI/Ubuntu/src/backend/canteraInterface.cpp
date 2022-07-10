@@ -46,6 +46,34 @@ namespace ASALI
                                        bool        isKinetic)
         : basicInterface()
     {
+		
+		
+		auto solution = Cantera::newSolution(filepath, gasPhaseName);
+		
+		// Create gas phase as ThermoPhase
+        {
+			auto thermo = solution->thermo();
+            thermo_ = thermo.get();
+        }
+
+        // Create gas Transport from thermo
+        {
+			auto transport = solution->transport();
+            transport_ = transport.get();
+        }
+		
+		
+		// Create gas kinetic reactions as Kinetics from thermo
+        if ( isKinetic )
+        {
+            //std::vector<Cantera::ThermoPhase *> gas_phases{thermo_};
+            //std::shared_ptr<Cantera::Kinetics> gas_as_kinetic(Cantera::newKinetics(gas_phases, filepath, gasPhaseName));
+            //kinetic_ = std::dynamic_pointer_cast<Cantera::Kinetics>(gas_as_kinetic);
+            auto kinetic = solution->kinetics();
+            kinetic_ = kinetic.get();
+        }
+		
+		/*
         // Create gas phase as ThermoPhase
         {
             thermo_ = Cantera::newPhase(filepath, gasPhaseName);
@@ -63,7 +91,12 @@ namespace ASALI
             //std::shared_ptr<Cantera::Kinetics> gas_as_kinetic(Cantera::newKinetics(gas_phases, filepath, gasPhaseName));
             //kinetic_ = std::dynamic_pointer_cast<Cantera::Kinetics>(gas_as_kinetic);
             kinetic_ = Cantera::newKinetics(gas_phases, filepath, gasPhaseName);
-        }
+        }*/
+        
+        
+        
+        
+        
 
         // Create surface phase as SurfPhase and surface kinetic as InterfaceKinetics
         if (surfPhaseName != "none")

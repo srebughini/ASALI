@@ -39,6 +39,7 @@
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
 
+#include "cantera/base/Solution.h"
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
@@ -177,9 +178,9 @@ namespace ASALI
         inline double siteDensity() const { return SD_; };
 
     private:
-        Cantera::ThermoPhase *thermo_;                                /// Cantera library thermo phase pointer
-        Cantera::Transport *transport_;                               /// Cantera library transport phase pointer
-        std::shared_ptr<Cantera::Kinetics> kinetic_;                  /// Cantera library homogeneous kinetic pointer
+        Cantera::ThermoPhase *thermo_;                /// Cantera library thermo phase pointer
+        Cantera::Transport *transport_;               /// Cantera library transport phase pointer
+        Cantera::Kinetics *kinetic_;                  /// Cantera library homogeneous kinetic pointer
         std::shared_ptr<Cantera::SurfPhase> surface_;                 /// Cantera library surface phase pointer
         std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_; /// Cantera library heterogeneous kinetic pointer
 
