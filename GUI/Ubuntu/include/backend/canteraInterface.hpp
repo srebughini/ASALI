@@ -56,7 +56,8 @@ namespace ASALI
         /// Class constructor
         canteraInterface(std::string filepath,
                          std::string gasPhaseName,
-                         std::string surfPhaseName);
+                         std::string surfPhaseName,
+                         bool        isKinetic);
 
         /// Set temperature in [K]
         void setTemperature(const double T);

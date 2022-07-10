@@ -133,10 +133,16 @@ namespace ASALI
     {
 		// TODO - Why not looking for a YAML reader in C++, this would make much easier find files names
 		
+		
+		std::cout << "ho iniziato a leggere il file" << std::endl;
+		
 		YAML::Node input = YAML::LoadFile(filename);
 		
+		std::cout << "sono riuscito a caricare il file" << std::endl;
 		
-		std::cout << input["phases"]["name"].as<std::string>() << std::endl;
+		//std::cout << input["generator"].IsScalar()<< std::endl;
+		
+		std::cout << "ho finito di plottare" << std::endl;
 		
 		std::vector<std::string> readed(2);
         readed[0] = "none";

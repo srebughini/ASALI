@@ -73,7 +73,7 @@ namespace ASALI
         private:
                 void exit();
                 void updateBasicChemistryInterface();
-                void updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase);
+                void updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase, const bool isKinetic);
                 void discrimer();
                 void mainMenu();
                 void noneInputError();
@@ -173,7 +173,7 @@ namespace ASALI
                 Gtk::LinkButton forgeButton_;
 
                 std::string kineticType_;
-                std::string basicXMLfilepath_;
+                std::string basicYAMLfilepath_;
                 std::string basicGasPhase_;
 
                 std::vector<std::string> beer_;

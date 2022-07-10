@@ -93,7 +93,7 @@ namespace ASALI
           smallLogo2_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
           smallLogo3_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
           smallLogo4_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
-          basicXMLfilepath_(fileManager_.relative_path_to_absolute_path("database/data.xml")),
+          basicYAMLfilepath_(fileManager_.relative_path_to_absolute_path("database/data.yaml")),
           basicGasPhase_("gas")
     {
         beerQuote_ = new ASALI::beerQuote();
@@ -386,13 +386,13 @@ namespace ASALI
         }
 
 #if ASALI_USING_CANTERA == 1
-        chemistryInterface_ = new ASALI::canteraInterface(basicXMLfilepath_, basicGasPhase_, "none");
+        chemistryInterface_ = new ASALI::canteraInterface(basicYAMLfilepath_, basicGasPhase_, "none", false);
 #else
         chemistryInterface_ = new ASALI::asaliInterface();
 #endif
     }
 
-    void mainGui::updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase)
+    void mainGui::updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase, const bool isKinetic)
     {
         if (!chemistryInterface_)
         {
@@ -400,7 +400,7 @@ namespace ASALI
         }
 
 #if ASALI_USING_CANTERA == 1
-        chemistryInterface_ = new ASALI::canteraInterface(filepath, gasPhase, surfPhase);
+        chemistryInterface_ = new ASALI::canteraInterface(filepath, gasPhase, surfPhase, isKinetic);
 #else
         chemistryInterface_ = new ASALI::asaliInterface();
 #endif
@@ -630,6 +630,7 @@ namespace ASALI
             else if (filename.find("yaml") != std::string::npos)
             {
                 std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
+                bool iskinetic = true;
 
                 if (interfaces[0] == "none" ||
                     interfaces[1] == "none")
@@ -662,7 +663,7 @@ namespace ASALI
                         }
                         else
                         {
-                            this->updateChemistryInterface(filename, type, "none");
+                            this->updateChemistryInterface(filename, type, "none", iskinetic);
                             speciesNames_ = new ASALI::speciesPopup();
                             kineticType_ = "nokinetic";
                             smallDialog.hide();
@@ -701,7 +702,7 @@ namespace ASALI
                     }
                     else
                     {
-                        this->updateChemistryInterface(filename, type[0], type[1]);
+                        this->updateChemistryInterface(filename, type[0], type[1], iskinetic);
                         kineticType_ = "load";
                         this->mainMenu();
                     }

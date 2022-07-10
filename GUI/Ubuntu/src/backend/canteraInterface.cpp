@@ -42,7 +42,8 @@ namespace ASALI
 {
     canteraInterface::canteraInterface(std::string filepath,
                                        std::string gasPhaseName,
-                                       std::string surfPhaseName)
+                                       std::string surfPhaseName,
+                                       bool        isKinetic)
         : basicInterface()
     {
         // Create gas phase as ThermoPhase
@@ -56,6 +57,7 @@ namespace ASALI
         }
 
         // Create gas kinetic reactions as Kinetics from thermo
+        if ( isKinetic )
         {
             std::vector<Cantera::ThermoPhase *> gas_phases{thermo_};
             kinetic_ = Cantera::newKineticsMgr(thermo_->xml(), gas_phases);
