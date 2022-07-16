@@ -656,7 +656,7 @@ namespace ASALI
                             {
                                 if (isKinetic == false)
                                 {
-									surfaceDialog.hide();
+                                    surfaceDialog.hide();
                                     Gtk::MessageDialog kineticDialog(*this, "We detect that your CANTERA input file does not have reactions.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
                                     kineticDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                                     int kineticAnswer = kineticDialog.run();

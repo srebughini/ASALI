@@ -242,17 +242,17 @@ namespace ASALI
         input.open(path);
         std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
 
-		std::string gasPhaseName = interfaces[0];
-		std::string surfacePhaseName = interfaces[1];
-		
-		if ( gasPhaseName == "none" )
-		{
-			return false;
-		}
+        std::string gasPhaseName = interfaces[0];
+        std::string surfacePhaseName = interfaces[1];
+        
+        if ( gasPhaseName == "none" )
+        {
+            return false;
+        }
         else
         {
-			return true;
-		}
+            return true;
+        }
     }
 
     chemkinConverter::~chemkinConverter()

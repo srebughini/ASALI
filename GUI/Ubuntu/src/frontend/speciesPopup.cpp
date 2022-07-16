@@ -45,7 +45,7 @@ namespace ASALI
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           speciesImage_(fileManager_.relative_path_to_absolute_path("database/names.tiff"))
     {
-		// TODO - Improve this using the list of species and the database/species.asali file
+        // TODO - Improve this using the list of species and the database/species.asali file
         this->set_default_size(600, 400);
         this->set_border_width(15);
         this->set_title("ASALI: species names");
