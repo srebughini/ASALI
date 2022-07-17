@@ -43,18 +43,60 @@ namespace ASALI
     speciesPopup::speciesPopup()
         : closeButton_("Close"),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
-          speciesImage_(fileManager_.relative_path_to_absolute_path("database/names.tiff"))
+          formulaHeading_("<b>Formula</b>"),
+          descriptionHeading_("<b>Description</b>"),
+          nameHeading_("<b>ASALI name</b>")
     {
-        // TODO - Improve this using the list of species and the database/species.asali file
-        this->set_default_size(600, 400);
-        this->set_border_width(15);
-        this->set_title("ASALI: species names");
-        this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
-        this->add(mainBox_);
+		{
+			this->set_default_size(600, 400);
+            this->set_border_width(15);
+            this->set_title("ASALI: species names");
+            this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
+        }
+
+		grid_.set_column_homogeneous(true);
+		grid_.set_column_spacing(10);
+		grid_.set_row_homogeneous(true);
+		grid_.set_row_spacing(10);
+        
+        //Adding headlines - Formula
+		formulaHeading_.set_use_markup(true);
+		formulaHeading_.set_justify(Gtk::JUSTIFY_CENTER);
+		grid_.attach(formulaHeading_, 0, 0, 1, 1);
+		
+		//Adding headlines - Description
+		descriptionHeading_.set_use_markup(true);
+		descriptionHeading_.set_justify(Gtk::JUSTIFY_CENTER);
+		grid_.attach(descriptionHeading_, 1, 0, 1, 1);
+		
+		//Adding headlines - ASALI name
+		nameHeading_.set_use_markup(true);
+		nameHeading_.set_justify(Gtk::JUSTIFY_CENTER);
+		grid_.attach(nameHeading_, 2, 0, 1, 1);
+        
+        //Adding species names
+        std::vector<std::vector<std::string>> fileToMatrix = fileManager_.readSpeciesPopupFile();
+       
+        for (unsigned int i=0;i<fileToMatrix[0].size();i++)
+		{
+			formulaLabel_.push_back(Gtk::Label(fileToMatrix[0][i]));
+			descriptionLabel_.push_back(Gtk::Label(fileToMatrix[1][i]));
+			nameLabel_.push_back(Gtk::Label(fileToMatrix[2][i]));
+			
+			formulaLabel_[i].set_justify(Gtk::JUSTIFY_CENTER);
+			descriptionLabel_[i].set_justify(Gtk::JUSTIFY_CENTER);
+			nameLabel_[i].set_justify(Gtk::JUSTIFY_CENTER);
+			
+			grid_.attach(formulaLabel_[i], 0,i+1,1,1);
+			grid_.attach(descriptionLabel_[i], 1,i+1,1,1);
+			grid_.attach(nameLabel_[i], 2,i+1,1,1);
+		}
+
+		this->add(mainBox_);
         mainBox_.pack_start(scrolledWindow_);
-        scrolledWindow_.add(speciesImage_);
-        scrolledWindow_.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+        scrolledWindow_.add(grid_);
+        scrolledWindow_.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
         mainBox_.pack_end(closeButton_, Gtk::PACK_SHRINK);
         closeButton_.signal_clicked().connect(sigc::mem_fun(*this, &speciesPopup::exit));
         this->show_all_children();

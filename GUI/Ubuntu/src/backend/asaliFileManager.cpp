@@ -41,6 +41,7 @@
 namespace ASALI
 {
     asaliFileManager::asaliFileManager():
+        speciesPopupfilepath_(this->relative_path_to_absolute_path("database/species.asali")),
         ck2yamlfilepath_(this->relative_path_to_absolute_path("scripts/ck2yaml.py")),
         cti2yamlfilepath_(this->relative_path_to_absolute_path("scripts/cti2yaml.py")),
         ctml2yamlfilepath_(this->relative_path_to_absolute_path("scripts/ctml2yaml.py"))
@@ -169,6 +170,27 @@ namespace ASALI
             return false;
         }
     }
+    
+    std::vector<std::vector<std::string>> asaliFileManager::readSpeciesPopupFile()
+    {
+		std::vector<std::string> formula;
+		std::vector<std::string> description;
+		std::vector<std::string> name;
+		
+		std::ifstream inputfile(speciesPopupfilepath_);
+		std::string line;
+		while (std::getline(inputfile, line))
+		{
+			std::vector<std::string> row = this->splitString(line, "\t");
+			formula.push_back(row[0]);
+			description.push_back(row[1]);
+			name.push_back(row[2]);
+		}
+
+		std::vector<std::vector<std::string>> output{formula, description, name};
+		return output;
+	} 
+    
 
 #if ASALI_USING_CANTERA == 1
     void asaliFileManager::fromXmlToYaml(std::string xmlFilePath)

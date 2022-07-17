@@ -61,12 +61,26 @@ namespace ASALI
         speciesPopup();
 
     private:
+    
+		/// Hide this window
         void exit();
 
         Gtk::Button closeButton_;
         Gtk::ScrolledWindow scrolledWindow_;
         Gtk::Box mainBox_;
-        Gtk::Image speciesImage_;
+        Gtk::Grid grid_;
+        Gtk::Label formulaHeading_;
+        Gtk::Label descriptionHeading_;
+        Gtk::Label nameHeading_;
+        
+        std::vector<Gtk::Label> formulaLabel_;
+        std::vector<Gtk::Label> descriptionLabel_;
+        std::vector<Gtk::Label> nameLabel_;
+        
+        std::vector<std::string> specieNames_;          /// Vector of species names
+        std::vector<std::string> specieFormulas_;       /// Vector of species formulas
+        std::vector<std::string> specieDescriptions_;   /// Vector of species descriptions
+
 
         ASALI::asaliFileManager fileManager_;
     };

@@ -94,6 +94,9 @@ namespace ASALI
 
         /// Remove extension from file path
         void removeFileExtension(std::string &filename, const std::string &extension);
+        
+        /// Read the file for species popup
+        std::vector<std::vector<std::string>> readSpeciesPopupFile();
 
 #if ASALI_USING_CANTERA == 1
         /// Covert from Cantera .xml to Cantera .yaml
@@ -109,6 +112,8 @@ namespace ASALI
     private:
         /// Remove substring from string
         void eraseSubString(std::string &mainStr, const std::string &toErase);
+        
+        std::string speciesPopupfilepath_;
         
 #if ASALI_USING_CANTERA == 1
         std::string ck2yamlfilepath_;
