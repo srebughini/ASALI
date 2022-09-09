@@ -7,17 +7,22 @@ redirect_from: /docs/index.html
 The **Web App** version on **ASALI** estimates transport and thermodynamic properties and also chemical equilibrium at constant temperature and pressure.
 So, try it!!!  
 
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text">Temperature</span>
-  </div>
-  <input type="text" class="form-control" aria-label="Text input with dropdown button">
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Unit dimensions</button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Pa</a>
-      <a class="dropdown-item" href="#">MPa</a>
-      <a class="dropdown-item" href="#">bar</a>
+<div class="container">
+    <div class="row">
+        <div class="container">
+            <div class = "col-sm-4 text-center">
+                <p>Temperature</p>
+            </div>
+            <div class = "col-sm-4 text-center">
+                <input type="number" class="form-control">
+            </div>
+            <div class = "col-sm-4 text-center">
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">K</a>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">°C</a>
+                    </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+<div>
