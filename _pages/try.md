@@ -7,9 +7,9 @@ redirect_from: /docs/index.html
 The **Web App** version on **ASALI** estimates transport and thermodynamic properties and also chemical equilibrium at constant temperature and pressure.
 So, try it!!!  
 
-<div class="input-group">
+<div class="input-group mb-3">
   <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-sm">Temperature</span>
+    <span class="input-group-text">Temperature</span>
   </div>
   <input type="text" class="form-control" aria-label="Text input with dropdown button">
   <div class="input-group-append">
