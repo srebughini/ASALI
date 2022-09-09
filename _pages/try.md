@@ -10,10 +10,10 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <div class="row">
-        <div class = "col-sm-auto text-center">
+        <div class = "col-sm text-center">
             <input type="number" class="form-control" placeholder="Temperature in K">
         </div>
-        <div class = "col-sm-auto text-center">
+        <div class = "col-sm text-center">
             <input type="number" class="form-control" placeholder="Pressure in Pa">
         </div>
     </div>
