@@ -1,5 +1,5 @@
 ---
-permalink: /pages/trys/
+permalink: /pages/try/
 redirect_from: /docs/index.html
 ---
 
