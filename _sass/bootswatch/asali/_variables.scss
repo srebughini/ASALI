@@ -189,7 +189,7 @@ $input-bg:                       #fff !default;
 $input-bg-disabled:              $gray-lighter !default;
 
 //** Text color for `<input>`s
-$input-color:                    #fff !default;
+$input-color:                    $gray-lighter !default;
 //** `<input>` border color
 $input-border:                   $text-border-color !default;
 
