@@ -5,15 +5,19 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <div class="input-group">
-        <span class="input-group-addon" id="T-addon1">Temperature</span>
-        <input type="number" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T">
-        <div class="input-group-btn">
+        <span class="input-group-addon" id="T-addon1">Temperature in K</span>
+        <input type="number" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T" min="0">
+        <!--<div class="input-group-btn">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">K <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
             <li><a href="#">°C</a></li>
             <li><a href="#">K</a></li>
             </ul>
-        </div><!-- /btn-group -->
+        </div> /btn-group -->
+    </div><!-- /input-group -->
+    <div class="input-group">
+        <span class="input-group-addon" id="P-addon1">Pressure in Pa</span>
+        <input type="number" class="form-control" placeholder="101325" aria-describedby="P-addon1" id="P" min="0">
     </div><!-- /input-group -->
 </div>
 
