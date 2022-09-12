@@ -3,6 +3,29 @@ permalink: /pages/try/
 redirect_from: /docs/index.html
 ---
 
+
+<div class="form-group">
+<label class="control-label col-md-3">X:</label>
+<div class="input-group col-md-7">
+    <input class="form-control" type="text">
+    <span class="input-group-addon">m</span>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3">Y:</label>
+<div class="input-group col-md-7">
+    <input class="form-control" type="text">
+    <span class="input-group-addon">m</span>
+</div>
+</div>
+<div class="form-group">
+<label class="control-label col-md-3">Z:</label>
+<div class="input-group col-md-7">
+    <input class="form-control" type="text">
+    <span class="input-group-addon">m</span>
+</div>
+</div>
+
 <div class="container">
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="input-group">
