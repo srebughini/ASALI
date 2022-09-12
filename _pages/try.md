@@ -3,33 +3,36 @@ permalink: /pages/try/
 redirect_from: /docs/index.html
 ---
 
-<h2 class="text-center"><b>Gas mixture conditions</b></h2>
-<div class="row">
-    <div class="col-sm-6 text-center">
-        <input type="number" class="form-control" placeholder="Temperature in K" id="T">
-    </div>
-    <div class="col-sm-6 text-center">
-        <input type="number" class="form-control" placeholder="Pressure in Pa" id="P">
-    </div>
-</div>
-<h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
-<div class="row">
-    <div class="col-sm-6 text-center">
-        <input type="text" class="form-control" placeholder="Specie name" id="n1">
-    </div>
-    <div class="col-sm-6 text-center">
-        <input type="number" class="form-control" placeholder="Mole fraction" id="x1">
+<div class="container">
+    <h2 class="text-center"><b>Gas mixture conditions</b></h2>
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <input type="number" class="form-control" placeholder="Temperature in K" id="T">
+        </div>
+        <div class="col-sm-6 text-center">
+            <input type="number" class="form-control" placeholder="Pressure in Pa" id="P">
+        </div>
     </div>
 </div>
-<p></p>
-<div class="row">
-    <div class="col-sm-6 text-center">
-        <input type="text" class="form-control" placeholder="Specie name" id="n2">
-    </div>
-    <div class="col-sm-6 text-center">
-        <input type="number" class="form-control" placeholder="Mole fraction" id="x2">
+<div class="container">
+    <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <input type="text" class="form-control" placeholder="Specie name" id="n1">
+        </div>
+        <div class="col-sm-6 text-center">
+            <input type="number" class="form-control" placeholder="Mole fraction" id="x1">
+        </div>
+        <div class="w-100"></div>
+        <div class="col-sm-6 text-center">
+            <input type="text" class="form-control" placeholder="Specie name" id="n2">
+        </div>
+        <div class="col-sm-6 text-center">
+            <input type="number" class="form-control" placeholder="Mole fraction" id="x2">
+        </div>
     </div>
 </div>
+<!--
 <p></p>
 <div class="row">
     <div class="col-sm-6 text-center">
@@ -103,6 +106,7 @@ redirect_from: /docs/index.html
     </div>
 </div>
 <p></p>
+-->
 <div class="row">
     <div class="col-sm-6 text-center">
         <button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>    Estimate properties</button>
