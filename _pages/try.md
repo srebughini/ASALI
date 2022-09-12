@@ -8,9 +8,7 @@ redirect_from: /docs/index.html
 
 <div class="row">
     <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <p class="input-group-text">Temperature</p>
-        </div>
+        <p class="input-group-prepend input-group-text">Temperature</p>
         <input type="number" class="form-control" placeholder="Temperature">
     </div>
 <!--
