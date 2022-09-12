@@ -4,57 +4,37 @@ redirect_from: /docs/index.html
 ---
 
 
-<div class="form-group">
-        <div class="input-group col-md-7">
-            <input class="form-control" type="text">
-            <span class="input-group-addon">m</span>
-        </div>
-</div>
-
-<div class="form-group">
-    <div class="input-group col-md-7">
-        <input class="form-control" type="text">
-        <span class="input-group-addon">m</span>
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="input-group col-md-7">
-        <input class="form-control" type="text">
-        <span class="input-group-addon">m</span>
-    </div>
-</div>
-
 <div class="container">
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
-    <div class="input-group">
-        <span class="input-group-addon" id="T-addon1">Temperature in K </span> 
-        <input type="number" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T" min="0">
-        <!--<div class="input-group-btn">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">K <span class="caret"></span></button>
-            <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">°C</a></li>
-            <li><a href="#">K</a></li>
-            </ul>
-        </div> /btn-group -->
-    </div><!-- /input-group -->
-    <div class="input-group">
-        <span class="input-group-addon" id="P-addon1">Pressure    in Pa</span>
-        <input type="number" class="form-control" placeholder="101325" aria-describedby="P-addon1" id="P" min="0">
-    </div><!-- /input-group -->
+    <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon text-center" id="T-addon1">Temperature in K </span> 
+                <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon1" id="T" min="0">
+            </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon text-center" id="P-addon1">Pressure    in Pa</span>
+            <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon1" id="P" min="0">
+        </div>
+    </div>
 </div>
 
 <div class="container">
     <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
-    <div class="input-group">
-        <span class="input-group-addon" id="s1-addon1">Specie #1 </span> 
-        <input type="text" class="form-control" placeholder="H2"  aria-describedby="s1-addon1" id="n1">
-        <input type="number" class="form-control" placeholder="0.5" aria-describedby="s1-addon1" id="x1" min="0" max="1">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon text-center" id="s1-addon1">Specie #1 </span> 
+            <input type="text" class="form-control text-right" placeholder="H2"  aria-describedby="s1-addon1" id="n1">
+            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="s1-addon1" id="x1" min="0" max="1">
+        </div>
     </div>
-    <div class="input-group">
-        <span class="input-group-addon" id="s2-addon1">Specie #1 </span> 
-        <input type="text" class="form-control" placeholder="H2"  aria-describedby="s2-addon1" id="n1">
-        <input type="number" class="form-control" placeholder="0.5" aria-describedby="s2-addon1" id="x1" min="0" max="1">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon text-center" id="s2-addon1">Specie #2 </span> 
+            <input type="text" class="form-control text-right" placeholder="H2"  aria-describedby="s2-addon1" id="n2">
+            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="s2-addon1" id="x2" min="0" max="1">
+        </div>
     </div>
 </div>
 
