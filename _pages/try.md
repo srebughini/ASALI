@@ -8,14 +8,14 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon text-center" id="T-addon">Temperature</span>
+                <span class="input-group-addon text-left" id="T-addon">Temperature</span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
-                <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
+                <span class="input-group-addon text-right" id="T-addon">&ensp;K</span>
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon">&nbsp;&nbsp;&nbsp;&nbsp;Pressure&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="input-group-addon text-left" id="P-addon">Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
             <span class="input-group-addon text-right">Pa</span>
         </div>
@@ -250,10 +250,10 @@ redirect_from: /docs/index.html
 <p></p>
 -->
 <div class="row">
-    <div class="col-sm-6 text-center">
+    <div class="col-sm-4 text-center">
         <button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>    Estimate properties</button>
     </div>
-    <div class="col-sm-6 text-center">
+    <div class="col-sm-4 text-center">
         <button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i>   Calculate equilibrium</button>
     </div>
 </div>
