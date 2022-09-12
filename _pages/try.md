@@ -102,13 +102,13 @@ redirect_from: /docs/index.html
         <input type="number" class="form-control" placeholder="Mole fraction" id="x10">
     </div>
 </div>
-
+<p></p>
 <div class="row">
     <div class="col-sm-6 text-center">
-        <button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i></button>
+        <button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>    Estimate properties</button>
     </div>
     <div class="col-sm-6 text-center">
-        <button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i></button>
+        <button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i>   Calculate equilibrium</button>
     </div>
 </div>
 
