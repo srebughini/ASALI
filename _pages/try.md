@@ -17,17 +17,23 @@ redirect_from: /docs/index.html
 <div class="container">
     <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
     <div class="row">
-        <div class="col-sm-6 text-center">
-            <input type="text" class="form-control" placeholder="Specie name" id="n1">
+        <div class="col-sm-4 text-center">
+            <p>Specie #1</p>
         </div>
-        <div class="col-sm-6 text-center">
+        <div class="col-sm-4 text-center">
+            <input type="text" class="form-control" placeholder="Name" id="n1">
+        </div>
+        <div class="col-sm-4 text-center">
             <input type="number" class="form-control" placeholder="Mole fraction" id="x1">
         </div>
         <div class="w-100"></div>
-        <div class="col-sm-6 text-center">
-            <input type="text" class="form-control" placeholder="Specie name" id="n2">
+        <div class="col-sm-4 text-center">
+            <p>Specie #1</p>
         </div>
-        <div class="col-sm-6 text-center">
+        <div class="col-sm-4 text-center">
+            <input type="text" class="form-control" placeholder="Name" id="n2">
+        </div>
+        <div class="col-sm-4 text-center">
             <input type="number" class="form-control" placeholder="Mole fraction" id="x2">
         </div>
     </div>
