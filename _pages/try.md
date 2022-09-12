@@ -8,13 +8,13 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon text-center" id="T-addon"><pre class="tab">Temperature in K </pre></span>
+                <pre class="input-group-addon text-center" id="T-addon">Temperature in K </pre>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon"><pre class="tab">Pressure    in Pa</pre></span>
+            <pre class="input-group-addon text-center" id="P-addon">Pressure    in Pa</pre>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
         </div>
     </div>
@@ -26,18 +26,18 @@ redirect_from: /docs/index.html
         <div class="input-group">
             <span class="input-group-addon text-center" id="s1-addon">#1</span> 
             <span class="input-group-addon text-center" id="n1-addon">Name</span> 
-            <input type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+            <input type="text" style="width:50%" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
             <span class="input-group-addon text-center" id="x1-addon">Fraction</span> 
-            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
+            <input type="number" style="width:50%" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
     </div>
     <div class="form-group">
         <div class="input-group">
             <span class="input-group-addon text-center" id="s2-addon">#1</span> 
             <span class="input-group-addon text-center" id="n2-addon">Name</span> 
-            <input type="text" class="form-control text-right" placeholder="H2" aria-describedby="n2-addon" id="n2">
+            <input type="text" style="width:50%" class="form-control text-right" placeholder="H2" aria-describedby="n2-addon" id="n2">
             <span class="input-group-addon text-center" id="x2-addon">Fraction</span> 
-            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x2-addon" id="x2" min="0" max="1">
+            <input type="number" style="width:50%" class="form-control text-right" placeholder="0.5" aria-describedby="x2-addon" id="x2" min="0" max="1">
         </div>
     </div>
 </div>
