@@ -3,8 +3,9 @@ permalink: /pages/try/
 redirect_from: /docs/index.html
 ---
 
-<div class="list-group">
-    <div class="list-group-item input-group">
+<div class="container">
+    <h2 class="text-center"><b>Gas mixture conditions</b></h2>
+    <div class="input-group">
         <span class="input-group-addon" id="T-addon1">Temperature in K </span> 
         <input type="number" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T" min="0">
         <!--<div class="input-group-btn">
@@ -19,6 +20,20 @@ redirect_from: /docs/index.html
         <span class="input-group-addon" id="P-addon1">Pressure    in Pa</span>
         <input type="number" class="form-control" placeholder="101325" aria-describedby="P-addon1" id="P" min="0">
     </div><!-- /input-group -->
+</div>
+
+<div class="container">
+    <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
+    <div class="input-group">
+        <span class="input-group-addon" id="s1-addon1">Specie #1 </span> 
+        <input type="text" class="form-control" placeholder="H2"  aria-describedby="s1-addon1" id="n1">
+        <input type="number" class="form-control" placeholder="0.5" aria-describedby="s1-addon1" id="x1" min="0" max="1">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon" id="s2-addon1">Specie #1 </span> 
+        <input type="text" class="form-control" placeholder="H2"  aria-describedby="s2-addon1" id="n1">
+        <input type="number" class="form-control" placeholder="0.5" aria-describedby="s2-addon1" id="x1" min="0" max="1">
+    </div>
 </div>
 
 <!--
