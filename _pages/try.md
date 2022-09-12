@@ -27,10 +27,10 @@ redirect_from: /docs/index.html
     <div class="row">
         <div class="form-group">
             <div class="input-group">
-                    <span style="width:25%" class="input-group-addon text-center" id="s1-addon">#1 Name</span> 
-                    <input style="width:50%" type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
-                    <span style="width:25%" class="input-group-addon text-center" id="x1-addon">Fraction</span> 
-                    <input style="width:50%" type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
+                    <span style="width:10%" class="input-group-addon text-center" id="s1-addon">#1 Name</span> 
+                    <input style="width:40%" type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+                    <span style="width:10%" class="input-group-addon text-center" id="x1-addon">Fraction</span> 
+                    <input style="width:40%" type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
             </div>
         </div>
     </div>
