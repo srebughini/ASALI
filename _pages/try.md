@@ -8,24 +8,28 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon text-center" id="T-addon">Temperature in K </span>
+                <span class="input-group-addon text-center" id="T-addon">Temperature</span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
+                <span class="input-group-addon text-center" id="T-addon">K</span>
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon">Pressure    in Pa</span>
+            <span class="input-group-addon text-center" id="P-addon">Pressure</span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
+            <span class="input-group-addon text-center">Pa</span>
         </div>
     </div>
 </div>
 
 <div class="container">
     <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
-    <div class="form-group">
-        <div class="input-group">
+    <div class="form-group row">
+        <div class="input-group col-sm-4">
             <span class="input-group-addon text-center" id="s1-addon">#1 Name</span> 
             <input type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+        </div>
+        <div class="input-group col-sm-4">
             <span class="input-group-addon text-center" id="x1-addon">Fraction</span> 
             <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
