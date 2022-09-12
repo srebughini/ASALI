@@ -8,13 +8,13 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon text-center" id="T-addon">Temperature in K&nbsp;</span>
+                <span class="input-group-addon text-center" id="T-addon"><pre class="tab">Temperature in K </pre></span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon">Pressure &nbsp;&nbsp;&nbsp;in Pa</span>
+            <span class="input-group-addon text-center" id="P-addon"><pre class="tab">Pressure    in Pa</pre></span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
         </div>
     </div>
