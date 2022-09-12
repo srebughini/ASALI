@@ -24,12 +24,12 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
         <form class="form-inline">
             <div class="form-group">
-                <span class="input-group-addon text-center" id="n1-addon">#1 Name</span> 
-                <input type="text" class="form-control text-right" placeholder="Name (Ex. H2)" aria-describedby="n1-addon" id="n1">
+                <label class="input-group-addon text-center" for="n1">Name</label>
+                <input type="text" class="form-control text-right" placeholder="Name (Ex. H2)" id="n1">
             </div>
             <div class="form-group">
-                <span class="input-group-addon text-center" id="x1-addon">Fraction</span> 
-                <input type="number" class="form-control text-right" placeholder="Mole fraction (Ex. 0.5)" aria-describedby="x1-addon" id="x1" min="0" max="1">
+                <label class="input-group-addon text-center" for="x1">Fraction</label>
+                <input type="number" class="form-control text-right" placeholder="Mole fraction (Ex. 0.5)" id="x1" min="0" max="1">
             </div>
         </form>
     <!--
