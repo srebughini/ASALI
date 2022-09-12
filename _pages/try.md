@@ -8,14 +8,14 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="form-group">
             <div class="input-group">
-                <span class="input-group-addon text-center" id="T-addon1">Temperature in K </span> 
-                <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon1" id="T" min="0">
+                <span class="input-group-addon text-center" id="T-addon">Temperature in K </span> 
+                <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon1">Pressure    in Pa</span>
-            <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon1" id="P" min="0">
+            <span class="input-group-addon text-center" id="P-addon">Pressure    in Pa</span>
+            <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
         </div>
     </div>
 </div>
@@ -24,9 +24,11 @@ redirect_from: /docs/index.html
     <h2 class="text-center"><b>Gas mixture mole fraction</b></h2>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="s1-addon1">Specie #1 </span> 
-            <input type="text" class="form-control text-right" placeholder="H2"  aria-describedby="s1-addon1" id="n1">
-            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="s1-addon1" id="x1" min="0" max="1">
+            <span class="input-group-addon text-center" id="s1-addon">#1</span> 
+            <span class="input-group-addon text-center" id="n1-addon">Specie name</span> 
+            <input type="text" class="form-control text-right" placeholder="H2"  aria-describedby="n1-addon" id="n1">
+            <span class="input-group-addon text-center" id="x1-addon">Mole fraction</span> 
+            <input type="number" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
     </div>
     <div class="form-group">
