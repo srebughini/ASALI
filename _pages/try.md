@@ -10,14 +10,14 @@ redirect_from: /docs/index.html
             <div class="input-group">
                 <span class="input-group-addon text-center" id="T-addon">Temperature</span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
-                <span class="input-group-addon text-center" id="T-addon">K&ensp;</span>
+                <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <span class="input-group-addon text-center" id="P-addon">Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <span class="input-group-addon text-center" id="P-addon">&nbsp;&nbsp;&nbsp;&nbsp;Pressure&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
-            <span class="input-group-addon text-center">Pa</span>
+            <span class="input-group-addon text-right">Pa</span>
         </div>
     </div>
 </div>
