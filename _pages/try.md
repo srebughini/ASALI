@@ -5,9 +5,16 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1">@</span>
-        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-    </div>
+        <span class="input-group-addon" id="T-addon1">Temperature</span>
+        <input type="text" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">K <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#">°C</a></li>
+            <li><a href="#">K</a></li>
+            </ul>
+        </div><!-- /btn-group -->
+    </div><!-- /input-group -->
 </div>
 
 <div class="container">
