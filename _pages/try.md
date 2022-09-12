@@ -27,7 +27,7 @@ redirect_from: /docs/index.html
     <div class="row">
         <div class="form-group">
             <div class="input-group">
-                    <span class="input-group-addon text-center" id="s1-addon">#1 Name</span> 
+                    <span class="input-group-addon text-center" id="n1-addon">#1 Name</span> 
                     <input type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
                     <span class="input-group-addon text-center" id="x1-addon">Fraction</span> 
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
