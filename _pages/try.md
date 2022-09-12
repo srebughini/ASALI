@@ -7,9 +7,11 @@ redirect_from: /docs/index.html
 <h3 class="text-center">Web App</h3>
 
 <div class="row">
-    <div class="input-group mb-3">
-        <p class="input-group-prepend input-group-text">Temperature</p>
+    <div class="col-sm-4 text-center">
         <input type="number" class="form-control" placeholder="Temperature">
+    </div>
+        <div class="col-sm-4 text-center">
+        <input type="number" class="form-control" placeholder="Pressure">
     </div>
 <!--
     <div class = "col-sm text-center">
