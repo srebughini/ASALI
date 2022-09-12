@@ -5,7 +5,7 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <label>
-        <div class="input-group mb-3">
+        <div class="input-group">
             <span class="input-group-text" id="basic-addon1">@</span>
             <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
         </div>
