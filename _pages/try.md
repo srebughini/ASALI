@@ -9,7 +9,7 @@ redirect_from: /docs/index.html
 <div class="row">
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Temperature</span>
+            <p class="input-group-text">Temperature</p>
         </div>
         <input type="number" class="form-control" placeholder="Temperature">
     </div>
