@@ -4,6 +4,15 @@ redirect_from: /docs/index.html
 ---
 
 <div class="container">
+    <label>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">@</span>
+            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+    </label>
+</div>
+
+<div class="container">
     <h2 class="text-center"><b>Gas mixture conditions</b></h2>
     <div class="row">
         <div class="col-sm-6 text-center">
