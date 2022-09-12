@@ -8,7 +8,7 @@ $bootstrap-sass-asset-helper: false !default;
 //
 //## Gray and brand colors for use across Bootstrap.
 
-$gray-base:              #000 !default;
+$gray-base:              #10253F !default;
 $gray-darker:            lighten($gray-base, 13.5%) !default; // #222
 $gray-dark:              #7b8a8b !default;   // #333
 $gray:                   #95a5a6 !default; // #555
@@ -189,7 +189,7 @@ $input-bg:                       #fff !default;
 $input-bg-disabled:              $gray-lighter !default;
 
 //** Text color for `<input>`s
-$input-color:                    $text-color !default;
+$input-color:                    $gray-lighter !default;
 //** `<input>` border color
 $input-border:                   $text-border-color !default;
 
@@ -222,7 +222,7 @@ $legend-color:                   $text-color !default;
 $legend-border-color:            transparent !default;
 
 //** Background color for textual input addons
-$input-group-addon-bg:           $gray-lighter !default;
+$input-group-addon-bg:           $gray-darker !default;
 //** Border color for textual input addons
 $input-group-addon-border-color: $input-border !default;
 

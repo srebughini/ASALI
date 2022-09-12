@@ -5,7 +5,7 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <div class="input-group">
-        <span class="input-group-addon input-group-lg" id="T-addon1">Temperature</span>
+        <span class="input-group-addon" id="T-addon1">Temperature</span>
         <input type="number" class="form-control" placeholder="298.15" aria-describedby="T-addon1" id="T">
         <div class="input-group-btn">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">K <span class="caret"></span></button>
