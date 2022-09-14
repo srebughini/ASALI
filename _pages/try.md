@@ -121,7 +121,7 @@ redirect_from: /docs/index.html
         <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa fa-rocket" aria-hidden="true"></i>&ensp;Estimate properties&ensp;&ensp;</button></p>
     </div>
     <div class = "col-md-6 text-center">
-        <p class="text-center"><button class="btn btn-primary btn-lg"onclick="calculateEquilibrium()"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;&nbsp;Calculate equilibrium</button></p>
+        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="calculateEquilibrium()"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;&nbsp;Calculate equilibrium</button></p>
     </div>
 </div>
 
