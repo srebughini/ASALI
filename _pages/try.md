@@ -117,7 +117,7 @@ redirect_from: /docs/index.html
 </div>
 
 <div class="container">
-    <p><button class="btn btn-primary btn-lg text-center"><i class="fa fa-rocket" aria-hidden="true"></i>    Estimate properties</button></p>
-    <p><button class="btn btn-primary btn-lg text-center"><i class="fa fa-spinner" aria-hidden="true"></i>   Calculate equilibrium</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>&ensp;Estimate properties</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;Calculate equilibrium</button></p>
 </div>
 
