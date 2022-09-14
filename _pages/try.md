@@ -117,7 +117,11 @@ redirect_from: /docs/index.html
 </div>
 
 <div class="container">
-    <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>&ensp;Estimate properties</button></p>
-    <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;Calculate equilibrium</button></p>
+    <div class = "col-md-6 text-center">
+        <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-rocket" aria-hidden="true"></i>&ensp;&ensp;Estimate properties&ensp;&ensp;</button></p>
+    </div>
+    <div class = "col-md-6 text-center">
+        <p class="text-center"><button class="btn btn-primary btn-lg"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;Calculate equilibrium</button></p>
+    </div>
 </div>
 
