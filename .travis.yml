@@ -1,12 +1,11 @@
 language: cpp
+os: linux
+compiler: g++
+sudo: required
+
 dist: 
   - focal
   - jammy
-matrix:
-  include:
-    compiler: g++
-    os: linux
-    sudo: required
 
 before_script: |
     if [[ $TRAVIS_DIST == "focal" ]]; then
