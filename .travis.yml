@@ -6,7 +6,7 @@ sudo: required
 matrix:
     include:
         - dist: focal
-        - dict: jammy
+        - dist: jammy
 
 before_script: |
     if [[ $TRAVIS_DIST == "focal" ]]; then
