@@ -3,9 +3,10 @@ os: linux
 compiler: g++
 sudo: required
 
-dist: 
-  - focal
-  - jammy
+matrix:
+    include:
+        - dist: focal
+        - dict: jammy
 
 before_script: |
     if [[ $TRAVIS_DIST == "focal" ]]; then
