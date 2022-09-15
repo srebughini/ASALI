@@ -30,7 +30,7 @@ Details can be found at: http://plplot.org/
 ### 1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
 ```bash
-git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1  
+git clone https://github.com/Cantera/cantera.git -b 2.6 --depth=1  
 ```
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
