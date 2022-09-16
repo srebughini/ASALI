@@ -10,7 +10,7 @@ SRC := $(filter-out $(SRC_TO_IGNORE), $(wildcard $(SRC_DIR)/frontend/*.cpp) $(wi
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --cflags)\
-            $(shell python-config ${PYTHON_CONFIG} --cflags)\
+            $(shell python3-config ${PYTHON_CONFIG} --cflags)\
             -I$(SUNDIALS_PATH)\
             -Iinclude
 
@@ -21,7 +21,7 @@ CFLAGS := -fPIC -s\
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --libs)\
-          $(shell python-config ${PYTHON_CONFIG} --libs)\
+          $(shell python3-config ${PYTHON_CONFIG} --libs)\
           -lplplotcxx\
           -lgfortran\
           -lpthread\
