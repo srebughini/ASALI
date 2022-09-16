@@ -141,6 +141,8 @@ function CheckPython()
 
     if [[ $python_version == *"3.8"* ]]; then
         python_config_command='--embed'
+    elif [[ $python_version == *"3.10"* ]]; then
+        python_config_command='--embed'
     else
         python_config_command=' '
     fi
