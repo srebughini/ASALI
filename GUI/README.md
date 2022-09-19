@@ -64,7 +64,16 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
+Asali has been tested on:
+* *Ubuntu 16.04 LTS*
+* *Ubuntu 18.04 LTS*
+* *Ubuntu 20.04 LTS*
+* *Ubuntu 22.04 LTS*
+* *Windows 10*
+* *Windows 8*
+* *Debian Wheezy*   
+
+If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS and Debian Wheez. Installation instructions can be found [here](LINUX.md).
