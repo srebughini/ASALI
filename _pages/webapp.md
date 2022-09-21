@@ -1,5 +1,5 @@
 ---
-permalink: /pages/try/
+permalink: /pages/webapp/
 redirect_from: /docs/index.html
 ---
 
@@ -100,6 +100,6 @@ redirect_from: /docs/index.html
 </div>
 
 <div class="container">
-    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa-regular fa-power-off"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="calculate()"><i class="fa-regular fa-power-off"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run</button></p>
 </div>
 

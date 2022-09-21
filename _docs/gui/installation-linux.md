@@ -10,14 +10,20 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
+Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Ubuntu 22.04 LTS and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
 ## Requirements installation
 The Linux based external libraries can be installed by typing these commands:  
+### Ubuntu 16.04/Ubuntu 18.04/Ubuntu 20.04/Debian Wheezy
 ```bash
 sudo apt-get update  
-sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3  
+sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev  
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
+```
+### Ubuntu 22.04
+```bash
+sudo apt-get update  
+sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran libboost-dev python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev
 ```
 
 ## How to install Gtkmm libraries
@@ -37,11 +43,11 @@ Details can be found at: http://plplot.org/
 ## How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
 ```bash
-git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1  
+git clone https://github.com/Cantera/cantera.git -b 2.6 --depth=1  
 ```
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n  
+scons build system_sundials=n python_package=minimal  
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html   
