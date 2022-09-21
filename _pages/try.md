@@ -10,7 +10,7 @@ redirect_from: /docs/index.html
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
-                <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-three-quarters"></i>&nbsp;&nbsp;</i></span>
+                <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-three-quarters"></i>&nbsp;&nbsp;</span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
