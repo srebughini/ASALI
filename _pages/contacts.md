@@ -6,9 +6,9 @@ redirect_from: /docs/index.html
 ## Social media
 Feel free to contact us with social media, we will reply you back as soon as possible:  
 <p>
-    <a class="btn btn-primary" href="https://twitter.com/ASALIcode" role="button"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>  
-    <a class="btn btn-primary" href="https://www.facebook.com/ASALIcode/" role="button"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>  
-    <a class="btn btn-primary" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa fa-linkedin" aria-hidden="true"></i> Linkedin</a>
+    <a class="btn btn-primary" href="https://twitter.com/ASALIcode" role="button"><i class="fa-brands fa-twitter"></i>&nbsp;&nbsp;Twitter</a>  
+    <a class="btn btn-primary" href="https://www.facebook.com/ASALIcode/" role="button"><i class="fa-brands fa-facebook"></i>&nbsp;&nbsp;Facebook</a>  
+    <a class="btn btn-primary" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa-brands fa-linkedin"></i>&nbsp;&nbsp;Linkedin</a>
 </p>
 
 ## Online Form

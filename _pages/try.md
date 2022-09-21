@@ -6,11 +6,11 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <h2 class="text-rigth"><b>Operating conditions</b></h2>
-    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa fa-thermometer-full" aria-hidden="true"></i> and <b>pressure</b> <i class="fa fa-tachometer" aria-hidden="true"></i> conditions.</p>
+    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa-solid fa-temperature-list"></i> and <b>pressure</b> <i class="fa-solid fa-gauge"></i> conditions.</p>
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
-                <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-thermometer-full" aria-hidden="true">&nbsp;&nbsp;</i></span>
+                <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-list">&nbsp;&nbsp;</i></span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
@@ -18,7 +18,7 @@ redirect_from: /docs/index.html
     <div class="form-group">
         <div class="input-group">
             <!--<span class="input-group-addon text-left" id="P-addon">Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
-            <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-tachometer" aria-hidden="true"></i></span>
+            <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-gauge"></i></span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
             <span class="input-group-addon text-right">Pa</span>
         </div>
@@ -118,13 +118,13 @@ redirect_from: /docs/index.html
 </div>
 
 <div class="container">
-    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa fa-rocket" aria-hidden="true"></i>Estimate properties</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa-solid fa-rocket"></i>Estimate properties</button></p>
     <!--
     <div class = "col-md-6 text-center">
-        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa fa-rocket" aria-hidden="true"></i>&ensp;Estimate properties&ensp;&ensp;</button></p>
+        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa fa-rocket"></i>&ensp;Estimate properties&ensp;&ensp;</button></p>
     </div>
     <div class = "col-md-6 text-center">
-        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="calculateEquilibrium()"><i class="fa fa-spinner" aria-hidden="true"></i>&ensp;&nbsp;Calculate equilibrium</button></p>
+        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="calculateEquilibrium()"><i class="fa fa-spinner"></i>&ensp;&nbsp;Calculate equilibrium</button></p>
     </div>
     -->
 </div>
