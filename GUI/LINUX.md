@@ -10,13 +10,13 @@ Asali is based on different open-source codes:
 
 ### 1.1 Requirements installation
 The Linux based external libraries can be installed by typing these commands:  
-#### 1.1.1 Ubuntu 18.04/Ubuntu 20.04
+#### 1.1.1 Ubuntu 16.04/Ubuntu 18.04/Ubuntu 20.04/Debian Wheezy
 ```bash
 sudo apt-get update  
 sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev  
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
 ```
-#### 1.1.2 Ubuntu 20.04
+#### 1.1.2 Ubuntu 22.04
 ```bash
 sudo apt-get update  
 sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran libboost-dev python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev
