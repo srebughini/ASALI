@@ -6,11 +6,11 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <h2 class="text-rigth"><b>Operating conditions</b></h2>
-    <p class="text-rigth">Insert <b>temperature</b> (<i class="fa fa-thermometer-full" aria-hidden="true"></i>) and <b>pressure</b> (<i class="fa fa-tachometer" aria-hidden="true"></i>) conditions of your gas mixture.</p>
+    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa fa-thermometer-full" aria-hidden="true"></i> and <b>pressure</b> <i class="fa fa-tachometer" aria-hidden="true"></i> conditions.</p>
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
-                <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-thermometer-full" aria-hidden="true">&nbsp;</i></span>
+                <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-thermometer-full" aria-hidden="true">&nbsp;&nbsp;</i></span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
@@ -24,8 +24,8 @@ redirect_from: /docs/index.html
         </div>
     </div>
     <h2 class="text-rigth"><b>Composition</b></h2>
-    <p class="text-rigth">Insert <b>mole fraction</b> composition of your gas mixture.</p>
-    <div class="row">
+    <p class="text-rigth">Insert gas mixture <b>mole fraction</b> composition</p>
+    <!--<div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n1-addon">Name #1</span> 
@@ -34,8 +34,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n2-addon">Name #2</span> 
@@ -44,8 +44,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x2-addon" id="x2" min="0" max="1">
             </div>
         </div>
-    </div>
-        <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n3-addon">Name #3</span> 
@@ -54,8 +54,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x3-addon" id="x3" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n4-addon">Name #4</span> 
@@ -64,8 +64,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x4-addon" id="x4" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n5-addon">Name #5</span> 
@@ -74,8 +74,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x5-addon" id="x5" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n6-addon">Name #6</span> 
@@ -84,8 +84,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x6-addon" id="x6" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n7-addon">Name #7</span> 
@@ -94,8 +94,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x7-addon" id="x7" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n8-addon">Name #8</span> 
@@ -104,8 +104,8 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x8-addon" id="x8" min="0" max="1">
             </div>
         </div>
-    </div>
-    <div class="row">
+    <!--</div>
+    <div class="row">-->
         <div class="form-group">
             <div class="input-group">
                     <span class="input-group-addon text-center" id="n9-addon">Name #9</span> 
@@ -114,7 +114,7 @@ redirect_from: /docs/index.html
                     <input type="text" class="form-control text-right" placeholder="0.5" aria-describedby="x9-addon" id="x9" min="0" max="1">
             </div>
         </div>
-    </div>
+    <!--</div>-->
 </div>
 
 <div class="container">
