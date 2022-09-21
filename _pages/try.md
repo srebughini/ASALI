@@ -6,11 +6,11 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <h2 class="text-rigth"><b>Operating conditions</b></h2>
-    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa-solid fa-temperature-list"></i> and <b>pressure</b> <i class="fa-solid fa-gauge"></i> conditions.</p>
+    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa-solid fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-solid fa-gauge"></i> conditions.</p>
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
-                <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-list">&nbsp;&nbsp;</i></span>
+                <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-three-quarters"></i>&nbsp;&nbsp;</i></span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
