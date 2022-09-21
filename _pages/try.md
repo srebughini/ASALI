@@ -6,11 +6,11 @@ redirect_from: /docs/index.html
 
 <div class="container">
     <h2 class="text-rigth"><b>Operating conditions</b></h2>
-    <p class="text-rigth">Insert <b>temperature</b> (in K) and <b>pressure</b> (in Pa) conditions of your gas mixture.</p>
+    <p class="text-rigth">Insert <b>temperature</b> (<i class="fa fa-thermometer-full" aria-hidden="true"></i>) and <b>pressure</b> (<i class="fa fa-tachometer" aria-hidden="true"></i>) conditions of your gas mixture.</p>
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
-                <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-thermometer-full" aria-hidden="true"></i></span>
+                <span class="input-group-addon text-left" id="T-addon"><i class="fa fa-thermometer-full" aria-hidden="true">&nbsp;</i></span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
@@ -23,9 +23,6 @@ redirect_from: /docs/index.html
             <span class="input-group-addon text-right">Pa</span>
         </div>
     </div>
-</div>
-
-<div class="container">
     <h2 class="text-rigth"><b>Composition</b></h2>
     <p class="text-rigth">Insert <b>mole fraction</b> composition of your gas mixture.</p>
     <div class="row">
