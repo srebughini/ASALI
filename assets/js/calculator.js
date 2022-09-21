@@ -23,7 +23,7 @@ function calculateEquilibrium() {
     newWindow.document.write("<h1>Calculate Equilibrium: Under construction</h1>");
 }
 
-function calculate()
+function runWebApp()
 {
     let resultsWindow = window.open("https://srebughini.github.io/ASALI/pages/results/", "_blank");
 
