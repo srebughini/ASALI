@@ -11,7 +11,7 @@ redirect_from: /docs/index.html
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
                 <span class="input-group-addon text-left" id="T-addon"><i class="fa-solid fa-temperature-three-quarters"></i>&nbsp;&nbsp;</span>
-                <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0">
+                <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0" max="2000">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
             </div>
     </div>
@@ -118,14 +118,6 @@ redirect_from: /docs/index.html
 </div>
 
 <div class="container">
-    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa-solid fa-rocket"></i>Estimate properties</button></p>
-    <!--
-    <div class = "col-md-6 text-center">
-        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa fa-rocket"></i>&ensp;Estimate properties&ensp;&ensp;</button></p>
-    </div>
-    <div class = "col-md-6 text-center">
-        <p class="text-center"><button class="btn btn-primary btn-lg" onclick="calculateEquilibrium()"><i class="fa fa-spinner"></i>&ensp;&nbsp;Calculate equilibrium</button></p>
-    </div>
-    -->
+    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="estimateProperties()"><i class="fa-solid fa-power-off"></i>&nbsp;Run</button></p>
 </div>
 
