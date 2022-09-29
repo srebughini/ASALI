@@ -1,10 +1,5 @@
-- title: Gas mixture properties
-  docs:
-  - transport
-  - thermo
-
-- title: Chemical equilibirum
-  docs:
-  - constant-tp
-
-
+- title: Results
+  results:
+  - transport-properties
+  - thermodynamic-properties
+  - equilibrium-constan-t-p
