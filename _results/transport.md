@@ -1,5 +1,5 @@
 ---
 permalink: /results/transport/
-redirect_from: /results/index.html
+redirect_from: /docs/index.html
 ---
 Prova transport

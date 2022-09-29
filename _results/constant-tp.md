@@ -1,5 +1,5 @@
 ---
 permalink: /results/constant-tp/
-redirect_from: /results/index.html
+redirect_from: /docs/index.html
 ---
 Prova chemical equilibrium
