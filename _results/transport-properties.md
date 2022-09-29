@@ -7,7 +7,7 @@ Gas mixture transport properties estimated using <a href="https://github.com/sre
 
 ### **Operating conditions and composition**
 These are the operating conditions and composition used to estimate the **gas mixture transport properties**.
-<table class="table-light" id="operating_conditions">
+<table class="table-light">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
