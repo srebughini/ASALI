@@ -1,5 +1,5 @@
-- title: Results
+- title: WebApp Results
   results:
   - transport-properties
   - thermodynamic-properties
-  - equilibrium-constan-t-p
+  - equilibrium-@-constant-t-p

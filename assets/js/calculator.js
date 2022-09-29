@@ -140,7 +140,7 @@ function runWebApp()
     let properties = estimateMixtureProperties();
 
     // Genere new window object
-    let resultsWindow = window.open("https://srebughini.github.io/ASALI/results/transport", "_blank");
+    let resultsWindow = window.open("https://srebughini.github.io/ASALI/results/transport-properties", "_blank");
 
     //Opening a window is asynchronous
     resultsWindow.onload = function()
