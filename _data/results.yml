@@ -1,5 +1,6 @@
 - title: WebApp Results
   results:
+  - operating-conditions
   - transport-properties
   - thermodynamic-properties
   - equilibrium-@-constant-t-p
