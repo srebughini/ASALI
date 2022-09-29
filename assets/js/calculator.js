@@ -150,7 +150,7 @@ function runWebApp()
       let transportWindow = window.open("https://srebughini.github.io/ASALI/results/transport-properties", "_blank");
 
       //Opening a window is asynchronous
-      resultsWindow.onload = function()
+      transportWindow.onload = function()
       {
         let transportDoc = transportWindow.document;
         console.log("temperature", transportDoc.getElementById("T").innerHTML, output["temperature"]);
