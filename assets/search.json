@@ -13,14 +13,18 @@ permalink: search.json
   {% endfor %}
 {% endfor %}
 
-  {% for post in site.posts %}
-  {
-  "title": "{{ post.title | escape }}",
-  "url": "{{ post.url | relative_url }}"
-  }{% unless forloop.last %},{% endunless %}
+{% for section in site.data.results %}
+  {% for item in section.results %}
+    {% assign item_url = item | prepend:"/results/" | append:"/" %}
+    {% assign p = site.results | where:"url", item_url | first %}
+    {
+      "title": "{{ p.title }}",
+      "url": "{{ p.url | relative_url }}"
+    },
   {% endfor %}
+{% endfor %}
 
-  {% for section in site.data.pages %}
+{% for section in site.data.pages %}
   {% for item in section.pages %}
     {% assign item_url = item | prepend:"/pages/" | append:"/" %}
     {% assign p = site.pages | where:"url", item_url | first %}

@@ -31,11 +31,13 @@ exclude:
 timezone: Europe/Berlin
 defaults:
 - scope:
-    path: _posts
-    type: posts
+    path: _results
+    type: results
   values:
-    layout: post
-    sectionid: blog
+    layout: results
+    sectionid: results
+    seo:
+      type: "WebPage"
 
 - scope:
     path: _docs
@@ -62,6 +64,6 @@ collections:
   pages:
     permalink: /:collection/:path/
     output: true
-  posts:
-    permalink: /blog/:year/:month/:day/:title/
+  results:
+    permalink: /:collection/:path/
     output: true
