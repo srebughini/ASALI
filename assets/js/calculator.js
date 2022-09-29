@@ -68,7 +68,8 @@ function estimateMixtureProperties() {
       mixture.getSpeciesName().forEach((key, i) => diff[key] = mixture.getMixtureDiffusion()[i]);
 
       //Extract output from the mixture object
-      output = {"properties": [
+      output = {
+      "properties": [
         {"name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol"},
         {"name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>"},
         {"name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas"},
@@ -81,7 +82,11 @@ function estimateMixtureProperties() {
         {"name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg"}
       ],
       "temperature": T,
-      "pressure": P}
+      "pressure": P,
+      "composition": {"name": mixture.getSpeciesName(),
+                      "mole": mixture.getMoleFraction(),
+                      "mass": mixture.getMassFraction()}
+      }
 
       return output;
     }
@@ -145,6 +150,9 @@ function runWebApp()
     if (Object.keys(output).length > 0 )
     {
       let properties = output["properties"];
+      let name = output["composition"]["name"];
+      let mole = output["composition"]["mole"];
+      let mass = output["composition"]["mass"];
 
       // Genere new window object
       let transportWindow = window.open("https://srebughini.github.io/ASALI/results/transport-properties", "_blank");
@@ -153,10 +161,21 @@ function runWebApp()
       transportWindow.onload = function()
       {
         let transportDoc = transportWindow.document;
-        console.log("temperature", transportDoc.getElementById("T").innerHTML, output["temperature"]);
+        let inputTable = transportDoc.getElementById("input-table")
+
+
         transportDoc.getElementById("T").innerHTML = output["temperature"];
         transportDoc.getElementById("P").innerHTML = output["pressure"];
 
+        for (let i = 0; i < name.length; i++) { 
+          let newRow = inputTable.insertRow(-1);
+          let nameCell = newRow.insertCell(0);
+          let moleCell = newRow.insertCell(1);
+          let massCell = newRow.insertCell(2);
+          nameCell.innerHTML = name[i];
+          moleCell.innerHTML = mole[i];
+          massCell.innerHTML = mass[i];
+        }
           /*
           let resultsDoc = resultsWindow.document
           let properties_id = "p";
