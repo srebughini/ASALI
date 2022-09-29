@@ -153,6 +153,7 @@ function runWebApp()
       resultsWindow.onload = function()
       {
         let transportDoc = transportWindow.document;
+        console.log("temperature", transportDoc.getElementById("T").innerHTML, output["temperature"]);
         transportDoc.getElementById("T").innerHTML = output["temperature"];
         transportDoc.getElementById("P").innerHTML = output["pressure"];
 

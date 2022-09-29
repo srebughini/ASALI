@@ -11,12 +11,12 @@ These are the operating conditions and composition used to estimate the **gas mi
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
-      <td id="T"></td>
+      <td id="T">250</td>
       <td>K</td>
     </tr>
     <tr>
       <th scope="row">Pressure <i class="fa-regular fa-gauge"></i></th>
-      <td id="P"></td>
+      <td id="P">360</td>
       <td>Pa</td>
     </tr>
     <tr class="table-dark">
