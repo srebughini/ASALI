@@ -1,21 +1,132 @@
-function estimateProperties() {
-    //Generate state objec
+var NSinput = 10;
+var mainDoc = window.document
+
+function readComposition() {
+  const composition = {};
+  let name_id = "n";
+  let value_id = "x";
+
+  for (let i = 0; i < NSinput; i++) {
+    let name = mainDoc.getElementById(name_id.concat(i + 1)).value;
+    let value = parseFloat(mainDoc.getElementById(value_id.concat(i + 1)).value);
+    if (name) {
+      if (!isNaN(value)) {
+        composition[name] = value;
+      }
+    }
+  }
+  return composition;
+}
+
+
+function readTemperature() {
+    return parseFloat(mainDoc.getElementById("T").value);
+}
+
+function readPressure() {
+    return parseFloat(mainDoc.getElementById("P").value);
+}
+
+function estimateMixtureProperties() {
+  //Read temperature
+  let T = readTemperature();
+
+  //Read pressure
+  let P = readPressure();
+
+  if (isNaN(T)) {
+    alert("Temperature input not valid!");
+    return [];
+  }
+  else if (isNaN(P)) {
+    alert("Pressure input not valid!");
+    return [];
+  }
+  else {
+    //Generate state object
     let state = jasali.GasState({
-        temperature: parseFloat(document.getElementById("T").innerHTML),
-        pressure: parseFloat(document.getElementById("P").innerHTML)
+      temperature: T,
+      pressure: P
     })
-        
-    //Generate mixture object
-    let mixture = jasali.GasMixture({
-        mixtureComposition: {
-        "O2": 0.21,
-        "N2": 0.78,
-        "AR": 0.01
-        },
+
+    //Read composition
+    let composition = readComposition()
+
+    if (Object.keys(composition).length === 0) {
+      alert("Input composition not valid!");
+      return [];
+    }
+    else {
+      //Generate mixture object
+      let mixture = jasali.GasMixture({
+        mixtureComposition: composition,
         gasState: state,
         compositionType: "mole"
-    })
+      })
+
+      let diff = {};
+      mixture.getSpeciesName().forEach((key, i) => diff[key] = mixture.getMixtureDiffusion()[i]);
+
+      //Extract properties from the mixture object
+      properties = [
+        {"name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol"},
+        {"name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>"},
+        {"name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas"},
+        {"name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s"},
+        {"name": "Thermal conductivity", "value": mixture.getThermalConductivity(), "ud": "W/m/K"},
+        {"name": "Specific heat", "value": mixture.getMassSpecificHeat(), "ud": "J/kg/K"},
+        {"name": "Enthalpy", "value": mixture.getMassEnthalpy(), "ud": "J/kg"},
+        {"name": "Entropy", "value": mixture.getMassEntropy(), "ud": "J/kg/K"},
+        {"name": "Gibbs free energy", "value": mixture.getMassGibbsFreeEnergy(), "ud": "J/kg"},
+        {"name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg"}
+      ]
+      return properties;
+    }
+  }
 }
+/*
+function gasMixtureProperties() {
+  let properties = estimateMixtureProperties();
+  if (properties.length > 0)
+  {
+    let propertiesWindow = window.open("output.html", "_blank");
+
+    //Opening a window is asynchronous
+    propertiesWindow.onload = function()
+    {
+      var propertiesDoc = propertiesWindow.document
+      let properties_id = "p";
+      let value_id = "v";
+      let unit_dimension_id = "ud";
+
+      for (let i = 0; i < properties.length; i++) {
+        
+        if (properties[i]["name"] == "Diffusivity")
+        {
+          propertiesDoc.getElementById(properties_id.concat(i)).innerHTML = properties[i]["name"]
+          let diff = ""
+          console.log(properties[i]["value"])
+          for (const [key, value] of Object.entries(properties[i]["value"])) {
+            diff = diff.concat(key)
+            diff = diff.concat(": ")
+            diff = diff.concat(value.toExponential(3))
+            diff = diff.concat("<br>")
+
+          }
+          propertiesDoc.getElementById(value_id.concat(i)).innerHTML = diff
+          propertiesDoc.getElementById(unit_dimension_id.concat(i)).innerHTML = properties[i]["ud"]
+        }
+        else
+        {
+          propertiesDoc.getElementById(properties_id.concat(i)).innerHTML = properties[i]["name"]
+          propertiesDoc.getElementById(value_id.concat(i)).innerHTML = properties[i]["value"].toExponential(3)
+          propertiesDoc.getElementById(unit_dimension_id.concat(i)).innerHTML = properties[i]["ud"]
+        }
+      }
+    }
+  }
+}*/
+
 
 function calculateEquilibrium() {
     newWindow = window.open("", null, "height=200,width=400,status=yes,toolbar=no,menubar=no,location=center");  
@@ -25,11 +136,44 @@ function calculateEquilibrium() {
 
 function runWebApp()
 {
+    // Estimate mixture properties
+    let properties = estimateMixtureProperties();
+
+    // Genere new window object
     let resultsWindow = window.open("https://srebughini.github.io/ASALI/pages/results/", "_blank");
 
     //Opening a window is asynchronous
     resultsWindow.onload = function()
     {
-
+        /*
+        let resultsDoc = resultsWindow.document
+        let properties_id = "p";
+        let value_id = "v";
+        let unit_dimension_id = "ud";
+  
+        for (let i = 0; i < properties.length; i++) {
+          
+          if (properties[i]["name"] == "Diffusivity")
+          {
+            propertiesDoc.getElementById(properties_id.concat(i)).innerHTML = properties[i]["name"]
+            let diff = ""
+            console.log(properties[i]["value"])
+            for (const [key, value] of Object.entries(properties[i]["value"])) {
+              diff = diff.concat(key)
+              diff = diff.concat(": ")
+              diff = diff.concat(value.toExponential(3))
+              diff = diff.concat("<br>")
+  
+            }
+            propertiesDoc.getElementById(value_id.concat(i)).innerHTML = diff
+            propertiesDoc.getElementById(unit_dimension_id.concat(i)).innerHTML = properties[i]["ud"]
+          }
+          else
+          {
+            propertiesDoc.getElementById(properties_id.concat(i)).innerHTML = properties[i]["name"]
+            propertiesDoc.getElementById(value_id.concat(i)).innerHTML = properties[i]["value"].toExponential(3)
+            propertiesDoc.getElementById(unit_dimension_id.concat(i)).innerHTML = properties[i]["ud"]
+          }
+        }*/
     }
 }

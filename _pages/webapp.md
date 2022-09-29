@@ -24,7 +24,7 @@ redirect_from: /docs/index.html
         </div>
     </div>
     <h2 class="text-rigth"><b>Composition</b></h2>
-    <p class="text-rigth">Insert gas mixture <b>mole fraction</b> <i class="fa-regular fa-chart-pie"></i> composition and <b>molecule name</b> <i class="fa-regular fa-atom"></i>: </p>
+    <p class="text-rigth">Insert gas mixture <b>molecule name</b> <i class="fa-regular fa-atom"></i> and <b>mole fraction</b> <i class="fa-regular fa-chart-pie"></i> composition: </p>
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span> 
