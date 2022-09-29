@@ -163,7 +163,6 @@ function runWebApp()
         let transportDoc = transportWindow.document;
         let inputTable = transportDoc.getElementById("input-table")
 
-
         transportDoc.getElementById("T").innerHTML = output["temperature"];
         transportDoc.getElementById("P").innerHTML = output["pressure"];
 
