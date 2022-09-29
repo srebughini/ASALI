@@ -172,8 +172,8 @@ function runWebApp()
           let moleCell = newRow.insertCell(1);
           let massCell = newRow.insertCell(2);
           nameCell.innerHTML = name[i];
-          moleCell.innerHTML = mole[i].toExponential(3);
-          massCell.innerHTML = mass[i].toExponential(3);
+          moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
+          massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
         }
           /*
           let resultsDoc = resultsWindow.document
