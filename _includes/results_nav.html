@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a role="button" onclick="prova();" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{forloop.index}}" aria-expanded="false" aria-controls="collapse-{{forloop.index}}">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{forloop.index}}" aria-expanded="false" aria-controls="collapse-{{forloop.index}}">
             {{ section.title }}
           </a>
         </h4>
@@ -20,7 +20,7 @@
           {% for item in section.results %}
             {% assign item_url = item | prepend:"/results/" | append:"/" %}
             {% assign p = site.results | where:"url", item_url | first %}
-            <a class="list-group-item {% if item_url == page.url %}active{% endif %}" href="{{ p.url  | relative_url }}">{{ p.title }}</a>
+            <a class="list-group-item {% if item_url == page.url %}active{% endif %}" href="{{ p.url  | relative_url }}" onclick="prova();">{{ p.title }}</a>
           {% endfor %}
         </div>
       </div>
