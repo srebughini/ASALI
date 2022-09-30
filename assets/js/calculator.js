@@ -40,29 +40,6 @@ function readComposition(fromInput) {
       }
     }
   }
-  /*
-  if (fromInput) {
-    for (let i = 0; i < NSinput; i++) {
-      let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
-      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
-      if (name) {
-        if (!isNaN(value)) {
-          composition[name] = value;
-        }
-      }
-    }
-  }
-  else {
-    for (let i = 0; i < NSinput; i++) {
-      let name = document.getElementById(name_id_prefix.concat(i + 1)).innerText;
-      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).innerText);
-      if (name) {
-        if (!isNaN(value)) {
-          composition[name] = value;
-        }
-      }
-    }
-  }*/
   return composition;
 }
 
@@ -191,14 +168,12 @@ function runWebApp() {
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = readComposition(false);
-  return false;
 
-  /*
   if (Object.keys(results).length > 0) {
-    //showOperatingConditions(results, destinationWindow.document);
+    showOperatingConditions(results, destinationWindow.document);
 
     // Genere new window object
-    //let destinationWindow = window.open(destinationPageUrl); //, "_blank");
+    let destinationWindow = window.open(destinationPageUrl); //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
@@ -225,5 +200,5 @@ function showResults(destinationPageUrl) {
   }
   else {
     return false;
-  }*/
+  }
 }
