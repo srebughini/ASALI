@@ -132,29 +132,7 @@ function runWebApp()
     }
 }
 
-function updateTransport()
+function prova()
 {
-  if (Object.keys(output).length > 0 )
-  {
-    let properties = output["properties"];
-    let name = output["composition"]["name"];
-    let mole = output["composition"]["mole"];
-    let mass = output["composition"]["mass"];
-
-    let transportDoc = transportWindow.document;
-    let inputTable = transportDoc.getElementById("input-table")
-
-    transportDoc.getElementById("T").innerHTML = output["temperature"];
-    transportDoc.getElementById("P").innerHTML = output["pressure"];
-
-    for (let i = 0; i < name.length; i++) { 
-      let newRow = inputTable.insertRow(-1);
-      let nameCell = newRow.insertCell(0);
-      let moleCell = newRow.insertCell(1);
-      let massCell = newRow.insertCell(2);
-      nameCell.innerHTML = name[i];
-      moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
-      massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
-    }
-  }
+  alert("Sto provando");
 }
