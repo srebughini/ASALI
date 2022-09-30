@@ -9,34 +9,59 @@ var value_id_prefix = "x";
 var T_id = "T";
 var P_id = "P";
 
-function readComposition() {
+function readComposition(fromInput) {
   const composition = {};
-  for (let i = 0; i < NSinput; i++) {
-    let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
-    let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
-    if (name) {
-      if (!isNaN(value)) {
-        composition[name] = value;
+  if (fromInput)
+  {
+    for (let i = 0; i < NSinput; i++) {
+      let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
+      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
+      if (name) {
+        if (!isNaN(value)) {
+          composition[name] = value;
+        }
+      }
+    }
+  }
+  else
+  {
+    for (let i = 0; i < NSinput; i++) {
+      let name = document.getElementById(name_id_prefix.concat(i + 1)).innerHTML;
+      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).innerHTML);
+      if (name) {
+        if (!isNaN(value)) {
+          composition[name] = value;
+        }
       }
     }
   }
   return composition;
 }
 
-function readTemperature() {
-    return parseFloat(document.getElementById(T_id).value);
+function readTemperature(fromInput) {
+    if (fromInput)
+    {
+      return parseFloat(document.getElementById(T_id).value);
+    }
+
+    return parseFloat(document.getElementById(T_id).innerHTML);
 }
 
 function readPressure() {
+  if (fromInput)
+  {
     return parseFloat(document.getElementById(P_id).value);
+  }
+
+  return parseFloat(document.getElementById(P_id).innerHTML);
 }
 
-function estimateMixtureProperties() {
+function estimateMixtureProperties(fromInput) {
   //Read temperature
-  let T = readTemperature();
+  let T = readTemperature(fromInput);
 
   //Read pressure
-  let P = readPressure();
+  let P = readPressure(fromInput);
 
   if (isNaN(T)) {
     alert("Temperature input not valid!");
@@ -54,7 +79,7 @@ function estimateMixtureProperties() {
     })
 
     //Read composition
-    let composition = readComposition()
+    let composition = readComposition(fromInput)
 
     if (Object.keys(composition).length == 0) {
       alert("Input composition not valid!");
@@ -126,7 +151,7 @@ function showOperatingConditions(results, doc)
 function runWebApp()
 {
     // Estimate mixture properties
-    let results = estimateMixtureProperties();
+    let results = estimateMixtureProperties(true);
 
     if (Object.keys(output).length > 0 )
     {
@@ -144,8 +169,8 @@ function runWebApp()
 function showResults(destinationPageUrl)
 {
   // Estimate mixture properties
-  let results = estimateMixtureProperties();
-  if (Object.keys(output).length > 0 )
+  let results = estimateMixtureProperties(false);
+  if (Object.keys(results).length > 0 )
   {
     // Genere new window object
     let destinationWindow = window.open(transportPageUrl); //, "_blank");
