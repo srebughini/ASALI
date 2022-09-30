@@ -3,10 +3,8 @@ permalink: /results/transport-properties/
 redirect_from: /docs/index.html
 ---
 # **Transport properties**
-Gas mixture transport properties estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
-
 ### **Operating conditions and composition**
-These are the operating conditions and composition used for the calculation.
+These are the operating conditions and composition used to estimate **gas mixture transport properties**.
 <table class="table table-striped" id="input-table">
   <tbody>
     <tr>
@@ -25,4 +23,15 @@ These are the operating conditions and composition used for the calculation.
       <th >Mass fraction <i class="fa-regular fa-chart-pie"></i></th>
     </tr>
   </tbody>
+</table>
+
+### **Properties**
+<table class="table table-striped" id="output-table">
+  <thead>
+    <tr>
+      <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
+      <th>Value <i class="fa-regular fa-chart-line"></i></th>
+      <th>Unit dimension <i class="fa-regular fa-scale-balanced"></i></th>
+    </tr>
+  </thead>
 </table>

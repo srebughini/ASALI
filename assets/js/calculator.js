@@ -103,7 +103,7 @@ function estimateMixtureProperties(fromInput) {
           { "name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol" },
           { "name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>" },
           { "name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas" },
-          { "name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s" },
+          //{ "name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s" },
           { "name": "Thermal conductivity", "value": mixture.getThermalConductivity(), "ud": "W/m/K" }
         ],
         "thermo": [
@@ -150,6 +150,21 @@ function showOperatingConditions(results, doc) {
   }
 }
 
+function showTransportProperties(results, doc) {
+  let transportProperties = results["transport"];
+  let outputTable = doc.getElementById("output-table")
+
+  for (let i = 0; i < transportProperties.length; i++) {
+    let newRow = outputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    let valueCell = newRow.insertCell(1);
+    let udCell = newRow.insertCell(2);
+    nameCell.innerHTML = transportProperties["name"];
+    valueCell.innerHTML = parseFloat(transportProperties["value"]).toExponential(3);
+    udCell.innerHTML = transportProperties["ud"];
+  }
+}
+
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties(true);
@@ -161,6 +176,7 @@ function runWebApp() {
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
       showOperatingConditions(results, destinationWindow.document);
+      showTransportProperties(results, destinationWindow.document)
     }
   }
 }
@@ -171,7 +187,7 @@ function showResults(destinationPageUrl) {
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl) ; //, "_blank");
+    let destinationWindow = window.open(destinationPageUrl, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
@@ -179,6 +195,7 @@ function showResults(destinationPageUrl) {
       showOperatingConditions(results, destinationWindow.document);
       if (destinationPageUrl == transportPageUrl)
       {
+        showTransportProperties(results, destinationWindow.document)
         return false;
       }
       else if (destinationPageUrl == thermoPageUrl)
