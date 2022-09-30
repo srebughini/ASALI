@@ -170,6 +170,7 @@ function showTransportProperties(results, doc) {
     let name = results["composition"]["name"]; 
     for (let i = 0; i < diffValues.length; i++) {
       let newRow = outputTable.insertRow(-1);
+      let nameCell = newRow.insertCell(0);
       let valueCell = newRow.insertCell(1);
       let udCell = newRow.insertCell(2);
       nameCell.innerHTML = name[i];
