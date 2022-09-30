@@ -27,11 +27,11 @@ These are the operating conditions and composition used to estimate **gas mixtur
 
 ### **Properties**
 <table class="table table-striped" id="output-table">
-  <thead>
+  <tbody>
     <tr>
       <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
       <th>Value <i class="fa-regular fa-chart-line"></i></th>
       <th>Unit dimension <i class="fa-regular fa-scale-balanced"></i></th>
     </tr>
-  </thead>
+  </tbody>
 </table>
