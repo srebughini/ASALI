@@ -148,7 +148,7 @@ function showResults(destinationPageUrl)
   if (Object.keys(output).length > 0 )
   {
     // Genere new window object
-    let destinationWindow = window.open(transportPageUrl, "_blank");
+    let destinationWindow = window.open(transportPageUrl); //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
