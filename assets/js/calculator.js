@@ -43,7 +43,6 @@ function readTemperature(fromInput) {
     {
       return parseFloat(document.getElementById(T_id).value);
     }
-
     return parseFloat(document.getElementById(T_id).innerHTML);
 }
 
@@ -170,10 +169,11 @@ function showResults(destinationPageUrl)
 {
   // Estimate mixture properties
   let results = estimateMixtureProperties(false);
+
   if (Object.keys(results).length > 0 )
   {
     // Genere new window object
-    let destinationWindow = window.open(transportPageUrl); //, "_blank");
+    /*let destinationWindow = window.open(transportPageUrl); //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
@@ -195,7 +195,8 @@ function showResults(destinationPageUrl)
       {
         return false;
       }
-    }
+    }*/
+    return false;
   }
   else
   {
