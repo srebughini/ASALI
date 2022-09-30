@@ -156,9 +156,9 @@ function showTransportProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = transportProperties["name"];
-    valueCell.innerHTML = parseFloat(transportProperties["value"]).toExponential(3);
-    udCell.innerHTML = transportProperties["ud"];
+    nameCell.innerHTML = transportProperties[i]["name"];
+    valueCell.innerHTML = parseFloat(transportProperties[i]["value"]).toExponential(3);
+    udCell.innerHTML = transportProperties[i]["ud"];
   }
 }
 
@@ -192,6 +192,7 @@ function showResults(destinationPageUrl) {
       showOperatingConditions(results, destinationWindow.document);
       if (destinationPageUrl == transportPageUrl)
       {
+        console.log("loading transport")
         showTransportProperties(results, destinationWindow.document)
         return false;
       }
