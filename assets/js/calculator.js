@@ -132,8 +132,8 @@ function runWebApp()
     }
 }
 
-function prova()
+function prova(element)
 {
-  alert("Sto provando");
-  return false;
+  alert("Sto provando: ", element.id);
+  return true;
 }
