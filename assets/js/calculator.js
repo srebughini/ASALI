@@ -14,6 +14,7 @@ function readComposition(fromInput) {
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(name_id_prefix.concat(i + 1));
+    console.log(name_obj, value_obj)
     if (name_obj != null && value_obj != null)
     {
       let value;
