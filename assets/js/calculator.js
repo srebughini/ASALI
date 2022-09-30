@@ -13,26 +13,28 @@ function readComposition(fromInput) {
   const composition = {};
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
-    let value_obj = document.getElementById(name_id_prefix.concat(i + 1));
-    console.log(name_obj, value_obj)
-    if (name_obj != null && value_obj != null)
+    if (name_obj)
     {
-      let value;
-      let name;
-      if (fromInput){
-        name = name_obj.value;
-        value = value_obj.value;
-      }
-      else
+      let value_obj = document.getElementById(name_id_prefix.concat(i + 1));
+      if (value_obj)
       {
-        name = name_obj.innerText;
-        value = value_obj.innerText;
-      }
-      if (name) {
-          if (!isNaN(value)) {
-            composition[name] = value;
-          }
+        let value;
+        let name;
+        if (fromInput){
+          name = name_obj.value;
+          value = value_obj.value;
         }
+        else
+        {
+          name = name_obj.innerText;
+          value = value_obj.innerText;
+        }
+        if (name) {
+            if (!isNaN(value)) {
+              composition[name] = value;
+            }
+          }
+      }
     }
   }
   /*
