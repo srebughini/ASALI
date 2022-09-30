@@ -11,8 +11,7 @@ var P_id = "P";
 
 function readComposition(fromInput) {
   const composition = {};
-  if (fromInput)
-  {
+  if (fromInput) {
     for (let i = 0; i < NSinput; i++) {
       let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
       let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
@@ -23,14 +22,13 @@ function readComposition(fromInput) {
       }
     }
   }
-  else
-  {
+  else {
     for (let i = 0; i < NSinput; i++) {
       let name = document.getElementById(name_id_prefix.concat(i + 1)).innerHTML;
-      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).innerHTML);
+      let value = document.getElementById(value_id_prefix.concat(i + 1)).innerHTML;
       if (name) {
-        if (!isNaN(value)) {
-          composition[name] = value;
+        if (!isNaN(parseFloat(value))) {
+          composition[name] = parseFloat(value);
         }
       }
     }
@@ -39,20 +37,19 @@ function readComposition(fromInput) {
 }
 
 function readTemperature(fromInput) {
-    if (fromInput)
-    {
-      return parseFloat(document.getElementById(T_id).value);
-    }
-    return parseFloat(document.getElementById(T_id).innerHTML);
+  if (fromInput) {
+    return parseFloat(document.getElementById(T_id).value);
+  }
+  let value = document.getElementById(T_id).innerHTML;
+  return parseFloat(value);
 }
 
 function readPressure(fromInput) {
-  if (fromInput)
-  {
+  if (fromInput) {
     return parseFloat(document.getElementById(P_id).value);
   }
-
-  return parseFloat(document.getElementById(P_id).innerHTML);
+  let value = document.getElementById(P_id).innerHTML;
+  return parseFloat(value);
 }
 
 function estimateMixtureProperties(fromInput) {
@@ -97,25 +94,27 @@ function estimateMixtureProperties(fromInput) {
 
       //Extract output from the mixture object
       output = {
-      "transport": [
-        {"name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol"},
-        {"name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>"},
-        {"name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas"},
-        {"name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s"},
-        {"name": "Thermal conductivity", "value": mixture.getThermalConductivity(), "ud": "W/m/K"}
-      ],
-      "thermo": [
-        {"name": "Specific heat", "value": mixture.getMassSpecificHeat(), "ud": "J/kg/K"},
-        {"name": "Enthalpy", "value": mixture.getMassEnthalpy(), "ud": "J/kg"},
-        {"name": "Entropy", "value": mixture.getMassEntropy(), "ud": "J/kg/K"},
-        {"name": "Gibbs free energy", "value": mixture.getMassGibbsFreeEnergy(), "ud": "J/kg"},
-        {"name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg"}
-      ],
-      "temperature": T,
-      "pressure": P,
-      "composition": {"name": mixture.getSpeciesName(),
-                      "mole": mixture.getMoleFraction(),
-                      "mass": mixture.getMassFraction()}
+        "transport": [
+          { "name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol" },
+          { "name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>" },
+          { "name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas" },
+          { "name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s" },
+          { "name": "Thermal conductivity", "value": mixture.getThermalConductivity(), "ud": "W/m/K" }
+        ],
+        "thermo": [
+          { "name": "Specific heat", "value": mixture.getMassSpecificHeat(), "ud": "J/kg/K" },
+          { "name": "Enthalpy", "value": mixture.getMassEnthalpy(), "ud": "J/kg" },
+          { "name": "Entropy", "value": mixture.getMassEntropy(), "ud": "J/kg/K" },
+          { "name": "Gibbs free energy", "value": mixture.getMassGibbsFreeEnergy(), "ud": "J/kg" },
+          { "name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg" }
+        ],
+        "temperature": T,
+        "pressure": P,
+        "composition": {
+          "name": mixture.getSpeciesName(),
+          "mole": mixture.getMoleFraction(),
+          "mass": mixture.getMassFraction()
+        }
       }
 
       return output;
@@ -124,8 +123,7 @@ function estimateMixtureProperties(fromInput) {
 }
 
 
-function showOperatingConditions(results, doc)
-{
+function showOperatingConditions(results, doc) {
   let name = results["composition"]["name"];
   let mole = results["composition"]["mole"];
   let mass = results["composition"]["mass"];
@@ -134,45 +132,45 @@ function showOperatingConditions(results, doc)
   doc.getElementById(T_id).innerHTML = results["temperature"];
   doc.getElementById(P_id).innerHTML = results["pressure"];
 
-  for (let i = 0; i < name.length; i++) { 
+  for (let i = 0; i < name.length; i++) {
     let newRow = inputTable.insertRow(-1);
     let nameCell = newRow.insertCell(0);
     let moleCell = newRow.insertCell(1);
     let massCell = newRow.insertCell(2);
     nameCell.innerHTML = name[i];
-    nameCell.id = name_id_prefix.concat(i+1);
+    nameCell.id = name_id_prefix.concat(i + 1);
     moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
-    moleCell.id = value_id_prefix.concat(i+1);
+    moleCell.id = value_id_prefix.concat(i + 1);
     massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
   }
 }
 
-function runWebApp()
-{
-    // Estimate mixture properties
-    let results = estimateMixtureProperties(true);
+function runWebApp() {
+  // Estimate mixture properties
+  let results = estimateMixtureProperties(true);
 
-    if (Object.keys(output).length > 0 )
-    {
-      // Genere new window object
-      let destinationWindow = window.open(transportPageUrl, "_blank");
+  if (Object.keys(output).length > 0) {
+    // Genere new window object
+    let destinationWindow = window.open(transportPageUrl, "_blank");
 
-      //Opening a window is asynchronous
-      destinationWindow.onload = function()
-      {
-        showOperatingConditions(results, destinationWindow.document);
-      }
+    //Opening a window is asynchronous
+    destinationWindow.onload = function () {
+      showOperatingConditions(results, destinationWindow.document);
     }
+  }
 }
 
-function showResults(destinationPageUrl)
-{
+function showResults(destinationPageUrl) {
   // Estimate mixture properties
   // let results = estimateMixtureProperties(false);
+  let T = readTemperature(false);
+  let P = readPressure(false);
+  console.log(document.getElementById(T_id).innerHTML)
+  console.log(document.getElementById(P_id).innerHTML)
+
   return false;
 
-  if (Object.keys(results).length > 0 )
-  {
+  if (Object.keys(results).length > 0) {
     // Genere new window object
     /*let destinationWindow = window.open(transportPageUrl); //, "_blank");
 
@@ -199,8 +197,7 @@ function showResults(destinationPageUrl)
     }*/
     return false;
   }
-  else
-  {
+  else {
     return false;
   }
 }
