@@ -29,6 +29,9 @@ function readComposition(fromInput) {
           name = name_obj.innerText;
           value = value_obj.innerText;
         }
+
+        console.log(name, value);
+
         if (name) {
             if (!isNaN(value)) {
               composition[name] = value;
