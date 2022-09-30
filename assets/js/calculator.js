@@ -182,6 +182,8 @@ function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = estimateMixtureProperties(false);
 
+  console.log(destinationPageUrl.localeCompare(transportPageUrl))
+
   if (Object.keys(results).length > 0) {
     // Genere new window object
     let destinationWindow = window.open(destinationPageUrl, "_blank");
