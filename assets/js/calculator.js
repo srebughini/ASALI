@@ -182,6 +182,9 @@ function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = estimateMixtureProperties(false);
 
+  console.log(destinationPageUrl)
+  console.log(transportPageUrl)
+
   console.log(destinationPageUrl.localeCompare(transportPageUrl))
 
   if (Object.keys(results).length > 0) {
