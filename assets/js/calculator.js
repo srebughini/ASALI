@@ -1,8 +1,8 @@
 var NSinput = 10;
 
-var transportPageUrl = "/ASALI/results/transport-properties"
-var thermoPageUrl = "/ASALI/results/thermodynamic-properties"
-var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p"
+var transportPageUrl = "/ASALI/results/transport-properties/"
+var thermoPageUrl = "/ASALI/results/thermodynamic-properties/"
+var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/"
 
 var name_id_prefix = "n";
 var value_id_prefix = "x";
@@ -184,6 +184,7 @@ function showResults(destinationPageUrl) {
 
   console.log(destinationPageUrl)
   console.log(transportPageUrl)
+  console.log(destinationPageUrl === transportPageUrl)
 
   console.log(destinationPageUrl.localeCompare(transportPageUrl))
 
@@ -195,7 +196,7 @@ function showResults(destinationPageUrl) {
     destinationWindow.onload = function()
     {
       showOperatingConditions(results, destinationWindow.document);
-      if (destinationPageUrl == transportPageUrl)
+      if (destinationPageUrl === transportPageUrl)
       {
         console.log("loading transport")
         showTransportProperties(results, destinationWindow.document)
