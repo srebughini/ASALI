@@ -11,6 +11,30 @@ var P_id = "P";
 
 function readComposition(fromInput) {
   const composition = {};
+  for (let i = 0; i < NSinput; i++) {
+    let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
+    let value_obj = document.getElementById(name_id_prefix.concat(i + 1));
+    if (name_obj != null && value_obj != null)
+    {
+      let value;
+      let name;
+      if (fromInput){
+        name = name_obj.value;
+        value = value_obj.value;
+      }
+      else
+      {
+        name = name_obj.innerText;
+        value = value_obj.innerText;
+      }
+      if (name) {
+          if (!isNaN(value)) {
+            composition[name] = value;
+          }
+        }
+    }
+  }
+  /*
   if (fromInput) {
     for (let i = 0; i < NSinput; i++) {
       let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
@@ -32,7 +56,7 @@ function readComposition(fromInput) {
         }
       }
     }
-  }
+  }*/
   return composition;
 }
 
