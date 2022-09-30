@@ -163,6 +163,7 @@ function showResults(destinationPageUrl) {
   let results = readComposition(false);
   return false;
 
+  /*
   if (Object.keys(results).length > 0) {
     //showOperatingConditions(results, destinationWindow.document);
 
@@ -194,5 +195,5 @@ function showResults(destinationPageUrl) {
   }
   else {
     return false;
-  }
+  }*/
 }
