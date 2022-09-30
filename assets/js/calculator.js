@@ -24,12 +24,11 @@ function readComposition(fromInput) {
   }
   else {
     for (let i = 0; i < NSinput; i++) {
-      let name = document.getElementById(name_id_prefix.concat(i + 1)).innerHTML;
-      let value = document.getElementById(value_id_prefix.concat(i + 1)).innerHTML;
-      console.log(name, value)
+      let name = document.getElementById(name_id_prefix.concat(i + 1)).innerText;
+      let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).innerText);
       if (name) {
-        if (!isNaN(parseFloat(value))) {
-          composition[name] = parseFloat(value);
+        if (!isNaN(value)) {
+          composition[name] = value;
         }
       }
     }
@@ -41,16 +40,14 @@ function readTemperature(fromInput) {
   if (fromInput) {
     return parseFloat(document.getElementById(T_id).value);
   }
-  let value = document.getElementById(T_id).innerHTML;
-  return parseFloat(value);
+  return parseFloat(document.getElementById(T_id).innerText);
 }
 
 function readPressure(fromInput) {
   if (fromInput) {
     return parseFloat(document.getElementById(P_id).value);
   }
-  let value = document.getElementById(P_id).innerHTML;
-  return parseFloat(value);
+  return parseFloat(document.getElementById(P_id).innerText);
 }
 
 function estimateMixtureProperties(fromInput) {
