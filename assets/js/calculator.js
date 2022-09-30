@@ -26,6 +26,7 @@ function readComposition(fromInput) {
     for (let i = 0; i < NSinput; i++) {
       let name = document.getElementById(name_id_prefix.concat(i + 1)).innerHTML;
       let value = document.getElementById(value_id_prefix.concat(i + 1)).innerHTML;
+      console.log(name, value)
       if (name) {
         if (!isNaN(parseFloat(value))) {
           composition[name] = parseFloat(value);
