@@ -173,7 +173,7 @@ function showResults(destinationPageUrl) {
     showOperatingConditions(results, destinationWindow.document);
 
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl); //, "_blank");
+    let destinationWindow = window.open(destinationPageUrl, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
