@@ -2,4 +2,27 @@
 permalink: /results/thermodynamic-properties/
 redirect_from: /docs/index.html
 ---
-Prova thermo
+# **Thermodynamic properties**
+Gas mixture thermodynamic properties estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
+
+### **Operating conditions and composition**
+These are the operating conditions and composition used for the calculation.
+<table class="table table-striped" id="input-table">
+  <tbody>
+    <tr>
+      <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
+      <td id="T"></td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <th scope="row">Pressure <i class="fa-regular fa-gauge"></i></th>
+      <td id="P"></td>
+      <td>Pa</td>
+    </tr>
+    <tr>
+      <th scope="row">Name <i class="fa-regular fa-atom"></i></th>
+      <th >Mole fraction <i class="fa-regular fa-chart-pie"></i></th>
+      <th >Mass fraction <i class="fa-regular fa-chart-pie"></i></th>
+    </tr>
+  </tbody>
+</table>

@@ -1,15 +1,19 @@
 var NSinput = 10;
-var mainDoc = window.document
-var destinationPageUrl = "https://srebughini.github.io/ASALI/results/operating-conditions"
+
+var transportPageUrl = "https://srebughini.github.io/ASALI/results/transport-properties"
+var thermoPageUrl = "https://srebughini.github.io/ASALI/results/thermodynamic-properties"
+var eqTPPageUrl = "https://srebughini.github.io/ASALI/results/equilibrium-@-constant-t-p"
+
+var name_id_prefix = "n";
+var value_id_prefix = "x";
+var T_id = "T";
+var P_id = "P";
 
 function readComposition() {
   const composition = {};
-  let name_id = "n";
-  let value_id = "x";
-
   for (let i = 0; i < NSinput; i++) {
-    let name = mainDoc.getElementById(name_id.concat(i + 1)).value;
-    let value = parseFloat(mainDoc.getElementById(value_id.concat(i + 1)).value);
+    let name = document.getElementById(name_id_prefix.concat(i + 1));
+    let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
     if (name) {
       if (!isNaN(value)) {
         composition[name] = value;
@@ -20,11 +24,11 @@ function readComposition() {
 }
 
 function readTemperature() {
-    return parseFloat(mainDoc.getElementById("T").value);
+    return parseFloat(document.getElementById(T_id).value);
 }
 
 function readPressure() {
-    return parseFloat(mainDoc.getElementById("P").value);
+    return parseFloat(document.getElementById(P_id).value);
 }
 
 function estimateMixtureProperties() {
@@ -95,46 +99,81 @@ function estimateMixtureProperties() {
   }
 }
 
+
+function showOperatingConditions(results, doc)
+{
+  let name = results["composition"]["name"];
+  let mole = results["composition"]["mole"];
+  let mass = results["composition"]["mass"];
+  let inputTable = doc.getElementById("input-table")
+
+  doc.getElementById(T_id).innerHTML = results["temperature"];
+  doc.getElementById(P_id).innerHTML = results["pressure"];
+
+  for (let i = 0; i < name.length; i++) { 
+    let newRow = inputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    let moleCell = newRow.insertCell(1);
+    let massCell = newRow.insertCell(2);
+    nameCell.innerHTML = name[i];
+    nameCell.id = name_id_prefix.concat(i+1);
+    moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
+    moleCell.id = value_id_prefix.concat(i+1);
+    massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
+  }
+}
+
 function runWebApp()
 {
     // Estimate mixture properties
-    var output = estimateMixtureProperties();
+    let results = estimateMixtureProperties();
 
     if (Object.keys(output).length > 0 )
     {
-      let properties = output["properties"];
-      let name = output["composition"]["name"];
-      let mole = output["composition"]["mole"];
-      let mass = output["composition"]["mass"];
-
       // Genere new window object
-      var transportWindow = window.open(destinationPageUrl, "_blank");
+      let destinationWindow = window.open(transportPageUrl, "_blank");
 
       //Opening a window is asynchronous
-      transportWindow.onload = function()
+      destinationWindow.onload = function()
       {
-        let transportDoc = transportWindow.document;
-        let inputTable = transportDoc.getElementById("input-table")
-
-        transportDoc.getElementById("T").innerHTML = output["temperature"];
-        transportDoc.getElementById("P").innerHTML = output["pressure"];
-
-        for (let i = 0; i < name.length; i++) { 
-          let newRow = inputTable.insertRow(-1);
-          let nameCell = newRow.insertCell(0);
-          let moleCell = newRow.insertCell(1);
-          let massCell = newRow.insertCell(2);
-          nameCell.innerHTML = name[i];
-          moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
-          massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
-        }
+        showOperatingConditions(results, destinationWindow.document);
       }
     }
 }
 
-function prova(id)
+function showResults(destinationPageUrl)
 {
-  console.log("Sto provando");
-  console.log(id);
-  return true;
+  // Estimate mixture properties
+  let results = estimateMixtureProperties();
+  if (Object.keys(output).length > 0 )
+  {
+    // Genere new window object
+    let destinationWindow = window.open(transportPageUrl, "_blank");
+
+    //Opening a window is asynchronous
+    destinationWindow.onload = function()
+    {
+      showOperatingConditions(results, destinationWindow.document);
+      if (destinationPageUrl == transportPageUrl)
+      {
+        return false;
+      }
+      else if (destinationPageUrl == thermoPageUrl)
+      {
+        return false;
+      }
+      else if (destinationPageUrl == eqTPPageUrl)
+      {
+        return false;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  }
+  else
+  {
+    return false;
+  }
 }

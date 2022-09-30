@@ -6,17 +6,17 @@ redirect_from: /docs/index.html
 Gas mixture transport properties estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
 
 ### **Operating conditions and composition**
-These are the operating conditions and composition used to estimate the **gas mixture transport properties**.
+These are the operating conditions and composition used for the calculation.
 <table class="table table-striped" id="input-table">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
-      <td id="T">250</td>
+      <td id="T"></td>
       <td>K</td>
     </tr>
     <tr>
       <th scope="row">Pressure <i class="fa-regular fa-gauge"></i></th>
-      <td id="P">360</td>
+      <td id="P"></td>
       <td>Pa</td>
     </tr>
     <tr>
