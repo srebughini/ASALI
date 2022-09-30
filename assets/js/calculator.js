@@ -12,7 +12,7 @@ var P_id = "P";
 function readComposition() {
   const composition = {};
   for (let i = 0; i < NSinput; i++) {
-    let name = document.getElementById(name_id_prefix.concat(i + 1));
+    let name = document.getElementById(name_id_prefix.concat(i + 1)).value;
     let value = parseFloat(document.getElementById(value_id_prefix.concat(i + 1)).value);
     if (name) {
       if (!isNaN(value)) {
