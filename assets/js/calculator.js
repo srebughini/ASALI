@@ -162,17 +162,11 @@ function runWebApp() {
 
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
-  // let results = estimateMixtureProperties(false);
-  let T = readTemperature(false);
-  let P = readPressure(false);
-  console.log(document.getElementById(T_id).innerHTML)
-  console.log(document.getElementById(P_id).innerHTML)
-
-  return false;
+  let results = estimateMixtureProperties(false);
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    /*let destinationWindow = window.open(transportPageUrl); //, "_blank");
+    let destinationWindow = window.open(destinationPageUrl); //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
@@ -194,7 +188,7 @@ function showResults(destinationPageUrl) {
       {
         return false;
       }
-    }*/
+    }
     return false;
   }
   else {
