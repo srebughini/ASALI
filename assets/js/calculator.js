@@ -163,10 +163,13 @@ function runWebApp() {
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = estimateMixtureProperties(false);
+  return false;
 
   if (Object.keys(results).length > 0) {
+    //showOperatingConditions(results, destinationWindow.document);
+
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl); //, "_blank");
+    //let destinationWindow = window.open(destinationPageUrl); //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function()
