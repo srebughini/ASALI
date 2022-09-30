@@ -47,7 +47,7 @@ function readTemperature(fromInput) {
     return parseFloat(document.getElementById(T_id).innerHTML);
 }
 
-function readPressure() {
+function readPressure(fromInput) {
   if (fromInput)
   {
     return parseFloat(document.getElementById(P_id).value);
