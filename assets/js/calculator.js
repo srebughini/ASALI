@@ -167,7 +167,7 @@ function runWebApp() {
 
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
-  let results = readComposition(false);
+  let results = estimateMixtureProperties(false);
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
