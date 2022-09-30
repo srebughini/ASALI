@@ -170,8 +170,6 @@ function showResults(destinationPageUrl) {
   let results = readComposition(false);
 
   if (Object.keys(results).length > 0) {
-    showOperatingConditions(results, destinationWindow.document);
-
     // Genere new window object
     let destinationWindow = window.open(destinationPageUrl, "_blank");
 
