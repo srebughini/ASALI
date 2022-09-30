@@ -4,9 +4,7 @@ redirect_from: /docs/index.html
 ---
 # **Chemical equilibrium @ T, P**
 Chemical equilibrium gas mixture composition at constant temperature and pressure estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
-
 ### **Operating conditions and composition**
-These are the operating conditions and composition used for the calculation.
 <table class="table table-striped" id="input-table">
   <tbody>
     <tr>

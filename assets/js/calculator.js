@@ -13,27 +13,24 @@ function readComposition(fromInput) {
   const composition = {};
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
-    if (name_obj)
-    {
+    if (name_obj) {
       let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
-      if (value_obj)
-      {
+      if (value_obj) {
         let value;
         let name;
-        if (fromInput){
+        if (fromInput) {
           name = name_obj.value;
           value = value_obj.value;
         }
-        else
-        {
+        else {
           name = name_obj.innerText;
           value = value_obj.innerText;
         }
         if (name) {
-            if (!isNaN(value)) {
-              composition[name] = value;
-            }
+          if (!isNaN(value)) {
+            composition[name] = value;
           }
+        }
       }
     }
   }
@@ -91,16 +88,12 @@ function estimateMixtureProperties(fromInput) {
         compositionType: "mole"
       })
 
-      let diff = {};
-      mixture.getSpeciesName().forEach((key, i) => diff[key] = mixture.getMixtureDiffusion()[i]);
-
       //Extract output from the mixture object
       output = {
         "transport": [
           { "name": "Molecular weight", "value": mixture.getMolecularWeight(), "ud": "kg/kmol" },
           { "name": "Density", "value": mixture.getDensity(), "ud": "kg/m<sup>3</sup>" },
           { "name": "Viscosity", "value": mixture.getViscosity(), "ud": "Pas" },
-          //{ "name": "Diffusivity", "value": diff, "ud": "m<sup>2</sup>/s" },
           { "name": "Thermal conductivity", "value": mixture.getThermalConductivity(), "ud": "W/m/K" }
         ],
         "thermo": [
@@ -116,14 +109,14 @@ function estimateMixtureProperties(fromInput) {
           "name": mixture.getSpeciesName(),
           "mole": mixture.getMoleFraction(),
           "mass": mixture.getMassFraction()
-        }
+        },
+        "diffusivity": { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" },
       }
 
       return output;
     }
   }
 }
-
 
 function showOperatingConditions(results, doc) {
   let name = results["composition"]["name"];
@@ -148,19 +141,59 @@ function showOperatingConditions(results, doc) {
 }
 
 function showTransportProperties(results, doc) {
-  let transportProperties = results["transport"];
+  let properties = results["transport"];
   let outputTable = doc.getElementById("output-table")
 
-  for (let i = 0; i < transportProperties.length; i++) {
+  for (let i = 0; i < properties.length; i++) {
     let newRow = outputTable.insertRow(-1);
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = transportProperties[i]["name"];
-    valueCell.innerHTML = parseFloat(transportProperties[i]["value"]).toExponential(3);
-    udCell.innerHTML = transportProperties[i]["ud"];
+    nameCell.innerHTML = properties[i]["name"];
+    valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
+    udCell.innerHTML = properties[i]["ud"];
+  }
+
+
+  // Diffifusivity main line
+  {
+    let newRow = outputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    newRow.insertCell(1);
+    newRow.insertCell(2);
+    nameCell.innerHTML = "Diffusivity";
+  }
+
+  {
+    let diffValues = results["diffusivity"]["value"];
+    let diffUd = results["diffusivity"]["ud"];
+    let name = results["composition"]["name"]; 
+    for (let i = 0; i < diffValues.length; i++) {
+      let newRow = outputTable.insertRow(-1);
+      let valueCell = newRow.insertCell(1);
+      let udCell = newRow.insertCell(2);
+      nameCell.innerHTML = name[i];
+      valueCell.innerHTML = parseFloat(diffValues[i]).toExponential(3);
+      udCell.innerHTML = diffUd;
+    }
   }
 }
+
+function showThermoProperties(results, doc) {
+  let properties = results["thermo"];
+  let outputTable = doc.getElementById("output-table")
+
+  for (let i = 0; i < properties.length; i++) {
+    let newRow = outputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    let valueCell = newRow.insertCell(1);
+    let udCell = newRow.insertCell(2);
+    nameCell.innerHTML = properties[i]["name"];
+    valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
+    udCell.innerHTML = properties[i]["ud"];
+  }
+}
+
 
 function runWebApp() {
   // Estimate mixture properties
@@ -182,36 +215,25 @@ function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = estimateMixtureProperties(false);
 
-  console.log(destinationPageUrl)
-  console.log(transportPageUrl)
-  console.log(destinationPageUrl === transportPageUrl)
-
-  console.log(destinationPageUrl.localeCompare(transportPageUrl))
-
   if (Object.keys(results).length > 0) {
     // Genere new window object
     let destinationWindow = window.open(destinationPageUrl, "_blank");
 
     //Opening a window is asynchronous
-    destinationWindow.onload = function()
-    {
+    destinationWindow.onload = function () {
       showOperatingConditions(results, destinationWindow.document);
-      if (destinationPageUrl === transportPageUrl)
-      {
-        console.log("loading transport")
-        showTransportProperties(results, destinationWindow.document)
+      if (destinationPageUrl === transportPageUrl) {
+        showTransportProperties(results, destinationWindow.document);
         return false;
       }
-      else if (destinationPageUrl == thermoPageUrl)
-      {
+      else if (destinationPageUrl == thermoPageUrl) {
+        showThermoProperties(results, destinationWindow.document);
         return false;
       }
-      else if (destinationPageUrl == eqTPPageUrl)
-      {
+      else if (destinationPageUrl == eqTPPageUrl) {
         return false;
       }
-      else
-      {
+      else {
         return false;
       }
     }

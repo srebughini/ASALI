@@ -3,10 +3,7 @@ permalink: /results/thermodynamic-properties/
 redirect_from: /docs/index.html
 ---
 # **Thermodynamic properties**
-Gas mixture thermodynamic properties estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
-
 ### **Operating conditions and composition**
-These are the operating conditions and composition used for the calculation.
 <table class="table table-striped" id="input-table">
   <tbody>
     <tr>
@@ -23,6 +20,17 @@ These are the operating conditions and composition used for the calculation.
       <th scope="row">Name <i class="fa-regular fa-atom"></i></th>
       <th >Mole fraction <i class="fa-regular fa-chart-pie"></i></th>
       <th >Mass fraction <i class="fa-regular fa-chart-pie"></i></th>
+    </tr>
+  </tbody>
+</table>
+
+### **Properties**
+<table class="table table-striped" id="output-table">
+  <tbody>
+    <tr>
+      <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
+      <th>Value <i class="fa-regular fa-chart-line"></i></th>
+      <th>Unit dimension <i class="fa-regular fa-scale-balanced"></i></th>
     </tr>
   </tbody>
 </table>
