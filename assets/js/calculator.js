@@ -15,7 +15,7 @@ function readComposition(fromInput) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
     if (name_obj)
     {
-      let value_obj = document.getElementById(name_id_prefix.concat(i + 1));
+      let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
       if (value_obj)
       {
         let value;
