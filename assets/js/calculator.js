@@ -1,8 +1,8 @@
 var NSinput = 10;
 
-var transportPageUrl = "https://srebughini.github.io/ASALI/results/transport-properties"
-var thermoPageUrl = "https://srebughini.github.io/ASALI/results/thermodynamic-properties"
-var eqTPPageUrl = "https://srebughini.github.io/ASALI/results/equilibrium-@-constant-t-p"
+var transportPageUrl = "/ASALI/results/transport-properties"
+var thermoPageUrl = "/ASALI/results/thermodynamic-properties"
+var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p"
 
 var name_id_prefix = "n";
 var value_id_prefix = "x";
