@@ -163,7 +163,7 @@ function runWebApp() {
 
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
-  let results = estimateMixtureProperties(false);
+  let results = readComposition(false);
   return false;
 
   if (Object.keys(results).length > 0) {
