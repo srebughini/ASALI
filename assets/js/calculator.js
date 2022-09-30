@@ -135,4 +135,5 @@ function runWebApp()
 function prova()
 {
   alert("Sto provando");
+  return false;
 }
