@@ -134,6 +134,7 @@ function runWebApp()
 
 function prova(id)
 {
-  alert("Sto provando: ", id);
+  console.log("Sto provando");
+  console.log(id);
   return true;
 }
