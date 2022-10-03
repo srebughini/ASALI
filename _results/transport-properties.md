@@ -4,7 +4,6 @@ redirect_from: /docs/index.html
 ---
 # **Transport properties**
 ### **Operating conditions and composition**
-These are the operating conditions and composition used to estimate **gas mixture transport properties**.
 <table class="table table-striped" id="input-table">
   <tbody>
     <tr>

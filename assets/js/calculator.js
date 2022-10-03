@@ -88,9 +88,13 @@ function estimateMixtureProperties(fromInput) {
         compositionType: "mole"
       })
 
+      // Calculate chemical equilibrium
       let moleEQ = mixture.calculateChemicalEquilibriumTP();
-
-      console.log(moleEQ);
+      let mixtureEQ = jasali.GasMixture({
+        mixtureComposition: moleEQ,
+        gasState: state,
+        compositionType: "mole"
+      })
 
       //Extract output from the mixture object
       output = {
@@ -115,6 +119,11 @@ function estimateMixtureProperties(fromInput) {
           "mass": mixture.getMassFraction()
         },
         "diffusivity": { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" },
+        "equilibrium": {
+          "name": mixtureEQ.getSpeciesName(),
+          "mole": mixtureEQ.getMoleFraction(),
+          "mass": mixtureEQ.getMassFraction()
+        }
       }
 
       return output;
@@ -171,7 +180,7 @@ function showTransportProperties(results, doc) {
   {
     let diffValues = results["diffusivity"]["value"];
     let diffUd = results["diffusivity"]["ud"];
-    let name = results["composition"]["name"]; 
+    let name = results["composition"]["name"];
     for (let i = 0; i < diffValues.length; i++) {
       let newRow = outputTable.insertRow(-1);
       let nameCell = newRow.insertCell(0);
@@ -199,6 +208,26 @@ function showThermoProperties(results, doc) {
   }
 }
 
+function showEquilibrium(results, doc)
+{
+  let name = results["equilibrium"]["name"];
+  let mole = results["equilibrium"]["mole"];
+  let mass = results["equilibrium"]["mass"];
+  let inputTable = doc.getElementById("output-table")
+
+  for (let i = 0; i < name.length; i++) {
+    let newRow = inputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    let moleCell = newRow.insertCell(1);
+    let massCell = newRow.insertCell(2);
+    nameCell.innerHTML = name[i];
+    nameCell.id = name_id_prefix.concat(i + 1);
+    moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
+    moleCell.id = value_id_prefix.concat(i + 1);
+    massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
+  }
+
+}
 
 function runWebApp() {
   // Estimate mixture properties
@@ -236,7 +265,7 @@ function showResults(destinationPageUrl) {
         return false;
       }
       else if (destinationPageUrl == eqTPPageUrl) {
-        // TO DO - Add Equilibrium
+        showEquilibrium(results, destinationWindow.document);
         return false;
       }
       else {
