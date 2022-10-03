@@ -88,6 +88,10 @@ function estimateMixtureProperties(fromInput) {
         compositionType: "mole"
       })
 
+      let moleEQ = mixture.calculateChemicalEquilibriumTP();
+
+      console.log(moleEQ);
+
       //Extract output from the mixture object
       output = {
         "transport": [
@@ -232,6 +236,7 @@ function showResults(destinationPageUrl) {
         return false;
       }
       else if (destinationPageUrl == eqTPPageUrl) {
+        // TO DO - Add Equilibrium
         return false;
       }
       else {
