@@ -89,9 +89,12 @@ function estimateMixtureProperties(fromInput) {
       })
 
       // Calculate chemical equilibrium
-      let moleEQ = mixture.calculateChemicalEquilibriumTP();
+      //let moleEQ = mixture.calculateChemicalEquilibriumTP();
+      let compositionEQ = {}
+      mixture.getSpeciesName().forEach((key, i) => compositionEQ[key] = mixture.calculateChemicalEquilibriumTP()[i]);
+
       let mixtureEQ = jasali.GasMixture({
-        mixtureComposition: moleEQ,
+        mixtureComposition: compositionEQ,
         gasState: state,
         compositionType: "mole"
       })
