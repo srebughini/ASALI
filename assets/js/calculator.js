@@ -254,7 +254,7 @@ function showResults(destinationPageUrl) {
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl);
+    let destinationWindow = window.open(destinationPageUrl, "_parent");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
