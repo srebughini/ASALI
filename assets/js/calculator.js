@@ -20,11 +20,11 @@ function readComposition(fromInput) {
         let name;
         if (fromInput) {
           name = name_obj.value;
-          value = value_obj.value;
+          value = parseFloat(value_obj.value).toFixed(6);
         }
         else {
           name = name_obj.innerText;
-          value = value_obj.innerText;
+          value = parseFloat(value_obj.innerText).toFixed(6);
         }
         if (name) {
           if (!isNaN(value)) {
