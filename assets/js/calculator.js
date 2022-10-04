@@ -89,15 +89,31 @@ function estimateMixtureProperties(fromInput) {
       })
 
       // Calculate chemical equilibrium
-      //let moleEQ = mixture.calculateChemicalEquilibriumTP();
-      let compositionEQ = {}
-      mixture.getSpeciesName().forEach((key, i) => compositionEQ[key] = mixture.calculateChemicalEquilibriumTP()[i]);
+      if (mixture.getSpeciesName().length > 1 )
+      {
+        let compositionEQ = {}
+        mixture.getSpeciesName().forEach((key, i) => compositionEQ[key] = mixture.calculateChemicalEquilibriumTP()[i]);
 
-      let mixtureEQ = jasali.GasMixture({
-        mixtureComposition: compositionEQ,
-        gasState: state,
-        compositionType: "mole"
-      })
+        let mixtureEQ = jasali.GasMixture({
+          mixtureComposition: compositionEQ,
+          gasState: state,
+          compositionType: "mole"
+        })
+
+        outputEQ = {
+          "name": mixtureEQ.getSpeciesName(),
+          "mole": mixtureEQ.getMoleFraction(),
+          "mass": mixtureEQ.getMassFraction()
+        }
+      }
+      else
+      {
+        outputEQ = {
+          "name": mixture.getSpeciesName(),
+          "mole": mixture.getMoleFraction(),
+          "mass": mixture.getMassFraction()
+        }
+      }
 
       //Extract output from the mixture object
       output = {
@@ -122,11 +138,7 @@ function estimateMixtureProperties(fromInput) {
           "mass": mixture.getMassFraction()
         },
         "diffusivity": { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" },
-        "equilibrium": {
-          "name": mixtureEQ.getSpeciesName(),
-          "mole": mixtureEQ.getMoleFraction(),
-          "mass": mixtureEQ.getMassFraction()
-        }
+        "equilibrium": outputEQ
       }
 
       return output;
