@@ -4,7 +4,7 @@ redirect_from: /docs/index.html
 ---
 # **Transport properties**
 ### **Operating conditions and composition**
-<table class="table table-striped" id="input-table">
+<table class="table table-striped center" id="input-table">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
