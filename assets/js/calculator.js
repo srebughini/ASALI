@@ -269,7 +269,7 @@ function runWebApp() {
   }
 }
 
-window.onload = function showResults(destinationPageUrl) {
+window.onload = function showResults() {
   // Estimate mixture properties
   let results = JSON.parse(localStorage.getItem(webAppResults)); //'estimateMixtureProperties(false);
 
@@ -279,19 +279,20 @@ window.onload = function showResults(destinationPageUrl) {
 
     //window.open(destinationPageUrl, "_self");
     alert("Done1");
-    console.log(window.location.href)
+    let destinationPageUrl = window.location.href.toString()
+
     console.log(JSON.parse(localStorage.getItem(webAppResults)))
     console.log(destinationPageUrl)
     showOperatingConditions(results, document);
-    if (destinationPageUrl === transportPageUrl) {
+    if (destinationPageUrl.includes(transportPageUrl)) {
       showTransportProperties(results, document);
       //return true;
     }
-    else if (destinationPageUrl == thermoPageUrl) {
+    else if (destinationPageUrl.includes(thermoPageUrl)) {
       showThermoProperties(results, document);
       //return true;
     }
-    else if (destinationPageUrl == eqTPPageUrl) {
+    else if (destinationPageUrl.includes(eqTPPageUrl)) {
       showEquilibrium(results, document);
       //return true;
     }
