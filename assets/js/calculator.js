@@ -100,19 +100,23 @@ function estimateMixtureProperties(fromInput) {
           compositionType: "mole"
         })
 
-        outputEQ = {
+        outputEq = {
           "name": mixtureEQ.getSpeciesName(),
           "mole": mixtureEQ.getMoleFraction(),
           "mass": mixtureEQ.getMassFraction()
         }
+
+        outputDiff = { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" }
       }
       else
       {
-        outputEQ = {
+        outputEq = {
           "name": mixture.getSpeciesName(),
           "mole": mixture.getMoleFraction(),
           "mass": mixture.getMassFraction()
         }
+
+        outputDiff = { "value": mixture.getSpeciesDiffusion(), "ud": "m<sup>2</sup>/s" }
       }
 
       //Extract output from the mixture object
@@ -137,8 +141,8 @@ function estimateMixtureProperties(fromInput) {
           "mole": mixture.getMoleFraction(),
           "mass": mixture.getMassFraction()
         },
-        "diffusivity": { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" },
-        "equilibrium": outputEQ
+        "diffusivity": outputDiff,
+        "equilibrium": outputEq
       }
 
       return output;
@@ -266,7 +270,7 @@ function showResults(destinationPageUrl) {
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl, "_parent");
+    let destinationWindow = window.open(destinationPageUrl, "_self");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
