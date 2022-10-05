@@ -25,7 +25,7 @@ redirect_from: /docs/index.html
 </table>
 
 ### **Properties**
-<table class="table table-striped text-center" id="output-table">
+<table class="table table-striped" id="output-table">
   <tbody>
     <tr>
       <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
