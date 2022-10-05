@@ -269,7 +269,7 @@ function runWebApp() {
   }
 }
 
-function showResults(destinationPageUrl) {
+window.onload = function showResults(destinationPageUrl) {
   // Estimate mixture properties
   let results = localStorage.getItem(webAppResults); //'estimateMixtureProperties(false);
 
