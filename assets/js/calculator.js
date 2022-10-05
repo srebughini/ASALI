@@ -277,25 +277,25 @@ function showResults(destinationPageUrl) {
     // Genere new window object
     //let destinationWindow = window.open(destinationPageUrl, "_self");
 
-    window.open(destinationPageUrl, "_self");
+    //window.open(destinationPageUrl, "_self");
     alert("Done1");
     console.log(window.location.href)
     console.log(localStorage.getItem(webAppResults))
     showOperatingConditions(results, document);
     if (destinationPageUrl === transportPageUrl) {
       showTransportProperties(results, document);
-      return false;
+      return true;
     }
     else if (destinationPageUrl == thermoPageUrl) {
       showThermoProperties(results, document);
-      return false;
+      return true;
     }
     else if (destinationPageUrl == eqTPPageUrl) {
       showEquilibrium(results, document);
-      return false;
+      return true;
     }
     else {
-      return false;
+      return true;
     }
 
     //Opening a window is asynchronous
@@ -319,7 +319,7 @@ function showResults(destinationPageUrl) {
         return false;
       }
     }*/
-    return false;
+    return true;
   }
   else {
     return false;
