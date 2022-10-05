@@ -11,23 +11,15 @@ var value_id_prefix = "x";
 var T_id = "T";
 var P_id = "P";
 
-function readComposition(fromInput) {
+function readComposition() {
   const composition = {};
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
     if (name_obj) {
       let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
       if (value_obj) {
-        let value;
-        let name;
-        if (fromInput) {
-          name = name_obj.value;
-          value = parseFloat(value_obj.value).toFixed(6);
-        }
-        else {
-          name = name_obj.innerText;
-          value = parseFloat(value_obj.innerText).toFixed(6);
-        }
+        let value = parseFloat(value_obj.value).toFixed(6);
+        let name = name_obj.value;
         if (name) {
           if (!isNaN(value)) {
             composition[name] = value;
@@ -39,26 +31,20 @@ function readComposition(fromInput) {
   return composition;
 }
 
-function readTemperature(fromInput) {
-  if (fromInput) {
-    return parseFloat(document.getElementById(T_id).value);
-  }
-  return parseFloat(document.getElementById(T_id).innerText);
+function readTemperature() {
+  return parseFloat(document.getElementById(T_id).value);
 }
 
-function readPressure(fromInput) {
-  if (fromInput) {
-    return parseFloat(document.getElementById(P_id).value);
-  }
-  return parseFloat(document.getElementById(P_id).innerText);
+function readPressure() {
+  return parseFloat(document.getElementById(P_id).value);
 }
 
-function estimateMixtureProperties(fromInput) {
+function estimateMixtureProperties() {
   //Read temperature
-  let T = readTemperature(fromInput);
+  let T = readTemperature();
 
   //Read pressure
-  let P = readPressure(fromInput);
+  let P = readPressure();
 
   if (isNaN(T)) {
     alert("Temperature input not valid!");
@@ -76,7 +62,7 @@ function estimateMixtureProperties(fromInput) {
     })
 
     //Read composition
-    let composition = readComposition(fromInput)
+    let composition = readComposition()
 
     if (Object.keys(composition).length == 0) {
       alert("Input composition not valid!");
@@ -91,8 +77,7 @@ function estimateMixtureProperties(fromInput) {
       })
 
       // Calculate chemical equilibrium
-      if (mixture.getSpeciesName().length > 1 )
-      {
+      if (mixture.getSpeciesName().length > 1) {
         let compositionEQ = {}
         mixture.getSpeciesName().forEach((key, i) => compositionEQ[key] = mixture.calculateChemicalEquilibriumTP()[i]);
 
@@ -110,8 +95,7 @@ function estimateMixtureProperties(fromInput) {
 
         outputDiff = { "value": mixture.getMixtureDiffusion(), "ud": "m<sup>2</sup>/s" }
       }
-      else
-      {
+      else {
         outputEq = {
           "name": mixture.getSpeciesName(),
           "mole": mixture.getMoleFraction(),
@@ -229,8 +213,7 @@ function showThermoProperties(results, doc) {
   }
 }
 
-function showEquilibrium(results, doc)
-{
+function showEquilibrium(results, doc) {
   let name = results["equilibrium"]["name"];
   let mole = results["equilibrium"]["mole"];
   let mass = results["equilibrium"]["mass"];
@@ -252,9 +235,9 @@ function showEquilibrium(results, doc)
 
 function runWebApp() {
   // Estimate mixture properties
-  let results = estimateMixtureProperties(true);
-  
-  // This should store the results
+  let results = estimateMixtureProperties();
+
+  // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
 
   if (Object.keys(output).length > 0) {
@@ -270,15 +253,10 @@ function runWebApp() {
 }
 
 window.onload = function showResults() {
-  // Estimate mixture properties
-  let results = JSON.parse(localStorage.getItem(webAppResults)); //'estimateMixtureProperties(false);
+  // Get mixture properties from LocalStorage
+  let results = JSON.parse(localStorage.getItem(webAppResults));
 
   if (Object.keys(results).length > 0) {
-    // Genere new window object
-    //let destinationWindow = window.open(destinationPageUrl, "_self");
-
-    //window.open(destinationPageUrl, "_self");
-    alert("Done1");
     let destinationPageUrl = window.location.href.toString()
 
     console.log(JSON.parse(localStorage.getItem(webAppResults)))
@@ -286,40 +264,12 @@ window.onload = function showResults() {
     showOperatingConditions(results, document);
     if (destinationPageUrl.includes(transportPageUrl)) {
       showTransportProperties(results, document);
-      //return true;
     }
     else if (destinationPageUrl.includes(thermoPageUrl)) {
       showThermoProperties(results, document);
-      //return true;
     }
     else if (destinationPageUrl.includes(eqTPPageUrl)) {
       showEquilibrium(results, document);
-      //return true;
     }
-    //Opening a window is asynchronous
-    /*
-    destinationWindow.document.onload = function () {
-      alert("Done2");
-      showOperatingConditions(results, destinationWindow.document);
-      if (destinationPageUrl === transportPageUrl) {
-        showTransportProperties(results, destinationWindow.document);
-        return false;
-      }
-      else if (destinationPageUrl == thermoPageUrl) {
-        showThermoProperties(results, destinationWindow.document);
-        return false;
-      }
-      else if (destinationPageUrl == eqTPPageUrl) {
-        showEquilibrium(results, destinationWindow.document);
-        return false;
-      }
-      else {
-        return false;
-      }
-    }*/
-    //return true;
   }
-  /*else {
-    return false;
-  }*/
 }
