@@ -4,6 +4,8 @@ var transportPageUrl = "/ASALI/results/transport-properties/"
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/"
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/"
 
+var webAppResults = "webAppResults"
+
 var name_id_prefix = "n";
 var value_id_prefix = "x";
 var T_id = "T";
@@ -251,6 +253,9 @@ function showEquilibrium(results, doc)
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties(true);
+  
+  // This should store the results
+  localStorage.setItem(webAppResults, results);
 
   if (Object.keys(output).length > 0) {
     // Genere new window object
@@ -266,15 +271,33 @@ function runWebApp() {
 
 function showResults(destinationPageUrl) {
   // Estimate mixture properties
-  let results = estimateMixtureProperties(false);
+  let results = localStorage.getItem(webAppResults); //'estimateMixtureProperties(false);
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl, "_self");
+    //let destinationWindow = window.open(destinationPageUrl, "_self");
 
+    window.open(destinationPageUrl, "_self");
     alert("Done1");
+    showOperatingConditions(results, document);
+    if (destinationPageUrl === transportPageUrl) {
+      showTransportProperties(results, document);
+      return false;
+    }
+    else if (destinationPageUrl == thermoPageUrl) {
+      showThermoProperties(results, document);
+      return false;
+    }
+    else if (destinationPageUrl == eqTPPageUrl) {
+      showEquilibrium(results, document);
+      return false;
+    }
+    else {
+      return false;
+    }
 
     //Opening a window is asynchronous
+    /*
     destinationWindow.document.onload = function () {
       alert("Done2");
       showOperatingConditions(results, destinationWindow.document);
@@ -293,7 +316,7 @@ function showResults(destinationPageUrl) {
       else {
         return false;
       }
-    }
+    }*/
     return false;
   }
   else {
