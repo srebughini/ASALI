@@ -20,7 +20,7 @@
           {% for item in section.results %}
             {% assign item_url = item | prepend:"/results/" | append:"/" %}
             {% assign p = site.results | where:"url", item_url | first %}
-            <a class="list-group-item {% if item_url == page.url %}active{% endif %}" href="{{ p.url  | relative_url }}" onclick="return showResults(this.href);">{{ p.title }}</a>
+            <a class="list-group-item {% if item_url == page.url %}active{% endif %}" href="{{ p.url  | relative_url }}" onload="showResults(this.href);">{{ p.title }}</a>
           {% endfor %}
         </div>
       </div>

@@ -284,20 +284,16 @@ function showResults(destinationPageUrl) {
     showOperatingConditions(results, document);
     if (destinationPageUrl === transportPageUrl) {
       showTransportProperties(results, document);
-      return true;
+      //return true;
     }
     else if (destinationPageUrl == thermoPageUrl) {
       showThermoProperties(results, document);
-      return true;
+      //return true;
     }
     else if (destinationPageUrl == eqTPPageUrl) {
       showEquilibrium(results, document);
-      return true;
+      //return true;
     }
-    else {
-      return true;
-    }
-
     //Opening a window is asynchronous
     /*
     destinationWindow.document.onload = function () {
@@ -319,9 +315,9 @@ function showResults(destinationPageUrl) {
         return false;
       }
     }*/
-    return true;
+    //return true;
   }
-  else {
+  /*else {
     return false;
-  }
+  }*/
 }
