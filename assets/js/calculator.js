@@ -270,11 +270,11 @@ function showResults(destinationPageUrl) {
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(destinationPageUrl, "_top");
+    let destinationWindow = window.open(destinationPageUrl, "_self");
 
     //Opening a window is asynchronous
-    destinationWindow.onload = function () {
-      console.log("Done");
+    destinationWindow.document.onload = function () {
+      alert("Done");
       showOperatingConditions(results, destinationWindow.document);
       if (destinationPageUrl === transportPageUrl) {
         showTransportProperties(results, destinationWindow.document);
