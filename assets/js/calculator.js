@@ -274,6 +274,7 @@ function showResults(destinationPageUrl) {
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
+      console.log("Done");
       showOperatingConditions(results, destinationWindow.document);
       if (destinationPageUrl === transportPageUrl) {
         showTransportProperties(results, destinationWindow.document);
