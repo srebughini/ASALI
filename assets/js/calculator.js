@@ -279,6 +279,8 @@ function showResults(destinationPageUrl) {
 
     window.open(destinationPageUrl, "_self");
     alert("Done1");
+    console.log(window.location.href)
+    console.log(localStorage.getItem(webAppResults))
     showOperatingConditions(results, document);
     if (destinationPageUrl === transportPageUrl) {
       showTransportProperties(results, document);
