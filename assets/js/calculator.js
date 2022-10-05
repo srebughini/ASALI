@@ -1,10 +1,10 @@
 var NSinput = 10;
 
-var transportPageUrl = "/ASALI/results/transport-properties/"
-var thermoPageUrl = "/ASALI/results/thermodynamic-properties/"
-var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/"
+var transportPageUrl = "/ASALI/results/transport-properties/";
+var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
+var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
 
-var webAppResults = "webAppResults"
+var webAppResults = "webAppResults";
 
 var name_id_prefix = "n";
 var value_id_prefix = "x";
@@ -255,7 +255,7 @@ function runWebApp() {
   let results = estimateMixtureProperties(true);
   
   // This should store the results
-  localStorage.setItem(webAppResults, results);
+  localStorage.setItem(webAppResults, JSON.stringify(results));
 
   if (Object.keys(output).length > 0) {
     // Genere new window object
@@ -271,7 +271,7 @@ function runWebApp() {
 
 window.onload = function showResults(destinationPageUrl) {
   // Estimate mixture properties
-  let results = localStorage.getItem(webAppResults); //'estimateMixtureProperties(false);
+  let results = JSON.parse(localStorage.getItem(webAppResults)); //'estimateMixtureProperties(false);
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
