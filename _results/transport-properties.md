@@ -4,7 +4,7 @@ redirect_from: /docs/index.html
 ---
 # **Transport properties**
 ### **Operating conditions and composition**
-<table class="table table-striped text-center" id="input-table">
+<table class="table table-striped text-center" style="margin:auto"  id="input-table">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
@@ -25,7 +25,7 @@ redirect_from: /docs/index.html
 </table>
 
 ### **Properties**
-<table class="table table-striped" id="output-table">
+<table class="table table-striped text-center" style="margin:auto" id="output-table">
   <tbody>
     <tr>
       <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>

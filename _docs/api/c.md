@@ -52,7 +52,7 @@ To convert the Asali database into C code run:
 ```
 ## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport (`asali` is the library object):
-<table class="table table-striped text-right">
+<table class="table table-striped">
     <thead>
         <tr>
             <th scope="row">Function</th>
