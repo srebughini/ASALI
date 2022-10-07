@@ -54,15 +54,19 @@ To convert the Asali database into C code run:
 ASALI estimates different thermodynamic and transport (`asali` is the library object):
 <table class="table table-striped">
     <thead>
-        <th scope="row">Function</th>
-        <th>Estimated property</th>
-        <th>Return type</th>
-        <th>Unit dimension</th>
+        <tr>
+            <th scope="row">Function</th>
+            <td>Estimated property</td>
+            <td>Return type</td>
+            <td>Unit dimension</td>
+        </tr>
     </thead>
     <tbody>
-        <th scope="row"><b><i>get_density(&asali)</i></b><th>
-        <th>Mixture density<th>
-        <th><i>double</i><th>
-        <th>kg/m<sup>3</sup><th>
+        <tr>
+            <th scope="row"><b><i>get_density(&asali)</i></b></th>
+            <td>Mixture density</td>
+            <td><i>double</i></td>
+            <td>kg/m<sup>3</sup></td>
+        </tr>
     </tbody>
 </table>
