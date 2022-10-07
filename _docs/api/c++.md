@@ -53,7 +53,7 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="row"><b><i>Function</th>
+            <th scope="row">Function</th>
             <th>Estimated property</th>
             <th>Return type</th>
             <th>Unit dimension</th>
@@ -123,73 +123,73 @@ ASALI estimates different thermodynamic and transport (`asali` is the library ob
         <tr>
             <th scope="row"><b><i>asali.mixtureDiffusion()</i></b></th>
             <td>Mixture diffusivity</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>m<sup>2</sup>/s</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesThermalConductivity()</i></b></th>
             <td>Single specie thermal conductivity</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>W/m/K</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesViscosity()</i></b></th>
             <td>Single specie viscosity</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>Pa*s</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMolarCp()</i></b></th>
             <td>Single specie specific heat</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kmol/K</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMassCp()</i></b></th>
             <td>Single specie specific heat</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kg/K</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMolarEnthalpy()</i></b></th>
             <td>Single specie enthalpy</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kmol</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMassEnthalpy()</i></b></th>
             <td>Single specie enthalpy</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kg</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMolarEntropy()</i></b></th>
             <td>Single specie entropy</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kmol/K</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.speciesMassEntropy()</i></b></th>
             <td>Single specie entropy</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>J/kg/K</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.arithmeticMeanGasVelocity()</i></b></th>
             <td>Single gas velocity</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>m/s</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.meanFreePath()</i></b></th>
             <td>Single mean free path</td>
-            <td><i>std::vector<double></i></td>
+            <td><i>std::vector&lt;double&gt;</i></td>
             <td>m</td>
         </tr>
         <tr>
             <th scope="row"><b><i>asali.binaryDiffusion()</i></b></th>
             <td>Single binary diffusion</td>
-            <td><i>std::vector<std::vector<double>></i></td>
+            <td><i>std::vector&lt;std::vector&lt;double&gt;&gt;</i></td>
             <td>m<sup>2</sup>/s</td>
         </tr>
     </tbody>

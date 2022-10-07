@@ -51,7 +51,7 @@ ASALI estimates different thermodynamic and transport properties (`N` is the num
 <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="row"><b><i>Function</th>
+            <th scope="row">Function</th>
             <th>Estimated property</th>
             <th>Return type</th>
             <th>Unit dimension</th>
