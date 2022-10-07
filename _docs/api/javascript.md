@@ -103,208 +103,286 @@ let x = mixture.calculateChemicalEquilibriumTP()
 ## **Available thermodynamic and transport properties**
 **J**a**S**ali objects estimate different thermodynamic and transport properties. Different objects share the same method to extract the same property. The following list reports all the available methods and the related objects:
 
-| | |
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th scope="row">Function</th>
+          <th>Estimated property</th>
+          <th>Method of</th>
+          <th>Unit dimension</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><b><i>getTemperature()</i></b></th>
+      <td>Temperature</td>
+      <td><i>GasState</i></td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getPressure()</i></b></th>
+      <td>Pressure</td>
+      <td><i>GasState</i></td>
+      <td>Pa</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>updateGasState()</i></b></th>
+      <td>Update gas state</td>
+      <td><i>GasSpecie</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>updateMoleFraction()</i></b></th>
+      <td>Update mole fraction</td>
+      <td><i>GasSpecie</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getName()</i></b></th>
+      <td>Specie name</td>
+      <td><i>GasSpecie</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getArithmeticMeanGasVelocity()</i></b></th>
+      <td>Mean gas velocity</td>
+      <td><i>GasSpecie</i></td>
+      <td>m/s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMeanFreePath()</i></b></th>
+      <td>Mean free path</td>
+      <td><i>GasSpecie</i></td>
+      <td>m</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getDiffusion()</i></b></th>
+      <td>Binary diffusivity</td>
+      <td><i>GasSpecie</i></td>
+      <td>m<sup>2</sup>/s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getTemperature()</i></b></th>
+      <td>Temperature</td>
+      <td><i>GasMixture</i></td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getPressure()</i></b></th>
+      <td>Pressure</td>
+      <td><i>GasMixture</i></td>
+      <td>Pa</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassFraction()</i></b></th>
+      <td>Mass fraction</td>
+      <td><i>GasMixture</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMoleFraction()</i></b></th>
+      <td>Mole fraction</td>
+      <td><i>GasMixture</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getBinaryDiffusion()</i></b></th>
+      <td>Binary diffusivity</td>
+      <td><i>GasMixture</i></td>
+      <td>m<sup>2</sup>/s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMixtureDiffusion()</i></b></th>
+      <td>Mixture diffusivity</td>
+      <td><i>GasMixture</i></td>
+      <td>m<sup>2</sup>/s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpeciesName()</i></b></th>
+      <td>Specie name</td>
+      <td><i>GasMixture</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpeciesArithmeticMeanGasVelocity()</i></b></th>
+      <td>Mean gas velocity</td>
+      <td><i>GasMixture</i></td>
+      <td>m/s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpeciesMeanFreePath()</i></b></th>
+      <td>Mean free path</td>
+      <td><i>GasMixture</i></td>
+      <td>m</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecies()</i></b></th>
+      <td>Species in the mixture</td>
+      <td><i>GasMixture</i></td>
+      <td>n.a</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMolarSpecificHeat()</i></b></th>
+      <td>Specific heat</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kmol/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMassSpecificHeat()</i></b></th>
+      <td>Specific heat</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kg/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMolarEnthalpy()</i></b></th>
+      <td>Enthalpy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMassEnthalpy()</i></b></th>
+      <td>Enthalpy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMolarEntropy()</i></b></th>
+      <td>Entropy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kmol/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMassEntropy()</i></b></th>
+      <td>Entropy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kg/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMolarInternalEnergy()</i></b></th>
+      <td>Internal energy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMassInternalEnergy()</i></b></th>
+      <td>Internal energy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMolarGibbsFreeEnergy()</i></b></th>
+      <td>Gibbs free energy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieMassGibbsFreeEnergy()</i></b></th>
+      <td>Gibbs free energy</td>
+      <td><i>GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieViscosity()</i></b></th>
+      <td>Viscosity</td>
+      <td><i>GasMixture</i></td>
+      <td>Pa*s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getSpecieThermalConductivity()</i></b></th>
+      <td>Thermal conductivity</td>
+      <td><i>GasMixture</i></td>
+      <td>W/m/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>calculateChemicalEquilibriumTP()</i></b></th>
+      <td>Chemical equilibrium</td>
+      <td><i>GasMixture</i></td>
+      <td>mole fraction</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolecularWeight()</i></b></th>
+      <td>Molecular weight</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>g/mol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getDensity()</i></b></th>
+      <td>Density</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>kg/m<sup>3</sup></td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolarSpecificHeat()</i></b></th>
+      <td>Specific heat</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kmol/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassSpecificHeat()</i></b></th>
+      <td>Specific heat</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kg/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolarEnthalpy()</i></b></th>
+      <td>Enthalpy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassEnthalpy()</i></b></th>
+      <td>Enthalpy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolarEntropy()</i></b></th>
+      <td>Entropy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kmol/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassEntropy()</i></b></th>
+      <td>Entropy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kg/K</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolarInternalEnergy()</i></b></th>
+      <td>Internal energy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassInternalEnergy()</i></b></th>
+      <td>Internal energy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMolarGibbsFreeEnergy()</i></b></th>
+      <td>Gibbs free energy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kmol</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getMassGibbsFreeEnergy()</i></b></th>
+      <td>Gibbs free energy</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>J/kg</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getViscosity()</i></b></th>
+      <td>Viscosity</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>Pa*s</td>
+    </tr>
+    <tr>
+      <th scope="row"><b><i>getThermalConductivity()</i></b></th>
+      <td>Thermal conductivity</td>
+      <td><i>GasSpecie/GasMixture</i></td>
+      <td>W/m/K</td>
+    </tr>
+  </tbody>
+</table>
 
-### `GasState` methods
-
-| | |
-|:-|:-|
-| **`getTemperature()`** | |
-| *Estimated property*|Temperature|
-| *Method of*         |`GasState`|
-| *Unit dimensions*   |K|
-| **`getPressure()`** | |
-| *Estimated property*|Pressure|
-| *Method of*         |`GasState`|
-| *Unit dimensions*   |Pa|
-| | |
-
-### `GasSpecie` methods
-
-| | |
-|:-|:-|
-| **`updateGasState()`** | |
-| *Estimated property*|Update gas state|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |n.a|
-| **`updateMoleFraction()`** | |
-| *Estimated property*|Update mole fraction|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |n.a|
-| **`getName()`** | |
-| *Estimated property*|Specie name|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |n.a|
-| **`getArithmeticMeanGasVelocity()`** | |
-| *Estimated property*|Mean gas velocity|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |m/s|
-| **`getMeanFreePath()`** | |
-| *Estimated property*|Mean free path|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |m|
-| **`getDiffusion()`** | |
-| *Estimated property*|Binary diffusivity|
-| *Method of*         |`GasSpecie`|
-| *Unit dimensions*   |m<sup>2</sup>/s|
-| | |
-
-### `GasMixture` methods
-
-| | |
-|:-|:-|
-| **`getTemperature()`** | |
-| *Estimated property*|Temperature|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |K|
-| **`getPressure()`** | |
-| *Estimated property*|Pressure|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |Pa|
-| **`getMassFraction()`** | |
-| *Estimated property*|Mass fraction|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |n.a|
-| **`getMoleFraction()`** | |
-| *Estimated property*|Mole fraction|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |n.a|
-| **`getBinaryDiffusion()`** | |
-| *Estimated property*|Binary diffusivity|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |m<sup>2</sup>/s|
-| **`getMixtureDiffusion()`** | |
-| *Estimated property*|Mixture diffusivity|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |m<sup>2</sup>/s|
-| **`getSpeciesName()`** | |
-| *Estimated property*|Specie name|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |n.a|
-| **`getSpeciesArithmeticMeanGasVelocity()`** | |
-| *Estimated property*|Mean gas velocity|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |m/s|
-| **`getSpeciesMeanFreePath()`** | |
-| *Estimated property*|Mean free path|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |m|
-| **`getSpecies()`** | |
-| *Estimated property*|Species in the mixture|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |n.a|
-| **`getSpecieMolarSpecificHeat()`** | |
-| *Estimated property*|Specific heat|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kmol/K|
-| **`getSpecieMassSpecificHeat()`** | |
-| *Estimated property*|Specific heat|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kg/K|
-| **`getSpecieMolarEnthalpy()`** | |
-| *Estimated property*|Enthalpy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getSpecieMassEnthalpy()`** | |
-| *Estimated property*|Enthalpy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getSpecieMolarEntropy()`** | |
-| *Estimated property*|Entropy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kmol/K|
-| **`getSpecieMassEntropy()`** | |
-| *Estimated property*|Entropy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kg/K|
-| **`getSpecieMolarInternalEnergy()`** | |
-| *Estimated property*|Internal energy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getSpecieMassInternalEnergy()`** | |
-| *Estimated property*|Internal energy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getSpecieMolarGibbsFreeEnergy()`** | |
-| *Estimated property*|Gibbs free energy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getSpecieMassGibbsFreeEnergy()`** | |
-| *Estimated property*|Gibbs free energy|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getSpecieViscosity()`** | |
-| *Estimated property*|Viscosity|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |Pa*s|
-| **`getSpecieThermalConductivity()`** | |
-| *Estimated property*|Thermal conductivity|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |W/m/K|
-| **`calculateChemicalEquilibriumTP()`** | |
-| *Estimated property*|Chemical equilibrium|
-| *Method of*         |`GasMixture`|
-| *Unit dimensions*   |mole fraction|
-| | |
-
-### `GasMixture` and `GasSpecie` methods
-
-| | |
-|:-|:-|
-| **`getMolecularWeight()`** | |
-| *Estimated property*|Molecular weight|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |g/mol|
-| **`getDensity()`** | |
-| *Estimated property*|Density|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |kg/m<sup>3</sup>|
-| **`getMolarSpecificHeat()`** | |
-| *Estimated property*|Specific heat|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kmol/K|
-| **`getMassSpecificHeat()`** | |
-| *Estimated property*|Specific heat|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kg/K|
-| **`getMolarEnthalpy()`** | |
-| *Estimated property*|Enthalpy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getMassEnthalpy()`** | |
-| *Estimated property*|Enthalpy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getMolarEntropy()`** | |
-| *Estimated property*|Entropy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kmol/K|
-| **`getMassEntropy()`** | |
-| *Estimated property*|Entropy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kg/K|
-| **`getMolarInternalEnergy()`** | |
-| *Estimated property*|Internal energy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getMassInternalEnergy()`** | |
-| *Estimated property*|Internal energy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getMolarGibbsFreeEnergy()`** | |
-| *Estimated property*|Gibbs free energy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kmol|
-| **`getMassGibbsFreeEnergy()`** | |
-| *Estimated property*|Gibbs free energy|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |J/kg|
-| **`getViscosity()`** | |
-| *Estimated property*|Viscosity|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |Pa*s|
-| **`getThermalConductivity()`** | |
-| *Estimated property*|Thermal conductivity|
-| *Method of*         |`GasSpecie`,`GasMixture`|
-| *Unit dimensions*   |W/m/K|
-| | |

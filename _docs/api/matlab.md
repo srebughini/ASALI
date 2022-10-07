@@ -21,93 +21,147 @@ cp = p.SpeciesMassSpecificHeat;
 To create the file *database.mat* run the file `database-generator.m`
 ## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport properties (`p` is the Asali object):
-
-| | |
-|:-|:-|
-| **`p.Density`** | |
-| *Estimated property*|Mixture density|
-| *Return type*       |`float`|
-| *Unit dimensions*   |kg/m<sup>3</sup>|
-| **`p.MixtureMolecularWeight`** | |
-| *Estimated property*|Mixture molecular weight |
-| *Return type*       |`float`|
-| *Unit dimensions*   |g/mol|
-| **`p.MixtureThermalConductivity`** | |
-| *Estimated property*|Mixture thermal conductivity |
-| *Return type*       |`float`|
-| *Unit dimensions*   |W/m/K|
-| **`p.MixtureViscosity`** | |
-| *Estimated property*|Mixture viscosity |
-| *Return type*       |`float`|
-| *Unit dimensions*   |Pa*s|
-| **`p.MixtureMolarSpecificHeat`** | |
-| *Estimated property*|Mixture specific heat |
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kmol/K|
-| **`p.MixtureMassSpecificHeat`** | |
-| *Estimated property*|Mixture specific heat |
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kg/K|
-| **`p.MixtureMolarEnthalpy`** | |
-| *Estimated property*|Mixture enthalpy|
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kmol|
-| **`p.MixtureMassEnthalpy`** | |
-| *Estimated property*|Mixture enthalpy|
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kg|
-| **`p.MixtureMolarEntropy`** | |
-| *Estimated property*|Mixture entropy|
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kmol/K|
-| **`p.MixtureMassEntropy`** | |
-| *Estimated property*|Mixture entropy|
-| *Return type*       |`float`|
-| *Unit dimensions*   |J/kg/K|
-| **`p.MixtureDiffusion`** | |
-| *Estimated property*|Mixture diffusivity|
-| *Return type*       |`float`|
-| *Unit dimensions*   |m<sup>2</sup>/s|
-| **`p.SpecieThermalConductivity`** | |
-| *Estimated property*|Single specie thermal conductivity|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |W/m/K|
-| **`p.SpecieViscosity`** | |
-| *Estimated property*|Single specie viscosity|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |Pa*s|
-| **`p.SpeciesMolarSpecificHeat`** | |
-| *Estimated property*|Single specie specific heat|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |J/kmol/K|
-| **`p.SpeciesMassSpecificHeat`** | |
-| *Estimated property*|Single specie specific heat|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |J/kg/K|
-| **`p.SpecieMolarEnthalpy`** | |
-| *Estimated property*|Single specie enthalpy|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |J/kmol|
-| **`p.SpecieMassEnthalpy`** | |
-| *Estimated property*|Single specie enthalpy|
-| *Return type*       |`1D array`|
-| **`p.SpecieMolarEntropy`** | |
-| *Estimated property*|Single specie entropy|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |J/kmol/K|
-| **`p.SpecieMassEntropy`** | |
-| *Estimated property*|Single specie entropy|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |J/kg/K|
-| **`p.MeanGasVelocity`** | |
-| *Estimated property*|Single gas velocity|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |m/s|
-| **`p.MeanFreePath`** | |
-| *Estimated property*|Single mean free path|
-| *Return type*       |`1D array`|
-| *Unit dimensions*   |m|
-| **`p.BinaryDiffusion`** | |
-| *Estimated property*|Single binary diffusion|
-| *Return type*       |`2D array`|
-| *Unit dimensions*   |m<sup>2</sup>/s|
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="row">Function</th>
+            <th>Estimated property</th>
+            <th>Return type</th>
+            <th>Unit dimension</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><b><i>p.Density</i></b></th>
+            <td>Mixture density</td>
+            <td><i>float</i></td>
+            <td>kg/m<sup>3</sup></td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMolecularWeight</i></b></th>
+            <td>Mixture molecular weight </td>
+            <td><i>float</i></td>
+            <td>g/mol</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureThermalConductivity</i></b></th>
+            <td>Mixture thermal conductivity </td>
+            <td><i>float</i></td>
+            <td>W/m/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureViscosity</i></b></th>
+            <td>Mixture viscosity </td>
+            <td><i>float</i></td>
+            <td>Pa*s</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMolarSpecificHeat</i></b></th>
+            <td>Mixture specific heat </td>
+            <td><i>float</i></td>
+            <td>J/kmol/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMassSpecificHeat</i></b></th>
+            <td>Mixture specific heat </td>
+            <td><i>float</i></td>
+            <td>J/kg/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMolarEnthalpy</i></b></th>
+            <td>Mixture enthalpy</td>
+            <td><i>float</i></td>
+            <td>J/kmol</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMassEnthalpy</i></b></th>
+            <td>Mixture enthalpy</td>
+            <td><i>float</i></td>
+            <td>J/kg</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMolarEntropy</i></b></th>
+            <td>Mixture entropy</td>
+            <td><i>float</i></td>
+            <td>J/kmol/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureMassEntropy</i></b></th>
+            <td>Mixture entropy</td>
+            <td><i>float</i></td>
+            <td>J/kg/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MixtureDiffusion</i></b></th>
+            <td>Mixture diffusivity</td>
+            <td><i>float</i></td>
+            <td>m<sup>2</sup>/s</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieThermalConductivity</i></b></th>
+            <td>Single specie thermal conductivity</td>
+            <td><i>1D array</i></td>
+            <td>W/m/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieViscosity</i></b></th>
+            <td>Single specie viscosity</td>
+            <td><i>1D array</i></td>
+            <td>Pa*s</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpeciesMolarSpecificHeat</i></b></th>
+            <td>Single specie specific heat</td>
+            <td><i>1D array</i></td>
+            <td>J/kmol/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpeciesMassSpecificHeat</i></b></th>
+            <td>Single specie specific heat</td>
+            <td><i>1D array</i></td>
+            <td>J/kg/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieMolarEnthalpy</i></b></th>
+            <td>Single specie enthalpy</td>
+            <td><i>1D array</i></td>
+            <td>J/kmol</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieMassEnthalpy</i></b></th>
+            <td>Single specie enthalpy</td>
+            <td><i>1D array</i></td>
+            <td>J/kmol</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieMolarEntropy</i></b></th>
+            <td>Single specie entropy</td>
+            <td><i>1D array</i></td>
+            <td>J/kmol/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.SpecieMassEntropy</i></b></th>
+            <td>Single specie entropy</td>
+            <td><i>1D array</i></td>
+            <td>J/kg/K</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MeanGasVelocity</i></b></th>
+            <td>Single gas velocity</td>
+            <td><i>1D array</i></td>
+            <td>m/s</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.MeanFreePath</i></b></th>
+            <td>Single mean free path</td>
+            <td><i>1D array</i></td>
+            <td>m</td>
+        </tr>
+        <tr>
+            <th scope="row"><b><i>p.BinaryDiffusion</i></b></th>
+            <td>Single binary diffusion</td>
+            <td><i>2D array</i></td>
+            <td>m<sup>2</sup>/s</td>
+        </tr>
+    </tbody>
+</table>
