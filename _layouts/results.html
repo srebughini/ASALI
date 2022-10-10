@@ -2,16 +2,14 @@
 layout: default
 ---
 
-<div class="container">
+<div class="container" id="markdown-content-container">
     <div class="row">
         <div class="col-md-4">
           {% include results_nav.html %}
         </div>
 
-        <div class="col-md-8 text-center">
-            <div id="markdown-content-container">
-              {{ content }}
-            </div>
+        <div class="col-md-8">
+            {{ content }}
         </div>
     </div>
 </div>
