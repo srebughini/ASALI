@@ -28,7 +28,7 @@ redirect_from: /docs/index.html
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span> 
-                <input type="text" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+                <input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
                 <span class="input-group-addon text-center" id="x1-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.31415926" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
