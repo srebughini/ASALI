@@ -2,7 +2,7 @@
 permalink: /docs/gui-installation-linux/
 redirect_from: /docs/index.html
 ---
-<h1 class="text-rigth"><b>Installation instructions - Linux OS</b></h1>
+<h1 class="text-rigth"><b>Installation instructions</b></h1>
 Asali is based on different open-source codes:
 * [Cantera](https://cantera.org/): estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
@@ -14,7 +14,7 @@ Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, U
 
 <h2 class="text-rigth"><b>Requirements installation</b></h2>
 The Linux based external libraries can be installed by typing these commands:  
-<h3 class="text-rigth"><b>Ubuntu 16.04/Ubuntu 18.04/Ubuntu 20.04/Debian Wheezy</b></h3>
+<h3 class="text-rigth"><b>Ubuntu 16.04/18.04/20.04 <br> Debian Wheezy</b></h3>
 ```bash
 sudo apt-get update  
 sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev  
@@ -59,15 +59,44 @@ To install Asali run the following command.
 ```  
 The installation can be customized with the following options:    
 
-|Option|Comment|  
-|--------|-----|  
-|`--help`|Show help message|  
-|`--clean`|Clean installation folder|  
-|`--cantera-path`|Select Cantera path|  
-|`--os`|Select operating system|  
-|`--output-folder`|Select target folder|  
-|`--symbolic-link`|Create symbolic link in `/usr/local/bin/`|  
-|`--no-interaction`|Disable human interaction|  
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th scope="row">Option</th>
+          <th>Comment</th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <th scope="row"><i>--help</i></th>
+        <td>Show help message</td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--clean</i></th>
+        <td>Clean installation folder</td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--cantera-path</i></th>
+        <td>Select Cantera path</td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--os</i></th>
+        <td>Select operating system</td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--output-folder</i></th>
+        <td>Select target folder</td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--symbolic-link</i></th>
+        <td>Create symbolic link in <i>/usr/local/bin/</i></td>
+    </tr>
+    <tr>
+        <th scope="row"><i>--no-interaction</i></th>
+        <td>Disable human interaction</i></td>
+    </tr>
+  </tbody>
+</table>
 
 To run Asali:  
 ```bash

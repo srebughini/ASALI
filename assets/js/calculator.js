@@ -257,10 +257,7 @@ window.onload = function showResults() {
   let results = JSON.parse(localStorage.getItem(webAppResults));
 
   if (Object.keys(results).length > 0) {
-    let destinationPageUrl = window.location.href.toString()
-
-    console.log(JSON.parse(localStorage.getItem(webAppResults)))
-    console.log(destinationPageUrl)
+    let destinationPageUrl = window.location.href.toString();
     showOperatingConditions(results, document);
     if (destinationPageUrl.includes(transportPageUrl)) {
       showTransportProperties(results, document);

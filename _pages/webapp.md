@@ -5,8 +5,8 @@ redirect_from: /docs/index.html
 
 
 <div class="container">
-    <h2 class="text-rigth"><b>Operating conditions</b></h2>
-    <p class="text-rigth">Insert gas mixture <b>temperature</b> <i class="fa-regular fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-regular fa-gauge"></i> conditions:</p>
+    <h2 class="text-center"><b>Operating conditions</b></h2>
+    <p class="text-right">Insert gas mixture <b>temperature</b> <i class="fa-regular fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-regular fa-gauge"></i> conditions:</p>
     <div class="form-group">
             <div class="input-group">
                 <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
@@ -23,8 +23,8 @@ redirect_from: /docs/index.html
             <span class="input-group-addon text-right">Pa</span>
         </div>
     </div>
-    <h2 class="text-rigth"><b>Composition</b></h2>
-    <p class="text-rigth">Insert gas mixture <b>molecule name</b> <i class="fa-regular fa-atom"></i> and <b>mole fraction</b> <i class="fa-regular fa-chart-pie"></i> composition: </p>
+    <h2 class="text-center"><b>Composition</b></h2>
+    <p class="text-right">Insert gas mixture <b>molecule name</b> <i class="fa-regular fa-atom"></i> and <b>mole fraction</b> <i class="fa-regular fa-chart-pie"></i> composition: </p>
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span> 
