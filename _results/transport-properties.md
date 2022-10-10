@@ -2,7 +2,7 @@
 permalink: /results/transport-properties/
 ---
 <h1 class="text-center"><b>Transport properties</b></h1>
-<h2 class="text-center"><b>Operating conditions and composition</b></h2>
+<h3 class="text-center"><b>Operating conditions and composition</b></h3>
 <table class="table table-striped text-center" style="margin:auto"  id="input-table">
   <tbody>
     <tr>
@@ -23,7 +23,7 @@ permalink: /results/transport-properties/
   </tbody>
 </table>
 
-<h2 class="text-center"><b>Properties</b></h2>
+<h3 class="text-center"><b>Properties</b></h3>
 <table class="table table-striped text-center" style="margin:auto" id="output-table">
   <tbody>
     <tr>

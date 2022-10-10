@@ -3,7 +3,7 @@ permalink: /results/equilibrium-@-constant-t-p/
 ---
 <h1 class="text-center"><b>Chemical equilibrium @ constant T, P</b></h1>
 <p class="text-center">Chemical equilibrium gas mixture composition at <b>constant temperature and pressure</b> estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.</p>
-<h2 class="text-center"><b>Operating conditions and composition</b></h2>
+<h3 class="text-center"><b>Operating conditions and composition</b></h3>
 <table class="table table-striped text-center" style="margin:auto" id="input-table">
   <tbody>
     <tr>
@@ -24,7 +24,7 @@ permalink: /results/equilibrium-@-constant-t-p/
   </tbody>
 </table>
 
-<h2 class="text-center"><b>Chemical equilibrium composition</b></h2>
+<h3 class="text-center"><b>Chemical equilibrium composition</b></h3>
 <table class="table table-striped text-center" style="margin:auto" id="output-table">
   <tbody>
     <tr>
