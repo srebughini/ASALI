@@ -1,8 +1,7 @@
 ---
-title: Introduction
 permalink: /docs/gui-introduction/
 ---
-
+<h1 class="text-left"><b>Introduction</b></h1>
 Let's go straight to the point! Asali main features are:
 * Estimation of thermodynamic/transport properties of ideal gas mixture
 * Linear regression of thermodynamic/transport properties of ideal gas mixture

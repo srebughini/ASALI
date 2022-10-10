@@ -1,7 +1,7 @@
 ---
-title: APIs elapsed time comparison
 permalink: /docs/api-performance/
 ---
+<h1 class="text-left"><b>APIs elapsed time comparison</b></h1>
 This section reports the comparison of the ASALI APIs in term of computational time. These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 20.04.1 LTS*.  
 If you download ASALI, you can run the same test on your own computer using the following commands:  
 ```bash  

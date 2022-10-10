@@ -1,7 +1,7 @@
 ---
-title: Python version
 permalink: /docs/api-python/
 ---
+<h1 class="text-left"><b>Python version</b></h1>
 The python API version of ASALI is called [ASALIPY](https://github.com/srebughini/ASALIPY) and its [conda package](https://anaconda.org/ASALIcode/asali) can be installed as follow:
 
 ```bash

@@ -1,8 +1,7 @@
 ---
-title: C++ version
 permalink: /docs/api-c++/
 ---
-
+<h1 class="text-left"><b>C++ version</b></h1>
 The C++ API can be included in your code as follow:  
 ```cpp
 //Include library

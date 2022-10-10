@@ -1,8 +1,7 @@
 ---
-title: Fortran version
 permalink: /docs/api-fortran/
 ---
-
+<h1 class="text-left"><b>Fortran version</b></h1>
 The Fortran API can be included in your code as follow:  
 ```fortran
 !Include library
