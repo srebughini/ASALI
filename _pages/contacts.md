@@ -4,7 +4,7 @@ redirect_from: /docs/index.html
 ---
 
 <div class="container">
-  <h2 class="text-right"><b>Social media</b></h2>
+  <h2 class="text-left"><b>Social media</b></h2>
   <p>Feel free to contact us with social media, we will reply you back as soon as possible:</p>
   <p>
       <a class="btn btn-primary" href="https://twitter.com/ASALIcode" role="button"><i class="fa-brands fa-twitter"></i>&nbsp;&nbsp;Twitter</a>  
@@ -12,7 +12,7 @@ redirect_from: /docs/index.html
       <a class="btn btn-primary" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa-brands fa-linkedin"></i>&nbsp;&nbsp;Linkedin</a>
   </p>
 
-  <h2 class="text-right"><b>Online form</b></h2>
+  <h2 class="text-left"><b>Online form</b></h2>
   <p>You can also contact us by compiling the form below:</p>
   <form action="https://formspree.io/f/mdopzvpj" method="POST">
     <p>
