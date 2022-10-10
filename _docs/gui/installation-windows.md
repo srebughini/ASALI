@@ -2,7 +2,7 @@
 permalink: /docs/gui-installation-windows/
 redirect_from: /docs/index.html
 ---
-# **Installation instructions - Windows OS**
+<h1 class="text-left"><b>Installation instructions</b></h1>
 Asali is based on different open-source codes:
 * [Cantera](https://cantera.org/): estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues

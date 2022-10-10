@@ -2,7 +2,7 @@
 permalink: /docs/gui-installation-mingw-w64/
 redirect_from: /docs/index.html
 ---
-<h1 class="text-right"><b>Installation instructions</b></h1>
+<h1 class="text-left"><b>Installation instructions</b></h1>
 Asali is based on different open-source codes:
 * [Cantera](https://cantera.org/): estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
@@ -12,7 +12,7 @@ Asali is based on different open-source codes:
 
 [Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
 
-<h2 class="text-right"><b>Requirements installation</b></h2>
+<h2 class="text-left"><b>Requirements installation</b></h2>
 The required libraries can be installed by typing these commands:  
 ```bash
 pacman -Syu
@@ -20,21 +20,21 @@ pacman -S scons python-setuptools make
 pacman -S mingw64/mingw-w64-x86_64-python mingw64/mingw-w64-x86_64-boost mingw64/mingw-w64-x86_64-gcc mingw64/mingw-w64-x86_64-python-setuptools mingw64/mingw-w64-x86_64-libopenmpt mingw64/mingw-w64-x86_64-openmp mingw64/mingw-w64-x86_64-python-ruamel-yaml mingw64/mingw-w64-x86_64-yaml-cpp mingw64/mingw-w64-x86_64-libyaml mingw64/mingw-w64-x86_64-cython mingw-w64-x86_64-gcc-fortran mingw64/mingw-w64-x86_64-libgd git 
 ```  
 
-<h2 class="text-right"><b>How to install Gtkmm libraries</b></h2>
+<h2 class="text-left"><b>How to install Gtkmm libraries</b></h2>
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
 ```bash
 pacman -S mingw64/mingw-w64-x86_64-gtkmm3
 ```
 More details can be found at: https://www.gtkmm.org/en/  
 
-<h2 class="text-right"><b>How to install PLplot</b></h2>
+<h2 class="text-left"><b>How to install PLplot</b></h2>
 [PLplot](http://plplot.org/) can be installed with the following command:  
 ```bash
 pacman -S mingw64/mingw-w64-x86_64-plplot
 ```
 Details can be found at: http://plplot.org/  
 
-<h2 class="text-right"><b>How to install Cantera</b></h2>
+<h2 class="text-left"><b>How to install Cantera</b></h2>
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
 ```bash
 git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1  
@@ -46,7 +46,7 @@ sudo scons install
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html   
 
-<h2 class="text-right"><b>How to install ASALI</b></h2>
+<h2 class="text-left"><b>How to install ASALI</b></h2>
 To install Asali run the following command.  
 ```bash
 ./build --os windows  
@@ -87,7 +87,7 @@ The installation can be customized with the following options:
     </tr>
     <tr>
         <th scope="row"><i>--no-interaction</i></th>
-        <td>Disable human interaction</i></td>
+        <td>Disable human interaction</td>
     </tr>
   </tbody>
 </table>

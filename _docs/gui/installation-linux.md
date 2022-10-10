@@ -2,7 +2,7 @@
 permalink: /docs/gui-installation-linux/
 redirect_from: /docs/index.html
 ---
-<h1 class="text-rigth"><b>Installation instructions</b></h1>
+<h1 class="text-left"><b>Installation instructions</b></h1>
 Asali is based on different open-source codes:
 * [Cantera](https://cantera.org/): estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database
 * [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
@@ -12,35 +12,35 @@ Asali is based on different open-source codes:
 
 Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Ubuntu 22.04 LTS and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
 
-<h2 class="text-rigth"><b>Requirements installation</b></h2>
+<h2 class="text-left"><b>Requirements installation</b></h2>
 The Linux based external libraries can be installed by typing these commands:  
-<h3 class="text-rigth"><b>Ubuntu 16.04/18.04/20.04 <br> Debian Wheezy</b></h3>
+<h3 class="text-left"><b>Ubuntu 16.04/18.04/20.04 <br> Debian Wheezy</b></h3>
 ```bash
 sudo apt-get update  
 sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran python libboost-dev cython python-dev python-numpy python-numpy-dev python-setuptools python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev  
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1  
 ```
-<h3 class="text-rigth"><b>Ubuntu 22.04</b></h3>
+<h3 class="text-left"><b>Ubuntu 22.04</b></h3>
 ```bash
 sudo apt-get update  
 sudo apt-get install build-essential scons git python3-ruamel.yaml python3-yaml g++ gfortran libboost-dev python3 python3-dev python3-setuptools python3-numpy cython3 libyaml-cpp-dev
 ```
 
-<h2 class="text-rigth"><b>How to install Gtkmm libraries</b></h2>
+<h2 class="text-left"><b>How to install Gtkmm libraries</b></h2>
 [Gtkmm](https://www.gtkmm.org/en/) can be downloaded with the following command:  
 ```bash
 sudo apt-get install libgtkmm-3.0-dev  
 ```
 More details can be found at: https://www.gtkmm.org/en/  
 
-<h2 class="text-rigth"><b>How to install PLplot</b></h2>
+<h2 class="text-left"><b>How to install PLplot</b></h2>
 [PLplot](http://plplot.org/) can be installed with the following command:  
 ```bash
 sudo apt-get install libplplot-dev plplot-driver-cairo  
 ```
 Details can be found at: http://plplot.org/  
 
-<h2 class="text-rigth"><b>How to install Cantera</b></h2>
+<h2 class="text-left"><b>How to install Cantera</b></h2>
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
 ```bash
 git clone https://github.com/Cantera/cantera.git -b 2.6 --depth=1  
@@ -52,7 +52,7 @@ sudo scons install
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html   
 
-<h2 class="text-rigth"><b>How to install ASALI</b></h2>
+<h2 class="text-left"><b>How to install ASALI</b></h2>
 To install Asali run the following command.  
 ```bash
 ./build --os ubuntu  
@@ -93,7 +93,7 @@ The installation can be customized with the following options:
     </tr>
     <tr>
         <th scope="row"><i>--no-interaction</i></th>
-        <td>Disable human interaction</i></td>
+        <td>Disable human interaction</td>
     </tr>
   </tbody>
 </table>

@@ -3,7 +3,7 @@ permalink: /docs/gui-introduction/
 redirect_from: /docs/index.html
 ---
 
-# **Introduction**
+<h1 class="text-left"><b>Installation instructions</b></h1>
 Let's go straight to the point! Asali main features are:
 * Estimation of thermodynamic/transport properties of ideal gas mixture
 * Linear regression of thermodynamic/transport properties of ideal gas mixture
@@ -14,7 +14,7 @@ Let's go straight to the point! Asali main features are:
 * Matlab and Octave interface for thermodynamic and transport properties
 
 If you are interested in  more details regarding models implemented in Asali have a look at the following paragraph; if not, jump to section number 2 for the installation instructions.
-## Thermodynamic/Transport properties
+<h2 class="text-left"><b>Thermodynamic/Transport properties</b></h2>
 The thermodynamic and transport properties evaluated by Asali are:
 * Thermal conductivity
 * Viscosity
@@ -24,11 +24,11 @@ The thermodynamic and transport properties evaluated by Asali are:
 * Specific heat at constant pressure
 
 Asali can be considered as a powerful user-friendly interface of  [Cantera](https://cantera.org/), thus all the transport and thermodynamic properties are estimated following the approach implemented in  [Cantera](https://cantera.org/). The transport properties are evaluated with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
-## Linear regression
+<h2 class="text-left"><b>Linear regression</b></h2>
 This feature of Asali applies a least square fit to derive *easy-to-handle* functions of thermodynamic/transport properties. In particular, Asali estimates the thermodynamic/transport properties by using [Cantera](https://cantera.org/) and derives exponential or linear functions describing these properties as a function of temperature.
-## Thermodynamic equilibrium
+<h2 class="text-left"><b>Thermodynamic equilibrium</b></h2>
 [Cantera](https://cantera.org/) calculates also the thermodynamic equilibrium of ideal gas mixtures. Therefore, Asali exploits this feature to evaluate the equilibrium at constant temperature or at constant pressure. For more information have a look at [Cantera](https://cantera.org/) user's guide.
-## Vacuum properties
+<h2 class="text-left"><b>Vacuum properties</b></h2>
 The vacuum properties estimated by Asali are:
 * Knudsen number
 * Mean gas velocity
@@ -36,7 +36,7 @@ The vacuum properties estimated by Asali are:
 * Diffusivity
 
 These properties are estimated according to the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. In particular, the diffusivity value is estimated considering both the viscous regime and the rarefied regime according to the Knudsen number.
-## Catalytic reactors
+<h2 class="text-left"><b>Catalytic reactors</b></h2>
 Different catalytic reactor models are implemented in Asali:
 * Batch reactor model
 * Continuous stirred tank reactor model (CSTR)
@@ -48,7 +48,7 @@ First of all, the transport and thermodynamic properties used by Asali in the re
 Secondly, from a kinetic point of view, all reactor models implemented in Asali handle micro-kinetic, user defined kinetic schemes and homogeneous reactions. In particular, the micro-kinetic or homogeneous schemes must be written in [Cantera](https://cantera.org/) format. Moreover, for those users who want to implement their own reaction rates, Asali has a user-friendly interface allowing them write their own kinetic scheme.
 Finally, the 1D Pseudo-homogeneous plug flow reactor model can be solved in transient and steady state mode, allowing a deep understading and analysis of the reactor behaviour.
 The `Pressure drops` option is a calculator of pressure drops for different reactor geometries (e.g. honeycomb, packed bed) based on state-of-the-art correlations.
-## Catalytic pellets
+<h2 class="text-left"><b>Catalytic pellets</b></h2>
 Different catalytic pellet geometries are implemented in ASALI:
 * Slab
 * Sphere
