@@ -1,8 +1,8 @@
 ---
-title: Thermodynamic properties
 permalink: /results/thermodynamic-properties/
 ---
-### **Operating conditions and composition**
+<h1 class="text-center"><b>Thermodynamic properties</b></h1>
+<h2 class="text-center"><b>Operating conditions and composition</b></h2>
 <table class="table table-striped text-center" style="margin:auto" id="input-table">
   <tbody>
     <tr>
@@ -23,7 +23,7 @@ permalink: /results/thermodynamic-properties/
   </tbody>
 </table>
 
-### **Properties**
+<h2 class="text-center"><b>Properties</b></h2>
 <table class="table table-striped text-center" style="margin:auto" id="output-table">
   <tbody>
     <tr>
