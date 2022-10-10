@@ -1,8 +1,7 @@
 ---
+title: Java version
 permalink: /docs/api-java/
 ---
-
-# **Java version**
 The Java API can be included in your code as follow:  
 ```java
 //Include library

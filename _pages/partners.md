@@ -1,6 +1,5 @@
 ---
 permalink: /pages/partners/
-redirect_from: /docs/index.html
 ---
 
 <div class="row">

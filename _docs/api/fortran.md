@@ -1,8 +1,8 @@
 ---
+title: Fortran version
 permalink: /docs/api-fortran/
 ---
 
-# **Fortran version**
 The Fortran API can be included in your code as follow:  
 ```fortran
 !Include library

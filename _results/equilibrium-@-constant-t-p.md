@@ -1,8 +1,7 @@
 ---
+title: Chemical equilibrium @ constant T, P
 permalink: /results/equilibrium-@-constant-t-p/
-redirect_from: /docs/index.html
 ---
-# **Chemical equilibrium @ constant T, P**
 Chemical equilibrium gas mixture composition at **constant temperature and pressure** estimated using <a href="https://github.com/srebughini/JASALI">JaSali</a>.
 ### **Operating conditions and composition**
 <table class="table table-striped text-center" style="margin:auto" id="input-table">

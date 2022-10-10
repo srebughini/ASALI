@@ -1,6 +1,5 @@
 ---
 permalink: /pages/webapp/
-redirect_from: /docs/index.html
 ---
 
 

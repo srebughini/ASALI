@@ -1,8 +1,7 @@
 ---
+title: Transport properties
 permalink: /results/transport-properties/
-redirect_from: /docs/index.html
 ---
-# **Transport properties**
 ### **Operating conditions and composition**
 <table class="table table-striped text-center" style="margin:auto"  id="input-table">
   <tbody>

@@ -1,8 +1,7 @@
 ---
+title: Thermodynamic properties
 permalink: /results/thermodynamic-properties/
-redirect_from: /docs/index.html
 ---
-# **Thermodynamic properties**
 ### **Operating conditions and composition**
 <table class="table table-striped text-center" style="margin:auto" id="input-table">
   <tbody>

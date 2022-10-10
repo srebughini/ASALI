@@ -1,6 +1,5 @@
 ---
 permalink: /pages/contacts/
-redirect_from: /docs/index.html
 ---
 
 <div class="container">

@@ -1,8 +1,7 @@
 ---
+title: Matlab and Octave version
 permalink: /docs/api-matlab/
 ---
-
-# **Matlab and Octave version**
 The [Matlab](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) and [Octave](https://www.gnu.org/software/octave/) API can be inlcuded in your code as follow:
 ```matlab
 %Class generation
