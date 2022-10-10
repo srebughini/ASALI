@@ -23,7 +23,7 @@
   display: block;
   padding: 10px 15px;
   // Place the border on the list items and negative margin up for better styling
-  margin-bottom: -1px;
+  // margin-bottom: -1px;
   background-color: $list-group-bg;
   border: 1px solid $list-group-border;
 
@@ -32,7 +32,7 @@
     @include border-top-radius($list-group-border-radius);
   }
   &:last-child {
-    margin-bottom: 0;
+    // margin-bottom: 0;
     @include border-bottom-radius($list-group-border-radius);
   }
 }
