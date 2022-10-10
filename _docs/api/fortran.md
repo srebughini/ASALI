@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-fortran/
-redirect_from: /docs/index.html
 ---
 
 # **Fortran version**

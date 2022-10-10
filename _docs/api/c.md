@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-c/
-redirect_from: /docs/index.html
 ---
 
 # **C version**

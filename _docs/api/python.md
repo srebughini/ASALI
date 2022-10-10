@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-python/
-redirect_from: /docs/index.html
 ---
 
 # **Python version**

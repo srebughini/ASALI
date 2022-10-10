@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-introduction/
-redirect_from: /docs/index.html
 ---
 
 # **Thermodynamic and transport properties**

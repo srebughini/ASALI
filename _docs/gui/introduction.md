@@ -1,6 +1,5 @@
 ---
 permalink: /docs/gui-introduction/
-redirect_from: /docs/index.html
 ---
 
 <h1 class="text-left"><b>Installation instructions</b></h1>

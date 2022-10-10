@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-javascript/
-redirect_from: /docs/index.html
 ---
 
 # **JavaScript version**

@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-java/
-redirect_from: /docs/index.html
 ---
 
 # **Java version**

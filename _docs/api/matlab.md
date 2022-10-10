@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-matlab/
-redirect_from: /docs/index.html
 ---
 
 # **Matlab and Octave version**

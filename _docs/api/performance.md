@@ -1,6 +1,5 @@
 ---
 permalink: /docs/api-performance/
-redirect_from: /docs/index.html
 ---
 
 # **APIs elapsed time comparison**  

@@ -1,6 +1,5 @@
 ---
 permalink: /docs/gui-installation-mingw-w64/
-redirect_from: /docs/index.html
 ---
 <h1 class="text-left"><b>Installation instructions</b></h1>
 Asali is based on different open-source codes:

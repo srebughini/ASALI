@@ -1,9 +1,8 @@
 ---
 permalink: /docs/gui-examples/
-redirect_from: /docs/index.html
 ---
 
-# **Examples**
+<h1 class="text-left"><b>Examples</b></h1>
 ![](https://i.imgur.com/oRdEgyl.gif)
 ![](https://i.imgur.com/3Yo1bmK.gif)
 ![](https://i.imgur.com/taxlKlv.gif)
