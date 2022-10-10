@@ -32,7 +32,7 @@
     @include border-top-radius($list-group-border-radius);
   }
   &:last-child {
-    margin-bottom: 0;
+    //margin-bottom: 0;
     @include border-bottom-radius($list-group-border-radius);
   }
 }
