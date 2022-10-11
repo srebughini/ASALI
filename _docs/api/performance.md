@@ -9,7 +9,7 @@ cd API/elapsedTimeComparison/
 ./run.sh -n 2000 -f test.md --compile  
 ```  
 
-## Assumptions and operating conditions  
+<h2 class="text-left"><b>Assumptions and operating conditions</b></h2>
 The gas mixture operating conditions are reported in the following table:  
 
 <table class="table table-striped">
@@ -53,7 +53,7 @@ The performance comparison has the following assumptions:
 * Number of runs: **2000**  
 * Elapsed time to initialize **output variables** is **not considered**  
 
-## Results  
+<h2 class="text-left"><b>Results</b></h2>
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
 
 <table class="table table-striped">

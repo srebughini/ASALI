@@ -3,7 +3,7 @@ permalink: /results/thermodynamic-properties/
 ---
 <h1 class="text-center"><b>Thermodynamic properties</b></h1>
 <h3 class="text-center"><b>Operating conditions and composition</b></h3>
-<table class="table table-striped text-center" style="margin:auto" id="input-table">
+<table class="table table-striped text-left" style="margin:auto" id="input-table">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
@@ -24,7 +24,7 @@ permalink: /results/thermodynamic-properties/
 </table>
 
 <h3 class="text-center"><b>Properties</b></h3>
-<table class="table table-striped text-center" style="margin:auto" id="output-table">
+<table class="table table-striped text-left" style="margin:auto" id="output-table">
   <tbody>
     <tr>
       <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
