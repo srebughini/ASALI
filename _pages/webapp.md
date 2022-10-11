@@ -27,7 +27,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <ul style="min-width:100%;width:50px;" class="dropdown-menu text-right">
+                <ul style="min-width:100%;width:50px;" class="form-control dropdown-menu text-right">
                     <li><a href="#">Action</a></li>
                     <li><a href="#">Another action</a></li>
                     <li><a href="#">Something else here</a></li>
