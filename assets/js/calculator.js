@@ -179,7 +179,7 @@ function showTransportProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     newRow.insertCell(1);
     newRow.insertCell(2);
-    nameCell.innerHTML = "Diffusivity";
+    nameCell.innerHTML = "<b>Diffusivity</b>";
   }
 
   {

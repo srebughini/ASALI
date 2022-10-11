@@ -1,9 +1,9 @@
 ---
 permalink: /results/transport-properties/
 ---
-<h1 class="text-center"><b>Transport properties</b></h1>
-<h3 class="text-center"><b>Operating conditions and composition</b></h3>
-<table class="table table-striped text-center" style="margin:auto"  id="input-table">
+<h1 class="text-left"><b>Transport properties</b></h1>
+<h3 class="text-left"><b>Operating conditions and composition</b></h3>
+<table class="table table-striped text-left" style="margin:auto"  id="input-table">
   <tbody>
     <tr>
       <th scope="row">Temperature <i class="fa-regular fa-temperature-three-quarters"></i></th>
@@ -23,8 +23,8 @@ permalink: /results/transport-properties/
   </tbody>
 </table>
 
-<h3 class="text-center"><b>Properties</b></h3>
-<table class="table table-striped text-center" style="margin:auto" id="output-table">
+<h3 class="text-left"><b>Properties</b></h3>
+<table class="table table-striped text-left" style="margin:auto" id="output-table">
   <tbody>
     <tr>
       <th scope="row">Property name <i class="fa-regular fa-vial"></i></th>
