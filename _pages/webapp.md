@@ -26,8 +26,16 @@ permalink: /pages/webapp/
     <p class="text-left">Insert gas mixture <b>molecule name</b> <i class="fa-regular fa-atom"></i> and <b>mole fraction</b> <i class="fa-regular fa-chart-pie"></i> composition: </p>
     <div class="form-group">
         <div class="input-group">
-                <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span> 
-                <input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+                <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
+                <div class="input-group-btn">
+                    <button type="button" style="min-width:100%;width:50px;" class="btn btn-default dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">-->
                 <span class="input-group-addon text-center" id="x1-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
