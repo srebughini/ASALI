@@ -27,14 +27,19 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <div class="input-group-btn" style="min-width:100%;width:50px;">
+                <ul style="min-width:100%;width:50px;" class="dropdown-menu text-right">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                </ul>
+                <!--<div class="input-group-btn" style="min-width:100%;width:50px;">
                     <button type="button" class="btn btn-default dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
                     <ul class="dropdown-menu text-right">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                     </ul>
-                </div>
+                </div>-->
                 <!--<select type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
                     <option>Rebu</option>
                     <option>Ciao</option>
