@@ -27,8 +27,8 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <div class="input-group-btn" style="min-width:100%;width:50px;">
-                    <button type="button" class="btn btn-primary dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                <div class="input-group-btn">
+                    <button type="button"  style="min-width:100%;width:50px;" class="btn btn-primary dropdown-toggle text-right" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
                     <ul class="dropdown-menu text-right">
                         <li><a href="#">Action</a></li>
                         <li><a href="#">Another action</a></li>
