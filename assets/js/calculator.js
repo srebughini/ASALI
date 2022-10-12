@@ -281,7 +281,7 @@ window.onload = function showResults() {
   }
 }
 
-window.onload = function showSpeciesList() {
+function showSpeciesList() {
   let actualPageUrl = window.location.href.toString();
   if (actualPageUrl.includes(webAppUrl))
   {
