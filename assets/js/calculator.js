@@ -3,7 +3,8 @@ var NSinput = 10;
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
-var webAppUrl = "/ASALI/pages/webapp/";
+var webAppPageUrl = "/ASALI/pages/webapp/";
+var resultsPageUrl = "/ASALI/results/";
 
 var webAppResults = "webAppResults";
 
@@ -135,7 +136,6 @@ function estimateMixtureProperties() {
 }
 
 function showOperatingConditions(results, doc) {
-  alert("ini operating conditions")
   let name = results["composition"]["name"];
   let mole = results["composition"]["mole"];
   let mass = results["composition"]["mass"];
@@ -143,8 +143,6 @@ function showOperatingConditions(results, doc) {
 
   doc.getElementById(T_id).innerHTML = results["temperature"];
   doc.getElementById(P_id).innerHTML = results["pressure"];
-
-  console.log("Temperature", results["temperature"])
 
   for (let i = 0; i < name.length; i++) {
     let newRow = inputTable.insertRow(-1);
@@ -157,7 +155,6 @@ function showOperatingConditions(results, doc) {
     moleCell.id = value_id_prefix.concat(i + 1);
     massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
   }
-  alert("end operating conditions")
 }
 
 function showTransportProperties(results, doc) {
@@ -479,11 +476,11 @@ function showSpeciesList() {
 
 window.onload = function updatePage() {
   let actualPageUrl = window.location.href.toString();
-  if (actualPageUrl.includes(webAppUrl)) {
+  if (actualPageUrl.includes(webAppPageUrl)) {
     showSpeciesList();
   }
-  else {
+  else if (actualPageUrl.includes(resultsPageUrl))
+  {
     showResults(actualPageUrl);
   }
-
 }
