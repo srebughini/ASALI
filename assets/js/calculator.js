@@ -25,6 +25,7 @@ function readComposition() {
       }
     }
   }
+  console.log(composition)
   return composition;
 }
 
