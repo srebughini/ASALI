@@ -248,7 +248,6 @@ function runWebApp() {
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
-      console.log("sono qui");
       showOperatingConditions(results, destinationWindow.document);
       showTransportProperties(results, destinationWindow.document);
     }
@@ -257,10 +256,15 @@ function runWebApp() {
 
 window.onload = function showResults() {
   let destinationPageUrl = window.location.href.toString();
+  console.log(destinationPageUrl);
   if (!destinationPageUrl.includes(webAppUrl))
   {
+    console.log("soo qui");
     // Get mixture properties from LocalStorage
     let results = JSON.parse(localStorage.getItem(webAppResults));
+
+    console.log(results);
+    console.log(Object.keys(results).length);
 
     if (Object.keys(results).length > 0) {
       showOperatingConditions(results, document);
