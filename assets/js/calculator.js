@@ -3,7 +3,7 @@ var NSinput = 10;
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
-var webAppUrl = "/ASALI/pages/webapp/"
+var webAppUrl = "/ASALI/pages/webapp/";
 
 var webAppResults = "webAppResults";
 
@@ -11,7 +11,7 @@ var name_id_prefix = "n";
 var value_id_prefix = "x";
 var T_id = "T";
 var P_id = "P";
-var Select_str = "Select"
+var Select_str = "Select";
 
 function readComposition() {
   const composition = {};
@@ -21,7 +21,7 @@ function readComposition() {
 
     if (!value_obj.value.includes(Select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
-      let name = select_obj.options[select_obj.selectedIndex].value;
+      let name = select_obj.options[select_obj.selectedIndex].value.toString();
       if (!isNaN(value)) {
         composition[name] = value;
       }
@@ -144,6 +144,8 @@ function showOperatingConditions(results, doc) {
   doc.getElementById(T_id).innerHTML = results["temperature"];
   doc.getElementById(P_id).innerHTML = results["pressure"];
 
+  console.log("Temperature", results["temperature"])
+
   for (let i = 0; i < name.length; i++) {
     let newRow = inputTable.insertRow(-1);
     let nameCell = newRow.insertCell(0);
@@ -235,8 +237,6 @@ function showEquilibrium(results, doc) {
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties();
-
-  console.log(results);
 
   // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
