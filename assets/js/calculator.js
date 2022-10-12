@@ -272,8 +272,6 @@ window.onload = function showResults() {
 }
 
 window.onload = function showSpeciesList() {
-  let select = document.getElementById('n1');
-
   let moleculesDict = {
     "AR": {
       elementsSymbol: ["Ar"],
@@ -467,12 +465,13 @@ window.onload = function showSpeciesList() {
 
   let specieNames = Object.keys(moleculesDict);
 
-
-  for (let i = 0; i <= specieNames.length; i++) {
-    let opt = document.createElement('option');
-    opt.value = specieNames[i];
-    opt.text = specieNames[i];
-    select.add(opt);
+  for (let i = 0; i < NSinput; i++) {
+    let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
+    for (let j = 0; j < specieNames.length; j++) {
+      let opt = document.createElement('option');
+      opt.value = specieNames[j];
+      opt.text = specieNames[j];
+      select_obj.add(opt);
+    }
   }
-
 }
