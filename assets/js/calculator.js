@@ -467,19 +467,12 @@ window.onload = function showSpeciesList() {
 
   let specieNames = Object.keys(moleculesDict);
 
-  {
-    let opt = document.createElement('option');
-    opt.value = "";
-    opt.innerHTML = "Select species..";
-    select.appendChild(opt);
-
-  }
 
   for (let i = 0; i <= specieNames.length; i++) {
     let opt = document.createElement('option');
     opt.value = specieNames[i];
-    opt.innerHTML = specieNames[i];
-    select.appendChild(opt);
+    opt.text = specieNames[i];
+    select.add(opt);
   }
 
 }
