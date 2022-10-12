@@ -129,15 +129,13 @@ function estimateMixtureProperties() {
         "diffusivity": outputDiff,
         "equilibrium": outputEq
       }
-
-      console.log(output);
-
       return output;
     }
   }
 }
 
 function showOperatingConditions(results, doc) {
+  alert("ini operating conditions")
   let name = results["composition"]["name"];
   let mole = results["composition"]["mole"];
   let mass = results["composition"]["mass"];
@@ -159,6 +157,7 @@ function showOperatingConditions(results, doc) {
     moleCell.id = value_id_prefix.concat(i + 1);
     massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
   }
+  alert("end operating conditions")
 }
 
 function showTransportProperties(results, doc) {
@@ -239,12 +238,9 @@ function showEquilibrium(results, doc) {
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties();
-  console.log(results)
-  alert("got results")
+
   // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
-  
-  alert("got results")
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
