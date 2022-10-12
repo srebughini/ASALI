@@ -17,6 +17,11 @@ function readComposition() {
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
+
+    console.log(name_obj);
+    console.log(name_obj.value);
+    console.log(value_obj)
+
     if (!value_obj.value.includes(Select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
       let name = name_obj.value;
