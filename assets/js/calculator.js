@@ -241,7 +241,7 @@ function runWebApp() {
   // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
 
-  if (Object.keys(output).length > 0) {
+  if (Object.keys(results).length > 0) {
     // Genere new window object
     let destinationWindow = window.open(transportPageUrl, "_blank");
 
