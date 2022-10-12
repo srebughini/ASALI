@@ -21,13 +21,11 @@ function readComposition() {
     if (!value_obj.value.includes(Select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
       let name = select_obj.options[select_obj.selectedIndex].value;
-      console.log(name)
       if (!isNaN(value)) {
         composition[name] = value;
       }
     }
   }
-  console.log(composition)
   return composition;
 }
 
@@ -63,9 +61,6 @@ function estimateMixtureProperties() {
 
     //Read composition
     let composition = readComposition();
-
-    console.log(composition)
-    alert("Ho letto composition")
 
     if (Object.keys(composition).length == 0) {
       alert("Input composition not valid!");
@@ -239,6 +234,8 @@ function showEquilibrium(results, doc) {
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties();
+
+  console.log(results);
 
   // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
