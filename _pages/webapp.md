@@ -8,7 +8,6 @@ permalink: /pages/webapp/
     <p class="text-left">Insert gas mixture <b>temperature</b> <i class="fa-regular fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-regular fa-gauge"></i> conditions:</p>
     <div class="form-group">
             <div class="input-group">
-                <!--<span class="input-group-addon text-left" id="T-addon">Temperature</span>-->
                 <span class="input-group-addon text-left" id="T-addon"><i class="fa-regular fa-temperature-three-quarters"></i>&nbsp;&nbsp;</span>
                 <input type="number" class="form-control text-right" placeholder="298.15" aria-describedby="T-addon" id="T" min="0" max="2000">
                 <span class="input-group-addon text-right" id="T-addon">K&ensp;</span>
@@ -16,7 +15,6 @@ permalink: /pages/webapp/
     </div>
     <div class="form-group">
         <div class="input-group">
-            <!--<span class="input-group-addon text-left" id="P-addon">Pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
             <span class="input-group-addon text-left" id="T-addon"><i class="fa-regular fa-gauge"></i></span>
             <input type="number" class="form-control text-right" placeholder="101325" aria-describedby="P-addon" id="P" min="0">
             <span class="input-group-addon text-right">Pa</span>
@@ -27,7 +25,10 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+                <select type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">
+                    <option>H2</option>
+                    <option>O2</option>
+                </select>
                 <span class="input-group-addon text-center" id="x1-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
