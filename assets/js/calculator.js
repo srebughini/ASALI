@@ -19,7 +19,7 @@ function readComposition() {
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
     if (!value_obj.value.includes(Select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
-      let name = name_obj.value.toUpperCase();
+      let name = name_obj.value;
       if (!isNaN(value)) {
         composition[name] = value;
       }
@@ -60,7 +60,10 @@ function estimateMixtureProperties() {
     })
 
     //Read composition
-    let composition = readComposition()
+    let composition = readComposition();
+
+    console.log(composition)
+    alert("Ho letto composition")
 
     if (Object.keys(composition).length == 0) {
       alert("Input composition not valid!");
