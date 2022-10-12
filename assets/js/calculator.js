@@ -237,9 +237,12 @@ function showEquilibrium(results, doc) {
 function runWebApp() {
   // Estimate mixture properties
   let results = estimateMixtureProperties();
-
+  console.log(results)
+  alert("got results")
   // Save mixture properties from LocalStorage
   localStorage.setItem(webAppResults, JSON.stringify(results));
+  
+  alert("got results")
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
