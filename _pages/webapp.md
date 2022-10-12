@@ -3,7 +3,7 @@ permalink: /pages/webapp/
 ---
 
 
-<div class="container">
+<div class="container" onload="showSpeciesList()">
     <h2 class="text-center"><b>Operating conditions</b></h2>
     <p class="text-left">Insert gas mixture <b>temperature</b> <i class="fa-regular fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-regular fa-gauge"></i> conditions:</p>
     <div class="form-group">
@@ -25,7 +25,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n1-addon" id="n1" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n1-addon" id="n1">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">-->
@@ -36,7 +36,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n2-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n2-addon" id="n2" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n2-addon" id="n2">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n2-addon" id="n2">-->
@@ -47,7 +47,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n3-addon"><i class="fa-regular fa-atom"></i></span>
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n3-addon" id="n3" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n3-addon" id="n3">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n3-addon" id="n3">-->
@@ -58,7 +58,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n4-addon"><i class="fa-regular fa-atom"></i></span>
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n4-addon" id="n4" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n4-addon" id="n4">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n4-addon" id="n4">-->
@@ -69,7 +69,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n5-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n5-addon" id="n5" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n5-addon" id="n5">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n5-addon" id="n5">-->
@@ -80,7 +80,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n6-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n6-addon" id="n6" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n6-addon" id="n6">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n6-addon" id="n6">-->
@@ -91,7 +91,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n7-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n7-addon" id="n7" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n7-addon" id="n7">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n7-addon" id="n7">-->
@@ -102,7 +102,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n8-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n8-addon" id="n8" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n8-addon" id="n8">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n8-addon" id="n8">-->
@@ -113,7 +113,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n9-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n9-addon" id="n9" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n9-addon" id="n9">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n9-addon" id="n9">-->
@@ -124,7 +124,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n10-addon"><i class="fa-regular fa-atom"></i></span> 
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n10-addon" id="n10" onload="showSpeciesList()">
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n10-addon" id="n10">
                     <option value="">Select...</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n10-addon" id="n10">-->

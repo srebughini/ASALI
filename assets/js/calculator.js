@@ -254,20 +254,23 @@ function runWebApp() {
 }
 
 window.onload = function showResults() {
-  // Get mixture properties from LocalStorage
-  let results = JSON.parse(localStorage.getItem(webAppResults));
+  let destinationPageUrl = window.location.href.toString();
+  if (!actualPageUrl.includes(webAppUrl))
+  {
+    // Get mixture properties from LocalStorage
+    let results = JSON.parse(localStorage.getItem(webAppResults));
 
-  if (Object.keys(results).length > 0) {
-    let destinationPageUrl = window.location.href.toString();
-    showOperatingConditions(results, document);
-    if (destinationPageUrl.includes(transportPageUrl)) {
-      showTransportProperties(results, document);
-    }
-    else if (destinationPageUrl.includes(thermoPageUrl)) {
-      showThermoProperties(results, document);
-    }
-    else if (destinationPageUrl.includes(eqTPPageUrl)) {
-      showEquilibrium(results, document);
+    if (Object.keys(results).length > 0) {
+      showOperatingConditions(results, document);
+      if (destinationPageUrl.includes(transportPageUrl)) {
+        showTransportProperties(results, document);
+      }
+      else if (destinationPageUrl.includes(thermoPageUrl)) {
+        showThermoProperties(results, document);
+      }
+      else if (destinationPageUrl.includes(eqTPPageUrl)) {
+        showEquilibrium(results, document);
+      }
     }
   }
 }
