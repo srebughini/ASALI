@@ -257,7 +257,7 @@ function runWebApp() {
 
 window.onload = function showResults() {
   let destinationPageUrl = window.location.href.toString();
-  if (!actualPageUrl.includes(webAppUrl))
+  if (!destinationPageUrl.includes(webAppUrl))
   {
     // Get mixture properties from LocalStorage
     let results = JSON.parse(localStorage.getItem(webAppResults));
