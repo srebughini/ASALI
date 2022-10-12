@@ -10,21 +10,18 @@ var name_id_prefix = "n";
 var value_id_prefix = "x";
 var T_id = "T";
 var P_id = "P";
+var Select_str = "Select"
 
 function readComposition() {
   const composition = {};
   for (let i = 0; i < NSinput; i++) {
     let name_obj = document.getElementById(name_id_prefix.concat(i + 1));
-    if (name_obj) {
-      let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
-      if (value_obj) {
-        let value = parseFloat(value_obj.value).toFixed(6);
-        let name = name_obj.value;
-        if (name) {
-          if (!isNaN(value)) {
-            composition[name] = value;
-          }
-        }
+    let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
+    if (!value_obj.value.includes(Select_str)) {
+      let value = parseFloat(value_obj.value).toFixed(6);
+      let name = name_obj.value.toUpperCase();
+      if (!isNaN(value)) {
+        composition[name] = value;
       }
     }
   }
