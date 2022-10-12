@@ -3,7 +3,7 @@ var NSinput = 10;
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
-var webAppUrl = "ASALI/webapp/"
+var webAppUrl = "/ASALI/pages/webapp/"
 
 var webAppResults = "webAppResults";
 
