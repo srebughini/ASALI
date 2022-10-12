@@ -25,7 +25,7 @@ permalink: /pages/webapp/
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n1-addon"><i class="fa-regular fa-atom"></i></span>
-                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n1-addon" id="n1" onload="showSpeciesList()";>
+                <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n1-addon" id="n1" onload="showSpeciesList()">
                     <option value="">Select species</option>
                 </select>
                 <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">-->
