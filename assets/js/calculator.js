@@ -244,7 +244,7 @@ function runWebApp() {
 
   if (Object.keys(results).length > 0) {
     // Genere new window object
-    let destinationWindow = window.open(transportPageUrl, "_blank");
+    let destinationWindow = window.open(transportPageUrl) //, "_blank");
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
