@@ -130,6 +130,8 @@ function estimateMixtureProperties() {
         "equilibrium": outputEq
       }
 
+      console.log(output);
+
       return output;
     }
   }
