@@ -4,6 +4,7 @@
   - gui-installation-linux
   - gui-installation-mingw-w64
   - gui-installation-windows
+  - gui-installation-docker
   - gui-examples
 
 - title: Application Programming Interface
