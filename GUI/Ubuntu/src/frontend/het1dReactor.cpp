@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    het1dReactor::het1dReactor(std::string kineticType)
+    het1dReactor::het1dReactor(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -68,8 +68,8 @@ namespace ASALI
           honeyCombCPSILabel_("CPSI"),
           honeyCombWallThicknessLabel_("Wall thickness"),
           honeyCombDuctLabel_("Duct section"),
-          logo1_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/Het1DLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/Het1DLogo.png")),
           reactorType_("none"),
           tubularBool_(false),
           honeyCombBool_(false),
@@ -78,14 +78,14 @@ namespace ASALI
     {
         eq_ = new ASALI::het1dEquations();
 
-        //Input
+        // Input
         {
             this->set_border_width(15);
             this->set_title("ASALI: 1D HET reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-            //Add background grid
+            // Add background grid
             this->add(mainBox_);
 
             mainBox_.set_halign(Gtk::ALIGN_START);
@@ -101,7 +101,7 @@ namespace ASALI
                 propertiesGrid_.set_row_spacing(10);
                 propertiesGrid_.set_column_homogeneous(true);
 
-                //Length
+                // Length
                 propertiesGrid_.attach(lengthLabel_, 0, 0, 1, 1);
                 propertiesGrid_.attach(lengthEntry_, 1, 0, 1, 1);
                 lengthEntry_.set_text("1");
@@ -112,7 +112,7 @@ namespace ASALI
                 lengthCombo_.append("mm");
                 lengthCombo_.set_active(0);
 
-                //Velocity
+                // Velocity
                 propertiesGrid_.attach(velocityLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(velocityEntry_, 1, 1, 1, 1);
                 velocityEntry_.set_text("1");
@@ -125,7 +125,7 @@ namespace ASALI
                 velocityCombo_.append("cm/h");
                 velocityCombo_.set_active(0);
 
-                //Time
+                // Time
                 propertiesGrid_.attach(timeLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 2, 1, 1);
                 timeEntry_.set_text("1");
@@ -136,7 +136,7 @@ namespace ASALI
                 timeCombo_.append("d");
                 timeCombo_.set_active(0);
 
-                //Save options
+                // Save options
                 propertiesGrid_.attach(saveLabel_, 0, 3, 1, 1);
                 propertiesGrid_.attach(saveEntry_, 1, 3, 1, 1);
                 saveEntry_.set_text("0.1");
@@ -147,24 +147,24 @@ namespace ASALI
                 saveCombo_.append("d");
                 saveCombo_.set_active(0);
 
-                //Number of points
+                // Number of points
                 propertiesGrid_.attach(pointsLabel_, 3, 0, 1, 1);
                 propertiesGrid_.attach(pointsEntry_, 4, 0, 1, 1);
                 pointsEntry_.set_text("10");
 
-                //Inert species
+                // Inert species
                 propertiesGrid_.attach(inertLabel_, 3, 1, 1, 1);
                 propertiesGrid_.attach(inertEntry_, 4, 1, 1, 1);
                 inertEntry_.set_text("AR");
 
-                //Energy
+                // Energy
                 propertiesGrid_.attach(energyLabel_, 3, 2, 1, 1);
                 propertiesGrid_.attach(energyCombo_, 4, 2, 1, 1);
                 energyCombo_.append("on");
                 energyCombo_.append("off");
                 energyCombo_.set_active(1);
 
-                //Type
+                // Type
                 propertiesGrid_.attach(reactorTypeLabel_, 3, 3, 1, 1);
                 propertiesGrid_.attach(reactorTypeCombo_, 4, 3, 1, 1);
                 reactorTypeCombo_.append("tubular");
@@ -173,7 +173,7 @@ namespace ASALI
                 reactorTypeCombo_.signal_changed().connect(sigc::mem_fun(*this, &het1dReactor::options));
                 reactorTypeCombo_.set_active(0);
 
-                //Tubular
+                // Tubular
                 {
                     tubularTubeEntry_.set_text("1");
 
@@ -196,7 +196,7 @@ namespace ASALI
                     tubularDuctCombo_.set_active(1);
                 }
 
-                //Honeycomb
+                // Honeycomb
                 {
                     honeyCombCPSIEntry_.set_text("400");
 
@@ -213,10 +213,9 @@ namespace ASALI
                     honeyCombDuctCombo_.set_active(1);
                 }
 
-                //Packed bed
+                // Packed bed
                 {
                     packedBedTubeEntry_.set_text("1");
-
                     packedBedTubeCombo_.append("m");
                     packedBedTubeCombo_.append("dm");
                     packedBedTubeCombo_.append("cm");
@@ -234,15 +233,15 @@ namespace ASALI
                     packedBedVoidFractionEntry_.set_text("0.42");
                 }
 
-                //Beer
+                // Beer
                 {
-                    beerLabel_.set_text(this->getBeerShort());
+                    beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                     beerLabel_.set_use_markup(true);
                     beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
                     propertiesGrid_.attach(beerLabel_, 3, 4, 2, 3);
                 }
 
-                //Buttons
+                // Buttons
                 propertiesGrid_.attach(exitButton3_, 0, 11, 2, 1);
                 exitButton3_.signal_clicked().connect(sigc::mem_fun(*this, &het1dReactor::exit));
                 propertiesGrid_.attach(nextButton3_, 3, 11, 2, 1);
@@ -252,7 +251,7 @@ namespace ASALI
             }
         }
 
-        //Recap
+        // Recap
         {
             recapMainBox_.set_halign(Gtk::ALIGN_CENTER);
             recapMainBox_.set_spacing(10);
@@ -312,81 +311,81 @@ namespace ASALI
                     recapGrid_.set_row_spacing(10);
                     recapGrid_.set_column_homogeneous(true);
 
-                    //Reactor type
+                    // Reactor type
                     recapReactorTypeLabel_.set_text("Reactor type");
                     recapGrid_.attach(recapReactorTypeLabel_, 0, 0, 1, 1);
                     recapGrid_.attach(recapReactorTypeValueLabel_, 1, 0, 1, 1);
 
-                    //Energy type
+                    // Energy type
                     recapEnergyLabel_.set_text("Energy balance is");
                     recapGrid_.attach(recapEnergyLabel_, 0, 1, 1, 1);
                     recapGrid_.attach(recapEnergyValueLabel_, 1, 1, 1, 1);
 
-                    //Kinetic type
+                    // Kinetic type
                     recapKineticLabel_.set_text("Kinetic model from");
                     recapGrid_.attach(recapKineticLabel_, 0, 2, 1, 1);
                     recapGrid_.attach(recapKineticValueLabel_, 1, 2, 1, 1);
 
-                    //Time
+                    // Time
                     recapTimeLabel_.set_text("Integration time");
                     recapTimeUDLabel_.set_text("s");
                     recapGrid_.attach(recapTimeLabel_, 0, 3, 1, 1);
                     recapGrid_.attach(recapTimeUDLabel_, 2, 3, 1, 1);
                     recapGrid_.attach(recapTimeValueLabel_, 1, 3, 1, 1);
 
-                    //Save
+                    // Save
                     recapSaveLabel_.set_text("Save solution every");
                     recapSaveUDLabel_.set_text("s");
                     recapGrid_.attach(recapSaveLabel_, 0, 4, 1, 1);
                     recapGrid_.attach(recapSaveUDLabel_, 2, 4, 1, 1);
                     recapGrid_.attach(recapSaveValueLabel_, 1, 4, 1, 1);
 
-                    //Points
+                    // Points
                     recapPointsLabel_.set_text("Solving with");
                     recapPointsUDLabel_.set_text("points");
                     recapGrid_.attach(recapPointsLabel_, 0, 5, 1, 1);
                     recapGrid_.attach(recapPointsUDLabel_, 2, 5, 1, 1);
                     recapGrid_.attach(recapPointsValueLabel_, 1, 5, 1, 1);
 
-                    //Inert
+                    // Inert
                     recapInertLabel_.set_text("Inert species is");
                     recapGrid_.attach(recapInertLabel_, 0, 6, 1, 1);
                     recapGrid_.attach(recapInertValueLabel_, 1, 6, 1, 1);
 
-                    //Velocity
+                    // Velocity
                     recapVelocityLabel_.set_text("Velocity");
                     recapGrid_.attach(recapVelocityLabel_, 3, 0, 1, 1);
                     recapVelocityUDLabel_.set_text("m/s");
                     recapGrid_.attach(recapVelocityUDLabel_, 5, 0, 1, 1);
                     recapGrid_.attach(recapVelocityValueLabel_, 4, 0, 1, 1);
 
-                    //Temperature
+                    // Temperature
                     recapTemperatureLabel_.set_text("Temperature");
                     recapGrid_.attach(recapTemperatureLabel_, 3, 1, 1, 1);
                     recapTemperatureUDLabel_.set_text("K");
                     recapGrid_.attach(recapTemperatureUDLabel_, 5, 1, 1, 1);
                     recapGrid_.attach(recapTemperatureValueLabel_, 4, 1, 1, 1);
 
-                    //Pressure
+                    // Pressure
                     recapPressureLabel_.set_text("Pressure");
                     recapGrid_.attach(recapPressureLabel_, 3, 2, 1, 1);
                     recapPressureUDLabel_.set_text("Pa");
                     recapGrid_.attach(recapPressureUDLabel_, 5, 2, 1, 1);
                     recapGrid_.attach(recapPressureValueLabel_, 4, 2, 1, 1);
 
-                    //Mole/Mass fraction
+                    // Mole/Mass fraction
                     recapGrid_.attach(recapFractionLabel_, 3, 3, 1, 1);
                     recapGrid_.attach(recapFractionNameLabel_, 5, 3, 1, 1);
                     recapGrid_.attach(recapFractionValueLabel_, 4, 3, 1, 1);
 
-                    //Length
+                    // Length
                     recapLengthLabel_.set_text("Length");
                     recapGrid_.attach(recapLengthLabel_, 3, 4, 1, 1);
                     recapLengthUDLabel_.set_text("m");
                     recapGrid_.attach(recapLengthUDLabel_, 5, 4, 1, 1);
                     recapGrid_.attach(recapLengthValueLabel_, 4, 4, 1, 1);
 
-                    //Tubular
+                    // Tubular
                     {
                         recapTubularTubeLabel_.set_text("Tube diameter");
                         recapTubularTubeUDLabel_.set_text("m");
@@ -395,7 +394,7 @@ namespace ASALI
                         recapTubularDuctLabel_.set_text("Tube section");
                     }
 
-                    //Honeycomb
+                    // Honeycomb
                     {
                         recapHoneyCombCPSILabel_.set_text("CPSI");
                         recapHoneyCombWallThicknessLabel_.set_text("Wall thickness");
@@ -403,7 +402,7 @@ namespace ASALI
                         recapHoneyCombDuctLabel_.set_text("Channel section");
                     }
 
-                    //Packedbed
+                    // Packedbed
                     {
                         recapPackedBedTubeLabel_.set_text("Tube diameter");
                         recapPackedBedTubeUDLabel_.set_text("m");
@@ -412,7 +411,7 @@ namespace ASALI
                         recapPackedBedParticleUDLabel_.set_text("m");
                     }
 
-                    //Buttons
+                    // Buttons
                     recapGrid_.attach(backButton3_, 0, 13, 3, 1);
                     backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &het1dReactor::input));
                     recapGrid_.attach(exitButton4_, 3, 13, 3, 1);
@@ -420,10 +419,6 @@ namespace ASALI
                 }
             }
         }
-    }
-
-    het1dReactor::~het1dReactor()
-    {
     }
 
     void het1dReactor::options()
@@ -463,7 +458,7 @@ namespace ASALI
             propertiesGrid_.remove(packedBedVoidFractionEntry_);
         }
 
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -573,10 +568,10 @@ namespace ASALI
         dt_ = Glib::Ascii::strtod(saveEntry_.get_text());
         NP_ = Glib::Ascii::strtod(pointsEntry_.get_text());
 
-        ConvertsToMeter(L_, lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_, velocityCombo_.get_active_text());
-        ConvertsToSecond(tf_, timeCombo_.get_active_text());
-        ConvertsToSecond(dt_, saveCombo_.get_active_text());
+        unitConversion_->toMeter(L_, lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_, velocityCombo_.get_active_text());
+        unitConversion_->toSecond(tf_, timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_, saveCombo_.get_active_text());
 
         reactorType_ = reactorTypeCombo_.get_active_text();
         energy_ = energyCombo_.get_active_text();
@@ -587,13 +582,11 @@ namespace ASALI
         {
             Dt_ = Glib::Ascii::strtod(tubularTubeEntry_.get_text());
 
-            ConvertsToMeter(Dt_, tubularTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_, tubularTubeCombo_.get_active_text());
 
             section_ = tubularDuctCombo_.get_active_text();
 
-            tw_ = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
-
-            ConvertsToMeter(tw_, tubularWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_, tubularWallThicknessCombo_.get_active_text());
         }
         else if (reactorTypeCombo_.get_active_text() == "packed bed")
         {
@@ -601,15 +594,15 @@ namespace ASALI
             Dp_ = Glib::Ascii::strtod(packedBedParticleEntry_.get_text());
             epsi_ = Glib::Ascii::strtod(packedBedVoidFractionEntry_.get_text());
 
-            ConvertsToMeter(Dt_, packedBedTubeCombo_.get_active_text());
-            ConvertsToMeter(Dp_, packedBedParticleCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_, packedBedTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dp_, packedBedParticleCombo_.get_active_text());
         }
         else if (reactorTypeCombo_.get_active_text() == "honeycomb")
         {
             cpsi_ = Glib::Ascii::strtod(honeyCombCPSIEntry_.get_text());
             tw_ = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_, honeyCombWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_, honeyCombWallThicknessCombo_.get_active_text());
 
             section_ = honeyCombDuctCombo_.get_active_text();
         }
@@ -645,26 +638,26 @@ namespace ASALI
             this->clean();
             this->add(recapMainBox_);
 
-            //Reactor type
+            // Reactor type
             {
                 recapReactorTypeValueLabel_.set_text(reactorType_);
             }
 
-            //Velocity
+            // Velocity
             {
                 std::ostringstream s;
                 s << v_;
                 recapVelocityValueLabel_.set_text(s.str());
             }
 
-            //Temperature
+            // Temperature
             {
                 std::ostringstream s;
                 s << T_;
                 recapTemperatureValueLabel_.set_text(s.str());
             }
 
-            //Pressure
+            // Pressure
             {
                 std::ostringstream s;
                 s << p_;
@@ -672,7 +665,7 @@ namespace ASALI
             }
 
             int NC = -1;
-            //Mole/mass fraction
+            // Mole/mass fraction
             {
                 recapFractionLabel_.set_text(fractionCombo_.get_active_text());
                 {
@@ -708,7 +701,7 @@ namespace ASALI
                 }
             }
 
-            //Length
+            // Length
             {
                 recapGrid_.attach(recapLengthLabel_, 3, 4 + NC, 1, 1);
                 recapGrid_.attach(recapLengthUDLabel_, 5, 4 + NC, 1, 1);
@@ -720,28 +713,28 @@ namespace ASALI
                 }
             }
 
-            //Time
+            // Time
             {
                 std::ostringstream s;
                 s << tf_;
                 recapTimeValueLabel_.set_text(s.str());
             }
 
-            //Save
+            // Save
             {
                 std::ostringstream s;
                 s << dt_;
                 recapSaveValueLabel_.set_text(s.str());
             }
 
-            //Points
+            // Points
             {
                 std::ostringstream s;
                 s << NP_;
                 recapPointsValueLabel_.set_text(s.str());
             }
 
-            //Inert
+            // Inert
             {
                 recapInertValueLabel_.set_text(inert_);
             }
@@ -837,7 +830,7 @@ namespace ASALI
                 honeyCombBool_ = false;
             }
 
-            //Kinetic
+            // Kinetic
             {
                 recapKineticValueLabel_.set_text(kineticCombo_.get_active_text());
             }
@@ -869,10 +862,10 @@ namespace ASALI
             if (chemistryInterface_->numberOfHomogeneousReactions() != 0.)
             {
                 Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(), true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = smallDialog.run();
 
-                //Handle the response:
+                // Handle the response:
                 switch (answer)
                 {
                 case (Gtk::RESPONSE_YES):
@@ -1202,12 +1195,9 @@ namespace ASALI
         eq_->store(0., x0);
         this->bar(1e-05, "Starting...");
 
-        //Start solving
+        // Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
             double dt = 0.;
-
             if (alfa_ != 0.)
             {
                 dt = dt_ / (eq_->NumberOfEquations() * 5.);
@@ -1217,30 +1207,26 @@ namespace ASALI
                 dt = dt_ / 100.;
             }
 
+            double ti = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
-            double timef = 0.;
-            double tm = 0;
             int Nt = int(tf_ / dt) + 1;
             for (int i = 0; i < Nt; i++)
             {
-                tf = ti + dt;
-
                 bvp.setInitialConditions(ti, x0);
-                bvp.solve(tf, x0);
+                bvp.solve(ti + dt, x0);
 
                 td += dt;
 
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
-                    eq_->store(tf, x0);
+                    eq_->store(ti + dt, x0);
                     td = 0.;
                 }
 
-                timef = double(std::clock() / CLOCKS_PER_SEC);
-                tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                ti = tf;
+                ti = ti + dt;
 
                 this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -1296,7 +1282,7 @@ namespace ASALI
 
     void het1dReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "het.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "het.asali");
         if (filename != "")
         {
             std::ofstream output;
@@ -1321,7 +1307,7 @@ namespace ASALI
 
             if (kineticCombo_.get_active_text() == "ASALI")
             {
-                //Conversion from mass to mole
+                // Conversion from mass to mole
                 std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
                 std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
                 {
@@ -1356,7 +1342,7 @@ namespace ASALI
                         {
                             for (unsigned int k = 0; k < NP_; k++)
                             {
-                                //Bulk
+                                // Bulk
                                 {
                                     chemistryInterface_->setTemperature(Tb[j][k]);
                                     chemistryInterface_->setPressure(p_);
@@ -1381,7 +1367,7 @@ namespace ASALI
                                     }
                                 }
 
-                                //Wall
+                                // Wall
                                 {
                                     chemistryInterface_->setTemperature(Tw[j][k]);
                                     chemistryInterface_->setPressure(p_);
@@ -1541,7 +1527,7 @@ namespace ASALI
             }
             else if (kineticCombo_.get_active_text() == "CANTERA")
             {
-                //Conversion from mass to mole
+                // Conversion from mass to mole
                 std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
                 std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
                 std::vector<std::string> n = chemistryInterface_->names();
@@ -1551,7 +1537,7 @@ namespace ASALI
                     {
                         for (unsigned int k = 0; k < NP_; k++)
                         {
-                            //Bulk
+                            // Bulk
                             {
                                 chemistryInterface_->setTemperature(Tb[j][k]);
                                 chemistryInterface_->setPressure(p_);
@@ -1568,7 +1554,7 @@ namespace ASALI
                                     moleb[j][k][i] = x[i];
                                 }
                             }
-                            //Wall
+                            // Wall
                             {
                                 chemistryInterface_->setTemperature(Tw[j][k]);
                                 chemistryInterface_->setPressure(p_);
@@ -1769,7 +1755,7 @@ namespace ASALI
             std::vector<std::vector<std::vector<double>>> yb = eq_->getBulkSpecie();
             std::vector<std::vector<std::vector<double>>> yw = eq_->getWallSpecie();
 
-            //Conversion from mass to mole
+            // Conversion from mass to mole
             std::vector<std::vector<std::vector<double>>> moleb = eq_->getBulkSpecie();
             std::vector<std::vector<std::vector<double>>> molew = eq_->getWallSpecie();
             std::vector<std::string> n = chemistryInterface_->names();
@@ -1807,7 +1793,7 @@ namespace ASALI
                     {
                         for (unsigned int k = 0; k < NP_; k++)
                         {
-                            //Bulk
+                            // Bulk
                             {
                                 chemistryInterface_->setTemperature(Tb[j][k]);
                                 chemistryInterface_->setPressure(p_);
@@ -1824,7 +1810,7 @@ namespace ASALI
                                     moleb[j][k][i] = x[i];
                                 }
                             }
-                            //Wall
+                            // Wall
                             {
                                 chemistryInterface_->setTemperature(Tw[j][k]);
                                 chemistryInterface_->setPressure(p_);
@@ -1866,7 +1852,7 @@ namespace ASALI
             plot_->setTemperature(Tb, Tw);
         }
 
-        //Length
+        // Length
         {
             double dz = L_ / double(NP_ - 1);
             std::vector<double> l(NP_);

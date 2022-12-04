@@ -48,7 +48,7 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->add(mainBox_);
         mainBox_.set_spacing(10);
         mainBox_.pack_start(solvingLabel_, Gtk::PACK_SHRINK);
@@ -60,7 +60,7 @@ namespace ASALI
         this->show_all_children();
     }
 
-    void runBar::update(const double fraction, const std::string tm)
+    void runBar::update(const double &fraction, const std::string &tm)
     {
         if (fraction == 0)
         {
@@ -86,9 +86,5 @@ namespace ASALI
     void runBar::exit()
     {
         this->hide();
-    }
-
-    runBar::~runBar()
-    {
     }
 }

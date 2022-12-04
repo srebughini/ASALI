@@ -41,7 +41,7 @@
 namespace ASALI
 {
     thermoTransportProperties::thermoTransportProperties(ASALI::speciesPopup *speciesNames,
-                                                         std::string kineticType)
+                                                         const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           condBox_(Gtk::ORIENTATION_VERTICAL),
           muBox_(Gtk::ORIENTATION_VERTICAL),
@@ -63,12 +63,8 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: Thermodynamic and transport properties");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->input();
-    }
-
-    thermoTransportProperties::~thermoTransportProperties()
-    {
     }
 
     void thermoTransportProperties::clean()
@@ -229,13 +225,13 @@ namespace ASALI
             }
 
             {
-                //Add back button
+                // Add back button
                 resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
 
-                //Add print on file
+                // Add print on file
                 resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
 
-                //Add exit button
+                // Add exit button
                 resultsGrid_.attach(exitButton2_, 6, n_.size() + 2, 1, 1);
 
                 this->remove();
@@ -258,7 +254,7 @@ namespace ASALI
         resultsGrid_.set_column_spacing(10);
         resultsGrid_.set_row_spacing(10);
 
-        //Thermal conductivity
+        // Thermal conductivity
         condBox_.pack_start(condLabel_, Gtk::PACK_SHRINK);
         condBox_.pack_start(condCombo_, Gtk::PACK_SHRINK);
         condBox_.set_spacing(5);
@@ -268,7 +264,7 @@ namespace ASALI
         condCombo_.set_active(0);
         condCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::condUnitConversion), true, 1));
 
-        //Viscosity
+        // Viscosity
         muBox_.pack_start(muLabel_, Gtk::PACK_SHRINK);
         muBox_.pack_start(muCombo_, Gtk::PACK_SHRINK);
         muBox_.set_spacing(5);
@@ -278,7 +274,7 @@ namespace ASALI
         muCombo_.set_active(0);
         muCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::muUnitConversion), true, 2));
 
-        //Diffusivity
+        // Diffusivity
         diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
         diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
         diffBox_.set_spacing(5);
@@ -287,8 +283,7 @@ namespace ASALI
         diffCombo_.set_active(0);
         diffCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::diffUnitConversion), true, 3));
 
-
-        //Specific heat
+        // Specific heat
         cpBox_.pack_start(cpLabel_, Gtk::PACK_SHRINK);
         cpBox_.pack_start(cpCombo_, Gtk::PACK_SHRINK);
         cpBox_.set_spacing(5);
@@ -302,7 +297,7 @@ namespace ASALI
         cpCombo_.set_active(0);
         cpCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::cpUnitConversion), true, 4));
 
-        //Enthalpy
+        // Enthalpy
         hBox_.pack_start(hLabel_, Gtk::PACK_SHRINK);
         hBox_.pack_start(hCombo_, Gtk::PACK_SHRINK);
         hBox_.set_spacing(5);
@@ -316,7 +311,7 @@ namespace ASALI
         hCombo_.set_active(0);
         hCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::hUnitConversion), true, 5));
 
-        //Entropy
+        // Entropy
         sBox_.pack_start(sLabel_, Gtk::PACK_SHRINK);
         sBox_.pack_start(sCombo_, Gtk::PACK_SHRINK);
         sBox_.set_spacing(5);
@@ -330,7 +325,7 @@ namespace ASALI
         sCombo_.set_active(0);
         sCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoTransportProperties::sUnitConversion), true, 6));
 
-        //Add heading
+        // Add heading
         resultsGrid_.attach(condBox_, 1, 0, 1, 1);
         resultsGrid_.attach(muBox_, 2, 0, 1, 1);
         resultsGrid_.attach(diffBox_, 3, 0, 1, 1);
@@ -338,15 +333,15 @@ namespace ASALI
         resultsGrid_.attach(hBox_, 5, 0, 1, 1);
         resultsGrid_.attach(sBox_, 6, 0, 1, 1);
 
-        //Add back button
+        // Add back button
         resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
         backButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoTransportProperties::input));
 
-        //Add print on file
+        // Add print on file
         resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
         saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoTransportProperties::save));
 
-        //Add exit button
+        // Add exit button
         resultsGrid_.attach(exitButton2_, 6, n_.size() + 2, 1, 1);
         exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &thermoTransportProperties::exit));
     }
@@ -373,7 +368,7 @@ namespace ASALI
 
     void thermoTransportProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "properties.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "properties.asali");
         if (filename != "")
         {
             std::ofstream output;
@@ -464,14 +459,14 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //W/m/K
+                converter[i] = 1.; // W/m/K
             }
         }
         else if (condCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 4.186; //cal/m/s/K
+                converter[i] = 1. / 4.186; // cal/m/s/K
             }
         }
 
@@ -507,14 +502,14 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //Pa
+                converter[i] = 1.; // Pa
             }
         }
         else if (muCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1e03; //cP
+                converter[i] = 1e03; // cP
             }
         }
 
@@ -576,7 +571,7 @@ namespace ASALI
         double converter = 0.;
         if (diffCombo_.get_active_row_number() == 0)
         {
-            converter = 1.; //m2/s
+            converter = 1.; // m2/s
         }
 
         for (unsigned int i = 0; i < n_.size(); i++)
@@ -641,42 +636,42 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //J/kmol/K
+                converter[i] = 1.; // J/kmol/K
             }
         }
         else if (cpCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 1.e03; //J/mol/K
+                converter[i] = 1. / 1.e03; // J/mol/K
             }
         }
         else if (cpCombo_.get_active_row_number() == 2)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / MW_[i]; //J/kg/K
+                converter[i] = 1. / MW_[i]; // J/kg/K
             }
         }
         else if (cpCombo_.get_active_row_number() == 3)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 4.186; //cal/kmol/K
+                converter[i] = 1. / 4.186; // cal/kmol/K
             }
         }
         else if (cpCombo_.get_active_row_number() == 4)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol/K
+                converter[i] = 1. / (1.e03 * 4.186); // cal/mol/K
             }
         }
         else if (cpCombo_.get_active_row_number() == 5)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg/K
+                converter[i] = 1. / (MW_[i] * 4.186); // cal/kg/K
             }
         }
 
@@ -712,42 +707,42 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //J/kmol
+                converter[i] = 1.; // J/kmol
             }
         }
         else if (hCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 1.e03; //J/mol
+                converter[i] = 1. / 1.e03; // J/mol
             }
         }
         else if (hCombo_.get_active_row_number() == 2)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / MW_[i]; //J/kg
+                converter[i] = 1. / MW_[i]; // J/kg
             }
         }
         else if (hCombo_.get_active_row_number() == 3)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 4.186; //cal/kmol
+                converter[i] = 1. / 4.186; // cal/kmol
             }
         }
         else if (hCombo_.get_active_row_number() == 4)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol
+                converter[i] = 1. / (1.e03 * 4.186); // cal/mol
             }
         }
         else if (hCombo_.get_active_row_number() == 5)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg
+                converter[i] = 1. / (MW_[i] * 4.186); // cal/kg
             }
         }
 
@@ -783,42 +778,42 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //J/kmol/K
+                converter[i] = 1.; // J/kmol/K
             }
         }
         else if (sCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 1.e03; //J/mol/K
+                converter[i] = 1. / 1.e03; // J/mol/K
             }
         }
         else if (sCombo_.get_active_row_number() == 2)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / MW_[i]; //J/kg/K
+                converter[i] = 1. / MW_[i]; // J/kg/K
             }
         }
         else if (sCombo_.get_active_row_number() == 3)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 4.186; //cal/kmol/K
+                converter[i] = 1. / 4.186; // cal/kmol/K
             }
         }
         else if (sCombo_.get_active_row_number() == 4)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (1.e03 * 4.186); //cal/mol/K
+                converter[i] = 1. / (1.e03 * 4.186); // cal/mol/K
             }
         }
         else if (sCombo_.get_active_row_number() == 5)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / (MW_[i] * 4.186); //cal/kg/K
+                converter[i] = 1. / (MW_[i] * 4.186); // cal/kg/K
             }
         }
 

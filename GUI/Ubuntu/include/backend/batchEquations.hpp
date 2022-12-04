@@ -93,10 +93,7 @@ namespace ASALI
         void resize();
 
         /// Store results for plottnig and saving
-        void store(const double tf, const std::vector<double> xf);
-
-        /// Class destructor
-        ~batchEquations();
+        void store(const double &tf, const std::vector<double> &xf);
 
     private:
         double MWmix_; /// Gas mixture molecular weight in [g/mol]

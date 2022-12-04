@@ -41,7 +41,7 @@
 namespace ASALI
 {
     basicProperties::basicProperties(ASALI::speciesPopup *speciesNames,
-                                     std::string kineticType)
+                                     const std::string &kineticType)
         : helpButton_("Available species"),
           exitButton1_("Exit"),
           doneButton_("Done"),
@@ -52,37 +52,34 @@ namespace ASALI
           kineticType_(kineticType),
           speciesNames_(speciesNames)
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
+        beerQuote_ = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
+        vectorUtils_ = new ASALI::asaliVectorUtils();
 
-        //Input menu
+        // Input menu
         {
             this->set_border_width(15);
             this->set_title("ASALI: Basic properties");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         }
     }
 
-    basicProperties::~basicProperties()
-    {
-    }
-
-    #if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA == 1
     void basicProperties::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #else
+#else
     void basicProperties::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #endif
+#endif
 
     void basicProperties::createInputGrid()
     {
-        //Add background grid
+        // Add background grid
         this->add(inputGrid_);
 
         inputGrid_.set_column_homogeneous(true);
@@ -90,38 +87,25 @@ namespace ASALI
         inputGrid_.set_row_homogeneous(true);
         inputGrid_.set_row_spacing(10);
 
-        //Add temperature selector
+        // Add temperature selector
         inputGrid_.attach(tempLabel_, 0, 0, 1, 1);
         inputGrid_.attach(tempEntry_, 1, 0, 1, 1);
         tempEntry_.set_max_length(10);
         tempEntry_.set_text("298.15");
         inputGrid_.attach(tempCombo_, 2, 0, 1, 1);
-        tempCombo_.append("K");
-        tempCombo_.append("°C");
-        tempCombo_.append("°F");
-        tempCombo_.set_active(0);
+        unitConversion_->updateBox(tempCombo_, "temperature");
 
-        //Add temperature selector
+        // Add temperature selector
         inputGrid_.attach(pressLabel_, 0, 1, 1, 1);
         inputGrid_.attach(pressEntry_, 1, 1, 1, 1);
         pressEntry_.set_max_length(10);
         pressEntry_.set_text("101325");
         inputGrid_.attach(pressCombo_, 2, 1, 1, 1);
-        pressCombo_.append("Pa");
-        pressCombo_.append("GPa");
-        pressCombo_.append("MPa");
-        pressCombo_.append("kPa");
-        pressCombo_.append("bar");
-        pressCombo_.append("torr");
-        pressCombo_.append("mmHg");
-        pressCombo_.append("atm");
-        pressCombo_.set_active(0);
+        unitConversion_->updateBox(pressCombo_, "pressure");
 
-        //Add mole or mass fraction selection
+        // Add mole or mass fraction selection
         inputGrid_.attach(fractionCombo_, 1, 2, 1, 1);
-        fractionCombo_.append("Mole fraction");
-        fractionCombo_.append("Mass fraction");
-        fractionCombo_.set_active(0);
+        unitConversion_->updateBox(fractionCombo_, "fraction");
 
         nameEntry_.resize(NS_);
         fractionEntry_.resize(NS_);
@@ -141,18 +125,18 @@ namespace ASALI
             }
         }
 
-        //Add help button
+        // Add help button
         if (kineticType_ == "default")
         {
             inputGrid_.attach(helpButton_, 1, 13, 1, 1);
             helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::availableSpecies));
         }
 
-        //Add back button
+        // Add back button
         inputGrid_.attach(exitButton1_, 0, 13, 1, 1);
         exitButton1_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::exit));
 
-        //Done buttons
+        // Done buttons
         inputGrid_.attach(doneButton_, 2, 13, 1, 1);
         doneButton_.signal_clicked().connect(sigc::mem_fun(*this, &basicProperties::results));
 
@@ -183,8 +167,8 @@ namespace ASALI
         T_ = Glib::Ascii::strtod(tempEntry_.get_text());
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
 
-        ConvertsToKelvin(T_, tempCombo_.get_active_text());
-        ConvertsToPascal(p_, pressCombo_.get_active_text());
+        unitConversion_->toKelvin(T_, tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_, pressCombo_.get_active_text());
 
         std::vector<std::string> n(NS_);
         std::vector<Glib::ustring> x(NS_);
@@ -239,7 +223,7 @@ namespace ASALI
                 }
 
                 {
-                    double sum = SumElements(x_);
+                    double sum = vectorUtils_->SumElements(x_);
                     for (unsigned int i = 0; i < x_.size(); i++)
                     {
                         x_[i] = x_[i] / sum;
@@ -265,19 +249,19 @@ namespace ASALI
         if (i == 4444)
         {
             Gtk::MessageDialog dialog(*this, "Please, the sum of mass/mole fractions should be 1.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else if (i == 4445)
         {
             Gtk::MessageDialog dialog(*this, "Something is wrong in your input, please fix it.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this, n_[i] + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
     }
@@ -285,25 +269,14 @@ namespace ASALI
     void basicProperties::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Your file has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
-    std::string basicProperties::getBeer()
+    basicProperties::~basicProperties()
     {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
-    }
-
-    std::string basicProperties::getBeerShort()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beerShort_.size()-1);
-        int i = distribution(gen);
-        return beerShort_[i];
+        delete beerQuote_;
+        delete unitConversion_;
+        delete vectorUtils_;
     }
 }

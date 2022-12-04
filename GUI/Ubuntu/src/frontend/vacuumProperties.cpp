@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+    vacuumProperties::vacuumProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           exitButton_("Exit"),
           saveButton_("Save"),
@@ -66,12 +66,8 @@ namespace ASALI
         this->set_border_width(15);
         this->set_title("ASALI: Vacuum properties");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->createInputGrid();
-    }
-
-    vacuumProperties::~vacuumProperties()
-    {
     }
 
     void vacuumProperties::createInputGrid()
@@ -81,107 +77,79 @@ namespace ASALI
         grid_.set_column_spacing(10);
         grid_.set_row_spacing(10);
 
-        //Add species
+        // Add species
         grid_.attach(specieLabel_, 0, 0, 1, 1);
         grid_.attach(specieEntry_, 0, 1, 1, 1);
         specieEntry_.set_max_length(10);
         specieEntry_.set_text("AR");
 
-        //Add temperature selector
+        // Add temperature selector
         grid_.attach(tempBox_, 1, 0, 1, 1);
         tempBox_.pack_start(tempLabel_, Gtk::PACK_SHRINK);
         tempBox_.pack_start(tempCombo_, Gtk::PACK_SHRINK);
         tempBox_.set_spacing(5);
         tempBox_.set_halign(Gtk::ALIGN_CENTER);
-        tempCombo_.append("K");
-        tempCombo_.append("°C");
-        tempCombo_.append("°F");
-        tempCombo_.set_active(0);
+        unitConversion_->updateBox(tempCombo_, "temperature");
         grid_.attach(tempEntry_, 1, 1, 1, 1);
         tempEntry_.set_max_length(10);
         tempEntry_.set_text("298.15");
 
-        //Add temperature selector
+        // Add temperature selector
         grid_.attach(pressBox_, 2, 0, 1, 1);
         pressBox_.pack_start(pressLabel_, Gtk::PACK_SHRINK);
         pressBox_.pack_start(pressCombo_, Gtk::PACK_SHRINK);
         pressBox_.set_spacing(5);
         pressBox_.set_halign(Gtk::ALIGN_CENTER);
-        pressCombo_.append("mbar");
-        pressCombo_.append("mmHg");
-        pressCombo_.append("torr");
-        pressCombo_.append("Pa");
-        pressCombo_.set_active(0);
+        unitConversion_->updateBox(pressCombo_, "pressure");
         grid_.attach(pressEntry_, 2, 1, 1, 1);
         pressEntry_.set_max_length(10);
         pressEntry_.set_text("1");
 
-        //Add length selector
+        // Add length selector
         grid_.attach(lengthBox_, 3, 0, 1, 1);
         lengthBox_.pack_start(lengthLabel_, Gtk::PACK_SHRINK);
         lengthBox_.pack_start(lengthCombo_, Gtk::PACK_SHRINK);
         lengthBox_.set_spacing(5);
         lengthBox_.set_halign(Gtk::ALIGN_CENTER);
-        lengthCombo_.append("km");
-        lengthCombo_.append("m");
-        lengthCombo_.append("dm");
-        lengthCombo_.append("cm");
-        lengthCombo_.append("mm");
-        lengthCombo_.append("\u03BCm");
-        lengthCombo_.append("nm");
-        lengthCombo_.append("pm");
-        lengthCombo_.set_active(1);
+        unitConversion_->updateBox(lengthCombo_, "length");
         grid_.attach(lengthEntry_, 3, 1, 1, 1);
         lengthEntry_.set_max_length(10);
         lengthEntry_.set_text("1");
 
-        //Add diffusion selector
+        // Add diffusion selector
         grid_.attach(diffBox_, 0, 2, 1, 1);
         diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
         diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
         diffBox_.set_spacing(5);
         diffBox_.set_halign(Gtk::ALIGN_CENTER);
-        diffCombo_.append("m\u00b2/s");
-        diffCombo_.append("cm\u00b2/s");
-        diffCombo_.set_active(0);
+        unitConversion_->updateBox(diffCombo_, "diffusion");
         diffCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add velocity selector
+        // Add velocity selector
         grid_.attach(velocityBox_, 1, 2, 1, 1);
         velocityBox_.pack_start(velocityLabel_, Gtk::PACK_SHRINK);
         velocityBox_.pack_start(velocityCombo_, Gtk::PACK_SHRINK);
         velocityBox_.set_spacing(5);
         velocityBox_.set_halign(Gtk::ALIGN_CENTER);
-        velocityCombo_.append("km/s");
-        velocityCombo_.append("m/s");
-        velocityCombo_.append("cm/s");
-        velocityCombo_.set_active(1);
+        unitConversion_->updateBox(velocityCombo_, "speed");
         velocityCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add path selector
+        // Add path selector
         grid_.attach(pathBox_, 2, 2, 1, 1);
         pathBox_.pack_start(pathLabel_, Gtk::PACK_SHRINK);
         pathBox_.pack_start(pathCombo_, Gtk::PACK_SHRINK);
         pathBox_.set_spacing(5);
         pathBox_.set_halign(Gtk::ALIGN_CENTER);
-        pathCombo_.append("km");
-        pathCombo_.append("m");
-        pathCombo_.append("dm");
-        pathCombo_.append("cm");
-        pathCombo_.append("mm");
-        pathCombo_.append("\u03BCm");
-        pathCombo_.append("nm");
-        pathCombo_.append("pm");
-        pathCombo_.set_active(1);
+        unitConversion_->updateBox(pathCombo_, "length");
         pathCombo_.signal_changed().connect(sigc::mem_fun(*this, &vacuumProperties::results));
 
-        //Add results
+        // Add results
         grid_.attach(diffResults_, 0, 3, 1, 1);
         grid_.attach(velocityResults_, 1, 3, 1, 1);
         grid_.attach(pathResults_, 2, 3, 1, 1);
         grid_.attach(knudsenResults_, 3, 3, 1, 1);
 
-        //Add Knudsen number
+        // Add Knudsen number
         grid_.attach(knudsenLabel_, 3, 2, 1, 1);
         grid_.attach(calculateButton_, 0, 5, 1, 1);
         grid_.attach(saveButton_, 2, 5, 1, 1);
@@ -190,7 +158,7 @@ namespace ASALI
         grid_.attach(exitButton_, 3, 5, 1, 1);
         exitButton_.signal_clicked().connect(sigc::mem_fun(*this, &vacuumProperties::exit));
 
-        //Add help button
+        // Add help button
         if (kineticType_ == "default")
         {
             grid_.attach(helpButton_, 1, 5, 1, 1);
@@ -205,9 +173,9 @@ namespace ASALI
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
         d_ = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        ConvertsToKelvin(T_, tempCombo_.get_active_text());
-        ConvertsToPascal(p_, pressCombo_.get_active_text());
-        ConvertsToMeter(d_, lengthCombo_.get_active_text());
+        unitConversion_->toKelvin(T_, tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_, pressCombo_.get_active_text());
+        unitConversion_->toMeter(d_, lengthCombo_.get_active_text());
 
         n_.resize(1);
         x_.resize(1);
@@ -298,11 +266,11 @@ namespace ASALI
 
                 Kn_ = d_ / lK_;
 
-                if (Kn_ < 1.) //molecular
+                if (Kn_ < 1.) // molecular
                 {
                     diffK_ = vK_ * d_ / 3.;
                 }
-                else //viscous
+                else // viscous
                 {
                     chemistryInterface_->transportCalculate();
                     for (unsigned int i = 0; i < n_.size(); i++)
@@ -330,56 +298,9 @@ namespace ASALI
                 }
             }
 
-            if (diffCombo_.get_active_row_number() == 1)
-            {
-                diffK_ = diffK_ * 1e04;
-            }
-
-            if (velocityCombo_.get_active_row_number() == 0)
-            {
-                vK_ = vK_ * 1e-03;
-            }
-            else if (velocityCombo_.get_active_row_number() == 1)
-            {
-                vK_ = vK_;
-            }
-            else if (velocityCombo_.get_active_row_number() == 2)
-            {
-                vK_ = vK_ * 1e02;
-            }
-
-            if (pathCombo_.get_active_row_number() == 0)
-            {
-                lK_ = lK_ * 1e-03;
-            }
-            else if (pathCombo_.get_active_row_number() == 1)
-            {
-                lK_ = lK_;
-            }
-            else if (pathCombo_.get_active_row_number() == 2)
-            {
-                lK_ = lK_ * 1e01;
-            }
-            else if (pathCombo_.get_active_row_number() == 3)
-            {
-                lK_ = lK_ * 1e02;
-            }
-            else if (pathCombo_.get_active_row_number() == 4)
-            {
-                lK_ = lK_ * 1e03;
-            }
-            else if (pathCombo_.get_active_row_number() == 5)
-            {
-                lK_ = lK_ * 1e06;
-            }
-            else if (pathCombo_.get_active_row_number() == 6)
-            {
-                lK_ = lK_ * 1e09;
-            }
-            else if (pathCombo_.get_active_row_number() == 7)
-            {
-                lK_ = lK_ * 1e12;
-            }
+            unitConversion_->fromSquareMeterPerSecond(diffK_, diffCombo_.get_active_text());
+            unitConversion_->fromMeterPerSecond(vK_, velocityCombo_.get_active_text());
+            unitConversion_->fromMeter(lK_, pathCombo_.get_active_text());
 
             {
                 std::stringstream diffK;
@@ -424,7 +345,7 @@ namespace ASALI
             this->results();
         }
 
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "vacuum.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "vacuum.asali");
         if (filename != "")
         {
             std::ofstream output;

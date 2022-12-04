@@ -190,7 +190,7 @@ namespace ASALI
         }
 
         // Variation of gas mass in the reactor
-        const double dm_over_dt = V_ * alfa_ * DotProduct(RfromSurface_, MW_);
+        const double dm_over_dt = V_ * alfa_ * vectorUtils_->DotProduct(RfromSurface_, MW_);
 
         // Recovering residuals
         {
@@ -224,7 +224,7 @@ namespace ASALI
         return 0;
     }
 
-    void batchEquations::store(const double tf, const std::vector<double> xf)
+    void batchEquations::store(const double &tf, const std::vector<double> &xf)
     {
         // Recover unknowns
         {
@@ -249,9 +249,5 @@ namespace ASALI
             Volume_.push_back(V_);
             Mass_.push_back(mass_);
         }
-    }
-
-    batchEquations::~batchEquations()
-    {
     }
 }

@@ -72,7 +72,7 @@ namespace ASALI
         void setIntegrationTime(const double tF);
 
         /// Set reactor inlet conditions: mass fraction and temperature in [K]
-        void setInletConditions(const std::vector<double> omega0, const double T0);
+        void setInletConditions(const std::vector<double> &omega0, const double T0);
 
         /// Return integration time vector in [s]
         inline std::vector<double> getTime() const { return Time_; };
@@ -93,7 +93,7 @@ namespace ASALI
         void resize();
 
         /// Store results for plottnig and saving
-        void store(const double tf, const std::vector<double> xf);
+        void store(const double &tf, const std::vector<double> &xf);
 
     private:
         double MWmix_; /// Gas mixture molecular weight in [g/mol]

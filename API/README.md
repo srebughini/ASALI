@@ -150,3 +150,51 @@ int main()
 Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into C++ code run `./database-generator`
+
+## **6. Java version**
+This version can be included in your code as follow:  
+```java
+//Include library
+import java.io.*; 
+import java.util.*;
+import java.lang.*;
+import java.text.*;
+
+class AsaliJava 
+{   
+    //Main
+    public static void main(String args[])  throws Exception 
+    { 
+		int N = Integer.valueOf(args[0]);
+
+        //Create composition using Vector and ArrayList
+        ArrayList<String> names = new ArrayList<String>();
+        names.add("H2");
+        names.add("O2");
+        names.add("N2");
+        
+        Vector<Double> x = new Vector<Double>();
+        x.add(0.1);
+        x.add(0.2);
+        x.add(0.7);
+
+		//Initialize ASALI
+		Asali asali_ = new Asali();
+
+        //Set up composition/pressure and temperature
+        asali_.set_number_of_species(3);
+        asali_.set_species_names(names);
+        asali_.set_mole_fraction(x);
+        asali_.set_pressure(4e05); //Pa 
+        asali_.set_temperature(393.15); //K
+
+        //Properties evaluation
+        double [][] diff;
+        diff      = asali_.get_binary_diffusion();
+
+        double [] cp;
+        cp = asali_.get_species_mass_specific_heat();
+    }
+}
+```
+Example can be compiled by typing `./compile.sh`

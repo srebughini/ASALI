@@ -30,25 +30,32 @@ Details can be found at: http://plplot.org/
 ### 1.4 How to install Cantera
 [Cantera](https://cantera.org/) can be downloaded with the following command:    
 ```bash
-git clone https://github.com/Cantera/cantera.git -b 2.5 --depth=1  
+git clone https://github.com/Cantera/cantera.git -b 2.6 --depth=1  
 ```
+  
+  
+***Due to an issue related to `os.system` on [Mingw-w64](https://www.msys2.org/), before installing [Cantera](https://cantera.org/) type the following command:***
+```bash
+cd ASALI/GUI/Windows/SConstruct cantera/.
+```
+   
 To install [Cantera](https://cantera.org/) type the following commands from the cantera folder:  
 ```bash
-scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n python_cmd=/mingw64/bin/python
+scons build system_sundials=n python_package=minimal cc_flags='-Os' matlab_toolbox=n doxygen_docs=n sphinx_docs=n debug=n optimize=yes prefix=/mingw64/
 sudo scons install  
 ```
 More details can be found at: https://cantera.org/install/compiling-install.html 
 ### 1.5 How to install ASALI
 To install Asali run the following command.  
 ```bash
-./build --os windows  
+cd ASALI/GUI/Ubuntu
+./build.sh --os windows  
 ```
 The installation can be customized with the following options:  
 |Option|Comment|
 |--------|-----|
 |`--help`|Show help message|
 |`--clean`|Clean installation folder|
-|`--cantera-path`|Select Cantera path|
 |`--os`|Select operating system|
 |`--output-folder`|Select target folder|
 |`--symbolic-link`|Create symbolic link in `/usr/local/bin/`|

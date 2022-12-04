@@ -42,6 +42,7 @@ namespace ASALI
 {
     catalyticReactorsEquations::catalyticReactorsEquations()
     {
+        vectorUtils_ = new ASALI::asaliVectorUtils();
     }
 
     void catalyticReactorsEquations::setInterface(ASALI::canteraInterface *chemistryInterface)
@@ -59,12 +60,12 @@ namespace ASALI
         heterogeneusReactions_ = flag;
     }
 
-    void catalyticReactorsEquations::setKineticType(const std::string type)
+    void catalyticReactorsEquations::setKineticType(const std::string &type)
     {
         type_ = type;
     }
 
-    void catalyticReactorsEquations::setAsaliKinetic(ASALI::pythonInterface *pi, const std::vector<int> canteraIndex, const std::vector<std::string> n)
+    void catalyticReactorsEquations::setAsaliKinetic(ASALI::pythonInterface *pi, const std::vector<int> &canteraIndex, const std::vector<std::string> &n)
     {
         pi_ = pi;
         canteraIndex_ = canteraIndex;
@@ -94,22 +95,22 @@ namespace ASALI
         userCheck_ = check;
     }
 
-    void catalyticReactorsEquations::setMW(const std::vector<double> MW)
+    void catalyticReactorsEquations::setMW(const std::vector<double> &MW)
     {
         MW_ = MW;
     }
 
-    void catalyticReactorsEquations::setDiffMix(const std::vector<double> diff)
+    void catalyticReactorsEquations::setDiffMix(const std::vector<double> &diff)
     {
         diff_ = diff;
     }
 
-    void catalyticReactorsEquations::setQfromSurface(const std::vector<double> Q)
+    void catalyticReactorsEquations::setQfromSurface(const std::vector<double> &Q)
     {
         QuserHet_ = Q;
     }
 
-    void catalyticReactorsEquations::setQfromGas(const std::vector<double> Q)
+    void catalyticReactorsEquations::setQfromGas(const std::vector<double> &Q)
     {
         QuserHom_ = Q;
     }
@@ -148,7 +149,7 @@ namespace ASALI
             }
             else if (type_ == "ASALI")
             {
-                RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); //kmol/m3/s
+                RfromGas_ = this->reactionRate(x_, T_, "homogeneous"); // kmol/m3/s
                 if (energyEquation_ == true)
                 {
                     if (userCheck_ == false)
@@ -161,7 +162,7 @@ namespace ASALI
                             h_[i] = hArray[canteraIndex_[i]];
                         }
 
-                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); // W/m3
                     }
                     else
                     {
@@ -169,7 +170,7 @@ namespace ASALI
                         {
                             h_[i] = 0.;
                         }
-                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); //W/m3
+                        QfromGas_ = this->heatOfReaction(x_, T_, h_, "homogeneous"); // W/m3
                     }
                 }
                 else
@@ -182,7 +183,7 @@ namespace ASALI
         {
             for (unsigned int j = 0; j < NC_; j++)
             {
-                RfromGas_[j] = 0.; //kmol/m2/s
+                RfromGas_[j] = 0.; // kmol/m2/s
             }
             QfromGas_ = 0.;
         }
@@ -210,7 +211,7 @@ namespace ASALI
             }
             else if (type_ == "ASALI")
             {
-                RfromSurface_ = this->reactionRate(x_, T_, "heterogeneous"); //kmol/m3/s
+                RfromSurface_ = this->reactionRate(x_, T_, "heterogeneous"); // kmol/m3/s
 
                 if (energyEquation_ == true)
                 {
@@ -222,7 +223,7 @@ namespace ASALI
                         {
                             h_[i] = hArray[canteraIndex_[i]];
                         }
-                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); // W/m3
                     }
                     else
                     {
@@ -230,7 +231,7 @@ namespace ASALI
                         {
                             h_[i] = 0.;
                         }
-                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); //W/m3
+                        QfromSurface_ = this->heatOfReaction(x_, T_, h_, "heterogeneous"); // W/m3
                     }
                 }
                 else
@@ -254,7 +255,7 @@ namespace ASALI
         }
     }
 
-    std::vector<double> catalyticReactorsEquations::reactionRate(const std::vector<double> x, const double T, const std::string type)
+    std::vector<double> catalyticReactorsEquations::reactionRate(const std::vector<double> &x, const double T, const std::string &type)
     {
         std::vector<double> R;
         pi_->setTemperature(T);
@@ -272,7 +273,7 @@ namespace ASALI
         return R;
     }
 
-    double catalyticReactorsEquations::heatOfReaction(const std::vector<double> x, const double T, const std::vector<double> h, const std::string type)
+    double catalyticReactorsEquations::heatOfReaction(const std::vector<double> &x, const double T, const std::vector<double> &h, const std::string &type)
     {
         double Q = 0;
         pi_->setTemperature(T);
@@ -334,7 +335,7 @@ namespace ASALI
         return -Q;
     }
 
-    double catalyticReactorsEquations::meanMolecularWeight(const std::vector<double> omega, const std::vector<double> MW)
+    double catalyticReactorsEquations::meanMolecularWeight(const std::vector<double> &omega, const std::vector<double> &MW)
     {
         double MWmix = 0.;
         for (unsigned int i = 0; i < NC_; i++)
@@ -344,7 +345,7 @@ namespace ASALI
         return 1. / MWmix;
     }
 
-    std::vector<double> catalyticReactorsEquations::moleFraction(const std::vector<double> omega, const std::vector<double> MW, double MWmix)
+    std::vector<double> catalyticReactorsEquations::moleFraction(const std::vector<double> &omega, const std::vector<double> &MW, double MWmix)
     {
         std::vector<double> x = omega;
 
@@ -358,5 +359,6 @@ namespace ASALI
 
     catalyticReactorsEquations::~catalyticReactorsEquations()
     {
+        delete vectorUtils_;
     }
 }

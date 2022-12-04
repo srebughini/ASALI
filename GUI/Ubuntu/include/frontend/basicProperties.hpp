@@ -57,6 +57,10 @@
 #include <random>
 
 #include "frontend/speciesPopup.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
+#include "backend/asaliVectorUtils.hpp"
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"
@@ -66,91 +70,107 @@
 
 namespace ASALI
 {
-    class basicProperties : public Gtk::Window
-    {
-    public:
-        basicProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
+        /// Vitrual class to estimate gas mixture properties
+        class basicProperties : public Gtk::Window
+        {
+        public:
+                /// Class constructor
+                basicProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
-        #include "shared/FileManager.H"
-        #include "shared/UnitConversion.H"
-        #include "shared/Vector.H"
+                /// Class destructor
+                virtual ~basicProperties();
 
-        virtual ~basicProperties();
+                /// Virtual function to get results
+                virtual void results() = 0;
 
-        virtual void results() = 0;
-        virtual void save() = 0;
+                /// Virtual function to save results
+                virtual void save() = 0;
 
-        void exit();
-        void availableSpecies();
-        void input();
-        void savedMessage();
-        void inputReader();
-        void createInputGrid();
-        void checkInput(unsigned int i);
+                /// Function to close the window
+                void exit();
 
-        #if ASALI_USING_CANTERA == 1
-        void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
-        #else
-        void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
-        #endif
+                /// Shows available species in the database
+                void availableSpecies();
 
-        std::string getBeer();
-        std::string getBeerShort();
+                /// Shows input windows
+                void input();
 
-        Gtk::Button helpButton_;
-        Gtk::Button exitButton1_;
-        Gtk::Button doneButton_;
+                /// Shows saving message popup
+                void savedMessage();
 
-        Gtk::Grid inputGrid_;
-        Gtk::Grid resultsGrid_;
+                /// Read input
+                void inputReader();
 
-        Gtk::Label tempLabel_;
-        Gtk::Label pressLabel_;
-        Gtk::Label fractionLabel_;
+                /// Create grid for input window
+                void createInputGrid();
 
-        Gtk::Entry tempEntry_;
-        Gtk::Entry pressEntry_;
+                /// Check input
+                void checkInput(unsigned int i);
 
-        Gtk::ComboBoxText tempCombo_;
-        Gtk::ComboBoxText pressCombo_;
-        Gtk::ComboBoxText fractionCombo_;
+#if ASALI_USING_CANTERA == 1
+                /// Set object to estimate gas mixture properties
+                void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
+#else
+                /// Set object to estimate gas mixture properties
+                void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
+#endif
 
-        std::vector<Gtk::Entry *> nameEntry_;
-        std::vector<Gtk::Entry *> fractionEntry_;
+                Gtk::Button helpButton_;  /// Help button
+                Gtk::Button exitButton1_; /// Exit button
+                Gtk::Button doneButton_;  /// Done button
 
-        std::vector<Gtk::Label *> nameVector_;
+                Gtk::Grid inputGrid_;   /// Background grid for input
+                Gtk::Grid resultsGrid_; /// Background grid for results
 
-        unsigned int NS_;
-        unsigned int OP_;
+                Gtk::Label tempLabel_;     /// Temperature label for input
+                Gtk::Label pressLabel_;    /// Pressure label for input
+                Gtk::Label fractionLabel_; /// Mass/Mole fraction label for input
 
-        double T_;
-        double p_;
+                Gtk::Entry tempEntry_;  /// Temperature entry box for input
+                Gtk::Entry pressEntry_; /// Pressure entry box for input
 
-        std::pair<unsigned int, bool> checkInput_;
+                Gtk::ComboBoxText tempCombo_;     /// Temperature unit dimensions for input
+                Gtk::ComboBoxText pressCombo_;    /// Pressurre unit dimensions for input
+                Gtk::ComboBoxText fractionCombo_; /// Mole or mass fraction for input
 
-        std::vector<double> x_;
-        std::vector<double> y_;
-        std::vector<double> MW_;
-        std::vector<double> cond_;
-        std::vector<double> mu_;
+                std::vector<Gtk::Entry *> nameEntry_;     /// Species input names
+                std::vector<Gtk::Entry *> fractionEntry_; /// Fraction input values
 
-        std::vector<std::vector<double>> diff_;
+                std::vector<Gtk::Label *> nameVector_;
 
-        std::vector<std::string> n_;
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
+                unsigned int NS_; /// Number of species
+                unsigned int OP_; /// Maximum number of input species
 
-        std::string kineticType_;
+                double T_; /// Temperature [K]
+                double p_; /// Pressure [Pa]
 
-        ASALI::speciesPopup *speciesNames_;
+                std::pair<unsigned int, bool> checkInput_;
 
-        #if ASALI_USING_CANTERA == 1
-        ASALI::canteraInterface *chemistryInterface_;
-        #else
-        ASALI::asaliInterface *chemistryInterface_;
-        #endif
+                std::vector<double> x_;    /// Mole fraction
+                std::vector<double> y_;    /// Mass fraction
+                std::vector<double> MW_;   /// Species molecular weigth [g/mol]
+                std::vector<double> cond_; /// Species thermal conductivity [W/m/K]
+                std::vector<double> mu_;   /// Species viscosity [Pas]
 
-    private:
-    };
+                std::vector<std::vector<double>> diff_; /// Species mixture diffusion [m2/s]
+
+                std::vector<std::string> n_; /// Species names
+
+                std::string kineticType_; /// Kinetic type
+
+                ASALI::speciesPopup *speciesNames_;               /// Object to show the popup window with all available species
+                ASALI::beerQuote *beerQuote_;                     /// Object to get random beer quotes
+                ASALI::asaliUnitConversionUtils *unitConversion_; /// Object to work with unit dimensions
+                ASALI::asaliVectorUtils *vectorUtils_;            /// Object to performe vector operations with std::vector
+                ASALI::asaliFileManager fileManager_;             /// Object to handle opening/closing of files
+
+#if ASALI_USING_CANTERA == 1
+                ASALI::canteraInterface *chemistryInterface_; /// Object to get gas mixture properties
+#else
+                ASALI::asaliInterface *chemistryInterface_; /// Object to get gas mixture properties
+#endif
+
+        private:
+        };
 }
 #endif

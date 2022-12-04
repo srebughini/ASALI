@@ -51,6 +51,8 @@
 #include <algorithm>
 #include <random>
 
+#include "backend/beerQuote.hpp"
+
 #include <cvodes/cvodes.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <cvodes/cvodes_direct.h>
@@ -63,73 +65,85 @@
 
 namespace ASALI
 {
-    #define Ith(v, i) NV_Ith_S(v, i - 1)
-    #define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
+#define Ith(v, i) NV_Ith_S(v, i - 1)
+#define IJth(A, i, j) DENSE_ELEM(A, i - 1, j - 1)
 
     template <typename T>
+    /// Class interface for SUNDIALS CVODE solver (https://computation.llnl.gov/projects/sundials)
     class odeInterface : public Gtk::Window
     {
     public:
+        /// Class constructor
         odeInterface();
 
+        /// Solve equations
         int solve(const double tf, std::vector<double> &yf);
 
+        /// Set system equations
         void setEquations(T *eq);
 
+        /// Set system initial conditions
         void setInitialConditions(double t0, std::vector<double> y0);
 
+        /// Set solver tollerance
         void setTollerance(const double absTol, const double relTol);
 
+        /// Set band matrix width
         void setBandDimensions(const double upperBand, const double lowerBand);
 
+        /// Set solver contrains
         void setConstraints(const bool constraints);
 
+        /// Return solver output
         bool check() { return check_; };
+
+        /// Refresh solver resolution
         void start() { check_ = true; };
 
+        /// Class destructor
         ~odeInterface(void);
 
     private:
-        void *cvode_mem_;
+        void *cvode_mem_; /// Pointer to the CVODE solver
 
-        T *eq_;
+        T *eq_; /// Template variable that describe the system equation
 
-        int NEQ_;
+        int NEQ_; /// Number of equations
 
-        double relTol_;
-        double absTol_;
-        double upperBand_;
-        double lowerBand_;
-        double t0_;
+        double relTol_;    /// Relative tollerance
+        double absTol_;    /// Absolute tollerance
+        double upperBand_; /// Upper matrix band width
+        double lowerBand_; /// Lower matrix band width
+        double t0_;        /// Integration variable initial conditions
 
-        bool constraints_;
-        bool check_;
+        bool check_;       /// Flag that shows the solver output
+        bool constraints_; /// Flag to enable/disable constraints
 
-        N_Vector yCVODE_;
-        N_Vector dyCVODE_;
-        N_Vector y0CVODE_;
-        N_Vector dy0CVODE_;
+        N_Vector yCVODE_;   /// SUNDIALS vector of integrated variables
+        N_Vector dyCVODE_;  /// SUNDIALS vector of residuals
+        N_Vector y0CVODE_;  /// SUNDIALS vector of initial conditions
+        N_Vector dy0CVODE_; /// SUNDIALS vector of initial residuals
 
-        SUNMatrix A_;
+        SUNMatrix A_; /// SUNDIALS matrix
 
-        SUNLinearSolver LS_;
+        SUNLinearSolver LS_; /// SUNDIALS linear solver
 
-        std::vector<double> y0_;
-        std::vector<double> dy0_;
+        std::vector<double> y0_;  /// std::vector of initial conditions
+        std::vector<double> dy0_; /// std::vector of initial residuals
 
-        std::vector<std::string> beer_;
+        std::vector<std::string> beer_; /// std::vector of beer quotes
+        ASALI::beerQuote beerQuote_;    /// Point of ASALI::beerQuote object
 
+        /// Check SUNDIALS output flags
         int checkFlag(void *flagvalue, int opt);
 
+        /// Show errors
         void error();
-        std::string getBeer();
     };
 
     template <typename T>
     odeInterface<T>::odeInterface()
     {
-        #include "shared/Beer.H"
-
         yCVODE_ = NULL;
         dyCVODE_ = NULL;
         y0CVODE_ = NULL;
@@ -374,18 +388,8 @@ namespace ASALI
     {
         check_ = false;
         Gtk::MessageDialog dialog(*this, "Ops, something wrong happend!", true, Gtk::MESSAGE_ERROR);
-        dialog.set_secondary_text(this->getBeer(), true);
+        dialog.set_secondary_text(beerQuote_.getRandomQuote(), true);
         dialog.run();
-    }
-
-    template <typename T>
-    std::string odeInterface<T>::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
     }
 
     template <typename T>
@@ -395,6 +399,5 @@ namespace ASALI
         N_VDestroy_Serial(dyCVODE_);
         CVodeFree(&cvode_mem_);
     }
-
 }
 #endif

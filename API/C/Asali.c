@@ -603,7 +603,7 @@ AsaliVector get_mixture_diffusion(Asali* asali_) //[m2/s]
     return asali_->diff_mix_;
 }
 
-AsaliVector get_aritmetic_mean_gas_velocity(Asali* asali_)
+AsaliVector get_arithmetic_mean_gas_velocity(Asali* asali_)
 {
     if ( !asali_->v_updated_ )
     {

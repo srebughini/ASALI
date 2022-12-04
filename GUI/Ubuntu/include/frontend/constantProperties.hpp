@@ -51,49 +51,48 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <random>
+#include "backend/asaliFileManager.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/beerQuote.hpp"
 
 namespace ASALI
 {
     class constantProperties : public Gtk::Window
     {
     public:
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
-
         constantProperties();
+
+        ~constantProperties();
 
         void destroy();
         void build();
         void savedMessage();
-        void setType(const std::string type);
-        void setSpeciesNames(const std::vector<std::string> n);
+        void setType(const std::string &type);
+        void setSpeciesNames(const std::vector<std::string> &n);
         void setReactions(const unsigned int Nhom, const unsigned int Nhet);
-        void setEnergy(const std::string energy);
+        void setEnergy(const std::string &energy);
 
         void doneInput();
         void convertToCaption(std::string &n);
 
-        std::vector<double> getMassFraction(const std::vector<double> MW, const std::vector<double> x);
-        std::vector<double> getMoleFraction(const std::vector<double> MW, const std::vector<double> y);
-        double getMWmix(const std::vector<double> MW, const std::vector<double> x);
+        std::vector<double> getMassFraction(const std::vector<double> &MW, const std::vector<double> &x);
+        std::vector<double> getMoleFraction(const std::vector<double> &MW, const std::vector<double> &y);
+        double getMWmix(const std::vector<double> &MW, const std::vector<double> &y);
 
-        inline std::vector<double> getMW() { return MW_; };
-        inline std::vector<double> getDiffMix() { return diff_; };
-        inline std::vector<double> getHomogeneousHeatOfReaction() { return Qhom_; };
-        inline std::vector<double> getHeterogeneousHeatOfReaction() { return Qhet_; };
+        inline std::vector<double> getMW() const { return MW_; };
+        inline std::vector<double> getDiffMix() const { return diff_; };
+        inline std::vector<double> getHomogeneousHeatOfReaction() const { return Qhom_; };
+        inline std::vector<double> getHeterogeneousHeatOfReaction() const { return Qhet_; };
 
-        inline std::vector<std::string> names() { return n_; };
+        inline std::vector<std::string> names() const { return n_; };
 
-        inline double getCpMassMix() { return cp_; };
-        inline double getCondMix() { return cond_; };
-        inline double getMuMix() { return mu_; };
+        inline double getCpMassMix() const { return cp_; };
+        inline double getCondMix() const { return cond_; };
+        inline double getMuMix() const { return mu_; };
 
         inline unsigned int numberOfGasSpecies() { return n_.size(); }
 
-        inline std::string get_type() { return type_; };
-
-        virtual ~constantProperties();
+        inline std::string get_type() const { return type_; };
 
     private:
         std::string getBeer();
@@ -145,9 +144,6 @@ namespace ASALI
         unsigned int NC_;
 
         std::vector<std::string> n_;
-        std::vector<std::string> beer_;
-        std::vector<std::string> small;
-        std::vector<std::string> big;
 
         std::vector<double> MW_;
         std::vector<double> diff_;
@@ -160,6 +156,10 @@ namespace ASALI
         double cp_;
         double cond_;
         double mu_;
+
+        ASALI::beerQuote *beerQuote_;
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

@@ -43,37 +43,49 @@
 
 namespace ASALI
 {
+    /// Class to estimate gas mixture chemical equilibrium
     class equilibriumCalculator : public ASALI::thermoTransportProperties
     {
     public:
-        equilibriumCalculator(ASALI::speciesPopup *speciesNames, std::string kineticType);
+        /// Class constructor
+        equilibriumCalculator(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
-        virtual ~equilibriumCalculator();
-
+        /// Function to save results
         void save();
+
+        /// Function to get results
         void results();
+
+        /// Function to clean input
         void clean();
+
+        /// Update windows
         void update();
+
+        /// Shows list of atoms
         void showAtomNames();
 
     private:
+        /// Convert initial fraction from mass to mole and viceversa
         void initialFractionUnitConversion();
+
+        /// Convert resulting fraction from mass to mole and viceversa
         void finalFractionUnitConversion();
 
-        Gtk::Label initialStateLabel_;
-        Gtk::Label finalStateLabel_;
+        Gtk::Label initialStateLabel_; /// Initial state label for input
+        Gtk::Label finalStateLabel_;   /// Final state label for input
 
-        Gtk::ComboBoxText equilibriumCombo_;
-        Gtk::ComboBoxText initialFractionCombo_;
-        Gtk::ComboBoxText finalFractionCombo_;
+        Gtk::ComboBoxText equilibriumCombo_;     /// Equilibrium type for input
+        Gtk::ComboBoxText initialFractionCombo_; /// Mass/mole fraction for input
+        Gtk::ComboBoxText finalFractionCombo_;   /// Mass/mole fraction for results
 
-        std::vector<Gtk::Label *> initialFractionVector_;
-        std::vector<Gtk::Label *> finalFractionVector_;
+        std::vector<Gtk::Label *> initialFractionVector_; /// Initial mass/mole fraction composition for input
+        std::vector<Gtk::Label *> finalFractionVector_;   /// Final mass/mole fraction composition
 
-        double Teq_;
+        double Teq_; /// Equilibrium temperature in [K]
 
-        std::vector<double> xeq_;
-        std::vector<double> yeq_;
+        std::vector<double> xeq_; /// Equilibrium mole fraction
+        std::vector<double> yeq_; /// Equilibrium mass fraction
     };
 }
 #endif

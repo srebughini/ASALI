@@ -49,9 +49,7 @@ namespace ASALI
     class catalyticPellet : public ASALI::catalyticReactors
     {
     public:
-        catalyticPellet(std::string kineticType);
-
-        virtual ~catalyticPellet();
+        explicit catalyticPellet(const std::string &kineticType);
 
         virtual void input();
         virtual void read();

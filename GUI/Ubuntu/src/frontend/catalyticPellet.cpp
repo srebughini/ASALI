@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    catalyticPellet::catalyticPellet(std::string kineticType)
+    catalyticPellet::catalyticPellet(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -59,8 +59,8 @@ namespace ASALI
           pelletTypeLabel_("Pellet shape"),
           modelTypeLabel_("Diffusion model"),
           poreLabel_("Pore diameter"),
-          logo1_(this->relative_path_to_absolute_path("images/PelletLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/PelletLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/PelletLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/PelletLogo.png")),
           pelletType_("none"),
           modelType_("none"),
           modelBool_(false),
@@ -69,14 +69,14 @@ namespace ASALI
     {
         eq_ = new ASALI::catalyticPelletEquations();
 
-        //Input
+        // Input
         {
             this->set_border_width(15);
             this->set_title("ASALI: Catalytic pellets");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-            //Add background grid
+            // Add background grid
             this->add(mainBox_);
 
             mainBox_.set_halign(Gtk::ALIGN_START);
@@ -92,56 +92,44 @@ namespace ASALI
                 propertiesGrid_.set_row_spacing(10);
                 propertiesGrid_.set_column_homogeneous(true);
 
-                //Catalytic load
+                // Catalytic load
                 propertiesGrid_.attach(loadLabel_, 0, 0, 1, 1);
                 propertiesGrid_.attach(loadEntry_, 1, 0, 1, 1);
                 loadEntry_.set_text("1");
                 propertiesGrid_.attach(loadCombo_, 2, 0, 1, 1);
-                loadCombo_.append("1/m");
-                loadCombo_.append("1/dm");
-                loadCombo_.append("1/cm");
-                loadCombo_.append("1/mm");
-                loadCombo_.set_active(0);
+                unitConversion_->updateBox(loadCombo_, "inverselength");
 
-                //Time
+                // Time
                 propertiesGrid_.attach(timeLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 1, 1, 1);
                 timeEntry_.set_text("1");
                 propertiesGrid_.attach(timeCombo_, 2, 1, 1, 1);
-                timeCombo_.append("s");
-                timeCombo_.append("min");
-                timeCombo_.append("h");
-                timeCombo_.append("d");
-                timeCombo_.set_active(0);
+                unitConversion_->updateBox(timeCombo_, "time");
 
-                //Save options
+                // Save options
                 propertiesGrid_.attach(saveLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(saveEntry_, 1, 2, 1, 1);
                 saveEntry_.set_text("0.1");
                 propertiesGrid_.attach(saveCombo_, 2, 2, 1, 1);
-                saveCombo_.append("s");
-                saveCombo_.append("min");
-                saveCombo_.append("h");
-                saveCombo_.append("d");
-                saveCombo_.set_active(0);
+                unitConversion_->updateBox(saveCombo_, "time");
 
-                //Number of points
+                // Number of points
                 propertiesGrid_.attach(pointsLabel_, 3, 0, 1, 1);
                 propertiesGrid_.attach(pointsEntry_, 4, 0, 1, 1);
                 pointsEntry_.set_text("10");
 
-                //Inert species
+                // Inert species
                 propertiesGrid_.attach(inertLabel_, 3, 1, 1, 1);
                 propertiesGrid_.attach(inertEntry_, 4, 1, 1, 1);
                 inertEntry_.set_text("AR");
 
-                //Beer
+                // Beer
                 propertiesGrid_.attach(beerLabel_, 0, 4, 3, 2);
-                beerLabel_.set_text(this->getBeerShort());
+                beerLabel_.set_text(beerQuote_->getShortRandomQuote());
                 beerLabel_.set_use_markup(true);
                 beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
-                //Model
+                // Model
                 propertiesGrid_.attach(modelTypeLabel_, 3, 2, 1, 1);
                 propertiesGrid_.attach(modelTypeCombo_, 4, 2, 1, 1);
                 modelTypeCombo_.append("\u03B5-\u03C4 model");
@@ -149,17 +137,17 @@ namespace ASALI
                 modelTypeCombo_.signal_changed().connect(sigc::mem_fun(*this, &catalyticPellet::modelOptions));
                 modelTypeCombo_.set_active(0);
 
-                //Void fractoin
+                // Void fractoin
                 propertiesGrid_.attach(epsiLabel_, 3, 3, 1, 1);
                 propertiesGrid_.attach(epsiEntry_, 4, 3, 1, 1);
                 epsiEntry_.set_text("0.75");
 
-                //Tortuosity
+                // Tortuosity
                 propertiesGrid_.attach(tauLabel_, 3, 4, 1, 1);
                 propertiesGrid_.attach(tauEntry_, 4, 4, 1, 1);
                 tauEntry_.set_text("7");
 
-                //Type
+                // Type
                 propertiesGrid_.attach(pelletTypeLabel_, 3, 5, 1, 1);
                 propertiesGrid_.attach(pelletTypeCombo_, 4, 5, 1, 1);
                 pelletTypeCombo_.append("slab");
@@ -168,27 +156,19 @@ namespace ASALI
                 pelletTypeCombo_.signal_changed().connect(sigc::mem_fun(*this, &catalyticPellet::pelletOptions));
                 pelletTypeCombo_.set_active(0);
 
-                //Length
+                // Length
                 propertiesGrid_.attach(lengthLabel_, 0, 3, 1, 1);
                 lengthLabel_.set_text("Thickness");
                 propertiesGrid_.attach(lengthEntry_, 1, 3, 1, 1);
                 lengthEntry_.set_text("1");
                 propertiesGrid_.attach(lengthCombo_, 2, 3, 1, 1);
-                lengthCombo_.append("m");
-                lengthCombo_.append("dm");
-                lengthCombo_.append("cm");
-                lengthCombo_.append("mm");
-                lengthCombo_.append("\u03BCm");
-                lengthCombo_.set_active(2);
+                unitConversion_->updateBox(lengthCombo_, "length");
 
-                //Pore
+                // Pore
                 poreEntry_.set_text("1");
-                poreCombo_.append("cm");
-                poreCombo_.append("mm");
-                poreCombo_.append("\u03BCm");
-                poreCombo_.set_active(2);
+                unitConversion_->updateBox(poreCombo_, "length");
 
-                //Buttons
+                // Buttons
                 propertiesGrid_.attach(exitButton3_, 0, 11, 2, 1);
                 exitButton3_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticPellet::exit));
                 propertiesGrid_.attach(nextButton3_, 3, 11, 2, 1);
@@ -198,7 +178,7 @@ namespace ASALI
             }
         }
 
-        //Recap
+        // Recap
         {
             recapMainBox_.set_halign(Gtk::ALIGN_CENTER);
             recapMainBox_.set_spacing(10);
@@ -252,92 +232,92 @@ namespace ASALI
                     recapGrid_.set_row_spacing(10);
                     recapGrid_.set_column_homogeneous(true);
 
-                    //Reactor type
+                    // Reactor type
                     recapPelletTypeLabel_.set_text("Pellet type");
                     recapGrid_.attach(recapPelletTypeLabel_, 0, 0, 1, 1);
                     recapGrid_.attach(recapPelletTypeValueLabel_, 1, 0, 1, 1);
 
-                    //Kinetic type
+                    // Kinetic type
                     recapKineticLabel_.set_text("Kinetic model from");
                     recapGrid_.attach(recapKineticLabel_, 0, 1, 1, 1);
                     recapGrid_.attach(recapKineticValueLabel_, 1, 1, 1, 1);
 
-                    //Time
+                    // Time
                     recapTimeLabel_.set_text("Integration time");
                     recapTimeUDLabel_.set_text("s");
                     recapGrid_.attach(recapTimeLabel_, 0, 2, 1, 1);
                     recapGrid_.attach(recapTimeUDLabel_, 2, 2, 1, 1);
                     recapGrid_.attach(recapTimeValueLabel_, 1, 2, 1, 1);
 
-                    //Save
+                    // Save
                     recapSaveLabel_.set_text("Save solution every");
                     recapSaveUDLabel_.set_text("s");
                     recapGrid_.attach(recapSaveLabel_, 0, 3, 1, 1);
                     recapGrid_.attach(recapSaveUDLabel_, 2, 3, 1, 1);
                     recapGrid_.attach(recapSaveValueLabel_, 1, 3, 1, 1);
 
-                    //Points
+                    // Points
                     recapPointsLabel_.set_text("Solving with");
                     recapPointsUDLabel_.set_text("points");
                     recapGrid_.attach(recapPointsLabel_, 0, 4, 1, 1);
                     recapGrid_.attach(recapPointsUDLabel_, 2, 4, 1, 1);
                     recapGrid_.attach(recapPointsValueLabel_, 1, 4, 1, 1);
 
-                    //Inert
+                    // Inert
                     recapInertLabel_.set_text("Inert species is");
                     recapGrid_.attach(recapInertLabel_, 0, 5, 1, 1);
                     recapGrid_.attach(recapInertValueLabel_, 1, 5, 1, 1);
 
-                    //Load
+                    // Load
                     recapLoadLabel_.set_text("Catalytic load");
                     recapGrid_.attach(recapLoadLabel_, 0, 6, 1, 1);
                     recapLoadUDLabel_.set_text("1/m");
                     recapGrid_.attach(recapLoadUDLabel_, 2, 6, 1, 1);
                     recapGrid_.attach(recapLoadValueLabel_, 1, 6, 1, 1);
 
-                    //Epsi
+                    // Epsi
                     recapEpsiLabel_.set_text("Void fraction");
                     recapGrid_.attach(recapEpsiLabel_, 0, 7, 1, 1);
                     recapGrid_.attach(recapEpsiValueLabel_, 1, 7, 1, 1);
 
-                    //Tau
+                    // Tau
                     recapTauLabel_.set_text("Tortuosity");
                     recapGrid_.attach(recapTauLabel_, 0, 8, 1, 1);
                     recapGrid_.attach(recapTauValueLabel_, 1, 8, 1, 1);
 
-                    //Model
+                    // Model
                     recapModelTypeLabel_.set_text("Diffusion model");
                     recapGrid_.attach(recapModelTypeLabel_, 0, 9, 1, 1);
                     recapGrid_.attach(recapModelTypeValueLabel_, 1, 9, 1, 1);
                     recapPoreLabel_.set_text("Pore diameter");
                     recapPoreUDLabel_.set_text("m");
 
-                    //Temperature
+                    // Temperature
                     recapTemperatureLabel_.set_text("Temperature");
                     recapGrid_.attach(recapTemperatureLabel_, 3, 1, 1, 1);
                     recapGrid_.attach(recapTemperatureUDLabel_, 5, 1, 1, 1);
                     recapTemperatureUDLabel_.set_text("K");
                     recapGrid_.attach(recapTemperatureValueLabel_, 4, 1, 1, 1);
 
-                    //Pressure
+                    // Pressure
                     recapPressureLabel_.set_text("Pressure");
                     recapGrid_.attach(recapPressureLabel_, 3, 2, 1, 1);
                     recapGrid_.attach(recapPressureUDLabel_, 5, 2, 1, 1);
                     recapPressureUDLabel_.set_text("Pa");
                     recapGrid_.attach(recapPressureValueLabel_, 4, 2, 1, 1);
 
-                    //Length
+                    // Length
                     recapGrid_.attach(recapLengthLabel_, 3, 0, 1, 1);
                     recapGrid_.attach(recapLengthUDLabel_, 5, 0, 1, 1);
                     recapLengthUDLabel_.set_text("m");
                     recapGrid_.attach(recapLengthValueLabel_, 4, 0, 1, 1);
 
-                    //Fraction
+                    // Fraction
                     recapGrid_.attach(recapFractionLabel_, 3, 3, 1, 1);
                     recapGrid_.attach(recapFractionNameLabel_, 5, 3, 1, 1);
                     recapGrid_.attach(recapFractionValueLabel_, 4, 3, 1, 1);
 
-                    //Buttons
+                    // Buttons
                     recapGrid_.attach(backButton3_, 0, 13, 3, 1);
                     backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticPellet::input));
                     recapGrid_.attach(exitButton4_, 3, 13, 3, 1);
@@ -350,7 +330,7 @@ namespace ASALI
     void catalyticPellet::pelletOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -377,7 +357,7 @@ namespace ASALI
     void catalyticPellet::modelOptions()
     {
         {
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
         }
@@ -440,10 +420,10 @@ namespace ASALI
         tau_ = Glib::Ascii::strtod(tauEntry_.get_text());
         L_ = Glib::Ascii::strtod(lengthEntry_.get_text());
 
-        ConvertsToSecond(tf_, timeCombo_.get_active_text());
-        ConvertsToSecond(dt_, saveCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_, loadCombo_.get_active_text());
-        ConvertsToMeter(L_, lengthCombo_.get_active_text());
+        unitConversion_->toSecond(tf_, timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_, saveCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_, loadCombo_.get_active_text());
+        unitConversion_->toMeter(L_, lengthCombo_.get_active_text());
 
         pelletType_ = pelletTypeCombo_.get_active_text();
         modelType_ = modelTypeCombo_.get_active_text();
@@ -457,7 +437,7 @@ namespace ASALI
         else if (modelTypeCombo_.get_active_row_number() == 1)
         {
             dp_ = Glib::Ascii::strtod(poreEntry_.get_text());
-            ConvertsToMeter(dp_, poreCombo_.get_active_text());
+            unitConversion_->toMeter(dp_, poreCombo_.get_active_text());
         }
     }
 
@@ -490,12 +470,12 @@ namespace ASALI
             this->remove();
             this->add(recapMainBox_);
 
-            //Pellet type
+            // Pellet type
             {
                 recapPelletTypeValueLabel_.set_text(pelletType_);
             }
 
-            //Model type
+            // Model type
             {
                 recapModelTypeValueLabel_.set_text(modelType_);
             }
@@ -506,7 +486,7 @@ namespace ASALI
             }
             else if (modelTypeCombo_.get_active_row_number() == 1)
             {
-                //Temperature
+                // Temperature
                 {
                     std::ostringstream s;
                     s << dp_;
@@ -518,14 +498,14 @@ namespace ASALI
                 recapModelBool_ = true;
             }
 
-            //Temperature
+            // Temperature
             {
                 std::ostringstream s;
                 s << T_;
                 recapTemperatureValueLabel_.set_text(s.str());
             }
 
-            //Pressure
+            // Pressure
             {
                 std::ostringstream s;
                 s << p_;
@@ -533,7 +513,7 @@ namespace ASALI
             }
 
             int NC = -1;
-            //Mole/mass fraction
+            // Mole/mass fraction
             {
                 recapFractionLabel_.set_text(fractionCombo_.get_active_text());
                 {
@@ -566,47 +546,47 @@ namespace ASALI
                 }
             }
 
-            //Time
+            // Time
             {
                 std::ostringstream s;
                 s << tf_;
                 recapTimeValueLabel_.set_text(s.str());
             }
 
-            //Save
+            // Save
             {
                 std::ostringstream s;
                 s << dt_;
                 recapSaveValueLabel_.set_text(s.str());
             }
 
-            //Points
+            // Points
             {
                 std::ostringstream s;
                 s << NP_;
                 recapPointsValueLabel_.set_text(s.str());
             }
 
-            //Inert
+            // Inert
             {
                 recapInertValueLabel_.set_text(inert_);
             }
 
-            //Load
+            // Load
             {
                 std::ostringstream s;
                 s << alfa_;
                 recapLoadValueLabel_.set_text(s.str());
             }
 
-            //Epsi
+            // Epsi
             {
                 std::ostringstream s;
                 s << epsi_;
                 recapEpsiValueLabel_.set_text(s.str());
             }
 
-            //Tau
+            // Tau
             {
                 std::ostringstream s;
                 s << tau_;
@@ -641,14 +621,14 @@ namespace ASALI
                 }
             }
 
-            //Fractions
+            // Fractions
             {
                 recapGrid_.attach(recapFractionLabel_, 3, 3, 1, NC + 1);
                 recapGrid_.attach(recapFractionNameLabel_, 5, 3, 1, NC + 1);
                 recapGrid_.attach(recapFractionValueLabel_, 4, 3, 1, NC + 1);
             }
 
-            //Kinetic
+            // Kinetic
             {
                 recapKineticValueLabel_.set_text(kineticCombo_.get_active_text());
             }
@@ -676,10 +656,10 @@ namespace ASALI
             if (chemistryInterface_->numberOfHomogeneousReactions() != 0.)
             {
                 Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(), true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = smallDialog.run();
 
-                //Handle the response:
+                // Handle the response:
                 switch (answer)
                 {
                 case (Gtk::RESPONSE_YES):
@@ -994,12 +974,9 @@ namespace ASALI
         eq_->store(0., x0);
         this->bar(1e-05, "Starting...");
 
-        //Start solving
+        // Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
             double dt = 0.;
-
             if (alfa_ != 0.)
             {
                 dt = dt_ / (eq_->NumberOfEquations() * 5.);
@@ -1009,30 +986,26 @@ namespace ASALI
                 dt = dt_ / 100.;
             }
 
+            double ti = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
-            double timef = 0.;
-            double tm = 0;
             int Nt = int(tf_ / dt) + 1;
             for (int i = 0; i < Nt; i++)
             {
-                tf = ti + dt;
-
                 bvp.setInitialConditions(ti, x0);
-                bvp.solve(tf, x0);
+                bvp.solve(ti + dt, x0);
 
                 td += dt;
 
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
-                    eq_->store(tf, x0);
+                    eq_->store(ti + dt, x0);
                     td = 0.;
                 }
 
-                timef = double(std::clock() / CLOCKS_PER_SEC);
-                tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                ti = tf;
+                ti = ti + dt;
 
                 this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -1080,7 +1053,7 @@ namespace ASALI
 
     void catalyticPellet::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "pellet.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "pellet.asali");
         if (filename != "")
         {
             std::ofstream output;
@@ -1103,7 +1076,7 @@ namespace ASALI
 
             if (kineticCombo_.get_active_text() == "ASALI")
             {
-                //Conversion from mass to mole
+                // Conversion from mass to mole
                 std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
                 {
                     if (kineticType_ == "none")
@@ -1207,7 +1180,7 @@ namespace ASALI
             }
             else if (kineticCombo_.get_active_text() == "CANTERA")
             {
-                //Conversion from mass to mole
+                // Conversion from mass to mole
                 std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
                 std::vector<std::string> n = chemistryInterface_->names();
                 {
@@ -1299,7 +1272,7 @@ namespace ASALI
             std::vector<double> t = eq_->getTime();
             std::vector<std::vector<std::vector<double>>> y = eq_->getSpecie();
 
-            //Conversion from mass to mole
+            // Conversion from mass to mole
             std::vector<std::vector<std::vector<double>>> mole = eq_->getSpecie();
 
             std::vector<std::string> n = chemistryInterface_->names();
@@ -1360,7 +1333,7 @@ namespace ASALI
             }
         }
 
-        //Length
+        // Length
         {
             double dz = eq_->getLength() / double(NP_ - 1);
             std::vector<double> l(NP_);
@@ -1374,10 +1347,5 @@ namespace ASALI
         plot_->setType("pellet");
         plot_->build();
         plot_->show();
-    }
-
-
-    catalyticPellet::~catalyticPellet()
-    {
     }
 }

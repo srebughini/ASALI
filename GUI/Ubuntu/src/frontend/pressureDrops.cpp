@@ -41,7 +41,7 @@
 namespace ASALI
 {
     pressureDrops::pressureDrops(ASALI::speciesPopup *speciesNames,
-                                 std::string kineticType)
+                                 const std::string &kineticType)
         : basicProperties(speciesNames, kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           calculateButton_("Calculate"),
@@ -60,8 +60,8 @@ namespace ASALI
           honeyCombWallThicknessLabel_("Wall thickness"),
           tubularDpLabel_("Bird R. B. et al. (1960)"),
           honeyCombDpLabel_("Bird R. B. et al. (1960)"),
-          logo1_(this->relative_path_to_absolute_path("images/PressureLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/PressureLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/PressureLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/PressureLogo.png")),
           reactorType_("none"),
           tubularBool_(false),
           honeyCombBool_(false),
@@ -71,7 +71,7 @@ namespace ASALI
           packedBedDpBool_(false),
           Ndp_(3)
     {
-        //Set up packed bed
+        // Set up packed bed
         {
             dpPackedBed_.resize(Ndp_);
             packedBedDpLabel_.resize(Ndp_);
@@ -89,18 +89,18 @@ namespace ASALI
             packedBedDpLabel_[2] = new Gtk::Label("Eisfeld B. et al. (2001)");
         }
 
-        //Input composition
+        // Input composition
         {
             this->createInputGrid();
             this->set_border_width(15);
             this->set_title("ASALI: Pressure drops");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             doneButton_.set_label("Next");
             this->input();
         }
 
-        //Input reactor
+        // Input reactor
         {
             mainBox_.set_halign(Gtk::ALIGN_START);
             mainBox_.set_spacing(10);
@@ -115,7 +115,7 @@ namespace ASALI
                 propertiesGrid_.set_row_spacing(10);
                 propertiesGrid_.set_column_homogeneous(true);
 
-                //Type
+                // Type
                 propertiesGrid_.attach(reactorTypeLabel_, 0, 0, 1, 1);
                 propertiesGrid_.attach(reactorTypeCombo_, 1, 0, 1, 1);
                 reactorTypeCombo_.append("tubular");
@@ -124,7 +124,7 @@ namespace ASALI
                 reactorTypeCombo_.signal_changed().connect(sigc::mem_fun(*this, &pressureDrops::options));
                 reactorTypeCombo_.set_active(0);
 
-                //Length
+                // Length
                 propertiesGrid_.attach(lengthLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(lengthEntry_, 1, 1, 1, 1);
                 lengthEntry_.set_text("1");
@@ -135,7 +135,7 @@ namespace ASALI
                 lengthCombo_.append("mm");
                 lengthCombo_.set_active(0);
 
-                //Velocity
+                // Velocity
                 propertiesGrid_.attach(velocityLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(velocityEntry_, 1, 2, 1, 1);
                 velocityEntry_.set_text("1");
@@ -148,7 +148,7 @@ namespace ASALI
                 velocityCombo_.append("cm/h");
                 velocityCombo_.set_active(0);
 
-                //Tubular
+                // Tubular
                 {
                     tubularTubeEntry_.set_text("1");
 
@@ -174,7 +174,7 @@ namespace ASALI
                     tubularDpCombo_.signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this, &pressureDrops::dpConversion), 0));
                 }
 
-                //Honeycomb
+                // Honeycomb
                 {
                     honeyCombCPSIEntry_.set_text("400");
 
@@ -194,7 +194,7 @@ namespace ASALI
                     honeyCombDpCombo_.signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this, &pressureDrops::dpConversion), 0));
                 }
 
-                //Packed bed
+                // Packed bed
                 {
                     packedBedTubeEntry_.set_text("1");
 
@@ -226,7 +226,7 @@ namespace ASALI
                     }
                 }
 
-                //Buttons
+                // Buttons
                 propertiesGrid_.attach(backButton3_, 0, 7, 1, 1);
                 backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &pressureDrops::input));
                 propertiesGrid_.attach(exitButton3_, 2, 7, 1, 1);
@@ -235,11 +235,6 @@ namespace ASALI
                 calculateButton_.signal_clicked().connect(sigc::mem_fun(*this, &pressureDrops::results));
             }
         }
-        std::cout << "sono qui" << std::endl;
-    }
-
-    pressureDrops::~pressureDrops()
-    {
     }
 
     void pressureDrops::options()
@@ -321,8 +316,8 @@ namespace ASALI
         L_ = Glib::Ascii::strtod(lengthEntry_.get_text());
         v_ = Glib::Ascii::strtod(velocityEntry_.get_text());
 
-        ConvertsToMeter(L_, lengthCombo_.get_active_text());
-        ConvertsToMeterPerSecond(v_, velocityCombo_.get_active_text());
+        unitConversion_->toMeter(L_, lengthCombo_.get_active_text());
+        unitConversion_->toMeterPerSecond(v_, velocityCombo_.get_active_text());
 
         reactorType_ = reactorTypeCombo_.get_active_text();
 
@@ -330,11 +325,11 @@ namespace ASALI
         {
             Dt_ = Glib::Ascii::strtod(tubularTubeEntry_.get_text());
 
-            ConvertsToMeter(Dt_, tubularTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_, tubularTubeCombo_.get_active_text());
 
             tw_ = Glib::Ascii::strtod(tubularWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_, tubularWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_, tubularWallThicknessCombo_.get_active_text());
         }
         else if (reactorTypeCombo_.get_active_text() == "packed bed")
         {
@@ -342,15 +337,15 @@ namespace ASALI
             Dp_ = Glib::Ascii::strtod(packedBedParticleEntry_.get_text());
             epsi_ = Glib::Ascii::strtod(packedBedVoidFractionEntry_.get_text());
 
-            ConvertsToMeter(Dt_, packedBedTubeCombo_.get_active_text());
-            ConvertsToMeter(Dp_, packedBedParticleCombo_.get_active_text());
+            unitConversion_->toMeter(Dt_, packedBedTubeCombo_.get_active_text());
+            unitConversion_->toMeter(Dp_, packedBedParticleCombo_.get_active_text());
         }
         else if (reactorTypeCombo_.get_active_text() == "honeycomb")
         {
             cpsi_ = Glib::Ascii::strtod(honeyCombCPSIEntry_.get_text());
             tw_ = Glib::Ascii::strtod(honeyCombWallThicknessEntry_.get_text());
 
-            ConvertsToMeter(tw_, honeyCombWallThicknessCombo_.get_active_text());
+            unitConversion_->toMeter(tw_, honeyCombWallThicknessCombo_.get_active_text());
         }
     }
 
@@ -438,9 +433,9 @@ namespace ASALI
             double G = chemistryInterface_->getDensity() * v_;
             double Aw = 1. + 2. / (3. * Dt_ * (1. - epsi_) / Dp_);
             double Bw = std::pow(1.15 * std::pow(Dp_ / Dt_, 2.) + 0.87, 2.);
-            dpPackedBed_[0] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 7. / 4.) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                                                //Ergun
-            dpPackedBed_[1] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 4.2 * std::pow((1. - epsi_) / (Dp_ * G / mu), 1. / 6.)) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_); //Tallmadge
-            dpPackedBed_[2] = (154. * std::pow(Aw, 2.) * (1. - epsi_) / (Dp_ * G / mu) + Aw / Bw) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                             //Eisfeld
+            dpPackedBed_[0] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 7. / 4.) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                                                // Ergun
+            dpPackedBed_[1] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 4.2 * std::pow((1. - epsi_) / (Dp_ * G / mu), 1. / 6.)) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_); // Tallmadge
+            dpPackedBed_[2] = (154. * std::pow(Aw, 2.) * (1. - epsi_) / (Dp_ * G / mu) + Aw / Bw) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                             // Eisfeld
         }
     }
 
@@ -457,7 +452,7 @@ namespace ASALI
             this->add(mainBox_);
 
             this->run();
-            beerLabel_.set_text(this->getBeerShort());
+            beerLabel_.set_text(beerQuote_->getShortRandomQuote());
             beerLabel_.set_use_markup(true);
             beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
@@ -579,14 +574,14 @@ namespace ASALI
 
     void pressureDrops::dpConversion(unsigned int i)
     {
-        beerLabel_.set_text(this->getBeerShort());
+        beerLabel_.set_text(beerQuote_->getShortRandomQuote());
         beerLabel_.set_use_markup(true);
         beerLabel_.set_justify(Gtk::JUSTIFY_CENTER);
 
         if (reactorType_ == "tubular")
         {
             double dp = dpTubular_;
-            ConvertsFromPascal(dp, tubularDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp, tubularDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -596,7 +591,7 @@ namespace ASALI
         else if (reactorType_ == "honeycomb")
         {
             double dp = dpHoneyComb_;
-            ConvertsFromPascal(dp, honeyCombDpCombo_.get_active_text());
+            unitConversion_->fromPascal(dp, honeyCombDpCombo_.get_active_text());
             {
                 std::ostringstream s;
                 s << dp;
@@ -606,7 +601,7 @@ namespace ASALI
         else if (reactorType_ == "packed bed")
         {
             double dp = dpPackedBed_[i];
-            ConvertsFromPascal(dp, packedBedDpCombo_[i]->get_active_text());
+            unitConversion_->fromPascal(dp, packedBedDpCombo_[i]->get_active_text());
             {
                 std::ostringstream s;
                 s << dp;

@@ -43,13 +43,13 @@ namespace ASALI
     speciesPopup::speciesPopup()
         : closeButton_("Close"),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
-          speciesImage_(this->relative_path_to_absolute_path("database/names.tiff"))
+          speciesImage_(fileManager_.relative_path_to_absolute_path("database/names.tiff"))
     {
         this->set_default_size(600, 400);
         this->set_border_width(15);
         this->set_title("ASALI: species names");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         this->add(mainBox_);
         mainBox_.pack_start(scrolledWindow_);
         scrolledWindow_.add(speciesImage_);
@@ -62,9 +62,5 @@ namespace ASALI
     void speciesPopup::exit()
     {
         this->hide();
-    }
-
-    speciesPopup::~speciesPopup()
-    {
     }
 }

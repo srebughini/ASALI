@@ -51,59 +51,73 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
+    /// Class to estimate catalyst properties
     class catalystProperties : public Gtk::Window
     {
     public:
+        /// Class constructor
         catalystProperties();
+
+        /// Class destructor
+        ~catalystProperties();
 
         void doneInput();
 
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
+        /// Return density in [kg/m3]
+        inline double get_rho() const { return rho_; };
 
-        double get_rho() { return rho_; };
-        double get_cond() { return cond_; };
-        double get_cp() { return cp_; };
-        double get_load() { return alfa_; };
-        double get_T() { return T_; };
+        /// Return thermal conducitivity in [W/m/K]
+        inline double get_cond() const { return cond_; };
 
-        virtual ~catalystProperties();
+        /// Return specific heat in [J/kg/K]
+        inline double get_cp() const { return cp_; };
+
+        /// Return catalyst active phase load in [1/m]
+        inline double get_load() const { return alfa_; };
+
+        /// Return temperature in [K]
+        inline double get_T() const { return T_; };
 
     private:
-        Gtk::Image het1dLogo_;
+        Gtk::Image het1dLogo_; /// Logo
 
-        Gtk::Box mainBox_;
+        Gtk::Box mainBox_; /// Background box
 
-        Gtk::Grid mainGrid_;
+        Gtk::Grid mainGrid_; /// Background grid
 
-        Gtk::Label rhoLabel_;
-        Gtk::Label condLabel_;
-        Gtk::Label cpLabel_;
-        Gtk::Label loadLabel_;
-        Gtk::Label TLabel_;
+        Gtk::Label rhoLabel_;  /// Density label for input
+        Gtk::Label condLabel_; /// Thermal conductivity label for input
+        Gtk::Label cpLabel_;   /// Specific heat label for input
+        Gtk::Label loadLabel_; /// Catalyst active phase load label for input
+        Gtk::Label TLabel_;    /// Temperature label for input
 
-        Gtk::Button doneButton_;
+        Gtk::Button doneButton_; /// Done button
 
-        Gtk::ComboBoxText rhoCombo_;
-        Gtk::ComboBoxText condCombo_;
-        Gtk::ComboBoxText cpCombo_;
-        Gtk::ComboBoxText loadCombo_;
-        Gtk::ComboBoxText TCombo_;
+        Gtk::ComboBoxText rhoCombo_;  /// Density unit dimensions for input
+        Gtk::ComboBoxText condCombo_; /// Thermal conductivity unit dimensions for input
+        Gtk::ComboBoxText cpCombo_;   /// Specific heat unit dimensions for input
+        Gtk::ComboBoxText loadCombo_; /// Catalyst active phase load unit dimensions for input
+        Gtk::ComboBoxText TCombo_;    /// Temperature unit dimensions for input
 
-        Gtk::Entry rhoEntry_;
-        Gtk::Entry condEntry_;
-        Gtk::Entry cpEntry_;
-        Gtk::Entry loadEntry_;
-        Gtk::Entry TEntry_;
+        Gtk::Entry rhoEntry_;  /// Density entry box for input
+        Gtk::Entry condEntry_; /// Thermal conductivity entry box for input
+        Gtk::Entry cpEntry_;   /// Specific heat entry box for input
+        Gtk::Entry loadEntry_; /// Catalyst active phase load entry box for input
+        Gtk::Entry TEntry_;    /// Temperature entry box for input
 
-        double rho_;
-        double cp_;
-        double cond_;
-        double alfa_;
-        double T_;
+        double rho_;  /// Density in [kg/m3]
+        double cp_;   /// Specific heat in [J/kg/K]
+        double cond_; /// Thermal conductivity in [W/m/K]
+        double alfa_; /// Catalyst active phase load in [1/m]
+        double T_;    /// Temperature in [K]
+
+        ASALI::asaliUnitConversionUtils *unitConversion_; /// Object to work with unit dimensions
+        ASALI::asaliFileManager fileManager_;             /// Object to handle opening/closing of files
     };
 }
 #endif

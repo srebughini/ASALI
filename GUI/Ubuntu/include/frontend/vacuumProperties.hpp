@@ -46,9 +46,7 @@ namespace ASALI
     class vacuumProperties : public ASALI::basicProperties
     {
     public:
-        vacuumProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~vacuumProperties();
+        vacuumProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         void results();
         void save();
@@ -86,8 +84,6 @@ namespace ASALI
         Gtk::ComboBoxText pathCombo_;
 
         Gtk::Entry specieEntry_;
-        Gtk::Entry tempEntry_;
-        Gtk::Entry pressEntry_;
         Gtk::Entry lengthEntry_;
 
         double Kn_;

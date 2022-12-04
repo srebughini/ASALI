@@ -62,7 +62,7 @@ namespace ASALI
         basicInterface();
 
         /// Convert string from lower case to upper case
-        void convertToCaption(std::string &n);
+        static void convertToCaption(std::string &n);
 
         /// Resize variables based on number of species in the gas mixture
         void resize();
@@ -71,58 +71,58 @@ namespace ASALI
         double specieProperty(std::string p, std::string n);
 
         /// Return mole fraction from names
-        std::vector<double> getMoleFractionFromNames(const std::vector<std::string> names);
+        std::vector<double> getMoleFractionFromNames(const std::vector<std::string> &names);
 
         /// Return mass fraction from names
-        std::vector<double> getMassFractionFromNames(const std::vector<std::string> names);
+        std::vector<double> getMassFractionFromNames(const std::vector<std::string> &names);
 
         /// Return mole fraction
-        inline std::vector<double> getMoleFraction() { return mole_; };
+        inline std::vector<double> getMoleFraction() const { return mole_; };
 
         /// Return mass fraction
-        inline std::vector<double> getMassFraction() { return mass_; };
+        inline std::vector<double> getMassFraction() const { return mass_; };
 
         /// Return species and mixture enthalpy in [J/kmol]
-        inline std::vector<double> h() { return h_; };
+        inline std::vector<double> h() const { return h_; };
 
         /// Return species and mixture entropy in [J/kmol/K]
-        inline std::vector<double> s() { return s_; };
+        inline std::vector<double> s() const { return s_; };
 
         /// Return species and mixture molar specific heat in [J/kmol/K]
-        inline std::vector<double> cp() { return cp_; };
+        inline std::vector<double> cp() const { return cp_; };
 
         /// Return species and mixture molecular weight in [g/mol]
-        inline std::vector<double> MW() { return MW_; };
+        inline std::vector<double> MW() const { return MW_; };
 
         /// Return species and mixture viscosity in [Pas]
-        inline std::vector<double> mu() { return mu_; };
+        inline std::vector<double> mu() const { return mu_; };
 
         /// Return species and mixture thermal conductivity in [W/m/K]
-        inline std::vector<double> cond() { return cond_; };
+        inline std::vector<double> cond() const { return cond_; };
 
         /// Return species arithmetic mean gas velocity [m/s]
-        inline std::vector<double> vm() { return v_; };
+        inline std::vector<double> vm() const { return v_; };
 
         /// Return species binary and mixture diffusion coefficients [m2/s]
-        inline std::vector<std::vector<double>> diff() { return diff_; };
+        inline std::vector<std::vector<double>> diff() const { return diff_; };
 
         /// Return species mean free path [m]
-        inline std::vector<double> l() { return l_; };
+        inline std::vector<double> l() const { return l_; };
 
         /// Return mole fraction
-        inline std::vector<double> mole() { return mole_; };
+        inline std::vector<double> mole() const { return mole_; };
 
         /// Return mass fraction
-        inline std::vector<double> mass() { return mass_; };
+        inline std::vector<double> mass() const { return mass_; };
 
         /// Return gas species names
-        inline std::vector<std::string> names() { return names_; };
+        inline std::vector<std::string> names() const { return names_; };
 
         /// Return gas species names and mixture
-        inline std::vector<std::string> mixtureNames() { return n_; };
+        inline std::vector<std::string> mixtureNames() const { return n_; };
 
         /// Return coverage species names
-        inline std::vector<std::string> coverageNames() { return nc_; };
+        inline std::vector<std::string> coverageNames() const { return nc_; };
 
         /// Set temperature in [K]
         virtual void setTemperature(const double T) = 0;
@@ -131,10 +131,10 @@ namespace ASALI
         virtual void setPressure(const double p) = 0;
 
         /// Set mass fraction
-        virtual void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name) = 0;
+        virtual void setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name) = 0;
 
         /// Set mole fraction
-        virtual void setMassFraction(const std::vector<double> y, const std::vector<std::string> name) = 0;
+        virtual void setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name) = 0;
 
         /// Set mass fraction, temperature in [K] and pressure in [Pa]
         virtual void setStateFromMassFraction(const double *y, const double T, const double p) = 0;

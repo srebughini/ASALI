@@ -46,9 +46,7 @@ namespace ASALI
     class thermoTransportProperties : public ASALI::basicProperties
     {
     public:
-        thermoTransportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~thermoTransportProperties();
+        thermoTransportProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         virtual void results();
         virtual void save();
@@ -75,8 +73,6 @@ namespace ASALI
         Gtk::Button saveButton_;
         Gtk::Button backButton_;
 
-        Gtk::Grid resultsGrid_;
-
         Gtk::Label condLabel_;
         Gtk::Label muLabel_;
         Gtk::Label diffLabel_;
@@ -91,7 +87,6 @@ namespace ASALI
         Gtk::ComboBoxText hCombo_;
         Gtk::ComboBoxText sCombo_;
 
-        std::vector<Gtk::Label *> nameVector_;
         std::vector<Gtk::Label *> condVector_;
         std::vector<Gtk::Label *> muVector_;
         std::vector<Gtk::Label *> diffVector_;

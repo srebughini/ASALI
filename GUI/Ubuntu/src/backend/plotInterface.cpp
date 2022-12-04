@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    #if ASALI_ON_WINDOW == 1
+#if ASALI_ON_WINDOW == 1
     plotInterface::plotInterface() : nFig_(-1),
                                      defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
@@ -50,7 +50,7 @@ namespace ASALI
         _putenv_s("PLPLOT_LIB", "share/plplot5.15.0");
         _putenv_s("WININSTALLDIR", ".");
     }
-    #else
+#else
     plotInterface::plotInterface() : nFig_(-1),
                                      defaultGeometry_("600x400"),
                                      defaultTextColor_({255, 255, 235}),
@@ -58,56 +58,16 @@ namespace ASALI
                                      onScreenOutputFormats_({"xcairo", "wxwidgets", "qtwidget"})
     {
     }
-    #endif
+#endif
 
-    double plotInterface::maxElement(const std::vector<double> v)
-    {
-        double max = DBL_MIN;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            max = std::max(v[i], max);
-
-        return max;
-    }
-
-    double plotInterface::minElement(const std::vector<double> v)
-    {
-        double min = DBL_MAX;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            min = std::min(v[i], min);
-
-        return min;
-    }
-
-    int plotInterface::maxElement(const std::vector<int> v)
-    {
-        int max = INT_MIN;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            max = std::max(v[i], max);
-
-        return max;
-    }
-
-    int plotInterface::minElement(const std::vector<int> v)
-    {
-        int min = INT_MAX;
-
-        for (unsigned int i = 0; i < v.size(); i++)
-            min = std::min(v[i], min);
-
-        return min;
-    }
-
-    void plotInterface::setDefaultBackgroundColor(int r, int b, int g)
+    void plotInterface::setDefaultBackgroundColor(const int r, const int b, const int g)
     {
         defaultBgColor_[0] = r;
         defaultBgColor_[1] = b;
         defaultBgColor_[2] = g;
     }
 
-    void plotInterface::setDefaultTextColor(int r, int b, int g)
+    void plotInterface::setDefaultTextColor(const int r, const int b, const int g)
     {
         defaultTextColor_[0] = r;
         defaultTextColor_[1] = b;
@@ -191,36 +151,36 @@ namespace ASALI
         ymax_[nFig_] = std::max(ymax, ymax_[nFig_]);
     }
 
-    void plotInterface::setXlabel(std::string xlabel)
+    void plotInterface::setXlabel(const std::string &xlabel)
     {
         xLabel_[nFig_] = xlabel;
     }
 
-    void plotInterface::setYlabel(std::string ylabel)
+    void plotInterface::setYlabel(const std::string &ylabel)
     {
         yLabel_[nFig_] = ylabel;
     }
 
-    void plotInterface::setTitle(std::string title)
+    void plotInterface::setTitle(const std::string &title)
     {
         title_[nFig_] = title;
     }
 
-    void plotInterface::setTextColor(int r, int b, int g)
+    void plotInterface::setTextColor(const int r, const int b, const int g)
     {
         textColor_[nFig_][0] = r;
         textColor_[nFig_][1] = b;
         textColor_[nFig_][2] = g;
     }
 
-    void plotInterface::setBackgroundColor(int r, int b, int g)
+    void plotInterface::setBackgroundColor(const int r, const int b, const int g)
     {
         bgColor_[nFig_][0] = r;
         bgColor_[nFig_][1] = b;
         bgColor_[nFig_][2] = g;
     }
 
-    void plotInterface::setData(std::vector<double> x, std::vector<double> y, std::string label)
+    void plotInterface::setData(const std::vector<double> &x, const std::vector<double> &y, const std::string &label)
     {
         xForSingleFig_.push_back(x);
         yForSingleFig_.push_back(y);
@@ -255,11 +215,11 @@ namespace ASALI
 
         nLegend_[nFig_] = xForSingleFig_.size();
 
-        this->setXlimits(this->maxElement(x), this->minElement(x));
-        this->setYlimits(this->maxElement(y), this->minElement(y));
+        this->setXlimits(vectorUtils_.MaxElement(x), vectorUtils_.MinElement(x));
+        this->setYlimits(vectorUtils_.MaxElement(y), vectorUtils_.MinElement(y));
     }
 
-    void plotInterface::setLegendPosition(const std::string position)
+    void plotInterface::setLegendPosition(const std::string &position)
     {
         if (position == "top")
         {
@@ -323,13 +283,13 @@ namespace ASALI
         }
     }
 
-    void plotInterface::setLegendGrid(int ncol, int nrow)
+    void plotInterface::setLegendGrid(const int ncol, const int nrow)
     {
         nCol_[nFig_] = ncol;
         nRow_[nFig_] = nrow;
     }
 
-    void plotInterface::setOutputFormat(std::string outputFormat)
+    void plotInterface::setOutputFormat(const std::string &outputFormat)
     {
         outputFormat_[nFig_] = outputFormat;
         for (unsigned int i = 0; i < onScreenOutputFormats_.size(); i++)
@@ -342,7 +302,7 @@ namespace ASALI
         }
     }
 
-    void plotInterface::setOutputFileName(std::string fileName)
+    void plotInterface::setOutputFileName(const std::string &fileName)
     {
         fileName_[nFig_] = fileName;
     }
@@ -387,7 +347,7 @@ namespace ASALI
         pls.clear();
     }
 
-    void plotInterface::convertToPLFLT(std::vector<double> v, PLFLT *p)
+    void plotInterface::convertToPLFLT(const std::vector<double> &v, PLFLT *p)
     {
         for (unsigned int i = 0; i < v.size(); i++)
         {
@@ -395,7 +355,7 @@ namespace ASALI
         }
     }
 
-    void plotInterface::convertToPLINT(std::vector<int> v, PLINT *p)
+    void plotInterface::convertToPLINT(const std::vector<int> &v, PLINT *p)
     {
         for (unsigned int i = 0; i < v.size(); i++)
         {
@@ -403,7 +363,7 @@ namespace ASALI
         }
     }
 
-    void plotInterface::initialize(plstream *pls, int figIndex)
+    void plotInterface::initialize(plstream *pls, const int figIndex)
     {
         // Change Background Color
         pls->scolbg(bgColor_[figIndex][0], bgColor_[figIndex][1], bgColor_[figIndex][2]);
@@ -428,7 +388,7 @@ namespace ASALI
         pls->init();
     }
 
-    void plotInterface::plot(plstream *pls, int figIndex)
+    void plotInterface::plot(plstream *pls, const int figIndex)
     {
         // Create a labelled box to hold the plot.
         pls->adv(0);
@@ -480,41 +440,37 @@ namespace ASALI
             PLFLT line_widths[nLegend_[figIndex]];
             this->convertToPLFLT(lineWidths_[figIndex], line_widths);
 
-            pls->legend(&legendWidth_[figIndex],   //p_legend_width
-                        &legendHeight_[figIndex],  //p_legend_height
-                        optBase_[figIndex],        //opt
-                        legendPosition_[figIndex], //position
-                        legendXoffset_[figIndex],  //x
-                        legendYoffset_[figIndex],  //y
-                        0.1,                       //plot_width
-                        0,                         //bg_color
-                        0,                         //bb_color
-                        1,                         //bb_style
-                        nRow_[figIndex],           //nrow
-                        nCol_[figIndex],           //ncolumn
-                        nLegend_[figIndex],        //nlegend
-                        opt_array,                 //opt_array
-                        1.0,                       //text_offset
-                        1.0,                       //text_scale
-                        2.0,                       //text_spacing
-                        1.,                        //test_justification
-                        text_colors,               //text_colors
-                        texts.data(),              //texts
-                        NULL,                      //box_colors
-                        NULL,                      //box_patterns
-                        NULL,                      //box_scales
-                        NULL,                      //box_line_widths
-                        line_colors,               //line_colors
-                        line_styles,               //line_styles
-                        line_widths,               //line_widths
-                        NULL,                      //symbol_colors
-                        NULL,                      //symbol_scales
-                        NULL,                      //symbol_numbers
-                        NULL);                     //symbols
+            pls->legend(&legendWidth_[figIndex],   // p_legend_width
+                        &legendHeight_[figIndex],  // p_legend_height
+                        optBase_[figIndex],        // opt
+                        legendPosition_[figIndex], // position
+                        legendXoffset_[figIndex],  // x
+                        legendYoffset_[figIndex],  // y
+                        0.1,                       // plot_width
+                        0,                         // bg_color
+                        0,                         // bb_color
+                        1,                         // bb_style
+                        nRow_[figIndex],           // nrow
+                        nCol_[figIndex],           // ncolumn
+                        nLegend_[figIndex],        // nlegend
+                        opt_array,                 // opt_array
+                        1.0,                       // text_offset
+                        1.0,                       // text_scale
+                        2.0,                       // text_spacing
+                        1.,                        // test_justification
+                        text_colors,               // text_colors
+                        texts.data(),              // texts
+                        NULL,                      // box_colors
+                        NULL,                      // box_patterns
+                        NULL,                      // box_scales
+                        NULL,                      // box_line_widths
+                        line_colors,               // line_colors
+                        line_styles,               // line_styles
+                        line_widths,               // line_widths
+                        NULL,                      // symbol_colors
+                        NULL,                      // symbol_scales
+                        NULL,                      // symbol_numbers
+                        NULL);                     // symbols
         }
-    }
-
-    plotInterface::~plotInterface()
-    {
     }
 }

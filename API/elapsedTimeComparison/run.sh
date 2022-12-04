@@ -12,6 +12,9 @@ function compile()
 	g++ -std=c++11 -w ../Cpp/Asali.C Cpp-API.cpp -I../Cpp/ -o asali-cpp.sh
 
 	gfortran -o asali-fortran.sh Fortran-API.f90 -I../Fortran/
+
+	javac -Xlint ../Java/ThermoDatabase.java ../Java/TransportDatabase.java ../Java/OmegaDatabase.java ../Java/Asali.java Java-API.java -d .
+
 }
 
 function run()
@@ -20,6 +23,7 @@ function run()
 	./asali-C.sh $N > C.txt
 	./asali-cpp.sh $N > Cpp.txt
 	./asali-fortran.sh $N > Fortran.txt
+	java AsaliJava $N > Java.txt
 }
 
 function printOnScreen()
@@ -36,6 +40,7 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < Cpp.txt
 	sed 's/,/./g ; s/E/e/g' < C.txt
 	sed 's/,/./g ; s/E/e/g' < Fortran.txt
+	sed 's/,/./g ; s/E/e/g' < Java.txt
 }
 
 
@@ -44,8 +49,8 @@ function parseSingleFileOutput()
 	local filename=$1
 	local language=$(sed 's/version//g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename | sed -n 1p)
 	local initime=$(sed 's/Initialization (s)://g ; s/ //g ; s/,/./g ; s/E/e/g'  < $filename | sed -n 2p)
-	local estitime=$(sed 's/Estimation (s)://g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename | sed -n 3p)
-	
+	local estitime=$(sed 's/Calculation (s)://g ; s/ //g ; s/,/./g ; s/E/e/g' < $filename | sed -n 3p)
+
 	echo "|$language|$initime|$estitime| "
 }
 
@@ -77,7 +82,7 @@ function markdownFileHead()
 	echo "* Elapsed time to initialize **output variables** is **not considered**  "
 	echo "## Results  "
 	echo "The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  "
-	echo "|Language|Initialization (s)|Estimation (s)|  "
+	echo "|Language|Initialization (s)|Calculation (s)|  "
 	echo "|--------|----------------|-------------------|  "
 
 }
@@ -91,6 +96,7 @@ function printOnFile()
 	parseSingleFileOutput Cpp.txt
 	parseSingleFileOutput C.txt
 	parseSingleFileOutput Fortran.txt
+	parseSingleFileOutput Java.txt
 }
 
 function Help()
@@ -168,6 +174,7 @@ printOnFile $number_of_runs $processor_model $os > $file_output
 rm -rf Cpp.txt
 rm -rf C.txt
 rm -rf Fortran.txt
+rm -rf Java.txt
 
 
 

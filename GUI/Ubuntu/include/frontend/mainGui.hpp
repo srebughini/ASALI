@@ -43,7 +43,10 @@
 #include "frontend/vacuumProperties.hpp"
 #include "frontend/linearRegression.hpp"
 #include "frontend/kineticMaker.hpp"
+#include "frontend/physicalChemicalProperties.hpp"
 #include "backend/pythonInterface.hpp"
+#include "backend/asaliFileManager.hpp"
+#include "backend/beerQuote.hpp"
 #include <gtk/gtk.h>
 
 #if ASALI_USING_CANTERA == 1
@@ -62,147 +65,141 @@
 
 namespace ASALI
 {
-    class mainGui : public Gtk::Window
-    {
-    public:
-        mainGui();
+        class mainGui : public Gtk::Window
+        {
+        public:
+                mainGui();
 
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
+        private:
+                void exit();
+                void updateBasicChemistryInterface();
+                void updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase);
+                void discrimer();
+                void mainMenu();
+                void noneInputError();
+                void changeCursor();
+                void defaultCanteraInput();
+                void noneInput();
+                void kineticAsali();
+                void kineticMake();
+                void kineticCheck();
+                void chemistryMenu2();
+                void transport();
+                void thermo();
+                void thermoTransport();
+                void vacuum();
+                void physicalChemical();
+                void linearRegression();
 
-        virtual ~mainGui();
+                bool chemistryMenu1(GdkEventButton *);
 
-    private:
-        void exit();
-        void updateBasicChemistryInterface();
-        void updateChemistryInterface(std::string filepath, std::string gasPhase, std::string surfPhase);
-        void discrimer();
-        void mainMenu();
-        void noneInputError();
-        void changeCursor();
-        void defaultCanteraInput();
-        void noneInput();
-        void kineticAsali();
-        void kineticMake();
-        void kineticCheck();
-        void chemistryMenu2();
-        void transport();
-        void thermo();
-        void thermoTransport();
-        void vacuum();
-        void linearRegression();
+#if ASALI_USING_CANTERA == 1
+                void chemkin();
+                void loadCanteraInput();
+                void equilibrium();
+                void pellets();
+                void reactors();
+                void batch();
+                void cstr();
+                void ph1d();
+                void het1d();
+                void dp();
+#endif
+                Gtk::Button discrimerButton_;
+                Gtk::Button exitButton1_;
+                Gtk::Button exitButton2_;
+                Gtk::Button exitButton3_;
+                Gtk::Button exitButton4_;
+                Gtk::Button exitButton5_;
+                Gtk::Button backButton1_;
+                Gtk::Button backButton2_;
+                Gtk::Button startButton_;
+                Gtk::Button defaultCanteraInputButton_;
+                Gtk::Button loadCanteraInputButton_;
+                Gtk::Button noneInputButton_;
+                Gtk::Button conversionButton_;
+                Gtk::Button canteraInputButton_;
+                Gtk::Button transportButton_;
+                Gtk::Button thermoButton_;
+                Gtk::Button thermoTransportButton_;
+                Gtk::Button equilibriumButton_;
+                Gtk::Button linearRegressionButton_;
+                Gtk::Button reactorsButton_;
+                Gtk::Button physicalChemicalButton_;
+                Gtk::Button vacuumButton_;
+                Gtk::Button pelletButton_;
+                Gtk::Button batchButton_;
+                Gtk::Button cstrButton_;
+                Gtk::Button ph1dButton_;
+                Gtk::Button het1dButton_;
+                Gtk::Button dpButton_;
+                Gtk::Button asaliKineticButton_;
+                Gtk::Button asaliKineticMakeButton_;
+                Gtk::Button asaliKineticCheckButton_;
 
-        bool chemistryMenu1(GdkEventButton *);
+                Gtk::Box menuBox_;
+                Gtk::Box chemistryBox_;
+                Gtk::Box reactorBox_;
+                Gtk::Box kineticBox_;
 
-        #if ASALI_USING_CANTERA == 1
-        void chemkin();
-        void loadCanteraInput();
-        void equilibrium();
-        void pellets();
-        void reactors();
-        void batch();
-        void cstr();
-        void ph1d();
-        void het1d();
-        void dp();
-        #endif
+                Gtk::ButtonBox linkButtonBox_;
+                Gtk::ButtonBox exitButtonBox_;
+                Gtk::ButtonBox discrimerButtonBox_;
+                Gtk::ButtonBox startButtonBox_;
+                Gtk::ButtonBox chemistryButtonBox_;
+                Gtk::ButtonBox menuButtonBox_;
+                Gtk::ButtonBox reactorButtonBox_;
+                Gtk::ButtonBox kineticButtonBox_;
 
-        std::string getBeer();
-        std::string getBeerShort();
+                Gtk::EventBox logoEventBox_;
 
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
+                Gtk::Label heading_;
+                Gtk::Label kineticLabel_;
+                Gtk::Label beerLabel_;
 
-        Gtk::Button discrimerButton_;
-        Gtk::Button exitButton1_;
-        Gtk::Button exitButton2_;
-        Gtk::Button exitButton3_;
-        Gtk::Button exitButton4_;
-        Gtk::Button exitButton5_;
-        Gtk::Button backButton1_;
-        Gtk::Button backButton2_;
-        Gtk::Button startButton_;
-        Gtk::Button defaultCanteraInputButton_;
-        Gtk::Button loadCanteraInputButton_;
-        Gtk::Button noneInputButton_;
-        Gtk::Button conversionButton_;
-        Gtk::Button canteraInputButton_;
-        Gtk::Button transportButton_;
-        Gtk::Button thermoButton_;
-        Gtk::Button thermoTransportButton_;
-        Gtk::Button equilibriumButton_;
-        Gtk::Button linearRegressionButton_;
-        Gtk::Button reactorsButton_;
-        Gtk::Button vacuumButton_;
-        Gtk::Button pelletButton_;
-        Gtk::Button batchButton_;
-        Gtk::Button cstrButton_;
-        Gtk::Button ph1dButton_;
-        Gtk::Button het1dButton_;
-        Gtk::Button dpButton_;
-        Gtk::Button asaliKineticButton_;
-        Gtk::Button asaliKineticMakeButton_;
-        Gtk::Button asaliKineticCheckButton_;
+                Gtk::Grid grid_;
+                Gtk::Grid reactorButtonGrid_;
+                Gtk::Grid kineticButtonGrid_;
 
-        Gtk::Box menuBox_;
-        Gtk::Box chemistryBox_;
-        Gtk::Box reactorBox_;
-        Gtk::Box kineticBox_;
+                Gtk::Image bigLogo_;
+                Gtk::Image smallLogo1_;
+                Gtk::Image smallLogo2_;
+                Gtk::Image smallLogo3_;
+                Gtk::Image smallLogo4_;
 
-        Gtk::ButtonBox linkButtonBox_;
-        Gtk::ButtonBox exitButtonBox_;
-        Gtk::ButtonBox discrimerButtonBox_;
-        Gtk::ButtonBox startButtonBox_;
-        Gtk::ButtonBox chemistryButtonBox_;
-        Gtk::ButtonBox menuButtonBox_;
-        Gtk::ButtonBox reactorButtonBox_;
-        Gtk::ButtonBox kineticButtonBox_;
+                Gtk::LinkButton gitButton_;
+                Gtk::LinkButton forgeButton_;
 
-        Gtk::EventBox logoEventBox_;
+                std::string kineticType_;
+                std::string basicXMLfilepath_;
+                std::string basicGasPhase_;
 
-        Gtk::Label heading_;
-        Gtk::Label kineticLabel_;
-        Gtk::Label beerLabel_;
+                std::vector<std::string> beer_;
+                std::vector<std::string> beerShort_;
 
-        Gtk::Grid grid_;
-        Gtk::Grid reactorButtonGrid_;
-        Gtk::Grid kineticButtonGrid_;
+                ASALI::speciesPopup *speciesNames_;
+                ASALI::transportProperties *transportMenu_;
+                ASALI::thermoProperties *thermoMenu_;
+                ASALI::thermoTransportProperties *thermoTransportMenu_;
+                ASALI::vacuumProperties *vacuumMenu_;
+                ASALI::linearRegression *linearRegressionMenu_;
+                ASALI::kineticMaker *kineticMakerMenu_;
+                ASALI::physicalChemicalProperties *physicalChemicalMenu_;
+                ASALI::beerQuote *beerQuote_;
+                ASALI::asaliFileManager fileManager_;
 
-        Gtk::Image bigLogo_;
-        Gtk::Image smallLogo1_;
-        Gtk::Image smallLogo2_;
-        Gtk::Image smallLogo3_;
-        Gtk::Image smallLogo4_;
-
-        Gtk::LinkButton gitButton_;
-        Gtk::LinkButton forgeButton_;
-
-        std::string kineticType_;
-        std::string basicXMLfilepath_;
-        std::string basicGasPhase_;
-
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
-
-        ASALI::speciesPopup *speciesNames_;
-        ASALI::transportProperties *transportMenu_;
-        ASALI::thermoProperties *thermoMenu_;
-        ASALI::thermoTransportProperties *thermoTransportMenu_;
-        ASALI::vacuumProperties *vacuumMenu_;
-        ASALI::linearRegression *linearRegressionMenu_;
-        ASALI::kineticMaker *kineticMakerMenu_;
-
-        #if ASALI_USING_CANTERA == 1
-        ASALI::chemkinConverter *converter_;
-        ASALI::canteraInterface *chemistryInterface_;
-        ASALI::equilibriumCalculator *equilibriumMenu_;
-        ASALI::batchReactor *batchMenu_;
-        ASALI::cstrReactor *cstrMenu_;
-        ASALI::ph1dReactor *ph1dMenu_;
-        ASALI::het1dReactor *het1dMenu_;
-        ASALI::pressureDrops *dpMenu_;
-        ASALI::catalyticPellet *pelletMenu_;
-        #else
-        ASALI::asaliInterface *chemistryInterface_;
-        #endif
-    };
+#if ASALI_USING_CANTERA == 1
+                ASALI::chemkinConverter *converter_;
+                ASALI::canteraInterface *chemistryInterface_;
+                ASALI::equilibriumCalculator *equilibriumMenu_;
+                ASALI::batchReactor *batchMenu_;
+                ASALI::cstrReactor *cstrMenu_;
+                ASALI::ph1dReactor *ph1dMenu_;
+                ASALI::het1dReactor *het1dMenu_;
+                ASALI::pressureDrops *dpMenu_;
+                ASALI::catalyticPellet *pelletMenu_;
+#else
+                ASALI::asaliInterface *chemistryInterface_;
+#endif
+        };
 }

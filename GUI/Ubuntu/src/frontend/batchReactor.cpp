@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    batchReactor::batchReactor(std::string kineticType)
+    batchReactor::batchReactor(const std::string &kineticType)
         : catalyticReactors(kineticType),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           recapMainBox_(Gtk::ORIENTATION_VERTICAL),
@@ -54,20 +54,20 @@ namespace ASALI
           timeLabel_("Integration time"),
           saveLabel_("Save solution every"),
           energyLabel_("Energy"),
-          logo1_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
-          logo2_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
+          logo1_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
+          logo2_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
           plotButtonBool_(false)
     {
         eq_ = new ASALI::batchEquations();
 
-        //Input
+        // Input
         {
             this->set_border_width(15);
             this->set_title("ASALI: Batch reactor");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-            //Add background grid
+            // Add background grid
             this->add(mainBox_);
 
             mainBox_.set_halign(Gtk::ALIGN_START);
@@ -83,60 +83,42 @@ namespace ASALI
                 propertiesGrid_.set_row_spacing(10);
                 propertiesGrid_.set_column_homogeneous(true);
 
-                //Volume
+                // Volume
                 propertiesGrid_.attach(volumeLabel_, 0, 0, 1, 1);
                 propertiesGrid_.attach(volumeEntry_, 1, 0, 1, 1);
                 volumeEntry_.set_text("1");
                 propertiesGrid_.attach(volumeCombo_, 2, 0, 1, 1);
-                volumeCombo_.append("m\u00b3");
-                volumeCombo_.append("dm\u00b3");
-                volumeCombo_.append("cm\u00b3");
-                volumeCombo_.append("mm\u00b3");
-                volumeCombo_.append("cc");
-                volumeCombo_.append("l");
-                volumeCombo_.set_active(0);
+                unitConversion_->updateBox(volumeCombo_, "volume");
 
-                //Catalytic load
+                // Catalytic load
                 propertiesGrid_.attach(loadLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(loadEntry_, 1, 1, 1, 1);
                 loadEntry_.set_text("1");
                 propertiesGrid_.attach(loadCombo_, 2, 1, 1, 1);
-                loadCombo_.append("1/m");
-                loadCombo_.append("1/dm");
-                loadCombo_.append("1/cm");
-                loadCombo_.append("1/mm");
-                loadCombo_.set_active(0);
+                unitConversion_->updateBox(loadCombo_, "inverselength");
 
-                //Time
+                // Time
                 propertiesGrid_.attach(timeLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(timeEntry_, 1, 2, 1, 1);
                 timeEntry_.set_text("1");
                 propertiesGrid_.attach(timeCombo_, 2, 2, 1, 1);
-                timeCombo_.append("s");
-                timeCombo_.append("min");
-                timeCombo_.append("h");
-                timeCombo_.append("d");
-                timeCombo_.set_active(0);
+                unitConversion_->updateBox(timeCombo_, "time");
 
-                //Save options
+                // Save options
                 propertiesGrid_.attach(saveLabel_, 0, 3, 1, 1);
                 propertiesGrid_.attach(saveEntry_, 1, 3, 1, 1);
                 saveEntry_.set_text("0.1");
                 propertiesGrid_.attach(saveCombo_, 2, 3, 1, 1);
-                saveCombo_.append("s");
-                saveCombo_.append("min");
-                saveCombo_.append("h");
-                saveCombo_.append("d");
-                saveCombo_.set_active(0);
+                unitConversion_->updateBox(saveCombo_, "time");
 
-                //Energy
+                // Energy
                 propertiesGrid_.attach(energyLabel_, 0, 4, 1, 1);
                 propertiesGrid_.attach(energyCombo_, 1, 4, 1, 1);
                 energyCombo_.append("on");
                 energyCombo_.append("off");
                 energyCombo_.set_active(1);
 
-                //Buttons
+                // Buttons
                 propertiesGrid_.attach(exitButton3_, 0, 5, 1, 1);
                 exitButton3_.signal_clicked().connect(sigc::mem_fun(*this, &batchReactor::exit));
                 propertiesGrid_.attach(nextButton3_, 2, 5, 1, 1);
@@ -146,7 +128,7 @@ namespace ASALI
             }
         }
 
-        //Recap
+        // Recap
         {
             recapMainBox_.set_halign(Gtk::ALIGN_START);
             recapMainBox_.set_spacing(10);
@@ -199,64 +181,64 @@ namespace ASALI
                     recapGrid_.set_row_spacing(10);
                     recapGrid_.set_column_homogeneous(true);
 
-                    //Volume
+                    // Volume
                     recapVolumeLabel_.set_text("Volume");
                     recapGrid_.attach(recapVolumeLabel_, 0, 0, 1, 1);
                     recapVolumeUDLabel_.set_text("m\u00b3");
                     recapGrid_.attach(recapVolumeUDLabel_, 2, 0, 1, 1);
                     recapGrid_.attach(recapVolumeValueLabel_, 1, 0, 1, 1);
 
-                    //Temperature
+                    // Temperature
                     recapTemperatureLabel_.set_text("Temperature");
                     recapGrid_.attach(recapTemperatureLabel_, 0, 1, 1, 1);
                     recapTemperatureUDLabel_.set_text("K");
                     recapGrid_.attach(recapTemperatureUDLabel_, 2, 1, 1, 1);
                     recapGrid_.attach(recapTemperatureValueLabel_, 1, 1, 1, 1);
 
-                    //Pressure
+                    // Pressure
                     recapPressureLabel_.set_text("Pressure");
                     recapGrid_.attach(recapPressureLabel_, 0, 2, 1, 1);
                     recapPressureUDLabel_.set_text("Pa");
                     recapGrid_.attach(recapPressureUDLabel_, 2, 2, 1, 1);
                     recapGrid_.attach(recapPressureValueLabel_, 1, 2, 1, 1);
 
-                    //Mole/Mass fraction
+                    // Mole/Mass fraction
                     recapGrid_.attach(recapFractionLabel_, 0, 3, 1, 1);
                     recapGrid_.attach(recapFractionNameLabel_, 1, 3, 1, 1);
                     recapGrid_.attach(recapFractionValueLabel_, 2, 3, 1, 1);
 
-                    //Load
+                    // Load
                     recapLoadLabel_.set_text("Catalyst load");
                     recapGrid_.attach(recapLoadLabel_, 0, 4, 1, 1);
                     recapLoadUDLabel_.set_text("1/m");
                     recapGrid_.attach(recapLoadUDLabel_, 2, 4, 1, 1);
                     recapGrid_.attach(recapLoadValueLabel_, 1, 4, 1, 1);
 
-                    //Time
+                    // Time
                     recapTimeLabel_.set_text("Integration time");
                     recapGrid_.attach(recapTimeLabel_, 0, 5, 1, 1);
                     recapTimeUDLabel_.set_text("s");
                     recapGrid_.attach(recapTimeUDLabel_, 2, 5, 1, 1);
                     recapGrid_.attach(recapTimeValueLabel_, 1, 5, 1, 1);
 
-                    //Save
+                    // Save
                     recapSaveLabel_.set_text("Save solution every");
                     recapGrid_.attach(recapSaveLabel_, 0, 6, 1, 1);
                     recapSaveUDLabel_.set_text("s");
                     recapGrid_.attach(recapSaveUDLabel_, 2, 6, 1, 1);
                     recapGrid_.attach(recapSaveValueLabel_, 1, 6, 1, 1);
 
-                    //Energy type
+                    // Energy type
                     recapEnergyLabel_.set_text("Energy balance is");
                     recapGrid_.attach(recapEnergyLabel_, 0, 7, 1, 1);
                     recapGrid_.attach(recapEnergyValueLabel_, 1, 7, 1, 1);
 
-                    //Kinetic type
+                    // Kinetic type
                     recapKineticLabel_.set_text("Kinetic model from");
                     recapGrid_.attach(recapKineticLabel_, 0, 8, 1, 1);
                     recapGrid_.attach(recapKineticValueLabel_, 1, 8, 1, 1);
 
-                    //Buttons
+                    // Buttons
                     recapGrid_.attach(backButton3_, 0, 9, 1, 1);
                     backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &batchReactor::input));
                     recapGrid_.attach(exitButton4_, 2, 9, 1, 1);
@@ -266,10 +248,6 @@ namespace ASALI
         }
     }
 
-    batchReactor::~batchReactor()
-    {
-    }
-
     void batchReactor::read()
     {
         V_ = Glib::Ascii::strtod(volumeEntry_.get_text());
@@ -277,10 +255,10 @@ namespace ASALI
         tf_ = Glib::Ascii::strtod(timeEntry_.get_text());
         dt_ = Glib::Ascii::strtod(saveEntry_.get_text());
 
-        ConvertsToCubeMeter(V_, volumeCombo_.get_active_text());
-        ConvertsToOneOverMeter(alfa_, loadCombo_.get_active_text());
-        ConvertsToSecond(tf_, timeCombo_.get_active_text());
-        ConvertsToSecond(dt_, saveCombo_.get_active_text());
+        unitConversion_->toCubeMeter(V_, volumeCombo_.get_active_text());
+        unitConversion_->toOneOverMeter(alfa_, loadCombo_.get_active_text());
+        unitConversion_->toSecond(tf_, timeCombo_.get_active_text());
+        unitConversion_->toSecond(dt_, saveCombo_.get_active_text());
 
         energy_ = energyCombo_.get_active_text();
     }
@@ -323,28 +301,28 @@ namespace ASALI
             this->clean();
             this->add(recapMainBox_);
 
-            //Volume
+            // Volume
             {
                 std::ostringstream s;
                 s << V_;
                 recapVolumeValueLabel_.set_text(s.str());
             }
 
-            //Temperature
+            // Temperature
             {
                 std::ostringstream s;
                 s << T_;
                 recapTemperatureValueLabel_.set_text(s.str());
             }
 
-            //Pressure
+            // Pressure
             {
                 std::ostringstream s;
                 s << p_;
                 recapPressureValueLabel_.set_text(s.str());
             }
 
-            //Mole/mass fraction
+            // Mole/mass fraction
             {
                 recapFractionLabel_.set_text(fractionCombo_.get_active_text());
                 {
@@ -372,28 +350,28 @@ namespace ASALI
                 }
             }
 
-            //Load
+            // Load
             {
                 std::ostringstream s;
                 s << alfa_;
                 recapLoadValueLabel_.set_text(s.str());
             }
 
-            //Time
+            // Time
             {
                 std::ostringstream s;
                 s << tf_;
                 recapTimeValueLabel_.set_text(s.str());
             }
 
-            //Save
+            // Save
             {
                 std::ostringstream s;
                 s << dt_;
                 recapSaveValueLabel_.set_text(s.str());
             }
 
-            //Kinetic
+            // Kinetic
             {
                 recapKineticValueLabel_.set_text(kineticCombo_.get_active_text());
             }
@@ -425,10 +403,10 @@ namespace ASALI
             if (chemistryInterface_->numberOfHomogeneousReactions() != 0.)
             {
                 Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file has GAS PHASE reactions.\nDo you wonna enable them?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                smallDialog.set_secondary_text(this->getBeerShort(), true);
+                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = smallDialog.run();
 
-                //Handle the response:
+                // Handle the response:
                 switch (answer)
                 {
                 case (Gtk::RESPONSE_YES):
@@ -607,10 +585,8 @@ namespace ASALI
         this->bar(0., "Starting...");
         eq_->store(0., x0);
 
-        //Start solving
+        // Start solving
         {
-            double ti = 0.;
-            double tf = 0.;
             double dt = 0.;
 
             if (alfa_ != 0.)
@@ -622,29 +598,25 @@ namespace ASALI
                 dt = dt_ / 100.;
             }
 
+            double ti = 0.;
             double td = 0;
             double time0 = double(std::clock() / CLOCKS_PER_SEC);
-            double timef = 0.;
-            double tm = 0;
             int Nt = int(tf_ / dt) + 1;
             for (int i = 0; i < Nt; i++)
             {
-                tf = ti + dt;
-
                 solver.setInitialConditions(ti, x0);
-                solver.solve(tf, x0);
+                solver.solve(ti + dt, x0);
                 td += dt;
 
                 if (std::fabs(td - dt_) < dt * 0.001)
                 {
-                    eq_->store(tf, x0);
+                    eq_->store(ti + dt, x0);
                     td = 0.;
                 }
 
-                timef = double(std::clock() / CLOCKS_PER_SEC);
-                tm = (timef - time0) * (Nt - i + 1) / (i + 1);
+                double tm = (double(std::clock() / CLOCKS_PER_SEC) - time0) * (Nt - i + 1) / (i + 1);
 
-                ti = tf;
+                ti = ti + dt;
 
                 this->bar(double(i + 1) * dt / tf_, "Remaning time: " + this->convertToTimeFormat(tm));
 
@@ -690,7 +662,7 @@ namespace ASALI
 
     void batchReactor::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "batch.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "batch.asali");
         if (filename != "")
         {
             std::ofstream output;

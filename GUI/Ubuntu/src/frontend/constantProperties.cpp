@@ -41,10 +41,10 @@
 namespace ASALI
 {
     constantProperties::constantProperties()
-        : batchLogo_(this->relative_path_to_absolute_path("images/BatchLogo.png")),
-          ph1dLogo_(this->relative_path_to_absolute_path("images/Ph1DLogo.png")),
-          het1dLogo_(this->relative_path_to_absolute_path("images/Het1DLogo.png")),
-          pelletLogo_(this->relative_path_to_absolute_path("images/PelletLogo.png")),
+        : batchLogo_(fileManager_.relative_path_to_absolute_path("images/BatchLogo.png")),
+          ph1dLogo_(fileManager_.relative_path_to_absolute_path("images/Ph1DLogo.png")),
+          het1dLogo_(fileManager_.relative_path_to_absolute_path("images/Het1DLogo.png")),
+          pelletLogo_(fileManager_.relative_path_to_absolute_path("images/PelletLogo.png")),
           mainBox_(Gtk::ORIENTATION_VERTICAL),
           nameLabel_("Name"),
           mwLabel_("Molecular weight"),
@@ -57,72 +57,18 @@ namespace ASALI
           doneButton_("Done"),
           type_("zero")
     {
-        #include "shared/Beer.H"
+        beerQuote_ = new ASALI::beerQuote();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
 
         this->set_border_width(15);
         this->set_title("ASALI: properties input");
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-        this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+        this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-        //Add background grid
+        // Add background grid
         mainBox_.set_halign(Gtk::ALIGN_START);
         mainBox_.set_spacing(10);
         this->add(mainBox_);
-
-        small.resize(26);
-        big.resize(26);
-        small[0] = "a";
-        big[0] = "A";
-        small[1] = "b";
-        big[1] = "B";
-        small[2] = "c";
-        big[2] = "C";
-        small[3] = "d";
-        big[3] = "D";
-        small[4] = "e";
-        big[4] = "E";
-        small[5] = "f";
-        big[5] = "F";
-        small[6] = "g";
-        big[6] = "G";
-        small[7] = "h";
-        big[7] = "H";
-        small[8] = "i";
-        big[8] = "I";
-        small[9] = "j";
-        big[9] = "J";
-        small[10] = "k";
-        big[10] = "K";
-        small[11] = "l";
-        big[11] = "L";
-        small[12] = "m";
-        big[12] = "M";
-        small[13] = "n";
-        big[13] = "N";
-        small[14] = "o";
-        big[14] = "O";
-        small[15] = "p";
-        big[15] = "P";
-        small[16] = "q";
-        big[16] = "Q";
-        small[17] = "r";
-        big[17] = "R";
-        small[18] = "s";
-        big[18] = "S";
-        small[19] = "t";
-        big[19] = "T";
-        small[20] = "u";
-        big[20] = "U";
-        small[21] = "v";
-        big[21] = "V";
-        small[22] = "w";
-        big[22] = "W";
-        small[23] = "x";
-        big[23] = "X";
-        small[24] = "y";
-        big[24] = "Y";
-        small[25] = "z";
-        big[25] = "Z";
 
         {
             mainGrid_.set_row_spacing(10);
@@ -134,30 +80,11 @@ namespace ASALI
             diffBox_.set_halign(Gtk::ALIGN_CENTER);
             diffBox_.set_spacing(10);
 
-            heatCombo_.append("J/kmol");
-            heatCombo_.append("J/mol");
-            heatCombo_.append("kJ/mol");
-            heatCombo_.append("cal/kmol");
-            heatCombo_.append("cal/mol");
-            heatCombo_.append("kcal/mol");
-            heatCombo_.set_active(0);
-
-            cpCombo_.append("J/kg/K");
-            cpCombo_.append("kJ/kg/K");
-            cpCombo_.set_active(0);
-
-            condCombo_.append("W/m/K");
-            condCombo_.append("kW/m/K");
-            condCombo_.set_active(0);
-
-            diffCombo_.append("m\u00b2/s");
-            diffCombo_.append("cm\u00b2/s");
-            diffCombo_.set_active(0);
-
-            muCombo_.append("cP");
-            muCombo_.append("P");
-            muCombo_.append("Pas");
-            muCombo_.set_active(2);
+            unitConversion_->updateBox(heatCombo_, "heat");
+            unitConversion_->updateBox(cpCombo_, "specificheatonlymass");
+            unitConversion_->updateBox(condCombo_, "conductivity");
+            unitConversion_->updateBox(diffCombo_, "diffusivity");
+            unitConversion_->updateBox(muCombo_, "viscosity");
 
             cpGrid_.set_row_spacing(10);
             cpGrid_.set_column_spacing(10);
@@ -171,17 +98,17 @@ namespace ASALI
         }
     }
 
-    void constantProperties::setEnergy(const std::string energy)
+    void constantProperties::setEnergy(const std::string &energy)
     {
         energy_ = energy;
     }
 
-    void constantProperties::setType(const std::string type)
+    void constantProperties::setType(const std::string &type)
     {
         type_ = type;
     }
 
-    void constantProperties::setSpeciesNames(const std::vector<std::string> n)
+    void constantProperties::setSpeciesNames(const std::vector<std::string> &n)
     {
         n_ = n;
         NC_ = n.size();
@@ -711,7 +638,7 @@ namespace ASALI
     void constantProperties::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Your file has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeer(), true);
+        dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
         dialog.run();
     }
 
@@ -732,6 +659,7 @@ namespace ASALI
             for (unsigned int i = 0; i < Nhom_; i++)
             {
                 Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                unitConversion_->toJoulePerKmole(Qhom_[i], heatCombo_.get_active_text());
             }
 
             Qhet_.clear();
@@ -740,72 +668,13 @@ namespace ASALI
             for (unsigned int i = Nhom_; i < NR_; i++)
             {
                 Qhet_[i - Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
-            }
-
-            if (heatCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 2)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 3)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 4)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 5)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
+                unitConversion_->toJoulePerKmole(Qhet_[i - Nhom_], heatCombo_.get_active_text());
             }
 
             if (energy_ == "on")
             {
                 cp_ = Glib::Ascii::strtod(cpEntry_.get_text());
-
-                if (cpCombo_.get_active_row_number() == 1)
-                {
-                    cp_ = cp_ * 1.e03; //kJ/kg/K -> J/kg/K
-                }
+                unitConversion_->toJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
             }
             else
             {
@@ -822,14 +691,7 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-            }
-
-            if (diffCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    diff_[i] = diff_[i] * 1.e-04; //cm2/s->m2
-                }
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
 
             Qhom_.clear();
@@ -838,6 +700,7 @@ namespace ASALI
             for (unsigned int i = 0; i < Nhom_; i++)
             {
                 Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                unitConversion_->toJoulePerKmole(Qhom_[i], heatCombo_.get_active_text());
             }
 
             Qhet_.clear();
@@ -846,79 +709,16 @@ namespace ASALI
             for (unsigned int i = Nhom_; i < NR_; i++)
             {
                 Qhet_[i - Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
-            }
-
-            if (heatCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 2)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 3)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 4)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 5)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
+                unitConversion_->toJoulePerKmole(Qhet_[i - Nhom_], heatCombo_.get_active_text());
             }
 
             if (energy_ == "on")
             {
                 cp_ = Glib::Ascii::strtod(cpEntry_.get_text());
-
-                if (cpCombo_.get_active_row_number() == 1)
-                {
-                    cp_ = cp_ * 1.e03; //kJ/kg/K -> J/kg/K
-                }
+                unitConversion_->toJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
 
                 cond_ = Glib::Ascii::strtod(condEntry_.get_text());
-
-                if (condCombo_.get_active_row_number() == 1)
-                {
-                    cond_ = cond_ * 1.e03; //W/m/K -> kW/m/K
-                }
+                unitConversion_->toWattPerMeterPerKelvin(cond_, condCombo_.get_active_text());
             }
             else
             {
@@ -936,14 +736,7 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-            }
-
-            if (diffCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    diff_[i] = diff_[i] * 1.e-04; //cm2/s->m2
-                }
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
 
             Qhom_.clear();
@@ -952,6 +745,7 @@ namespace ASALI
             for (unsigned int i = 0; i < Nhom_; i++)
             {
                 Qhom_[i] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
+                unitConversion_->toJoulePerKmole(Qhom_[i], heatCombo_.get_active_text());
             }
 
             Qhet_.clear();
@@ -960,82 +754,19 @@ namespace ASALI
             for (unsigned int i = Nhom_; i < NR_; i++)
             {
                 Qhet_[i - Nhom_] = Glib::Ascii::strtod(speciesHeatEntry_[i]->get_text());
-            }
-
-            if (heatCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] / 1.e-03; //J/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 2)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 / 1.e-03; //kJ/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 3)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184; //cal/kmol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 4)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 4.184 / 1.e-03; //cal/mol -> J/kmol
-                }
-            }
-            else if (heatCombo_.get_active_row_number() == 5)
-            {
-                for (unsigned int i = 0; i < Nhom_; i++)
-                {
-                    Qhom_[i] = Qhom_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
-                for (unsigned int i = 0; i < Nhet_; i++)
-                {
-                    Qhet_[i] = Qhet_[i] * 1.e03 * 4.184 / 1.e-03; //kcal/mol -> J/kmol
-                }
+                unitConversion_->toJoulePerKmole(Qhet_[i - Nhom_], heatCombo_.get_active_text());
             }
 
             mu_ = Glib::Ascii::strtod(muEntry_.get_text());
-            ConvertsToPascalPerSecond(mu_, muCombo_.get_active_text());
+            unitConversion_->toPascalPerSecond(mu_, muCombo_.get_active_text());
 
             if (energy_ == "on")
             {
                 cp_ = Glib::Ascii::strtod(cpEntry_.get_text());
-
-                if (cpCombo_.get_active_row_number() == 1)
-                {
-                    cp_ = cp_ * 1.e03; //kJ/kg/K -> J/kg/K
-                }
+                unitConversion_->toJoulePerKgPerKelvin(cp_, cpCombo_.get_active_text());
 
                 cond_ = Glib::Ascii::strtod(condEntry_.get_text());
-
-                if (condCombo_.get_active_row_number() == 1)
-                {
-                    cond_ = cond_ * 1.e03; //W/m/K -> kW/m/K
-                }
+                unitConversion_->toWattPerMeterPerKelvin(cond_, condCombo_.get_active_text());
             }
             else
             {
@@ -1053,41 +784,18 @@ namespace ASALI
             {
                 MW_[i] = Glib::Ascii::strtod(speciesMwEntry_[i]->get_text());
                 diff_[i] = Glib::Ascii::strtod(speciesDiffEntry_[i]->get_text());
-            }
-
-            if (diffCombo_.get_active_row_number() == 1)
-            {
-                for (unsigned int i = 0; i < NC_; i++)
-                {
-                    diff_[i] = diff_[i] * 1.e-04; //cm2/s->m2
-                }
+                unitConversion_->toSquareMeterPerSecond(diff_[i], diffCombo_.get_active_text());
             }
         }
         this->hide();
     }
 
-    constantProperties::~constantProperties()
-    {
-    }
-
-    std::string constantProperties::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
-    }
-
     void constantProperties::convertToCaption(std::string &n)
     {
-        for (unsigned int i = 0; i < 26; i++)
-        {
-            std::replace(n.begin(), n.end(), *small[i].c_str(), *big[i].c_str());
-        }
+        std::transform(n.begin(), n.end(), n.begin(), ::toupper);
     }
 
-    std::vector<double> constantProperties::getMassFraction(const std::vector<double> MW, const std::vector<double> x)
+    std::vector<double> constantProperties::getMassFraction(const std::vector<double> &MW, const std::vector<double> &x)
     {
         std::vector<double> y(x.size());
         double MWmix = 0.;
@@ -1104,7 +812,7 @@ namespace ASALI
         return y;
     }
 
-    std::vector<double> constantProperties::getMoleFraction(const std::vector<double> MW, const std::vector<double> y)
+    std::vector<double> constantProperties::getMoleFraction(const std::vector<double> &MW, const std::vector<double> &y)
     {
         std::vector<double> x(y.size());
         double MWmix = 0.;
@@ -1121,7 +829,7 @@ namespace ASALI
         return x;
     }
 
-    double constantProperties::getMWmix(const std::vector<double> MW, const std::vector<double> y)
+    double constantProperties::getMWmix(const std::vector<double> &MW, const std::vector<double> &y)
     {
         double MWmix = 0.;
 
@@ -1131,5 +839,11 @@ namespace ASALI
         }
 
         return 1. / MWmix;
+    }
+
+    constantProperties::~constantProperties()
+    {
+        delete beerQuote_;
+        delete unitConversion_;
     }
 }

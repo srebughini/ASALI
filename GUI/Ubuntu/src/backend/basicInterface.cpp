@@ -96,31 +96,33 @@ namespace ASALI
             idx = int(NS_);
         }
 
-        if (p == "h")
+        this->convertToCaption(p);
+
+        if (p == "H")
         {
             return h_[idx];
         }
-        else if (p == "s")
+        else if (p == "S")
         {
             return s_[idx];
         }
-        else if (p == "cp")
+        else if (p == "CP")
         {
             return cp_[idx];
         }
-        else if (p == "cond")
+        else if (p == "COND")
         {
             return cond_[idx];
         }
-        else if (p == "mu")
+        else if (p == "MU")
         {
             return mu_[idx];
         }
-        else if (p == "mw")
+        else if (p == "MW")
         {
             return MW_[idx];
         }
-        else if (p == "diff")
+        else if (p == "DIFF")
         {
             return diff_[idx][NS_];
         }
@@ -130,7 +132,7 @@ namespace ASALI
         }
     }
 
-    std::vector<double> basicInterface::getMoleFractionFromNames(const std::vector<std::string> names)
+    std::vector<double> basicInterface::getMoleFractionFromNames(const std::vector<std::string> &names)
     {
         std::vector<double> x(names.size());
         for (unsigned int i = 0; i < names.size(); i++)
@@ -147,7 +149,7 @@ namespace ASALI
         return x;
     }
 
-    std::vector<double> basicInterface::getMassFractionFromNames(const std::vector<std::string> names)
+    std::vector<double> basicInterface::getMassFractionFromNames(const std::vector<std::string> &names)
     {
         std::vector<double> y(names.size());
         for (unsigned int i = 0; i < names.size(); i++)
@@ -166,5 +168,7 @@ namespace ASALI
 
     basicInterface::~basicInterface()
     {
+        delete[] x_;
+        delete[] y_;
     }
 }

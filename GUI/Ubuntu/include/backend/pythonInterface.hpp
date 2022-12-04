@@ -62,16 +62,16 @@ namespace ASALI
         pythonInterface();
 
         /// Set temperature in [K]
-        void setTemperature(const double T);
+        void setTemperature(const double &T);
 
         /// Set mole fraction
-        void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        void setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name);
 
         /// Convert string from lower case to upper case
-        void convertToCaption(std::string &n);
+        static void convertToCaption(std::string &n);
 
         /// Initialize PyObject
-        std::string initialize(const std::string function, const std::string path);
+        std::string initialize(const std::string &function, const std::string &path);
 
         /// Estimate species homogeneous and heterogeneous reaction rates
         void run();
@@ -95,25 +95,25 @@ namespace ASALI
         void runNetHeterogeneous();
 
         /// Destroy PyObject
-        void close();
+        static void close();
 
         /// Set PYTHONPATH enviorment variable
-        void setPythonPath(std::string path);
+        static void setPythonPath(const std::string &path);
 
         /// Return species heterogeneous reaction rates
-        std::vector<double> getHetReactionRate() { return Rhet_; };
+        inline std::vector<double> getHetReactionRate() const { return Rhet_; };
 
         /// Return species homogeneous reaction rates
-        std::vector<double> getHomReactionRate() { return Rhom_; };
+        inline std::vector<double> getHomReactionRate() const { return Rhom_; };
 
         /// Return net heterogeneous reaction rates
-        std::vector<double> getHetNetRate() { return RhetNet_; };
+        inline std::vector<double> getHetNetRate() const { return RhetNet_; };
 
         /// Return net homogeneous reaction rates
-        std::vector<double> getHomNetRate() { return RhomNet_; };
+        inline std::vector<double> getHomNetRate() const { return RhomNet_; };
 
         /// Return species names
-        std::vector<std::string> getSpeciesName() { return n_; };
+        inline std::vector<std::string> getSpeciesName() const { return n_; };
 
         /// Check single species name
         int checkNames(std::string name);
@@ -122,25 +122,22 @@ namespace ASALI
         std::vector<int> checkNames(std::vector<std::string> &name);
 
         /// Return number of homogeneous reactions
-        inline unsigned int getNumberOfHomReactions() { return Nhom_; };
+        inline unsigned int getNumberOfHomReactions() const { return Nhom_; };
 
         /// Return number of heterogeneous reactions
-        inline unsigned int getNumberOfHetReactions() { return Nhet_; };
+        inline unsigned int getNumberOfHetReactions() const { return Nhet_; };
 
         /// Return number of heterogeneous and homogeneous reactions
-        inline unsigned int getNumberOfReactions() { return (Nhet_ + Nhom_); };
+        inline unsigned int getNumberOfReactions() const { return (Nhet_ + Nhom_); };
 
         /// Return heterogeneous reaction rates
-        inline std::vector<std::vector<double>> getAllHetReactionRate() { return RallHet_; };
+        inline std::vector<std::vector<double>> getAllHetReactionRate() const { return RallHet_; };
 
         /// Return homogeneous reaction rates
-        inline std::vector<std::vector<double>> getAllHomReactionRate() { return RallHom_; };
+        inline std::vector<std::vector<double>> getAllHomReactionRate() const { return RallHom_; };
 
         /// Return species names
-        inline std::vector<std::string> names() { return n_; };
-
-        /// Class destructor
-        virtual ~pythonInterface();
+        inline std::vector<std::string> names() const { return n_; };
 
     private:
         std::vector<double> Rhet_;    /// Heterogeneous reactions vector

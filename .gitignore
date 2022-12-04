@@ -2,6 +2,8 @@ obj/*
 obj
 Asali
 __*
+.vscode
+
 API/C/example
 API/C/database-generator
 API/Cpp/example
@@ -9,8 +11,12 @@ API/Cpp/database-generator
 API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/*.mod
+API/Java/*.class
 API/elapsedTimeComparison/*.mod
+API/elapsedTimeComparison/*.txt
 API/elapsedTimeComparison/asali-*
+API/elapsedTimeComparison/*.class
+API/elapsedTimeComparison/*.txt
 
 GUI/Ubuntu/ext/*
 GUI/Ubuntu/ext/Asali.cpp
@@ -19,6 +25,7 @@ GUI/Ubuntu/ext/shared/omega11.H
 GUI/Ubuntu/ext/shared/omega22.H
 GUI/Ubuntu/ext/shared/transport.H
 GUI/Ubuntu/ext/shared/thermo.H
-
 GUI/Ubuntu/.vscode
 GUI/Ubuntu/Asali.exe
+
+GUI/Windows/_*

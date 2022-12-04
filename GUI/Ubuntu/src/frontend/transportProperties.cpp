@@ -40,21 +40,17 @@
 
 namespace ASALI
 {
-    transportProperties::transportProperties(ASALI::speciesPopup *speciesNames, std::string kineticType)
+    transportProperties::transportProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : thermoTransportProperties(speciesNames, kineticType)
     {
-        //Input menu
+        // Input menu
         {
             this->set_border_width(15);
             this->set_title("ASALI: Transport properties");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
             this->input();
         }
-    }
-
-    transportProperties::~transportProperties()
-    {
     }
 
     void transportProperties::clean()
@@ -175,13 +171,13 @@ namespace ASALI
                 }
             }
 
-            //Add back button
+            // Add back button
             resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
 
-            //Add print on file
+            // Add print on file
             resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
 
-            //Add exit button
+            // Add exit button
             resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
 
             this->remove();
@@ -200,7 +196,7 @@ namespace ASALI
         resultsGrid_.set_column_spacing(10);
         resultsGrid_.set_row_spacing(10);
 
-        //Thermal conductivity
+        // Thermal conductivity
         condBox_.pack_start(condLabel_, Gtk::PACK_SHRINK);
         condBox_.pack_start(condCombo_, Gtk::PACK_SHRINK);
         condBox_.set_spacing(5);
@@ -210,7 +206,7 @@ namespace ASALI
         condCombo_.set_active(0);
         condCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::condUnitConversion), true, 1));
 
-        //Viscosity
+        // Viscosity
         muBox_.pack_start(muLabel_, Gtk::PACK_SHRINK);
         muBox_.pack_start(muCombo_, Gtk::PACK_SHRINK);
         muBox_.set_spacing(5);
@@ -220,7 +216,7 @@ namespace ASALI
         muCombo_.set_active(0);
         muCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::muUnitConversion), true, 2));
 
-        //Diffusivity
+        // Diffusivity
         diffBox_.pack_start(diffLabel_, Gtk::PACK_SHRINK);
         diffBox_.pack_start(diffCombo_, Gtk::PACK_SHRINK);
         diffBox_.set_spacing(5);
@@ -229,27 +225,27 @@ namespace ASALI
         diffCombo_.set_active(0);
         diffCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &transportProperties::diffUnitConversion), true, 3));
 
-        //Add heading
+        // Add heading
         resultsGrid_.attach(condBox_, 1, 0, 1, 1);
         resultsGrid_.attach(muBox_, 2, 0, 1, 1);
         resultsGrid_.attach(diffBox_, 3, 0, 1, 1);
 
-        //Add back button
+        // Add back button
         resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
         backButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::input));
 
-        //Add print on file
+        // Add print on file
         resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
         saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::save));
 
-        //Add exit button
+        // Add exit button
         resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
         exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &transportProperties::exit));
     }
 
     void transportProperties::save()
     {
-        std::string filename = this->save_file(this->get_toplevel()->gobj(), "transport.asali");
+        std::string filename = fileManager_.saveFile(this->get_toplevel()->gobj(), "transport.asali");
         if (filename != "")
         {
             std::ofstream output;

@@ -135,17 +135,17 @@ namespace ASALI
         T_ = T;
     }
 
-    void catalyticPelletEquations::setPelletType(const std::string pelletType)
+    void catalyticPelletEquations::setPelletType(const std::string &pelletType)
     {
         pelletType_ = pelletType;
     }
 
-    void catalyticPelletEquations::setDiffusionModel(const std::string modelType)
+    void catalyticPelletEquations::setDiffusionModel(const std::string &modelType)
     {
         modelType_ = modelType;
     }
 
-    void catalyticPelletEquations::setResolutionType(const std::string resolution)
+    void catalyticPelletEquations::setResolutionType(const std::string &resolution)
     {
         resolution_ = resolution;
     }
@@ -213,12 +213,12 @@ namespace ASALI
         inertIndex_ = inertIndex;
     }
 
-    void catalyticPelletEquations::setInletConditions(const std::vector<double> omega0)
+    void catalyticPelletEquations::setInletConditions(const std::vector<double> &omega0)
     {
         omega0_ = omega0;
     }
 
-    std::vector<std::vector<double>> catalyticPelletEquations::epsi_tau_model(const std::vector<std::vector<double>> diff, const std::vector<std::vector<double>> omega)
+    std::vector<std::vector<double>> catalyticPelletEquations::epsi_tau_model(const std::vector<std::vector<double>> &diff, const std::vector<std::vector<double>> &omega)
     {
         std::vector<std::vector<double>> N = diff;
         for (unsigned int i = 0; i < NP_; i++)
@@ -242,9 +242,9 @@ namespace ASALI
         return N;
     }
 
-    std::vector<std::vector<double>> catalyticPelletEquations::dusty_gas_model(const std::vector<std::vector<std::vector<double>>> diff,
-                                                                               const std::vector<std::vector<double>> omega,
-                                                                               const std::vector<std::vector<double>> MW)
+    std::vector<std::vector<double>> catalyticPelletEquations::dusty_gas_model(const std::vector<std::vector<std::vector<double>>> &diff,
+                                                                               const std::vector<std::vector<double>> &omega,
+                                                                               const std::vector<std::vector<double>> &MW)
     {
         std::vector<std::vector<double>> x = omega;
         std::vector<std::vector<double>> N = omega;
@@ -488,7 +488,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -507,7 +507,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -526,7 +526,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -553,7 +553,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -572,7 +572,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -591,7 +591,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter++] = 1e03 * (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                     }
                 }
 
@@ -625,7 +625,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -650,7 +650,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -675,7 +675,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -708,7 +708,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -733,7 +733,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -758,7 +758,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -791,7 +791,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -816,7 +816,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -841,7 +841,7 @@ namespace ASALI
                     }
                     else
                     {
-                        dy[counter] = (1. - SumElements(omegaMatrix_[i]));
+                        dy[counter] = (1. - vectorUtils_->SumElements(omegaMatrix_[i]));
                         algb_[counter] = true;
                         counter++;
                     }
@@ -857,7 +857,7 @@ namespace ASALI
         }
     }
 
-    void catalyticPelletEquations::store(const double tf, const std::vector<double> xf)
+    void catalyticPelletEquations::store(const double &tf, const std::vector<double> &xf)
     {
         // Recover unknowns
         {
@@ -883,6 +883,6 @@ namespace ASALI
 
     double catalyticPelletEquations::getLength()
     {
-        return MaxElement(Length_);
+        return vectorUtils_->MaxElement(Length_);
     }
 }

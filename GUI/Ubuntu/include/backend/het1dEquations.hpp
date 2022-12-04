@@ -47,6 +47,7 @@ namespace ASALI
     class het1dEquations : public ASALI::catalyticReactorsEquations
     {
     public:
+        /// Class constructor
         het1dEquations();
 
         /// Enable/disable energy balance
@@ -68,7 +69,7 @@ namespace ASALI
         void setInert(const unsigned int inertIndex);
 
         /// Set reactor inlet conditions: mass fraction and temperature in [K]
-        void setInletConditions(const std::vector<double> omega0, const double T0);
+        void setInletConditions(const std::vector<double> &omega0, const double T0);
 
         /// Set integration time in [s]
         void setIntegrationTime(const double tF);
@@ -77,19 +78,19 @@ namespace ASALI
         void setNumberOfPoints(const double NP);
 
         /// Set reactor type model
-        void setReactorType(const std::string reactorType);
+        void setReactorType(const std::string &reactorType);
 
         /// Set resolution method
-        void setResolutionType(const std::string resolution);
+        void setResolutionType(const std::string &resolution);
 
         /// Set packed bed reactor: tube diameter in [m], particle diameter [m], void fraction
         void setPackedBed(const double Dt, const double Dp, const double epsi);
 
         /// Set tubular reactor: tube diameter in [m], wall thickness [m], section shape
-        void setTubular(const double Dt, const double tw, const std::string section);
+        void setTubular(const double Dt, const double tw, const std::string &section);
 
         /// Set honeycomb reactor: CPSI, wall thickness [m], section shape
-        void setHoneyComb(const double cpsi, const double tw, const std::string section);
+        void setHoneyComb(const double cpsi, const double tw, const std::string &section);
 
         /// Return discretized reactor length [m]
         inline std::vector<double> getLength() const { return Length_; };
@@ -119,7 +120,7 @@ namespace ASALI
         void resize();
 
         /// Store results for plottnig and saving
-        void store(const double tf, const std::vector<double> xf);
+        void store(const double &tf, const std::vector<double> &xf);
 
         /// Return algebraic equations flags
         std::vector<bool> AlgebraicEquations() const { return algb_; };
@@ -184,7 +185,7 @@ namespace ASALI
         std::vector<std::vector<std::vector<double>>> Site_;    /// Coverage at different integration time
 
         /// Estimate mass transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], density [kg/m3], diffusivity [m2/s]
-        std::vector<double> massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d);
+        std::vector<double> massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> &d);
 
         /// Estimate heat transfer coefficient from: distance from reactor inlet in [m], viscosity [Pas], thermal condutivity [W/m2/K], specific heat [J/kg/K]
         double heatTransferCoefficient(const double z, const double mu, const double cond, const double cp);

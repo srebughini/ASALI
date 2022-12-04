@@ -54,7 +54,9 @@
 #include <thread>
 #include <numeric>
 #include <functional>
-#include <random>
+#include "backend/asaliFileManager.hpp"
+#include "backend/asaliVectorUtils.hpp"
+#include "backend/beerQuote.hpp"
 
 #if ASALI_USING_CANTERA == 1
 #include "backend/canteraInterface.hpp"
@@ -64,133 +66,128 @@
 
 namespace ASALI
 {
-    class kineticMaker : public Gtk::Window
-    {
-    public:
-        kineticMaker();
+        class kineticMaker : public Gtk::Window
+        {
+        public:
+                kineticMaker();
 
-        #include "shared/FileManager.H"
-        #include "shared/Vector.H"
+                void species();
+                void reactionNumber();
+                void reaction();
+                void equation();
+                void recap();
+                void save();
+                void exit();
 
-        void species();
-        void reactionNumber();
-        void reaction();
-        void equation();
-        void recap();
-        void save();
-        void exit();
+#if ASALI_USING_CANTERA == 1
+                void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
+#else
+                void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
+#endif
 
-        #if ASALI_USING_CANTERA == 1
-        void setChemistryInterface(ASALI::canteraInterface *chemistryInterface);
-        #else
-        void setChemistryInterface(ASALI::asaliInterface *chemistryInterface);
-        #endif
+#if ASALI_USING_CANTERA == 1
+                ASALI::canteraInterface *chemistryInterface_;
+#else
+                ASALI::asaliInterface *chemistryInterface_;
+#endif
 
-        std::string getBeer();
-        std::string getBeerShort();
+        private:
+                Gtk::Box reactionNumberBox_;
+                Gtk::Box speciesBox_;
+                Gtk::Box reactionBox_;
+                Gtk::Box equationBox_;
+                Gtk::Box recapBox_;
 
-        #if ASALI_USING_CANTERA == 1
-        ASALI::canteraInterface *chemistryInterface_;
-        #else
-        ASALI::asaliInterface *chemistryInterface_;
-        #endif
+                Gtk::Button exitButton1_;
+                Gtk::Button exitButton2_;
+                Gtk::Button nextButton1_;
+                Gtk::Button nextButton2_;
+                Gtk::Button nextButton3_;
+                Gtk::Button nextButton4_;
+                Gtk::Button backButton1_;
+                Gtk::Button backButton2_;
+                Gtk::Button backButton3_;
+                Gtk::Button backButton4_;
+                Gtk::Button saveButton_;
+                Gtk::Button reactionHelpButton_;
+                Gtk::Button equationHelpButton_;
 
-        virtual ~kineticMaker();
+                Gtk::Grid reactionNumberGrid_;
+                Gtk::Grid speciesGrid_;
+                Gtk::Grid reactionGrid_;
+                Gtk::Grid equationGrid_;
+                Gtk::Grid recapSpeciesGrid_;
+                Gtk::Grid recapReactionGrid_;
 
-    private:
-        Gtk::Box reactionNumberBox_;
-        Gtk::Box speciesBox_;
-        Gtk::Box reactionBox_;
-        Gtk::Box equationBox_;
-        Gtk::Box recapBox_;
+                Gtk::Label reactionNumberLabel_;
+                Gtk::Label speciesLabel_;
+                Gtk::Label numberLabel1_;
+                Gtk::Label numberLabel2_;
+                Gtk::Label expressionLabel1_;
+                Gtk::Label expressionLabel2_;
+                Gtk::Label typeLabel1_;
+                Gtk::Label recapSpeciesLabel_;
+                Gtk::Label recapReactionLabel_;
 
-        Gtk::Button exitButton1_;
-        Gtk::Button exitButton2_;
-        Gtk::Button nextButton1_;
-        Gtk::Button nextButton2_;
-        Gtk::Button nextButton3_;
-        Gtk::Button nextButton4_;
-        Gtk::Button backButton1_;
-        Gtk::Button backButton2_;
-        Gtk::Button backButton3_;
-        Gtk::Button backButton4_;
-        Gtk::Button saveButton_;
-        Gtk::Button reactionHelpButton_;
-        Gtk::Button equationHelpButton_;
+                Gtk::ComboBoxText reactionNumberCombo_;
 
-        Gtk::Grid reactionNumberGrid_;
-        Gtk::Grid speciesGrid_;
-        Gtk::Grid reactionGrid_;
-        Gtk::Grid equationGrid_;
-        Gtk::Grid recapSpeciesGrid_;
-        Gtk::Grid recapReactionGrid_;
+                Gtk::Image logo1_;
+                Gtk::Image logo2_;
+                Gtk::Image logo3_;
+                Gtk::Image logo4_;
+                Gtk::Image logo5_;
 
-        Gtk::Label reactionNumberLabel_;
-        Gtk::Label speciesLabel_;
-        Gtk::Label numberLabel1_;
-        Gtk::Label numberLabel2_;
-        Gtk::Label expressionLabel1_;
-        Gtk::Label expressionLabel2_;
-        Gtk::Label typeLabel1_;
-        Gtk::Label recapSpeciesLabel_;
-        Gtk::Label recapReactionLabel_;
+                std::vector<Gtk::Label *> reactionLabel_;
+                std::vector<Gtk::Label *> equationLabel_;
+                std::vector<Gtk::Label *> recapSpeciesVectorLabel_;
+                std::vector<Gtk::Label *> recapReactionVectorLabel_;
+                std::vector<Gtk::Label *> recapEquationVectorLabel_;
+                std::vector<Gtk::Label *> recapTypeVectorLabel_;
 
-        Gtk::ComboBoxText reactionNumberCombo_;
+                std::vector<Gtk::ComboBoxText *> reactionCombo_;
 
-        Gtk::Image logo1_;
-        Gtk::Image logo2_;
-        Gtk::Image logo3_;
-        Gtk::Image logo4_;
-        Gtk::Image logo5_;
+                std::vector<Gtk::Entry *> speciesEntry_;
+                std::vector<Gtk::Entry *> reactionEntry_;
+                std::vector<Gtk::Entry *> equationEntry_;
 
-        std::vector<Gtk::Label *> reactionLabel_;
-        std::vector<Gtk::Label *> equationLabel_;
-        std::vector<Gtk::Label *> recapSpeciesVectorLabel_;
-        std::vector<Gtk::Label *> recapReactionVectorLabel_;
-        std::vector<Gtk::Label *> recapEquationVectorLabel_;
-        std::vector<Gtk::Label *> recapTypeVectorLabel_;
+                std::vector<std::string> beer_;
+                std::vector<std::string> beerShort_;
+                std::vector<std::string> n_;
+                std::vector<std::string> Rhet_;
+                std::vector<std::string> Rhom_;
+                std::vector<std::string> Rtot_;
+                std::vector<std::string> r_;
+                std::vector<std::string> t_;
+                std::vector<std::string> op_;
 
-        std::vector<Gtk::ComboBoxText *> reactionCombo_;
+                unsigned int NR_;
+                unsigned int NC_;
 
-        std::vector<Gtk::Entry *> speciesEntry_;
-        std::vector<Gtk::Entry *> reactionEntry_;
-        std::vector<Gtk::Entry *> equationEntry_;
+                bool restart_;
 
-        std::vector<std::string> beer_;
-        std::vector<std::string> beerShort_;
-        std::vector<std::string> n_;
-        std::vector<std::string> Rhet_;
-        std::vector<std::string> Rhom_;
-        std::vector<std::string> Rtot_;
-        std::vector<std::string> r_;
-        std::vector<std::string> t_;
-        std::vector<std::string> op_;
+                std::vector<std::vector<double>> shet_;
+                std::vector<std::vector<double>> shom_;
 
-        unsigned int NR_;
-        unsigned int NC_;
+                void updateLayout();
+                void savedMessage();
+                void missingSpecies(const std::string &n);
+                void unknownOption(const std::string &n);
+                void errorEquation(const std::string &error);
+                void helpReaction();
+                void helpEquation();
+                void replaceString(std::string &str, const std::string &from, const std::string &to);
 
-        bool restart_;
+                bool readStoichiometryCoefficient(const unsigned int &index);
+                bool checkReaction();
+                bool checkEquation();
+                bool checkSpecies();
 
-        std::vector<std::vector<double>> shet_;
-        std::vector<std::vector<double>> shom_;
+                int getSpecieIndex(const std::string &n, const std::vector<std::string> &nv);
 
-        void updateLayout();
-        void savedMessage();
-        void missingSpecies(const std::string n);
-        void unknownOption(const std::string n);
-        void errorEquation(const std::string error);
-        void helpReaction();
-        void helpEquation();
-        void replaceString(std::string &str, const std::string from, const std::string to);
+                ASALI::beerQuote *beerQuote_;
+                ASALI::asaliVectorUtils *vectorUtils_;
 
-        bool readStoichiometryCoefficient(unsigned int index);
-        bool checkReaction();
-        bool checkEquation();
-        bool checkSpecies();
-
-        std::vector<std::string> splitString(const std::string txt, std::string ch);
-
-        int getSpecieIndex(std::string n, std::vector<std::string> nv);
-    };
+                ASALI::asaliFileManager fileManager_;
+        };
 }
 #endif

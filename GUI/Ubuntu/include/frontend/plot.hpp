@@ -40,6 +40,8 @@
 #define PLOT_H
 
 #include "backend/plotInterface.hpp"
+#include "backend/asaliUnitConversionUtils.hpp"
+#include "backend/asaliFileManager.hpp"
 #include <gtkmm.h>
 
 namespace ASALI
@@ -49,38 +51,35 @@ namespace ASALI
     public:
         plot();
 
-        #include "shared/UnitConversion.H"
-        #include "shared/FileManager.H"
+        ~plot();
 
-        void setSpecieNames(const std::vector<std::string> n);
-        void setSiteNames(const std::vector<std::string> nc);
+        void setSpecieNames(const std::vector<std::string> &n);
+        void setSiteNames(const std::vector<std::string> &nc);
 
-        void setTime(const std::vector<double> t);
-        void setVolume(const std::vector<double> V);
-        void setLength(const std::vector<double> L, const std::string Lud);
+        void setTime(const std::vector<double> &t);
+        void setVolume(const std::vector<double> &V);
+        void setLength(const std::vector<double> &L, const std::string &Lud);
 
-        void setSpecie(const std::vector<std::vector<double>> y, const std::vector<std::vector<double>> x);
-        void setSpecie(const std::vector<std::vector<std::vector<double>>> y, const std::vector<std::vector<std::vector<double>>> x);
-        void setSpecie(const std::vector<std::vector<std::vector<double>>> yb, const std::vector<std::vector<std::vector<double>>> xb,
-                       const std::vector<std::vector<std::vector<double>>> yw, const std::vector<std::vector<std::vector<double>>> xw);
+        void setSpecie(const std::vector<std::vector<double>> &y, const std::vector<std::vector<double>> &x);
+        void setSpecie(const std::vector<std::vector<std::vector<double>>> &y, const std::vector<std::vector<std::vector<double>>> &x);
+        void setSpecie(const std::vector<std::vector<std::vector<double>>> &yb, const std::vector<std::vector<std::vector<double>>> &xb,
+                       const std::vector<std::vector<std::vector<double>>> &yw, const std::vector<std::vector<std::vector<double>>> &xw);
 
-        void setSite(const std::vector<std::vector<double>> z);
-        void setSite(const std::vector<std::vector<std::vector<double>>> z);
+        void setSite(const std::vector<std::vector<double>> &z);
+        void setSite(const std::vector<std::vector<std::vector<double>>> &z);
 
-        void setTemperature(const std::vector<double> T);
-        void setTemperature(const std::vector<std::vector<double>> T);
-        void setTemperature(const std::vector<std::vector<double>> Tb,
-                            const std::vector<std::vector<double>> Tw);
+        void setTemperature(const std::vector<double> &T);
+        void setTemperature(const std::vector<std::vector<double>> &T);
+        void setTemperature(const std::vector<std::vector<double>> &Tb,
+                            const std::vector<std::vector<double>> &Tw);
 
-        void setType(const std::string type);
-        void setResolutionType(const std::string resolution);
+        void setType(const std::string &type);
+        void setResolutionType(const std::string &resolution);
 
         void build();
         void destroy();
         void runPlot();
         void exit();
-
-        virtual ~plot();
 
     private:
         Gtk::Button plotButton_;
@@ -135,15 +134,19 @@ namespace ASALI
 
         void output(ASALI::plotInterface *plotInterface);
         void defaultcolors(ASALI::plotInterface *plotInterface);
-        void legend(ASALI::plotInterface *plotInterface, int ndata);
+        void legend(ASALI::plotInterface *plotInterface, const int &ndata);
 
         void batchplot(ASALI::plotInterface *plotInterface);
         void cstrplot(ASALI::plotInterface *plotInterface);
-        void ph1dplot(ASALI::plotInterface *plotInterface, const std::string resolution);
+        void ph1dplot(ASALI::plotInterface *plotInterface, const std::string &resolution);
         void het1dplot(ASALI::plotInterface *plotInterface);
         void pelletplot(ASALI::plotInterface *plotInterface);
 
         bool isChecked(std::vector<Gtk::CheckButton *> button);
+
+        ASALI::asaliUnitConversionUtils *unitConversion_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

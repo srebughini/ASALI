@@ -59,13 +59,13 @@ namespace ASALI
         asali_->setPressure(p_);
     }
 
-    void asaliInterface::setMoleFraction(const std::vector<double> x, const std::vector<std::string> name)
+    void asaliInterface::setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name)
     {
         asali_->setSpecies(name);
         this->setStateFromMoleFraction(x.data(), T_, p_);
     }
 
-    void asaliInterface::setMassFraction(const std::vector<double> y, const std::vector<std::string> name)
+    void asaliInterface::setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name)
     {
         asali_->setSpecies(name);
         this->setStateFromMassFraction(y.data(), T_, p_);
@@ -148,9 +148,9 @@ namespace ASALI
         }
 
         n_[NS_] = "mix";
-        h_[NS_] = asali_->mixtureMolarEnthalpy(); //J/Kmol
-        s_[NS_] = asali_->mixtureMolarEntropy();  //J/Kmol/K
-        cp_[NS_] = asali_->mixtureMolarCp();      //J/Kmol/K
+        h_[NS_] = asali_->mixtureMolarEnthalpy(); // J/Kmol
+        s_[NS_] = asali_->mixtureMolarEntropy();  // J/Kmol/K
+        cp_[NS_] = asali_->mixtureMolarCp();      // J/Kmol/K
         MW_[NS_] = asali_->mixtureMolecularWeight();
     }
 
@@ -170,8 +170,8 @@ namespace ASALI
             if (i == NS_)
             {
                 n_[i] = "mix";
-                mu_[i] = asali_->mixtureViscosity();             //Pas
-                cond_[i] = asali_->mixtureThermalConductivity(); //W/m/K
+                mu_[i] = asali_->mixtureViscosity();             // Pas
+                cond_[i] = asali_->mixtureThermalConductivity(); // W/m/K
                 MW_[i] = asali_->mixtureMolecularWeight();
                 for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
@@ -235,7 +235,7 @@ namespace ASALI
         return asali_->mixtureViscosity();
     }
 
-    int asaliInterface::getSpecieIndex(std::string n)
+    int asaliInterface::getSpecieIndex(const std::string &n)
     {
         for (unsigned int i = 0; i <= NS_; i++)
         {
@@ -338,9 +338,5 @@ namespace ASALI
         }
 
         return check;
-    }
-
-    asaliInterface::~asaliInterface()
-    {
     }
 }

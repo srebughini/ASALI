@@ -144,12 +144,12 @@ namespace ASALI
         }
     }
 
-    void het1dEquations::setReactorType(const std::string reactorType)
+    void het1dEquations::setReactorType(const std::string &reactorType)
     {
         reactorType_ = reactorType;
     }
 
-    void het1dEquations::setResolutionType(const std::string resolution)
+    void het1dEquations::setResolutionType(const std::string &resolution)
     {
         resolution_ = resolution;
     }
@@ -162,7 +162,7 @@ namespace ASALI
         av_ = 6. * (1. - epsi_) / Dp_;
     }
 
-    void het1dEquations::setTubular(const double Dt, const double tw, const std::string section)
+    void het1dEquations::setTubular(const double Dt, const double tw, const std::string &section)
     {
         Dt_ = Dt - 2. * tw;
         av_ = 4. / Dt;
@@ -184,7 +184,7 @@ namespace ASALI
         epsi_ = std::pow(Dt_ / Dt, 2.);
     }
 
-    void het1dEquations::setHoneyComb(const double cpsi, const double tw, const std::string section)
+    void het1dEquations::setHoneyComb(const double cpsi, const double tw, const std::string &section)
     {
         if (section == "circle")
         {
@@ -230,7 +230,7 @@ namespace ASALI
         inertIndex_ = inertIndex;
     }
 
-    void het1dEquations::setInletConditions(const std::vector<double> omega0, const double T0)
+    void het1dEquations::setInletConditions(const std::vector<double> &omega0, const double T0)
     {
         omega0_ = omega0;
         T0_ = T0;
@@ -323,7 +323,7 @@ namespace ASALI
                 this->updateHeterogeneousChemistry();
             }
 
-            //Calculate transport properties
+            // Calculate transport properties
             {
                 kMat_ = this->massTransferCoefficient(z_[i], mu_, rho_, diff_);
 
@@ -364,7 +364,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -376,7 +376,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
 
@@ -406,7 +406,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -418,7 +418,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
 
@@ -448,7 +448,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                         }
                     }
 
@@ -460,7 +460,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter++] = 1e03 * (1. - SumElements(omegaWMatrix_[i]));
+                            dy[counter++] = 1e03 * (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                         }
                     }
 
@@ -469,16 +469,8 @@ namespace ASALI
                         dy[counter++] = 0.;
                     }
 
-                    if (energyEquation_ == true)
-                    {
-                        dy[counter++] = 0.;
-                        dy[counter++] = 0.;
-                    }
-                    else
-                    {
-                        dy[counter++] = 0.;
-                        dy[counter++] = 0.;
-                    }
+                    dy[counter++] = 0.;
+                    dy[counter++] = 0.;
                 }
             }
         }
@@ -499,7 +491,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -517,7 +509,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -535,7 +527,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -580,7 +572,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -598,7 +590,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -616,7 +608,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -661,7 +653,7 @@ namespace ASALI
                         }
                         else
                         {
-                            dy[counter] = (1. - SumElements(omegaBMatrix_[i]));
+                            dy[counter] = (1. - vectorUtils_->SumElements(omegaBMatrix_[i]));
                             algb_[counter] = true;
                             counter++;
                         }
@@ -679,7 +671,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -697,7 +689,7 @@ namespace ASALI
                             }
                             else
                             {
-                                dy[counter] = (1. - SumElements(omegaWMatrix_[i]));
+                                dy[counter] = (1. - vectorUtils_->SumElements(omegaWMatrix_[i]));
                                 algb_[counter] = true;
                                 counter++;
                             }
@@ -735,7 +727,7 @@ namespace ASALI
         return 0;
     }
 
-    void het1dEquations::store(const double tf, const std::vector<double> xf)
+    void het1dEquations::store(const double &tf, const std::vector<double> &xf)
     {
         // Recover unknowns
         {
@@ -770,7 +762,7 @@ namespace ASALI
         TemperatureW_.push_back(TWvector_);
     }
 
-    std::vector<double> het1dEquations::massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> d)
+    std::vector<double> het1dEquations::massTransferCoefficient(const double z, const double mu, const double rho, const std::vector<double> &d)
     {
         std::vector<double> kMat(NC_);
         if (reactorType_ == "honeycomb" ||
@@ -794,7 +786,7 @@ namespace ASALI
         }
         else if (reactorType_ == "packedBed")
         {
-            //Yoshida et al.
+            // Yoshida et al.
             double Re = G_ * Dt_ / (mu_ * (1. - epsi_) * 6.);
             double ReReal = G_ * Dt_ / mu_;
             double Sc;
@@ -842,7 +834,7 @@ namespace ASALI
         }
         else if (reactorType_ == "packed bed")
         {
-            //Yoshida et al.
+            // Yoshida et al.
             double Re = G_ * Dt_ / (mu * (1. - epsi_) * 6.);
             double ReReal = G_ * Dt_ / mu;
             double Pr = cp * mu / cond;

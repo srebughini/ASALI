@@ -20,6 +20,8 @@ The thermodynamic and transport properties evaluated by Asali are:
 * Enthalpy
 * Entropy
 * Specific heat at constant pressure
+* Density
+* Molecular weight
 
 Asali can be considered as a powerful user-friendly interface of  [Cantera](https://cantera.org/), thus all the transport and thermodynamic properties are estimated following the approach implemented in  [Cantera](https://cantera.org/). The transport properties are evaluated with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
 ### 1.2 Linear regression
@@ -62,17 +64,29 @@ Asali is based on different open-source codes:
 * [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
 * [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
 
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS, Windows 10, Windows 8 and Debian Wheezy. If your Operating System (OS) is not one of them, please send us an [email](ste.rebu@outlook.it).
+Asali has been tested on different Operating System (OS). If yours is not in the list below, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
-Asali has been tested on Ubuntu 16.04 LTS, Ubuntu 18.04 LTS, Ubuntu 20.04 LTS and Debian Wheez. Installation instructions can be found [here](LINUX.md).
+Asali has been tested on:
+* *Ubuntu 16.04 LTS*
+* *Ubuntu 18.04 LTS*
+* *Ubuntu 20.04 LTS*
+* *Ubuntu 22.04 LTS*
+* *Debian Wheezy* 
+
+Installation instructions can be found [here](LINUX.md).
+### 2.2 Windows OS
+Asali has been tested on:
+* *Windows 10*
+* *Windows 8*    
+
+To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
 
 ### 2.3 Mingw-w64 on Windows
 [Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
 Installation instructions can be found [here](MINGW64.md).
 
-### 2.2 Windows OS
-To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
-
 ### 2.4 Docker
 Asali can be installed using [docker](https://docs.docker.com/). Installation instructions can be found [here](DOCKER.md).
+
+

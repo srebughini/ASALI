@@ -65,10 +65,10 @@ namespace ASALI
         void setPressure(const double p);
 
         /// Set mass fraction
-        void setMoleFraction(const std::vector<double> x, const std::vector<std::string> name);
+        void setMoleFraction(const std::vector<double> &x, const std::vector<std::string> &name);
 
         /// Set mole fraction
-        void setMassFraction(const std::vector<double> y, const std::vector<std::string> name);
+        void setMassFraction(const std::vector<double> &y, const std::vector<std::string> &name);
 
         /// Set mass fraction, temperature in [K] and pressure in [Pa]
         void setStateFromMassFraction(const double *y, const double T, const double p);
@@ -128,7 +128,7 @@ namespace ASALI
         std::vector<int> checkNames(std::vector<std::string> &name);
 
         /// Return specie index from specie name
-        int getSpecieIndex(std::string n);
+        int getSpecieIndex(std::string name);
 
         /// Check single species name
         int checkNames(std::string name);
@@ -155,28 +155,25 @@ namespace ASALI
         void equilibriumCalculate(std::string type);
 
         /// Convert double* to std::vector<double>
-        std::vector<double> doubleVectorToStdVector(double *double_vector, unsigned int vector_size);
+        static std::vector<double> doubleVectorToStdVector(double *double_vector, unsigned int vector_size);
 
         /// Return species homogeneous reactions in [kg/m3/s]
-        inline std::vector<double> RfromGas() { return RfromGas_; };
+        inline std::vector<double> RfromGas() const { return RfromGas_; };
 
         /// Return species heterogeneous reactions in [kg/m2/s]
-        inline std::vector<double> RfromSurface() { return RfromSurface_; };
+        inline std::vector<double> RfromSurface() const { return RfromSurface_; };
 
         /// Return coverage reactions in [kg/m2/s]
-        inline std::vector<double> Rsurface() { return Rsurface_; };
+        inline std::vector<double> Rsurface() const { return Rsurface_; };
 
         /// Return homogeneous heat of reactions in [W/m3]
-        inline double QfromGas() { return QfromGas_; };
+        inline double QfromGas() const { return QfromGas_; };
 
         /// Return heterogeneous heat of reactions in [W/m2]
-        inline double QfromSurface() { return QfromSurface_; };
+        inline double QfromSurface() const { return QfromSurface_; };
 
         /// Return site density in [1/m2]
-        inline double siteDensity() { return SD_; };
-
-        /// Class destructor
-        ~canteraInterface();
+        inline double siteDensity() const { return SD_; };
 
     private:
         Cantera::ThermoPhase *thermo_;                                /// Cantera library thermo phase pointer

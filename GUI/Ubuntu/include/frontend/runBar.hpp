@@ -51,6 +51,7 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
+#include "backend/asaliFileManager.hpp"
 
 namespace ASALI
 {
@@ -59,15 +60,11 @@ namespace ASALI
     public:
         runBar();
 
-        void update(const double fraction, const std::string tm);
+        void update(const double &fraction, const std::string &tm);
         void exit();
         void close();
 
         bool check() { return close_; };
-
-        #include "shared/FileManager.H"
-
-        virtual ~runBar();
 
     private:
         Gtk::Box mainBox_;
@@ -77,6 +74,8 @@ namespace ASALI
         Gtk::ProgressBar runBar_;
 
         bool close_;
+
+        ASALI::asaliFileManager fileManager_;
     };
 }
 #endif

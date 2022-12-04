@@ -46,9 +46,7 @@ namespace ASALI
     class pressureDrops : public ASALI::basicProperties
     {
     public:
-        pressureDrops(ASALI::speciesPopup *speciesNames, std::string kineticType);
-
-        virtual ~pressureDrops();
+        pressureDrops(ASALI::speciesPopup *speciesNames, const std::string &kineticType);
 
         void results();
         void save();

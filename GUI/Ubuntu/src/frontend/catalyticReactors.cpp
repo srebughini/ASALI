@@ -40,7 +40,7 @@
 
 namespace ASALI
 {
-    catalyticReactors::catalyticReactors(std::string kineticType)
+    catalyticReactors::catalyticReactors(const std::string &kineticType)
         : coverageBox_(Gtk::ORIENTATION_VERTICAL),
           helpButton_("Available species"),
           nextButton1_("Next"),
@@ -62,30 +62,30 @@ namespace ASALI
           kineticType_(kineticType),
           inert_("NONE")
     {
-        #include "shared/Beer.H"
-        #include "shared/BeerShort.H"
-
         speciesNames_ = new ASALI::speciesPopup();
         constantProperties_ = new ASALI::constantProperties();
         catalystProperties_ = new ASALI::catalystProperties();
         plot_ = new ASALI::plot();
         bar_ = new ASALI::runBar();
+        beerQuote_ = new ASALI::beerQuote();
+        vectorUtils_ = new ASALI::asaliVectorUtils();
+        unitConversion_ = new ASALI::asaliUnitConversionUtils();
 
         {
             this->set_border_width(15);
             this->set_title("ASALI: Catalytic reactors");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
-            this->set_icon_from_file(this->relative_path_to_absolute_path("images/Icon.png"));
+            this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
         }
 
-        //Species input menu
+        // Species input menu
         {
             inputGrid_.set_column_homogeneous(true);
             inputGrid_.set_column_spacing(10);
             inputGrid_.set_row_homogeneous(true);
             inputGrid_.set_row_spacing(10);
 
-            //Add kinetic selection
+            // Add kinetic selection
             inputGrid_.attach(kineticLabel_, 0, 0, 1, 1);
             inputGrid_.attach(kineticCombo_, 1, 0, 1, 1);
             kineticCombo_.append("ASALI");
@@ -100,38 +100,25 @@ namespace ASALI
             }
             kineticCombo_.signal_changed().connect(sigc::mem_fun(*this, &catalyticReactors::switchTo));
 
-            //Add temperature selector
+            // Add temperature selector
             inputGrid_.attach(tempLabel_, 0, 1, 1, 1);
             inputGrid_.attach(tempEntry_, 1, 1, 1, 1);
             tempEntry_.set_max_length(10);
             tempEntry_.set_text("298.15");
             inputGrid_.attach(tempCombo_, 2, 1, 1, 1);
-            tempCombo_.append("K");
-            tempCombo_.append("°C");
-            tempCombo_.append("°F");
-            tempCombo_.set_active(0);
+            unitConversion_->updateBox(tempCombo_, "temperature");
 
-            //Add temperature selector
+            // Add pressure selector
             inputGrid_.attach(pressLabel_, 0, 2, 1, 1);
             inputGrid_.attach(pressEntry_, 1, 2, 1, 1);
             pressEntry_.set_max_length(10);
             pressEntry_.set_text("101325");
             inputGrid_.attach(pressCombo_, 2, 2, 1, 1);
-            pressCombo_.append("Pa");
-            pressCombo_.append("GPa");
-            pressCombo_.append("MPa");
-            pressCombo_.append("kPa");
-            pressCombo_.append("bar");
-            pressCombo_.append("torr");
-            pressCombo_.append("mmHg");
-            pressCombo_.append("atm");
-            pressCombo_.set_active(0);
+            unitConversion_->updateBox(pressCombo_, "pressure");
 
-            //Add mole or mass fraction selection
+            // Add mole or mass fraction selection
             inputGrid_.attach(fractionCombo_, 1, 3, 1, 1);
-            fractionCombo_.append("Mole fraction");
-            fractionCombo_.append("Mass fraction");
-            fractionCombo_.set_active(0);
+            unitConversion_->updateBox(fractionCombo_, "fraction");
 
             nameEntry_.resize(NS_);
             fractionEntry_.resize(NS_);
@@ -151,14 +138,14 @@ namespace ASALI
                 }
             }
 
-            //Add help button
+            // Add help button
             if (kineticType_ == "default")
             {
                 inputGrid_.attach(helpButton_, 1, NS_ + 5, 1, 1);
                 helpButton_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::availableSpecies));
             }
 
-            //Add back button
+            // Add back button
             inputGrid_.attach(backButton1_, 0, NS_ + 5, 1, 1);
             backButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::input));
 
@@ -173,7 +160,7 @@ namespace ASALI
             }
         }
 
-        //Coverage input menu
+        // Coverage input menu
         {
             coverageBox_.set_halign(Gtk::ALIGN_START);
             coverageBox_.set_spacing(10);
@@ -203,31 +190,27 @@ namespace ASALI
                 }
             }
 
-            //Add back button
+            // Add back button
             coverageGrid_.attach(backButton2_, 0, SURF_NS_ + 5, 1, 1);
             backButton2_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::composition));
 
-            //Done buttons
+            // Done buttons
             coverageGrid_.attach(nextButton2_, 1, SURF_NS_ + 5, 1, 1);
             nextButton2_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
         }
     }
 
-    catalyticReactors::~catalyticReactors()
-    {
-    }
-
-    #if ASALI_USING_CANTERA == 1
+#if ASALI_USING_CANTERA == 1
     void catalyticReactors::setChemistryInterface(ASALI::canteraInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #else
+#else
     void catalyticReactors::setChemistryInterface(ASALI::asaliInterface *chemistryInterface)
     {
         chemistryInterface_ = chemistryInterface;
     }
-    #endif
+#endif
 
     void catalyticReactors::coverage()
     {
@@ -251,19 +234,19 @@ namespace ASALI
         if (kineticType_ == "default" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else if (kineticType_ == "load" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else if (kineticType_ == "nokinetic" && chemistryInterface_->checkNames(inert_) == 1 && inert_ != "NONE")
         {
             Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else
@@ -301,27 +284,9 @@ namespace ASALI
         else
         {
             Gtk::MessageDialog dialog(*this, "No kinetic scheme implemented, please select ASALI kinetic type.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(), true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
             dialog.run();
         }
-    }
-
-    std::string catalyticReactors::getBeer()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beer_.size()-1);
-        int i = distribution(gen);
-        return beer_[i];
-    }
-
-    std::string catalyticReactors::getBeerShort()
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<const unsigned int> distribution(0, beerShort_.size()-1);
-        int i = distribution(gen);
-        return beerShort_[i];
     }
 
     std::string catalyticReactors::convertToTimeFormat(double t)
@@ -336,33 +301,33 @@ namespace ASALI
         std::string ts;
         {
             std::ostringstream strs;
-            strs << h; //std::max(0.,h);
+            strs << h; // std::max(0.,h);
             ts = strs.str() + ":";
         }
 
         if (m > 9)
         {
             std::ostringstream strs;
-            strs << m; //std::max(0.,m);
+            strs << m; // std::max(0.,m);
             ts = ts + strs.str() + ":";
         }
         else
         {
             std::ostringstream strs;
-            strs << m; //std::max(0.,m);
+            strs << m; // std::max(0.,m);
             ts = ts + "0" + strs.str() + ":";
         }
 
         if (s > 9)
         {
             std::ostringstream strs;
-            strs << s; //std::max(0.,s);
+            strs << s; // std::max(0.,s);
             ts = ts + strs.str();
         }
         else
         {
             std::ostringstream strs;
-            strs << s; //std::max(0.,s);
+            strs << s; // std::max(0.,s);
             ts = ts + "0" + strs.str();
         }
 
@@ -374,8 +339,8 @@ namespace ASALI
         T_ = Glib::Ascii::strtod(tempEntry_.get_text());
         p_ = Glib::Ascii::strtod(pressEntry_.get_text());
 
-        ConvertsToKelvin(T_, tempCombo_.get_active_text());
-        ConvertsToPascal(p_, pressCombo_.get_active_text());
+        unitConversion_->toKelvin(T_, tempCombo_.get_active_text());
+        unitConversion_->toPascal(p_, pressCombo_.get_active_text());
 
         std::vector<std::string> n(NS_);
         std::vector<Glib::ustring> x(NS_);
@@ -434,7 +399,7 @@ namespace ASALI
             }
 
             {
-                double sum = SumElements(x_);
+                double sum = vectorUtils_->SumElements(x_);
                 for (unsigned int i = 0; i < x_.size(); i++)
                 {
                     x_[i] = x_[i] / sum;
@@ -517,7 +482,7 @@ namespace ASALI
                     }
 
                     {
-                        double sum = SumElements(xc_);
+                        double sum = vectorUtils_->SumElements(xc_);
                         for (unsigned int i = 0; i < xc_.size(); i++)
                         {
                             xc_[i] = xc_[i] / sum;
@@ -544,19 +509,19 @@ namespace ASALI
         if (i == 4444)
         {
             Gtk::MessageDialog dialog(*this, "Please, the sum of mass/mole fractions should be 1.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else if (i == 4445)
         {
             Gtk::MessageDialog dialog(*this, "Something is wrong in your input, please fix it.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this, n_[i] + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeerShort(), true);
+            dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
             dialog.run();
         }
     }
@@ -566,19 +531,19 @@ namespace ASALI
         if (i == 4444)
         {
             Gtk::MessageDialog dialog(*this, "Please, the sum of mass/mole fractions should be 1.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(), true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
             dialog.run();
         }
         else if (i == 4445)
         {
             Gtk::MessageDialog dialog(*this, "Something is wrong in your input, please fix it.", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(), true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
             dialog.run();
         }
         else
         {
             Gtk::MessageDialog dialog(*this, nc_[i] + " is missing!!", true, Gtk::MESSAGE_WARNING);
-            dialog.set_secondary_text(this->getBeer(), true);
+            dialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
             dialog.run();
         }
     }
@@ -586,7 +551,7 @@ namespace ASALI
     void catalyticReactors::savedMessage()
     {
         Gtk::MessageDialog dialog(*this, "Your file has been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
-        dialog.set_secondary_text(this->getBeerShort(), true);
+        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
         dialog.run();
     }
 
@@ -634,7 +599,7 @@ namespace ASALI
                 if (!check)
                 {
                     Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-                    dialog.set_secondary_text(this->getBeerShort(), true);
+                    dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                     dialog.run();
                 }
             }
@@ -669,7 +634,7 @@ namespace ASALI
             pi_ = new ASALI::pythonInterface();
 
             Gtk::MessageDialog dialogBig(*this, "Please, load your ASALI kinetic file!", true, Gtk::MESSAGE_INFO);
-            dialogBig.set_secondary_text(this->getBeer(), true);
+            dialogBig.set_secondary_text(beerQuote_->getRandomQuote(), true);
             int resultsBig = dialogBig.run();
 
             switch (resultsBig)
@@ -677,7 +642,7 @@ namespace ASALI
             default:
             {
                 dialogBig.hide();
-                std::string filename = this->open_file(this->get_toplevel()->gobj());
+                std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
                 if (filename != "")
                 {
                     std::ifstream input;
@@ -686,17 +651,12 @@ namespace ASALI
                     if (filename.substr(filename.length() - 3, filename.length()) != ".py")
                     {
                         Gtk::MessageDialog dialogSmall(*this, "Something is wrong in your ASALI kinetic file!", true, Gtk::MESSAGE_ERROR);
-                        dialogSmall.set_secondary_text(this->getBeer(), true);
+                        dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(), true);
                         dialogSmall.run();
                     }
                     else
                     {
-                        #if ASALI_ON_WINDOW == 0
-                        std::vector<std::string> filevector = this->splitString(filename, "/");
-                        #else
-                        std::vector<std::string> filevector = this->splitString(filename, "\\");
-                        #endif
-
+                        std::vector<std::string> filevector = fileManager_.splitPath(filename);
                         std::string function = filevector.back().substr(0, filevector.back().length() - 3);
                         std::string path = filename.substr(0, filename.length() - function.length() - 3);
 
@@ -705,13 +665,13 @@ namespace ASALI
                         if (check != "done")
                         {
                             Gtk::MessageDialog dialogSmall(*this, "Something is wrong in your ASALI kinetic file!", true, Gtk::MESSAGE_ERROR);
-                            dialogSmall.set_secondary_text(this->getBeer(), true);
+                            dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(), true);
                             dialogSmall.run();
                         }
                         else
                         {
                             Gtk::MessageDialog dialogSmall(*this, "Your ASALI kinetic is loaded!", true, Gtk::MESSAGE_INFO);
-                            dialogSmall.set_secondary_text(this->getBeer(), true);
+                            dialogSmall.set_secondary_text(beerQuote_->getRandomQuote(), true);
                             dialogSmall.run();
 
                             if (kineticType_ == "none")
@@ -719,7 +679,7 @@ namespace ASALI
                                 if (pi_->checkNames(inert_) == 1 && inert_ != "NONE")
                                 {
                                     Gtk::MessageDialog dialog(*this, inert_ + " is missing!!", true, Gtk::MESSAGE_WARNING);
-                                    dialog.set_secondary_text(this->getBeerShort(), true);
+                                    dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                                     dialog.run();
                                 }
                                 else
@@ -737,12 +697,12 @@ namespace ASALI
                                     if (check[i] == 1)
                                     {
                                         Gtk::MessageDialog dialog(*this, pi_->getSpeciesName()[i] + " is missing in CANTERA transport/thermodynamic file!", true, Gtk::MESSAGE_WARNING);
-                                        dialog.set_secondary_text(this->getBeerShort(), true);
+                                        dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                                         dialog.run();
                                     }
                                 }
 
-                                if (MaxElement(check) == 0)
+                                if (vectorUtils_->MaxElement(check) == 0)
                                 {
                                     signal.disconnect();
                                     signal = nextButton1_.signal_clicked().connect(sigc::mem_fun(*this, &catalyticReactors::recap));
@@ -756,7 +716,7 @@ namespace ASALI
         }
     }
 
-    unsigned int catalyticReactors::specieIndex(const std::string n, const std::vector<std::string> v)
+    unsigned int catalyticReactors::specieIndex(const std::string &n, const std::vector<std::string> &v)
     {
         unsigned int id = 0;
         for (unsigned int i = 0; i < v.size(); i++)
@@ -790,27 +750,6 @@ namespace ASALI
         }
     }
 
-    std::vector<std::string> catalyticReactors::splitString(const std::string txt, std::string ch)
-    {
-        std::vector<std::string> strs;
-        std::size_t pos = txt.find(ch);
-        std::size_t initialPos = 0;
-
-        strs.clear();
-
-        while (pos != std::string::npos)
-        {
-            strs.push_back(txt.substr(initialPos, pos - initialPos));
-            initialPos = pos + 1;
-
-            pos = txt.find(ch, initialPos);
-        }
-
-        strs.push_back(txt.substr(initialPos, std::min(pos, txt.size()) - initialPos + 1));
-
-        return strs;
-    }
-
     std::vector<std::string> catalyticReactors::gasSpeciesNames()
     {
         if (kineticType_ == "none")
@@ -830,9 +769,9 @@ namespace ASALI
         }
     }
 
-    void catalyticReactors::bar(const double fraction, const std::string tm)
+    void catalyticReactors::bar(const double &fraction, const std::string &tm)
     {
-        //Update solving bar
+        // Update solving bar
         while (Gtk::Main::events_pending())
         {
             Gtk::Main::iteration();
@@ -842,7 +781,7 @@ namespace ASALI
 
         bar_->show();
 
-        //Update solving bar
+        // Update solving bar
         while (Gtk::Main::events_pending())
         {
             Gtk::Main::iteration();
@@ -854,19 +793,10 @@ namespace ASALI
         this->hide();
     }
 
-    void catalyticReactors::input() {}
-
-    void catalyticReactors::read() {}
-
-    void catalyticReactors::recap() {}
-
-    void catalyticReactors::propertiesShow() {}
-
-    void catalyticReactors::catalystPropertiesShow() {}
-
-    void catalyticReactors::save() {}
-
-    void catalyticReactors::run() {}
-
-    void catalyticReactors::plot() {}
+    catalyticReactors::~catalyticReactors()
+    {
+        delete beerQuote_;
+        delete unitConversion_;
+        delete vectorUtils_;
+    }
 }

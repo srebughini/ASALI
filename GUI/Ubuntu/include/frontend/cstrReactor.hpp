@@ -48,9 +48,7 @@ namespace ASALI
     class cstrReactor : public ASALI::catalyticReactors
     {
     public:
-        cstrReactor(std::string kineticType);
-
-        virtual ~cstrReactor();
+        explicit cstrReactor(const std::string &kineticType);
 
         virtual void input();
         virtual void read();
