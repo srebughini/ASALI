@@ -17,7 +17,7 @@ var inputContainer_id = "inputContainer";
 
 
 var inputContainer = document.getElementById(inputContainer_id);
-var count = container_div.getElementsByTagName('div').length;
+var count = inputContainer.getElementsByTagName('div').length;
 alert(count);
 
 
