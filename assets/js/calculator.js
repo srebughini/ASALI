@@ -16,6 +16,10 @@ var inputContainer_id = "inputContainer";
 function getNumberOfInput() {
   let inputContainer = document.getElementById(inputContainer_id);
   let Ndiv = inputContainer.getElementsByTagName('div').length;
+  console.log(Ndiv)
+  console.log(Ndiv % 2)
+  console.log(Math.floor(Ndiv / 2))
+  console.log(Math.floor(Ndiv / 2) - 2)
   return (Ndiv % 2) - 2
 }
 
