@@ -28,7 +28,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n1-addon" id="n1">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n1-addon" id="n1">-->
                 <span class="input-group-addon text-center" id="x1-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
@@ -128,7 +127,7 @@ permalink: /pages/webapp/
 </div>
 
 <div class="container">
-    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="runWebApp();"><i class="fa-regular fa-power-off"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run</button></p>
-    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="addInputSpecie();"><i class="fa-regular fa-circle-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="runWebApp();"><i class="fa-regular fa-power-off"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run</button>
+    <button class="btn btn-primary btn-lg" onclick="addInputSpecie();"><i class="fa-solid fa-circle-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add</button></p>
 </div>
 

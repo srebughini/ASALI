@@ -13,6 +13,21 @@ var P_id = "P";
 var select_str = "Select";
 var inputContainer_id = "inputContainer";
 
+
+function getInputLineHTML(counter) {
+  return `
+<div class="form-group">
+  <div class="input-group">
+        <span class="input-group-addon text-center" id="${name_id_prefix}${counter}-addon"><i class="fa-regular fa-atom"></i></span>
+        <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="${name_id_prefix}${counter}-addon" id="${name_id_prefix}${counter}">
+            <option value="">Select...</option>
+        </select>
+        <span class="input-group-addon text-center" id="${value_id_prefix}${counter}-addon"><i class="fa-regular fa-chart-pie"></i></span> 
+        <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="${value_id_prefix}${counter}-addon" id="${value_id_prefix}${counter}" min="0" max="1">
+  </div>
+</div>`
+}
+
 function getNumberOfInput() {
   let inputContainer = document.getElementById(inputContainer_id);
   let Ndiv = inputContainer.getElementsByTagName('div').length;
@@ -259,8 +274,8 @@ function runWebApp() {
 
 function addInputSpecie() {
   let actualNSinput = getNumberOfInput();
-  let newId = actualNSinput + 1;
-  console.log(newId);
+  let newLineHTML = getInputLineHTML(actualNSinput + 1);
+  document.getElementById(inputContainer_id).insertAdjacentHTML("afterend", newLineHTML);
 }
 
 function showResults(destinationPageUrl) {
