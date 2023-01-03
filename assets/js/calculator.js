@@ -467,9 +467,11 @@ function showSpeciesList() {
     }
   }
 
-  let specieNames = Object.keys(moleculesDict);
+  let specieNames = Object.keys(jasali.moleculesDict);
   let NSinput = getNumberOfInput();
+  console.log(NSinput)
   for (let i = 0; i < NSinput; i++) {
+    console.log(i);
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     for (let j = 0; j < specieNames.length; j++) {
       let opt = document.createElement('option');
