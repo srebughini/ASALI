@@ -234,7 +234,7 @@ function addInputSpecie() {
   let actualNSinput = getNumberOfInput();
   let newLineHTML = getInputLineHTML(actualNSinput + 1);
   let specieNames = getSpeciesList();
-  document.getElementById(inputContainer_id).insertAdjacentHTML("beforend", newLineHTML);
+  document.getElementById(inputContainer_id).insertAdjacentHTML("beforeEnd", newLineHTML);
   showSpeciesListForSingleInput(actualNSinput + 1, specieNames);
 }
 
