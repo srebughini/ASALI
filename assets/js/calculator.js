@@ -15,26 +15,36 @@ var inputContainer_id = "inputContainer";
 
 
 function getInputLineHTML(counter) {
+  /*
+  Get the HTML code for the input line to insert specie and mole fraction
+  */
   return `
-<div class="form-group">
-  <div class="input-group">
-        <span class="input-group-addon text-center" id="${name_id_prefix}${counter}-addon"><i class="fa-regular fa-atom"></i></span>
-        <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="${name_id_prefix}${counter}-addon" id="${name_id_prefix}${counter}">
-            <option value="">Select...</option>
-        </select>
-        <span class="input-group-addon text-center" id="${value_id_prefix}${counter}-addon"><i class="fa-regular fa-chart-pie"></i></span> 
-        <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="${value_id_prefix}${counter}-addon" id="${value_id_prefix}${counter}" min="0" max="1">
-  </div>
-</div>`
+          <div class="form-group">
+            <div class="input-group">
+                  <span class="input-group-addon text-center" id="${name_id_prefix}${counter}-addon"><i class="fa-regular fa-atom"></i></span>
+                  <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="${name_id_prefix}${counter}-addon" id="${name_id_prefix}${counter}">
+                      <option value="">Select...</option>
+                  </select>
+                  <span class="input-group-addon text-center" id="${value_id_prefix}${counter}-addon"><i class="fa-regular fa-chart-pie"></i></span> 
+                  <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="${value_id_prefix}${counter}-addon" id="${value_id_prefix}${counter}" min="0" max="1">
+            </div>
+          </div>
+        `
 }
 
 function getNumberOfInput() {
+  /*
+  Get the number of input species
+  */
   let inputContainer = document.getElementById(inputContainer_id);
   let Ndiv = inputContainer.getElementsByTagName('div').length;
   return Math.floor(Ndiv / 2) - 2
 }
 
 function getSpeciesList() {
+  /*
+  Get the list of species present in JASALI
+  */
   // - TODO: Try to get moleculesDict directly from JASALI
   let moleculesDict = {
     "AR": {
@@ -230,16 +240,46 @@ function getSpeciesList() {
   return Object.keys(moleculesDict);
 }
 
-function addInputSpecie() {
+function addSpeciesListToSingleInput(input_counter, specieNames) {
+  /*
+  Add the list of the species in a specific drop down menù of the input line
+  */
+  let select_obj = document.getElementById(name_id_prefix.concat(input_counter));
+  for (let j = 0; j < specieNames.length; j++) {
+    let opt = document.createElement('option');
+    opt.value = specieNames[j];
+    opt.text = specieNames[j];
+    select_obj.add(opt);
+  }
+}
+
+function addSpeciesList() {
+  /*
+  Add the list of the species in all the drop down menù of the input line
+  */
+  let specieNames = getSpeciesList();
+  let NSinput = getNumberOfInput();
+  for (let i = 0; i < NSinput; i++) {
+    addSpeciesListToSingleInput(i + 1, specieNames);
+  }
+}
+
+function addInputLine() {
+  /*
+  input line to insert specie and mole fraction
+  */
   let actualNSinput = getNumberOfInput();
   let newLineHTML = getInputLineHTML(actualNSinput + 1);
   let specieNames = getSpeciesList();
   document.getElementById(inputContainer_id).insertAdjacentHTML("beforeEnd", newLineHTML);
-  showSpeciesListForSingleInput(actualNSinput + 1, specieNames);
+  addSpeciesListToSingleInput(actualNSinput + 1, specieNames);
 }
 
 
 function readComposition() {
+  /*
+  Read the input composition and return a dictionary: {Specie Name: Mole Fraction}
+  */
   const composition = {};
   let NSinput = getNumberOfInput();
   for (let i = 0; i < NSinput; i++) {
@@ -258,14 +298,23 @@ function readComposition() {
 }
 
 function readTemperature() {
+  /*
+  Read the input temperature
+  */
   return parseFloat(document.getElementById(T_id).value);
 }
 
 function readPressure() {
+  /*
+  Read the input pressure
+  */
   return parseFloat(document.getElementById(P_id).value);
 }
 
 function estimateMixtureProperties() {
+  /*
+  Estimate the mixture properties using JASALI and return a dictionary
+  */
   //Read temperature
   let T = readTemperature();
 
@@ -362,6 +411,9 @@ function estimateMixtureProperties() {
 }
 
 function showOperatingConditions(results, doc) {
+  /*
+  Show the operating conditions in the results page
+  */
   let name = results["composition"]["name"];
   let mole = results["composition"]["mole"];
   let mass = results["composition"]["mass"];
@@ -384,6 +436,9 @@ function showOperatingConditions(results, doc) {
 }
 
 function showTransportProperties(results, doc) {
+  /*
+  Show the transport properties in the results page
+  */
   let properties = results["transport"];
   let outputTable = doc.getElementById("output-table")
 
@@ -424,6 +479,9 @@ function showTransportProperties(results, doc) {
 }
 
 function showThermoProperties(results, doc) {
+  /*
+  Show the thermodynamic properties in the results page
+  */
   let properties = results["thermo"];
   let outputTable = doc.getElementById("output-table")
 
@@ -439,6 +497,9 @@ function showThermoProperties(results, doc) {
 }
 
 function showEquilibrium(results, doc) {
+  /*
+  Show the equilibrium in the results page
+  */
   let name = results["equilibrium"]["name"];
   let mole = results["equilibrium"]["mole"];
   let mass = results["equilibrium"]["mass"];
@@ -459,6 +520,9 @@ function showEquilibrium(results, doc) {
 }
 
 function runWebApp() {
+  /*
+  Run the webapp at button press
+  */
   // Estimate mixture properties
   let results = estimateMixtureProperties();
 
@@ -478,6 +542,9 @@ function runWebApp() {
 }
 
 function showResults(destinationPageUrl) {
+  /*
+  Show the results page
+  */
   // Get mixture properties from LocalStorage
   let results = JSON.parse(localStorage.getItem(webAppResults));
 
@@ -495,28 +562,13 @@ function showResults(destinationPageUrl) {
   }
 }
 
-function showSpeciesList() {
-  let specieNames = getSpeciesList();
-  let NSinput = getNumberOfInput();
-  for (let i = 0; i < NSinput; i++) {
-    showSpeciesListForSingleInput(i + 1, specieNames);
-  }
-}
-
-function showSpeciesListForSingleInput(input_counter, specieNames) {
-  let select_obj = document.getElementById(name_id_prefix.concat(input_counter));
-  for (let j = 0; j < specieNames.length; j++) {
-    let opt = document.createElement('option');
-    opt.value = specieNames[j];
-    opt.text = specieNames[j];
-    select_obj.add(opt);
-  }
-}
-
 window.onload = function updatePage() {
+  /*
+  Main function that run on page load
+  */
   let actualPageUrl = window.location.href.toString();
   if (actualPageUrl.includes(webAppPageUrl)) {
-    showSpeciesList();
+    addSpeciesList();
   }
   else if (actualPageUrl.includes(resultsPageUrl)) {
     showResults(actualPageUrl);
