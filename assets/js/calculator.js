@@ -467,7 +467,7 @@ function showSpeciesList() {
     }
   }
 
-  let specieNames = Object.keys(jasali.moleculesDict);
+  let specieNames = Object.keys(moleculesDict);
   let NSinput = getNumberOfInput();
   console.log(NSinput)
   for (let i = 0; i < NSinput; i++) {
