@@ -1,4 +1,5 @@
-var NSinput = 10;
+
+var NSinput = getNumberOfInput();
 
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
@@ -15,11 +16,11 @@ var P_id = "P";
 var select_str = "Select";
 var inputContainer_id = "inputContainer";
 
-
-var inputContainer = document.getElementById(inputContainer_id);
-var count = inputContainer.getElementsByTagName('div').length;
-alert(count);
-
+function getNumberOfInput() {
+  let inputContainer = document.getElementById(inputContainer_id);
+  let Ndiv = inputContainer.getElementsByTagName('div').length;
+  return (Ndiv % 2) - 2
+}
 
 function readComposition() {
   const composition = {};
@@ -486,8 +487,7 @@ window.onload = function updatePage() {
   if (actualPageUrl.includes(webAppPageUrl)) {
     showSpeciesList();
   }
-  else if (actualPageUrl.includes(resultsPageUrl))
-  {
+  else if (actualPageUrl.includes(resultsPageUrl)) {
     showResults(actualPageUrl);
   }
 }
