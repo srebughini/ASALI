@@ -3,7 +3,7 @@ permalink: /pages/webapp/
 ---
 
 
-<div class="container">
+<div class="container" id="inputContainer">
     <h2 class="text-center"><b>Operating conditions</b></h2>
     <p class="text-left">Insert gas mixture <b>temperature</b> <i class="fa-regular fa-temperature-three-quarters"></i> and <b>pressure</b> <i class="fa-regular fa-gauge"></i> conditions:</p>
     <div class="form-group">

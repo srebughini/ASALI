@@ -12,7 +12,14 @@ var name_id_prefix = "n";
 var value_id_prefix = "x";
 var T_id = "T";
 var P_id = "P";
-var Select_str = "Select";
+var select_str = "Select";
+var inputContainer_id = "inputContainer";
+
+
+var inputContainer = document.getElementById(inputContainer_id);
+var count = container_div.getElementsByTagName('div').length;
+alert(count);
+
 
 function readComposition() {
   const composition = {};
@@ -20,7 +27,7 @@ function readComposition() {
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
 
-    if (!value_obj.value.includes(Select_str)) {
+    if (!value_obj.value.includes(select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
       let name = select_obj.options[select_obj.selectedIndex].value.toString();
       if (!isNaN(value)) {
