@@ -33,13 +33,13 @@ permalink: /pages/webapp/
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
         </div>
     </div>
+    <!--
     <div class="form-group">
         <div class="input-group">
                 <span class="input-group-addon text-center" id="n2-addon"><i class="fa-regular fa-atom"></i></span> 
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n2-addon" id="n2">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n2-addon" id="n2">-->
                 <span class="input-group-addon text-center" id="x2-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x2-addon" id="x2" min="0" max="1">
         </div>
@@ -50,7 +50,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n3-addon" id="n3">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n3-addon" id="n3">-->
                 <span class="input-group-addon text-center" id="x3-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x3-addon" id="x3" min="0" max="1">
         </div>
@@ -61,7 +60,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n4-addon" id="n4">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n4-addon" id="n4">-->
                 <span class="input-group-addon text-center" id="x4-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x4-addon" id="x4" min="0" max="1">
         </div>
@@ -72,7 +70,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n5-addon" id="n5">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n5-addon" id="n5">-->
                 <span class="input-group-addon text-center" id="x5-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x5-addon" id="x5" min="0" max="1">
         </div>
@@ -83,7 +80,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n6-addon" id="n6">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n6-addon" id="n6">-->
                 <span class="input-group-addon text-center" id="x6-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x6-addon" id="x6" min="0" max="1">
         </div>
@@ -94,7 +90,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n7-addon" id="n7">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n7-addon" id="n7">-->
                 <span class="input-group-addon text-center" id="x7-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x7-addon" id="x7" min="0" max="1">
         </div>
@@ -105,7 +100,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n8-addon" id="n8">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n8-addon" id="n8">-->
                 <span class="input-group-addon text-center" id="x8-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x8-addon" id="x8" min="0" max="1">
         </div>
@@ -116,7 +110,6 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n9-addon" id="n9">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n9-addon" id="n9">-->
                 <span class="input-group-addon text-center" id="x9-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x9-addon" id="x9" min="0" max="1">
         </div>
@@ -127,14 +120,15 @@ permalink: /pages/webapp/
                 <select style="min-width:100%;width:50px;" class="form-control text-left" aria-describedby="n10-addon" id="n10">
                     <option value="">Select...</option>
                 </select>
-                <!--<input type="text" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="H2" aria-describedby="n10-addon" id="n10">-->
                 <span class="input-group-addon text-center" id="x10-addon"><i class="fa-regular fa-chart-pie"></i></span> 
                 <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x10-addon" id="x10" min="0" max="1">
         </div>
     </div>
+    -->
 </div>
 
 <div class="container">
     <p class="text-center"><button class="btn btn-primary btn-lg" onclick="runWebApp();"><i class="fa-regular fa-power-off"></i>&nbsp;&nbsp;&nbsp;&nbsp;Run</button></p>
+    <p class="text-center"><button class="btn btn-primary btn-lg" onclick="addInputSpecie();"><i class="fa-regular fa-circle-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add</button></p>
 </div>
 

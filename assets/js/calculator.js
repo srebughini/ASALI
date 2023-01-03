@@ -257,6 +257,12 @@ function runWebApp() {
   }
 }
 
+function addInputSpecie() {
+  let actualNSinput = getNumberOfInput();
+  let newId = actualNSinput + 1;
+  console.log(newId);
+}
+
 function showResults(destinationPageUrl) {
   // Get mixture properties from LocalStorage
   let results = JSON.parse(localStorage.getItem(webAppResults));
@@ -276,6 +282,7 @@ function showResults(destinationPageUrl) {
 }
 
 function showSpeciesList() {
+  // - TODO: Try to get moleculesDict directly from JASALI
   let moleculesDict = {
     "AR": {
       elementsSymbol: ["Ar"],
@@ -469,9 +476,7 @@ function showSpeciesList() {
 
   let specieNames = Object.keys(moleculesDict);
   let NSinput = getNumberOfInput();
-  console.log(NSinput)
   for (let i = 0; i < NSinput; i++) {
-    console.log(i);
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     for (let j = 0; j < specieNames.length; j++) {
       let opt = document.createElement('option');
