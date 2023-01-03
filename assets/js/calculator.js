@@ -1,6 +1,3 @@
-
-var NSinput = getNumberOfInput();
-
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
@@ -24,6 +21,7 @@ function getNumberOfInput() {
 
 function readComposition() {
   const composition = {};
+  let NSinput = getNumberOfInput();
   for (let i = 0; i < NSinput; i++) {
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
@@ -470,7 +468,7 @@ function showSpeciesList() {
   }
 
   let specieNames = Object.keys(moleculesDict);
-
+  let NSinput = getNumberOfInput();
   for (let i = 0; i < NSinput; i++) {
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     for (let j = 0; j < specieNames.length; j++) {
