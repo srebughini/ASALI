@@ -1,66 +1,72 @@
-
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  padding-top: $navbar-height + $navbar-margin-bottom;
+  margin-bottom: 46px;
+}
+
+.navbar-brand {
+  img {
+    margin: -$navbar-padding-vertical 0;
+    height: $navbar-height;
+    padding: 10px 0;
   }
-  body {
-    padding-top: $navbar-height + $navbar-margin-bottom;
-    margin-bottom: 46px;
-  }
-  
-  .navbar-brand{
-    img{
-      margin: -$navbar-padding-vertical 0;
-      height: $navbar-height;
-      padding: 10px 0;
-    }
-  }
-  
-  
-  .header-container {
-    background-color: #DCE6F2;
-    background: linear-gradient(rgba(220, 230, 242, 0.5), rgba(220, 230, 242, 0.5)), url('../img/bg.jpg') no-repeat 50% 0;
+}
+
+
+.header-container {
+  background-color: #DCE6F2;
+  background: linear-gradient(rgba(220, 230, 242, 0.5), rgba(220, 230, 242, 0.5)), url('../img/bg.png') no-repeat 50% 0;
+  color: #10253F;
+
+  h1 {
     color: #10253F;
-  
-    h1 {
-      color: #10253F;
-    }
-    h2 {
-      color: #10253F;
-    }
-    // background-attachment: fixed;
-    background-size: cover;
-    background-position: center 36%;
-    margin-top: -37px;
   }
-  .navbar-container {
-    font-size: 16px;
+
+  h2 {
+    color: #10253F;
   }
-  .page-content {
-    padding-bottom: 20px;
+
+  // background-attachment: fixed;
+  background-size: cover;
+  background-position: center 36%;
+  margin-top: -37px;
+}
+
+.navbar-container {
+  font-size: 16px;
+}
+
+.page-content {
+  padding-bottom: 20px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-top: 10px;
+  background-color: $gray-lighter;
+  color: $gray-dark;
+}
+
+.post-list-container {
+  li a.active {
+    font-weight: bold;
   }
-  .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;    
-    padding-top: 10px;
-    background-color: $gray-lighter;
-    color: $gray-dark;
-  }
-  
-  .post-list-container {
-    li a.active {
-      font-weight: bold;
-    }
-  }
-  *[id]:before {
-    display: block;
-    content: " ";
-    margin-top: -75px;
-    height: 75px;
-    visibility: hidden;
-  }
-  .navbar-form .has-feedback .form-control-feedback{
-    top:10px
-  }
-  
+}
+
+*[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -75px;
+  height: 75px;
+  visibility: hidden;
+}
+
+.navbar-form .has-feedback .form-control-feedback {
+  top: 10px
+}
