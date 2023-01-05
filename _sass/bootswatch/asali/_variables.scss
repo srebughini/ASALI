@@ -155,9 +155,15 @@ $btn-primary-color: $btn-default-color !default;
 $btn-primary-bg: $brand-primary !default;
 $btn-primary-border: $btn-primary-bg !default;
 
-$btn-success-color: $brand-primary; //$btn-default-color !default;
-$btn-success-bg: #FFFFFF; //$brand-success !default;
-$btn-success-border: #FFFFFF; //$btn-success-bg !default;
+$btn-success-color: $btn-default-color !default;
+$btn-success-bg: $brand-primary !default;
+$btn-success-border: #DCE6F2; //$btn-default-color !default;
+
+/*
+$btn-success-color: $btn-default-color !default;
+$btn-success-bg: $brand-success !default;
+$btn-success-border: $btn-success-bg !default;
+*/
 
 $btn-info-color: $btn-default-color !default;
 $btn-info-bg: $brand-info !default;
