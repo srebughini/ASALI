@@ -19,15 +19,15 @@ body {
 
 .header-container {
   background-color: #DCE6F2;
-  background: linear-gradient(rgba(220, 230, 242, 0.5), rgba(220, 230, 242, 0.5)), url('../img/bg.png') no-repeat 50% 0;
+  background: url('../img/bg.png') no-repeat 50% 0; //linear-gradient(rgba(220, 230, 242, 0.5), rgba(220, 230, 242, 0.5)), url('../img/bg.png') no-repeat 50% 0;
   color: #10253F;
 
   h1 {
-    color: #10253F;
+    color: #DCE6F2; //#10253F;
   }
 
   h2 {
-    color: #10253F;
+    color: #DCE6F2; //#10253F;
   }
 
   // background-attachment: fixed;
