@@ -46,7 +46,7 @@ function getSpeciesList() {
    * Get the list of species present in JASALI
    */
   // - TODO: Try to get moleculesDict directly from JASALI
-  /*let moleculesDict = {
+  let moleculesDict = {
     "AR": {
       elementsSymbol: ["Ar"],
       numberOfAtoms: [1]
@@ -235,11 +235,9 @@ function getSpeciesList() {
       elementsSymbol: ["H", "C"],
       numberOfAtoms: [6, 2]
     }
-  }*/
+  }
 
-  //Generate molecule object object
-  let molecule = jasali.MoleculeComposition();
-  return Object.keys(molecule.getAvailableSpecies());
+  return Object.keys(moleculesDict);
 }
 
 function addSpeciesListToSingleInput(input_counter, specieNames) {
