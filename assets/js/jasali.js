@@ -83652,9 +83652,21 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
+      Object.defineProperty(exports, "Fractions", {
+        enumerable: true,
+        get: function () {
+          return _utils.Fractions;
+        }
+      });
       exports.GasMixture = GasMixture;
       exports.GasSpecie = GasSpecie;
       exports.GasState = GasState;
+      Object.defineProperty(exports, "Molecule", {
+        enumerable: true,
+        get: function () {
+          return _molecule.Molecule;
+        }
+      });
       var _thermo2 = _interopRequireDefault(require("./thermo.js"));
       var _transport2 = _interopRequireDefault(require("./transport.js"));
       var _omega = require("./omega.js");
@@ -84074,7 +84086,7 @@
           }
         }
         for (let i = 0; i < _numberOfSpecies; i++) {
-          let molecule = (0, _molecule.MoleculeComposition)(_speciesName[i]);
+          let molecule = (0, _molecule.Molecule)(_speciesName[i]);
           _elementsCompositionDictionary[_speciesName[i]] = molecule.getElementCounterDict();
           _elementsSymbolList = _elementsSymbolList.concat(molecule.getElementsSymbol()).filter(_utils.UniqueArray);
         }
@@ -84515,7 +84527,7 @@
       Object.defineProperty(exports, "__esModule", {
         value: true
       });
-      exports.MoleculeComposition = MoleculeComposition;
+      exports.Molecule = Molecule;
       var _utils = require("./utils.js");
       var _elements = _interopRequireDefault(require("@chemistry/elements"));
       function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -84709,7 +84721,7 @@
           numberOfAtoms: [6, 2]
         }
       };
-      function MoleculeComposition(gasSpecieName) {
+      function Molecule(gasSpecieName) {
         let _moleculeDict = undefined;
         let _numberOfElements = undefined;
         if (gasSpecieName != undefined) {

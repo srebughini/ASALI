@@ -237,7 +237,9 @@ function getSpeciesList() {
     }
   }
 
-  return Object.keys(moleculesDict);
+  let molecule = jasali.Molecule();
+
+  return Object.keys(molecule.getAvailableSpecies());
 }
 
 function addSpeciesListToSingleInput(input_counter, specieNames) {
