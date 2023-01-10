@@ -239,7 +239,7 @@ function getSpeciesList() {
 
   let molecule = jasali.Molecule();
 
-  return Object.keys(molecule.getAvailableSpecies());
+  return molecule.getAvailableSpecies();
 }
 
 function addSpeciesListToSingleInput(input_counter, specieNames) {
