@@ -249,7 +249,6 @@ mod asali {
             self.x_.clone()
         }
 
-
         fn species_viscosity_(&mut self) {
             let mut Tr: f64;
             let mut dr: f64;
@@ -287,6 +286,10 @@ mod asali {
         pub fn get_density(&mut self) -> f64 {
             self.density_();
             self.rho_
+        }
+
+        pub fn get_mixture_molecular_weight(&self) -> f64 {
+            self.MWmix_
         }
 
         fn resize(&mut self, NC: i32) {
