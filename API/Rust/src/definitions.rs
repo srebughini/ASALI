@@ -1,5 +1,5 @@
 mod definitions {
-    #[derive(Default)]
+    #[derive(Debug, Clone)]
     pub struct Transport {
         nome: String,
         geometry: f32,
@@ -8,17 +8,43 @@ mod definitions {
         dipole: f32,
         polar: f32,
         collision: f32,
-        mw: f32,
+        mw: f32
     }
 
-    #[derive(Default)]
+    impl Default for Transport {
+        fn default() -> Self {
+            Transport {
+                nome: String::new(),
+                geometry: 0.0,
+                ljpotential: 0.0,
+                ljdiameter: 0.0,
+                dipole: 0.0,
+                polar: 0.0,
+                collision: 0.0,
+                mw: 0.0
+            }
+        }
+    }
+
+    #[derive(Debug, Clone)]
     pub struct Thermo {
         nome: String,
         high: [f32; 7],
         low: [f32; 7],
     }
 
-    #[derive(Default)]
+
+    impl Default for Thermo {
+        fn default() -> Self {
+            Thermo {
+                nome: String::new(),
+                high: [0.0; 7],
+                low: [0.0; 7]
+            }
+        }
+    }
+
+    #[derive(Debug)]
     pub struct Definitions {
         pub transport_: [Transport; 483],
         pub thermo_: [Thermo; 483],
@@ -29,5 +55,36 @@ mod definitions {
         pub tsigma11_: [f32; 37],
         pub sigmaMatrix11_: [[f32; 8]; 37],
     }
-}
 
+    impl Default for Definitions {
+        fn default() -> Self {
+            Definitions {
+                transport_: [Transport::default(); 483],
+                thermo_: [Thermo::default(); 483],
+                dsigma22_: [0.0; 8],
+                tsigma22_: [0.0; 37],
+                sigmaMatrix22_: [[0.0; 8]; 37],
+                dsigma11_: [0.0; 8],
+                tsigma11_: [0.0; 37],
+                sigmaMatrix11_: [[0.0; 8]; 37],
+            }
+        }
+    }
+
+    impl Clone for Definitions {
+        fn clone(&self) -> Self {
+            Definitions {
+                transport_: self.transport_.iter().map(|t| t.clone()).collect::<Vec<_>>().try_into().unwrap(),
+                thermo_: self.thermo_.iter().map(|t| t.clone()).collect::<Vec<_>>().try_into().unwrap(),
+                dsigma22_: self.dsigma22_.clone(),
+                tsigma22_: self.tsigma22_.clone(),
+                sigmaMatrix22_: self.sigmaMatrix22_.clone(),
+                dsigma11_: self.dsigma11_.clone(),
+                tsigma11_: self.tsigma11_.clone(),
+                sigmaMatrix11_: self.sigmaMatrix11_.clone(),
+            }
+        }
+    }
+    
+    
+}

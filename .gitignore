@@ -12,6 +12,8 @@ API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/*.mod
 API/Java/*.class
+API/Rust/Cargo.lock
+API/Rust/target*
 API/elapsedTimeComparison/*.mod
 API/elapsedTimeComparison/asali-*
 API/elapsedTimeComparison/*.class
