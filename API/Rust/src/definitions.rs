@@ -44,7 +44,7 @@ mod definitions {
         }
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone)]
     pub struct Definitions {
         pub transport_: [Transport; 483],
         pub thermo_: [Thermo; 483],
@@ -70,21 +70,4 @@ mod definitions {
             }
         }
     }
-
-    impl Clone for Definitions {
-        fn clone(&self) -> Self {
-            Definitions {
-                transport_: self.transport_.iter().map(|t| t.clone()).collect::<Vec<_>>().try_into().unwrap(),
-                thermo_: self.thermo_.iter().map(|t| t.clone()).collect::<Vec<_>>().try_into().unwrap(),
-                dsigma22_: self.dsigma22_.clone(),
-                tsigma22_: self.tsigma22_.clone(),
-                sigmaMatrix22_: self.sigmaMatrix22_.clone(),
-                dsigma11_: self.dsigma11_.clone(),
-                tsigma11_: self.tsigma11_.clone(),
-                sigmaMatrix11_: self.sigmaMatrix11_.clone(),
-            }
-        }
-    }
-    
-    
 }
