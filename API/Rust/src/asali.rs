@@ -1,72 +1,110 @@
-use definitions::Definitions;
+//mod definitions;
 use crate::omega::omega_update;
 use crate::thermo::thermo_update;
 use crate::transport::transport_update;
-use std::process::exit;
+//use std::process::exit;
 
-mod asali {
-    pub struct Asali {
-        pub(crate) T_: f64,
-        pub(crate) P_: f64,
-        pub(crate) MWmix_: f64,
-        pub(crate) rho_: f64,
-        pub(crate) mu_mix_: f64,
-        pub(crate) cond_mix_: f64,
-        pub(crate) cpmole_mix_: f64,
-        pub(crate) cpmass_mix_: f64,
-        pub(crate) hmole_mix_: f64,
-        pub(crate) hmass_mix_: f64,
-        pub(crate) smole_mix_: f64,
-        pub(crate) smass_mix_: f64,
-        pub(crate) pi_: f64,
-        pub(crate) MW_: Vec<f64>,
-        pub(crate) x_: Vec<f64>,
-        pub(crate) y_: Vec<f64>,
-        pub(crate) mu_: Vec<f64>,
-        pub(crate) diff_: Vec<Vec<f64>>,
-        pub(crate) cpmole_: Vec<f64>,
-        pub(crate) cpmass_: Vec<f64>,
-        pub(crate) hmole_: Vec<f64>,
-        pub(crate) hmass_: Vec<f64>,
-        pub(crate) smole_: Vec<f64>,
-        pub(crate) smass_: Vec<f64>,
-        pub(crate) cond_: Vec<f64>,
-        pub(crate) diff_mix_: Vec<f64>,
-        pub(crate) v_: Vec<f64>,
-        pub(crate) l_: Vec<f64>,
-        pub(crate) NC_: i32,
-        pub(crate) index_: Vec<usize>,
-        pub(crate) name_: Vec<String>,
-        pub(crate) error_: String,
-        pub(crate) mu_update_: bool,
-        pub(crate) diff_update_: bool,
-        pub(crate) rho_update_: bool,
-        pub(crate) cp_update_: bool,
-        pub(crate) h_update_: bool,
-        pub(crate) s_update_: bool,
-        pub(crate) cond_update_: bool,
-        pub(crate) v_update_: bool,
-        pub(crate) l_update_: bool,
-        pub(crate) mu_mix_update_: bool,
-        pub(crate) diff_mix_update_: bool,
-        pub(crate) cond_mix_update_: bool,
-        pub(crate) cpmole_mix_update_: bool,
-        pub(crate) cpmass_mix_update_: bool,
-        pub(crate) hmole_mix_update_: bool,
-        pub(crate) hmass_mix_update_: bool,
-        pub(crate) smole_mix_update_: bool,
-        pub(crate) definitions_: Definitions,
-    }
+use crate::definitions::Transport;
+use crate::definitions::Thermo;
+use crate::definitions::Omega;
 
-    impl Asali {
-        pub fn new() -> Self {
-            let mut definitions = Definitions::default();
-            omega_update(&mut definitions);
-            transport_update(&mut definitions);
-            thermo_update(&mut definitions);
-            Self { definitions_: definitions }
+
+pub struct Asali {
+    /*
+    pub(crate) T_: f64,
+    pub(crate) P_: f64,
+    pub(crate) MWmix_: f64,
+    pub(crate) rho_: f64,
+    pub(crate) mu_mix_: f64,
+    pub(crate) cond_mix_: f64,
+    pub(crate) cpmole_mix_: f64,
+    pub(crate) cpmass_mix_: f64,
+    pub(crate) hmole_mix_: f64,
+    pub(crate) hmass_mix_: f64,
+    pub(crate) smole_mix_: f64,
+    pub(crate) smass_mix_: f64,
+    pub(crate) pi_: f64,
+    pub(crate) MW_: Vec<f64>,
+    pub(crate) x_: Vec<f64>,
+    pub(crate) y_: Vec<f64>,
+    pub(crate) mu_: Vec<f64>,
+    pub(crate) diff_: Vec<Vec<f64>>,
+    pub(crate) cpmole_: Vec<f64>,
+    pub(crate) cpmass_: Vec<f64>,
+    pub(crate) hmole_: Vec<f64>,
+    pub(crate) hmass_: Vec<f64>,
+    pub(crate) smole_: Vec<f64>,
+    pub(crate) smass_: Vec<f64>,
+    pub(crate) cond_: Vec<f64>,
+    pub(crate) diff_mix_: Vec<f64>,
+    pub(crate) v_: Vec<f64>,
+    pub(crate) l_: Vec<f64>,
+    pub(crate) NC_: i32,
+    pub(crate) index_: Vec<usize>,
+    pub(crate) name_: Vec<String>,
+    pub(crate) error_: String,
+    pub(crate) mu_update_: bool,
+    pub(crate) diff_update_: bool,
+    pub(crate) rho_update_: bool,
+    pub(crate) cp_update_: bool,
+    pub(crate) h_update_: bool,
+    pub(crate) s_update_: bool,
+    pub(crate) cond_update_: bool,
+    pub(crate) v_update_: bool,
+    pub(crate) l_update_: bool,
+    pub(crate) mu_mix_update_: bool,
+    pub(crate) diff_mix_update_: bool,
+    pub(crate) cond_mix_update_: bool,
+    pub(crate) cpmole_mix_update_: bool,
+    pub(crate) cpmass_mix_update_: bool,
+    pub(crate) hmole_mix_update_: bool,
+    pub(crate) hmass_mix_update_: bool,
+    pub(crate) smole_mix_update_: bool,
+    */
+    transport_: Vec<Transport>,
+    thermo_: Vec<Thermo>,
+    omega_: Vec<Omega>
+}
+
+impl Asali{
+    pub fn new() -> Asali {
+        let mut transport = Vec::<Transport>::new();
+        transport_update(&mut transport);
+
+        let mut thermo = Vec::<Thermo>::new();
+        thermo_update(&mut thermo);
+
+        let mut omega = Vec::<Omega>::new();
+        omega_update(&mut omega);
+
+        Asali {
+            transport_: transport,
+            thermo_: thermo,
+            omega_: omega
         }
+    }
+}
 
+/*
+impl Asali {
+    pub fn new() -> Self {
+        let transport = Vec<Transport>;
+        transport_update(&mut transport);
+
+        let thermo = Vec<Thermo>;
+        thermo_update(&mut thermo);
+
+
+        let omega = Vec<Omega>;
+        omega_update(&mut omega);
+
+        Self { transport_: transport,
+                thermo_: thermo, 
+            omega_: omega }
+    }
+}*/
+
+        /*
         pub fn set_temperature(&mut self, T: f64) {
             if T != self.T_ {
                 self.T_ = T;
@@ -316,6 +354,4 @@ mod asali {
             self.l_.resize(NC as usize, 0.0);
             self.NC_ = NC;
         }
-    }
-}
-
+    }*/
