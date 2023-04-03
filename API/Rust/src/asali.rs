@@ -8,9 +8,9 @@ use crate::definitions::Omega;
 
 
 pub struct Asali {
+    T_: f64,
+    P_: f64,
     /*
-    pub(crate) T_: f64,
-    pub(crate) P_: f64,
     pub(crate) MWmix_: f64,
     pub(crate) rho_: f64,
     pub(crate) mu_mix_: f64,
@@ -76,6 +76,8 @@ impl Asali{
         omega_update(&mut omega);
 
         Asali {
+            T_: 0.0,
+            P_: 0.0,
             mu_update_: false,
             diff_update_: false,
             rho_update_: false,
