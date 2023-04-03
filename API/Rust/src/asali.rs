@@ -1,8 +1,6 @@
-//mod definitions;
 use crate::omega::omega_update;
 use crate::thermo::thermo_update;
 use crate::transport::transport_update;
-//use std::process::exit;
 
 use crate::definitions::Transport;
 use crate::definitions::Thermo;
@@ -43,24 +41,24 @@ pub struct Asali {
     pub(crate) index_: Vec<usize>,
     pub(crate) name_: Vec<String>,
     pub(crate) error_: String,
-    pub(crate) mu_update_: bool,
-    pub(crate) diff_update_: bool,
-    pub(crate) rho_update_: bool,
-    pub(crate) cp_update_: bool,
-    pub(crate) h_update_: bool,
-    pub(crate) s_update_: bool,
-    pub(crate) cond_update_: bool,
-    pub(crate) v_update_: bool,
-    pub(crate) l_update_: bool,
-    pub(crate) mu_mix_update_: bool,
-    pub(crate) diff_mix_update_: bool,
-    pub(crate) cond_mix_update_: bool,
-    pub(crate) cpmole_mix_update_: bool,
-    pub(crate) cpmass_mix_update_: bool,
-    pub(crate) hmole_mix_update_: bool,
-    pub(crate) hmass_mix_update_: bool,
-    pub(crate) smole_mix_update_: bool,
     */
+    mu_update_: bool,
+    diff_update_: bool,
+    rho_update_: bool,
+    cp_update_: bool,
+    h_update_: bool,
+    s_update_: bool,
+    cond_update_: bool,
+    v_update_: bool,
+    l_update_: bool,
+    mu_mix_update_: bool,
+    diff_mix_update_: bool,
+    cond_mix_update_: bool,
+    cpmole_mix_update_: bool,
+    cpmass_mix_update_: bool,
+    hmole_mix_update_: bool,
+    hmass_mix_update_: bool,
+    smole_mix_update_: bool,
     transport_: Vec<Transport>,
     thermo_: Vec<Thermo>,
     omega_: Vec<Omega>
@@ -78,78 +76,89 @@ impl Asali{
         omega_update(&mut omega);
 
         Asali {
+            mu_update_: false,
+            diff_update_: false,
+            rho_update_: false,
+            cp_update_: false,
+            h_update_: false,
+            s_update_: false,
+            cond_update_: false,
+            v_update_: false,
+            l_update_: false,
+            mu_mix_update_: false,
+            diff_mix_update_: false,
+            cond_mix_update_: false,
+            cpmole_mix_update_: false,
+            cpmass_mix_update_: false,
+            hmole_mix_update_: false,
+            hmass_mix_update_: false,
+            smole_mix_update_: false,
             transport_: transport,
             thermo_: thermo,
             omega_: omega
         }
     }
+    
+    pub fn set_temperature(&mut self, T: f64) {
+        if T != self.T_ {
+            self.T_ = T;
+            self.mu_update_ = false;
+            self.diff_update_ = false;
+            self.rho_update_ = false;
+            self.cp_update_ = false;
+            self.h_update_ = false;
+            self.s_update_ = false;
+            self.cond_update_ = false;
+            self.v_update_ = false;
+            self.l_update_ = false;
+            self.mu_mix_update_ = false;
+            self.diff_mix_update_ = false;
+            self.cond_mix_update_ = false;
+            self.cpmole_mix_update_ = false;
+            self.cpmass_mix_update_ = false;
+            self.hmole_mix_update_ = false;
+            self.hmass_mix_update_ = false;
+            self.smole_mix_update_ = false;
+        }
+    }
+
+    pub fn get_temperature(&self) -> f64 {
+        self.T_
+    }
+
+    pub fn set_pressure(&mut self, P: f64) {
+        if P != self.P_ {
+            self.P_ = P;
+            self.mu_update_ = false;
+            self.diff_update_ = false;
+            self.rho_update_ = false;
+            self.cp_update_ = false;
+            self.h_update_ = false;
+            self.s_update_ = false;
+            self.cond_update_ = false;
+            self.v_update_ = false;
+            self.l_update_ = false;
+            self.mu_mix_update_ = false;
+            self.diff_mix_update_ = false;
+            self.cond_mix_update_ = false;
+            self.cpmole_mix_update_ = false;
+            self.cpmass_mix_update_ = false;
+            self.hmole_mix_update_ = false;
+            self.hmass_mix_update_ = false;
+            self.smole_mix_update_ = false;
+        }
+    }
+
+    pub fn get_pressure(&self) -> f64 {
+        self.P_
+    }
 }
 
-/*
-impl Asali {
-    pub fn new() -> Self {
-        let transport = Vec<Transport>;
-        transport_update(&mut transport);
-
-        let thermo = Vec<Thermo>;
-        thermo_update(&mut thermo);
 
 
-        let omega = Vec<Omega>;
-        omega_update(&mut omega);
-
-        Self { transport_: transport,
-                thermo_: thermo, 
-            omega_: omega }
-    }
-}*/
 
         /*
-        pub fn set_temperature(&mut self, T: f64) {
-            if T != self.T_ {
-                self.T_ = T;
-                self.mu_update_ = false;
-                self.diff_update_ = false;
-                self.rho_update_ = false;
-                self.cp_update_ = false;
-                self.h_update_ = false;
-                self.s_update_ = false;
-                self.cond_update_ = false;
-                self.v_update_ = false;
-                self.l_update_ = false;
-                self.mu_mix_update_ = false;
-                self.diff_mix_update_ = false;
-                self.cond_mix_update_ = false;
-                self.cpmole_mix_update_ = false;
-                self.cpmass_mix_update_ = false;
-                self.hmole_mix_update_ = false;
-                self.hmass_mix_update_ = false;
-                self.smole_mix_update_ = false;
-            }
-        }
 
-        pub fn set_pressure(&mut self, P: f64) {
-            if P != self.P_ {
-                self.P_ = P;
-                self.mu_update_ = false;
-                self.diff_update_ = false;
-                self.rho_update_ = false;
-                self.cp_update_ = false;
-                self.h_update_ = false;
-                self.s_update_ = false;
-                self.cond_update_ = false;
-                self.v_update_ = false;
-                self.l_update_ = false;
-                self.mu_mix_update_ = false;
-                self.diff_mix_update_ = false;
-                self.cond_mix_update_ = false;
-                self.cpmole_mix_update_ = false;
-                self.cpmass_mix_update_ = false;
-                self.hmole_mix_update_ = false;
-                self.hmass_mix_update_ = false;
-                self.smole_mix_update_ = false;
-            }
-        }
 
         pub fn set_number_of_species(&mut self, NC: i32) {
             if NC != self.NC_ {
