@@ -190,6 +190,37 @@ impl Asali{
         self.NC_;
     }
 
+    pub fn set_species_names(&mut self, names: Vec<String>) {
+        if names == self.name_ {
+            if names.len() == self.NC_ as usize {
+                for j in 0..self.NC_ as usize {
+                    self.index_[j] = usize::MAX;
+                    self.name_[j] = names[j].to_string();
+                    for i in 0..self.transport_.len() {
+                        if self.name_[j].trim() == self.transport_[i].name.trim() {
+                            self.index_[j] = i;
+                            self.MW_[j] = self.transport_[i].mw;
+                            break;
+                        }
+                    }
+                    if self.index_[j] == usize::MAX {
+                        let error = format!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
+                        println!(error);
+                        exit(-1);
+                    }
+                }
+            } else {
+                println!("ASALI::ERROR-->Wrong number of species names");
+                exit(-1);
+            }
+            self.reset_bool();
+        }
+    }
+
+    pub fn get_species_names(&self) -> Vec<String> {
+        self.name_;
+    }
+
     fn resize(&mut self, NC: i32) {
         self.x_.resize(NC as usize, 0.0);
         self.y_.resize(NC as usize, 0.0);
@@ -236,33 +267,6 @@ impl Asali{
 
 
         /*
-        pub fn set_species_names(&mut self, names: &[&str]) {
-            if names.iter().all(|&name| !self.name_.contains(&name.to_string())) {
-                if names.len() == self.NC_ as usize{
-                    for j in 0..self.NC_ as uszie {
-                        self.index_[j] = usize::MAX;
-                        self.name_[j] = names[j].to_string();
-                        for i in 0..self.definitions_.transport_.len() {
-                            if self.name_[j].trim() == self.definitions_.transport_[i].name.trim() {
-                                self.index_[j] = i;
-                                self.MW_[j] = self.definitions_.transport_[i].MW;
-                                break;
-                            }
-                        }
-                        if self.index_[j] == usize::MAX {
-                            let error = format!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
-                            println!(error);
-                            exit(-1);
-                        }
-                    }
-                } else {
-                    println!("ASALI::ERROR-->Wrong number of species names");
-                    exit(-1);
-                }
-                self.reset_bool();
-            }
-        }
-
         pub fn set_mass_fraction(&mut self, y: &[f64]) {
             if self.y_ != y {
                 self.y_ = y.to_owned();

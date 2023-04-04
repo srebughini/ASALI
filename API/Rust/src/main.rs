@@ -7,12 +7,23 @@ mod asali;
 
 fn main() {
     let mut asali = asali::Asali::new();
+    
     asali.set_temperature(393.15);
     println!("Temperature: {} K", asali.get_temperature());
+    
     asali.set_pressure(4.0e5);
     println!("Pressure: {} Pa", asali.get_pressure());
+    
     asali.set_number_of_species(3);
     println!("Number of species: {}", asali.get_number_of_species());
+    
+    asali.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()])
+    let names = asali.get_species_names()
+    for n in &names {
+        println!("{n}");
+    }
+    
+
     //asali.resize(3);
     
     //asali.set_mole_fraction(&[0.1, 0.2, 0.7]);
