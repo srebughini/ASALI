@@ -10,38 +10,34 @@ use crate::definitions::Omega;
 pub struct Asali {
     T_: f64,
     P_: f64,
-    /*
-    pub(crate) MWmix_: f64,
-    pub(crate) rho_: f64,
-    pub(crate) mu_mix_: f64,
-    pub(crate) cond_mix_: f64,
-    pub(crate) cpmole_mix_: f64,
-    pub(crate) cpmass_mix_: f64,
-    pub(crate) hmole_mix_: f64,
-    pub(crate) hmass_mix_: f64,
-    pub(crate) smole_mix_: f64,
-    pub(crate) smass_mix_: f64,
-    pub(crate) pi_: f64,
-    pub(crate) MW_: Vec<f64>,
-    pub(crate) x_: Vec<f64>,
-    pub(crate) y_: Vec<f64>,
-    pub(crate) mu_: Vec<f64>,
-    pub(crate) diff_: Vec<Vec<f64>>,
-    pub(crate) cpmole_: Vec<f64>,
-    pub(crate) cpmass_: Vec<f64>,
-    pub(crate) hmole_: Vec<f64>,
-    pub(crate) hmass_: Vec<f64>,
-    pub(crate) smole_: Vec<f64>,
-    pub(crate) smass_: Vec<f64>,
-    pub(crate) cond_: Vec<f64>,
-    pub(crate) diff_mix_: Vec<f64>,
-    pub(crate) v_: Vec<f64>,
-    pub(crate) l_: Vec<f64>,
-    pub(crate) NC_: i32,
-    pub(crate) index_: Vec<usize>,
-    pub(crate) name_: Vec<String>,
-    pub(crate) error_: String,
-    */
+    MWmix_: f64,
+    rho_: f64,
+    mu_mix_: f64,
+    cond_mix_: f64,
+    cpmole_mix_: f64,
+    cpmass_mix_: f64,
+    hmole_mix_: f64,
+    hmass_mix_: f64,
+    smole_mix_: f64,
+    smass_mix_: f64,
+    MW_: Vec<f64>,
+    x_: Vec<f64>,
+    y_: Vec<f64>,
+    mu_: Vec<f64>,
+    diff_: Vec<Vec<f64>>,
+    cpmole_: Vec<f64>,
+    cpmass_: Vec<f64>,
+    hmole_: Vec<f64>,
+    hmass_: Vec<f64>,
+    smole_: Vec<f64>,
+    smass_: Vec<f64>,
+    cond_: Vec<f64>,
+    diff_mix_: Vec<f64>,
+    v_: Vec<f64>,
+    l_: Vec<f64>,
+    NC_: i32,
+    index_: Vec<usize>,
+    name_: Vec<String>,
     mu_update_: bool,
     diff_update_: bool,
     rho_update_: bool,
@@ -78,6 +74,34 @@ impl Asali{
         Asali {
             T_: 0.0,
             P_: 0.0,
+            MWmix_: 0.0,
+            rho_: 0.0,
+            mu_mix_: 0.0,
+            cond_mix_: 0.0,
+            cpmole_mix_: 0.0,
+            cpmass_mix_: 0.0,
+            hmole_mix_: 0.0,
+            hmass_mix_: 0.0,
+            smole_mix_: 0.0,
+            smass_mix_: 0.0,
+            MW::_: Vec::<f64>::new(),
+            x_: Vec::<f64>::new(),
+            y_: Vec::<f64>::new(),
+            mu_: Vec::<f64>::new(),
+            diff_: Vec<Vec<::f64>>::new(),
+            cpmole_: Vec::<f64>::new(),
+            cpmass_: Vec::<f64>::new(),
+            hmole_: Vec::<f64>::new(),
+            hmass_: Vec::<f64>::new(),
+            smole_: Vec::<f64>::new(),
+            smass_: Vec::<f64>::new(),
+            cond_: Vec::<f64>::new(),
+            diff_mix_: Vec::<f64>::new(),
+            v_: Vec::<f64>::new(),
+            l_: Vec::<f64>::new(),
+            NC_: 0,
+            index_: Vec::<usize>::new(),
+            name_: Vec::<String>::new(),
             mu_update_: false,
             diff_update_: false,
             rho_update_: false,
@@ -154,24 +178,64 @@ impl Asali{
     pub fn get_pressure(&self) -> f64 {
         self.P_
     }
+
+    pub fn set_number_of_species(&mut self, NC: i32) {
+        if NC != self.NC_ {
+            self.NC_ = NC;
+            self.resize(NC);
+        }
+    }
+
+    pub fn get_number_of_species(&self) -> i32 {
+        self.NC_;
+    }
+
+    fn resize(&mut self, NC: i32) {
+        self.x_.resize(NC as usize, 0.0);
+        self.y_.resize(NC as usize, 0.0);
+        self.mu_.resize(NC as usize, 0.0);
+        self.diff_.resize(NC as usize, vec![0.0; NC as usize]);
+        self.cpmole_.resize(NC as usize, 0.0);
+        self.cpmass_.resize(NC as usize, 0.0);
+        self.hmole_.resize(NC as usize, 0.0);
+        self.hmass_.resize(NC as usize, 0.0);
+        self.smole_.resize(NC as usize, 0.0);
+        self.smass_.resize(NC as usize, 0.0);
+        self.cond_.resize(NC as usize, 0.0);
+        self.diff_mix_.resize(NC as usize, 0.0);
+        self.MW_.resize(NC as usize, 0.0);
+        self.index_.resize(NC as usize, usize::MAX);
+        self.name_.resize(NC as usize, String::new());
+        self.v_.resize(NC as usize, 0.0);
+        self.l_.resize(NC as usize, 0.0);
+        self.NC_ = NC;
+    }
+
+    fn reset_bool(&mu self) {
+        self.mu_update_ = false;
+        self.diff_update_ = false;
+        self.rho_update_ = false;
+        self.cp_update_ = false;
+        self.h_update_ = false;
+        self.s_update_ = false;
+        self.cond_update_ = false;
+        self.v_update_ = false;
+        self.l_update_ = false;
+        self.mu_mix_update_ = false;
+        self.diff_mix_update_ = false;
+        self.cond_mix_update_ = false;
+        self.cpmole_mix_update_ = false;
+        self.cpmass_mix_update_ = false;
+        self.hmole_mix_update_ = false;
+        self.hmass_mix_update_ = false;
+        self.smole_mix_update_ = false;
+    }
 }
 
 
 
 
         /*
-
-
-        pub fn set_number_of_species(&mut self, NC: i32) {
-            if NC != self.NC_ {
-                self.NC_ = NC;
-                self.resize(self.NC_);
-                transport_update(self.definitions_);
-                thermo_update(self.definitions_);
-                omega_update(self.definitions_);
-            }
-        }
-
         pub fn set_species_names(&mut self, names: &[&str]) {
             if names.iter().all(|&name| !self.name_.contains(&name.to_string())) {
                 if names.len() == self.NC_ as usize{
@@ -195,23 +259,7 @@ impl Asali{
                     println!("ASALI::ERROR-->Wrong number of species names");
                     exit(-1);
                 }
-                self.mu_update_ = false;
-                self.diff_update_ = false;
-                self.rho_update_ = false;
-                self.cp_update_ = false;
-                self.h_update_ = false;
-                self.s_update_ = false;
-                self.cond_update_ = false;
-                self.v_update_ = false;
-                self.l_update_ = false;
-                self.mu_mix_update_ = false;
-                self.diff_mix_update_ = false;
-                self.cond_mix_update_ = false;
-                self.cpmole_mix_update_ = false;
-                self.cpmass_mix_update_ = false;
-                self.hmole_mix_update_ = false;
-                self.hmass_mix_update_ = false;
-                self.smole_mix_update_ = false;
+                self.reset_bool();
             }
         }
 
