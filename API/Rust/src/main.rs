@@ -17,10 +17,10 @@ fn main() {
     asali.set_number_of_species(3);
     println!("Number of species: {}", asali.get_number_of_species());
     
-    asali.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()])
-    let names = asali.get_species_names()
+    asali.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()]);
+    let names = asali.get_species_names();
     for n in &names {
-        println!("{n}");
+        println!("fuori {}", n);
     }
     
 

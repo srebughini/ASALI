@@ -6,6 +6,8 @@ use crate::definitions::Transport;
 use crate::definitions::Thermo;
 use crate::definitions::Omega;
 
+use std::process::exit;
+
 
 pub struct Asali {
     T_: f64,
@@ -84,11 +86,11 @@ impl Asali{
             hmass_mix_: 0.0,
             smole_mix_: 0.0,
             smass_mix_: 0.0,
-            MW::_: Vec::<f64>::new(),
+            MW_: Vec::<f64>::new(),
             x_: Vec::<f64>::new(),
             y_: Vec::<f64>::new(),
             mu_: Vec::<f64>::new(),
-            diff_: Vec<Vec<::f64>>::new(),
+            diff_: Vec::<Vec::<f64>>::new(),
             cpmole_: Vec::<f64>::new(),
             cpmass_: Vec::<f64>::new(),
             hmole_: Vec::<f64>::new(),
@@ -187,38 +189,39 @@ impl Asali{
     }
 
     pub fn get_number_of_species(&self) -> i32 {
-        self.NC_;
+        self.NC_
     }
 
     pub fn set_species_names(&mut self, names: Vec<String>) {
-        if names == self.name_ {
-            if names.len() == self.NC_ as usize {
-                for j in 0..self.NC_ as usize {
-                    self.index_[j] = usize::MAX;
-                    self.name_[j] = names[j].to_string();
-                    for i in 0..self.transport_.len() {
-                        if self.name_[j].trim() == self.transport_[i].name.trim() {
-                            self.index_[j] = i;
-                            self.MW_[j] = self.transport_[i].mw;
-                            break;
-                        }
-                    }
-                    if self.index_[j] == usize::MAX {
-                        let error = format!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
-                        println!(error);
-                        exit(-1);
+        for n in &names {
+            println!("dentro {}", n);
+        }
+
+        if names.len() == self.NC_ as usize {
+            for j in 0..self.NC_ as usize {
+                self.index_[j] = usize::MAX;
+                self.name_[j] = names[j].to_string();
+                for i in 0..self.transport_.len() as usize {
+                    if self.name_[j].trim() == self.transport_[i].name.trim() {
+                        self.index_[j] = i;
+                        self.MW_[j] = self.transport_[i].mw;
+                        break;
                     }
                 }
-            } else {
-                println!("ASALI::ERROR-->Wrong number of species names");
-                exit(-1);
+                if self.index_[j] == usize::MAX {
+                    println!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
+                    exit(-1);
+                }
             }
-            self.reset_bool();
+        } else {
+            println!("ASALI::ERROR-->Wrong number of species names");
+            exit(-1);
         }
+        self.reset_bool();
     }
 
     pub fn get_species_names(&self) -> Vec<String> {
-        self.name_;
+        self.name_.clone()
     }
 
     fn resize(&mut self, NC: i32) {
@@ -242,7 +245,7 @@ impl Asali{
         self.NC_ = NC;
     }
 
-    fn reset_bool(&mu self) {
+    fn reset_bool(&mut self) {
         self.mu_update_ = false;
         self.diff_update_ = false;
         self.rho_update_ = false;
