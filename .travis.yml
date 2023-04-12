@@ -38,3 +38,8 @@ script: |
     cd GUI/Ubuntu
     ./build.sh -c
     ./build.sh --no-interaction
+    cd ..
+    cd API/Cpp
+    ./compile.sh
+    ./example
+    cd ..
