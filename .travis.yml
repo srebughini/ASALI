@@ -1,6 +1,9 @@
 language: cpp
 os: linux
 compiler: g++
+vm:
+  size: large
+
 sudo: required
 
 matrix:
