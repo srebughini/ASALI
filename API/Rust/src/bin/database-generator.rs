@@ -1,37 +1,37 @@
 use std::fs::File;
-use std::io::{Write, BufReader, BufRead, Error};
-use linecount::count_lines;
+use std::io::{ self, BufRead, BufReader };
+use std::process::exit;
 
-fn get_number_of_lines(transport_file_path: String) -> usize {
-    let input = File::open(transport_file_path)?;
-    let number_of_lines: usize = count_lines(input.unwrap()).unwrap();
-    number_of_lines;
+fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
+    // Open the file in read-only mode.
+    let file = File::open(filename).unwrap(); 
+    // Read the file line by line, and return an iterator of the lines of the file.
+    return io::BufReader::new(file).lines(); 
 }
 
-fn lines_from_file(path: String) -> Vec<String> {
-    let input = File::open(path)?;
-    let buffered = BufReader::new(input);
-    buffered.lines()
-        .map(|l| l.expect("Could not parse line"))
-        .collect();
+fn count_number_of_lines(filename: String) -> usize {
+    let lines = read_lines(filename);
+    return lines.count();
 }
 
 fn read_transport(path: String) -> Vec::<(String,i32,f64,f64,f64,f64,f64,f64)> {
-    let input = File::open(path)?;
-    let buffered = BufReader::new(input);
+    let lines = read_lines(path);
 
-    let allv = Vec::<(String,i32,f64,f64,f64,f64,f64,f64)>::new();
+    let mut allv = Vec::<(String,i32,f64,f64,f64,f64,f64,f64)>::new();
 
-    for line in buffered.lines() { 
-        let mut parts = line.split_whitespace();
+    // Iterate over the lines of the file, and in this case print them.
+    for line in lines {
+        let lineu = line.unwrap();
+        let mut parts = lineu.split_whitespace();
+        let n_parts = lineu.split_whitespace().count();
 
-        if parts.len() != 8
+        if n_parts != 8
         {
-            println!("\nASALI::ERROR --> database/transport.asali missing parameter in line:\n {}", line);
+            println!("\nASALI::ERROR --> database/transport.asali missing parameter in line:\n {}", lineu);
             exit(-1);
         }
 
-        let tuple = (
+        let element = (
             parts.next().unwrap().to_string(), //AC3H4
             parts.next().unwrap().parse::<i32>().unwrap(), //1 
             parts.next().unwrap().parse::<f64>().unwrap(), //252.000
@@ -42,30 +42,37 @@ fn read_transport(path: String) -> Vec::<(String,i32,f64,f64,f64,f64,f64,f64)> {
             parts.next().unwrap().parse::<f64>().unwrap(), //40.0648
         );
 
-        if tuple.1 > 2
+        if element.1 > 2
         {
-            println!("\nASALI::ERROR --> database/transport.asali second paramter should be || 0 || 1 || 2 || in line:\n {}", line);
+            println!("\nASALI::ERROR --> database/transport.asali second paramter should be || 0 || 1 || 2 || in line:\n {}", lineu);
             exit(-1);
         }
-
-        allv.push(tuple);
+        allv.push(element);
     }
-    allv;
+    return allv;
 }
 
+
 fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)> {
-    let allv = Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)>::new();
+    let mut allv = Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)>::new();
 
-    let lines = lines_from_file(path);
+    let mut lines = read_lines(path);
 
-    for i in 0..lines.len(){
-        j = NC*i
+    for i in 0..NC{
+        let mut line0 = lines.nth(4*i).unwrap();
+        let mut line1 = lines.nth(4*i+1);
+        let mut line2 = lines.nth(4*i+2);
+        let mut line3 = lines.nth(4*i+3);
 
-        let mut parts1 = lines[j+1].split_whitespace();
-        let mut parts2 = lines[j+2].split_whitespace();
-        let mut parts3 = lines[j+3].split_whitespace();
+        println!("{}", line0.unwrap());
 
-        let tuple = (lines[j],
+        /*
+
+        let mut parts1 = line1.unwrap().split_whitespace();
+        let mut parts2 = line2.unwrap().split_whitespace();
+        let mut parts3 = line3.unwrap().split_whitespace();
+
+        let element = (line0.unwrap(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
@@ -80,29 +87,23 @@ fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64
             parts3.next().unwrap().parse::<f64>().unwrap(),
             parts3.next().unwrap().parse::<f64>().unwrap(),
             parts3.next().unwrap().parse::<f64>().unwrap()
-        )
+        );
         
-        allv.push(tuple);
+        allv.push(element);*/
     }
-    allv;
+    return allv;
 }
 
-/*
-fn read_astar() -> Result<(), Error> {
-    let path = "../../database/astar.asali";
-    let input = File::open(path)?;
-    let buffered = BufReader::new(input);
+fn main() {
+    // Stores the iterator of lines of the file in lines variable.
+    let transport = read_transport("../database/transport.asali".to_string());
+    let NC = count_number_of_lines("../database/transport.asali".to_string());
+    let thermo = read_thermo("../database/thermo.asali".to_string(), NC);
+    println!("{}",NC);
 
-    for line in buffered.lines() {
-        println!("{}", line?);
-    }
-}
 
-*/
-fn main() -> Result<(), Error> {
-    let transport = read_transport("../../database/transport.asali".to_string());
+    /*
+    
     let NC = get_number_of_lines("../../database/transport.asali".to_string());
-    let thermo = read_thermo("../../database/thermo.asali".to_string(), NC)
-
-    Ok(())
+    let thermo = read_thermo("../../database/thermo.asali".to_string(), NC);*/
 }
