@@ -58,13 +58,14 @@ fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64
 
     let mut lines = read_lines(path);
 
-    for i in 0..NC{
-        let mut line0 = lines.nth(4*i).unwrap();
-        let mut line1 = lines.nth(4*i+1);
-        let mut line2 = lines.nth(4*i+2);
-        let mut line3 = lines.nth(4*i+3);
+    let lines_vector: Vec<String> = lines.collect::<Result<_, _>>().unwrap();
 
-        println!("{}", line0.unwrap());
+    for i in 0..NC as usize {
+        let mut line0 = &lines_vector[4*i];
+        let mut line1 = &lines_vector[4*i+1];
+
+        println!("{}, {}", line0, line1); //, line1.unwrap());
+        
 
         /*
 
