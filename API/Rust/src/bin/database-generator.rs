@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::{ self, BufRead, BufReader };
 use std::process::exit;
+use std::str::SplitWhitespace;
 
 fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     // Open the file in read-only mode.
@@ -52,28 +53,19 @@ fn read_transport(path: String) -> Vec::<(String,i32,f64,f64,f64,f64,f64,f64)> {
     return allv;
 }
 
-
 fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)> {
     let mut allv = Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)>::new();
 
-    let mut lines = read_lines(path);
-
+    let lines = read_lines(path);
     let lines_vector: Vec<String> = lines.collect::<Result<_, _>>().unwrap();
 
     for i in 0..NC as usize {
-        let mut line0 = &lines_vector[4*i];
-        let mut line1 = &lines_vector[4*i+1];
+        let line0 = &lines_vector[4*i];
+        let mut parts1 = lines_vector[4*i+1].split_whitespace();
+        let mut parts2 = lines_vector[4*i+2].split_whitespace();
+        let mut parts3 = lines_vector[4*i+3].split_whitespace();
 
-        println!("{}, {}", line0, line1); //, line1.unwrap());
-        
-
-        /*
-
-        let mut parts1 = line1.unwrap().split_whitespace();
-        let mut parts2 = line2.unwrap().split_whitespace();
-        let mut parts3 = line3.unwrap().split_whitespace();
-
-        let element = (line0.unwrap(),
+        let element = (line0.to_string(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
             parts1.next().unwrap().parse::<f64>().unwrap(),
@@ -90,21 +82,50 @@ fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64
             parts3.next().unwrap().parse::<f64>().unwrap()
         );
         
-        allv.push(element);*/
+        allv.push(element);
     }
     return allv;
 }
 
+fn read_matrix(path: String) -> (Vec<f64>, Vec<f64>, Vec<Vec<f64>>) {
+    let lines = read_lines(path);
+    let lines_vector: Vec<String> = lines.collect::<Result<_, _>>().unwrap();
+
+    let mut t = Vec::<f64>::new();
+    let mut d = Vec::<f64>::new();
+    let mut s = Vec::<Vec::<f64>>::new();
+
+    // Read d
+    let mut parts = lines_vector[0].split_whitespace();
+    let mut parts_vector: Vec<String> = parts.map(|s| s.to_string()).collect();
+
+    for k in 1..9 as usize {
+        d.push(parts_vector[k].parse::<f64>().unwrap());
+    }
+
+    // Read t and s
+    for i in 1..lines_vector.len() as usize {
+        parts = lines_vector[i].split_whitespace();
+        parts_vector = parts.map(|s| s.to_string()).collect();
+
+        t.push(parts_vector[0].parse::<f64>().unwrap());
+
+        let mut sVector = Vec::<f64>::new();
+        for k in 0..9 as usize {
+            sVector.push(parts_vector[k].parse::<f64>().unwrap());
+        }
+
+        s.push(sVector);
+    }
+
+    return (d, t, s);
+
+}
+
 fn main() {
-    // Stores the iterator of lines of the file in lines variable.
-    let transport = read_transport("../database/transport.asali".to_string());
+    let transport_file = read_transport("../database/transport.asali".to_string());
     let NC = count_number_of_lines("../database/transport.asali".to_string());
-    let thermo = read_thermo("../database/thermo.asali".to_string(), NC);
-    println!("{}",NC);
-
-
-    /*
-    
-    let NC = get_number_of_lines("../../database/transport.asali".to_string());
-    let thermo = read_thermo("../../database/thermo.asali".to_string(), NC);*/
+    let thermo_file = read_thermo("../database/thermo.asali".to_string(), NC);
+    let astar_file = read_matrix("../database/astar.asali".to_string());
+    let omega22_file = read_matrix("../database/omega22.asali".to_string());
 }
