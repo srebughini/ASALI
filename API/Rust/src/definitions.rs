@@ -1,6 +1,6 @@
 pub struct Transport {
     pub name: String,
-    pub geometry: f64,
+    pub geometry: i32,
     pub ljpotential: f64,
     pub ljdiameter: f64,
     pub dipole: f64,

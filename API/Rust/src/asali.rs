@@ -1,14 +1,13 @@
-use crate::omega::omega_update;
 use crate::thermo::thermo_update;
 use crate::transport::transport_update;
+use crate::omega::omega11_update;
+use crate::omega::omega22_update;
 
 use crate::definitions::Transport;
 use crate::definitions::Thermo;
 use crate::definitions::Omega;
 
 use std::process::exit;
-
-
 pub struct Asali {
     T_: f64,
     P_: f64,
@@ -59,7 +58,9 @@ pub struct Asali {
     smole_mix_update_: bool,
     transport_: Vec<Transport>,
     thermo_: Vec<Thermo>,
-    omega_: Vec<Omega>
+    omega11_: Omega,
+    omega22_: Omega
+
 }
 
 impl Asali{
@@ -70,8 +71,8 @@ impl Asali{
         let mut thermo = Vec::<Thermo>::new();
         thermo_update(&mut thermo);
 
-        let mut omega = Vec::<Omega>::new();
-        omega_update(&mut omega);
+        let omega11 = omega11_update();
+        let omega22 = omega22_update();
 
         Asali {
             T_: 0.0,
@@ -123,7 +124,8 @@ impl Asali{
             smole_mix_update_: false,
             transport_: transport,
             thermo_: thermo,
-            omega_: omega
+            omega11_: omega11,
+            omega22_: omega22
         }
     }
     
