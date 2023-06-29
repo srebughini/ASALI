@@ -25,7 +25,7 @@ LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --libs)\
           -lplplotcxx\
           -lgfortran\
           -lpthread\
-          -lyaml-cpp
+          -lyaml-cpp\
           -lm
 
 

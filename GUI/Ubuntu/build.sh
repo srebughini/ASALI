@@ -116,7 +116,7 @@ function CheckCantera()
         echoRed "Cantera is missing"
         Help
         else
-        sundials_path=$(echo $(pkg-config cantera --cflags-only-I | sed 's|-I||g' | sed 's| ||g')/cantera/ext)
+        cantera_ext_path=$(echo $(pkg-config cantera --cflags-only-I | sed 's|-I||g' | sed 's| ||g')/cantera/ext)
         asali_using_cantera=1
         fi
     else
