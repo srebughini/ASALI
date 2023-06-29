@@ -440,37 +440,37 @@ namespace ASALI
             PLFLT line_widths[nLegend_[figIndex]];
             this->convertToPLFLT(lineWidths_[figIndex], line_widths);
 
-            pls->legend(&legendWidth_[figIndex],   //p_legend_width
-                        &legendHeight_[figIndex],  //p_legend_height
-                        optBase_[figIndex],        //opt
-                        legendPosition_[figIndex], //position
-                        legendXoffset_[figIndex],  //x
-                        legendYoffset_[figIndex],  //y
-                        0.1,                       //plot_width
-                        0,                         //bg_color
-                        0,                         //bb_color
-                        1,                         //bb_style
-                        nRow_[figIndex],           //nrow
-                        nCol_[figIndex],           //ncolumn
-                        nLegend_[figIndex],        //nlegend
-                        opt_array,                 //opt_array
-                        1.0,                       //text_offset
-                        1.0,                       //text_scale
-                        2.0,                       //text_spacing
-                        1.,                        //test_justification
-                        text_colors,               //text_colors
-                        texts.data(),              //texts
-                        NULL,                      //box_colors
-                        NULL,                      //box_patterns
-                        NULL,                      //box_scales
-                        NULL,                      //box_line_widths
-                        line_colors,               //line_colors
-                        line_styles,               //line_styles
-                        line_widths,               //line_widths
-                        NULL,                      //symbol_colors
-                        NULL,                      //symbol_scales
-                        NULL,                      //symbol_numbers
-                        NULL);                     //symbols
+            pls->legend(&legendWidth_[figIndex],   // p_legend_width
+                        &legendHeight_[figIndex],  // p_legend_height
+                        optBase_[figIndex],        // opt
+                        legendPosition_[figIndex], // position
+                        legendXoffset_[figIndex],  // x
+                        legendYoffset_[figIndex],  // y
+                        0.1,                       // plot_width
+                        0,                         // bg_color
+                        0,                         // bb_color
+                        1,                         // bb_style
+                        nRow_[figIndex],           // nrow
+                        nCol_[figIndex],           // ncolumn
+                        nLegend_[figIndex],        // nlegend
+                        opt_array,                 // opt_array
+                        1.0,                       // text_offset
+                        1.0,                       // text_scale
+                        2.0,                       // text_spacing
+                        1.,                        // test_justification
+                        text_colors,               // text_colors
+                        texts.data(),              // texts
+                        NULL,                      // box_colors
+                        NULL,                      // box_patterns
+                        NULL,                      // box_scales
+                        NULL,                      // box_line_widths
+                        line_colors,               // line_colors
+                        line_styles,               // line_styles
+                        line_widths,               // line_widths
+                        NULL,                      // symbol_colors
+                        NULL,                      // symbol_scales
+                        NULL,                      // symbol_numbers
+                        NULL);                     // symbols
         }
     }
 }

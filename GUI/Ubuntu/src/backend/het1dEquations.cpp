@@ -323,7 +323,7 @@ namespace ASALI
                 this->updateHeterogeneousChemistry();
             }
 
-            //Calculate transport properties
+            // Calculate transport properties
             {
                 kMat_ = this->massTransferCoefficient(z_[i], mu_, rho_, diff_);
 
@@ -786,7 +786,7 @@ namespace ASALI
         }
         else if (reactorType_ == "packedBed")
         {
-            //Yoshida et al.
+            // Yoshida et al.
             double Re = G_ * Dt_ / (mu_ * (1. - epsi_) * 6.);
             double ReReal = G_ * Dt_ / mu_;
             double Sc;
@@ -834,7 +834,7 @@ namespace ASALI
         }
         else if (reactorType_ == "packed bed")
         {
-            //Yoshida et al.
+            // Yoshida et al.
             double Re = G_ * Dt_ / (mu * (1. - epsi_) * 6.);
             double ReReal = G_ * Dt_ / mu;
             double Pr = cp * mu / cond;

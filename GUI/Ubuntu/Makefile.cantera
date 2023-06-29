@@ -14,18 +14,20 @@ CPPFLAGS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --cflags)\
             -I$(CANTERA_EXT_PATH)\
             -Iinclude
 
-CFLAGS := -fPIC -Os -s\
+CFLAGS := -fPIC -s\
           -DASALI_ON_WINDOW=${ASALI_ON_WINDOW} \
           -DASALI_NEXT_VERSION=${ASALI_NEXT_VERSION} \
           -DASALI_USING_CANTERA=${ASALI_USING_CANTERA} \
           -DCOMPILING_PATH=\"${COMPILING_PATH}\"
 
-LDFLAGS:= -L$(CANTERA_PREFIX)lib
 LDLIBS := $(shell pkg-config gtkmm-3.0 gtk+-3.0 plplot cantera --libs)\
           $(shell python3-config ${PYTHON_CONFIG} --libs)\
           -lplplotcxx\
           -lgfortran\
+          -lpthread\
+          -lyaml-cpp
           -lm
+
 
 .PHONY: clean
 clean:
@@ -47,4 +49,4 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 $(EXE): $(OBJ)
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) $(CFLAGS) -o $@
+	$(CXX) $^ $(LDLIBS) $(CFLAGS) -o $@

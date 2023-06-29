@@ -81,14 +81,14 @@ namespace ASALI
         vectorUtils_ = new ASALI::asaliVectorUtils();
         beerQuote_ = new ASALI::beerQuote();
 
-        //Reaction number
+        // Reaction number
         {
             this->set_border_width(15);
             this->set_title("ASALI: Kinetic scheme");
             this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
             this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-            //Add background grid
+            // Add background grid
             this->add(reactionNumberBox_);
 
             reactionNumberBox_.set_halign(Gtk::ALIGN_START);
@@ -121,7 +121,7 @@ namespace ASALI
             this->show_all_children();
         }
 
-        //Species
+        // Species
         {
             speciesBox_.set_halign(Gtk::ALIGN_START);
             speciesBox_.set_spacing(10);
@@ -156,7 +156,7 @@ namespace ASALI
             }
         }
 
-        //Reaction
+        // Reaction
         {
             reactionBox_.set_halign(Gtk::ALIGN_START);
             reactionBox_.set_spacing(10);
@@ -184,7 +184,7 @@ namespace ASALI
             reactionEntry_.clear();
         }
 
-        //Equation
+        // Equation
         {
             equationBox_.set_halign(Gtk::ALIGN_START);
             equationBox_.set_spacing(10);
@@ -210,7 +210,7 @@ namespace ASALI
             equationEntry_.clear();
         }
 
-        //Recap
+        // Recap
         {
             recapBox_.set_halign(Gtk::ALIGN_START);
             recapBox_.set_spacing(10);
@@ -302,7 +302,7 @@ namespace ASALI
             {
                 std::string r1 = Rtot_[i];
 
-                //Replace mass fraction
+                // Replace mass fraction
                 for (unsigned int j = 0; j < NC_; j++)
                 {
                     std::size_t sp = r1.find(n_[j]);
@@ -424,7 +424,7 @@ namespace ASALI
 
         if (n_.size() != 0)
         {
-            //Check Species
+            // Check Species
             std::string ni = "We detect that ";
             unsigned int counter = 0;
             {
@@ -459,7 +459,7 @@ namespace ASALI
                 dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
                 int answer = dialog.run();
 
-                //Handle the response:
+                // Handle the response:
                 switch (answer)
                 {
                 case (Gtk::RESPONSE_YES):
@@ -526,7 +526,7 @@ namespace ASALI
             std::string all = equationEntry_[i]->get_text();
             all.erase(std::remove_if(all.begin(), all.end(), ::isspace), all.end());
 
-            //Check exp
+            // Check exp
             {
                 std::string error;
                 {
@@ -589,7 +589,7 @@ namespace ASALI
                 }
             }
 
-            //Check pow
+            // Check pow
             {
                 std::string error;
                 {
@@ -672,7 +672,7 @@ namespace ASALI
                 }
             }
 
-            //Check species
+            // Check species
             {
                 std::string error;
                 {
@@ -810,7 +810,7 @@ namespace ASALI
             equationGrid_.attach(nextButton4_, 2, NR_ + 1, 1, 1);
         }
 
-        //Add recap species
+        // Add recap species
         {
             for (unsigned int i = 0; i < recapSpeciesVectorLabel_.size(); i++)
             {
@@ -833,7 +833,7 @@ namespace ASALI
             }
         }
 
-        //Add recap reactions
+        // Add recap reactions
         {
             for (unsigned int i = 0; i < recapReactionVectorLabel_.size(); i++)
             {

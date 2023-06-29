@@ -116,7 +116,7 @@ function CheckCantera()
         echoRed "Cantera is missing"
         Help
         else
-        cantera_ext_path=$(echo $(pkg-config cantera --cflags | awk '{print $3}' | sed 's|-I||g')/cantera/ext)
+        sundials_path=$(echo $(pkg-config cantera --cflags-only-I | sed 's|-I||g' | sed 's| ||g')/cantera/ext)
         asali_using_cantera=1
         fi
     else
@@ -140,6 +140,8 @@ function CheckPython()
     fi
 
     if [[ $python_version == *"3.8"* ]]; then
+        python_config_command='--embed'
+    elif [[ $python_version == *"3.10"* ]]; then
         python_config_command='--embed'
     else
         python_config_command=' '

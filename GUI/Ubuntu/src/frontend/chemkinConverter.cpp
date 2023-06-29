@@ -57,12 +57,12 @@ namespace ASALI
         this->set_position(Gtk::WIN_POS_CENTER_ALWAYS);
         this->set_icon_from_file(fileManager_.relative_path_to_absolute_path("images/Icon.png"));
 
-        //Adding logo
+        // Adding logo
         mainBox_.set_halign(Gtk::ALIGN_START);
         mainBox_.set_spacing(10);
         mainBox_.pack_start(logo_, Gtk::PACK_SHRINK);
 
-        //Adding thermo and transport buttons
+        // Adding thermo and transport buttons
         mainBox_.pack_start(buttonBox_, Gtk::PACK_SHRINK);
         buttonBox_.set_valign(Gtk::ALIGN_CENTER);
         buttonBox_.set_spacing(10);

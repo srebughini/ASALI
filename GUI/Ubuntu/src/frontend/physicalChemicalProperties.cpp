@@ -63,7 +63,7 @@ namespace ASALI
             resultsGrid_.set_column_spacing(10);
             resultsGrid_.set_row_spacing(10);
 
-            //Molecular weight
+            // Molecular weight
             mwBox_.pack_start(mwLabel_, Gtk::PACK_SHRINK);
             mwBox_.pack_start(mwCombo_, Gtk::PACK_SHRINK);
             mwBox_.set_spacing(5);
@@ -75,7 +75,7 @@ namespace ASALI
             mwCombo_.set_active(0);
             mwCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::mwUnitConversion), true));
 
-            //Density
+            // Density
             rhoBox_.pack_start(rhoLabel_, Gtk::PACK_SHRINK);
             rhoBox_.pack_start(rhoCombo_, Gtk::PACK_SHRINK);
             rhoBox_.set_spacing(5);
@@ -85,19 +85,19 @@ namespace ASALI
             rhoCombo_.set_active(0);
             rhoCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &physicalChemicalProperties::rhoUnitConversion), true));
 
-            //Add heading
+            // Add heading
             resultsGrid_.attach(mwBox_, 1, 0, 1, 1);
             resultsGrid_.attach(rhoBox_, 2, 0, 1, 1);
 
-            //Add back button
+            // Add back button
             resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
             backButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::input));
 
-            //Add print on file
+            // Add print on file
             resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
             saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::save));
 
-            //Add exit button
+            // Add exit button
             resultsGrid_.attach(exitButton2_, 2, n_.size() + 2, 1, 1);
             exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &physicalChemicalProperties::exit));
         }
@@ -183,13 +183,13 @@ namespace ASALI
             MW_.push_back(chemistryInterface_->getMWmix());
             rho_.push_back(chemistryInterface_->getMWmix() * p_ / (8314. * T_));
 
-            //Add back button
+            // Add back button
             resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
 
-            //Add print on file
+            // Add print on file
             resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
 
-            //Add exit button
+            // Add exit button
             resultsGrid_.attach(exitButton2_, 2, n_.size() + 2, 1, 1);
 
             this->remove();
@@ -242,28 +242,28 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //g/mol
+                converter[i] = 1.; // g/mol
             }
         }
         else if (mwCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.e-03; //kg/mol
+                converter[i] = 1.e-03; // kg/mol
             }
         }
         else if (mwCombo_.get_active_row_number() == 2)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1. / 1.e-03; //g/kmol
+                converter[i] = 1. / 1.e-03; // g/kmol
             }
         }
         else if (mwCombo_.get_active_row_number() == 3)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //kg/kmol
+                converter[i] = 1.; // kg/kmol
             }
         }
 
@@ -299,14 +299,14 @@ namespace ASALI
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.; //kg/m3
+                converter[i] = 1.; // kg/m3
             }
         }
         else if (rhoCombo_.get_active_row_number() == 1)
         {
             for (unsigned int i = 0; i < n_.size(); i++)
             {
-                converter[i] = 1.e03 / 1.e06; //g/cm3
+                converter[i] = 1.e03 / 1.e06; // g/cm3
             }
         }
 

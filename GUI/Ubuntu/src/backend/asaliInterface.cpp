@@ -148,9 +148,9 @@ namespace ASALI
         }
 
         n_[NS_] = "mix";
-        h_[NS_] = asali_->mixtureMolarEnthalpy(); //J/Kmol
-        s_[NS_] = asali_->mixtureMolarEntropy();  //J/Kmol/K
-        cp_[NS_] = asali_->mixtureMolarCp();      //J/Kmol/K
+        h_[NS_] = asali_->mixtureMolarEnthalpy(); // J/Kmol
+        s_[NS_] = asali_->mixtureMolarEntropy();  // J/Kmol/K
+        cp_[NS_] = asali_->mixtureMolarCp();      // J/Kmol/K
         MW_[NS_] = asali_->mixtureMolecularWeight();
     }
 
@@ -170,8 +170,8 @@ namespace ASALI
             if (i == NS_)
             {
                 n_[i] = "mix";
-                mu_[i] = asali_->mixtureViscosity();             //Pas
-                cond_[i] = asali_->mixtureThermalConductivity(); //W/m/K
+                mu_[i] = asali_->mixtureViscosity();             // Pas
+                cond_[i] = asali_->mixtureThermalConductivity(); // W/m/K
                 MW_[i] = asali_->mixtureMolecularWeight();
                 for (unsigned int j = 0; j < (NS_ + 1); j++)
                 {
