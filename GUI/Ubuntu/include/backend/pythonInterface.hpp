@@ -60,6 +60,9 @@ namespace ASALI
     public:
         /// Class constructor
         pythonInterface();
+        
+        /// Run simple python script
+        void runScript(std::string filename, int argc, char *argv[]);
 
         /// Set temperature in [K]
         void setTemperature(const double &T);

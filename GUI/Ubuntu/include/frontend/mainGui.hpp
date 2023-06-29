@@ -73,7 +73,7 @@ namespace ASALI
         private:
                 void exit();
                 void updateBasicChemistryInterface();
-                void updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase);
+                void updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase, const bool isKinetic);
                 void discrimer();
                 void mainMenu();
                 void noneInputError();
@@ -96,6 +96,7 @@ namespace ASALI
 #if ASALI_USING_CANTERA == 1
                 void chemkin();
                 void loadCanteraInput();
+                void convertCanteraInputFile();
                 void equilibrium();
                 void pellets();
                 void reactors();
@@ -116,6 +117,7 @@ namespace ASALI
                 Gtk::Button startButton_;
                 Gtk::Button defaultCanteraInputButton_;
                 Gtk::Button loadCanteraInputButton_;
+                Gtk::Button convertCanteraFileButton_;
                 Gtk::Button noneInputButton_;
                 Gtk::Button conversionButton_;
                 Gtk::Button canteraInputButton_;
@@ -171,7 +173,7 @@ namespace ASALI
                 Gtk::LinkButton forgeButton_;
 
                 std::string kineticType_;
-                std::string basicXMLfilepath_;
+                std::string basicYAMLfilepath_;
                 std::string basicGasPhase_;
 
                 std::vector<std::string> beer_;

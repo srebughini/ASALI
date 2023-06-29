@@ -128,38 +128,48 @@ namespace ASALI
         {
             this->error(transport_.get_label());
         }
-        else if (files_[3] == "")
-        {
-            this->error(surface_.get_label());
-        }
         else
         {
-            std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.cti");
-            if (dialogname != "")
+            bool is_surface = true;
+            int answer = Gtk::RESPONSE_YES;
+            Gtk::MessageDialog smallDialog(*this, "We detect that your CHEMKIN input file does not have a surface phase.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+            smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+            
+            if (files_[3] == "")
             {
-                fileManager_.removeFileExtension(dialogname, ".xml");
-                fileManager_.removeFileExtension(dialogname, ".cti");
-                std::string filename = dialogname + ".cti";
-                {
-                    files_[4] = "--output=" + filename;
-                }
+                answer = smallDialog.run();
+                is_surface = false;
+            }
 
+            //Handle the response:
+            switch (answer)
+            {
+            case (Gtk::RESPONSE_YES):
+            {
+                std::string dialogname = fileManager_.saveFile(this->get_toplevel()->gobj(), "*.yaml");
+                if (dialogname != "")
                 {
-                    std::string cmd = "ck2cti " + files_[0] + " " + files_[1] + " " + files_[2] + " " + files_[3] + " " + files_[4];
-                    system(cmd.c_str());
-                }
+                    fileManager_.removeFileExtension(dialogname, ".yaml");
+                    std::string filename = dialogname + ".yaml";
+                    {
+                        files_[4] = "--output=" + filename;
+                    }
 
-                if (bool(std::ifstream(filename)))
-                {
-                    std::string cmd = "ctml_writer " + filename + " " + dialogname + ".xml";
-                    system(cmd.c_str());
-                    std::remove(filename.c_str());
-                    this->savedMessage();
+                    {
+                        fileManager_.fromCkToYaml(files_, is_surface);
+                        this->savedMessage();
+                    }
                 }
                 else
                 {
                     this->notSavedMessage();
                 }
+            }
+            default:
+            {
+                smallDialog.hide();
+                break;
+            }
             }
         }
     }
@@ -232,50 +242,16 @@ namespace ASALI
         input.open(path);
         std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
 
-        if (interfaces[0] == "none" ||
-            interfaces[1] == "none")
+        std::string gasPhaseName = interfaces[0];
+        std::string surfacePhaseName = interfaces[1];
+        
+        if ( gasPhaseName == "none" )
         {
-            std::string type = "none";
-            for (unsigned int i = 0; i < interfaces.size(); i++)
-            {
-                if (interfaces[i] != "none")
-                {
-                    type = fileManager_.getCanteraPhaseName(interfaces[i]);
-                }
-            }
-            if (type == "none")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return false;
         }
         else
         {
-            std::vector<std::string> type(2);
-            type[0] = "none";
-            type[1] = "none";
-            for (unsigned int i = 0; i < interfaces.size(); i++)
-            {
-                type[i] = fileManager_.getCanteraPhaseName(interfaces[i]);
-
-                if (type[0] != "none" && type[1] != "none")
-                {
-                    break;
-                }
-            }
-
-            if (type[0] == "none" ||
-                type[1] == "none")
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return true;
         }
     }
 

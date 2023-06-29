@@ -175,7 +175,7 @@ function Compile()
     fi 
 
     if [ "$1" == "true" ]; then
-        make all -f Makefile.cantera SUNDIALS_PATH=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
+    	make all -f Makefile.cantera CANTERA_EXT_PATH=$2 ASALI_USING_CANTERA=$3 ASALI_ON_WINDOW=$4 PYTHON_CONFIG=$5 COMPILING_PATH=$6 ASALI_NEXT_VERSION=$7
     else
         echoRed "NOT TESTED, yet :)"
         make all -f Makefile.libs
@@ -212,7 +212,7 @@ function Clean()
 }
 
 POSITIONAL=()
-sundials_path=""
+cantera_ext_path=""
 operating_system="ubuntu"
 with_cantera="true"
 output_folder=$PWD
@@ -279,7 +279,7 @@ CheckSymbolicLink "$symbolic_link" "$python_config_command"
 compile=$(Continue)
 
 if [ "$compile" == "true" ]; then
-   Compile "$with_cantera" "$sundials_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder" "$next_version"
+   Compile "$with_cantera" "$cantera_ext_path" "$asali_using_cantera" "$asali_on_windows" "$python_config_command" "$compiling_folder" "$next_version"
    Copy "$output_folder"
    CreateSymbolicLink "$symbolic_link" "$output_folder"
 else

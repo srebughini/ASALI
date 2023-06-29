@@ -62,7 +62,7 @@ namespace ASALI
           kineticType_(kineticType),
           inert_("NONE")
     {
-        speciesNames_ = new ASALI::speciesPopup();
+		speciesNames_ = new ASALI::speciesPopup();
         constantProperties_ = new ASALI::constantProperties();
         catalystProperties_ = new ASALI::catalystProperties();
         plot_ = new ASALI::plot();

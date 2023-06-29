@@ -54,6 +54,11 @@
 #include <functional>
 #include <gtk/gtk.h>
 
+#if ASALI_USING_CANTERA == 1
+#include "backend/pythonInterface.hpp"
+#include "yaml-cpp/yaml.h"
+#endif
+
 namespace ASALI
 {
     /// Class that handles file opening/closing
@@ -81,15 +86,41 @@ namespace ASALI
         /// Get Cantera interfaces
         static std::vector<std::string> getCanteraInterfaces(std::string filename);
 
-        /// Get Cantera phase name from interface
-        static std::string getCanteraPhaseName(std::string interfaceName);
+        /// Check if reactions are present or not
+        static bool areReactionsPresent(std::string filename);
+
+        /// Replace file extension
+        std::string replaceFileExtension(std::string mainStr, const std::string extension);
 
         /// Remove extension from file path
         void removeFileExtension(std::string &filename, const std::string &extension);
+        
+        /// Read the file for species popup
+        std::vector<std::vector<std::string>> readSpeciesPopupFile();
+
+#if ASALI_USING_CANTERA == 1
+        /// Covert from Cantera .xml to Cantera .yaml
+        void fromXmlToYaml(std::string xmlFilePath);
+        
+        /// Covert from Cantera .cti to Cantera .yaml
+        void fromCtiToYaml(std::string ctiFilePath);
+
+        /// Covert from CHEMKIN to Cantera .yaml
+        void fromCkToYaml(std::vector<std::string> ckFilePaths, bool is_surface);
+#endif
 
     private:
         /// Remove substring from string
         void eraseSubString(std::string &mainStr, const std::string &toErase);
+        
+        std::string speciesPopupfilepath_;
+        
+#if ASALI_USING_CANTERA == 1
+        std::string ck2yamlfilepath_;
+        std::string cti2yamlfilepath_;
+        std::string ctml2yamlfilepath_;
+#endif
+        
     };
 }
 #endif

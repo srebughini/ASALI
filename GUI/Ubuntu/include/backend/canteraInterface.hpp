@@ -39,6 +39,7 @@
 #ifndef CANTERAINTERFACE_H
 #define CANTERAINTERFACE_H
 
+#include "cantera/base/Solution.h"
 #include "cantera/thermo.h"
 #include "cantera/transport.h"
 #include "cantera/kinetics.h"
@@ -56,7 +57,8 @@ namespace ASALI
         /// Class constructor
         canteraInterface(std::string filepath,
                          std::string gasPhaseName,
-                         std::string surfPhaseName);
+                         std::string surfPhaseName,
+                         bool        isKinetic);
 
         /// Set temperature in [K]
         void setTemperature(const double T);
@@ -176,9 +178,10 @@ namespace ASALI
         inline double siteDensity() const { return SD_; };
 
     private:
-        Cantera::ThermoPhase *thermo_;                                /// Cantera library thermo phase pointer
-        Cantera::Transport *transport_;                               /// Cantera library transport phase pointer
-        Cantera::Kinetics *kinetic_;                                  /// Cantera library homogeneous kinetic pointer
+        std::shared_ptr<Cantera::Solution> solution_;
+        std::shared_ptr<Cantera::ThermoPhase> thermo_;                /// Cantera library thermo phase pointer
+        std::shared_ptr<Cantera::Transport> transport_;               /// Cantera library transport phase pointer
+        std::shared_ptr<Cantera::Kinetics> kinetic_;                  /// Cantera library homogeneous kinetic pointer
         std::shared_ptr<Cantera::SurfPhase> surface_;                 /// Cantera library surface phase pointer
         std::shared_ptr<Cantera::InterfaceKinetics> surface_kinetic_; /// Cantera library heterogeneous kinetic pointer
 

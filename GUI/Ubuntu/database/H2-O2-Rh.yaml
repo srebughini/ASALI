@@ -1,0 +1,184 @@
+generator: ctml2yaml
+cantera-version: 2.6.0
+date: Sun, 10 Jul 2022 11:15:29 +0200
+input-files: [/home/stefano/myCodes/Development/ASALI-branches/cantera-input-files/GUI/Ubuntu/database/H2-O2-Rh.xml]
+
+phases:
+- name: gas
+  elements: [H, O, N, Ar, Rh]
+  species: [H2, O2, H2O, N2, AR]
+  thermo: ideal-gas
+  transport: mixture-averaged
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+- name: Rh_surface
+  elements: [H, O, N, Ar, Rh]
+  species: [Rh(s), H2O(s), H(s), OH(s), O(s)]
+  thermo: ideal-surface
+  adjacent-phases: [gas]
+  site-density: 2.72e-09 mol/cm^2
+  kinetics: surface
+  reactions: all
+  state: {T: 300.0 K, P: 1.01325e+05 Pa}
+
+species:
+- name: H2
+  composition: {H: 2.0}
+  note: u'(adjust)'
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [3.3553514, 5.0136144e-04, -2.3006908e-07, -4.7905324e-10, 4.8522585e-13, -1019.1626,
+      -3.5477228]
+    - [3.0667095, 5.7473755e-04, 1.3938319e-08, -2.5483518e-11, 2.9098574e-15, -865.47412,
+      -1.7798424]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    dipole: 0.0
+    polarizability: 0.79
+    rotational-relaxation: 280.0
+- name: O2
+  composition: {O: 2.0}
+  note: u'(adjust)'
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [3.7837135, -3.0233634e-03, 9.9492751e-06, -9.8189101e-09, 3.3031825e-12, -1063.8107,
+      3.6416345]
+    - [3.6122139, 7.4853166e-04, -1.9820647e-07, 3.3749008e-11, -2.3907374e-15, -1197.8151,
+      3.6703307]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    dipole: 0.0
+    polarizability: 1.6
+    rotational-relaxation: 3.8
+- name: H2O
+  composition: {H: 2.0, O: 1.0}
+  note: u'(adjust)'
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [4.1677234, -1.811497e-03, 5.9471288e-06, -4.8692021e-09, 1.5291991e-12, -3.0289969e+04,
+      -0.73135474]
+    - [2.6110472, 3.156313e-03, -9.2985438e-07, 1.3331538e-10, -7.4689351e-15, -2.9868167e+04,
+      7.2091268]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    polarizability: 0.0
+    rotational-relaxation: 4.0
+- name: N2
+  composition: {N: 2.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1050.0, 3500.0]
+    data:
+    - [3.85321336, -2.44053349e-03, 5.35160392e-06, -3.75608397e-09, 9.2268433e-13,
+      -1079.6955, 1.60217419]
+    - [2.71287897, 1.90359754e-03, -8.54297556e-07, 1.84170938e-10, -1.54715988e-14,
+      -840.225273, 7.15926558]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    dipole: 0.0
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+- name: AR
+  composition: {Ar: 1.0}
+  note: u'(adjust)'
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.37498, 4.3660006]
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.37502, 4.3660006]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 136.5
+    diameter: 3.33
+    dipole: 0.0
+    polarizability: 0.0
+    rotational-relaxation: 0.0
+- name: Rh(s)
+  composition: {Rh: 1.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: H2O(s)
+  composition: {H: 2.0, Rh: 1.0, O: 1.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: H(s)
+  composition: {H: 1.0, Rh: 1.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: OH(s)
+  composition: {H: 1.0, Rh: 1.0, O: 1.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: O(s)
+  composition: {Rh: 1.0, O: 1.0}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+reactions:
+- equation: H2 + Rh(s) + Rh(s) => H(s) + H(s)
+  sticking-coefficient: {A: 0.03, b: 0.0, Ea: 0.0 kJ/mol}
+  sticking-species: H2
+- equation: O2 + Rh(s) + Rh(s) => O(s) + O(s)
+  sticking-coefficient: {A: 0.01, b: 0.0, Ea: 0.0 kJ/mol}
+  sticking-species: O2
+- equation: H2O + Rh(s) => H2O(s)
+  sticking-coefficient: {A: 0.1, b: 0.0, Ea: 0.0 kJ/mol}
+  sticking-species: H2O
+- equation: H(s) + H(s) => Rh(s) + Rh(s) + H2
+  rate-constant: {A: 5.574e+18, b: 0.239, Ea: 59.691 kJ/mol}
+- equation: O(s) + O(s) => Rh(s) + Rh(s) + O2
+  rate-constant: {A: 5.329e+21, b: -0.137, Ea: 386.995 kJ/mol}
+- equation: H2O(s) => Rh(s) + H2O
+  rate-constant: {A: 6.858e+14, b: -0.28, Ea: 44.993 kJ/mol}
+- equation: O(s) + H(s) => OH(s) + Rh(s)
+  rate-constant: {A: 8.826e+20, b: -0.048, Ea: 73.365 kJ/mol}
+- equation: OH(s) + Rh(s) => O(s) + H(s)
+  rate-constant: {A: 1.0e+20, b: 0.045, Ea: 48.041 kJ/mol}
+- equation: OH(s) + H(s) => H2O(s) + Rh(s)
+  rate-constant: {A: 1.743e+21, b: -0.127, Ea: 41.731 kJ/mol}
+- equation: H2O(s) + Rh(s) => OH(s) + H(s)
+  rate-constant: {A: 5.408e+21, b: 0.129, Ea: 98.22 kJ/mol}
+- equation: OH(s) + OH(s) => O(s) + H2O(s)
+  rate-constant: {A: 5.736e+19, b: -0.081, Ea: 121.594 kJ/mol}
+- equation: O(s) + H2O(s) => OH(s) + OH(s)
+  rate-constant: {A: 1.57e+21, b: 0.081, Ea: 203.407 kJ/mol}

@@ -52,6 +52,7 @@ namespace ASALI
           startButton_("Start"),
           defaultCanteraInputButton_("Default (only transport/thermodynamic)"),
           loadCanteraInputButton_("Load CANTERA kinetic/properties file"),
+          convertCanteraFileButton_("CANTERA -> CANTERA converter"),
           noneInputButton_("User defined constant properties"),
           conversionButton_("CHEMKIN -> CANTERA converter"),
           canteraInputButton_("Select CANTERA kinetic/properties file"),
@@ -92,7 +93,7 @@ namespace ASALI
           smallLogo2_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
           smallLogo3_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
           smallLogo4_(fileManager_.relative_path_to_absolute_path("images/SmallLogo.png")),
-          basicXMLfilepath_(fileManager_.relative_path_to_absolute_path("database/data.xml")),
+          basicYAMLfilepath_(fileManager_.relative_path_to_absolute_path("database/data.yaml")),
           basicGasPhase_("gas")
     {
         beerQuote_ = new ASALI::beerQuote();
@@ -176,14 +177,17 @@ namespace ASALI
             chemistryButtonBox_.pack_start(loadCanteraInputButton_, Gtk::PACK_SHRINK);
             loadCanteraInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::loadCanteraInput));
             loadCanteraInputButton_.set_tooltip_text("Load CANTERA input file");
-            chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
-            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
-            noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
+            chemistryButtonBox_.pack_start(convertCanteraFileButton_, Gtk::PACK_SHRINK);
+            convertCanteraFileButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::convertCanteraInputFile));
+            convertCanteraFileButton_.set_tooltip_text("Converter CANTERA input files");
 #if ASALI_ON_WINDOW == 0
             chemistryButtonBox_.pack_start(conversionButton_, Gtk::PACK_SHRINK);
             conversionButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::chemkin));
             conversionButton_.set_tooltip_text("Converter of CHEMKIN files to CANTERA file");
 #endif
+            chemistryButtonBox_.pack_start(noneInputButton_, Gtk::PACK_SHRINK);
+            noneInputButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::noneInput));
+            noneInputButton_.set_tooltip_text("No input file required. Constant properties are used.");
 #endif
             chemistryButtonBox_.pack_start(asaliKineticButton_, Gtk::PACK_SHRINK);
             asaliKineticButton_.signal_clicked().connect(sigc::mem_fun(*this, &mainGui::kineticAsali));
@@ -382,13 +386,13 @@ namespace ASALI
         }
 
 #if ASALI_USING_CANTERA == 1
-        chemistryInterface_ = new ASALI::canteraInterface(basicXMLfilepath_, basicGasPhase_, "none");
+        chemistryInterface_ = new ASALI::canteraInterface(basicYAMLfilepath_, basicGasPhase_, "none", false);
 #else
         chemistryInterface_ = new ASALI::asaliInterface();
 #endif
     }
 
-    void mainGui::updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase)
+    void mainGui::updateChemistryInterface(const std::string &filepath, const std::string &gasPhase, const std::string &surfPhase, const bool isKinetic)
     {
         if (!chemistryInterface_)
         {
@@ -396,7 +400,7 @@ namespace ASALI
         }
 
 #if ASALI_USING_CANTERA == 1
-        chemistryInterface_ = new ASALI::canteraInterface(filepath, gasPhase, surfPhase);
+        chemistryInterface_ = new ASALI::canteraInterface(filepath, gasPhase, surfPhase, isKinetic);
 #else
         chemistryInterface_ = new ASALI::asaliInterface();
 #endif
@@ -613,85 +617,90 @@ namespace ASALI
 
             if (filename.find("cti") != std::string::npos)
             {
-                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the xml version of CANTERA input file\nTo convert .cti to .xml use ctml_writer command", true, Gtk::MESSAGE_WARNING);
+                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the yaml version of CANTERA input file\nConvert .cti to .yaml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
                 errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
                 errorDialog.run();
             }
             else if (filename.find("xml") != std::string::npos)
             {
+                Gtk::MessageDialog errorDialog(*this, "Sorry, ASALI use only the yaml version of CANTERA input file\nConvert .xml to .yaml using CANTERA -> CANTERA converter", true, Gtk::MESSAGE_WARNING);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
+                errorDialog.run();
+            }
+            else if (filename.find("yaml") != std::string::npos)
+            {
                 std::vector<std::string> interfaces = fileManager_.getCanteraInterfaces(filename);
+                std::string gasPhaseName = interfaces[0];
+                std::string surfacePhaseName = interfaces[1];
+                
+                bool isKinetic = fileManager_.areReactionsPresent(filename);
 
-                if (interfaces[0] == "none" ||
-                    interfaces[1] == "none")
+                if (gasPhaseName == "none")
                 {
-                    Gtk::MessageDialog smallDialog(*this, "We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-                    smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
-                    int answer = smallDialog.run();
-
-                    // Handle the response:
-                    switch (answer)
-                    {
-                    case (Gtk::RESPONSE_YES):
-                    {
-                        std::string type = "none";
-                        for (unsigned int i = 0; i < interfaces.size(); i++)
-                        {
-                            if (interfaces[i] != "none")
-                            {
-                                type = fileManager_.getCanteraPhaseName(interfaces[i]);
-                            }
-                        }
-
-                        if (type == "none")
-                        {
-                            Gtk::MessageDialog errorDialog(*this, "Something is wrong in your CANTERA input file.", true, Gtk::MESSAGE_WARNING);
-                            errorDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
-                            errorDialog.run();
-                            smallDialog.hide();
-                            break;
-                        }
-                        else
-                        {
-                            this->updateChemistryInterface(filename, type, "none");
-                            speciesNames_ = new ASALI::speciesPopup();
-                            kineticType_ = "nokinetic";
-                            smallDialog.hide();
-                            this->mainMenu();
-                            break;
-                        }
-                    }
-                    default:
-                    {
-                        smallDialog.hide();
-                        break;
-                    }
-                    }
+                    Gtk::MessageDialog errorDialog(*this, "Something is wrong in your CANTERA input file.", true, Gtk::MESSAGE_WARNING);
+                    errorDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                    errorDialog.run();
                 }
                 else
                 {
-                    std::vector<std::string> type(2);
-                    type[0] = "none";
-                    type[1] = "none";
-                    for (unsigned int i = 0; i < interfaces.size(); i++)
+                    if (surfacePhaseName == "none")
                     {
-                        type[i] = fileManager_.getCanteraPhaseName(interfaces[i]);
-
-                        if (type[0] != "none" && type[1] != "none")
+                        Gtk::MessageDialog surfaceDialog(*this, "We detect that your CANTERA input file does not have a surface phase.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+                        surfaceDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                        int surfaceAnswer = surfaceDialog.run();
+                        
+                        //Handle the surface response:
+                        switch (surfaceAnswer)
                         {
-                            break;
+                            case (Gtk::RESPONSE_YES):
+                            {
+                                if (isKinetic == false)
+                                {
+                                    surfaceDialog.hide();
+                                    Gtk::MessageDialog kineticDialog(*this, "We detect that your CANTERA input file does not have reactions.\nDo you wonna continue anyway?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+                                    kineticDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                                    int kineticAnswer = kineticDialog.run();
+                                    
+                                    //Handle the surface response:
+                                    switch (kineticAnswer)
+                                    {
+                                        case (Gtk::RESPONSE_YES):
+                                        {
+                                            this->updateChemistryInterface(filename, gasPhaseName, surfacePhaseName, isKinetic);
+                                            speciesNames_ = new ASALI::speciesPopup();
+                                            kineticType_ = "nokinetic";
+                                            surfaceDialog.hide();
+                                            kineticDialog.hide();
+                                            this->mainMenu();
+                                            break;
+                                        }
+                                        default:
+                                        {
+                                            kineticDialog.hide();
+                                            break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    this->updateChemistryInterface(filename, gasPhaseName, surfacePhaseName, isKinetic);
+                                    speciesNames_ = new ASALI::speciesPopup();
+                                    kineticType_ = "nokinetic";
+                                    surfaceDialog.hide();
+                                    this->mainMenu();
+                                    break;
+                                }
+                            }
+                            default:
+                            {
+                                surfaceDialog.hide();
+                                break;
+                            }
                         }
-                    }
-
-                    if (type[0] == "none" ||
-                        type[1] == "none")
-                    {
-                        Gtk::MessageDialog errorDialog(*this, "Something is wrong in your CANTERA kinetic file.", true, Gtk::MESSAGE_WARNING);
-                        errorDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
-                        errorDialog.run();
                     }
                     else
                     {
-                        this->updateChemistryInterface(filename, type[0], type[1]);
+                        this->updateChemistryInterface(filename, gasPhaseName, surfacePhaseName, isKinetic);
                         kineticType_ = "load";
                         this->mainMenu();
                     }
@@ -699,9 +708,47 @@ namespace ASALI
             }
             else
             {
-                Gtk::MessageDialog smallDialog(*this, "Something is wrong in your CANTERA kinetic file.", true, Gtk::MESSAGE_WARNING);
-                smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
-                smallDialog.run();
+                Gtk::MessageDialog errorDialog(*this, "Unknown file format.\nPlease, use YAML file", true, Gtk::MESSAGE_WARNING);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
+                errorDialog.run();
+            }
+        }
+        else
+        {
+            Gtk::MessageDialog smallDialog(*this, "Something is wrong in your CANTERA kinetic file.", true, Gtk::MESSAGE_WARNING);
+            smallDialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+            smallDialog.run();
+        }
+    }
+
+    void mainGui::convertCanteraInputFile()
+    {
+        std::string filename = fileManager_.openFile(this->get_toplevel()->gobj());
+        if (filename != "")
+        {
+            std::ifstream input;
+            const char *path = filename.c_str();
+            input.open(path);
+
+            if (filename.find("cti") != std::string::npos)
+            {
+                fileManager_.fromCtiToYaml(filename);
+                Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                dialog.run();
+            }
+            else if (filename.find("xml") != std::string::npos)
+            {
+                fileManager_.fromXmlToYaml(filename);
+                Gtk::MessageDialog dialog(*this, "Conversion completed. Your file as been saved.\nThank you for using ASALI.", true, Gtk::MESSAGE_OTHER);
+                dialog.set_secondary_text(beerQuote_->getShortRandomQuote(), true);
+                dialog.run();
+            }
+            else
+            {
+                Gtk::MessageDialog errorDialog(*this, "Sorry, not recognized CANTERA format", true, Gtk::MESSAGE_WARNING);
+                errorDialog.set_secondary_text(beerQuote_->getRandomQuote(), true);
+                errorDialog.run();
             }
         }
     }
