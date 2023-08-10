@@ -4,7 +4,6 @@
 <p align="center">
   <a href="https://github.com/srebughini/ASALI/blob/master/CONTRIBUTING.md"><img alt="Contributions welcome" src="https://img.shields.io/static/v1.svg?label=contributions&message=welcome&style=flat-square&color=red"></a>
   <a href="https://sourceforge.net/projects/asali/?source=directory"><img src="https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square"></a>
-  <a href="https://twitter.com/ASALIcode"><img src="https://img.shields.io/twitter/follow/Asalicode.svg?label=Follow&style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/stargazers"><img src="https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/blob/master/LICENSE"><img src="https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square"></a>
 </p>
@@ -13,8 +12,8 @@
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://www.codefactor.io/repository/github/srebughini/asali"><img src="https://img.shields.io/codefactor/grade/github/srebughini/ASALI?style=flat-square"></a>
-    <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/srebughini/ASALI?style=flat-square"></a>
-    <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/srebughini/ASALI?style=flat-square"></a>
+  <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/srebughini/ASALI?style=flat-square"></a>
+  <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/srebughini/ASALI?style=flat-square"></a>
 </p>
 
 
