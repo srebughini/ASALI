@@ -514,14 +514,14 @@ namespace ASALI
             {
                 chemistryInterface_->setTemperature(T_);
                 chemistryInterface_->setPressure(p_);
-                if (fractionCombo_.get_active_row_number() == 0)
-                {
-                    chemistryInterface_->setMoleFraction(x_, n_);
-                }
-                else if (fractionCombo_.get_active_row_number() == 1)
-                {
-                    chemistryInterface_->setMassFraction(x_, n_);
-                }
+				if (fractionCombo_.get_active_row_number() == 0)
+				{
+					chemistryInterface_->setMassFraction(x_, n_);
+				}
+				else if (fractionCombo_.get_active_row_number() == 1)
+				{
+					chemistryInterface_->setMoleFraction(x_, n_);
+				}
 
                 {
                     std::vector<double> y = chemistryInterface_->getMassFractionFromNames(n_);
@@ -539,14 +539,15 @@ namespace ASALI
             {
                 chemistryInterface_->setTemperature(T_);
                 chemistryInterface_->setPressure(p_);
-                if (fractionCombo_.get_active_row_number() == 0)
-                {
-                    chemistryInterface_->setMoleFraction(x_, n_);
-                }
-                else if (fractionCombo_.get_active_row_number() == 1)
-                {
-                    chemistryInterface_->setMassFraction(x_, n_);
-                }
+				if (fractionCombo_.get_active_row_number() == 0)
+				{
+					chemistryInterface_->setMassFraction(x_, n_);
+				}
+				else if (fractionCombo_.get_active_row_number() == 1)
+				{
+					chemistryInterface_->setMoleFraction(x_, n_);
+				}
+
 
                 {
                     std::vector<double> y = chemistryInterface_->getMassFraction();

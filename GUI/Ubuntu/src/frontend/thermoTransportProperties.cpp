@@ -134,14 +134,15 @@ namespace ASALI
             this->clean();
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
+
 
             chemistryInterface_->thermoCalculate();
             chemistryInterface_->transportCalculate();
