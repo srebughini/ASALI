@@ -6,21 +6,25 @@ mod asali;
 
 
 fn main() {
-    let mut asali = asali::Asali::new();
+    let mut asali_obj = asali::Asali::new();
     
-    asali.set_temperature(393.15);
-    println!("Temperature: {} K", asali.get_temperature());
+    asali_obj.set_temperature(393.15);
+    println!("Temperature: {} K", asali_obj.get_temperature());
     
-    asali.set_pressure(4.0e5);
-    println!("Pressure: {} Pa", asali.get_pressure());
+    asali_obj.set_pressure(4.0e5);
+    println!("Pressure: {} Pa", asali_obj.get_pressure());
     
-    asali.set_number_of_species(3);
-    println!("Number of species: {}", asali.get_number_of_species());
+    asali_obj.set_number_of_species(3);
+    println!("Number of species: {}", asali_obj.get_number_of_species());
     
-    asali.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()]);
-    let names = asali.get_species_names();
-    for n in &names {
-        println!("fuori {}", n);
+    asali_obj.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()]);
+    asali_obj.set_mole_fraction(vec![0.1,0.2,0.7]);
+    let names = asali_obj.get_species_names();
+    let mu = asali_obj.get_species_viscosity();
+
+    println!("\nSpecies viscosity [Pas]");
+    for j in 0..asali_obj.get_number_of_species() as usize {
+        println!("{}\t{:.5e}", names[j],mu[j]);
     }
     
 

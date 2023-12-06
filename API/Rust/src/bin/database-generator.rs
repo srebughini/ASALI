@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{ self, BufRead, BufReader, Write };
 use std::process::exit;
-use std::str::SplitWhitespace;
+//use std::str::SplitWhitespace;
 
 fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
     let file = File::open(filename).unwrap(); 
@@ -50,13 +50,13 @@ fn read_transport(path: String) -> Vec::<(String,i32,f64,f64,f64,f64,f64,f64)> {
     return allv;
 }
 
-fn read_thermo(path: String, NC: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)> {
+fn read_thermo(path: String, nc: usize) -> Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)> {
     let mut allv = Vec::<(String,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64,f64)>::new();
 
     let lines = read_lines(path);
     let lines_vector: Vec<String> = lines.collect::<Result<_, _>>().unwrap();
 
-    for i in 0..NC as usize {
+    for i in 0..nc as usize {
         let line0 = &lines_vector[4*i];
         let mut parts1 = lines_vector[4*i+1].split_whitespace();
         let mut parts2 = lines_vector[4*i+2].split_whitespace();
@@ -107,12 +107,12 @@ fn read_matrix(path: String) -> (Vec<f64>, Vec<f64>, Vec<Vec<f64>>) {
 
         t.push(parts_vector[0].parse::<f64>().unwrap());
 
-        let mut sVector = Vec::<f64>::new();
+        let mut s_vector = Vec::<f64>::new();
         for k in 1..9 as usize {
-            sVector.push(parts_vector[k].parse::<f64>().unwrap());
+            s_vector.push(parts_vector[k].parse::<f64>().unwrap());
         }
 
-        s.push(sVector);
+        s.push(s_vector);
     }
 
     return (d, t, s);
@@ -144,8 +144,8 @@ fn transport_to_file(input_path: String, output_path: String) {
     data_file.write(as_string.as_bytes()).expect("ASALI::ERROR-->transport file write failed");
 }
 
-fn thermo_to_file(input_path: String, output_path: String, NC: usize) {
-    let as_file = read_thermo(input_path, NC);
+fn thermo_to_file(input_path: String, output_path: String, nc: usize) {
+    let as_file = read_thermo(input_path, nc);
 
     let mut as_string = "use crate::definitions::Thermo;\npub fn thermo_update(thermo: &mut Vec<Thermo>) {".to_string();
 
@@ -220,8 +220,8 @@ fn omega_to_file(omega_path: String,
 fn main() {
     transport_to_file("../database/transport.asali".to_string(), "src/transport.rs".to_string());
     
-    let NC = count_number_of_lines("../database/transport.asali".to_string());
-    thermo_to_file("../database/thermo.asali".to_string(), "src/thermo.rs".to_string(), NC);
+    let nc = count_number_of_lines("../database/transport.asali".to_string());
+    thermo_to_file("../database/thermo.asali".to_string(), "src/thermo.rs".to_string(), nc);
     
     omega_to_file("../database/omega22.asali".to_string(), 
     "../database/astar.asali".to_string(), 

@@ -9,9 +9,9 @@ use crate::definitions::Omega;
 
 use std::process::exit;
 pub struct Asali {
-    T_: f64,
-    P_: f64,
-    MWmix_: f64,
+    t_: f64,
+    p_: f64,
+    mw_mix_: f64,
     rho_: f64,
     mu_mix_: f64,
     cond_mix_: f64,
@@ -21,7 +21,7 @@ pub struct Asali {
     hmass_mix_: f64,
     smole_mix_: f64,
     smass_mix_: f64,
-    MW_: Vec<f64>,
+    mw_: Vec<f64>,
     x_: Vec<f64>,
     y_: Vec<f64>,
     mu_: Vec<f64>,
@@ -36,7 +36,7 @@ pub struct Asali {
     diff_mix_: Vec<f64>,
     v_: Vec<f64>,
     l_: Vec<f64>,
-    NC_: i32,
+    nc_: i32,
     index_: Vec<usize>,
     name_: Vec<String>,
     mu_update_: bool,
@@ -75,9 +75,9 @@ impl Asali{
         let omega22 = omega22_update();
 
         Asali {
-            T_: 0.0,
-            P_: 0.0,
-            MWmix_: 0.0,
+            t_: 0.0,
+            p_: 0.0,
+            mw_mix_: 0.0,
             rho_: 0.0,
             mu_mix_: 0.0,
             cond_mix_: 0.0,
@@ -87,7 +87,7 @@ impl Asali{
             hmass_mix_: 0.0,
             smole_mix_: 0.0,
             smass_mix_: 0.0,
-            MW_: Vec::<f64>::new(),
+            mw_: Vec::<f64>::new(),
             x_: Vec::<f64>::new(),
             y_: Vec::<f64>::new(),
             mu_: Vec::<f64>::new(),
@@ -102,7 +102,7 @@ impl Asali{
             diff_mix_: Vec::<f64>::new(),
             v_: Vec::<f64>::new(),
             l_: Vec::<f64>::new(),
-            NC_: 0,
+            nc_: 0,
             index_: Vec::<usize>::new(),
             name_: Vec::<String>::new(),
             mu_update_: false,
@@ -129,9 +129,9 @@ impl Asali{
         }
     }
     
-    pub fn set_temperature(&mut self, T: f64) {
-        if T != self.T_ {
-            self.T_ = T;
+    pub fn set_temperature(&mut self, t: f64) {
+        if t != self.t_ {
+            self.t_ = t;
             self.mu_update_ = false;
             self.diff_update_ = false;
             self.rho_update_ = false;
@@ -153,12 +153,12 @@ impl Asali{
     }
 
     pub fn get_temperature(&self) -> f64 {
-        self.T_
+        self.t_
     }
 
-    pub fn set_pressure(&mut self, P: f64) {
-        if P != self.P_ {
-            self.P_ = P;
+    pub fn set_pressure(&mut self, p: f64) {
+        if p != self.p_ {
+            self.p_ = p;
             self.mu_update_ = false;
             self.diff_update_ = false;
             self.rho_update_ = false;
@@ -180,33 +180,29 @@ impl Asali{
     }
 
     pub fn get_pressure(&self) -> f64 {
-        self.P_
+        self.p_
     }
 
-    pub fn set_number_of_species(&mut self, NC: i32) {
-        if NC != self.NC_ {
-            self.NC_ = NC;
-            self.resize(NC);
+    pub fn set_number_of_species(&mut self, nc: i32) {
+        if nc != self.nc_ {
+            self.nc_ = nc;
+            self.resize(nc);
         }
     }
 
     pub fn get_number_of_species(&self) -> i32 {
-        self.NC_
+        self.nc_
     }
 
     pub fn set_species_names(&mut self, names: Vec<String>) {
-        for n in &names {
-            println!("dentro {}", n);
-        }
-
-        if names.len() == self.NC_ as usize {
-            for j in 0..self.NC_ as usize {
+        if names.len() == self.nc_ as usize {
+            for j in 0..self.nc_ as usize {
                 self.index_[j] = usize::MAX;
                 self.name_[j] = names[j].to_string();
                 for i in 0..self.transport_.len() as usize {
                     if self.name_[j].trim() == self.transport_[i].name.trim() {
                         self.index_[j] = i;
-                        self.MW_[j] = self.transport_[i].mw;
+                        self.mw_[j] = self.transport_[i].mw;
                         break;
                     }
                 }
@@ -226,25 +222,78 @@ impl Asali{
         self.name_.clone()
     }
 
-    fn resize(&mut self, NC: i32) {
-        self.x_.resize(NC as usize, 0.0);
-        self.y_.resize(NC as usize, 0.0);
-        self.mu_.resize(NC as usize, 0.0);
-        self.diff_.resize(NC as usize, vec![0.0; NC as usize]);
-        self.cpmole_.resize(NC as usize, 0.0);
-        self.cpmass_.resize(NC as usize, 0.0);
-        self.hmole_.resize(NC as usize, 0.0);
-        self.hmass_.resize(NC as usize, 0.0);
-        self.smole_.resize(NC as usize, 0.0);
-        self.smass_.resize(NC as usize, 0.0);
-        self.cond_.resize(NC as usize, 0.0);
-        self.diff_mix_.resize(NC as usize, 0.0);
-        self.MW_.resize(NC as usize, 0.0);
-        self.index_.resize(NC as usize, usize::MAX);
-        self.name_.resize(NC as usize, String::new());
-        self.v_.resize(NC as usize, 0.0);
-        self.l_.resize(NC as usize, 0.0);
-        self.NC_ = NC;
+    pub fn set_mass_fraction(&mut self, y: Vec<f64>) {
+        if y.len() == self.nc_ as usize {
+            self.mw_mix_ = 0.0;
+            for i in 0..self.nc_ as usize {
+                self.y_[i] = y[i];
+                self.mw_mix_ += self.y_[i] / self.mw_[i];
+            }
+            for i in 0..self.nc_ as usize {
+                self.x_[i] = (self.y_[i] / self.mw_[i]) / self.mw_mix_;
+            }
+            self.mw_mix_ = 1.0 / self.mw_mix_;
+            self.reset_bool();
+        } else {
+            println!("ASALI::ERROR-->Wrong number of mass fraction");
+            exit(-1);
+        }
+    }
+
+    pub fn get_mass_fraction(&self) -> Vec<f64> {
+        self.y_.clone()
+    }
+
+    pub fn set_mole_fraction(&mut self, x: Vec<f64>) {
+        if x.len() == self.nc_ as usize {
+            self.mw_mix_ = 0.;
+            for i in 0..self.nc_ as usize {
+                self.x_[i] = x[i];
+                self.mw_mix_ += self.x_[i] * self.mw_[i];
+            }
+            for i in 0..self.nc_ as usize {
+                self.y_[i] = self.x_[i] * self.mw_[i] / self.mw_mix_;
+            }
+            self.reset_bool();
+        } else {
+            println!("ASALI::ERROR-->Wrong number of mass fraction");
+            exit(-1);
+        }
+    }
+
+    pub fn get_mole_fraction(&self) -> Vec<f64> {
+        self.x_.clone()
+    }
+
+    pub fn get_species_viscosity(&mut self) -> Vec<f64> {
+        self.species_viscosity_();
+        self.mu_.clone()
+    }
+
+    pub fn get_density(&mut self) -> f64 {
+        self.density_();
+        self.rho_
+    }
+    
+    fn resize(&mut self, nc: i32) {
+        self.x_.resize(nc as usize, 0.0);
+        self.y_.resize(nc as usize, 0.0);
+        self.mu_.resize(nc as usize, 0.0);
+        self.diff_.resize(nc as usize, vec![0.0; nc as usize]);
+        self.cpmole_.resize(nc as usize, 0.0);
+        self.cpmass_.resize(nc as usize, 0.0);
+        self.hmole_.resize(nc as usize, 0.0);
+        self.hmass_.resize(nc as usize, 0.0);
+        self.smole_.resize(nc as usize, 0.0);
+        self.smass_.resize(nc as usize, 0.0);
+        self.cond_.resize(nc as usize, 0.0);
+        self.diff_mix_.resize(nc as usize, 0.0);
+        self.mw_.resize(nc as usize, 0.0);
+        self.index_.resize(nc as usize, usize::MAX);
+        self.name_.resize(nc as usize, String::new());
+        self.v_.resize(nc as usize, 0.0);
+        self.l_.resize(nc as usize, 0.0);
+        self.nc_ = nc;
     }
 
     fn reset_bool(&mut self) {
@@ -266,116 +315,94 @@ impl Asali{
         self.hmass_mix_update_ = false;
         self.smole_mix_update_ = false;
     }
+
+    fn species_viscosity_(&mut self) {
+        let mut tr: f64;
+        let mut dr: f64;
+        let mut sigma: f64;
+        
+        if !self.mu_update_ {
+            for i in 0..self.nc_ as usize {
+                tr = self.t_ / self.transport_[self.index_[i]].ljpotential;
+                dr = 0.5 * self.transport_[self.index_[i]].dipole.powi(2);
+                dr = dr / (self.transport_[self.index_[i]].ljpotential * 1.3806488 * self.transport_[self.index_[i]].ljdiameter.powi(3));
+                dr = 1e06 * dr;
+                sigma = self.collision_integrals_22(tr, dr);
+                self.mu_[i] = (5. / 16.) * (std::f64::consts::PI * 1.3806488 * self.t_ * self.mw_[i] * 1.66054).sqrt() / (std::f64::consts::PI * sigma * self.transport_[self.index_[i]].ljdiameter.powi(2));
+                self.mu_[i] = self.mu_[i] * 1.0e-05;
+            }
+            self.mu_update_ = true;
+        }
+    }
+
+    fn density_(&mut self) {
+        if !self.rho_update_ {
+            self.rho_ = self.mw_mix_ * self.p_ / (8314. * self.t_);
+            self.rho_update_ = true;
+        }
+    }
+
+    fn extract_index_from_vector(&mut self, vector: Vec<f64>, v: f64) -> (usize, usize)
+    {   let mut ia: usize;
+        let mut ib: usize;
+        ia = usize::MAX;
+        ib = usize::MAX;
+        for j in 0..vector.len()-1 as usize {
+            if v >= vector[j] && v < vector[j+1] {
+                ia = j;
+                ib = j+1;
+                break;
+            }
+
+        }
+        if ia == usize::MAX{
+            if v <= vector[0]{
+                ia = 0;
+                ib = 1
+            }
+            else if v >= vector[vector.len()-1]{
+                ia = vector.len()-2;
+                ib = vector.len()-1;
+            }
+        }
+        (ia, ib)
+    }
+
+    fn collision_integrals_22(&mut self, tr: f64, dr: f64)->f64{
+        let ta: usize;
+        let tb: usize;
+        let da: usize;
+        let db: usize;
+        let mut x: [f64;4] = [0.0,0.0,0.0,0.0];
+        let mut b: [f64;4] = [0.0,0.0,0.0,0.0];
+
+        (ta, tb) = self.extract_index_from_vector((&self.omega22_.t).to_vec(), tr);
+        (da, db) = self.extract_index_from_vector((&self.omega22_.d).to_vec(), dr);
+
+        b[0] = self.omega22_.sigma[ta][da];
+        b[1] = self.omega22_.sigma[ta][db];
+        b[2] = self.omega22_.sigma[tb][da];
+        b[3] = self.omega22_.sigma[tb][db];
+
+        x[3] = (b[0] - b[1]- b[2] + b[3])/(self.omega22_.t[ta]*self.omega22_.d[da] - self.omega22_.t[ta]*self.omega22_.d[db] - self.omega22_.t[tb]*self.omega22_.d[da] + self.omega22_.t[tb]*self.omega22_.d[db]);
+    
+        x[2] = (-x[3]*(self.omega22_.t[ta]*self.omega22_.d[da] - self.omega22_.t[ta]*self.omega22_.d[db]) - b[1] + b[0])/(self.omega22_.d[da] - self.omega22_.d[db]);
+    
+        x[1] = (-x[3]*(self.omega22_.t[ta]*self.omega22_.d[da] - self.omega22_.t[tb]*self.omega22_.d[da]) - b[2] + b[0])/(self.omega22_.t[ta] - self.omega22_.t[tb]);
+        
+        x[0] = -x[1]*self.omega22_.t[ta] - x[2]*self.omega22_.d[da] - x[3]*self.omega22_.t[ta]*self.omega22_.d[da] + b[0];
+    
+        x[0] + x[1]*tr + x[2]*dr + x[3]*tr*dr
+    }
+
+
+
 }
 
 
 
 
         /*
-        pub fn set_mass_fraction(&mut self, y: &[f64]) {
-            if self.y_ != y {
-                self.y_ = y.to_owned();
-                if self.y_.len() == self.NC_ as usize {
-                    self.MWmix_ = 0.0;
-                    for i in 0..self.NC_ as usize {
-                        self.MWmix_ += self.y_[i] / self.MW_[i];
-                    }
-        
-                    for i in 0..self.NC_ as usize {
-                        self.x_[i] = (self.y_[i] / self.MW_[i]) / self.MWmix_;
-                    }
-        
-                    self.MWmix_ = 1.0 / self.MWmix_;
-                } else {
-                    println!("ASALI::ERROR-->Wrong number of mass fractions");
-                    exit(-1);
-                }
-        
-                self.mu_update_ = false;
-                self.diff_update_ = false;
-                self.rho_update_ = false;
-                self.cp_update_ = false;
-                self.h_update_ = false;
-                self.s_update_ = false;
-                self.cond_update_ = false;
-                self.v_update_ = false;
-                self.l_update_ = false;
-                self.mu_mix_update_ = false;
-                self.diff_mix_update_ = false;
-                self.cond_mix_update_ = false;
-                self.cpmole_mix_update_ = false;
-                self.cpmass_mix_update_ = false;
-                self.hmole_mix_update_ = false;
-                self.hmass_mix_update_ = false;
-                self.smole_mix_update_ = false;
-            }
-        }
-
-        pub fn set_mole_fraction(&mut self, x: &[f64]) {
-            if x != self.x_ {
-                self.x_ = x.to_vec();
-                if x.len() == self.NC_ as usize {
-                    self.MWmix_ = 0.;
-                    for i in 0..self.NC_ as usize {
-                        self.MWmix_ += self.x_[i] * self.MW_[i];
-                    }
-    
-                    for i in 0..self.NC_ as usize {
-                        self.y_[i] = self.x_[i] * self.MW_[i] / self.MWmix_;
-                    }
-                } else {
-                    println!("ASALI::ERROR-->Wrong number of mole fractions");
-                    exit(-1);
-                }
-                self.mu_update_   = false;
-                self.diff_update_ = false;
-                self.rho_update_  = false;
-                self.cp_update_   = false;
-                self.h_update_    = false;
-                self.s_update_    = false;
-                self.cond_update_ = false;
-                self.v_update_    = false;
-                self.l_update_    = false;
-                self.mu_mix_update_     = false;
-                self.diff_mix_update_   = false;
-                self.cond_mix_update_   = false;
-                self.cpmole_mix_update_ = false;
-                self.cpmass_mix_update_ = false;
-                self.hmole_mix_update_  = false;
-                self.hmass_mix_update_  = false;
-                self.smole_mix_update_  = false;
-            }
-        }
-
-        pub fn get_mass_fraction(&self) -> Vec<f64> {
-            self.y_.clone()
-        }
-
-        pub fn get_mole_fraction(&self) -> Vec<f64> {
-            self.x_.clone()
-        }
-
-        fn species_viscosity_(&mut self) {
-            let mut Tr: f64;
-            let mut dr: f64;
-            let mut sigma: f64;
-            
-            if !self.mu_update_ {
-                for i in 0..self.NC_ as usize {
-                    Tr = self.T_ / self.definitions_.transport_[self.index_[i]].ljpotential;
-                    dr = 0.5 * self.definitions_.transport_[self.index_[i]].dipole.powi(2);
-                    dr = dr / (self.definitions_.transport_[self.index_[i]].ljpotential * 1.3806488 *
-                                self.definitions_.transport_[self.index_[i]].ljdiameter.powi(3));
-                    dr = 1e06 * dr;
-                    sigma = self.collision_integrals_22(Tr, dr);
-                    self.mu_[i] = (5. / 16.) * (std::f64::consts::PI * 1.3806488 * self.T_ *
-                                    self.MW_[i] * 1.66054).sqrt() /
-                                    (std::f64::consts::PI * sigma * self.definitions_.transport_[self.index_[i]].ljdiameter.powi(2));
-                    self.mu_[i] = self.mu_[i] * 1.0e-05;
-                }
-                self.mu_update_ = true;
-            }
-        }
 
         pub fn get_species_viscosity(&mut self) -> Vec<f64> {
             self.species_viscosity_();
@@ -384,7 +411,7 @@ impl Asali{
 
         fn density_(&mut self) {
             if !self.rho_update_ {
-                self.rho_ = self.MWmix_ * self.P_ / (8314. * self.T_);
+                self.rho_ = self.mw_mix_ * self.P_ / (8314. * self.T_);
                 self.rho_update_ = true;
             }
         }
@@ -395,7 +422,7 @@ impl Asali{
         }
 
         pub fn get_mixture_molecular_weight(&self) -> f64 {
-            self.MWmix_
+            self.mw_mix_
         }
 
         pub fn collision_integrals_22(&mut self, Tr, Dr) -> f64 {
