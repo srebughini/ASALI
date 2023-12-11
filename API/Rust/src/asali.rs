@@ -278,7 +278,44 @@ impl Asali{
     pub fn get_mixture_molecular_weight(&self) -> f64 {
         self.mw_mix_
     }
+
+    pub fn get_species_molar_specific_heat(&mut self) -> Vec<f64> {
+        self.species_cp_();
+        self.cp_mole_.clone()
+    }
     
+    pub fn get_species_mass_specific_heat(&mut self) -> Vec<f64> {
+        self.species_cp_();
+        self.cp_mass_.clone()
+    }
+
+
+    pub fn get_species_molar_enthalpy(&mut self) -> Vec<f64> {
+        self.species_h_();
+        self.h_mole_.clone()
+    }
+
+    pub fn get_species_mass_enthalpy(&mut self) -> Vec<f64> {
+        self.species_h_();
+        self.h_mass_.clone()
+    }
+
+
+    pub fn get_species_molar_entropy(&mut self) -> Vec<f64> {
+        self.species_s_();
+        self.s_mole_.clone()
+    }
+
+    pub fn get_species_mass_entropy(&mut self) -> Vec<f64> {
+        self.species_s_();
+        self.s_mass_.clone()
+    }
+
+    pub fn get_species_thermal_conductivity(&mut self) -> Vec<f64> {
+        self.species_thermal_conductivity_();
+        self.cond_.clone()
+    }
+
     fn resize(&mut self, nc: i32) {
         self.x_.resize(nc as usize, 0.0);
         self.y_.resize(nc as usize, 0.0);
@@ -346,8 +383,126 @@ impl Asali{
         }
     }
 
-    fn extract_index_from_vector(&mut self, vector: Vec<f64>, v: f64) -> (usize, usize)
-    {   let mut ia: usize;
+    fn species_cp_(&mut self){
+        if !self.cp_update_{
+            for i in 0..self.nc_ as usize {
+                if self.t_ < 1000 {
+                    self.cp_mole_[i] = self.thermo_[self.index_[i]].low[0] + self.thermo_[self.index_[i]].low[1]*self.t_ + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2) + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3) + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4);
+                }
+                else {
+                    self.cp_mole_[i] = self.thermo_[self.index_[i]].high[0] + self.thermo_[self.index_[i]].high[1]*self.t_ + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2) + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3) + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4);
+                }
+                self.cp_mole_[i] = self.cp_mole_[i]*8.314;
+                self.cp_mass_[i] = self.cp_mole_[i]/self.mw_[i];
+            } 
+            self.cp_update_ = true;
+        }
+    }
+
+    fn species_h_(&mut self){
+        if !self.h_update_{
+            for i in 0..self.nc_ as usize {
+                if self.t_ < 1000 {
+                    self.h_mole_[i] = self.thermo_[self.index_[i]].low[0] + self.thermo_[self.index_[i]].low[1]*self.t_/2. + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2)/3. + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3)/4. + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4)/5. + self.thermo_[self.index_[i]].low[5]/self.t_;
+                }
+                else {
+                    self.h_mole_[i] = self.thermo_[self.index_[i]].high[0] + self.thermo_[self.index_[i]].high[1]*self.t_/2. + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2)/3. + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3)/4. + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4)/5. + self.thermo_[self.index_[i]].high[5]/self.t_;
+                }
+                self.h_mole_[i] = self.h_mole_[i]*8.314*self.t_;
+                self.h_mass_[i] = self.h_mole_[i]/self.mw_[i];
+            } 
+            self.h_update_ = true;
+        }
+    }
+
+    fn species_s_(&mut self){
+        if !self.s_update_{
+            let mut v: f64;
+            for i in 0..self.nc_ as usize {
+                if self.t_ < 1000 {
+                    self.s_mole_[i] = self.thermo_[self.index_[i]].low[0]*self.t_.log() + self.thermo_[self.index_[i]].low[1]*self.t_ + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2)/2. + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3)/3. + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4)/4. + self.thermo_[self.index_[i]].low[6];
+                }
+                else {
+                    self.s_mole_[i] = self.thermo_[self.index_[i]].high[0]*self.t_.log() + self.thermo_[self.index_[i]].high[1]*self.t_ + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2)/2. + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3)/3. + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4)/4. + self.thermo_[self.index_[i]].high[6];
+                }
+                v = self.p_*self.x_[i]/1.0e05;
+                self.s_mole_[i] = 8314.*(self.s_mole_[i] - v.log());
+                self.s_mass_[i] = self.s_mole_[i]/self.mw_[i];
+            } 
+            self.s_update_ = true;
+        }
+    }
+
+    fn binary_diffusion_(&mut self){
+        //TODO
+    }
+
+    fn species_thermal_conductivity_(&mut self){
+        if !self.cond_update_{
+            let mut a: f64 = 0.0;
+            let mut b: f64 = 0.0;
+            let mut zrot: f64 = 0.0;
+            let mut cvtrans: f64 = 0.0;
+            let mut cvrot: f64 = 0.0;
+            let mut cvvib: f64 = 0.0;
+            let mut ftrans: f64 = 0.0;
+            let mut frot: f64 = 0.0;
+            let mut fvib: f64 = 0.0;
+            let mut r: f64 = 8314.0; //[J/kmol/K]
+            let mut f_t: f64 = 0.0;
+            let mut f_298: f64 = 0.0;
+            let mut rho: f64 = 0.0;
+            let mut diff: f64 = 0.0;
+            let mut mu: f64 = 0.0;
+
+            self.species_viscosity_();
+            self.binary_diffusion_();
+            self.density_();
+            self.species_cp_();
+            for i in 0..self.nc_ as usize {
+                let mut idx: usize = self.index_[i];
+                if self.transport_[idx].geometry == 0 {
+                    cvtrans = 3.*r*0.5;
+                    cvrot   = 0.;
+                    cvvib   = 0.;
+                }
+                else if self.transport_[idx]. geometry == 1 {
+                    cvtrans = 3.*r*0.5;
+                    cvrot   = r;
+                    cvvib   = self.cp_mole_[i] - r - 5.*r*0.5;
+                }
+                else
+                {
+                    cvtrans = 3.*r*0.5;
+                    cvrot   = 3.*r*0.5;
+                    cvvib   = self.cp_mole_[i] - r - 3.*r;
+                }
+
+                rho  = self.p_*self.mw_[i]/(r*self.t_);
+                diff = self.diff_[i][i];
+                mu = self.mu_[i];
+
+                a = (5./2.) - rho*diff/mu;
+
+                f_t = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/self.t_).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/self.t_) + (self.pi_*self.transport_[idx].ljpotential/self.t_).powi(3).sqrt();
+                f_298 = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/298.0).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/298.0) + (self.pi_*self.transport_[idx].ljpotential/298.0).powi(3).sqrt();
+
+                zrot = self.transport_[idx].collision*f_298/f_t;
+                
+                b = zrot + (2./std::f64::consts::PI)*((5./3.)*(cvrot/r) + rho*diff/mu);
+
+                ftrans = (5./2.)*(1. - 2.*cvrot*a/(std::f64::consts::PI*cvtrans*b));
+                frot   = (rho*diff/mu)*(1. + 2.*a/(std::f64::consts::PI*b));
+                fvib   = rho*diff/mu;
+                
+                self.cond[i] = mu*(ftrans*cvtrans + frot*cvrot + fvib*cvvib)/self.mw_[i];
+            }       
+            self.cond_update_;
+        }
+    }
+
+    fn extract_index_from_vector(&mut self, vector: Vec<f64>, v: f64) -> (usize, usize){   
+        let mut ia: usize;
         let mut ib: usize;
         ia = usize::MAX;
         ib = usize::MAX;
@@ -400,7 +555,6 @@ impl Asali{
     }
 
     fn collision_integrals_11(&mut self, tr: f64, dr: f64)->f64{
-    {
         let ta: usize;
         let tb: usize;
         let da: usize;
@@ -426,8 +580,5 @@ impl Asali{
     
         x[0] + x[1]*tr + x[2]*dr + x[3]*tr*dr
     }
-
-
-
 }
 

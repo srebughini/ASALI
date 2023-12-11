@@ -21,12 +21,36 @@ fn main() {
     asali_obj.set_mole_fraction(vec![0.1,0.2,0.7]);
     let names = asali_obj.get_species_names();
     let mu = asali_obj.get_species_viscosity();
+    let cp = asali_obj.get_species_mass_specific_heat();
+    let h = asali_obj.get_species_mass_enthalpy();
+    let s = asali_obj.get_species_mass_entropy();
+    let cond = asali_obj.get_species_thermal_conductivity();
 
     println!("Mixture molecular weight:     {:.3e}  [kmol/kg]\n",asali_obj.get_mixture_molecular_weight());
     println!("Density:                      {:.3e}  [kg/m3]\n",asali_obj.get_density());
 
-    println!("\nSpecies viscosity [Pas]");
+    println!("\nSpecies viscosity [Pas]\n");
     for j in 0..asali_obj.get_number_of_species() as usize {
-        println!("{}\t{:.5e}",names[j],mu[j]);
+        println!("{}\t{:.3e}",names[j],mu[j]);
+    }
+
+    println!("\nSpecies specific heat [J/kg/K]\n");
+    for j in 0..asali_obj.get_number_of_species() as usize {
+        println!("{}\t{:.3e}",names[j],cp[j]);
+    }
+
+    println!("\nSpecies enthalpy [J/kg]\n");
+    for j in 0..asali_obj.get_number_of_species() as usize {
+        println!("{}\t{:.3e}",names[j],h[j]);
+    }
+
+    println!("\nSpecies entropy [J/kg/K]\n");
+    for j in 0..asali_obj.get_number_of_species() as usize {
+        println!("{}\t{:.3e}",names[j],s[j]);
+    }
+
+    println!("\nSpecies thermal conductivity [W/m/K]\n");
+    for j in 0..asali_obj.get_number_of_species() as usize {
+        println!("{}\t{:.3e}",names[j],cond[j]);
     }
 }
