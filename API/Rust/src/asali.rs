@@ -274,6 +274,10 @@ impl Asali{
         self.density_();
         self.rho_
     }
+
+    pub fn get_mixture_molecular_weight(&self) -> f64 {
+        self.mw_mix_
+    }
     
     fn resize(&mut self, nc: i32) {
         self.x_.resize(nc as usize, 0.0);
@@ -395,58 +399,35 @@ impl Asali{
         x[0] + x[1]*tr + x[2]*dr + x[3]*tr*dr
     }
 
+    fn collision_integrals_11(&mut self, tr: f64, dr: f64)->f64{
+    {
+        let ta: usize;
+        let tb: usize;
+        let da: usize;
+        let db: usize;
+        let mut x: [f64;4] = [0.0,0.0,0.0,0.0];
+        let mut b: [f64;4] = [0.0,0.0,0.0,0.0];
+
+        (ta, tb) = self.extract_index_from_vector((&self.omega11_.t).to_vec(), tr);
+        (da, db) = self.extract_index_from_vector((&self.omega11_.d).to_vec(), dr);
+
+        b[0] = self.omega11_.sigma[ta][da];
+        b[1] = self.omega11_.sigma[ta][db];
+        b[2] = self.omega11_.sigma[tb][da];
+        b[3] = self.omega11_.sigma[tb][db];
+
+        x[3] = (b[0] - b[1]- b[2] + b[3])/(self.omega11_.t[ta]*self.omega11_.d[da] - self.omega11_.t[ta]*self.omega11_.d[db] - self.omega11_.t[tb]*self.omega11_.d[da] + self.omega11_.t[tb]*self.omega11_.d[db]);
+    
+        x[2] = (-x[3]*(self.omega11_.t[ta]*self.omega11_.d[da] - self.omega11_.t[ta]*self.omega11_.d[db]) - b[1] + b[0])/(self.omega11_.d[da] - self.omega11_.d[db]);
+    
+        x[1] = (-x[3]*(self.omega11_.t[ta]*self.omega11_.d[da] - self.omega11_.t[tb]*self.omega11_.d[da]) - b[2] + b[0])/(self.omega11_.t[ta] - self.omega11_.t[tb]);
+        
+        x[0] = -x[1]*self.omega11_.t[ta] - x[2]*self.omega11_.d[da] - x[3]*self.omega11_.t[ta]*self.omega11_.d[da] + b[0];
+    
+        x[0] + x[1]*tr + x[2]*dr + x[3]*tr*dr
+    }
+
 
 
 }
 
-
-
-
-        /*
-
-        pub fn get_species_viscosity(&mut self) -> Vec<f64> {
-            self.species_viscosity_();
-            self.mu_.clone()
-        }
-
-        fn density_(&mut self) {
-            if !self.rho_update_ {
-                self.rho_ = self.mw_mix_ * self.P_ / (8314. * self.T_);
-                self.rho_update_ = true;
-            }
-        }
-
-        pub fn get_density(&mut self) -> f64 {
-            self.density_();
-            self.rho_
-        }
-
-        pub fn get_mixture_molecular_weight(&self) -> f64 {
-            self.mw_mix_
-        }
-
-        pub fn collision_integrals_22(&mut self, Tr, Dr) -> f64 {
-            0.0
-        }
-
-        fn resize(&mut self, NC: i32) {
-            self.x_.resize(NC as usize, 0.0);
-            self.y_.resize(NC as usize, 0.0);
-            self.mu_.resize(NC as usize, 0.0);
-            self.diff_.resize(NC as usize, vec![0.0; NC as usize]);
-            self.cpmole_.resize(NC as usize, 0.0);
-            self.cpmass_.resize(NC as usize, 0.0);
-            self.hmole_.resize(NC as usize, 0.0);
-            self.hmass_.resize(NC as usize, 0.0);
-            self.smole_.resize(NC as usize, 0.0);
-            self.smass_.resize(NC as usize, 0.0);
-            self.cond_.resize(NC as usize, 0.0);
-            self.diff_mix_.resize(NC as usize, 0.0);
-            self.MW_.resize(NC as usize, 0.0);
-            self.index_.resize(NC as usize, usize::MAX);
-            self.name_.resize(NC as usize, String::new());
-            self.v_.resize(NC as usize, 0.0);
-            self.l_.resize(NC as usize, 0.0);
-            self.NC_ = NC;
-        }
-    }*/

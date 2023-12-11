@@ -22,13 +22,11 @@ fn main() {
     let names = asali_obj.get_species_names();
     let mu = asali_obj.get_species_viscosity();
 
+    println!("Mixture molecular weight:     {:.3e}  [kmol/kg]\n",asali_obj.get_mixture_molecular_weight());
+    println!("Density:                      {:.3e}  [kg/m3]\n",asali_obj.get_density());
+
     println!("\nSpecies viscosity [Pas]");
     for j in 0..asali_obj.get_number_of_species() as usize {
-        println!("{}\t{:.5e}", names[j],mu[j]);
+        println!("{}\t{:.5e}",names[j],mu[j]);
     }
-    
-
-    //asali.resize(3);
-    
-    //asali.set_mole_fraction(&[0.1, 0.2, 0.7]);
 }
