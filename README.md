@@ -30,5 +30,4 @@ If you are looking for something more advanced and with higher performance, we s
 For any question/issue contact us:  
 E-mail: ste.rebu@outlook.it  
 Facebook: [Asali](https://www.facebook.com/ASALIcode/)  
-Twitter: [@ASALIcode](https://twitter.com/ASALIcode)  
 LinkedIn: [Asalicode](https://www.linkedin.com/company/asalicode)  
