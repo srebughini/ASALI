@@ -6,9 +6,9 @@ permalink: /pages/contacts/
   <h2 class="text-left"><b>Social media</b></h2>
   <p>Feel free to contact us with social media, we will reply you back as soon as possible:</p>
   <p>
-      <a class="btn btn-primary" href="https://twitter.com/ASALIcode" role="button"><i class="fa-brands fa-twitter"></i>&nbsp;&nbsp;Twitter</a>  
       <a class="btn btn-primary" href="https://www.facebook.com/ASALIcode/" role="button"><i class="fa-brands fa-facebook"></i>&nbsp;&nbsp;Facebook</a>  
       <a class="btn btn-primary" href="https://www.linkedin.com/company/asalicode" role="button"><i class="fa-brands fa-linkedin"></i>&nbsp;&nbsp;Linkedin</a>
+      <a class="btn btn-primary" href="https://github.com/srebughini/ASALI/tree/master" role="button"><i class="fa-brands fa-github"></i>&nbsp;&nbsp;Github</a>
   </p>
 
   <h2 class="text-left"><b>Online form</b></h2>

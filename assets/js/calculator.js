@@ -84,7 +84,6 @@ function addInputLine() {
   addSpeciesListToSingleInput(actualNSinput + 1, specieNames);
 }
 
-
 function readComposition() {
   /**
    * Read the input composition and return a dictionary: {Specie Name: Mole Fraction}
