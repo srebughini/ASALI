@@ -84797,6 +84797,7 @@
         }
       };
       function findLowerAndUpperIndex(value, array) {
+        alert(array);
         if (value < array[0]) {
           return [0, 1];
         } else if (value > array[value.length - 1]) {
@@ -84816,7 +84817,6 @@
         let Tb = 0;
         let da = 0;
         let db = 0;
-        alert("Calcolo T");
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
         alert("Calcolo d");
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
