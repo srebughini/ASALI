@@ -289,7 +289,6 @@ impl Asali{
         self.cp_mass_.clone()
     }
 
-
     pub fn get_species_molar_enthalpy(&mut self) -> Vec<f64> {
         self.species_h_();
         self.h_mole_.clone()
@@ -299,7 +298,6 @@ impl Asali{
         self.species_h_();
         self.h_mass_.clone()
     }
-
 
     pub fn get_species_molar_entropy(&mut self) -> Vec<f64> {
         self.species_s_();
@@ -314,6 +312,11 @@ impl Asali{
     pub fn get_species_thermal_conductivity(&mut self) -> Vec<f64> {
         self.species_thermal_conductivity_();
         self.cond_.clone()
+    }
+
+    pub fn get_binary_diffusion(&mut self) -> Vec<Vec<f64>> {
+        self.binary_diffusion_();
+        self.diff_.clone()
     }
 
     fn resize(&mut self, nc: i32) {
