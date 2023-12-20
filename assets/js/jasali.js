@@ -83860,7 +83860,6 @@
             let tr = _temperature / _LJpotential;
             let dr = 1.e06 * 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * _utils.Parameters.k * Math.pow(_LJdiameter, 3.));
             let sigma = (0, _omega.CollisionIntegral22)(tr, dr);
-            console.log(sigma, tr, dr);
             _mu = 1e-05 * (5 / 16) * Math.sqrt(_utils.Parameters.pi * _utils.Parameters.k * _temperature * _molecularWeight * 1.66054) / (_utils.Parameters.pi * sigma * Math.pow(_LJdiameter, 2));
             _mu_update = false;
           }
@@ -84811,6 +84810,7 @@
         }
       }
       function collisionIntegralsEvaluation(omega, tr, dr) {
+        alert(omega, tr, dr);
         let Ta = 0;
         let Tb = 0;
         let da = 0;
