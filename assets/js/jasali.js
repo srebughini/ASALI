@@ -84804,19 +84804,21 @@
         } else {
           for (let i = 0; i < array.length - 1; i++) {
             if (value >= array[i] && value < array[i + 1]) {
+              alert(i);
+              alert(i+1);
               return [i, i + 1];
             }
           }
         }
       }
       function collisionIntegralsEvaluation(omega, tr, dr) {
-        alert(tr);
-        alert(dr);
         let Ta = 0;
         let Tb = 0;
         let da = 0;
         let db = 0;
+        alert("Calcolo T");
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
+        alert("Calcolo d");
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
         alert(Ta);
         alert(Tb);
