@@ -84797,11 +84797,10 @@
         }
       };
       function findLowerAndUpperIndex(value, array) {
-        alert(array);
         if (value < array[0]) {
           return [0, 1];
-        } else if (value > array[value.length - 1]) {
-          return [value.length - 2, value.length - 1];
+        } else if (value > array[array.length - 1]) {
+          return [array.length - 2, array.length - 1];
         } else {
           for (let i = 0; i < array.length - 1; i++) {
             if (value >= array[i] && value < array[i + 1]) {
@@ -84816,11 +84815,7 @@
         let da = 0;
         let db = 0;
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
-        alert("Calcolo d");
-        alert(dr);
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
-        alert(da);
-        alert(db);
         let b = [0., 0., 0., 0.];
         b[0] = omega.matrix[Ta][da];
         b[1] = omega.matrix[Ta][db];
