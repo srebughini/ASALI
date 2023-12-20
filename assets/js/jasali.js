@@ -84810,7 +84810,7 @@
         }
       }
       function collisionIntegralsEvaluation(omega, tr, dr) {
-        alert(omega, tr, dr);
+        alert(tr, dr);
         let Ta = 0;
         let Tb = 0;
         let da = 0;
