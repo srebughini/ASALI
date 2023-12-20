@@ -84802,7 +84802,7 @@
         } else if (value > array[value.length - 1]) {
           return [value.length - 2, value.length - 1];
         } else {
-          for (let i = 0; i < array.length - 1; i++) {
+          for (let i = 0; i < array.length - 2; i++) {
             if (value >= array[i] && value < array[i + 1]) {
               return [i, i + 1];
             }
