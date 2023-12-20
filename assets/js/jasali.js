@@ -84810,13 +84810,18 @@
         }
       }
       function collisionIntegralsEvaluation(omega, tr, dr) {
-        alert(tr, dr);
+        alert(tr);
+        alert(dr);
         let Ta = 0;
         let Tb = 0;
         let da = 0;
         let db = 0;
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
+        alert(Ta);
+        alert(Tb);
+        alert(da);
+        alert(db);
         let b = [0., 0., 0., 0.];
         b[0] = omega.matrix[Ta][da];
         b[1] = omega.matrix[Ta][db];
