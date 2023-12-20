@@ -84805,8 +84805,6 @@
         } else {
           for (let i = 0; i < array.length - 1; i++) {
             if (value >= array[i] && value < array[i + 1]) {
-              alert(i);
-              alert(i+1);
               return [i, i + 1];
             }
           }
@@ -84819,6 +84817,7 @@
         let db = 0;
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
         alert("Calcolo d");
+        alert(dr);
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
         alert(da);
         alert(db);
