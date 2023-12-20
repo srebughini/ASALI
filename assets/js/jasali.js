@@ -84820,8 +84820,6 @@
         [Ta, Tb] = findLowerAndUpperIndex(tr, omega.t);
         alert("Calcolo d");
         [da, db] = findLowerAndUpperIndex(dr, omega.d);
-        alert(Ta);
-        alert(Tb);
         alert(da);
         alert(db);
         let b = [0., 0., 0., 0.];
