@@ -434,7 +434,68 @@ impl Asali{
     }
 
     fn binary_diffusion_(&mut self){
-        //TODO
+        if !self.binary_diffusion_{
+            let mut ljpotentialmix: f64 = 0.0;
+            let mut ljdiametermix: f64 = 0.0;
+            let mut dipolemix: f64 = 0.0;
+            let mut polarn: f64 = 0.0;
+            let mut dipolep: f64 = 0.0;
+
+            for i in 0..self.nc_ as usize {
+                let mut idx: usize = self.index_[i];
+                for j in i..self.nc_ as usize {
+                    let mut jdx: usize = self.index_[j];
+                    let mut mw_mix: f64 = self.mw_[i]*self.mw_[j]/(self.mw_[i] + self.mw_[j]);
+                    
+                    if self.transport_[idx].polar == 0 && self.trasport_[jdx].polar == 0 {
+                        ljpotentialmix = (self.transport_[idx].ljpotential*self.trasport_[jdx].ljpotential).sqrt();
+                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.trasport_[jdx].ljdiameter);
+                        dipolemix      = (self.transport_[idx].dipole*self.trasport_[jdx].dipole).sqrt();
+                    }
+                    else if self.transport_[idx].polar > 0 && self.trasport_[jdx].polar > 0 {
+                        ljpotentialmix = (self.transport_[idx].ljpotential*self.trasport_[jdx].ljpotential).sqrt();
+                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.trasport_[jdx].ljdiameter);
+                        dipolemix      = (self.transport_[idx].dipole*self.trasport_[jdx].dipole).sqrt();
+                    }
+                    else {
+                        polarn  = 0.;
+                        dipolep = 0.;
+                        
+                        if self.transport_[idx].polar == 0 {
+                            polarn  = self.transport_[idx].polar/self.transport_[idx].ljdiameter.powi(3);
+                            dipolep = 1e02*self.trasport_[jdx].dipole;
+                            dipolep = dipolep/(self.trasport_[jdx].ljpotential*1.3806488*self.trasport_[jdx].ljdiameter.powi(3)).sqrt();
+                            chi     = 0.25*polarn*dipolep;
+                            chi     = chi*(self.trasport_[jdx].ljpotential/self.transport_[idx].ljpotential).sqrt();
+                            chi     = 1. + chi ;
+                        }
+                        else {
+                            polarn  = self.trasport_[jdx].polar/self.trasport_[jdx].ljdiameter.powi(3);
+                            dipolep = 1e02*self.transport_[idx].dipole;
+                            dipolep = dipolep/(self.transport_[idx].ljpotential*1.3806488*self.transport_[idx].ljdiameter.powi(3)).sqrt();
+                            chi     = 0.25*polarn*dipolep;
+                            chi     = chi*(self.transport_[idx].ljpotential/self.trasport_[jdx].ljpotential).sqrt();
+                            chi     = 1. + chi;
+                        }
+
+                        ljpotentialmix = chi.pow(2) * std::sqrt(self.transport_[idx].ljpotential * self.transport_[jdx].ljpotential);
+                        ljdiametermix = 0.5 * (self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter) * chi.pow(-1. / 6.);
+                        dipolemix = 0.;
+
+                    }
+
+                    let mut tr: f64 = self.t_/ljpotentialmix;
+                    let mut dr: f64 = 0.5*dipolemix.powi(2)/(ljpotentialmix*1.3806488*ljpotentialmix.powi(3));
+                    dr    = 1e06*dr;
+                    let mut sigma: f64 = self.collision_integrals_11(tr,dr);
+                    let mut diff: f64 = (3./16.)*(2.*std::f64::consts::PI*(1.3806488*self.t_).powi(3)/(mw_mix*1.66054)).sqrt()/(self.p_*std::f64::consts::PI*ljdiametermix.powi(2)*sigma);
+                    diff  = diff*0.1;
+                    self.diff_[i][j] = diff;
+                    self.diff_[j][i] = diff;                
+                }
+            }
+            self.binary_diffusion_ = true;
+        }
     }
 
     fn species_thermal_conductivity_(&mut self){
