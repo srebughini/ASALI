@@ -37,7 +37,8 @@ pub struct Asali {
     v_: Vec<f64>,
     l_: Vec<f64>,
     nc_: i32,
-    index_: Vec<usize>,
+    transport_index_: Vec<usize>,
+    thermo_index_: Vec<usize>,
     name_: Vec<String>,
     mu_update_: bool,
     diff_update_: bool,
@@ -103,7 +104,8 @@ impl Asali{
             v_: Vec::<f64>::new(),
             l_: Vec::<f64>::new(),
             nc_: 0,
-            index_: Vec::<usize>::new(),
+            transport_index_: Vec::<usize>::new(),
+            thermo_index_: Vec::<usize>::new(),
             name_: Vec::<String>::new(),
             mu_update_: false,
             diff_update_: false,
@@ -197,19 +199,33 @@ impl Asali{
     pub fn set_species_names(&mut self, names: Vec<String>) {
         if names.len() == self.nc_ as usize {
             for j in 0..self.nc_ as usize {
-                self.index_[j] = usize::MAX;
+                self.transport_index_[j] = usize::MAX;
+                self.thermo_index_[j] = usize::MAX;
                 self.name_[j] = names[j].to_string();
+                
                 for i in 0..self.transport_.len() as usize {
                     if self.name_[j].trim() == self.transport_[i].name.trim() {
-                        self.index_[j] = i;
+                        self.transport_index_[j] = i;
                         self.mw_[j] = self.transport_[i].mw;
                         break;
                     }
                 }
-                if self.index_[j] == usize::MAX {
+                if self.transport_index_[j] == usize::MAX {
                     println!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
                     exit(-1);
                 }
+
+                for i in 0..self.thermo_.len() as usize {
+                    if self.name_[j].trim() == self.thermo_[i].name.trim() {
+                        self.thermo_index_[j] = i;
+                        break;
+                    }
+                }
+                if self.thermo_index_[j] == usize::MAX {
+                    println!("ASALI::ERROR-->{} is missing in ASALI database.", self.name_[j]);
+                    exit(-1);
+                }
+
             }
         } else {
             println!("ASALI::ERROR-->Wrong number of species names");
@@ -281,32 +297,32 @@ impl Asali{
 
     pub fn get_species_molar_specific_heat(&mut self) -> Vec<f64> {
         self.species_cp_();
-        self.cp_mole_.clone()
+        self.cpmole_.clone()
     }
     
     pub fn get_species_mass_specific_heat(&mut self) -> Vec<f64> {
         self.species_cp_();
-        self.cp_mass_.clone()
+        self.cpmass_.clone()
     }
 
     pub fn get_species_molar_enthalpy(&mut self) -> Vec<f64> {
         self.species_h_();
-        self.h_mole_.clone()
+        self.hmole_.clone()
     }
 
     pub fn get_species_mass_enthalpy(&mut self) -> Vec<f64> {
         self.species_h_();
-        self.h_mass_.clone()
+        self.hmass_.clone()
     }
 
     pub fn get_species_molar_entropy(&mut self) -> Vec<f64> {
         self.species_s_();
-        self.s_mole_.clone()
+        self.smole_.clone()
     }
 
     pub fn get_species_mass_entropy(&mut self) -> Vec<f64> {
         self.species_s_();
-        self.s_mass_.clone()
+        self.smass_.clone()
     }
 
     pub fn get_species_thermal_conductivity(&mut self) -> Vec<f64> {
@@ -333,7 +349,8 @@ impl Asali{
         self.cond_.resize(nc as usize, 0.0);
         self.diff_mix_.resize(nc as usize, 0.0);
         self.mw_.resize(nc as usize, 0.0);
-        self.index_.resize(nc as usize, usize::MAX);
+        self.transport_index_.resize(nc as usize, usize::MAX);
+        self.thermo_index_.resize(nc as usize, usize::MAX);
         self.name_.resize(nc as usize, String::new());
         self.v_.resize(nc as usize, 0.0);
         self.l_.resize(nc as usize, 0.0);
@@ -367,12 +384,12 @@ impl Asali{
         
         if !self.mu_update_ {
             for i in 0..self.nc_ as usize {
-                tr = self.t_ / self.transport_[self.index_[i]].ljpotential;
-                dr = 0.5 * self.transport_[self.index_[i]].dipole.powi(2);
-                dr = dr / (self.transport_[self.index_[i]].ljpotential * 1.3806488 * self.transport_[self.index_[i]].ljdiameter.powi(3));
+                tr = self.t_ / self.transport_[self.transport_index_[i]].ljpotential;
+                dr = 0.5 * self.transport_[self.transport_index_[i]].dipole.powi(2);
+                dr = dr / (self.transport_[self.transport_index_[i]].ljpotential * 1.3806488 * self.transport_[self.transport_index_[i]].ljdiameter.powi(3));
                 dr = 1e06 * dr;
                 sigma = self.collision_integrals_22(tr, dr);
-                self.mu_[i] = (5. / 16.) * (std::f64::consts::PI * 1.3806488 * self.t_ * self.mw_[i] * 1.66054).sqrt() / (std::f64::consts::PI * sigma * self.transport_[self.index_[i]].ljdiameter.powi(2));
+                self.mu_[i] = (5. / 16.) * (std::f64::consts::PI * 1.3806488 * self.t_ * self.mw_[i] * 1.66054).sqrt() / (std::f64::consts::PI * sigma * self.transport_[self.transport_index_[i]].ljdiameter.powi(2));
                 self.mu_[i] = self.mu_[i] * 1.0e-05;
             }
             self.mu_update_ = true;
@@ -389,14 +406,15 @@ impl Asali{
     fn species_cp_(&mut self){
         if !self.cp_update_{
             for i in 0..self.nc_ as usize {
-                if self.t_ < 1000 {
-                    self.cp_mole_[i] = self.thermo_[self.index_[i]].low[0] + self.thermo_[self.index_[i]].low[1]*self.t_ + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2) + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3) + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4);
+                let mut idx: usize = self.thermo_index_[i];
+                if self.t_ < 1000.0 {
+                    self.cpmole_[i] = self.thermo_[idx].low[0] + self.thermo_[idx].low[1]*self.t_ + self.thermo_[idx].low[2]*(self.t_).powi(2) + self.thermo_[idx].low[3]*(self.t_).powi(3) + self.thermo_[idx].low[4]*(self.t_).powi(4);
                 }
                 else {
-                    self.cp_mole_[i] = self.thermo_[self.index_[i]].high[0] + self.thermo_[self.index_[i]].high[1]*self.t_ + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2) + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3) + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4);
+                    self.cpmole_[i] = self.thermo_[idx].high[0] + self.thermo_[idx].high[1]*self.t_ + self.thermo_[idx].high[2]*self.t_.powi(2) + self.thermo_[idx].high[3]*self.t_.powi(3) + self.thermo_[idx].high[4]*self.t_.powi(4);
                 }
-                self.cp_mole_[i] = self.cp_mole_[i]*8.314;
-                self.cp_mass_[i] = self.cp_mole_[i]/self.mw_[i];
+                self.cpmole_[i] = self.cpmole_[i]*8314.0;
+                self.cpmass_[i] = self.cpmole_[i]/self.mw_[i];
             } 
             self.cp_update_ = true;
         }
@@ -405,14 +423,15 @@ impl Asali{
     fn species_h_(&mut self){
         if !self.h_update_{
             for i in 0..self.nc_ as usize {
-                if self.t_ < 1000 {
-                    self.h_mole_[i] = self.thermo_[self.index_[i]].low[0] + self.thermo_[self.index_[i]].low[1]*self.t_/2. + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2)/3. + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3)/4. + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4)/5. + self.thermo_[self.index_[i]].low[5]/self.t_;
+                let mut idx: usize = self.thermo_index_[i];
+                if self.t_ < 1000.0 {
+                    self.hmole_[i] = self.thermo_[idx].low[0] + self.thermo_[idx].low[1]*self.t_/2. + self.thermo_[idx].low[2]*self.t_.powi(2)/3. + self.thermo_[idx].low[3]*self.t_.powi(3)/4. + self.thermo_[idx].low[4]*self.t_.powi(4)/5. + self.thermo_[idx].low[5]/self.t_;
                 }
                 else {
-                    self.h_mole_[i] = self.thermo_[self.index_[i]].high[0] + self.thermo_[self.index_[i]].high[1]*self.t_/2. + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2)/3. + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3)/4. + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4)/5. + self.thermo_[self.index_[i]].high[5]/self.t_;
+                    self.hmole_[i] = self.thermo_[idx].high[0] + self.thermo_[idx].high[1]*self.t_/2. + self.thermo_[idx].high[2]*self.t_.powi(2)/3. + self.thermo_[idx].high[3]*self.t_.powi(3)/4. + self.thermo_[idx].high[4]*self.t_.powi(4)/5. + self.thermo_[idx].high[5]/self.t_;
                 }
-                self.h_mole_[i] = self.h_mole_[i]*8.314*self.t_;
-                self.h_mass_[i] = self.h_mole_[i]/self.mw_[i];
+                self.hmole_[i] = self.hmole_[i]*8314.0*self.t_;
+                self.hmass_[i] = self.hmole_[i]/self.mw_[i];
             } 
             self.h_update_ = true;
         }
@@ -422,67 +441,69 @@ impl Asali{
         if !self.s_update_{
             let mut v: f64;
             for i in 0..self.nc_ as usize {
-                if self.t_ < 1000 {
-                    self.s_mole_[i] = self.thermo_[self.index_[i]].low[0]*self.t_.log() + self.thermo_[self.index_[i]].low[1]*self.t_ + self.thermo_[self.index_[i]].low[2]*self.t_.powi(2)/2. + self.thermo_[self.index_[i]].low[3]*self.t_.powi(3)/3. + self.thermo_[self.index_[i]].low[4]*self.t_.powi(4)/4. + self.thermo_[self.index_[i]].low[6];
+                let mut idx: usize = self.thermo_index_[i];
+                if self.t_ < 1000.0 {
+                    self.smole_[i] = self.thermo_[idx].low[0]*(self.t_).ln() + self.thermo_[idx].low[1]*self.t_ + self.thermo_[idx].low[2]*self.t_.powi(2)/2. + self.thermo_[idx].low[3]*self.t_.powi(3)/3. + self.thermo_[idx].low[4]*self.t_.powi(4)/4. + self.thermo_[idx].low[6];
                 }
                 else {
-                    self.s_mole_[i] = self.thermo_[self.index_[i]].high[0]*self.t_.log() + self.thermo_[self.index_[i]].high[1]*self.t_ + self.thermo_[self.index_[i]].high[2]*self.t_.powi(2)/2. + self.thermo_[self.index_[i]].high[3]*self.t_.powi(3)/3. + self.thermo_[self.index_[i]].high[4]*self.t_.powi(4)/4. + self.thermo_[self.index_[i]].high[6];
+                    self.smole_[i] = self.thermo_[idx].high[0]*(self.t_).ln() + self.thermo_[idx].high[1]*self.t_ + self.thermo_[idx].high[2]*self.t_.powi(2)/2. + self.thermo_[idx].high[3]*self.t_.powi(3)/3. + self.thermo_[idx].high[4]*self.t_.powi(4)/4. + self.thermo_[idx].high[6];
                 }
                 v = self.p_*self.x_[i]/1.0e05;
-                self.s_mole_[i] = 8314.*(self.s_mole_[i] - v.log());
-                self.s_mass_[i] = self.s_mole_[i]/self.mw_[i];
+                self.smole_[i] = 8314.0*(self.smole_[i] - v.ln());
+                self.smass_[i] = self.smole_[i]/self.mw_[i];
             } 
             self.s_update_ = true;
         }
     }
 
     fn binary_diffusion_(&mut self){
-        if !self.binary_diffusion_{
+        if !self.diff_update_{
             let mut ljpotentialmix: f64 = 0.0;
             let mut ljdiametermix: f64 = 0.0;
             let mut dipolemix: f64 = 0.0;
             let mut polarn: f64 = 0.0;
             let mut dipolep: f64 = 0.0;
+            let mut chi: f64 = 0.0;
 
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.index_[i];
+                let mut idx: usize = self.transport_index_[i];
                 for j in i..self.nc_ as usize {
-                    let mut jdx: usize = self.index_[j];
+                    let mut jdx: usize = self.transport_index_[j];
                     let mut mw_mix: f64 = self.mw_[i]*self.mw_[j]/(self.mw_[i] + self.mw_[j]);
                     
-                    if self.transport_[idx].polar == 0 && self.trasport_[jdx].polar == 0 {
-                        ljpotentialmix = (self.transport_[idx].ljpotential*self.trasport_[jdx].ljpotential).sqrt();
-                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.trasport_[jdx].ljdiameter);
-                        dipolemix      = (self.transport_[idx].dipole*self.trasport_[jdx].dipole).sqrt();
+                    if self.transport_[idx].polar == 0.0 && self.transport_[jdx].polar == 0.0 {
+                        ljpotentialmix = (self.transport_[idx].ljpotential*self.transport_[jdx].ljpotential).sqrt();
+                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter);
+                        dipolemix      = (self.transport_[idx].dipole*self.transport_[jdx].dipole).sqrt();
                     }
-                    else if self.transport_[idx].polar > 0 && self.trasport_[jdx].polar > 0 {
-                        ljpotentialmix = (self.transport_[idx].ljpotential*self.trasport_[jdx].ljpotential).sqrt();
-                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.trasport_[jdx].ljdiameter);
-                        dipolemix      = (self.transport_[idx].dipole*self.trasport_[jdx].dipole).sqrt();
+                    else if self.transport_[idx].polar > 0.0 && self.transport_[jdx].polar > 0.0 {
+                        ljpotentialmix = (self.transport_[idx].ljpotential*self.transport_[jdx].ljpotential).sqrt();
+                        ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter);
+                        dipolemix      = (self.transport_[idx].dipole*self.transport_[jdx].dipole).sqrt();
                     }
                     else {
                         polarn  = 0.;
                         dipolep = 0.;
                         
-                        if self.transport_[idx].polar == 0 {
+                        if self.transport_[idx].polar == 0.0 {
                             polarn  = self.transport_[idx].polar/self.transport_[idx].ljdiameter.powi(3);
-                            dipolep = 1e02*self.trasport_[jdx].dipole;
-                            dipolep = dipolep/(self.trasport_[jdx].ljpotential*1.3806488*self.trasport_[jdx].ljdiameter.powi(3)).sqrt();
+                            dipolep = 1e02*self.transport_[jdx].dipole;
+                            dipolep = dipolep/(self.transport_[jdx].ljpotential*1.3806488*self.transport_[jdx].ljdiameter.powi(3)).sqrt();
                             chi     = 0.25*polarn*dipolep;
-                            chi     = chi*(self.trasport_[jdx].ljpotential/self.transport_[idx].ljpotential).sqrt();
+                            chi     = chi*(self.transport_[jdx].ljpotential/self.transport_[idx].ljpotential).sqrt();
                             chi     = 1. + chi ;
                         }
                         else {
-                            polarn  = self.trasport_[jdx].polar/self.trasport_[jdx].ljdiameter.powi(3);
+                            polarn  = self.transport_[jdx].polar/self.transport_[jdx].ljdiameter.powi(3);
                             dipolep = 1e02*self.transport_[idx].dipole;
                             dipolep = dipolep/(self.transport_[idx].ljpotential*1.3806488*self.transport_[idx].ljdiameter.powi(3)).sqrt();
                             chi     = 0.25*polarn*dipolep;
-                            chi     = chi*(self.transport_[idx].ljpotential/self.trasport_[jdx].ljpotential).sqrt();
+                            chi     = chi*(self.transport_[idx].ljpotential/self.transport_[jdx].ljpotential).sqrt();
                             chi     = 1. + chi;
                         }
 
-                        ljpotentialmix = chi.pow(2) * std::sqrt(self.transport_[idx].ljpotential * self.transport_[jdx].ljpotential);
-                        ljdiametermix = 0.5 * (self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter) * chi.pow(-1. / 6.);
+                        ljpotentialmix = chi.powi(2) * (self.transport_[idx].ljpotential * self.transport_[jdx].ljpotential).sqrt();
+                        ljdiametermix = 0.5 * (self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter) * chi.powf(-1. / 6.);
                         dipolemix = 0.;
 
                     }
@@ -497,7 +518,7 @@ impl Asali{
                     self.diff_[j][i] = diff;                
                 }
             }
-            self.binary_diffusion_ = true;
+            self.diff_update_ = true;
         }
     }
 
@@ -524,7 +545,7 @@ impl Asali{
             self.density_();
             self.species_cp_();
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.index_[i];
+                let mut idx: usize = self.transport_index_[i];
                 if self.transport_[idx].geometry == 0 {
                     cvtrans = 3.*r*0.5;
                     cvrot   = 0.;
@@ -533,13 +554,13 @@ impl Asali{
                 else if self.transport_[idx]. geometry == 1 {
                     cvtrans = 3.*r*0.5;
                     cvrot   = r;
-                    cvvib   = self.cp_mole_[i] - r - 5.*r*0.5;
+                    cvvib   = self.cpmole_[i] - r - 5.*r*0.5;
                 }
                 else
                 {
                     cvtrans = 3.*r*0.5;
                     cvrot   = 3.*r*0.5;
-                    cvvib   = self.cp_mole_[i] - r - 3.*r;
+                    cvvib   = self.cpmole_[i] - r - 3.*r;
                 }
 
                 rho  = self.p_*self.mw_[i]/(r*self.t_);
@@ -548,8 +569,8 @@ impl Asali{
 
                 a = (5./2.) - rho*diff/mu;
 
-                f_t = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/self.t_).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/self.t_) + (self.pi_*self.transport_[idx].ljpotential/self.t_).powi(3).sqrt();
-                f_298 = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/298.0).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/298.0) + (self.pi_*self.transport_[idx].ljpotential/298.0).powi(3).sqrt();
+                f_t = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/self.t_).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/self.t_) + (std::f64::consts::PI*self.transport_[idx].ljpotential/self.t_).powi(3).sqrt();
+                f_298 = 1. + 0.5*(std::f64::consts::PI.powi(3)*self.transport_[idx].ljpotential/298.0).sqrt() + (0.25*std::f64::consts::PI.powi(2) + 2.)*(self.transport_[idx].ljpotential/298.0) + (std::f64::consts::PI*self.transport_[idx].ljpotential/298.0).powi(3).sqrt();
 
                 zrot = self.transport_[idx].collision*f_298/f_t;
                 
@@ -559,7 +580,7 @@ impl Asali{
                 frot   = (rho*diff/mu)*(1. + 2.*a/(std::f64::consts::PI*b));
                 fvib   = rho*diff/mu;
                 
-                self.cond[i] = mu*(ftrans*cvtrans + frot*cvrot + fvib*cvvib)/self.mw_[i];
+                self.cond_[i] = mu*(ftrans*cvtrans + frot*cvrot + fvib*cvvib)/self.mw_[i];
             }       
             self.cond_update_;
         }

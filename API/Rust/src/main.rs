@@ -27,36 +27,35 @@ fn main() {
     let cond = asali_obj.get_species_thermal_conductivity();
     let diff = asali_obj.get_binary_diffusion();
 
-    println!("Mixture molecular weight:     {:.3e}  [kmol/kg]\n",asali_obj.get_mixture_molecular_weight());
-    println!("Density:                      {:.3e}  [kg/m3]\n",asali_obj.get_density());
+    println!("Mixture molecular weight:     {:.3e}  [kmol/kg]",asali_obj.get_mixture_molecular_weight());
+    println!("Density:                      {:.3e}  [kg/m3]",asali_obj.get_density());
 
-    println!("\nSpecies viscosity [Pas]\n");
+    println!("\nSpecies viscosity [Pas]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],mu[j]);
     }
 
-    println!("\nSpecies binary diffusion coefficient [m2/s]\n");
+    println!("\nSpecies binary diffusion coefficient [m2/s]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}:\t{:.3e}\t{:.3e}\t{:.3e}",names[j],diff[j][0], diff[j][1], diff[j][2]);
     }
 
-
-    println!("\nSpecies specific heat [J/kg/K]\n");
+    println!("\nSpecies specific heat [J/kg/K]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],cp[j]);
     }
 
-    println!("\nSpecies enthalpy [J/kg]\n");
+    println!("\nSpecies enthalpy [J/kg]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],h[j]);
     }
 
-    println!("\nSpecies entropy [J/kg/K]\n");
+    println!("\nSpecies entropy [J/kg/K]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],s[j]);
     }
 
-    println!("\nSpecies thermal conductivity [W/m/K]\n");
+    println!("\nSpecies thermal conductivity [W/m/K]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],cond[j]);
     }
