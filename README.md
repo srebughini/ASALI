@@ -6,14 +6,9 @@
   <a href="https://sourceforge.net/projects/asali/?source=directory"><img src="https://img.shields.io/sourceforge/dt/asali.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/stargazers"><img src="https://img.shields.io/github/stars/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/blob/master/LICENSE"><img src="https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square"></a>
-</p>
-<p align="center">
-  <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/srebughini/ASALI?style=flat-square"></a>
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
-  <a href="https://www.codefactor.io/repository/github/srebughini/asali"><img src="https://img.shields.io/codefactor/grade/github/srebughini/ASALI?style=flat-square"></a>
-  <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/srebughini/ASALI?style=flat-square"></a>
-  <a href="https://github.com/srebughini/ASALI/"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/srebughini/ASALI?style=flat-square"></a>
+  <a href="https://srebughini.github.io/ASALI/"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fsrebughini.github.io%2FASALI%2F&up_message=online&down_message=offline&style=flat-square">
 </p>
 
 
@@ -26,8 +21,15 @@ Instead, the API version of Asali is designed for those approaching the modeling
 
 If you are looking for something more advanced and with higher performance, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
 
+# Infos
+|Branch|Code quality|Last commit|Number of commits|
+|-|-|-|-|
+|`master`|![CodeFactor Grade (with branch)](https://img.shields.io/codefactor/grade/github/srebughini/ASALI/master?style=flat-square)|![GitHub last commit (branch)](https://img.shields.io/github/last-commit/srebughini/ASALI/master?style=flat-square)|![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/srebughini/ASALI/master?style=flat-square)|
+|`api`|![CodeFactor Grade (with branch)](https://img.shields.io/codefactor/grade/github/srebughini/ASALI/api?style=flat-square)|![GitHub last commit (branch)](https://img.shields.io/github/last-commit/srebughini/ASALI/api?style=flat-square)|![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/srebughini/ASALI/api?style=flat-square)|
+|`gh-pages`|![CodeFactor Grade (with branch)](https://img.shields.io/codefactor/grade/github/srebughini/ASALI/gh-pages?style=flat-square)|![GitHub last commit (branch)](https://img.shields.io/github/last-commit/srebughini/ASALI/gh-pages?style=flat-square)|![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/srebughini/ASALI/gh-pages?style=flat-square)|
+|`cantera-input-files`|![CodeFactor Grade (with branch)](https://img.shields.io/codefactor/grade/github/srebughini/ASALI/cantera-input-files?style=flat-square)|![GitHub last commit (branch)](https://img.shields.io/github/last-commit/srebughini/ASALI/cantera-input-files?style=flat-square)|![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/srebughini/ASALI/cantera-input-files?style=flat-square)|
 # Contacts
-For any question/issue contact us:  
-E-mail: ste.rebu@outlook.it  
-Facebook: [Asali](https://www.facebook.com/ASALIcode/)  
-LinkedIn: [Asalicode](https://www.linkedin.com/company/asalicode)  
+For any question/issue contact us:
+|Email|Facebook|LinkedIn|
+|:-:|:-:|:-:|
+|ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
