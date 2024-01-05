@@ -6,17 +6,17 @@ __*
 
 API/C/example
 API/C/database-generator
+API/C/elapsed-time.sh
 API/Cpp/example
 API/Cpp/database-generator
+API/Cpp/elapsed-time.sh
 API/Fortran/example
 API/Fortran/database-generator
+API/Fortran/elapsed-time.sh
 API/Fortran/*.mod
 API/Java/*.class
 API/Rust/Cargo.lock
 API/Rust/target*
-API/elapsedTimeComparison/*.mod
-API/elapsedTimeComparison/asali-*
-API/elapsedTimeComparison/*.class
 API/elapsedTimeComparison/*.txt
 
 GUI/Ubuntu/ext/*
