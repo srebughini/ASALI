@@ -36,77 +36,73 @@
 #                                                                                              #
 ##############################################################################################*/
 
-import java.io.*; 
-import java.util.*;
-import java.lang.*;
-import java.text.*;
+#include "Asali.h"
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-class AsaliJava 
+int main(int argc, char *argv[])
 {
-    public static void main(String args[])  throws Exception 
-    { 
-		int N = Integer.valueOf(args[0]);
+    char *a = argv[1];
+    int N = atoi(a);
 
-        //Set up mixture composition
-        ArrayList<String> names = new ArrayList<String>();
-        names.add("H2");
-        names.add("O2");
-        names.add("N2");
-        
-        Vector<Double> x = new Vector<Double>();
-        x.add(0.1);
-        x.add(0.2);
-        x.add(0.7);
+    //Set up mixture composition
+    AsaliVector x,names;
+    double X[3] = {0.1, 0.2, 0.7};
+    empty_vector_of_char(&names,3);
+    set_vector_element_from_char(&names,0,"H2");
+    set_vector_element_from_char(&names,1,"O2");
+    set_vector_element_from_char(&names,2,"N2");
+    vector_from_double_array(&x,3,X);
 
-		//Initialize variables
-		double initializationStart = System.nanoTime();
-		for (int i=0;i<N-1;i++)
-		{
-			Asali asali_ = new Asali();
-		}
-		Asali asali_ = new Asali();
-		double initializationEnd = System.nanoTime();
-		
-		double []  mu, cp, h, s, cond, diff_mix, v, l;
-		double [][] diff;
-		double MWmix, rho, mumix, cpmassmix, cpmolemix, condmix, hmassmix, hmolemix, smolemix, smassmix;
-
-
-		double estimationStart = System.nanoTime();
-		for (int i=0;i<N;i++)
-		{
-			asali_.set_pressure(4e05);
-			asali_.set_temperature(393.15);
-			asali_.set_number_of_species(3);
-			asali_.set_species_names(names);
-			asali_.set_mole_fraction(x);
-
-			mu        = asali_.get_species_viscosity();
-			cp        = asali_.get_species_mass_specific_heat();
-			h         = asali_.get_species_mass_enthalpy();
-			s         = asali_.get_species_mass_entropy();
-			cond      = asali_.get_species_thermal_conductivity();
-			diff_mix  = asali_.get_mixture_diffusion();
-			v         = asali_.get_aritmetic_mean_gas_velocity();
-			l         = asali_.get_mean_free_path();
-			diff      = asali_.get_binary_diffusion();
-			MWmix     = asali_.get_mixture_molecular_weight();
-			rho       = asali_.get_density();
-			mumix     = asali_.get_mixture_viscosity();
-			cpmassmix = asali_.get_mixture_mass_specific_heat();
-			cpmolemix = asali_.get_mixture_molar_specific_heat();
-			condmix   = asali_.get_mixture_thermal_conductivity();
-			hmassmix  = asali_.get_mixture_mass_enthalpy();
-			hmolemix  = asali_.get_mixture_molar_enthalpy();
-			smolemix  = asali_.get_mixture_molar_entropy();
-			smassmix  = asali_.get_mixture_molar_entropy();
-		}
-		double estimationEnd = System.nanoTime();
-		double estimationTime = (estimationEnd - estimationStart)/(1.0e09*(double)N);
-		double initializationTime = (initializationEnd - initializationStart)/(1.0e09*(double)N);
-		
-		System.out.println("Java version");
-		System.out.printf("Initialization (s):  %.3e\n", initializationTime);
-		System.out.printf("Calculation (s):     %.3e\n", estimationTime);
+    //Initialize variables
+    clock_t initializationStart = clock();
+    for (int i=0;i<N-1;i++)
+    {
+        Asali asali;
+        initialize(&asali);
     }
+    Asali asali;
+    initialize(&asali);
+    clock_t initializationEnd = clock();
+    
+    AsaliVector mu,cp,h,s,cond,diff_mix,v,l;
+    AsaliMatrix diff;
+    double MWmix, rho, mumix, cpmassmix, cpmolemix, hmassmix, hmolemix, smassmix, smolemix, condmix;
+
+    clock_t estimationStart = clock();
+    for (int i=0;i<N;i++)
+    {
+        set_temperature(&asali,393.15);
+        set_pressure(&asali,4e05);
+        set_number_of_species(&asali,get_vector_size(&x));
+        set_species_names(&asali,names);
+        set_mole_fraction(&asali,x);
+
+        mu = get_species_viscosity(&asali);
+        diff = get_binary_diffusion(&asali);
+        cp = get_species_mass_specific_heat(&asali);
+        h = get_species_mass_enthalpy(&asali);
+        s = get_species_mass_entropy(&asali);
+        cond = get_species_thermal_conductivity(&asali);
+        diff_mix = get_mixture_diffusion(&asali);
+        v = get_arithmetic_mean_gas_velocity(&asali);
+        l = get_mean_free_path(&asali);
+        MWmix = get_mixture_molecular_weight(&asali);
+        rho = get_density(&asali);
+        mumix = get_mixture_viscosity(&asali);
+        cpmassmix = get_mixture_mass_specific_heat(&asali);
+        cpmolemix = get_mixture_molar_specific_heat(&asali);
+        hmassmix = get_mixture_mass_enthalpy(&asali);
+        hmolemix = get_mixture_molar_enthalpy(&asali);
+        smassmix = get_mixture_mass_entropy(&asali);
+        smolemix = get_mixture_molar_entropy(&asali);
+        condmix = get_mixture_thermal_conductivity(&asali);
+    }
+    clock_t estimationEnd = clock();
+    printf("C version\n");
+    printf("Initialization (s):  %.3e\n",((double)(initializationEnd - initializationStart)/CLOCKS_PER_SEC)/N);
+    printf("Calculation (s):     %.3e\n",((double)(estimationEnd - estimationStart)/CLOCKS_PER_SEC)/N);
+    
+    return 0;
 }

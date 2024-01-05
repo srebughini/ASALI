@@ -198,3 +198,43 @@ class AsaliJava
 }
 ```
 Example can be compiled by typing `./compile.sh`
+
+## **7. Rust version**
+This version can be included in your code as follow:  
+```rust
+//Include library
+mod definitions;
+mod omega;
+mod thermo;
+mod transport;
+mod asali;
+
+fn main() {
+    //Create asali object
+    let mut asali_obj = asali::Asali::new();
+    
+    //Set temperature
+    asali_obj.set_temperature(393.15);
+
+    //Set pressure
+    asali_obj.set_pressure(4.0e5);
+    
+    //Set number of species
+    asali_obj.set_number_of_species(3);
+    
+    //Set specie names
+    asali_obj.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()]);
+    
+    //Set mole composition
+    asali_obj.set_mole_fraction(vec![0.1,0.2,0.7]);
+
+    //Properties evaluation
+    let diff = asali_obj.get_binary_diffusion();
+    let cp = asali_obj.get_species_mass_specific_heat();
+}
+```
+Example can be compiled by typing `cargo build`
+
+To convert the Asali database into Rust code run `cargo run --bin database-generator`
+
+
