@@ -335,6 +335,125 @@ impl Asali{
         self.diff_.clone()
     }
 
+    pub fn get_mixture_viscosity(&mut self) -> f64 {
+        if !self.mu_mix_update_ {
+            self.species_viscosity_();
+            self.mu_mix_ = 0.0;
+            for i in 0..self.nc_ as usize {
+                let mut somma: f64 = 0.0;
+                for j in 0..self.nc_ as usize {
+                    let mut phi: f64 = 0.0;
+                    phi = (1./(8.).sqrt())*(1./(1. + self.mw_[i]/self.mw_[j]).sqrt());
+                    phi = phi*(1. + (self.mu_[i]/self.mu_[j]).sqrt()*(self.mw_[j]/self.mw_[j]).powf(1./4.)).powi(2);
+                    somma = somma + self.x_[j]*phi;
+                }
+                self.mu_mix_ = self.mu_mix_ + self.x_[i]*self.mu_[i]/somma;
+            }
+            self.mu_mix_update_ = true;
+        }
+        self.mu_mix_
+    }
+
+    pub fn get_mixture_mass_specific_heat(&mut self) -> f64 {
+        if !self.cpmass_mix_update_ {
+            self.species_cp_();
+            self.cpmass_mix_ = self.estimate_mixture_property(self.cpmass_, self.y_);
+        }
+        self.cpmass_mix_
+    }
+
+    pub fn get_mixture_molar_specific_heat(&mut self) -> f64 {
+        if !self.cpmole_mix_update_ {
+            self.species_cp_();
+            self.cpmole_mix_ = self.estimate_mixture_property(self.cpmole_, self.x_);
+        }
+        self.cpmole_mix_
+    }
+
+    pub fn get_mixture_mass_enthalpy(&mut self) -> f64 {
+        if !self.hmass_mix_update_ {
+            self.species_h_();
+            self.hmass_mix_ = self.estimate_mixture_property(self.hmass_, self.y_);
+        }
+        self.hmass_mix_
+    }
+
+    pub fn get_mixture_molar_enthalpy(&mut self) -> f64 {
+        if !self.hmole_mix_update_ {
+            self.species_h_();
+            self.hmole_mix_ = self.estimate_mixture_property(self.hmole_, self.x_);
+        }
+        self.hmole_mix_
+    }
+
+    pub fn get_mixture_molar_entropy(&mut self) -> f64 {
+        if !self.smole_mix_update_ {
+            self.species_s_();
+            self.smole_mix_ = self.estimate_mixture_property(self.smole_, self.x_);
+        }
+        self.smole_mix_
+    }
+
+    pub fn get_mixture_mass_entropy(&mut self) -> f64 {
+        self.smass_mix_ = self.get_mixture_molar_entropy()/self.mw_mix_;
+        self.smass_mix_
+    }
+
+    pub fn get_mixture_thermal_conductivity(&mut self) -> f64 {
+        if !self.cond_mix_update_{
+            self.species_thermal_conductivity_();
+            let mut a: f64 = 0.0;
+            let mut b: f64 = 0.0;
+            for i in 0..self.nc_ as usize {
+                a = a + self.x_[i]*self.cond_[i];
+                b = b + self.x_[i]/self.cond_[i];
+            }
+            self.cond_mix_ = 0.5*(a + 1.0/b);
+            self.cond_mix_update_ = true;
+        }
+        self.cond_mix_
+    }
+
+    pub fn get_mixture_diffusion(&mut self) -> Vec<f64> {
+        if !self.diff_mix_update_{
+            self.binary_diffusion_();
+            for i in 0..self.nc_ as usize {
+                let mut a: f64 = 0.0;
+                let mut b: f64 = 0.0;
+                for j in 0..self.nc_ as usize {
+                    if j != i {
+                        a = a + self.x_[j]*self.mw_[j];
+                        b = b + self.x_[j]/self.diff_[j][i];
+                    }
+                }
+                self.diff_mix_[i] = a/(self.mw_mix_*b);
+            }
+            self.diff_mix_update_ = true;
+        }
+        self.diff_mix_
+    }
+
+    pub fn get_arithmetic_mean_gas_velocity(&mut self) -> Vec<f64> {
+        if !v_update_{
+            for i in 0..self.nc_ as usize {
+                self.v_[i] = (8*8314*self.t_/(std::f64::consts::PI*self.mw_[i])).sqrt();
+            }
+            self.v_update_ = true;
+        }
+        self.v_
+    }
+
+    pub fn get_mean_free_path(&mut self) -> Vec<f64> {
+        if !l_update_{
+            for i in 0..self.nc_ as usize {
+                let idx = self.transport_index_[i];
+                self.l_[i] = 1.38064852*1e-03*self.t_/((2.0).sqrt()*self.p_*(self.transport_[idx].ljdiameter).powi(2));
+            }
+            self.l_update_ = true;
+        }
+        self.l_
+    }
+
     fn resize(&mut self, nc: i32) {
         self.x_.resize(nc as usize, 0.0);
         self.y_.resize(nc as usize, 0.0);
@@ -665,5 +784,14 @@ impl Asali{
     
         x[0] + x[1]*tr + x[2]*dr + x[3]*tr*dr
     }
+
+    fn estimate_mixture_property(&mut self, property_vector: Vec<f64>, composition_vector: Vec<f64>) -> f64 {
+        let mut mixture_property: f64 = 0.0;
+        for i in 0..self.nc_ as usize {
+            mixture_property = mixture_property + composition_vector[i]*property_vector[i];
+        }
+        mixture_property
+    }
+
 }
 
