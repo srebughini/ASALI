@@ -98,8 +98,6 @@ function readComposition() {
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
 
-    console.warn(select_obj);
-
     if (!value_obj.value.includes(select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
       let name = select_obj.options[select_obj.selectedIndex].value.toString();
