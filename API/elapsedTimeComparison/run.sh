@@ -40,7 +40,7 @@ function run()
 	java ../Java/ElapsedTime $N > Java.txt
 	
 	cd ../Rust
-	cargo run --bin elapsed-time $N > ../elapsedTimeComparison/Rust.txt
+	cargo run --bin elapsedtime $N > ../elapsedTimeComparison/Rust.txt
 	cd ../elapsedTimeComparison
 }
 
@@ -59,6 +59,7 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < C.txt
 	sed 's/,/./g ; s/E/e/g' < Fortran.txt
 	sed 's/,/./g ; s/E/e/g' < Java.txt
+	sed 's/,/./g ; s/E/e/g' < Rust.txt
 }
 
 
@@ -115,6 +116,7 @@ function printOnFile()
 	parseSingleFileOutput C.txt
 	parseSingleFileOutput Fortran.txt
 	parseSingleFileOutput Java.txt
+	parseSingleFileOutput Rust.txt
 }
 
 function Help()
