@@ -71,7 +71,7 @@ namespace ASALI
           packedBedDpBool_(false),
           Ndp_(3)
     {
-        //Set up packed bed
+        // Set up packed bed
         {
             dpPackedBed_.resize(Ndp_);
             packedBedDpLabel_.resize(Ndp_);
@@ -89,7 +89,7 @@ namespace ASALI
             packedBedDpLabel_[2] = new Gtk::Label("Eisfeld B. et al. (2001)");
         }
 
-        //Input composition
+        // Input composition
         {
             this->createInputGrid();
             this->set_border_width(15);
@@ -100,7 +100,7 @@ namespace ASALI
             this->input();
         }
 
-        //Input reactor
+        // Input reactor
         {
             mainBox_.set_halign(Gtk::ALIGN_START);
             mainBox_.set_spacing(10);
@@ -115,7 +115,7 @@ namespace ASALI
                 propertiesGrid_.set_row_spacing(10);
                 propertiesGrid_.set_column_homogeneous(true);
 
-                //Type
+                // Type
                 propertiesGrid_.attach(reactorTypeLabel_, 0, 0, 1, 1);
                 propertiesGrid_.attach(reactorTypeCombo_, 1, 0, 1, 1);
                 reactorTypeCombo_.append("tubular");
@@ -124,7 +124,7 @@ namespace ASALI
                 reactorTypeCombo_.signal_changed().connect(sigc::mem_fun(*this, &pressureDrops::options));
                 reactorTypeCombo_.set_active(0);
 
-                //Length
+                // Length
                 propertiesGrid_.attach(lengthLabel_, 0, 1, 1, 1);
                 propertiesGrid_.attach(lengthEntry_, 1, 1, 1, 1);
                 lengthEntry_.set_text("1");
@@ -135,7 +135,7 @@ namespace ASALI
                 lengthCombo_.append("mm");
                 lengthCombo_.set_active(0);
 
-                //Velocity
+                // Velocity
                 propertiesGrid_.attach(velocityLabel_, 0, 2, 1, 1);
                 propertiesGrid_.attach(velocityEntry_, 1, 2, 1, 1);
                 velocityEntry_.set_text("1");
@@ -148,7 +148,7 @@ namespace ASALI
                 velocityCombo_.append("cm/h");
                 velocityCombo_.set_active(0);
 
-                //Tubular
+                // Tubular
                 {
                     tubularTubeEntry_.set_text("1");
 
@@ -174,7 +174,7 @@ namespace ASALI
                     tubularDpCombo_.signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this, &pressureDrops::dpConversion), 0));
                 }
 
-                //Honeycomb
+                // Honeycomb
                 {
                     honeyCombCPSIEntry_.set_text("400");
 
@@ -194,7 +194,7 @@ namespace ASALI
                     honeyCombDpCombo_.signal_changed().connect(sigc::bind<unsigned int>(sigc::mem_fun(*this, &pressureDrops::dpConversion), 0));
                 }
 
-                //Packed bed
+                // Packed bed
                 {
                     packedBedTubeEntry_.set_text("1");
 
@@ -226,7 +226,7 @@ namespace ASALI
                     }
                 }
 
-                //Buttons
+                // Buttons
                 propertiesGrid_.attach(backButton3_, 0, 7, 1, 1);
                 backButton3_.signal_clicked().connect(sigc::mem_fun(*this, &pressureDrops::input));
                 propertiesGrid_.attach(exitButton3_, 2, 7, 1, 1);
@@ -357,14 +357,14 @@ namespace ASALI
         {
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
 
             chemistryInterface_->transportCalculate();
 
@@ -386,14 +386,15 @@ namespace ASALI
         {
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
+
 
             chemistryInterface_->transportCalculate();
 
@@ -418,14 +419,15 @@ namespace ASALI
         {
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
+
 
             chemistryInterface_->transportCalculate();
 
@@ -433,9 +435,9 @@ namespace ASALI
             double G = chemistryInterface_->getDensity() * v_;
             double Aw = 1. + 2. / (3. * Dt_ * (1. - epsi_) / Dp_);
             double Bw = std::pow(1.15 * std::pow(Dp_ / Dt_, 2.) + 0.87, 2.);
-            dpPackedBed_[0] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 7. / 4.) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                                                //Ergun
-            dpPackedBed_[1] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 4.2 * std::pow((1. - epsi_) / (Dp_ * G / mu), 1. / 6.)) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_); //Tallmadge
-            dpPackedBed_[2] = (154. * std::pow(Aw, 2.) * (1. - epsi_) / (Dp_ * G / mu) + Aw / Bw) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                             //Eisfeld
+            dpPackedBed_[0] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 7. / 4.) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                                                // Ergun
+            dpPackedBed_[1] = (150. * (1. - epsi_) / (Dp_ * G / mu) + 4.2 * std::pow((1. - epsi_) / (Dp_ * G / mu), 1. / 6.)) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_); // Tallmadge
+            dpPackedBed_[2] = (154. * std::pow(Aw, 2.) * (1. - epsi_) / (Dp_ * G / mu) + Aw / Bw) * (1. - epsi_) * std::pow(G, .2) / (std::pow(epsi_, 3.) * chemistryInterface_->getDensity() * Dp_);                             // Eisfeld
         }
     }
 

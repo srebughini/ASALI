@@ -63,7 +63,7 @@ namespace ASALI
             pv_.resize(10);
         }
 
-        //Input menu
+        // Input menu
         {
             this->set_border_width(15);
             this->set_title("ASALI: Linear regression");
@@ -73,16 +73,16 @@ namespace ASALI
             this->cleanInput();
         }
 
-        //Results
+        // Results
         {
             resultsGrid_.set_column_homogeneous(true);
             resultsGrid_.set_column_spacing(10);
             resultsGrid_.set_row_spacing(10);
 
-            //Add logo
+            // Add logo
             resultsGrid_.attach(logo_, 0, 0, 4, 1);
 
-            //Add temperature range
+            // Add temperature range
             resultsGrid_.attach(tempRangeLabel_, 0, 1, 1, 1);
             resultsGrid_.attach(tempEntry1_, 1, 1, 1, 1);
             tempEntry1_.set_text("298.15");
@@ -91,23 +91,23 @@ namespace ASALI
             resultsGrid_.attach(tempRangeCombo_, 3, 1, 1, 1);
             unitConversion_->updateBox(tempRangeCombo_, "temperature");
 
-            //Add properties selector
+            // Add properties selector
             resultsGrid_.attach(propertyLabel_, 0, 2, 1, 1);
             resultsGrid_.attach(propertyCombo_, 1, 2, 2, 1);
-            propertyCombo_.append("Thermal conductivity"); //0
-            propertyCombo_.append("Viscosity");            //1
-            propertyCombo_.append("Specific heat");        //2
-            propertyCombo_.append("Enthalpy");             //3
-            propertyCombo_.append("Entropy");              //4
-            propertyCombo_.append("Diffusivity");          //5
+            propertyCombo_.append("Thermal conductivity"); // 0
+            propertyCombo_.append("Viscosity");            // 1
+            propertyCombo_.append("Specific heat");        // 2
+            propertyCombo_.append("Enthalpy");             // 3
+            propertyCombo_.append("Entropy");              // 4
+            propertyCombo_.append("Diffusivity");          // 5
             propertyCombo_.set_active(0);
             propertyCombo_.signal_changed().connect(sigc::mem_fun(*this, &linearRegression::uploadLayout));
             resultsGrid_.attach(unitDimensionCombo_, 3, 2, 1, 1);
 
-            //Add regression image
+            // Add regression image
             resultsGrid_.attach(regressionImage_, 0, 3, 4, 1);
 
-            //Add value
+            // Add value
             resultsGrid_.attach(mLabel_, 0, 4, 1, 1);
             resultsGrid_.attach(mValueLabel_, 1, 4, 1, 1);
             resultsGrid_.attach(qLabel_, 0, 5, 1, 1);
@@ -115,7 +115,7 @@ namespace ASALI
             resultsGrid_.attach(rLabel_, 2, 4, 1, 2);
             resultsGrid_.attach(rValueLabel_, 3, 4, 1, 2);
 
-            //Add buttons
+            // Add buttons
             resultsGrid_.attach(backButton_, 0, 6, 1, 1);
             backButton_.signal_clicked().connect(sigc::mem_fun(*this, &linearRegression::cleanInput));
             resultsGrid_.attach(calculateButton_, 2, 6, 1, 1);
@@ -127,7 +127,7 @@ namespace ASALI
 
     void linearRegression::cleanInput()
     {
-        //Remove temperature selector
+        // Remove temperature selector
         inputGrid_.remove(tempLabel_);
         inputGrid_.remove(tempEntry_);
         inputGrid_.remove(tempCombo_);
@@ -150,7 +150,7 @@ namespace ASALI
             this->resize(resultsGrid_.get_width(), resultsGrid_.get_height());
             this->show_all_children();
 
-            //Add temperature selector
+            // Add temperature selector
             inputGrid_.attach(tempLabel_, 0, 0, 1, 1);
             inputGrid_.attach(tempEntry_, 1, 0, 1, 1);
             tempEntry_.set_max_length(10);
@@ -222,7 +222,7 @@ namespace ASALI
         }
         else
         {
-            //Make temperature vector
+            // Make temperature vector
             {
                 double T1 = Glib::Ascii::strtod(tempEntry1_.get_text());
                 double T2 = Glib::Ascii::strtod(tempEntry2_.get_text());
@@ -240,7 +240,7 @@ namespace ASALI
                 }
             }
 
-            //Set CANTERA
+            // Set CANTERA
             {
                 if (n_.size() > 1)
                 {
@@ -252,21 +252,21 @@ namespace ASALI
                 }
             }
 
-            //Property evaluation
+            // Property evaluation
             for (unsigned int i = 0; i < Tv_.size(); i++)
             {
                 chemistryInterface_->setTemperature(Tv_[i]);
 
                 chemistryInterface_->setPressure(p_);
 
-                if (fractionCombo_.get_active_row_number() == 0)
-                {
-                    chemistryInterface_->setMoleFraction(x_, n_);
-                }
-                else if (fractionCombo_.get_active_row_number() == 1)
-                {
-                    chemistryInterface_->setMassFraction(x_, n_);
-                }
+				if (fractionCombo_.get_active_row_number() == 0)
+				{
+					chemistryInterface_->setMassFraction(x_, n_);
+				}
+				else if (fractionCombo_.get_active_row_number() == 1)
+				{
+					chemistryInterface_->setMoleFraction(x_, n_);
+				}
 
                 chemistryInterface_->transportCalculate();
                 chemistryInterface_->thermoCalculate();
@@ -275,7 +275,7 @@ namespace ASALI
                 {
                     pv_[i] = chemistryInterface_->specieProperty("cond", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->condUnitDimensions(pv_[i]);
 
                     Tv_[i] = std::log(Tv_[i]);
@@ -285,7 +285,7 @@ namespace ASALI
                 {
                     pv_[i] = chemistryInterface_->specieProperty("mu", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->muUnitDimensions(pv_[i]);
 
                     Tv_[i] = std::log(Tv_[i]);
@@ -295,21 +295,21 @@ namespace ASALI
                 {
                     pv_[i] = chemistryInterface_->specieProperty("cp", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->cpUnitDimensions(pv_[i]);
                 }
                 else if (propertyCombo_.get_active_row_number() == 3)
                 {
                     pv_[i] = chemistryInterface_->specieProperty("h", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->hUnitDimensions(pv_[i]);
                 }
                 else if (propertyCombo_.get_active_row_number() == 4)
                 {
                     pv_[i] = chemistryInterface_->specieProperty("s", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->sUnitDimensions(pv_[i]);
 
                     Tv_[i] = std::log(Tv_[i]);
@@ -320,7 +320,7 @@ namespace ASALI
                     name_ = specieCombo_.get_active_text();
                     pv_[i] = chemistryInterface_->specieProperty("s", name_);
 
-                    //Convert unit
+                    // Convert unit
                     this->diffUnitDimensions(pv_[i]);
 
                     Tv_[i] = std::log(Tv_[i]);
@@ -328,7 +328,7 @@ namespace ASALI
                 }
             }
 
-            //Least square regression
+            // Least square regression
             {
                 this->leastSquareFitting(Tv_, pv_, m_, q_, r2_);
 
@@ -350,21 +350,21 @@ namespace ASALI
                 }
             }
 
-            //Show m_
+            // Show m_
             {
                 std::stringstream s;
                 s << std::scientific << std::setprecision(OP_) << std::setprecision(OP_) << m_;
                 mValueLabel_.set_text(s.str());
             }
 
-            //Show q_
+            // Show q_
             {
                 std::stringstream s;
                 s << std::scientific << std::setprecision(OP_) << std::setprecision(OP_) << q_;
                 qValueLabel_.set_text(s.str());
             }
 
-            //Show r2_
+            // Show r2_
             {
                 std::stringstream s;
                 s << std::scientific << std::setprecision(OP_) << std::setprecision(OP_) << r2_;

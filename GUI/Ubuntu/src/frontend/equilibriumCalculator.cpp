@@ -45,7 +45,7 @@ namespace ASALI
           initialStateLabel_("Initial state"),
           finalStateLabel_("Final state")
     {
-        //Input
+        // Input
         {
             this->remove();
             this->set_border_width(15);
@@ -76,14 +76,15 @@ namespace ASALI
             this->clean();
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
+
 
             x_.clear();
             y_.clear();
@@ -208,15 +209,15 @@ namespace ASALI
         finalFractionCombo_.set_active(0);
         finalFractionCombo_.signal_changed().connect(sigc::mem_fun(*this, &equilibriumCalculator::finalFractionUnitConversion));
 
-        //Add back button
+        // Add back button
         resultsGrid_.attach(backButton_, 0, n_.size() + 3, 1, 1);
         backButton_.signal_clicked().connect(sigc::mem_fun(*this, &equilibriumCalculator::input));
 
-        //Add print on file
+        // Add print on file
         resultsGrid_.attach(saveButton_, 1, n_.size() + 3, 1, 1);
         saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &equilibriumCalculator::save));
 
-        //Add exit button
+        // Add exit button
         resultsGrid_.attach(exitButton2_, 2, n_.size() + 3, 1, 1);
         exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &equilibriumCalculator::exit));
     }

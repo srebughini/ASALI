@@ -43,7 +43,7 @@ namespace ASALI
     thermoProperties::thermoProperties(ASALI::speciesPopup *speciesNames, const std::string &kineticType)
         : thermoTransportProperties(speciesNames, kineticType)
     {
-        //Input menu
+        // Input menu
         {
             this->set_border_width(15);
             this->set_title("ASALI: Thermodynamic properties");
@@ -96,14 +96,15 @@ namespace ASALI
             this->clean();
             chemistryInterface_->setTemperature(T_);
             chemistryInterface_->setPressure(p_);
-            if (fractionCombo_.get_active_row_number() == 0)
-            {
-                chemistryInterface_->setMoleFraction(x_, n_);
-            }
-            else if (fractionCombo_.get_active_row_number() == 1)
-            {
-                chemistryInterface_->setMassFraction(x_, n_);
-            }
+			if (fractionCombo_.get_active_row_number() == 0)
+			{
+				chemistryInterface_->setMassFraction(x_, n_);
+			}
+			else if (fractionCombo_.get_active_row_number() == 1)
+			{
+				chemistryInterface_->setMoleFraction(x_, n_);
+			}
+
 
             chemistryInterface_->thermoCalculate();
 
@@ -158,15 +159,15 @@ namespace ASALI
                 }
             }
 
-            //Thermo grid menu
+            // Thermo grid menu
             {
-                //Add back button
+                // Add back button
                 resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
 
-                //Add print on file
+                // Add print on file
                 resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
 
-                //Add exit button
+                // Add exit button
                 resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
 
                 this->remove();
@@ -186,7 +187,7 @@ namespace ASALI
         resultsGrid_.set_column_spacing(10);
         resultsGrid_.set_row_spacing(10);
 
-        //Specific heat
+        // Specific heat
         cpBox_.pack_start(cpLabel_, Gtk::PACK_SHRINK);
         cpBox_.pack_start(cpCombo_, Gtk::PACK_SHRINK);
         cpBox_.set_spacing(5);
@@ -200,7 +201,7 @@ namespace ASALI
         cpCombo_.set_active(0);
         cpCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::cpUnitConversion), true, 1));
 
-        //Enthalpy
+        // Enthalpy
         hBox_.pack_start(hLabel_, Gtk::PACK_SHRINK);
         hBox_.pack_start(hCombo_, Gtk::PACK_SHRINK);
         hBox_.set_spacing(5);
@@ -214,7 +215,7 @@ namespace ASALI
         hCombo_.set_active(0);
         hCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::hUnitConversion), true, 2));
 
-        //Entropy
+        // Entropy
         sBox_.pack_start(sLabel_, Gtk::PACK_SHRINK);
         sBox_.pack_start(sCombo_, Gtk::PACK_SHRINK);
         sBox_.set_spacing(5);
@@ -228,20 +229,20 @@ namespace ASALI
         sCombo_.set_active(0);
         sCombo_.signal_changed().connect(sigc::bind<bool>(sigc::mem_fun(*this, &thermoProperties::sUnitConversion), true, 3));
 
-        //Add heading
+        // Add heading
         resultsGrid_.attach(cpBox_, 1, 0, 1, 1);
         resultsGrid_.attach(hBox_, 2, 0, 1, 1);
         resultsGrid_.attach(sBox_, 3, 0, 1, 1);
 
-        //Add back button
+        // Add back button
         resultsGrid_.attach(backButton_, 0, n_.size() + 2, 1, 1);
         backButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::input));
 
-        //Add print on file
+        // Add print on file
         resultsGrid_.attach(saveButton_, 1, n_.size() + 2, 1, 1);
         saveButton_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::save));
 
-        //Add exit button
+        // Add exit button
         resultsGrid_.attach(exitButton2_, 3, n_.size() + 2, 1, 1);
         exitButton2_.signal_clicked().connect(sigc::mem_fun(*this, &thermoProperties::exit));
     }
