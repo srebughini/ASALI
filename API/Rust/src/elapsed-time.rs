@@ -35,6 +35,7 @@
 #   along with ASALI. If not, see <http://www.gnu.org/licenses/>.                              #
 #                                                                                              #
 ##############################################################################################*/
+#![allow(unused)]
 
 mod definitions;
 mod omega;
@@ -109,7 +110,7 @@ fn main() {
     }
     let estimation_duration = (estimation_start.elapsed().as_nanos() as f64)/1e09;
   
-    println!("Rust version\n");
-    println!("Initialization (s):  {:.5e}\n", initialization_duration/(n as f64));
-    println!("Calculation (s):     {:.5e}\n", estimation_duration/(n as f64));
+    println!("Rust version");
+    println!("Initialization (s):  {:.3e}", initialization_duration/(n as f64));
+    println!("Calculation (s):     {:.3e}", estimation_duration/(n as f64));
 }

@@ -7,24 +7,29 @@ function compile()
 	rm -rf ../Cpp/elapsed-time.sh
 	rm -rf ../Fortran/elapsed-time.sh
 	
+	echo "...C version..."
 	cd ../C
 	gcc elapsed-time.c AsaliVector.c AsaliMatrix.c Asali.c -lm -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
+	echo "...Cpp version..."
 	cd ../Cpp
-	g++ -std=c++11 -Wall -Wextra Asali.cpp elapsed-time.cpp -o elapsed-time.sh
+	g++ -std=c++11 -Wall -Wextra -Wunused-but-set-variable Asali.cpp elapsed-time.cpp -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
+	echo "...Fortran version..."
 	cd ../Fortran
 	gfortran elapsed-time.f90 -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
+	echo "...Java version..."
 	cd ../Java
 	javac -Xlint ThermoDatabase.java TransportDatabase.java OmegaDatabase.java Asali.java ElapsedTime.java
 	cd ../elapsedTimeComparison
 
+	echo "...Rust version..."
 	cd ../Rust
-	cargo build
+	cargo build --release
 	cd ../elapsedTimeComparison 
 }
 
@@ -37,7 +42,9 @@ function run()
 	
 	./../Fortran/elapsed-time.sh $N > Fortran.txt
 	
-	java ../Java/ElapsedTime $N > Java.txt
+	cd ../Java
+	java ElapsedTime $N > ../elapsedTimeComparison/Java.txt
+	cd ../elapsedTimeComparison
 	
 	cd ../Rust
 	cargo run --bin elapsedtime $N > ../elapsedTimeComparison/Rust.txt
