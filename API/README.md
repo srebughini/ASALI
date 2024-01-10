@@ -14,7 +14,13 @@ Let's go straight to the point! Asali library can estimate:
 
 Asali estimates the transport properties with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
 
-## **2. Matlab and Octave version**
+## **2. Python version**
+Interested in the python version? Check this: [ASALIPY](https://github.com/srebughini/ASALIPY)
+
+## **3. Javascript version**
+Interested in the Javascript version? Check this: [JaSali](https://github.com/srebughini/JASALI)
+
+## **4. Matlab and Octave version**
 The [Matlab](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) and [Octave](https://www.gnu.org/software/octave/) API can be inlcuded in your code as follow:
 ```Matlab
 %Class generation
@@ -31,7 +37,7 @@ cp = p.SpeciesMassSpecificHeat;
 ```
 To create the file *database.mat* run the file `database-generator.m`
 
-## **3. Fortran version**
+## **5. Fortran version**
 This version can be included in your code as follow:  
 ```fortran
 !Include library
@@ -69,7 +75,7 @@ Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into Fortran code run `./database-generator`
 
-## **4. C version**
+## **6. C version**
 This version can be included in your code as follow:  
 ```c
 //Include library
@@ -111,7 +117,7 @@ Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into C code run `./database-generator`
 
-## **5. C++ version**
+## **7. C++ version**
 This version can be included in your code as follow:  
 ```cpp
 //Include library
@@ -151,7 +157,7 @@ Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into C++ code run `./database-generator`
 
-## **6. Java version**
+## **8. Java version**
 This version can be included in your code as follow:  
 ```java
 //Include library
@@ -198,3 +204,43 @@ class AsaliJava
 }
 ```
 Example can be compiled by typing `./compile.sh`
+
+## **9. Rust version**
+This version can be included in your code as follow:  
+```rust
+//Include library
+mod definitions;
+mod omega;
+mod thermo;
+mod transport;
+mod asali;
+
+fn main() {
+    //Create asali object
+    let mut asali_obj = asali::Asali::new();
+    
+    //Set temperature
+    asali_obj.set_temperature(393.15);
+
+    //Set pressure
+    asali_obj.set_pressure(4.0e5);
+    
+    //Set number of species
+    asali_obj.set_number_of_species(3);
+    
+    //Set specie names
+    asali_obj.set_species_names(vec!["H2".to_string(), "O2".to_string(), "N2".to_string()]);
+    
+    //Set mole composition
+    asali_obj.set_mole_fraction(vec![0.1,0.2,0.7]);
+
+    //Properties evaluation
+    let diff = asali_obj.get_binary_diffusion();
+    let cp = asali_obj.get_species_mass_specific_heat();
+}
+```
+Example can be compiled by typing `cargo build`
+
+To convert the Asali database into Rust code run `cargo run --bin database-generator`
+
+

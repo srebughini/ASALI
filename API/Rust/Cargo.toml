@@ -1,0 +1,12 @@
+[package]
+name = "Asali"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "databasegenerator"
+path = "src/database-generator.rs"
+
+[[bin]]
+name = "elapsedtime"
+path = "src/elapsed-time.rs"

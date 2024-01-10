@@ -3,27 +3,52 @@
 function compile()
 {
 	echo "Compiling..."
-	rm -rf asali-C.sh
-	rm -rf asali-cpp.sh
-	rm -rf asali-fortran.sh
+	rm -rf ../C/elapsed-time.sh
+	rm -rf ../Cpp/elapsed-time.sh
+	rm -rf ../Fortran/elapsed-time.sh
 	
-	gcc -w C-API.c ../C/AsaliVector.c ../C/AsaliMatrix.c ../C/Asali.c -I../C/ -lm -o asali-C.sh
+	echo "...C version..."
+	cd ../C
+	gcc elapsed-time.c AsaliVector.c AsaliMatrix.c Asali.c -lm -o elapsed-time.sh
+	cd ../elapsedTimeComparison
 
-	g++ -std=c++11 -w ../Cpp/Asali.C Cpp-API.cpp -I../Cpp/ -o asali-cpp.sh
+	echo "...Cpp version..."
+	cd ../Cpp
+	g++ -std=c++11 -Wall -Wextra -Wunused-but-set-variable Asali.cpp elapsed-time.cpp -o elapsed-time.sh
+	cd ../elapsedTimeComparison
 
-	gfortran -o asali-fortran.sh Fortran-API.f90 -I../Fortran/
+	echo "...Fortran version..."
+	cd ../Fortran
+	gfortran elapsed-time.f90 -o elapsed-time.sh
+	cd ../elapsedTimeComparison
 
-	javac -Xlint ../Java/ThermoDatabase.java ../Java/TransportDatabase.java ../Java/OmegaDatabase.java ../Java/Asali.java Java-API.java -d .
+	echo "...Java version..."
+	cd ../Java
+	javac -Xlint ThermoDatabase.java TransportDatabase.java OmegaDatabase.java Asali.java ElapsedTime.java
+	cd ../elapsedTimeComparison
 
+	echo "...Rust version..."
+	cd ../Rust
+	cargo build --release
+	cd ../elapsedTimeComparison 
 }
 
 function run()
 {
 	local N=$1
-	./asali-C.sh $N > C.txt
-	./asali-cpp.sh $N > Cpp.txt
-	./asali-fortran.sh $N > Fortran.txt
-	java AsaliJava $N > Java.txt
+	./../C/elapsed-time.sh $N > C.txt
+	
+	./../Cpp/elapsed-time.sh $N > Cpp.txt
+	
+	./../Fortran/elapsed-time.sh $N > Fortran.txt
+	
+	cd ../Java
+	java ElapsedTime $N > ../elapsedTimeComparison/Java.txt
+	cd ../elapsedTimeComparison
+	
+	cd ../Rust
+	cargo run --bin elapsedtime $N > ../elapsedTimeComparison/Rust.txt
+	cd ../elapsedTimeComparison
 }
 
 function printOnScreen()
@@ -41,6 +66,7 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < C.txt
 	sed 's/,/./g ; s/E/e/g' < Fortran.txt
 	sed 's/,/./g ; s/E/e/g' < Java.txt
+	sed 's/,/./g ; s/E/e/g' < Rust.txt
 }
 
 
@@ -97,6 +123,7 @@ function printOnFile()
 	parseSingleFileOutput C.txt
 	parseSingleFileOutput Fortran.txt
 	parseSingleFileOutput Java.txt
+	parseSingleFileOutput Rust.txt
 }
 
 function Help()
@@ -175,6 +202,7 @@ rm -rf Cpp.txt
 rm -rf C.txt
 rm -rf Fortran.txt
 rm -rf Java.txt
+rm -rf Rust.txt
 
 
 

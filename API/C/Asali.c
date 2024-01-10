@@ -344,6 +344,10 @@ void binary_diffusion_(Asali* asali_)
                         chi     = chi*sqrt(asali_->transport_[i_idx].LJpotential/asali_->transport_[j_idx].LJpotential);
                         chi     = 1. + chi;
                     }
+
+                    LJpotentialmix = pow(chi, 2.) * sqrt(asali_->transport_[i_idx].LJpotential * asali_->transport_[j_idx].LJpotential);
+                    LJdiametermix = 0.5 * (asali_->transport_[i_idx].LJdiameter + asali_->transport_[j_idx].LJdiameter) * pow(chi, -1. / 6.);
+                    dipolemix = 0.;
                 }
 
                 Tr    = asali_->T_/LJpotentialmix;
