@@ -41,11 +41,11 @@ mod omega;
 mod thermo;
 mod transport;
 mod asali;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-    let n: i32 = args[0].parse().unwrap();
+    let n: i32 = args[1].parse().unwrap();
 
     //Set up mixture composition
     let names: Vec<String> = vec!["H2".to_string(), "O2".to_string(), "N2".to_string()];
@@ -53,11 +53,11 @@ fn main() {
 
     //Initialize variables
     let initialization_start = Instant::now();
-    for i in 0..n-1 as usize {
+    for _i in 0..(n-1) as usize {
         let mut asali_obj = asali::Asali::new();
     }
     let mut asali_obj = asali::Asali::new();
-    let initialization_duration = initialization_start.elapsed();
+    let initialization_duration = (initialization_start.elapsed().as_nanos() as f64)/1e09;
 
     let mut mu: Vec<f64>; 
     let mut diff: Vec<Vec<f64>>;
@@ -73,19 +73,19 @@ fn main() {
     let mut mumix: f64;
     let mut cpmassmix: f64;
     let mut cpmolemix: f64;
-    let mut hmassmxi: f64;
+    let mut hmassmix: f64;
     let mut hmolemix: f64;
     let mut smassmix: f64;
     let mut smolemix: f64;
     let mut condmix: f64;
 
     let estimation_start = Instant::now();
-    for i in 0..n as usize {
+    for _i in 0..n as usize {
         asali_obj.set_temperature(393.15);
         asali_obj.set_pressure(4.0e5);
         asali_obj.set_number_of_species(3);
-        asali_obj.set_species_names(names);
-        asali_obj.set_mole_fraction(x);
+        asali_obj.set_species_names(names.clone());
+        asali_obj.set_mole_fraction(x.clone());
 
         mu = asali_obj.get_species_viscosity();
         diff = asali_obj.get_binary_diffusion();
@@ -107,9 +107,9 @@ fn main() {
         smolemix = asali_obj.get_mixture_molar_entropy();
         condmix = asali_obj.get_mixture_thermal_conductivity();
     }
-    let estimation_duration = estimation_start.elapsed();
+    let estimation_duration = (estimation_start.elapsed().as_nanos() as f64)/1e09;
   
     println!("Rust version\n");
-    println!("Initialization (s):  {:.3e}\n", initialization_duration.as_sec()/n);
-    println!("Calculation (s):     {:.3e}\n", estimation_duration.as_sec()/n);   
+    println!("Initialization (s):  {:.5e}\n", initialization_duration/(n as f64));
+    println!("Calculation (s):     {:.5e}\n", estimation_duration/(n as f64));
 }

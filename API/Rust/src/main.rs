@@ -81,7 +81,7 @@ fn main() {
         println!("{}\t{:.3e}",names[j],v[j]);
     }
 
-    println!("\nMean free path [m");
+    println!("\nMean free path [m]");
     for j in 0..asali_obj.get_number_of_species() as usize {
         println!("{}\t{:.3e}",names[j],l[j]);
     }

@@ -342,8 +342,7 @@ impl Asali{
             for i in 0..self.nc_ as usize {
                 let mut somma: f64 = 0.0;
                 for j in 0..self.nc_ as usize {
-                    let mut phi: f64 = 0.0;
-                    phi = (1./(8.).sqrt())*(1./(1. + self.mw_[i]/self.mw_[j]).sqrt());
+                    let mut phi: f64 = (1./(8.0_f64).sqrt())*(1./(1. + self.mw_[i]/self.mw_[j]).sqrt());
                     phi = phi*(1. + (self.mu_[i]/self.mu_[j]).sqrt()*(self.mw_[j]/self.mw_[j]).powf(1./4.)).powi(2);
                     somma = somma + self.x_[j]*phi;
                 }
@@ -357,7 +356,7 @@ impl Asali{
     pub fn get_mixture_mass_specific_heat(&mut self) -> f64 {
         if !self.cpmass_mix_update_ {
             self.species_cp_();
-            self.cpmass_mix_ = self.estimate_mixture_property(self.cpmass_, self.y_);
+            self.cpmass_mix_ = self.estimate_mixture_property(self.cpmass_.clone(), self.y_.clone());
         }
         self.cpmass_mix_
     }
@@ -365,7 +364,7 @@ impl Asali{
     pub fn get_mixture_molar_specific_heat(&mut self) -> f64 {
         if !self.cpmole_mix_update_ {
             self.species_cp_();
-            self.cpmole_mix_ = self.estimate_mixture_property(self.cpmole_, self.x_);
+            self.cpmole_mix_ = self.estimate_mixture_property(self.cpmole_.clone(), self.x_.clone());
         }
         self.cpmole_mix_
     }
@@ -373,7 +372,7 @@ impl Asali{
     pub fn get_mixture_mass_enthalpy(&mut self) -> f64 {
         if !self.hmass_mix_update_ {
             self.species_h_();
-            self.hmass_mix_ = self.estimate_mixture_property(self.hmass_, self.y_);
+            self.hmass_mix_ = self.estimate_mixture_property(self.hmass_.clone(), self.y_.clone());
         }
         self.hmass_mix_
     }
@@ -381,7 +380,7 @@ impl Asali{
     pub fn get_mixture_molar_enthalpy(&mut self) -> f64 {
         if !self.hmole_mix_update_ {
             self.species_h_();
-            self.hmole_mix_ = self.estimate_mixture_property(self.hmole_, self.x_);
+            self.hmole_mix_ = self.estimate_mixture_property(self.hmole_.clone(), self.x_.clone());
         }
         self.hmole_mix_
     }
@@ -389,7 +388,7 @@ impl Asali{
     pub fn get_mixture_molar_entropy(&mut self) -> f64 {
         if !self.smole_mix_update_ {
             self.species_s_();
-            self.smole_mix_ = self.estimate_mixture_property(self.smole_, self.x_);
+            self.smole_mix_ = self.estimate_mixture_property(self.smole_.clone(), self.x_.clone());
         }
         self.smole_mix_
     }
@@ -430,28 +429,28 @@ impl Asali{
             }
             self.diff_mix_update_ = true;
         }
-        self.diff_mix_
+        self.diff_mix_.clone()
     }
 
     pub fn get_arithmetic_mean_gas_velocity(&mut self) -> Vec<f64> {
-        if !v_update_{
+        if !self.v_update_{
             for i in 0..self.nc_ as usize {
-                self.v_[i] = (8*8314*self.t_/(std::f64::consts::PI*self.mw_[i])).sqrt();
+                self.v_[i] = (8.0*8314.0*self.t_/(std::f64::consts::PI*self.mw_[i])).sqrt();
             }
             self.v_update_ = true;
         }
-        self.v_
+        self.v_.clone()
     }
 
     pub fn get_mean_free_path(&mut self) -> Vec<f64> {
-        if !l_update_{
+        if !self.l_update_{
             for i in 0..self.nc_ as usize {
                 let idx = self.transport_index_[i];
-                self.l_[i] = 1.38064852*1e-03*self.t_/((2.0).sqrt()*self.p_*(self.transport_[idx].ljdiameter).powi(2));
+                self.l_[i] = 1.38064852*1e-03*self.t_/((2.0_f64).sqrt()*self.p_*(self.transport_[idx].ljdiameter).powi(2));
             }
             self.l_update_ = true;
         }
-        self.l_
+        self.l_.clone()
     }
 
     fn resize(&mut self, nc: i32) {
@@ -525,7 +524,7 @@ impl Asali{
     fn species_cp_(&mut self){
         if !self.cp_update_{
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.thermo_index_[i];
+                let idx: usize = self.thermo_index_[i];
                 if self.t_ < 1000.0 {
                     self.cpmole_[i] = self.thermo_[idx].low[0] + self.thermo_[idx].low[1]*self.t_ + self.thermo_[idx].low[2]*(self.t_).powi(2) + self.thermo_[idx].low[3]*(self.t_).powi(3) + self.thermo_[idx].low[4]*(self.t_).powi(4);
                 }
@@ -542,7 +541,7 @@ impl Asali{
     fn species_h_(&mut self){
         if !self.h_update_{
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.thermo_index_[i];
+                let idx: usize = self.thermo_index_[i];
                 if self.t_ < 1000.0 {
                     self.hmole_[i] = self.thermo_[idx].low[0] + self.thermo_[idx].low[1]*self.t_/2. + self.thermo_[idx].low[2]*self.t_.powi(2)/3. + self.thermo_[idx].low[3]*self.t_.powi(3)/4. + self.thermo_[idx].low[4]*self.t_.powi(4)/5. + self.thermo_[idx].low[5]/self.t_;
                 }
@@ -560,7 +559,7 @@ impl Asali{
         if !self.s_update_{
             let mut v: f64;
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.thermo_index_[i];
+                let idx: usize = self.thermo_index_[i];
                 if self.t_ < 1000.0 {
                     self.smole_[i] = self.thermo_[idx].low[0]*(self.t_).ln() + self.thermo_[idx].low[1]*self.t_ + self.thermo_[idx].low[2]*self.t_.powi(2)/2. + self.thermo_[idx].low[3]*self.t_.powi(3)/3. + self.thermo_[idx].low[4]*self.t_.powi(4)/4. + self.thermo_[idx].low[6];
                 }
@@ -577,19 +576,19 @@ impl Asali{
 
     fn binary_diffusion_(&mut self){
         if !self.diff_update_{
-            let mut ljpotentialmix: f64 = 0.0;
-            let mut ljdiametermix: f64 = 0.0;
-            let mut dipolemix: f64 = 0.0;
-            let mut polarn: f64 = 0.0;
-            let mut dipolep: f64 = 0.0;
-            let mut chi: f64 = 0.0;
+            let mut polarn: f64;
+            let mut dipolep: f64;
+            let mut chi: f64;
+            let mut ljpotentialmix: f64;
+            let mut ljdiametermix: f64;
+            let mut dipolemix: f64;
 
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.transport_index_[i];
+                let idx: usize = self.transport_index_[i];
                 for j in i..self.nc_ as usize {
-                    let mut jdx: usize = self.transport_index_[j];
-                    let mut mw_mix: f64 = self.mw_[i]*self.mw_[j]/(self.mw_[i] + self.mw_[j]);
-                    
+                    let jdx: usize = self.transport_index_[j];
+                    let mw_mix: f64 = self.mw_[i]*self.mw_[j]/(self.mw_[i] + self.mw_[j]);
+
                     if self.transport_[idx].polar == 0.0 && self.transport_[jdx].polar == 0.0 {
                         ljpotentialmix = (self.transport_[idx].ljpotential*self.transport_[jdx].ljpotential).sqrt();
                         ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter);
@@ -600,10 +599,7 @@ impl Asali{
                         ljdiametermix  = 0.5*(self.transport_[idx].ljdiameter + self.transport_[jdx].ljdiameter);
                         dipolemix      = (self.transport_[idx].dipole*self.transport_[jdx].dipole).sqrt();
                     }
-                    else {
-                        polarn  = 0.;
-                        dipolep = 0.;
-                        
+                    else {                       
                         if self.transport_[idx].polar == 0.0 {
                             polarn  = self.transport_[idx].polar/self.transport_[idx].ljdiameter.powi(3);
                             dipolep = 1e02*self.transport_[jdx].dipole;
@@ -627,12 +623,10 @@ impl Asali{
 
                     }
 
-                    let mut tr: f64 = self.t_/ljpotentialmix;
-                    let mut dr: f64 = 0.5*dipolemix.powi(2)/(ljpotentialmix*1.3806488*ljpotentialmix.powi(3));
-                    dr    = 1e06*dr;
-                    let mut sigma: f64 = self.collision_integrals_11(tr,dr);
-                    let mut diff: f64 = (3./16.)*(2.*std::f64::consts::PI*(1.3806488*self.t_).powi(3)/(mw_mix*1.66054)).sqrt()/(self.p_*std::f64::consts::PI*ljdiametermix.powi(2)*sigma);
-                    diff  = diff*0.1;
+                    let tr: f64 = self.t_/ljpotentialmix;
+                    let dr: f64 = 1e06*0.5*dipolemix.powi(2)/(ljpotentialmix*1.3806488*ljpotentialmix.powi(3));
+                    let sigma: f64 = self.collision_integrals_11(tr,dr);
+                    let diff: f64 = 0.1*(3./16.)*(2.*std::f64::consts::PI*(1.3806488*self.t_).powi(3)/(mw_mix*1.66054)).sqrt()/(self.p_*std::f64::consts::PI*ljdiametermix.powi(2)*sigma);
                     self.diff_[i][j] = diff;
                     self.diff_[j][i] = diff;                
                 }
@@ -643,28 +637,29 @@ impl Asali{
 
     fn species_thermal_conductivity_(&mut self){
         if !self.cond_update_{
-            let mut a: f64 = 0.0;
-            let mut b: f64 = 0.0;
-            let mut zrot: f64 = 0.0;
-            let mut cvtrans: f64 = 0.0;
-            let mut cvrot: f64 = 0.0;
-            let mut cvvib: f64 = 0.0;
-            let mut ftrans: f64 = 0.0;
-            let mut frot: f64 = 0.0;
-            let mut fvib: f64 = 0.0;
-            let mut r: f64 = 8314.0; //[J/kmol/K]
-            let mut f_t: f64 = 0.0;
-            let mut f_298: f64 = 0.0;
-            let mut rho: f64 = 0.0;
-            let mut diff: f64 = 0.0;
-            let mut mu: f64 = 0.0;
+            let mut a: f64;
+            let mut b: f64;
+            let mut zrot: f64;
+            let mut cvtrans: f64;
+            let mut cvrot: f64;
+            let mut cvvib: f64;
+            let mut ftrans: f64;
+            let mut frot: f64;
+            let mut fvib: f64;
+            let mut f_t: f64;
+            let mut f_298: f64;
+            let mut rho: f64;
+            let mut diff: f64;
+            let mut mu: f64;
+
+            let r: f64 = 8314.0; //[J/kmol/K]
 
             self.species_viscosity_();
             self.binary_diffusion_();
             self.density_();
             self.species_cp_();
             for i in 0..self.nc_ as usize {
-                let mut idx: usize = self.transport_index_[i];
+                let idx: usize = self.transport_index_[i];
                 if self.transport_[idx].geometry == 0 {
                     cvtrans = 3.*r*0.5;
                     cvrot   = 0.;
