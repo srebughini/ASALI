@@ -1,5 +1,7 @@
+import { BeerQuote } from "./beerq";
+
 function getQuote() {
-  let randomQuote = beerq.getRandomQuote();
+  let randomQuote = BeerQuote.getRandomQuote();
   document.getElementById("quote").innerHTML = "<i>" + randomQuote.quote + "</i>";
   document.getElementById("author").innerHTML = randomQuote.author;
 }
