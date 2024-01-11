@@ -1,6 +1,5 @@
 function getQuote() {
-  let beerquotes = BeerQuote();
-  let randomQuote = beerquotes.getRandomQuote();
+  let randomQuote = beerq.getRandomQuote();
   document.getElementById("quote").innerHTML = "<i>" + randomQuote.quote + "</i>";
   document.getElementById("author").innerHTML = randomQuote.author;
 }
