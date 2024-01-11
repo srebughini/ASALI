@@ -1,8 +1,7 @@
 function getQuote() {
   let randomQuote = beerq.BeerQuote().getRandomQuote();
-  document.getElementById("quote").innerHTML = "<i>" + randomQuote.quote + "</i>";
-  document.getElementById("author").innerHTML = randomQuote.author;
+  document.getElementById("quote").innerHTML = "<i>" + randomQuote.quote + "</i>br[" + randomQuote.author + "]";
 }
 
-setInterval(getQuote, 5000); /*Call it here*/
+setInterval(getQuote, 10000); /*Call it here*/
 getQuote();
