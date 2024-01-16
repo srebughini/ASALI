@@ -10,6 +10,7 @@
 - title: Application Programming Interface
   docs:
   - api-introduction
+  - api-species
   - api-performance
   - api-matlab
   - api-fortran
