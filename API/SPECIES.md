@@ -1,6 +1,6 @@
 # **ASALI: Modeling and beyond**
 ## List of available species
-|Asali name|Chemical formula|Common name|
+|ASALI name|Formula|Name from [PubChem](https://pubchem.ncbi.nlm.nih.gov/)|
 |:-:|:-:|:-:|
 |AC3H4|C<sub>3</sub>H<sub>4</sub>|Allene|
 |CH3COOH|C<sub>2</sub>H<sub>4</sub>O<sub>2</sub>|Acetic acid|
@@ -102,10 +102,10 @@
 |XYLENE|C<sub>8</sub>H<sub>10</sub>|Xylenes|
 |NC16H34|C<sub>16</sub>H<sub>34</sub>|Normal hexadecane|
 |N2H4|H<sub>4</sub>N2|Hydrazine|
-|N2O|ON<sub>2</sub>|Dinitrogen monoxide|
-|NH3|H<sub>3</sub>N|Ammonia|
-|NO|ON|Nitric oxide|
-|NO2|O<sub>2</sub>N|Nitric dioxide|
+|N2O|N<sub>2</sub>O|Dinitrogen monoxide|
+|NH3|NH<sub>3</sub>|Ammonia|
+|NO|NO|Nitric oxide|
+|NO2|NO<sub>2</sub>|Nitric dioxide|
 |C3H5OOH|C<sub>3</sub>H<sub>6</sub>O<sub>2</sub>|Allyl hydroperoxide|
 |NC3H7OH|C<sub>3</sub>H<sub>8</sub>O|Propanol|
 |N1C4H9OH|C<sub>4</sub>H<sub>10</sub>O|1-Butanol|
