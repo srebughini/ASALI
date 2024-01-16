@@ -2,7 +2,7 @@
 permalink: /docs/api-species/
 ---
 <h1 class="text-left"><b>List of available species</b></h1>
-<table>
+<table class="table table-striped">
     <tr>
         <td>ASALI name</td>
         <td>Formula</td>
