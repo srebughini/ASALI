@@ -4,7 +4,7 @@ These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* w
 If you download ASALI, you can run the same test on your own computer using the following commands:  
 ```bash  
 cd API/elapsedTimeComparison/  
-./run.sh -n 10000 -f test.md --compile  
+./run.sh -n 2000 -f test.md --compile  
 ```  
 ## Assumptions and operating conditions  
 The gas mixture operating conditions are reported in the following table:  
@@ -13,18 +13,25 @@ The gas mixture operating conditions are reported in the following table:
 |Temperature|393.15|K|  
 |Pressure|4|bar|  
 |H<sub>2</sub>|0.1|Molar fraction|  
-|O<sub>2</sub>|0.2|Molar fraction|  
-|N<sub>2</sub>|0.7|Molar fraction|  
+|O<sub>2</sub>|0.1|Molar fraction|  
+|C<sub>3</sub>H<sub>8</sub>|0.1|Molar fraction|  
+|C<sub>2</sub>H<sub>6</sub>|0.1|Molar fraction|  
+|CH<sub>4</sub>|0.1|Molar fraction|  
+|CO<sub>2</sub>|0.1|Molar fraction|  
+|HE|0.1|Molar fraction|  
+|N<sub>2</sub>|0.1|Molar fraction|  
+|NH<sub>3</sub>|0.2|Molar fraction|  
  
 The performance comparison has the following assumptions:  
-* Number of runs: **10000**  
+* Number of runs: **2000**  
 * Elapsed time to initialize **output variables** is **not considered**  
 ## Results  
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
 |Language|Initialization (s)|Calculation (s)|  
 |--------|----------------|-------------------|  
-|C++|2.364e-03|6.794e-06| 
-|C|3.400e-04|3.121e-05| 
-|Fortran|n.a.|5.447e-07| 
-|Java|2.531e-04|7.306e-06| 
-|Rust|4.508e-04|8.546e-04| 
+|C++|7.685e-04|1.003e-05| 
+|C|7.086e-05|1.196e-04| 
+|Fortran|n.a.|2.751e-06| 
+|Java|1.058e-04|1.575e-05| 
+|Rust|1.098e-4|9.363e-4| 
+|Octave|6.621e-03|8.256e-01| 

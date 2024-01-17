@@ -49,14 +49,26 @@ class ElapsedTime
 
         //Set up mixture composition
         ArrayList<String> names = new ArrayList<String>();
-        names.add("H2");
-        names.add("O2");
-        names.add("N2");
+		names.add("H2");
+		names.add("O2");
+		names.add("C3H8");
+		names.add("C2H6");
+		names.add("CH4");
+		names.add("CO2");
+		names.add("HE");
+		names.add("N2");
+		names.add("NH3");
         
         Vector<Double> x = new Vector<Double>();
         x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
+        x.add(0.1);
         x.add(0.2);
-        x.add(0.7);
 
 		//Initialize variables
 		double initializationStart = System.nanoTime();
@@ -77,7 +89,7 @@ class ElapsedTime
 		{
 			asali_.set_pressure(4e05);
 			asali_.set_temperature(393.15);
-			asali_.set_number_of_species(3);
+			asali_.set_number_of_species(9);
 			asali_.set_species_names(names);
 			asali_.set_mole_fraction(x);
 

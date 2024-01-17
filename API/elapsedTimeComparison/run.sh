@@ -2,7 +2,7 @@
 
 function compile()
 {
-	echo "Compiling..."
+	echo "Compiling/Preparing..."
 	rm -rf ../C/elapsed-time.sh
 	rm -rf ../Cpp/elapsed-time.sh
 	rm -rf ../Fortran/elapsed-time.sh
@@ -37,14 +37,22 @@ function compile()
 
 	echo "...Rust version..."
 	cd ../Rust
-	cargo build --release
-	cargo run --bin databasegenerator
-	cargo build --release
-	cd ../elapsedTimeComparison 
+	cargo build --quiet --release
+	cargo run --quiet --bin databasegenerator 
+	cargo build --quiet --release
+	cd ../elapsedTimeComparison
+	
+	echo "...Octave version..."
+	cd ../Octave
+	octave --quiet --no-window-system database-generator.m
+	cd ../elapsedTimeComparison
+	
+	echo "...done!"
 }
 
 function run()
 {
+	echo "Running..."
 	local N=$1
 	./../C/elapsed-time.sh $N > C.txt
 	
@@ -57,8 +65,14 @@ function run()
 	cd ../elapsedTimeComparison
 	
 	cd ../Rust
-	cargo run --bin elapsedtime $N > ../elapsedTimeComparison/Rust.txt
+	cargo run --quiet --bin elapsedtime $N > ../elapsedTimeComparison/Rust.txt
 	cd ../elapsedTimeComparison
+	
+	cd ../Octave
+	octave --quiet --no-window-system elapsed-time.m $N > ../elapsedTimeComparison/Octave.txt
+	cd ../elapsedTimeComparison
+	echo "...done!"
+	
 }
 
 function printOnScreen()
@@ -77,6 +91,7 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < Fortran.txt
 	sed 's/,/./g ; s/E/e/g' < Java.txt
 	sed 's/,/./g ; s/E/e/g' < Rust.txt
+	sed 's/,/./g ; s/E/e/g' < Octave.txt
 }
 
 
@@ -110,8 +125,14 @@ function markdownFileHead()
 	echo "|Temperature|393.15|K|  "
 	echo "|Pressure|4|bar|  "
 	echo "|H<sub>2</sub>|0.1|Molar fraction|  "
-	echo "|O<sub>2</sub>|0.2|Molar fraction|  "
-	echo "|N<sub>2</sub>|0.7|Molar fraction|  "
+	echo "|O<sub>2</sub>|0.1|Molar fraction|  "
+	echo "|C<sub>3</sub>H<sub>8</sub>|0.1|Molar fraction|  "
+	echo "|C<sub>2</sub>H<sub>6</sub>|0.1|Molar fraction|  "
+	echo "|CH<sub>4</sub>|0.1|Molar fraction|  "
+	echo "|CO<sub>2</sub>|0.1|Molar fraction|  "
+	echo "|HE|0.1|Molar fraction|  "
+	echo "|N<sub>2</sub>|0.1|Molar fraction|  "
+	echo "|NH<sub>3</sub>|0.2|Molar fraction|  "
 	echo " "
 	echo "The performance comparison has the following assumptions:  "
 	echo "* Number of runs: **$N**  "
@@ -134,6 +155,7 @@ function printOnFile()
 	parseSingleFileOutput Fortran.txt
 	parseSingleFileOutput Java.txt
 	parseSingleFileOutput Rust.txt
+	parseSingleFileOutput Octave.txt
 }
 
 function Help()
@@ -213,6 +235,7 @@ rm -rf C.txt
 rm -rf Fortran.txt
 rm -rf Java.txt
 rm -rf Rust.txt
+rm -rf Octave.txt
 
 
 

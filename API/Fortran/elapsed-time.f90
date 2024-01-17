@@ -42,12 +42,12 @@ program example
     use asali
     implicit none
 
-	real, dimension(3) :: x, mu, cp, h, s, cond, diffmix, v, l
-	real, dimension(3,3) :: diff
+	real, dimension(9) :: x, mu, cp, h, s, cond, diffmix, v, l
+	real, dimension(9,9) :: diff
 	real :: rho, MWmix, condmix, mumix, cpmolemix, cpmassmix, &
 			hmolemix, hmassmix, smolemix, smassmix, tStart, tEnd
 	integer :: i, N
-	character(len=200), dimension(3) :: names
+	character(len=200), dimension(9) :: names
 
 	character(len=32) :: arg
 
@@ -59,17 +59,29 @@ program example
     do i=1,N
 		names(1) = 'H2'
 		names(2) = 'O2'
-		names(3) = 'N2'
-		
+		names(3) = 'C3H8'
+		names(4) = 'C2H6'
+		names(5) = 'CH4'
+		names(6) = 'CO2'
+		names(7) = 'HE'
+		names(8) = 'N2'
+		names(9) = 'NH3'
+
 		x(1) = 0.1
-		x(2) = 0.2
-		x(3) = 1 - x(1) - x(2)
+		x(2) = 0.1
+		x(3) = 0.1
+		x(4) = 0.1
+		x(5) = 0.1
+		x(6) = 0.1
+		x(7) = 0.1
+		x(8) = 0.1
+		x(9) = 1.-x(1)-x(2)-x(3)-x(4)-x(5)-x(6)-x(7)-x(8)
 		
 		call set_temperature(393.15)
 		
 		call set_pressure(4e05)
 		
-		call set_number_of_species(3)
+		call set_number_of_species(9)
 		
 		call set_species_names(names)
 		

@@ -2,11 +2,19 @@ close all
 clear all
 clc
 
-
 %Read transport
-a                  = importdata('../database/transport.asali');
-database.name      = a.textdata;
-database.transport = a.data;
+a = importdata('../database/transport.asali');
+for i=1:size(a,1)
+    b = strsplit(a{i},'\t');
+    database.name{i} = b{1};
+    database.transport(i,1) = str2double(b{2});
+    database.transport(i,2) = str2double(b{3});
+    database.transport(i,3) = str2double(b{4});
+    database.transport(i,4) = str2double(b{5});
+    database.transport(i,5) = str2double(b{6});
+    database.transport(i,6) = str2double(b{7});
+    database.transport(i,7) = str2double(b{8});
+end
 
 %Read thermo
 id    = fopen('../database/thermo.asali');

@@ -1,6 +1,6 @@
 [package]
-name = "Asali"
-version = "0.1.0"
+name = "asali"
+version = "2.6.0"
 edition = "2021"
 
 [[bin]]

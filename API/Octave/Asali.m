@@ -614,7 +614,7 @@ classdef Asali
                             end
                             LJpotentialmix = (chi^2)*sqrt(obj.data.transport(obj.index(i),2)*obj.data.transport(obj.index(j),2));
                             LJdiametermix  = 0.5*(obj.data.transport(obj.index(i),3) + obj.data.transport(obj.index(j),3))*(chi^(-1/6));
-                            dipolemix      = 0.
+                            dipolemix      = 0.;
                         end
                         Tr        = obj.Temperature/LJpotentialmix;
                         dr        = 0.5*(dipolemix^2)/(LJpotentialmix*1.3806488*(LJdiametermix^3));
@@ -714,7 +714,7 @@ classdef Asali
                     db = 1;
                 else
                     da = length(obj.data.d) - 1;
-                    db = sa + 1;
+                    db = da + 1;
                 end
             end
             
@@ -767,7 +767,7 @@ classdef Asali
                     db = 1;
                 else
                     da = length(obj.data.d) - 1;
-                    db = sa + 1;
+                    db = da + 1;
                 end
             end
             

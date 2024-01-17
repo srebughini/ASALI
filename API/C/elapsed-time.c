@@ -48,12 +48,18 @@ int main(int argc, char *argv[])
 
     //Set up mixture composition
     AsaliVector x,names;
-    double X[3] = {0.1, 0.2, 0.7};
-    empty_vector_of_char(&names,3);
+    double X[9] = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2};
+    empty_vector_of_char(&names,9);
     set_vector_element_from_char(&names,0,"H2");
     set_vector_element_from_char(&names,1,"O2");
-    set_vector_element_from_char(&names,2,"N2");
-    vector_from_double_array(&x,3,X);
+    set_vector_element_from_char(&names,2,"C3H8");
+    set_vector_element_from_char(&names,3,"C2H6");
+    set_vector_element_from_char(&names,4,"CH4");
+    set_vector_element_from_char(&names,5,"CO2");
+    set_vector_element_from_char(&names,6,"HE");
+    set_vector_element_from_char(&names,7,"N2");
+    set_vector_element_from_char(&names,8,"NH3");
+    vector_from_double_array(&x,9,X);
 
     //Initialize variables
     clock_t initializationStart = clock();

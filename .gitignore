@@ -18,6 +18,7 @@ API/Java/*.class
 API/Rust/Cargo.lock
 API/Rust/target*
 API/elapsedTimeComparison/*.txt
+API/elapsedTimeComparison/test.md
 
 GUI/Ubuntu/ext/*
 GUI/Ubuntu/ext/Asali.cpp
