@@ -9,26 +9,36 @@ function compile()
 	
 	echo "...C version..."
 	cd ../C
+	gcc database-generator.c -o database-generator
+	./database-generator
 	gcc elapsed-time.c AsaliVector.c AsaliMatrix.c Asali.c -lm -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
 	echo "...Cpp version..."
 	cd ../Cpp
-	g++ -std=c++11 -Wall -Wextra -Wunused-but-set-variable Asali.cpp elapsed-time.cpp -o elapsed-time.sh
+	g++ -std=c++11 database-generator.cpp -o database-generator
+	./database-generator
+	g++ -std=c++11 Asali.cpp elapsed-time.cpp -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
 	echo "...Fortran version..."
 	cd ../Fortran
+	gfortran database-generator.f90 -o database-generator
+	./database-generator
 	gfortran elapsed-time.f90 -o elapsed-time.sh
 	cd ../elapsedTimeComparison
 
 	echo "...Java version..."
 	cd ../Java
+	javac -Xlint DatabaseGenerator.java
+	java DatabaseGenerator
 	javac -Xlint ThermoDatabase.java TransportDatabase.java OmegaDatabase.java Asali.java ElapsedTime.java
 	cd ../elapsedTimeComparison
 
 	echo "...Rust version..."
 	cd ../Rust
+	cargo build --release
+	cargo run --bin databasegenerator
 	cargo build --release
 	cd ../elapsedTimeComparison 
 }

@@ -241,6 +241,6 @@ fn main() {
 ```
 Example can be compiled by typing `cargo build`
 
-To convert the Asali database into Rust code run `cargo run --bin database-generator`
+To convert the Asali database into Rust code run `cargo run --bin databasegenerator`
 
 
