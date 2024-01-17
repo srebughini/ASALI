@@ -33,5 +33,5 @@ The table reports the compatutational time required to **estimate all thermodyna
 |C|7.086e-05|1.196e-04| 
 |Fortran|n.a.|2.751e-06| 
 |Java|1.058e-04|1.575e-05| 
-|Rust|1.098e-4|9.363e-4| 
+|Rust|1.098e-04|9.363e-04| 
 |Octave|6.621e-03|8.256e-01| 
