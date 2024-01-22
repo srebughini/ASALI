@@ -47,9 +47,25 @@ function getSpeciesList() {
    */
   let molecule = jasali.Molecule();
   let chemicalNames = molecule.getAvailableSpeciesChemicalName();
-  let formulas = molecule.getAvailableSpeciesFormula();
-  let species = chemicalNames.map((n,i) => n.concat(": ", formulas[i]));
-  return species;
+  let species = [];
+  for (let i = 0; i < chemicalNames.length; i++)
+  {
+      let name = molecule.getNameFromChemicalName(chemicalNames);
+      let mol = jasali.Molecule(name);
+      let formula = "";
+      for (const [s, na] of Object.entries(mol.getElementCounterDict())) {
+        if ( na == 1)
+        {
+          formula.concat(s);
+        }
+        else
+        {
+          formula.concat(s, "<sub>", na, "</sub>");
+        }
+      }
+      species.push(formula);
+  } 
+  return species.sort();
 }
 
 function addSpeciesListToSingleInput(input_counter, specieNames) {
@@ -106,7 +122,7 @@ function readComposition() {
       let value = parseFloat(value_obj.value).toFixed(6);
       let specie = select_obj.options[select_obj.selectedIndex].value.toString();
       let chemicalName = specie.split(": ");
-      let name = molecule.getNameFromChemicalName(chemicalName);
+      let name = molecule.getNameFromChemicalName(chemicalName[0]);
       alert(chemicalName);
       alert(name);
       if (!isNaN(value)) {
