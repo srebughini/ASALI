@@ -274,8 +274,7 @@ function showTransportProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    alert(properties[i]["name"]);
-    nameCell.innerHTML = mergeChemicalNameAndFormula(properties[i]["name"]);
+    nameCell.innerHTML = properties[i]["name"];
     valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
     udCell.innerHTML = properties[i]["ud"];
   }
@@ -319,7 +318,7 @@ function showThermoProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = mergeChemicalNameAndFormula(properties[i]["name"]);
+    nameCell.innerHTML = properties[i]["name"];
     valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
     udCell.innerHTML = properties[i]["ud"];
   }
