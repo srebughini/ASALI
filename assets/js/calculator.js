@@ -61,6 +61,7 @@ function addSpeciesListToSingleInput(input_counter, specieNames) {
     let opt = document.createElement('option');
     opt.value = specieNames[j];
     opt.text = specieNames[j];
+    opt.innerHTML = specieNames[j];
     select_obj.add(opt);
   }
 }
