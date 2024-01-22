@@ -46,6 +46,10 @@ function getSpeciesList() {
    * Get the list of species present in JASALI
    */
   let molecule = jasali.Molecule();
+  let chemicalNames = molecule.getAvailableSpeciesChemicalName();
+  let formulas = molecule.getAvailableSpeciesFormula();
+  let species = chemicalNames.map((n,i) => n.concat("-", formulas[i]));
+  alert(species[0], species[1]);
   return molecule.getAvailableSpecies();
 }
 
