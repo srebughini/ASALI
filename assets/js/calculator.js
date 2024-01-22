@@ -50,9 +50,11 @@ function getSpeciesList() {
   let species = [];
   for (let i = 0; i < chemicalNames.length; i++)
   {
-      let name = molecule.getNameFromChemicalName(chemicalNames);
+      let name = molecule.getNameFromChemicalName(chemicalNames[i]);
       let mol = jasali.Molecule(name);
       let formula = "";
+      alert(chemicalNames[i]);
+      alert(name);
       for (const [s, na] of Object.entries(mol.getElementCounterDict())) {
         if ( na == 1)
         {
@@ -63,6 +65,7 @@ function getSpeciesList() {
           formula.concat(s, "<sub>", na, "</sub>");
         }
       }
+      alert(formula);
       species.push(formula);
   } 
   return species.sort();
