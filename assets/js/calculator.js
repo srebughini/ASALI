@@ -108,8 +108,6 @@ function readComposition() {
       let specie = select_obj.options[select_obj.selectedIndex].value.toString();
       let chemicalName = specie.split(": ");
       let name = molecule.getNameFromChemicalName(chemicalName[0]);
-      alert(chemicalName);
-      alert(name);
       if (!isNaN(value)) {
         composition[name] = value;
       }
