@@ -48,9 +48,8 @@ function getSpeciesList() {
   let molecule = jasali.Molecule();
   let chemicalNames = molecule.getAvailableSpeciesChemicalName();
   let formulas = molecule.getAvailableSpeciesFormula();
-  let species = chemicalNames.map((n,i) => n.concat("-", formulas[i]));
-  alert(species[0], species[1]);
-  return molecule.getAvailableSpecies();
+  let species = chemicalNames.map((n,i) => n.concat(": ", formulas[i]));
+  return species;
 }
 
 function addSpeciesListToSingleInput(input_counter, specieNames) {
@@ -94,6 +93,7 @@ function readComposition() {
    */
   const composition = {};
   let NSinput = getNumberOfInput();
+  let molecule = jasali.Molecule();
   for (let i = 0; i < NSinput; i++) {
 
     console.warn(name_id_prefix.concat(i + 1));
@@ -104,7 +104,11 @@ function readComposition() {
 
     if (!value_obj.value.includes(select_str)) {
       let value = parseFloat(value_obj.value).toFixed(6);
-      let name = select_obj.options[select_obj.selectedIndex].value.toString();
+      let specie = select_obj.options[select_obj.selectedIndex].value.toString();
+      let chemicalName = specie.split(": ");
+      let name = molecule.getNameFromChemicalName(chemicalName);
+      alert(chemicalName);
+      alert(name);
       if (!isNaN(value)) {
         composition[name] = value;
       }
