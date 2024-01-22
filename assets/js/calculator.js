@@ -55,6 +55,7 @@ function getSpeciesList() {
       let formula = "";
       alert(chemicalNames[i]);
       alert(name);
+      alert(mol.getElementCounterDict());
       for (const [s, na] of Object.entries(mol.getElementCounterDict())) {
         if ( na == 1)
         {
