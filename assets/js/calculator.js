@@ -13,6 +13,13 @@ var P_id = "P";
 var select_str = "Select";
 var inputContainer_id = "inputContainer";
 
+function mergeChemicalNameAndFormula(name){
+  /**
+   * Merge chemical name and formula and prettify it
+   */
+  let mol = jasali.Molecule(name);
+  return mol.getChemicalName().concat(": ", mol.getFormula().replace(/\d+/g, '<sub>$&</sub>').replaceAll('<sub>1</sub>', ''));
+}
 
 function getInputLineHTML(counter) {
   /**
@@ -267,7 +274,7 @@ function showTransportProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = properties[i]["name"];
+    nameCell.innerHTML = mergeChemicalNameAndFormula(properties[i]["name"]);
     valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
     udCell.innerHTML = properties[i]["ud"];
   }
@@ -286,12 +293,13 @@ function showTransportProperties(results, doc) {
     let diffValues = results["diffusivity"]["value"];
     let diffUd = results["diffusivity"]["ud"];
     let name = results["composition"]["name"];
+    
     for (let i = 0; i < diffValues.length; i++) {
       let newRow = outputTable.insertRow(-1);
       let nameCell = newRow.insertCell(0);
       let valueCell = newRow.insertCell(1);
       let udCell = newRow.insertCell(2);
-      nameCell.innerHTML = name[i];
+      nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
       valueCell.innerHTML = parseFloat(diffValues[i]).toExponential(3);
       udCell.innerHTML = diffUd;
     }
@@ -310,7 +318,7 @@ function showThermoProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = properties[i]["name"];
+    nameCell.innerHTML = mergeChemicalNameAndFormula(properties[i]["name"]);
     valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
     udCell.innerHTML = properties[i]["ud"];
   }
@@ -330,7 +338,7 @@ function showEquilibrium(results, doc) {
     let nameCell = newRow.insertCell(0);
     let moleCell = newRow.insertCell(1);
     let massCell = newRow.insertCell(2);
-    nameCell.innerHTML = name[i];
+    nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
     nameCell.id = name_id_prefix.concat(i + 1);
     moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
     moleCell.id = value_id_prefix.concat(i + 1);
