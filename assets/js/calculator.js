@@ -47,30 +47,8 @@ function getSpeciesList() {
    */
   let molecule = jasali.Molecule();
   let chemicalNames = molecule.getAvailableSpeciesChemicalName();
-  let species = [];
-  for (let i = 0; i < chemicalNames.length; i++)
-  {
-      let name = molecule.getNameFromChemicalName(chemicalNames[i]);
-      let mol = jasali.Molecule(name);
-      let formula = "";
-      alert(chemicalNames[i]);
-      alert(name);
-      alert(mol.getElementCounterDict());
-      for (const [s, na] of Object.entries(mol.getElementCounterDict())) {
-        alert(s);
-        alert(na);
-        if ( na == 1)
-        {
-          formula.concat(s);
-        }
-        else
-        {
-          formula.concat(s, "<sub>", na, "</sub>");
-        }
-      }
-      alert(formula);
-      species.push(formula);
-  } 
+  let formulas = molecule.getAvailableSpeciesFormula();
+  let species = chemicalNames.map((n,i) => n.concat(": ", formulas[i].replace(/\d+/g, '<sub>$&</sub>').replaceAll('<sub>1</sub>', '')));
   return species.sort();
 }
 
