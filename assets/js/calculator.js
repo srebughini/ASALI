@@ -254,7 +254,7 @@ function showOperatingConditions(results, doc) {
     let nameCell = newRow.insertCell(0);
     let moleCell = newRow.insertCell(1);
     let massCell = newRow.insertCell(2);
-    nameCell.innerHTML = name[i];
+    nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
     nameCell.id = name_id_prefix.concat(i + 1);
     moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
     moleCell.id = value_id_prefix.concat(i + 1);
@@ -274,6 +274,7 @@ function showTransportProperties(results, doc) {
     let nameCell = newRow.insertCell(0);
     let valueCell = newRow.insertCell(1);
     let udCell = newRow.insertCell(2);
+    alert(properties[i]["name"]);
     nameCell.innerHTML = mergeChemicalNameAndFormula(properties[i]["name"]);
     valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
     udCell.innerHTML = properties[i]["ud"];
