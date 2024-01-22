@@ -57,6 +57,8 @@ function getSpeciesList() {
       alert(name);
       alert(mol.getElementCounterDict());
       for (const [s, na] of Object.entries(mol.getElementCounterDict())) {
+        alert(s);
+        alert(na);
         if ( na == 1)
         {
           formula.concat(s);
