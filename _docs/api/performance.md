@@ -58,11 +58,9 @@ The table reports the compatutational time required to **estimate all thermodyna
 
 <table class="table table-striped">
   <thead>
-      <tr>
-          <th scope="row">Language</th>
-          <th>Initialization (s)</th>
-          <th>Calculation (s)</th>
-      </tr>
+        <th scope="row">Language</th>
+        <th>Initialization (s)</th>
+        <th>Calculation (s)</th>
   </thead>
   <tbody>
     <tr>
