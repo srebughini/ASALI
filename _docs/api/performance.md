@@ -58,9 +58,11 @@ The table reports the compatutational time required to **estimate all thermodyna
 
 <table class="table table-striped">
   <thead>
+      <tr>
         <th scope="row">Language</th>
         <th>Initialization (s)</th>
         <th>Calculation (s)</th>
+      </tr>
   </thead>
   <tbody>
     <tr>
@@ -78,13 +80,12 @@ The table reports the compatutational time required to **estimate all thermodyna
         <td>n.a.</td>
         <td>5.447e-07</td>
     </tr>
-        <tr>
+    <tr>
         <th scope="row">Java</th>
         <td>2.531e-04</td>
         <td>7.306e-06</td>
     </tr>
-    </tr>
-        <tr>
+    <tr>
         <th scope="row">Rust</th>
         <td>4.508e-04</td>
         <td>8.546e-04</td>
