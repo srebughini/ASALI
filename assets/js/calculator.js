@@ -213,7 +213,7 @@ function estimateMixtureProperties() {
       let v = new Array(names.length);
       let l = new Array(names.length);
       for (let i = 0; i < names.length; i++) {
-        let specie = GasSpecie({
+        let specie = jasali.GasSpecie({
           name: names[i],
           gasState: state
         });
