@@ -224,8 +224,8 @@ function estimateMixtureProperties() {
           { "name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg" }
         ],
         "vacuum": [
-          { "name": "Mean gas velocity", "value": mixture.getArithmeticMeanGasVelocity(), "ud": "m/s"},
-          { "name": "Mean free path", "value": mixture.getMeanFreePath(), "ud": "m"}
+          { "name": "Mean gas velocity", "value": 10.0 , "ud": "m/s"}, //mixture.getArithmeticMeanGasVelocity()
+          { "name": "Mean free path", "value": 11.0, "ud": "m"} //mixture.getMeanFreePath()
         ],
         "temperature": T,
         "pressure": P,
