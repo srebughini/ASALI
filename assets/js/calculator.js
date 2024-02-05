@@ -212,7 +212,7 @@ function estimateMixtureProperties() {
       let names = Object.keys(composition);
       let v = new Array(composition.length);
       let l = new Array(composition.length);
-      for (let i = 0; i < NSinput; i++) {
+      for (let i = 0; i < composition.length; i++) {
         let specie = GasSpecie({
           name: names[i],
           gasState: state
@@ -255,7 +255,7 @@ function estimateMixtureProperties() {
   }
 }
 
-function showOperatingConditions(results, doc) {
+function showOperatingConditions(results, doc, showCompositionBool) {
   /**
    * Show the operating conditions in the results page
    */
@@ -267,16 +267,19 @@ function showOperatingConditions(results, doc) {
   doc.getElementById(T_id).innerHTML = results["temperature"];
   doc.getElementById(P_id).innerHTML = results["pressure"];
 
-  for (let i = 0; i < name.length; i++) {
-    let newRow = inputTable.insertRow(-1);
-    let nameCell = newRow.insertCell(0);
-    let moleCell = newRow.insertCell(1);
-    let massCell = newRow.insertCell(2);
-    nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
-    nameCell.id = name_id_prefix.concat(i + 1);
-    moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
-    moleCell.id = value_id_prefix.concat(i + 1);
-    massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
+  if (showCompositionBool)
+  {
+    for (let i = 0; i < name.length; i++) {
+      let newRow = inputTable.insertRow(-1);
+      let nameCell = newRow.insertCell(0);
+      let moleCell = newRow.insertCell(1);
+      let massCell = newRow.insertCell(2);
+      nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
+      nameCell.id = name_id_prefix.concat(i + 1);
+      moleCell.innerHTML = parseFloat(mole[i]).toExponential(3);
+      moleCell.id = value_id_prefix.concat(i + 1);
+      massCell.innerHTML = parseFloat(mass[i]).toExponential(3);
+    }
   }
 }
 
@@ -399,7 +402,7 @@ function runWebApp() {
 
     //Opening a window is asynchronous
     destinationWindow.onload = function () {
-      showOperatingConditions(results, destinationWindow.document);
+      showOperatingConditions(results, destinationWindow.document, true);
       showTransportProperties(results, destinationWindow.document);
     }
   }
@@ -413,17 +416,20 @@ function showResults(destinationPageUrl) {
   let results = JSON.parse(localStorage.getItem(webAppResults));
 
   if (Object.keys(results).length > 0) {
-    showOperatingConditions(results, document);
     if (destinationPageUrl.includes(transportPageUrl)) {
+      showOperatingConditions(results, document, true);
       showTransportProperties(results, document);
     }
     else if (destinationPageUrl.includes(thermoPageUrl)) {
+      showOperatingConditions(results, document, true);
       showThermoProperties(results, document);
     }
     else if (destinationPageUrl.includes(vacuumPageUrl)) {
+      showOperatingConditions(results, document, false);
       showVacuumProperties(results, document);
     }
     else if (destinationPageUrl.includes(eqTPPageUrl)) {
+      showOperatingConditions(results, document, true);
       showEquilibrium(results, document);
     }
   }
