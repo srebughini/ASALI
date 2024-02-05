@@ -352,6 +352,8 @@ function showVacuumProperties(results, doc) {
    * Show the vacuum properties in the results page
    */
 
+  let outputTable = doc.getElementById("output-table")
+
   // Mean gas velocity main line
   {
     let newRow = outputTable.insertRow(-1);
