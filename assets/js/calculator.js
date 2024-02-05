@@ -248,7 +248,9 @@ function estimateMixtureProperties() {
           "mass": mixture.getMassFraction()
         },
         "diffusivity": outputDiff,
-        "equilibrium": outputEq
+        "equilibrium": outputEq,
+        "velocity": { "value": v, "ud": "m/s" },
+        "path": { "value": l, "ud": "m" }
       }
       return output;
     }
@@ -349,17 +351,55 @@ function showVacuumProperties(results, doc) {
   /**
    * Show the vacuum properties in the results page
    */
-  let properties = results["vacuum"];
-  let outputTable = doc.getElementById("output-table")
 
-  for (let i = 0; i < properties.length; i++) {
+  // Mean gas velocity main line
+  {
     let newRow = outputTable.insertRow(-1);
     let nameCell = newRow.insertCell(0);
-    let valueCell = newRow.insertCell(1);
-    let udCell = newRow.insertCell(2);
-    nameCell.innerHTML = properties[i]["name"];
-    valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
-    udCell.innerHTML = properties[i]["ud"];
+    newRow.insertCell(1);
+    newRow.insertCell(2);
+    nameCell.innerHTML = "<b>Mean gas velocity</b>";
+  }
+
+  {
+    let values = results["velocity"]["value"];
+    let ud = results["velocity"]["ud"];
+    let name = results["composition"]["name"];
+    
+    for (let i = 0; i < values.length; i++) {
+      let newRow = outputTable.insertRow(-1);
+      let nameCell = newRow.insertCell(0);
+      let valueCell = newRow.insertCell(1);
+      let udCell = newRow.insertCell(2);
+      nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
+      valueCell.innerHTML = parseFloat(values[i]).toExponential(3);
+      udCell.innerHTML = ud;
+    }
+  }
+
+  // Mean free path main line
+  {
+    let newRow = outputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    newRow.insertCell(1);
+    newRow.insertCell(2);
+    nameCell.innerHTML = "<b>Mean free path</b>";
+  }
+
+  {
+    let values = results["path"]["value"];
+    let ud = results["path"]["ud"];
+    let name = results["composition"]["name"];
+    
+    for (let i = 0; i < values.length; i++) {
+      let newRow = outputTable.insertRow(-1);
+      let nameCell = newRow.insertCell(0);
+      let valueCell = newRow.insertCell(1);
+      let udCell = newRow.insertCell(2);
+      nameCell.innerHTML = mergeChemicalNameAndFormula(name[i]);
+      valueCell.innerHTML = parseFloat(values[i]).toExponential(3);
+      udCell.innerHTML = ud;
+    }
   }
 }
 

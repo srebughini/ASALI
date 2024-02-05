@@ -15,11 +15,6 @@ permalink: /results/vacuum-properties/
       <td id="P"></td>
       <td>Pa</td>
     </tr>
-    <tr>
-      <th scope="row">Name <i class="fa-regular fa-atom"></i></th>
-      <th>Mole fraction <i class="fa-regular fa-chart-pie"></i></th>
-      <th>Mass fraction <i class="fa-regular fa-chart-pie"></i></th>
-    </tr>
   </tbody>
 </table>
 
