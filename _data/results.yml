@@ -2,5 +2,6 @@
   results:
   - transport-properties
   - thermodynamic-properties
+  - vacuum-properties
   - equilibrium-@-constant-t-p
 

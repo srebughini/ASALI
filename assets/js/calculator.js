@@ -1,6 +1,7 @@
 var transportPageUrl = "/ASALI/results/transport-properties/";
 var thermoPageUrl = "/ASALI/results/thermodynamic-properties/";
 var eqTPPageUrl = "/ASALI/results/equilibrium-@-constant-t-p/";
+var vacuumPageUrl = "/ASALI/results/vacuum-properties/"
 var webAppPageUrl = "/ASALI/pages/webapp/";
 var resultsPageUrl = "/ASALI/results/";
 
@@ -222,6 +223,10 @@ function estimateMixtureProperties() {
           { "name": "Gibbs free energy", "value": mixture.getMassGibbsFreeEnergy(), "ud": "J/kg" },
           { "name": "Internal energy", "value": mixture.getMassInternalEnergy(), "ud": "J/kg" }
         ],
+        "vacuum": [
+          { "name": "Mean gas velocity", "value": mixture.getArithmeticMeanGasVelocity(), "ud": "m/s"},
+          { "name": "Mean free path", "value": mixture.getMeanFreePath(), "ud": "m"}
+        ],
         "temperature": T,
         "pressure": P,
         "composition": {
@@ -324,6 +329,24 @@ function showThermoProperties(results, doc) {
   }
 }
 
+function showVacuumProperties(results, doc) {
+  /**
+   * Show the vacuum properties in the results page
+   */
+  let properties = results["vacuum"];
+  let outputTable = doc.getElementById("output-table")
+
+  for (let i = 0; i < properties.length; i++) {
+    let newRow = outputTable.insertRow(-1);
+    let nameCell = newRow.insertCell(0);
+    let valueCell = newRow.insertCell(1);
+    let udCell = newRow.insertCell(2);
+    nameCell.innerHTML = properties[i]["name"];
+    valueCell.innerHTML = parseFloat(properties[i]["value"]).toExponential(3);
+    udCell.innerHTML = properties[i]["ud"];
+  }
+}
+
 function showEquilibrium(results, doc) {
   /**
    * Show the equilibrium in the results page
@@ -383,6 +406,9 @@ function showResults(destinationPageUrl) {
     }
     else if (destinationPageUrl.includes(thermoPageUrl)) {
       showThermoProperties(results, document);
+    }
+    else if (destinationPageUrl.includes(vacuumPageUrl)) {
+      showVacuumProperties(results, document);
     }
     else if (destinationPageUrl.includes(eqTPPageUrl)) {
       showEquilibrium(results, document);
