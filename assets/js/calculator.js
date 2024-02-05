@@ -209,16 +209,17 @@ function estimateMixtureProperties() {
       }
 
       //Calculate mean free path and mean gas velocity
-      let names = Object.keys(composition);
+      let names = Object.keys(names);
       let v = new Array(composition.length);
-      let l = new Array(composition.length);
-      for (let i = 0; i < composition.length; i++) {
+      let l = new Array(names.length);
+      for (let i = 0; i < names.length; i++) {
         let specie = GasSpecie({
           name: names[i],
           gasState: state
         });
         v[i] = specie.getArithmeticMeanGasVelocity();
         l[i] = specie.getMeanFreePath();
+        console.log(names[i], v[i], l[i])
       }
 
       //Extract output from the mixture object
