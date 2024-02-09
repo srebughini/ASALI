@@ -108,7 +108,7 @@ function readComposition() {
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
 
     if (!value_obj.value.includes(select_str)) {
-      let value = parseFloat(value_obj.value).toFixed(6);
+      let value = parseFloat(value_obj.value).toFixed(8);
       let specie = select_obj.options[select_obj.selectedIndex].value.toString();
       let chemicalName = specie.split(": ");
       let name = molecule.getNameFromChemicalName(chemicalName[0]);
