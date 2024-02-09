@@ -219,7 +219,6 @@ function estimateMixtureProperties() {
         });
         v[i] = specie.getArithmeticMeanGasVelocity();
         l[i] = specie.getMeanFreePath();
-        alert(names[i], v[i], l[i])
       }
 
       //Extract output from the mixture object
