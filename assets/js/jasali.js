@@ -82702,7 +82702,7 @@ function GasMixture({
     _molecularWeight = compositionArray.map(compositionDictionary => compositionDictionary.value / compositionDictionary.specie.getMolecularWeight()).reduce((a, b) => a + b, 0);
     _moleFraction = compositionArray.map(compositionDictionary => compositionDictionary.value / compositionDictionary.specie.getMolecularWeight() / _mixtureMolecularWeight);
   }
-  if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-16) {
+  if (Math.abs(_moleFraction.reduce((a, b) => a + b, 0) - 1.) > 1e-08) {
     (0, _utils.AsaliError)("Composition sum != 1");
   } else {
     for (let i = 0; i < _numberOfSpecies; i++) {
