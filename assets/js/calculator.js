@@ -114,7 +114,6 @@ function readComposition() {
       let name = molecule.getNameFromChemicalName(chemicalName[0]);
       if (!isNaN(value)) {
         composition[name] = value;
-        console.warn(name, value);
       }
     }
   }
