@@ -104,10 +104,6 @@ function readComposition() {
   let NSinput = getNumberOfInput();
   let molecule = jasali.Molecule();
   for (let i = 0; i < NSinput; i++) {
-
-    console.warn(name_id_prefix.concat(i + 1));
-    console.warn(value_id_prefix.concat(i + 1));
-
     let select_obj = document.getElementById(name_id_prefix.concat(i + 1));
     let value_obj = document.getElementById(value_id_prefix.concat(i + 1));
 
@@ -118,6 +114,7 @@ function readComposition() {
       let name = molecule.getNameFromChemicalName(chemicalName[0]);
       if (!isNaN(value)) {
         composition[name] = value;
+        console.warn(name, value);
       }
     }
   }
