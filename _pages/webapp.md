@@ -29,7 +29,7 @@ permalink: /pages/webapp/
                     <option value="">Select...</option>
                 </select>
                 <span class="input-group-addon text-center" id="x1-addon"><i class="fa-regular fa-chart-pie"></i></span> 
-                <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" min="0" max="1">
+                <input type="number" style="min-width:100%;width:50px;" class="form-control text-right" placeholder="0.5" aria-describedby="x1-addon" id="x1" step="0.01" min="0" max="1">
         </div>
     </div>
 </div>
