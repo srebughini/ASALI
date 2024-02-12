@@ -46,147 +46,149 @@ cargo run --bin database-generator
 ```
 ## **Available thermodynamic and transport properties**
 ASALI estimates different thermodynamic and transport (`asali` is the library object):
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="row">Function</th>
-            <th>Estimated property</th>
-            <th>Return type</th>
-            <th>Unit dimension</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row"><b><i>asali.density()</i></b></th>
-            <td>Mixture density</td>
-            <td><i>f64</i></td>
-            <td>kg/m<sup>3</sup></td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_molecular_weight()</i></b></th>
-            <td>Mixture molecular weight</td>
-            <td><i>f64</i></td>
-            <td>g/mol</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_thermal_conductivity()</i></b></th>
-            <td>Mixture thermal conductivity</td>
-            <td><i>f64</i></td>
-            <td>W/m/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_viscosity()</i></b></th>
-            <td>Mixture viscosity</td>
-            <td><i>f64</i></td>
-            <td>Pa*s</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_molar_cp()</i></b></th>
-            <td>Mixture specific heat</td>
-            <td><i>f64</i></td>
-            <td>J/kmol/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_mass_cp()</i></b></th>
-            <td>Mixture specific heat</td>
-            <td><i>f64</i></td>
-            <td>J/kg/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_molar_enthalpy()</i></b></th>
-            <td>Mixture enthalpy</td>
-            <td><i>f64</i></td>
-            <td>J/kmol</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_mass_enthalpy()</i></b></th>
-            <td>Mixture enthalpy</td>
-            <td><i>f64</i></td>
-            <td>J/kg</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_molar_entropy()</i></b></th>
-            <td>Mixture entropy</td>
-            <td><i>f64</i></td>
-            <td>J/kmol/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_mass_entropy()</i></b></th>
-            <td>Mixture entropy</td>
-            <td><i>f64</i></td>
-            <td>J/kg/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mixture_diffusion()</i></b></th>
-            <td>Mixture diffusivity</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>m<sup>2</sup>/s</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_thermal_conductivity()</i></b></th>
-            <td>Single specie thermal conductivity</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>W/m/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_viscosity()</i></b></th>
-            <td>Single specie viscosity</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>Pa*s</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_molar_cp()</i></b></th>
-            <td>Single specie specific heat</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kmol/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_mass_cp()</i></b></th>
-            <td>Single specie specific heat</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kg/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_molar_enthalpy()</i></b></th>
-            <td>Single specie enthalpy</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kmol</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_mass_enthalpy()</i></b></th>
-            <td>Single specie enthalpy</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kg</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_molar_entropy()</i></b></th>
-            <td>Single specie entropy</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kmol/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.species_mass_entropy()</i></b></th>
-            <td>Single specie entropy</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>J/kg/K</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.arithmetic_mean_gas_velocity()</i></b></th>
-            <td>Single gas velocity</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>m/s</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.mean_free_path()</i></b></th>
-            <td>Single mean free path</td>
-            <td><i>Vec&lt;f64&gt;</i></td>
-            <td>m</td>
-        </tr>
-        <tr>
-            <th scope="row"><b><i>asali.binary_diffusion()</i></b></th>
-            <td>Single binary diffusion</td>
-            <td><i>Vec&lt;Vec&lt;f64&gt;&gt;</i></td>
-            <td>m<sup>2</sup>/s</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Function</th>
+                <th>Estimated property</th>
+                <th>Return type</th>
+                <th>Unit dimension</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"><b><i>asali.density()</i></b></th>
+                <td>Mixture density</td>
+                <td><i>f64</i></td>
+                <td>kg/m<sup>3</sup></td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_molecular_weight()</i></b></th>
+                <td>Mixture molecular weight</td>
+                <td><i>f64</i></td>
+                <td>g/mol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_thermal_conductivity()</i></b></th>
+                <td>Mixture thermal conductivity</td>
+                <td><i>f64</i></td>
+                <td>W/m/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_viscosity()</i></b></th>
+                <td>Mixture viscosity</td>
+                <td><i>f64</i></td>
+                <td>Pa*s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_molar_cp()</i></b></th>
+                <td>Mixture specific heat</td>
+                <td><i>f64</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_mass_cp()</i></b></th>
+                <td>Mixture specific heat</td>
+                <td><i>f64</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_molar_enthalpy()</i></b></th>
+                <td>Mixture enthalpy</td>
+                <td><i>f64</i></td>
+                <td>J/kmol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_mass_enthalpy()</i></b></th>
+                <td>Mixture enthalpy</td>
+                <td><i>f64</i></td>
+                <td>J/kg</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_molar_entropy()</i></b></th>
+                <td>Mixture entropy</td>
+                <td><i>f64</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_mass_entropy()</i></b></th>
+                <td>Mixture entropy</td>
+                <td><i>f64</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mixture_diffusion()</i></b></th>
+                <td>Mixture diffusivity</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>m<sup>2</sup>/s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_thermal_conductivity()</i></b></th>
+                <td>Single specie thermal conductivity</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>W/m/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_viscosity()</i></b></th>
+                <td>Single specie viscosity</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>Pa*s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_molar_cp()</i></b></th>
+                <td>Single specie specific heat</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_mass_cp()</i></b></th>
+                <td>Single specie specific heat</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_molar_enthalpy()</i></b></th>
+                <td>Single specie enthalpy</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kmol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_mass_enthalpy()</i></b></th>
+                <td>Single specie enthalpy</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kg</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_molar_entropy()</i></b></th>
+                <td>Single specie entropy</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.species_mass_entropy()</i></b></th>
+                <td>Single specie entropy</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.arithmetic_mean_gas_velocity()</i></b></th>
+                <td>Single gas velocity</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>m/s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.mean_free_path()</i></b></th>
+                <td>Single mean free path</td>
+                <td><i>Vec&lt;f64&gt;</i></td>
+                <td>m</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>asali.binary_diffusion()</i></b></th>
+                <td>Single binary diffusion</td>
+                <td><i>Vec&lt;Vec&lt;f64&gt;&gt;</i></td>
+                <td>m<sup>2</sup>/s</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
