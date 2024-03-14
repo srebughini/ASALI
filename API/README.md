@@ -12,7 +12,7 @@ Let's go straight to the point! Asali library can estimate:
 * Entropy
 * Specific heat at constant pressure
 
-Asali estimates the transport properties with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem.
+Asali estimates the transport properties with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem. The list of available species can be found [here](SPECIES.md)
 
 ## **2. Python version**
 Interested in the python version? Check this: [ASALIPY](https://github.com/srebughini/ASALIPY)
@@ -241,6 +241,6 @@ fn main() {
 ```
 Example can be compiled by typing `cargo build`
 
-To convert the Asali database into Rust code run `cargo run --bin database-generator`
+To convert the Asali database into Rust code run `cargo run --bin databasegenerator`
 
 

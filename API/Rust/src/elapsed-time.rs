@@ -49,8 +49,8 @@ fn main() {
     let n: i32 = args[1].parse().unwrap();
 
     //Set up mixture composition
-    let names: Vec<String> = vec!["H2".to_string(), "O2".to_string(), "N2".to_string()];
-    let x : Vec<f64> = vec![0.1,0.2,0.7];
+    let names: Vec<String> = vec!["H2".to_string(), "O2".to_string(), "C3H8".to_string(),"C2H6".to_string(),"CH4".to_string(),"CO2".to_string(),"HE".to_string(),"N2".to_string(),"NH3".to_string()];
+    let x : Vec<f64> = vec![0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.2];
 
     //Initialize variables
     let initialization_start = Instant::now();
@@ -84,7 +84,7 @@ fn main() {
     for _i in 0..n as usize {
         asali_obj.set_temperature(393.15);
         asali_obj.set_pressure(4.0e5);
-        asali_obj.set_number_of_species(3);
+        asali_obj.set_number_of_species(9);
         asali_obj.set_species_names(names.clone());
         asali_obj.set_mole_fraction(x.clone());
 

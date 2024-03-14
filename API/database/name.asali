@@ -1,0 +1,134 @@
+AC3H4	C3H4	Allene
+CH3COOH	C2H4O2	Acetic acid
+CH3COCH3	C3H6O1	Acetone
+C2H3CHO	C3H4O1	Acrolein
+C2H5CHO	C3H6O1	Propionaldehyde
+C4H9CHO	C5H10O1	3-Methylbutanal
+AR	AR1	Argon
+C6H5CH2OH	C7H8O1	Benzyl alcohol
+C6H4O2	C6H4O2	1,4-Benzoquinone
+C6H6	C6H6	Benzene
+C6H5CHO	C7H6O1	Benzaldehyde
+C6H5C2H4C6H5	C14H14	2-Methyldiphenylmethane
+NC4H8	C4H8	Butene
+C4H6	C4H6	Butyne
+C12H8	C12H8	Acenaphthylene
+C2H2	C2H2	Acetylene
+C2H4	C2H4	Ethylene
+C2H6	C2H6	Ethane
+C3H6	C3H6	Propylene
+C3H8	C3H8	Propane
+C4H2	C4H2	Diacetylene
+C4H4	C4H4	Vinylacetylene
+CYC5H4O	C5H4O1	Cyclopentadienone
+C6H5O	C6H5O1	Phenoxy
+CYC6H10-ONE	C6H10O1	Cyclohexanone
+CYC5H8	C5H8	Cyclopentene
+CYC6H8	C6H8	Cyclohexadiene
+CYC6H12	C6H12	Cyclohexane
+CYC6H10	C6H10	Cyclohexene
+CH2CO	C2H2O1	Ketene
+CH2O	C1H2O1	Formaldehyde
+CH3OH	C1H4O1	Methanol
+CH4	C1H4	Methane
+CO	C1O1	Carbon monoxide
+CO2	C1O2	Carbon dioxide
+CYC5H6	C5H6	Cyclopentadiene
+MCPTD	C6H8	Methyl cyclopentadiene
+CRESOL	C7H8O1	Cresol
+NC10H20	C10H20	Normal decenes
+C6H5CH2C6H5	C13H12	Diphenilmethane
+DIPE	C6H14O1	Diisopropyl ether
+CH3OCH3	C2H6O1	Dimethyl ether
+CH3CH3-C5H6	C7H12	Dimethyl pentadienes
+C6H5C2H5	C8H10	Ethylbenzene
+NC7H14	C7H14	Normal heptenes
+NC6H12	C6H12	1-hexene
+C5H9CHO	C6H10O1	2-Hexenal
+ETBE	C6H14O1	Ethyl tertiary butyl ether
+C2H5OH	C2H6O1	Ethanol
+C2H5OOH	C2H6O2	Ethyl hydroperoxide
+C2H4O	C2H4O1	Ethylene oxide
+C6H5C2H	C8H6	Phenylacetylene
+BIPHENYL	C12H10	Biphenyl
+C14H10	C14H10	Anthracene
+C6H5OH	C6H6O1	Phenol
+FLUORENE	C13H10	Fluorene
+C10H8	C10H8	Naphthalene
+H2	H2	Hydrogen
+H2O	H2O1	Water
+H2O2	H2O2	Hydrogen peroxide
+HE	HE1	Helium
+IC4H8	C4H8	Isobutene
+IC3H7CHO	C4H8O1	Isobutyrraldehyde
+IC4H10	C4H10	Isobutane
+IC8H18	C8H18	Isooctane
+INDENE	C9H8	Indene
+IC3H7OH	C3H8O1	2-propanol
+IC5H10	C5H10	Isoamilene
+IC3H5CHO	C4H6O1	Methacrolein
+MCYC6	C7H14	Methylcyclohexane
+CH3CHO	C2H4O1	Acetaldehyde
+C10H7CH3	C11H10	Methylnaphthalene
+CH3OOH	C1H4O2	Methyl hydroperoxide
+MTBE	C5H12O1	Methyl Tertiary Butyl Ether
+N2	N2	Nitrogen
+C10H7OH	C10H8O1	Naphthol
+C10H7CHO	C11H8O1	Naphthaldehyde
+NC4H10	C4H10	Normal butane
+NC10H22	C10H22	Normal decane
+NC12H26	C12H26	Normal dodecane
+NC5H12	C5H12	Normal pentane
+NC7H16	C7H16	Normal heptane
+NEOC5H12	C5H12	Neopentane
+O2	O2	Oxygen
+IC8H16	C8H16	Isooctenes
+NC5H10	C5H10	Pentenee
+PC3H4	C3H4	Propyne
+CH3CO3H	C2H4O3	Peracetic acid
+HCO3H	C1H2O3	Performic acid
+C3H6O	C3H6O1	Propylene oxide
+C5H8	C5H8	Isoprene
+C16H10	C16H10	Pyrene
+C6H5C2H3	C8H8	Styrene
+TAME	C6H14O1	Tertiary Amyl Methyl Ether
+TETRALIN	C10H12	Tetrahydronaphthalene
+DECALIN	C10H18	Decahydronaphthalene
+C7H8	C7H8	Toluene
+XYLENE	C8H10	Xylenes
+NC16H34	C16H34	Normal hexadecane
+N2H4	H4N2	Hydrazine
+N2O	O1N2	Dinitrogen monoxide
+NH3	H3N1	Ammonia
+NO	O1N1	Nitric oxide
+NO2	O2N1	Nitric dioxide
+C3H5OOH	C3H6O2	Allyl hydroperoxide
+NC3H7OH	C3H8O1	Propanol
+N1C4H9OH	C4H10O1	1-Butanol
+N2C4H9OH	C4H10O1	2-Butanol
+MEK	C4H8O1	Methyl Ethyl Keton
+TC4H9OH	C4H10O1	Tert Butanol
+IC4H9OH	C4H10O1	Iso butanol
+C4H7OH	C4H8O1	Butenol
+C3H5OH	C3H6O1	Allyl alcohol
+C10H10	C10H10	Dialin
+BZFUR	C8H6O1	Benzofuran
+TMBENZ	C9H12	1,2,4 Tri methyl benzene
+NPBENZ	C9H12	Normal propylbenzene
+C6H5OCH3	C7H8O1	Anisole
+MB	C5H10O2	Methyl butanoate
+MCROT	C5H8O2	Methyl crotonate
+MACRIL	C4H6O2	Methyl acrylate
+DIBZFUR	C12H8O1	Dibenzofuran
+DIFENET	C12H10O1	Diphenyl ether
+C12H22	C12H22	Dodecadiene
+BENZYNE	C6H4	Benzyne
+C2H2O2	C2H2O2	Glyoxal
+C4H6O2	C4H6O2	Butanedione
+C5H4O2	C5H4O2	Furfural
+C5H8O4	C5H8O4	Xylofuranose
+C6H10O5	C6H10O5	Levoglucosan
+C8H10O3	C8H10O3	2,6-Dimethoxyphenol
+HCOOH	C1H2O2	Formic acid
+GLYCEROL	C3H8O3	Glycerol
+C4H4O	C4H4O1	Furan

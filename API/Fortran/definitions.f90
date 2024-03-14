@@ -47,7 +47,7 @@ type :: transport
     real               :: MW
 end type
  
-type(transport) :: transport_(483)
+type(transport) :: transport_(134)
  
 type :: thermo
     character(len=200) :: nome
@@ -55,7 +55,7 @@ type :: thermo
     real               :: low(7)
 end type
  
-type(thermo) :: thermo_(483)
+type(thermo) :: thermo_(134)
  
 real :: dsigma22_(8)
 real :: Tsigma22_(37)

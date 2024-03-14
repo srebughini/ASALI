@@ -46,16 +46,28 @@ int main(int argc, char** argv)
     int N = atoi(argv[1]);
 
     //Set up mixture composition
-    std::vector<std::string> names(3);
-    std::vector<double> x(3);
+    std::vector<std::string> names(9);
+    std::vector<double> x(9);
 
     names[0] = "H2";
     names[1] = "O2";
-    names[2] = "N2";
+    names[2] = "C3H8";
+    names[3] = "C2H6";
+    names[4] = "CH4";
+    names[5] = "CO2";
+    names[6] = "HE";
+    names[7] = "N2";
+    names[8] = "NH3";
 
     x[0] = 0.1;
-    x[1] = 0.2;
-    x[2] = 1. - x[0] - x[1];
+    x[1] = 0.1;
+    x[2] = 0.1;
+    x[3] = 0.1;
+    x[4] = 0.1;
+    x[5] = 0.1;
+    x[6] = 0.1;
+    x[7] = 0.1;
+    x[8] = 1. - x[0] - x[1] - x[2] - x[3] - x[4] - x[5] - x[6] - x[7];
 
     //Initialize variables
     clock_t initializationStart = clock();
