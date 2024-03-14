@@ -6,7 +6,7 @@ This section reports the comparison of the ASALI APIs in term of computational t
 If you download ASALI, you can run the same test on your own computer using the following commands:  
 ```bash  
 cd API/elapsedTimeComparison/  
-./run.sh -n 10000 -f test.md --compile  
+./run.sh -n 2000 -f test.md --compile  
 ```  
 
 <h2 class="text-left"><b>Assumptions and operating conditions</b></h2>
@@ -32,18 +32,48 @@ The gas mixture operating conditions are reported in the following table:
       <td>bar</td>
     </tr>
     <tr>
-      <th scope="row"><b>H<sub>2</sub></b></th>
+      <th scope="row">H<sub>2</sub></td>
       <td>0.1</td>
       <td>Molar fraction</td>
     </tr>
     <tr>
-      <th scope="row"><b>O<sub>2</sub></b></th>
-      <td>0.2</td>
+      <th scope="row">O<sub>2</sub></th>
+      <td>0.1</td>
       <td>Molar fraction</td>
     </tr>
     <tr>
-      <th scope="row"><b>N<sub>2</sub></b></th>
-      <td>0.7</td>
+      <th scope="row">C<sub>3</sub>H<sub>8</sub></th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">C<sub>2</sub>H<sub>6</sub></th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">CH<sub>4</sub></th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">CO<sub>2</sub></th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">HE</th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">N<sub>2</sub></th>
+      <td>0.1</td>
+      <td>Molar fraction</td>
+    </tr>
+    <tr>
+      <th scope="row">NH<sub>3</sub></th>
+      <td>0.2</td>
       <td>Molar fraction</td>
     </tr>
   </tbody>
@@ -66,29 +96,34 @@ The table reports the compatutational time required to **estimate all thermodyna
   </thead>
   <tbody>
     <tr>
-        <th scope="row">C++</th>
-        <td>2.364e-03</td>
-        <td>6.794e-06</td>
+      <th scope="row">C++</th>
+      <td>7.685e-04</td>
+      <td>1.003e-05</td>
     </tr>
     <tr>
-        <th scope="row">C</th>
-        <td>3.400e-04</td>
-        <td>3.121e-05</td>
+      <th scope="row">C</th>
+      <td>7.086e-05</td>
+      <td>1.196e-04</td>
     </tr>
     <tr>
-        <th scope="row">Fortran</th>
-        <td>n.a.</td>
-        <td>5.447e-07</td>
+      <th scope="row">Fortran</th>
+      <td>n.a.</td>
+      <td>2.751e-06</td>
     </tr>
     <tr>
-        <th scope="row">Java</th>
-        <td>2.531e-04</td>
-        <td>7.306e-06</td>
+      <th scope="row">Java</th>
+      <td>1.058e-04</td>
+      <td>1.575e-05</td>
     </tr>
     <tr>
-        <th scope="row">Rust</th>
-        <td>4.508e-04</td>
-        <td>8.546e-04</td>
+      <th scope="row">Rust</th>
+      <td>1.098e-04</td>
+      <td>9.363e-04</td>
+    </tr>
+    <tr>
+      <th scope="row">Octave</th>
+      <td>6.621e-03</td>
+      <td>8.256e-01</td>
     </tr>
   </tbody>
 </table>
