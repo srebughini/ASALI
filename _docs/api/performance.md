@@ -32,7 +32,7 @@ The gas mixture operating conditions are reported in the following table:
       <td>bar</td>
     </tr>
     <tr>
-      <th scope="row">H<sub>2</sub></td>
+      <th scope="row">H<sub>2</sub></th>
       <td>0.1</td>
       <td>Molar fraction</td>
     </tr>
@@ -80,7 +80,7 @@ The gas mixture operating conditions are reported in the following table:
 </table>
 
 The performance comparison has the following assumptions:  
-* Number of runs: **10000**  
+* Number of runs: **2000**  
 * Elapsed time to initialize **output variables** is **not considered**  
 
 <h2 class="text-left"><b>Results</b></h2>
