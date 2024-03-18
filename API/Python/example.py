@@ -13,7 +13,7 @@ if __name__ == "__main__":
     diff_mix = asali.mixture_diffusion
     cond = asali.species_thermal_conductivity
     v = asali.arithmetic_mean_gas_velocity
-    l = asali.mean_free_path
+    f_path = asali.mean_free_path
 
     print("Mixture molecular weight:     ", asali.mixture_molecular_weight, "[kg/kmol]")
     print("Density:                      ", asali.density, "[kg/m3]")
@@ -60,4 +60,4 @@ if __name__ == "__main__":
 
     print("\nMean free path [m]")
     for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], l[i])
+        print(asali.species_name[i], f_path[i])

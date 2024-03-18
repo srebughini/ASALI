@@ -42,7 +42,7 @@ if __name__ == "__main__":
         cond = asali.species_thermal_conductivity
         diff_mix = asali.mixture_diffusion
         v = asali.arithmetic_mean_gas_velocity
-        l = asali.mean_free_path
+        f_path = asali.mean_free_path
         mwmix = asali.mixture_molecular_weight
         rho = asali.density
         mumix = asali.mixture_viscosity
