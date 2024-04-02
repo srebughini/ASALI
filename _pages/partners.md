@@ -23,4 +23,9 @@ permalink: /pages/partners/
         <p class="text-left"><b>ASALIPY</b> is a Python library to model chemical reactors based on <a href="https://cantera.org/">Cantera</a>. It is available as conda package on different operating systems.
         </p>
     </div>
+    <div class="row">
+        <h3 class="text-center"><a href="https://github.com/srebughini/ASALIX">ASALIX</a><br></h3>
+        <p class="text-left"><b>ASALIX</b> is a Python package that collects mathematical tools and utilities designed to support Lean Six Sigma practitioners in their process improvement journey. This repository aims to provide a robust set of tools for data analysis and statistical modeling. It can be also downloaded from the <a href="https://pypi.org/project/asalix/">PiPy repository</a>.
+        </p>
+    </div>
 </div>
