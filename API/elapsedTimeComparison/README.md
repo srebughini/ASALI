@@ -29,9 +29,10 @@ The performance comparison has the following assumptions:
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
 |Language|Initialization (s)|Calculation (s)|  
 |--------|----------------|-------------------|  
-|C++|7.685e-04|1.003e-05| 
-|C|7.086e-05|1.196e-04| 
-|Fortran|n.a.|2.751e-06| 
-|Java|1.058e-04|1.575e-05| 
-|Rust|1.098e-04|9.363e-04| 
-|Octave|6.621e-03|8.256e-01| 
+|C++|7.588e-04|1.006e-05| 
+|C|7.030e-05|1.197e-04| 
+|Fortran|n.a.|2.863e-06| 
+|Java|9.980e-05|1.603e-05| 
+|Rust|1.102e-4|7.897e-4| 
+|Octave|6.782e-03|8.205e-01| 
+|Python|2.900e-05|1.433e-02|

@@ -49,7 +49,7 @@ function compile()
 	
 	echo "...Python version..."
 	cd ../Python
-	python database-generator.py
+	python3 database-generator.py
 	cd ../elapsedTimeComparison
 
 	echo "...done!"
@@ -78,7 +78,7 @@ function run()
 	cd ../elapsedTimeComparison
 
 	cd ../Python
-	python elapsed-time.py --number-of-runs $N > ../elapsedTimeComparison/Python.txt
+	python3 elapsed-time.py --number-of-runs $N > ../elapsedTimeComparison/Python.txt
 	cd ../elapsedTimeComparison 
 	echo "...done!"	
 }
