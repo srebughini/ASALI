@@ -4,7 +4,7 @@ permalink: /docs/api-python/
 <h1 class="text-left"><b>Python version</b></h1>
 The Python version of ASALI is composed by the **API version** to estimate themodynamic/transport properties and **[ASALIPY](https://github.com/srebughini/ASALIPY)** to model catalytic reactors.
 
-## API version
+## **API version**
 The [Python](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) API can be inlcuded in your code as follow:
 ```python
 # Class initialization and set up composition, pressure and temperature
@@ -166,14 +166,14 @@ ASALI estimates different thermodynamic and transport properties (`p` is the Asa
     </table>
 </div>
 
-## ASALIPY: Python package to model catalytic reactors
-The python API version of ASALI is called [ASALIPY](https://github.com/srebughini/ASALIPY) and its [conda package](https://anaconda.org/ASALIcode/asali) can be installed as follow:
+## **ASALIPY: Python package to model catalytic reactors**
+[ASALIPY](https://github.com/srebughini/ASALIPY) has its own [conda package](https://anaconda.org/ASALIcode/asali), that can be installed as follow:
 
 ```bash
 conda install -c conda-forge asalicode::asali
 ```
 
-Asalipy *does not* estimate thermodynamic and transport properties (if you are looking for a python package to do so, have a look to [Cantera](https://cantera.org/)). Asalipy is a python package to simulate catalytic reactors with the following models:
+ASALIPY *does not* estimate thermodynamic and transport properties. ASALIPY is a python package to simulate catalytic reactors with the following models:
 * Batch Reactor
 * Continuous Stirred Tank Reactor
 * 1-Dimensional Pseudo-Homogeneous Plug Flow Reactor (Steady State/Transient)
