@@ -14,11 +14,21 @@ Let's go straight to the point! Asali library can estimate:
 
 Asali estimates the transport properties with the standard gas kinetic theory *(Curtiss, Charles F., and Joseph O. Hirschfelder. "Transport properties of multicomponent gas mixtures." The Journal of Chemical Physics 17.6 (1949): 550-555.)*. The thermodynamic properties of each species are based on the NASA parameters and calculated according to the approach proposed by Gordon and McBride *(Gordon, S., and B. J. McBride. "Technical Report SP-273." NASA Special Publication (1971))*. Moreover, thermodynamic properties of the gaseous mixture are estimated by applying the Gibbs theorem. The list of available species can be found [here](SPECIES.md)
 
-## **2. Python version**
-Interested in the python version? Check this: [ASALIPY](https://github.com/srebughini/ASALIPY)
-
-## **3. Javascript version**
+## **2. Javascript version**
 Interested in the Javascript version? Check this: [JaSali](https://github.com/srebughini/JASALI)
+
+## **3. Python version**
+Interested in modeling chemical reactors with python? Check this: [ASALIPY](https://github.com/srebughini/ASALIPY).
+Instead, if you want to estimate thermodynamic and transport properties, the [Python](https://www.python.org/) API can be include in your code as follow:
+```Python
+# Class initialization and set up composition, pressure and temperature
+asali = Asali(373.15, 4e05)
+asali.mole_composition = {"H2": 0.1, "O2": 0.2, "N2": 0.7}
+
+# Properties evaluation
+cp = asali.species_mass_specific_heat
+```
+To convert the Asali database into Python code run `python database-generator.py`
 
 ## **4. Matlab and Octave version**
 The [Matlab](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) and [Octave](https://www.gnu.org/software/octave/) API can be inlcuded in your code as follow:
@@ -26,7 +36,7 @@ The [Matlab](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_2
 %Class generation
 p = Asali('database.mat');
 
-%Set up composition/pressure and temperature
+%Set up composition,pressure and temperature
 p.Pressure     = 4e05;
 p.Temperature  = 393.15;
 p.Names        = {'H2' 'O2' 'N2'};
@@ -70,7 +80,6 @@ program example
     !Properties evaluation
     cp = get_species_mass_specific_heat()
 ```
-
 Example and database generator can be compiled by typing `./compile.sh`
 
 To convert the Asali database into Fortran code run `./database-generator`

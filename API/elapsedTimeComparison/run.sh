@@ -47,6 +47,11 @@ function compile()
 	octave --quiet --no-window-system database-generator.m
 	cd ../elapsedTimeComparison
 	
+	echo "...Python version..."
+	cd ../Python
+	python3 database-generator.py
+	cd ../elapsedTimeComparison
+
 	echo "...done!"
 }
 
@@ -71,8 +76,11 @@ function run()
 	cd ../Octave
 	octave --quiet --no-window-system elapsed-time.m $N > ../elapsedTimeComparison/Octave.txt
 	cd ../elapsedTimeComparison
-	echo "...done!"
-	
+
+	cd ../Python
+	python3 elapsed-time.py --number-of-runs $N > ../elapsedTimeComparison/Python.txt
+	cd ../elapsedTimeComparison 
+	echo "...done!"	
 }
 
 function printOnScreen()
@@ -92,6 +100,7 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < Java.txt
 	sed 's/,/./g ; s/E/e/g' < Rust.txt
 	sed 's/,/./g ; s/E/e/g' < Octave.txt
+	sed 's/,/./g ; s/E/e/g' < Python.txt
 }
 
 
@@ -156,6 +165,7 @@ function printOnFile()
 	parseSingleFileOutput Java.txt
 	parseSingleFileOutput Rust.txt
 	parseSingleFileOutput Octave.txt
+	parseSingleFileOutput Python.txt
 }
 
 function Help()
@@ -236,6 +246,7 @@ rm -rf Fortran.txt
 rm -rf Java.txt
 rm -rf Rust.txt
 rm -rf Octave.txt
+rm -rf Python.txt
 
 
 
