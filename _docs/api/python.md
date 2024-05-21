@@ -2,6 +2,171 @@
 permalink: /docs/api-python/
 ---
 <h1 class="text-left"><b>Python version</b></h1>
+The Python version of ASALI is composed by the **API version** to estimate themodynamic/transport properties and **[ASALIPY](https://github.com/srebughini/ASALIPY)** to model catalytic reactors.
+
+## API version
+The [Python](https://it.mathworks.com/campaigns/products/trials.html?s_eid=ppc_29775072802&q=matlab) API can be inlcuded in your code as follow:
+```python
+# Class initialization and set up composition, pressure and temperature
+asali = Asali(373.15, 4e05)
+asali.mole_composition = {"H2": 0.1, "O2": 0.2, "N2": 0.7}
+
+# Properties evaluation
+cp = asali.species_mass_specific_heat
+diff = asali.mixture_diffusion
+```
+To convert the Asali database into Python code run `python database-generator.py`
+
+## **Available thermodynamic and transport properties**
+ASALI estimates different thermodynamic and transport properties (`p` is the Asali object):
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Function</th>
+                <th>Estimated property</th>
+                <th>Return type</th>
+                <th>Unit dimension</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"><b><i>p.density</i></b></th>
+                <td>Mixture density</td>
+                <td><i>float</i></td>
+                <td>kg/m<sup>3</sup></td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_molecular_weight</i></b></th>
+                <td>Mixture molecular weight </td>
+                <td><i>float</i></td>
+                <td>g/mol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_thermal_conductivity</i></b></th>
+                <td>Mixture thermal conductivity </td>
+                <td><i>float</i></td>
+                <td>W/m/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_viscosity</i></b></th>
+                <td>Mixture viscosity </td>
+                <td><i>float</i></td>
+                <td>Pa*s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_molar_specific_heat</i></b></th>
+                <td>Mixture specific heat </td>
+                <td><i>float</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_mass_specific_heat</i></b></th>
+                <td>Mixture specific heat </td>
+                <td><i>float</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_molar_enthalpy</i></b></th>
+                <td>Mixture enthalpy</td>
+                <td><i>float</i></td>
+                <td>J/kmol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_mass_enthalpy</i></b></th>
+                <td>Mixture enthalpy</td>
+                <td><i>float</i></td>
+                <td>J/kg</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_molar_entropy</i></b></th>
+                <td>Mixture entropy</td>
+                <td><i>float</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_mass_entropy</i></b></th>
+                <td>Mixture entropy</td>
+                <td><i>float</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mixture_diffusion</i></b></th>
+                <td>Mixture diffusivity</td>
+                <td><i>float</i></td>
+                <td>m<sup>2</sup>/s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_thermal_conductivity</i></b></th>
+                <td>Single specie thermal conductivity</td>
+                <td><i>1D array</i></td>
+                <td>W/m/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_viscosity</i></b></th>
+                <td>Single specie viscosity</td>
+                <td><i>1D array</i></td>
+                <td>Pa*s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.SpeciesMolarSpecificHeat</i></b></th>
+                <td>Single specie specific heat</td>
+                <td><i>1D array</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.species_mass_specific_heat</i></b></th>
+                <td>Single specie specific heat</td>
+                <td><i>1D array</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_molar_enthalpy</i></b></th>
+                <td>Single specie enthalpy</td>
+                <td><i>1D array</i></td>
+                <td>J/kmol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_mass_enthalpy</i></b></th>
+                <td>Single specie enthalpy</td>
+                <td><i>1D array</i></td>
+                <td>J/kmol</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_molar_entropy</i></b></th>
+                <td>Single specie entropy</td>
+                <td><i>1D array</i></td>
+                <td>J/kmol/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.specie_mass_entropy</i></b></th>
+                <td>Single specie entropy</td>
+                <td><i>1D array</i></td>
+                <td>J/kg/K</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mean_gas_velocity</i></b></th>
+                <td>Single gas velocity</td>
+                <td><i>1D array</i></td>
+                <td>m/s</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.mean_free_path</i></b></th>
+                <td>Single mean free path</td>
+                <td><i>1D array</i></td>
+                <td>m</td>
+            </tr>
+            <tr>
+                <th scope="row"><b><i>p.binary_diffusion</i></b></th>
+                <td>Single binary diffusion</td>
+                <td><i>2D array</i></td>
+                <td>m<sup>2</sup>/s</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+## ASALIPY: Python package to model catalytic reactors
 The python API version of ASALI is called [ASALIPY](https://github.com/srebughini/ASALIPY) and its [conda package](https://anaconda.org/ASALIcode/asali) can be installed as follow:
 
 ```bash
