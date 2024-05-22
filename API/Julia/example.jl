@@ -36,66 +36,90 @@
 #                                                                                              #
 ################################################################################################
 
-from asali import Asali
+using Printf
+include("asali.jl")
 
-if __name__ == "__main__":
-    asali = Asali(373.15, 4e05)
 
-    asali.mole_composition = {"H2": 0.1, "O2": 0.2, "N2": 0.7}
+species = String["H2","O2","N2"]
+x = Float64[0.1,0.2,0.7]
+asali.set_temperature(393.15)
+asali.set_pressure(4e05)
+asali.set_number_of_species(3)
+asali.set_species_names(species)
+asali.set_mole_fraction(x)
 
-    mu = asali.species_viscosity
-    cp = asali.species_mass_specific_heat
-    h = asali.species_mass_enthalpy
-    s = asali.species_mass_entropy
-    diff = asali.species_binary_diffusion
-    diff_mix = asali.mixture_diffusion
-    cond = asali.species_thermal_conductivity
-    v = asali.arithmetic_mean_gas_velocity
-    f_path = asali.mean_free_path
+mu = asali.get_species_viscosity()
+MWmix = asali.get_mixture_molecular_weight()
+rho = asali.get_density()
+bdiff = asali.get_binary_diffusion()
+cp = asali.get_species_mass_specific_heat()
+h = asali.get_species_mass_enthalpy()
+s = asali.get_species_mass_entropy()
+cond = asali.get_species_thermal_conductivity()
+condmix = asali.get_mixture_thermal_conductivity()
+mumix = asali.get_mixture_viscosity()
+diffmix = asali.get_mixture_diffusion()
+v = asali.get_aritmetic_mean_gas_velocity()
+l = asali.get_mean_free_path()
+cpmolemix = asali.get_mixture_molar_specific_heat()
+cpmassmix = asali.get_mixture_mass_specific_heat()
+hmolemix = asali.get_mixture_molar_enthalpy()
+hmassmix = asali.get_mixture_mass_enthalpy()
+smolemix = asali.get_mixture_molar_entropy()
+smassmix = asali.get_mixture_mass_entropy()
 
-    print("Mixture molecular weight:     ", asali.mixture_molecular_weight, "[kg/kmol]")
-    print("Density:                      ", asali.density, "[kg/m3]")
-    print("Mixture viscosity:            ", asali.mixture_viscosity, "[Pas]")
-    print("Mixture specific heat:        ", asali.mixture_mass_specific_heat, "[J/kg/K]")
-    print("Mixture specific heat:        ", asali.mixture_molar_specific_heat, "[J/kmol/K]")
-    print("Mixture enthalpy:             ", asali.mixture_mass_enthalpy, "[J/kg]")
-    print("Mixture enthalpy:             ", asali.mixture_molar_enthalpy, "[J/kmol]")
-    print("Mixture thermal conductivity: ", asali.mixture_thermal_conductivity, "[W/m/K]")
-    print("Mixture entropy:              ", asali.mixture_molar_entropy, "[J/kg/K]")
-    print("Mixture entropy:              ", asali.mixture_mass_entropy, "[J/kmol/K]")
+print(string("\nMixture molecular weigth:     ",@sprintf("%.3E", MWmix)," [kg/kmol]"))
+print(string("\nDensity:                      ",@sprintf("%.3E", rho)," [kg/m3]"))
+print(string("\nMixture viscosity:            ",@sprintf("%.3E", mumix)," [Pas]"))
+print(string("\nMixture thermal conductivity: ",@sprintf("%.3E", condmix)," [W/m/K]"))
+print(string("\nMixture specific heat:        ",@sprintf("%.3E", cpmassmix)," [J/kg/K]"))
+print(string("\nMixture specific heat:        ",@sprintf("%.3E", cpmolemix)," [J/kmol/K]"))
+print(string("\nMixture enthalpy:             ",@sprintf("%.3E", hmassmix)," [J/kg]"))
+print(string("\nMixture enthalpy:             ",@sprintf("%.3E", hmolemix)," [J/kmol]"))
+print(string("\nMixture entropy:              ",@sprintf("%.3E", smassmix)," [J/kg/K]"))
+print(string("\nMixture entropy:              ",@sprintf("%.3E", smolemix)," [J/kmol/K]"))
+print("\n")
+print("\nSpecies viscosity [Pas]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", mu[i]),"\n"))
+end
 
-    print("\nSpecies viscosity [Pas]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], mu[i])
+print("\nSpecies binary diffusion coefficient [m2/s]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", bdiff[i,1]),", ",@sprintf("%.3E", bdiff[i,2]),", ",@sprintf("%.3E", bdiff[i,3]),"\n"))
+end
 
-    print("\nSpecies binary diffusion coefficient [m2/s]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], diff[i][0], diff[i][1], diff[i][2])
+print("\nSpecies specific heat [J/kg/K]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", cp[i]),"\n"))
+end
 
-    print("\nSpecies specific heat [J/kg/K]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], cp[i])
+print("\nSpecies enthalpy [J/kg]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", h[i]),"\n"))
+end
 
-    print("\nSpecies enthalpy [J/kg]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], h[i])
+print("\nSpecies entropy [J/kg/K]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", s[i]),"\n"))
+end
 
-    print("\nSpecies entropy [J/kg/K]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], s[i])
+print("\nSpecies thermal conductiviy [W/m/K]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", cond[i]),"\n"))
+end
 
-    print("\nSpecies thermal conductivity [W/m/K]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], cond[i])
+print("\nMixture diffusion coefficient [m2/s]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", diffmix[i]),"\n"))
+end
 
-    print("\nMixture diffusion coefficient [m2/s]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], diff_mix[i])
+print("\nMean gas velocity [m/s]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", v[i]),"\n"))
+end
 
-    print("\nMean gas velocity [m/s]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], v[i])
-
-    print("\nMean free path [m]")
-    for i in range(0, asali.number_of_species):
-        print(asali.species_name[i], f_path[i])
+print("\nMean free path [m]\n")
+for i in 1:3
+    print(string(species[i],": ",@sprintf("%.3E", l[i]),"\n"))
+end
