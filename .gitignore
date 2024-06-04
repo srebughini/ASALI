@@ -3,6 +3,7 @@ obj
 Asali
 __*
 .vscode
+.idea
 
 API/C/example
 API/C/database-generator
