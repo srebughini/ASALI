@@ -1,0 +1,6 @@
+name: asali
+channels:
+  - conda-forge
+  - asalicode
+dependencies:
+  - asali
