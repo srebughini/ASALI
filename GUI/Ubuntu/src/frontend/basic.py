@@ -1,11 +1,10 @@
 import os
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QWidget,
-    QToolBar, QAction, QStatusBar, QMenu, QMessageBox, QDialog, QLabel, QHBoxLayout, QPushButton
+    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout
 )
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QSize, Qt
+from PyQt5.QtCore import Qt
 
 from GUI.Ubuntu.src.frontend.style import WidgetStyle, ColorPalette
 
@@ -21,12 +20,19 @@ class BasicMainWindow(QMainWindow):
 
         self.mainPath = os.path.join("..", "images")
 
-        self.setGeometry(100, 100, 800, 600)
+        #self.setGeometry(100, 100, 800, 600)
         self.icon = QIcon(os.path.join(self.mainPath, "Icon.png"))
         self.setWindowIcon(self.icon)
         self.setStyleSheet(WidgetStyle.WINDOW.value)
+        self.setWindowFlags(
+            Qt.Window |
+            Qt.CustomizeWindowHint |
+            Qt.WindowTitleHint |
+            Qt.WindowMinimizeButtonHint |
+            Qt.WindowCloseButtonHint
+        )
 
-        # Create menu bar
+        # Create tool bar
         self._createToolBar()
         self._createActions()
         self._connectActions()
@@ -34,32 +40,42 @@ class BasicMainWindow(QMainWindow):
         self.optionToolBar.addAction(self.disclaimerAction)
         self.optionToolBar.addAction(self.exitAction)
 
-        # self.menuBar.addMenu(self.optionMenu)
-
-        # Create a toolbar
-        # toolbar = QToolBar("Main Toolbar")
-        # toolbar.setIconSize(QSize(24, 24))
-        # self.addToolBar(toolbar)
-
-        # Add actions to the toolbar
-        # exit_action = QAction(QIcon.fromTheme("application-exit"), "Exit", self)
-        # exit_action.setStatusTip("Exit the application")
-        # exit_action.triggered.connect(self.close)
-        # toolbar.addAction(exit_action)
-
         # Central widget and layout
-        # self.central_widget = QWidget()
-        # self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout()
-        # self.central_widget.setLayout(self.layout)
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
+        self.grid = QGridLayout()
+        self.central_widget.setLayout(self.grid)
 
-        # Status bar
-        # self.status_bar = QStatusBar()
-        # self.setStatusBar(self.status_bar)
-        # self.status_bar.showMessage("Ready")
+        self.logo = self._createLogo(os.path.join(self.mainPath, "BigLogo.png"))
+        self.img_row_idx = 0
+        self.img_col_idx = 0
+        self.grid.addWidget(self.logo, self.img_col_idx, self.img_row_idx, -1, -1)
+
+
 
         # Initialize the UI
         self.initUI()
+
+    def _createLogo(self, logo_path):
+        """
+        Create img from path
+        Parameters
+        ----------
+        logo_path: str
+            Logo image path
+
+        Returns
+        -------
+        label: QLabel
+            Image as label
+        """
+
+        label = QLabel(self)
+        pixmap = QPixmap(logo_path)
+        label.setPixmap(pixmap)
+        label.setAlignment(Qt.AlignCenter)
+        label.setStyleSheet(WidgetStyle.LOGO.value)
+        return label
 
     def _createToolBar(self):
         """
@@ -155,6 +171,9 @@ class BasicMainWindow(QMainWindow):
         -------
         """
         msg = QLabel(f"""<p style="text-align: center">
+        <a href='https://srebughini.github.io/ASALI/' style='color:{ColorPalette.LIGHTORANGE.value}'>Website</a>
+        <br>
+        <br>
         <a href='ste.rebu@outlook.it' style='color:{ColorPalette.LIGHTORANGE.value}'>E-mail</a>
         <br>
         <br>
@@ -166,9 +185,19 @@ class BasicMainWindow(QMainWindow):
         <br>
         <a href='https://www.linkedin.com/company/asalicode' style='color:{ColorPalette.LIGHTORANGE.value}'>LinkedIn</a>
         </p>
+        <br>
+        <br>
+        <a href='https://sourceforge.net/projects/asali' style='color:{ColorPalette.LIGHTORANGE.value}'>SourceForge</a>
+        </p>
         """)
         msg.setOpenExternalLinks(True)
         self._dialogMessage("Contacts", msg)
 
     def initUI(self):
+        """
+        Run the User Interface
+        Returns
+        -------
+
+        """
         pass

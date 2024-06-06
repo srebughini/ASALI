@@ -13,6 +13,9 @@ class WidgetStyle(Enum):
             background-color: {ColorPalette.BLUE.value}; 
             color: {ColorPalette.LIGHTBLUE.value};
             """
+
+    LOGO = "padding: 35px;"
+
     BUTTON = f"""
             QPushButton {{
                 background-color: {ColorPalette.LIGHTBLUE.value};
@@ -29,5 +32,16 @@ class WidgetStyle(Enum):
             }}
             QPushButton:pressed {{
                 background-color: {ColorPalette.LIGHTORANGE.value};
+            }}
+        """
+
+    DROPDOWN = f"""
+            QComboBox {{
+                background-color: {ColorPalette.ORANGE.value};
+                color: {ColorPalette.BLUE.value};
+            }}
+            
+            QComboBox QAbstractItemView {{
+                background-color: {ColorPalette.LIGHTBLUE.value};
             }}
         """
