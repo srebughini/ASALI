@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QPushButton, QLabel
 from PyQt5.QtCore import Qt
-from GUI.Ubuntu.src.frontend.basic import AbstractStyledMainWindow
+from GUI.Ubuntu.src.frontend.basic import BasicMainWindow
 
 
 # Example derived class
 from GUI.Ubuntu.src.frontend.style import WidgetStyle
 
 
-class MainWindow(AbstractStyledMainWindow):
+class MainWindow(BasicMainWindow):
     def initUI(self):
         # Add a label
         #label = QLabel("Welcome to the Modern PyQt Application!", self)
