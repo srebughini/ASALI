@@ -1,4 +1,5 @@
 import os
+import beerpy
 
 from PyQt5.QtWidgets import (
     QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout
@@ -44,12 +45,20 @@ class BasicMainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.grid = QGridLayout()
+        self.grid.setVerticalSpacing(25)
         self.central_widget.setLayout(self.grid)
 
+        # Create logo
         self.logo = self._createLogo(os.path.join(self.mainPath, "BigLogo.png"))
-        self.img_row_idx = 0
-        self.img_col_idx = 0
-        self.grid.addWidget(self.logo, self.img_col_idx, self.img_row_idx, -1, -1)
+        self.row_idx = 0
+        self.col_idx = 0
+        self.grid.addWidget(self.logo, self.row_idx, self.col_idx,1, -1)
+
+        # Create beer quote
+        self.beerLabel = self._createBeerLabel()
+        self.row_idx = self.row_idx + 1
+        self.col_idx = self.col_idx + 1
+        self.grid.addWidget(self.beerLabel, self.row_idx, self.col_idx,1, -1)
 
 
 
@@ -77,6 +86,21 @@ class BasicMainWindow(QMainWindow):
         label.setStyleSheet(WidgetStyle.LOGO.value)
         return label
 
+    def _createBeerLabel(self):
+        """
+        Create beer quote label
+        Returns
+        -------
+        label: QLabel
+            Image as label
+        """
+        q = beerpy.get_random_quote(language="eng")
+        label = QLabel(f'{q["quote"]}\n[{q["author"]}]')
+        label.setAlignment(Qt.AlignCenter)
+        label.setWordWrap(True)
+        label.setStyleSheet(WidgetStyle.ITALICLABEL.value)
+        return label
+
     def _createToolBar(self):
         """
         Create QToolBar
@@ -85,7 +109,8 @@ class BasicMainWindow(QMainWindow):
 
         """
         self.optionToolBar = QToolBar("Options Toolbar", self)
-        self.addToolBar(Qt.LeftToolBarArea, self.optionToolBar)
+        self.optionToolBar.setMovable(False)
+        self.addToolBar(self.optionToolBar)
 
     def _createActions(self):
         """

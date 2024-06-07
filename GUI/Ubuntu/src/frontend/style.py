@@ -14,17 +14,20 @@ class WidgetStyle(Enum):
             color: {ColorPalette.LIGHTBLUE.value};
             """
 
-    LOGO = "padding: 35px;"
+    LOGO = "padding: 5px;"
+
+    ITALICLABEL = f"""
+            font: italic;
+            """
 
     BUTTON = f"""
             QPushButton {{
                 background-color: {ColorPalette.LIGHTBLUE.value};
                 border: none;
-                color: #2E3440;
+                color: {ColorPalette.BLUE.value};
                 padding: 10px 20px;
                 text-align: center;
-                font-size: 16px;
-                margin: 20px;
+                margin: 10px;
                 border-radius: 10px;
             }}
             QPushButton:hover {{

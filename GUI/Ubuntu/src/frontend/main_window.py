@@ -15,7 +15,7 @@ class MainWindow(BasicMainWindow):
 
         """
         # Add a dropdown menu for chemistry option
-        row_idx = self.img_row_idx + 1
+        self.row_idx = self.row_idx + 1
         dropdown = QComboBox()
         dropdown.addItems(["Default (only transport/thermodynamic)",
                            "Load CANTERA kinetic/properties file",
@@ -25,11 +25,11 @@ class MainWindow(BasicMainWindow):
         dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
         #dropdown.currentIndexChanged.connect(self.on_dropdown_changed)
 
-        col_idx = self.img_col_idx + 1
-        self.grid.addWidget(QLabel("Create/Select the chemistry file: "), row_idx, col_idx)
+        self.col_idx = self.col_idx + 1
+        self.grid.addWidget(QLabel("Create/Select the chemistry file: "), self.row_idx, self.col_idx)
 
-        col_idx = col_idx + 1
-        self.grid.addWidget(dropdown, row_idx, col_idx)
+        self.col_idx = self.col_idx + 1
+        self.grid.addWidget(dropdown, self.row_idx, self.col_idx)
 
         """
         # Add a button

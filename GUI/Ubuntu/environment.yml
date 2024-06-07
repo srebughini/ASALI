@@ -4,3 +4,4 @@ channels:
   - asalicode
 dependencies:
   - asali
+  - beerpy
