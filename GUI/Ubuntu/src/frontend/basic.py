@@ -236,7 +236,7 @@ class BasicMainWindow(ABC):
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getOpenFileName(self, 'OpenFile')
+        fileTuple = QFileDialog.getOpenFileName(self.mainWindowObject, 'OpenFile')
 
         if len(fileTuple[0]) == 0:
             return None
