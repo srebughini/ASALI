@@ -1,31 +1,44 @@
 import os
+from abc import ABC, abstractmethod
+
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout
+    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout,
+    QFileDialog
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
+from GUI.Ubuntu.src.backend.input_data_handler import InputDataHandler
 from GUI.Ubuntu.src.frontend.style import WidgetStyle, ColorPalette
 
 
-class BasicMainWindow(QMainWindow):
-    def __init__(self):
+class BasicMainWindow(ABC):
+    def __init__(self, mainWindowObject):
         """
         Basic class to setup all windows structures
+        Parameters
+        ----------
+        mainWindowObject: QMainWindow
+            QMainWindow object
         """
         super().__init__()
+        # Set backend variables
+        self.imagePath = os.path.join("..", "images")
+        self.databasePath = os.path.join("..", "database")
+        self.defaultChemistryPath = os.path.join(self.databasePath, "data.xml")
+        self.inputHandler = InputDataHandler()
+
         # Set up windows
-        self.setWindowTitle("ASALI")
+        self.mainWindowObject = mainWindowObject
+        self.mainWindowObject.setWindowTitle("ASALI")
 
-        self.mainPath = os.path.join("..", "images")
-
-        #self.setGeometry(100, 100, 800, 600)
-        self.icon = QIcon(os.path.join(self.mainPath, "Icon.png"))
-        self.setWindowIcon(self.icon)
-        self.setStyleSheet(WidgetStyle.WINDOW.value)
-        self.setWindowFlags(
+        # self.setGeometry(100, 100, 800, 600)
+        self.icon = QIcon(os.path.join(self.imagePath, "Icon.png"))
+        self.mainWindowObject.setWindowIcon(self.icon)
+        self.mainWindowObject.setStyleSheet(WidgetStyle.WINDOW.value)
+        self.mainWindowObject.setWindowFlags(
             Qt.Window |
             Qt.CustomizeWindowHint |
             Qt.WindowTitleHint |
@@ -36,31 +49,30 @@ class BasicMainWindow(QMainWindow):
         # Create tool bar
         self._createToolBar()
         self._createActions()
-        self._connectActions()
         self.optionToolBar.addAction(self.contactAction)
         self.optionToolBar.addAction(self.disclaimerAction)
         self.optionToolBar.addAction(self.exitAction)
+        self._connectActions()
 
         # Central widget and layout
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        self.central_widget = QWidget(self.mainWindowObject)
+        self.mainWindowObject.setCentralWidget(self.central_widget)
         self.grid = QGridLayout()
         self.grid.setVerticalSpacing(25)
         self.central_widget.setLayout(self.grid)
 
         # Create logo
-        self.logo = self._createLogo(os.path.join(self.mainPath, "BigLogo.png"))
+        self.logo = self._createLogo(os.path.join(self.imagePath, "BigLogo.png"))
         self.row_idx = 0
-        self.col_idx = 0
-        self.grid.addWidget(self.logo, self.row_idx, self.col_idx,1, -1)
+        self.grid.addWidget(self.logo, self.row_idx, 0, 1, -1)
 
         # Create beer quote
         self.beerLabel = self._createBeerLabel()
         self.row_idx = self.row_idx + 1
-        self.col_idx = self.col_idx + 1
-        self.grid.addWidget(self.beerLabel, self.row_idx, self.col_idx,1, -1)
+        self.grid.addWidget(self.beerLabel, self.row_idx, 0, 1, -1)
 
-
+        # Initialize the widgets
+        self.initWidget()
 
         # Initialize the UI
         self.initUI()
@@ -79,7 +91,7 @@ class BasicMainWindow(QMainWindow):
             Image as label
         """
 
-        label = QLabel(self)
+        label = QLabel(self.mainWindowObject)
         pixmap = QPixmap(logo_path)
         label.setPixmap(pixmap)
         label.setAlignment(Qt.AlignCenter)
@@ -106,11 +118,10 @@ class BasicMainWindow(QMainWindow):
         Create QToolBar
         Returns
         -------
-
         """
-        self.optionToolBar = QToolBar("Options Toolbar", self)
+        self.optionToolBar = QToolBar("Options Toolbar", self.mainWindowObject)
         self.optionToolBar.setMovable(False)
-        self.addToolBar(self.optionToolBar)
+        self.mainWindowObject.addToolBar(self.optionToolBar)
 
     def _createActions(self):
         """
@@ -119,9 +130,9 @@ class BasicMainWindow(QMainWindow):
         -------
 
         """
-        self.contactAction = QAction("&Contact", self)
-        self.disclaimerAction = QAction("&Disclaimer", self)
-        self.exitAction = QAction("&Exit", self)
+        self.contactAction = QAction("&Contact", self.mainWindowObject)
+        self.disclaimerAction = QAction("&Disclaimer", self.mainWindowObject)
+        self.exitAction = QAction("&Exit", self.mainWindowObject)
 
     def _connectActions(self):
         """
@@ -131,7 +142,7 @@ class BasicMainWindow(QMainWindow):
         """
         self.contactAction.triggered.connect(self._contactMessage)
         self.disclaimerAction.triggered.connect(self._disclaimerMessage)
-        self.exitAction.triggered.connect(self.close)
+        self.exitAction.triggered.connect(self.mainWindowObject.close)
 
     def _dialogMessage(self, title, msg):
         """
@@ -147,13 +158,12 @@ class BasicMainWindow(QMainWindow):
         -------
         """
         # Create a QDialog instance
-        dialog = QDialog(self, Qt.WindowCloseButtonHint)
+        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton("Close")
+        button = QPushButton("Close", clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
-        button.clicked.connect(dialog.close)
 
         # Create a layout for the dialog
         dialog_layout = QVBoxLayout()
@@ -218,6 +228,32 @@ class BasicMainWindow(QMainWindow):
         msg.setOpenExternalLinks(True)
         self._dialogMessage("Contacts", msg)
 
+    def _openFile(self):
+        """
+        Dialog window to open file
+        Returns
+        -------
+        file_path: str
+            File path
+        """
+        fileTuple = QFileDialog.getOpenFileName(self, 'OpenFile')
+
+        if len(fileTuple[0]) == 0:
+            return None
+
+        return fileTuple[0]
+
+    @abstractmethod
+    def initWidget(self):
+        """
+        Initialize the widgets
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
     def initUI(self):
         """
         Run the User Interface

@@ -25,10 +25,9 @@ class WidgetStyle(Enum):
                 background-color: {ColorPalette.LIGHTBLUE.value};
                 border: none;
                 color: {ColorPalette.BLUE.value};
-                padding: 10px 20px;
+                padding: 5px 10px;
                 text-align: center;
-                margin: 10px;
-                border-radius: 10px;
+                border-radius: 5px;
             }}
             QPushButton:hover {{
                 background-color: {ColorPalette.LIGHTORANGE.value};
