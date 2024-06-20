@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QMainWindow
 from GUI.Ubuntu.src.frontend.basic import BasicMainWindow
 
 # Example derived class
-from GUI.Ubuntu.src.frontend.chemkin_to_cantera_converter_window import ChemkinToCanteraConverterWindow
+from GUI.Ubuntu.src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
 from GUI.Ubuntu.src.frontend.style import WidgetStyle
 
 

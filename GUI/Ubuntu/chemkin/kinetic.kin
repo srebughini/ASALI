@@ -7,103 +7,140 @@ AR
 HE
 END
 SPECIES
-HE             AR             N2             NO             N2O            
-O2             NO2            HNO            HNNO           HONO           
-HNO2           HONO2          H2             N2H2           H2O            
-H2O2           NH3            N2H4           CO             CO2            
-HCN            HCNO           HNCO           HOCN           CH2O           
-HCOOH          HCO3H          CH3NO          CH3NO2         CH3ONO         
-CH3ONO2        CH4            CH3OH          CH3OOH         C2H2           
-CH2CO          C2H2O2         CH3CN          C2H4           CH3CHO         
-C2H4O          CH3COOH        CH3OCHO        C2H4O2         CH3CO3H        
-C2-OQOOH       DME-OQOOH      C2H6           CH3OCH3        C2H5OH         
-GLIET          C2H5OOH        C3H2           PC3H4          AC3H4          
-C2H3CHO        C3H4O2         ETC3H4O2       C3H4O3         KEA3B3         
-KEA3G2         C3H6           CH3COCH3       C2H5CHO        C3H5OH         
-C3H6O          C3H5OOH        ACETOL         C3H6O2         C3-OQOOH       
-C3H8           IC3H7OH        NC3H7OH        C3H7OOH        GLYCEROL       
-C4H2           C4H4           CH2CCHCHO      C4H4O          C4H6           
-IC3H5CHO       C3H5CHO        C4H6O2         MACRIL         IC4H8          
-NC4H8          C4H7OH         C4H8O          MEK            C3H7CHO        
-IC3H7CHO       NC4-OQOOH      IC4-OQOOH      KEHYBU1        IC4H10         
-NC4H10         N1C4H9OH       N2C4H9OH       TC4H9OH        IC4H9OH        
-C4H9OOH        CYC5H4O        C5H4O2         CYC5H6         MEFU2          
-CYC5H8         C5H8           C5H8O          MCROT          C5EN-OQOOH-35  
-ETMB583        C5H8O4         KEHYMB         NC5H10         IC5H10         
-NEOC5H10-O     C4H9CHO        NC5H10-O       MB             MTBE-O         
-NEOC5-OQOOH    NC5-OQOOH      MTBE-OQOOH     NEOC5H12       NC5H12         
-MTBE           NC5H11OOH      C6H2           C6H4           BENZYNE        
-C6H4O2         C6H6           LC6H6          C6H5OH         C6H6O3         
-CYC6H8         MCPTD          DMF            C6H8O4         CYC6H10        
-CYC6H10-O-13   CYC6H10-O-12   C5H9CHO        CYC6H10-ONE    CYC6H10-O-14   
-CYC6-OQOOH-2   CYC6-OQOOH-4   CYC6-OQOOH-3   ALDEST         C6H10O5        
-CYC6H12        NC6H12         DIPE           TAME           ETBE           
-C6H5CHO        C7H8           C6H5CH2OH      CRESOL         C6H5OCH3       
-CH3CH3-C5H6    C7DIONE        MCYC6-OQOOH    MCYC6          NC7H14         
-NC7H14O        C7KETONE       NC7H13OOH      NC7-OQOOH      NC7H16         
-NC7H15OOH      C8H2           C6H5C2H        BZFUR          C6H5C2H3       
-XYLENE         C6H5C2H5       C8H10O3        UME7           IC8H16         
-IC8H16O        IC8-OQOOH      IC8H18         INDENE         C9H10O2        
-TMBENZ         NPBENZ         C7H15COCHO     C10H8          C10H7OH        
-C10H10         TETRALIN       DCYC5          KHDECA         DECALIN        
-ODECAL         NC10H20        NC10MOOH       NC10-OQOOH     NC10H22        
-C10H7CHO       C10H7CH3       CH3C10H6OH     C11H12O4       U2ME10         
-UME10          ETEROMD        MDKETO         MD             C12H8          
-DIBZFUR        BIPHENYL       DIFENET        C12H18         C12H22         
-NC12-OQOOH     NC12H26        FLUORENE       C6H5CH2C6H5    ALDINS         
-U2ME12         C14H10         C6H5C2H4C6H5   C16H10         IC16-OQOOH     
-NC16-OQOOH     NC16H34        IC16H34        UME16          ETEROMPA       
-MPA            KHMLIN1        MLIN1          MLINO          MEOLE          
-MSTEAKETO      MSTEA          BIN1B          BIN1A          
-N              O              NO3            H              NH             
-NNH            OH             HO2            NH2            H2NO           
-N2H3           C              CSOLID         CN             NCO            
-CH             HCO            HCO3           CH2S           CH2            
-H2CN           CH3            CH2OH          CH3O           CH3OO          
-C2H            HCCO           CH2CN          C2H3           CH3CO          
-CH2CHO         CH3OCO         CH3CO3         C2H5           C2H4OH         
-CH3CHOH        CH3OCH2        C2-QOOH        C2H5OO         DME-QOOH       
-DME-OO         C2-OOQOOH      DME-OOQOOH     C3H3           CH2CHCH2       
-CHCHCH3        CH2CCH3        C2H4CHO        RALD3G         CH3COCH2       
-RALD3B         C3H5OO         CH2OOHCHCHO    CH3CHOOCHO     CH2CHOOHCHO    
-CH2OOCH2CHO    CH2OOHCHOOCHO  CH2OOCHOOHCHO  IC3H7          NC3H7          
-CH2CH2CH2OH    CH3CHCH2OH     CH2CHOHCH3     CH3CH2CH2O     CH3COHCH3      
-NC3H7O         CH3CH2CHOH     NC3H7OO        IC3-QOOH       NC3-QOOH       
-IC3H7OO        NC3-OOQOOH     IC3-OOQOOH     C4H3           C4H3O          
-C4H5           SC4H7          IC4H7          CH2C3H5        RMP3           
-IC4H9P         IC4H9T         NC4H9P         NC4H9S         CH3CCH2OHCH3   
-CH3CHCH2OCH3   CH3CH2CHOCH3   CH2CH2CH2CH2OH CH3CH2CHCH2OH  CH2CH2CHOHCH3  
-CH3CHCH3CHOH   CH3CH2CH2CH2O  CH3CHCH2CH2OH  CH2CHCH2OHCH3  CH3CHCHOHCH3   
-RTC4H8OH       CH3CH2CHOHCH2  CH3CH2COHCH3   RTC4H9O        CH3CH2CH2CHOH  
-IC4H9T-OO      IC4H9P-OO      IC4T-QOOH      NC4-QOOH       IC4P-QOOH      
-NC4H9-OO       QBU1OOX        RBU1OOX        IC4P-OOQOOH    IC4T-OOQOOH    
-NC4-OOQOOH     ZBU1OOX        CYC5H5         C5H5O          C5H7           
-RMCROTA        NC5H9-3        ERC4H8CHO      C5EN-QOOH      C5EN-OO        
-RMBX           RMBOOX         C5EN-OOQOOH-35 QMBOOX         ZMBOOX         
-NEOC5H11       NC5H11         RMTBE          NC5-QOOH       NEOC5H11-OO    
-NEOC5-QOOH     NC5H12OO       MTBE-QOOH      MTBE-OO        NC5-OOQOOH     
-NEOC5-OOQOOH   MTBE-OOQOOH    C6H3           LC6H5          C6H5           
-C6H5O          DMF-3YL        CYC6H9         RALDEST        CYC6H11        
-CYC6-QOOH-2    CYC6-QOOH-3    CYC6-OO        CYC6-QOOH-4    CYC6-OOQOOH-3  
-CYC6-OOQOOH-2  CYC6-OOQOOH-4  RDIPE          C6H4CH3        C7H7           
-RCRESOLC       RCRESOLO       NC7H13         RMCYC6         RMCYC6-OO      
-MCYC6-QOOH     MCYC6T-QOOH    MCYC6-OOQOOH   MCYC6T-OOQOOH  NC7H15         
-NC7-QOOH       NC7H15-OO      NC7-OOQOOH     C6H4C2H        C6H5C2H2       
-RXYLENE        C8H9           RUME7          RME7           IC8H17         
-IC8-QOOH       IC8H17-OO      IC8T-QOOH      IC8-OOQOOH     INDENYL        
-RC9H11         C10H7          C10H7O         RTETRALIN      RTETRAOO       
-RDECALIN       RODECA         RDECOO         QDECOOH        ZDECA          
-NC10H19        NC10H21        NC10-QOOH      NC10H21-OO     NC10-OOQOOH    
-C10H6CH3       C10H7CH2       CH3C10H6O      RUME10         RMDX           
-RMDOOX         QMDOOH         ZMDOOH         C12H7          RBIPHENYL      
-NC12H25        NC12-QOOH      NC12H25-OO     NC12-OOQOOH    C14H9          
-C16H9          NC16H33        IC16H33        NC16-QOOH      IC16-QOOH      
-NC16H33-OO     IC16T-QOOH     IC16H33-OO     NC16-OOQOOH    IC16-OOQOOH    
-IC16T-OOQOOH   RUME16         RMPAX          QMPAOOH        RMPAOOX        
-ZMPAOOH        RMLIN1X        RMLIN1A        RMLIN1OOX      QMLIN1OOX      
-ZMLIN1OOX      RMLINX         RMLINA         RMLINOOX       QMLINOOX       
-ZMLINOOX       RMEOLES        RMEOLEA        RMEOLEOOX      QMEOLEOOH      
-ZMEOLEOOX      RSTEAX         RMSTEAOOX      QMSTEAOOH      ZMSTEAOOH      
+AC3H4
+CH3COOH
+CH3COCH3
+C2H3CHO
+C2H5CHO
+C4H9CHO
+AR
+C6H5CH2OH
+C6H4O2
+C6H6
+C6H5CHO
+C6H5C2H4C6H5
+NC4H8
+C4H6
+C12H8
+C2H2
+C2H4
+C2H6
+C3H6
+C3H8
+C4H2
+C4H4
+CYC5H4O
+C6H5O
+CYC6H10-ONE
+CYC5H8
+CYC6H8
+CYC6H12
+CYC6H10
+CH2CO
+CH2O
+CH3OH
+CH4
+CO
+CO2
+CYC5H6
+MCPTD
+CRESOL
+NC10H20
+C6H5CH2C6H5
+DIPE
+CH3OCH3
+CH3CH3-C5H6
+C6H5C2H5
+NC7H14
+NC6H12
+C5H9CHO
+ETBE
+C2H5OH
+C2H5OOH
+C2H4O
+C6H5C2H
+BIPHENYL
+C14H10
+C6H5OH
+FLUORENE
+C10H8
+H2
+H2O
+H2O2
+HE
+IC4H8
+IC3H7CHO
+IC4H10
+IC8H18
+INDENE
+IC3H7OH
+IC5H10
+IC3H5CHO
+MCYC6
+CH3CHO
+C10H7CH3
+CH3OOH
+MTBE
+N2
+C10H7OH
+C10H7CHO
+NC4H10
+NC10H22
+NC12H26
+NC5H12
+NC7H16
+NEOC5H12
+O2
+IC8H16
+NC5H10
+PC3H4
+CH3CO3H
+HCO3H
+C3H6O
+C5H8
+C16H10
+C6H5C2H3
+TAME
+TETRALIN
+DECALIN
+C7H8
+XYLENE
+NC16H34
+N2H4
+N2O
+NH3
+NO
+NO2
+C3H5OOH
+NC3H7OH
+N1C4H9OH
+N2C4H9OH
+MEK
+TC4H9OH
+IC4H9OH
+C4H7OH
+C3H5OH
+C10H10
+BZFUR
+TMBENZ
+NPBENZ
+C6H5OCH3
+MB
+MCROT
+MACRIL
+DIBZFUR
+DIFENET
+C12H22
+BENZYNE
+C2H2O2
+C4H6O2
+C5H4O2
+C5H8O4
+C6H10O5
+C8H10O3
+HCOOH
+GLYCEROL
+C4H4O
 END
 REACTIONS
 END

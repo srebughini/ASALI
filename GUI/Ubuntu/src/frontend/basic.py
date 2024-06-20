@@ -5,7 +5,7 @@ import beerpy
 
 from PyQt5.QtWidgets import (
     QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout,
-    QFileDialog
+    QFileDialog, QMessageBox
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -27,12 +27,13 @@ class BasicMainWindow(ABC):
         # Set backend variables
         self.imagePath = os.path.join("..", "images")
         self.databasePath = os.path.join("..", "database")
-        self.defaultChemistryPath = os.path.join(self.databasePath, "data.xml")
+        self.defaultChemistryPath = os.path.join(self.databasePath, "data.yaml")
         self.inputHandler = InputDataHandler()
+        self.title = "ASALI"
 
         # Set up windows
         self.mainWindowObject = mainWindowObject
-        self.mainWindowObject.setWindowTitle("ASALI")
+        self.mainWindowObject.setWindowTitle(self.title)
 
         # self.setGeometry(100, 100, 800, 600)
         self.icon = QIcon(os.path.join(self.imagePath, "Icon.png"))
@@ -176,6 +177,37 @@ class BasicMainWindow(ABC):
         # Show the dialog as a modal dialog (blocks the main window)
         dialog.exec_()
 
+    def _questionMessage(self, title, msg):
+        """
+        Question message box
+        Parameters
+        ----------
+        title: str
+            QDialog title
+        msg: str
+            QDialog message
+
+        Returns
+        -------
+        answer: bool
+            If yes the answer is true
+        """
+        box = QMessageBox(self.mainWindowObject)
+        box.setIcon(QMessageBox.Question)
+        box.setWindowTitle(title)
+        box.setText(msg)
+        box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        button_yes = box.button(QMessageBox.Yes)
+        button_yes.setStyleSheet(WidgetStyle.BUTTON.value)
+        button_no = box.button(QMessageBox.No)
+        button_no.setStyleSheet(WidgetStyle.BUTTON.value)
+        box.exec_()
+
+        if box.clickedButton() == button_yes:
+            return True
+        elif box.clickedButton() == button_no:
+            return False
+
     def _disclaimerMessage(self):
         """
         Show disclaimer with QDialog
@@ -228,6 +260,86 @@ class BasicMainWindow(ABC):
         msg.setOpenExternalLinks(True)
         self._dialogMessage("Contacts", msg)
 
+    def _somethingWentWrongMessage(self):
+        """
+        Show something went wrong message with QDialog
+        Returns
+        -------
+        """
+        self._dialogMessage(self.title, "Something went wrong!")
+
+    def _doneMessage(self, title, msg):
+        """
+        Show message with QDialog
+        Parameters
+        ----------
+        title: str
+            QDialog title
+        msg: QLabel
+            QDialog message
+
+        Returns
+        -------
+        """
+        # Create the dialog
+        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
+        dialog.setWindowTitle(title)
+
+        # Add a button
+        button = QPushButton("Close", clicked=dialog.close)
+        button.setStyleSheet(WidgetStyle.BUTTON.value)
+
+        # Create the error icon
+        icon_label = QLabel()
+        icon_pixmap = QMessageBox.standardIcon(QMessageBox.Information)
+        icon_label.setPixmap(icon_pixmap)  # Set the size of the icon as needed
+
+        # Setup grid layout
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(icon_label, 0, 0)
+        grid_layout.addWidget(msg, 0, 1, )
+        grid_layout.addWidget(button, 1, 0, 1, -1)
+        dialog.setLayout(grid_layout)
+
+        # Execute the dialog
+        dialog.exec_()
+
+    def _errorMessage(self, title, msg):
+        """
+        Show message with QDialog
+        Parameters
+        ----------
+        title: str
+            QDialog title
+        msg: QLabel
+            QDialog message
+
+        Returns
+        -------
+        """
+        # Create the dialog
+        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
+        dialog.setWindowTitle(title)
+
+        # Add a button
+        button = QPushButton("Close", clicked=dialog.close)
+        button.setStyleSheet(WidgetStyle.BUTTON.value)
+
+        # Create the error icon
+        icon_label = QLabel()
+        icon_pixmap = QMessageBox.standardIcon(QMessageBox.Critical)
+        icon_label.setPixmap(icon_pixmap)  # Set the size of the icon as needed
+
+        # Setup grid layout
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(icon_label, 0, 0)
+        grid_layout.addWidget(msg, 0, 1, )
+        grid_layout.addWidget(button, 1, 0, 1, -1)
+        dialog.setLayout(grid_layout)
+
+        # Execute the dialog
+        dialog.exec_()
+
     def _openFile(self):
         """
         Dialog window to open file
@@ -238,6 +350,20 @@ class BasicMainWindow(ABC):
         """
         fileTuple = QFileDialog.getOpenFileName(self.mainWindowObject, 'OpenFile')
 
+        if len(fileTuple[0]) == 0:
+            return None
+
+        return fileTuple[0]
+
+    def _saveFile(self):
+        """
+        Dialog window to save file
+        Returns
+        -------
+        file_path: str
+            File path
+        """
+        fileTuple = QFileDialog.getSaveFileName(self.mainWindowObject, 'Save File')
         if len(fileTuple[0]) == 0:
             return None
 
