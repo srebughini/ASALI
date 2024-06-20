@@ -34,4 +34,5 @@ class ChemkinToCanteraConverter:
                                                   thermodynamic_file_path=thermodynamic_file_path,
                                                   transport_file_path=transport_file_path,
                                                   surface_file_path=surface_file_path,
-                                                  output_file_path=output_file_path)
+                                                  output_file_path=output_file_path,
+                                                  validation=False)

@@ -34,8 +34,7 @@ if __name__ == "__main__":
 
     # Create and show the main window
     mainWindow = QMainWindow()
-    # window = SelectChemistryWindow(mainWindow)
-    window = ChemkinToCanteraConverterWindow(mainWindow)
+    window = SelectChemistryWindow(mainWindow)
     mainWindow.show()
 
     sys.exit(app.exec_())

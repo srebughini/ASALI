@@ -174,7 +174,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         self.transportLabel.setText("Not selected")
         self.thermoLabel.setText("Not selected")
         self.kineticLabel.setText("Not selected")
-        self.kineticLabel.setText("Not selected")
+        self.surfaceLabel.setText("Not selected")
 
     def _convert(self):
         """
@@ -197,7 +197,6 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
                                                   self._transport_file_path,
                                                   self._surface_file_path,
                                                   output_file_path)
-
 
                 self.inputHandler.file_path = output_file_path
                 if self.inputHandler.check_cantera_input_file():
