@@ -33,8 +33,7 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
 
     # Create and show the main window
-    mainWindow = QMainWindow()
-    window = SelectChemistryWindow(mainWindow)
+    mainWindow = SelectChemistryWindow()
     mainWindow.show()
 
     sys.exit(app.exec_())

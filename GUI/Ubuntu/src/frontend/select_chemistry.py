@@ -3,19 +3,16 @@ from GUI.Ubuntu.src.frontend.basic import BasicMainWindow
 
 # Example derived class
 from GUI.Ubuntu.src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
+from GUI.Ubuntu.src.frontend.exception_handler import ExceptionHandler
 from GUI.Ubuntu.src.frontend.style import WidgetStyle
 
 
 class SelectChemistryWindow(BasicMainWindow):
-    def __init__(self, mainWindowObject):
+    def __init__(self, parent=None):
         """
         Select chemistry main window
-        Parameters
-        ----------
-        mainWindowObject: QMainWindow
-            QMainWindow object
         """
-        super().__init__(mainWindowObject)
+        super().__init__(parent)
 
     def _createNextButton(self):
         """
@@ -25,7 +22,7 @@ class SelectChemistryWindow(BasicMainWindow):
         button: QPushButton
             Next page button
         """
-        button = QPushButton('Next', self.mainWindowObject)
+        button = QPushButton('Next', self)
         button.setToolTip('Go to next step')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         # button.clicked.connect(self._nextWindows)
@@ -39,10 +36,11 @@ class SelectChemistryWindow(BasicMainWindow):
         dropdown: QComboBox
             Chemistry dropdown
         """
-        dropdown = QComboBox(self.mainWindowObject)
+        dropdown = QComboBox(self)
         dropdown.addItems(["...",
                            "Default (only transport/thermodynamic)",
-                           "Load CANTERA kinetic/properties file"])
+                           "Load CANTERA kinetic/properties file",
+                           "Load ASALI kinetic file"])
         dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
         dropdown.currentIndexChanged.connect(self.on_dropdown_select_chemistry_menu_changed)
         return dropdown
@@ -55,10 +53,10 @@ class SelectChemistryWindow(BasicMainWindow):
         dropdown: QComboBox
             Chemistry dropdown
         """
-        dropdown = QComboBox(self.mainWindowObject)
+        dropdown = QComboBox(self)
         dropdown.addItems(["...",
                            "CHEMKIN -> CANTERA converter",
-                           "Make/Check ASALI kinetic scheme"])
+                           "Check ASALI kinetic scheme"])
         dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
         dropdown.currentIndexChanged.connect(self.on_dropdown_make_chemistry_menu_changed)
         return dropdown
@@ -106,11 +104,13 @@ class SelectChemistryWindow(BasicMainWindow):
         Returns
         -------
         """
-        file_path = None
         if self.selectChemistryDropDown.currentIndex() == 1:
             self.inputHandler.file_path = self.defaultChemistryPath
         elif self.selectChemistryDropDown.currentIndex() == 2:
             self.inputHandler.file_path = self._openFile()
+        elif self.selectChemistryDropDown.currentIndex() == 3:
+            self.inputHandler.file_path = self.defaultChemistryPath
+            self.inputHandler.udk_file_path = self._openFile()
 
     def on_dropdown_make_chemistry_menu_changed(self):
         """
@@ -119,6 +119,11 @@ class SelectChemistryWindow(BasicMainWindow):
         -------
         """
         if self.makeChemistryDropDown.currentIndex() == 1:
-            self.secondWindowObject = QMainWindow()
-            window = ChemkinToCanteraConverterWindow(self.secondWindowObject)
-            self.secondWindowObject.show()
+            window = ChemkinToCanteraConverterWindow(self)
+            window.show()
+        elif self.makeChemistryDropDown.currentIndex() == 2:
+            self.inputHandler.file_path = self.defaultChemistryPath
+            self.inputHandler.udk_file_path = self._openFile()
+            if self.inputHandler.check_udk_input_file():
+                self._doneMessage(self.title,
+                                  QLabel("ASALI user defined kinetic file is correct!"))

@@ -1,5 +1,7 @@
 import os
 import yaml
+
+from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
 
@@ -10,6 +12,7 @@ class InputDataHandler:
 
     def __init__(self):
         self._file_path = None
+        self._udk_file_path = None
         self._gas_phase_name = None
         self._surface_phase_name = None
 
@@ -34,6 +37,28 @@ class InputDataHandler:
 
     # Creating a property object for chemistry file path
     file_path = property(get_file_path, set_file_path)
+
+    def get_udk_file_path(self):
+        """
+        Get chemistry file path
+        Returns
+        -------
+        udk_file_path: str
+            Chemistry file path
+        """
+        return self._udk_file_path
+
+    def set_udk_file_path(self, value):
+        """
+        Set chemistry file path
+        Returns
+        -------
+
+        """
+        self._udk_file_path = value
+
+    # Creating a property object for user define kinetic file path
+    udk_file_path = property(get_udk_file_path, set_udk_file_path)
 
     def get_gas_phase_name(self):
         """
@@ -122,6 +147,20 @@ class InputDataHandler:
 
         if self._surface_phase_name is not None:
             phase = Interface(self._file_path, self._surface_phase_name, [gas])
+        return True
+
+    def check_udk_input_file(self):
+        """
+        Check .json input file of user define kinetic model
+        Returns
+        -------
+        check: bool
+            If True the file is correct
+        """
+        udk_model = UserDefinedKinetic()
+        udk_model.file_path = self._udk_file_path
+        gas = Solution(self._file_path)
+        udk_model.load_and_validate(gas)
         return True
 
     @staticmethod

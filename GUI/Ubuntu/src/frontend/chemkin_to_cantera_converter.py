@@ -9,15 +9,11 @@ from GUI.Ubuntu.src.frontend.style import WidgetStyle
 
 
 class ChemkinToCanteraConverterWindow(BasicMainWindow):
-    def __init__(self, mainWindowObject):
+    def __init__(self, parent=None):
         """
         CHEMKIN -> CANTERA converter window
-        Parameters
-        ----------
-        mainWindowObject: QMainWindow
-            QMainWindow object
         """
-        super().__init__(mainWindowObject)
+        super().__init__(parent)
 
         self._transport_file_path = None
         self._thermo_file_path = None
@@ -32,7 +28,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Next page button
         """
-        button = QPushButton('Convert', self.mainWindowObject, clicked=self._convert)
+        button = QPushButton('Convert', self, clicked=self._convert)
         button.setToolTip('Run CHEMKIN -> CANTERA converter')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
@@ -45,7 +41,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Next page button
         """
-        button = QPushButton('Clean', self.mainWindowObject, clicked=self._clean)
+        button = QPushButton('Clean', self, clicked=self._clean)
         button.setToolTip('Clean input file path')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
@@ -58,7 +54,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Load button
         """
-        button = QPushButton('Select thermodynamic file', self.mainWindowObject, clicked=self._loadThermoFile)
+        button = QPushButton('Select thermodynamic file', self, clicked=self._loadThermoFile)
         button.setToolTip('Load thermodynamic properties file')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
@@ -71,7 +67,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Load button
         """
-        button = QPushButton('Select transport file', self.mainWindowObject, clicked=self._loadTransportFile)
+        button = QPushButton('Select transport file', self, clicked=self._loadTransportFile)
         button.setToolTip('Load transport properties file')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
@@ -84,7 +80,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Load button
         """
-        button = QPushButton('Select gas kinetic file', self.mainWindowObject, clicked=self._loadKineticFile)
+        button = QPushButton('Select gas kinetic file', self, clicked=self._loadKineticFile)
         button.setToolTip('Load gas kinetic file')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
@@ -97,7 +93,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         button: QPushButton
             Load button
         """
-        button = QPushButton('Select surface kinetic file (optional)', self.mainWindowObject,
+        button = QPushButton('Select surface kinetic file (optional)', self,
                              clicked=self._loadSurfaceFile)
         button.setToolTip('Load surface kinetic file')
         button.setStyleSheet(WidgetStyle.BUTTON.value)
@@ -181,7 +177,6 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         Function to convert from CHEMKIN to CANTERA kinetic file
         Returns
         -------
-
         """
         output_file_path = self._saveFile()
 

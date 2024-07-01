@@ -1,10 +1,9 @@
 import os
-from abc import ABC, abstractmethod
 
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QStatusBar, QGridLayout,
+    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QGridLayout,
     QFileDialog, QMessageBox
 )
 from PyQt5.QtGui import QIcon, QPixmap
@@ -14,32 +13,26 @@ from GUI.Ubuntu.src.backend.input_data_handler import InputDataHandler
 from GUI.Ubuntu.src.frontend.style import WidgetStyle, ColorPalette
 
 
-class BasicMainWindow(ABC):
-    def __init__(self, mainWindowObject):
+class BasicMainWindow(QMainWindow):
+    def __init__(self, parent=None):
         """
         Basic class to setup all windows structures
-        Parameters
-        ----------
-        mainWindowObject: QMainWindow
-            QMainWindow object
         """
-        super().__init__()
         # Set backend variables
+        super().__init__(parent)
         self.imagePath = os.path.join("..", "images")
         self.databasePath = os.path.join("..", "database")
         self.defaultChemistryPath = os.path.join(self.databasePath, "data.yaml")
         self.inputHandler = InputDataHandler()
         self.title = "ASALI"
 
-        # Set up windows
-        self.mainWindowObject = mainWindowObject
-        self.mainWindowObject.setWindowTitle(self.title)
+        self.setWindowTitle(self.title)
 
         # self.setGeometry(100, 100, 800, 600)
         self.icon = QIcon(os.path.join(self.imagePath, "Icon.png"))
-        self.mainWindowObject.setWindowIcon(self.icon)
-        self.mainWindowObject.setStyleSheet(WidgetStyle.WINDOW.value)
-        self.mainWindowObject.setWindowFlags(
+        self.setWindowIcon(self.icon)
+        self.setStyleSheet(WidgetStyle.WINDOW.value)
+        self.setWindowFlags(
             Qt.Window |
             Qt.CustomizeWindowHint |
             Qt.WindowTitleHint |
@@ -56,8 +49,8 @@ class BasicMainWindow(ABC):
         self._connectActions()
 
         # Central widget and layout
-        self.central_widget = QWidget(self.mainWindowObject)
-        self.mainWindowObject.setCentralWidget(self.central_widget)
+        self.central_widget = QWidget(self)
+        self.setCentralWidget(self.central_widget)
         self.grid = QGridLayout()
         self.grid.setVerticalSpacing(25)
         self.central_widget.setLayout(self.grid)
@@ -92,7 +85,7 @@ class BasicMainWindow(ABC):
             Image as label
         """
 
-        label = QLabel(self.mainWindowObject)
+        label = QLabel(self)
         pixmap = QPixmap(logo_path)
         label.setPixmap(pixmap)
         label.setAlignment(Qt.AlignCenter)
@@ -120,9 +113,9 @@ class BasicMainWindow(ABC):
         Returns
         -------
         """
-        self.optionToolBar = QToolBar("Options Toolbar", self.mainWindowObject)
+        self.optionToolBar = QToolBar("Options Toolbar", self)
         self.optionToolBar.setMovable(False)
-        self.mainWindowObject.addToolBar(self.optionToolBar)
+        self.addToolBar(self.optionToolBar)
 
     def _createActions(self):
         """
@@ -131,9 +124,9 @@ class BasicMainWindow(ABC):
         -------
 
         """
-        self.contactAction = QAction("&Contact", self.mainWindowObject)
-        self.disclaimerAction = QAction("&Disclaimer", self.mainWindowObject)
-        self.exitAction = QAction("&Exit", self.mainWindowObject)
+        self.contactAction = QAction("&Contact", self)
+        self.disclaimerAction = QAction("&Disclaimer", self)
+        self.exitAction = QAction("&Exit", self)
 
     def _connectActions(self):
         """
@@ -143,7 +136,7 @@ class BasicMainWindow(ABC):
         """
         self.contactAction.triggered.connect(self._contactMessage)
         self.disclaimerAction.triggered.connect(self._disclaimerMessage)
-        self.exitAction.triggered.connect(self.mainWindowObject.close)
+        self.exitAction.triggered.connect(self.close)
 
     def _dialogMessage(self, title, msg):
         """
@@ -159,7 +152,7 @@ class BasicMainWindow(ABC):
         -------
         """
         # Create a QDialog instance
-        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
+        dialog = QDialog(self, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(title)
 
         # Add a button
@@ -192,7 +185,7 @@ class BasicMainWindow(ABC):
         answer: bool
             If yes the answer is true
         """
-        box = QMessageBox(self.mainWindowObject)
+        box = QMessageBox(self)
         box.setIcon(QMessageBox.Question)
         box.setWindowTitle(title)
         box.setText(msg)
@@ -282,7 +275,7 @@ class BasicMainWindow(ABC):
         -------
         """
         # Create the dialog
-        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
+        dialog = QDialog(self, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(title)
 
         # Add a button
@@ -318,7 +311,7 @@ class BasicMainWindow(ABC):
         -------
         """
         # Create the dialog
-        dialog = QDialog(self.mainWindowObject, Qt.WindowCloseButtonHint)
+        dialog = QDialog(self, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(title)
 
         # Add a button
@@ -348,7 +341,7 @@ class BasicMainWindow(ABC):
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getOpenFileName(self.mainWindowObject, 'OpenFile')
+        fileTuple = QFileDialog.getOpenFileName(self, 'OpenFile')
 
         if len(fileTuple[0]) == 0:
             return None
@@ -363,13 +356,12 @@ class BasicMainWindow(ABC):
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getSaveFileName(self.mainWindowObject, 'Save File')
+        fileTuple = QFileDialog.getSaveFileName(self, 'Save File')
         if len(fileTuple[0]) == 0:
             return None
 
         return fileTuple[0]
 
-    @abstractmethod
     def initWidget(self):
         """
         Initialize the widgets
@@ -379,7 +371,6 @@ class BasicMainWindow(ABC):
         """
         pass
 
-    @abstractmethod
     def initUI(self):
         """
         Run the User Interface
