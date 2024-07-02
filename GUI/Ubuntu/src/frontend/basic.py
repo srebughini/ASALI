@@ -9,8 +9,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 
-from GUI.Ubuntu.src.backend.input_data_handler import InputDataHandler
-from GUI.Ubuntu.src.frontend.style import WidgetStyle, ColorPalette
+from src.backend.input_data_handler import InputDataHandler
+from src.frontend.style import WidgetStyle, ColorPalette
 
 
 class BasicMainWindow(QMainWindow):
@@ -20,8 +20,8 @@ class BasicMainWindow(QMainWindow):
         """
         # Set backend variables
         super().__init__(parent)
-        self.imagePath = os.path.join("..", "images")
-        self.databasePath = os.path.join("..", "database")
+        self.imagePath = os.path.join("images")
+        self.databasePath = os.path.join("database")
         self.defaultChemistryPath = os.path.join(self.databasePath, "data.yaml")
         self.inputHandler = InputDataHandler()
         self.title = "ASALI"

@@ -1,10 +1,8 @@
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QMainWindow
-from GUI.Ubuntu.src.frontend.basic import BasicMainWindow
-
-# Example derived class
-from GUI.Ubuntu.src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
-from GUI.Ubuntu.src.frontend.exception_handler import ExceptionHandler
-from GUI.Ubuntu.src.frontend.style import WidgetStyle
+from src.frontend.basic import BasicMainWindow
+from src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
+from src.frontend.exception_handler import ExceptionHandler
+from src.frontend.style import WidgetStyle
 
 
 class SelectChemistryWindow(BasicMainWindow):

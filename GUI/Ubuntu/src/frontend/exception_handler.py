@@ -3,7 +3,7 @@ import traceback
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QVBoxLayout, QComboBox, QMessageBox, QHBoxLayout, QGridLayout
 
-from GUI.Ubuntu.src.frontend.style import WidgetStyle
+from src.frontend.style import WidgetStyle
 
 
 class ExceptionHandler:

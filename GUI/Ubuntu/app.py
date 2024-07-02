@@ -2,9 +2,9 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
-from GUI.Ubuntu.src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
-from GUI.Ubuntu.src.frontend.exception_handler import ExceptionHandler
-from GUI.Ubuntu.src.frontend.select_chemistry import SelectChemistryWindow
+from src.frontend.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
+from src.frontend.exception_handler import ExceptionHandler
+from src.frontend.select_chemistry import SelectChemistryWindow
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):
