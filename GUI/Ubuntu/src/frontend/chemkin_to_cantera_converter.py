@@ -1,9 +1,9 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton
+from PyQt5.QtWidgets import QLabel, QPushButton
 
 from src.backend.chemkin_to_cantera_converter import ChemkinToCanteraConverter
 from src.frontend.basic import BasicMainWindow
-from src.frontend.style import WidgetStyle
+from src.frontend.style import WidgetStyle, FileType
 
 
 class ChemkinToCanteraConverterWindow(BasicMainWindow):
@@ -116,7 +116,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._thermo_file_path = self._openFile("Load thermodynamic file")
+        self._thermo_file_path = self._openFile(file_type=FileType.CHEMKIN.value)
         if self._thermo_file_path is not None:
             self.thermoLabel.setText(self._thermo_file_path)
 
@@ -127,7 +127,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._transport_file_path = self._openFile("Load transport file")
+        self._transport_file_path = self._openFile(file_type=FileType.CHEMKIN.value)
         if self._transport_file_path is not None:
             self.transportLabel.setText(self._transport_file_path)
 
@@ -138,7 +138,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._kinetic_file_path = self._openFile("Load kinetic file")
+        self._kinetic_file_path = self._openFile(file_type=FileType.CHEMKIN.value)
         if self._kinetic_file_path is not None:
             self.kineticLabel.setText(self._kinetic_file_path)
 
@@ -149,7 +149,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._surface_file_path = self._openFile("Load surface kinetic file")
+        self._surface_file_path = self._openFile(file_type=FileType.CHEMKIN.value)
         if self._surface_file_path is not None:
             self.surfaceLabel.setText(self._surface_file_path)
 
@@ -176,7 +176,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         Returns
         -------
         """
-        output_file_path = self._saveFile()
+        output_file_path = self._saveFile("Save file", file_type=FileType.CANTERA.value)
 
         if output_file_path is not None:
             if not self.inputHandler.check_file_extension(output_file_path, ".yaml"):

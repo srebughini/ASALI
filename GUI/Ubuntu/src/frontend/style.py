@@ -1,6 +1,12 @@
 from enum import Enum
 
 
+class FileType(Enum):
+    CANTERA = "CANTERA file type (*.yaml)"
+    ASALI = "ASALI file type (*.json)"
+    CHEMKIN = "CHEMIKIN file type (*.kin;*.sur; *.tdc;*.tra;*.ckin)"
+
+
 class ColorPalette(Enum):
     BLUE = "#10253F"
     LIGHTBLUE = "#DCE6F2"

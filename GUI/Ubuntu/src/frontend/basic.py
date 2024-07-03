@@ -333,7 +333,7 @@ class BasicMainWindow(QMainWindow):
         # Execute the dialog
         dialog.exec_()
 
-    def _openFile(self, title, file_type="All Files (*)"):
+    def _openFile(self, title="Load file", file_type="All Files (*)"):
         """
         Dialog window to open file
         Parameters
@@ -342,6 +342,7 @@ class BasicMainWindow(QMainWindow):
             QFileDialog title
         file_type: str
             QFileDialog message
+
         Returns
         -------
         file_path: str
@@ -357,15 +358,25 @@ class BasicMainWindow(QMainWindow):
 
         return fileTuple[0]
 
-    def _saveFile(self):
+    def _saveFile(self, title="Save file", file_type="All Files (*)"):
         """
         Dialog window to save file
+        Parameters
+        ----------
+        title: str
+            QFileDialog title
+        file_type: str
+            QFileDialog message
+
         Returns
         -------
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getSaveFileName(self, 'Save File')
+        fileTuple = QFileDialog.getSaveFileName(self,
+                                                title,
+                                                "",
+                                                file_type)
         if len(fileTuple[0]) == 0:
             return None
 
