@@ -5,7 +5,7 @@ from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
 
-class InputDataHandler:
+class UserInputHandler:
     """
     Class to handle input data from users
     """
