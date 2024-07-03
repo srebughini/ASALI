@@ -116,7 +116,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._thermo_file_path = self._openFile()
+        self._thermo_file_path = self._openFile("Load thermodynamic file")
         if self._thermo_file_path is not None:
             self.thermoLabel.setText(self._thermo_file_path)
 
@@ -127,7 +127,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._transport_file_path = self._openFile()
+        self._transport_file_path = self._openFile("Load transport file")
         if self._transport_file_path is not None:
             self.transportLabel.setText(self._transport_file_path)
 
@@ -138,7 +138,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._kinetic_file_path = self._openFile()
+        self._kinetic_file_path = self._openFile("Load kinetic file")
         if self._kinetic_file_path is not None:
             self.kineticLabel.setText(self._kinetic_file_path)
 
@@ -149,7 +149,7 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         -------
 
         """
-        self._surface_file_path = self._openFile()
+        self._surface_file_path = self._openFile("Load surface kinetic file")
         if self._surface_file_path is not None:
             self.surfaceLabel.setText(self._surface_file_path)
 

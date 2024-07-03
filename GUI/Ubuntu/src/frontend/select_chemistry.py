@@ -105,10 +105,10 @@ class SelectChemistryWindow(BasicMainWindow):
         if self.selectChemistryDropDown.currentIndex() == 1:
             self.inputHandler.file_path = self.defaultChemistryPath
         elif self.selectChemistryDropDown.currentIndex() == 2:
-            self.inputHandler.file_path = self._openFile()
+            self.inputHandler.file_path = self._openFile("Load Cantera file", file_type="Cantera files (*.yaml)")
         elif self.selectChemistryDropDown.currentIndex() == 3:
             self.inputHandler.file_path = self.defaultChemistryPath
-            self.inputHandler.udk_file_path = self._openFile()
+            self.inputHandler.udk_file_path = self._openFile("Load ASALI file", file_type="ASALI files (*.json)")
 
     def on_dropdown_make_chemistry_menu_changed(self):
         """
@@ -121,7 +121,7 @@ class SelectChemistryWindow(BasicMainWindow):
             window.show()
         elif self.makeChemistryDropDown.currentIndex() == 2:
             self.inputHandler.file_path = self.defaultChemistryPath
-            self.inputHandler.udk_file_path = self._openFile()
+            self.inputHandler.udk_file_path = self._openFile("Load ASALI file", file_type="ASALI files (*.json)")
             if self.inputHandler.check_udk_input_file():
                 self._doneMessage(self.title,
                                   QLabel("ASALI user defined kinetic file is correct!"))

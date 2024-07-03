@@ -333,15 +333,24 @@ class BasicMainWindow(QMainWindow):
         # Execute the dialog
         dialog.exec_()
 
-    def _openFile(self):
+    def _openFile(self, title, file_type="All Files (*)"):
         """
         Dialog window to open file
+        Parameters
+        ----------
+        title: str
+            QFileDialog title
+        file_type: str
+            QFileDialog message
         Returns
         -------
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getOpenFileName(self, 'OpenFile')
+        fileTuple = QFileDialog.getOpenFileName(self,
+                                                title,
+                                                "",
+                                                file_type)
 
         if len(fileTuple[0]) == 0:
             return None

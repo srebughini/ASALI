@@ -140,9 +140,11 @@ class InputDataHandler:
         check: bool
             If True the file is correct
         """
+        if self._file_path is None:
+            return False
+
         self._extract_gas_phase_name()
         self._extract_surface_phase_name()
-
         gas = Solution(self._file_path)
 
         if self._surface_phase_name is not None:
@@ -160,8 +162,11 @@ class InputDataHandler:
         udk_model = UserDefinedKinetic()
         udk_model.file_path = self._udk_file_path
         gas = Solution(self._file_path)
-        udk_model.load_and_validate(gas)
-        return True
+        if udk_model.file_path is not None:
+            udk_model.load_and_validate(gas)
+            return True
+
+        return False
 
     @staticmethod
     def check_file_extension(file_path, required_extension):
