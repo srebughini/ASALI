@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
 )
 
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.style import FileType
+from src.frontend.style import FileType, WidgetStyle
 from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
 from src.frontend.utils import Utils
 
@@ -17,14 +17,16 @@ class MainMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._select_chemistry_option_list = ["...",
-                                              "Default (only transport/thermodynamic)",
-                                              "Load CANTERA kinetic/properties file",
-                                              "Load ASALI kinetic file"]
+        self._select_chemistry_option_list = [
+            Utils.padString("...Select chemistry file..."),
+            Utils.padString("Default (no kinetic model)"),
+            Utils.padString("Load CANTERA kinetic/properties file"),
+            Utils.padString("Load ASALI kinetic file")]
 
-        self._make_chemistry_option_list = ["...",
-                                            "CHEMKIN -> CANTERA converter",
-                                            "Check ASALI kinetic scheme"]
+        self._make_chemistry_option_list = [
+            Utils.padString("...Make/Check the chemistry file..."),
+            Utils.padString("CHEMKIN -> CANTERA converter"),
+            Utils.padString("Check ASALI kinetic scheme")]
 
         super().__init__(main_window)
 
@@ -87,15 +89,17 @@ class MainMenuLayout(BasicLayout):
         """
         self.row_idx = self.row_idx + 1
 
-        self.addWidget(QLabel("Select the chemistry file: "), self.row_idx, 0)
-        self.addWidget(self.selectChemistryDropDown, self.row_idx, 1)
+        # self.addWidget(QLabel(Utils.padString("Select the chemistry file: ")), self.row_idx, 0)
+        # self.addWidget(self.selectChemistryDropDown, self.row_idx, 1)
+        self.addWidget(self.selectChemistryDropDown, self.row_idx, 0)
 
         self.row_idx = self.row_idx + 1
         self.addWidget(QLabel('<p style="text-align: center"><b>or</b></p>'), self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel("Select how to make the chemistry file: "), self.row_idx, 0)
-        self.addWidget(self.makeChemistryDropDown, self.row_idx, 1)
+        # self.addWidget(QLabel(Utils.padString("Select how to make the chemistry file: ")), self.row_idx, 0)
+        # self.addWidget(self.makeChemistryDropDown, self.row_idx, 1)
+        self.addWidget(self.makeChemistryDropDown, self.row_idx, 0)
 
         self.row_idx = self.row_idx + 1
         self.addWidget(self.nextButton, self.row_idx, 0, 1, -1)

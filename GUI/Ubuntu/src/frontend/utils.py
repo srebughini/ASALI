@@ -11,6 +11,16 @@ class Utils:
     """
     Class to handle utilities functions
     """
+    @staticmethod
+    def stringLength():
+        """
+        Return maximum string length
+        Returns
+        -------
+        length: int
+            String length
+        """
+        return 40
 
     @staticmethod
     def cleanLayout(layout):
@@ -350,3 +360,22 @@ class Utils:
 
         # Execute the dialog
         dialog.exec_()
+
+    @staticmethod
+    def padString(original_str):
+        """
+        Pad a string to fixed length
+        Parameters
+        ----------
+        original_str: str
+            Original string
+
+        Returns
+        -------
+        new_str: str
+            New string of fixed length
+        """
+        new_str = f"{original_str:<{Utils.stringLength()}}"
+        if len(new_str) < len(original_str):
+            print("Error in lenght str")
+        return new_str

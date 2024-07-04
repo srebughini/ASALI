@@ -205,3 +205,22 @@ class UserInputHandler:
         """
         file_name, _ = os.path.splitext(file_path)
         return file_name + target_extension
+
+    @staticmethod
+    def from_human_to_code_ud(ud):
+        """
+        Convert from human to code unit dimensions
+        Parameters
+        ----------
+        ud: str
+            Unit dimension in human format
+
+        Returns
+        -------
+        ud: str
+            Unit dimension in code format
+        """
+        cud = ud.replace("°", "deg")
+        cud = cud.replace("\u00b3", "**3")
+        cud = cud.replace("\u00b2", "**2")
+        return cud

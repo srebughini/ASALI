@@ -53,3 +53,11 @@ class WidgetStyle(Enum):
                 background-color: {ColorPalette.LIGHTBLUE.value};
             }}
         """
+
+    LINEEDIT = f"""
+            QLineEdit {{
+                background-color: {ColorPalette.LIGHTBLUE.value};
+                color: {ColorPalette.BLUE.value};
+            }}
+
+        """

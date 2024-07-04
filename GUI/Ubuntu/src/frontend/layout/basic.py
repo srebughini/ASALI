@@ -3,12 +3,13 @@ import os
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox
+    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit
 )
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QStandardItemModel, QStandardItem, QFont, QDoubleValidator
 from PyQt5.QtCore import Qt
 
 from src.frontend.style import WidgetStyle
+from src.frontend.utils import Utils
 
 
 class BasicLayout(QGridLayout):
@@ -106,8 +107,8 @@ class BasicLayout(QGridLayout):
         Create generic dropdown menu
         Parameters
         ----------
-        option_list: List
-            List of options
+        option_list: list
+            Dictionary with option as key and style as value
         function: Function (optional)
             Function to be called when dropdown changed
 
@@ -119,9 +120,35 @@ class BasicLayout(QGridLayout):
         dropdown = QComboBox(self.main_window)
         dropdown.addItems(option_list)
         dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
+
         if function is not None:
             dropdown.currentIndexChanged.connect(function)
         return dropdown
+
+    def _createLineEdit(self, validator):
+        """
+        Create Qline for input
+        Parameters
+        ----------
+        validator: QValidator
+            Validator for format
+
+        Returns
+        -------
+        line: QLineEdit
+            Edit line for input
+        """
+        line_edit = QLineEdit(self.main_window)
+        line_edit.setValidator(validator)
+
+        line_edit.setText(Utils.padString(""))
+        font_metrics = line_edit.fontMetrics()
+        text_width = font_metrics.width(line_edit.text())
+        line_edit.setFixedWidth(text_width)
+        line_edit.setText(None)
+
+        line_edit.setStyleSheet(WidgetStyle.LINEEDIT.value)
+        return line_edit
 
     def initialize(self):
         """
