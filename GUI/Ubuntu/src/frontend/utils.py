@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout
+from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget
 
 from src.frontend.style import WidgetStyle, ColorPalette
 
@@ -35,6 +35,27 @@ class Utils:
                     Utils.cleanLayout(item.layout())
 
         return layout
+
+    @staticmethod
+    def cleanWidget(widget):
+        """
+        Clean a widget by remove all children
+        Parameters
+        ----------
+        widget: QWidget
+            Widget to be cleaned
+        Returns
+        -------
+        widget: QWidget
+            Cleaned widget
+        """
+        # Remove all child widgets of the central widget
+        for child in widget.children():
+            if isinstance(child, QWidget):
+                child.setParent(None)
+                child.deleteLater()
+
+        return widget
 
     @staticmethod
     def openNewWindow(main_window, new_window_class):

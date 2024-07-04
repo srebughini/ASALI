@@ -1,8 +1,7 @@
 import os
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QToolBar, QAction, QDialog, QLabel, QPushButton, QWidget, QGridLayout,
-    QFileDialog, QMessageBox
+    QMainWindow, QToolBar, QAction, QWidget, QGridLayout
 )
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt
@@ -11,8 +10,8 @@ from functools import partial
 
 from src.backend.default_input_handler import DefaultInputHandler
 from src.backend.user_input_handler import UserInputHandler
-from src.frontend.style import WidgetStyle, ColorPalette
-from src.frontend.window.utils import Utils
+from src.frontend.style import WidgetStyle
+from src.frontend.utils import Utils
 
 
 class BasicMainWindow(QMainWindow):
@@ -56,6 +55,16 @@ class BasicMainWindow(QMainWindow):
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
 
+    def _resetUserInput(self):
+        """
+        Reset user input values
+        Returns
+        -------
+
+        """
+        self.userInput.udk_file_path = None
+        self.userInput.file_path = None
+
     def _createToolBar(self):
         """
         Create QToolBar
@@ -87,6 +96,20 @@ class BasicMainWindow(QMainWindow):
         self.disclaimerAction.triggered.connect(partial(Utils.disclaimerMessage, self))
         self.exitAction.triggered.connect(self.close)
 
+    def _cleanCentralWidget(self):
+        """
+        Clean the central widget by remove all children
+        Returns
+        -------
+        """
+        layout = self.central_widget.layout()
+        if layout is not None:
+            Utils.cleanLayout(layout)
+            # Clear the layout from the central widget
+            QWidget().setLayout(layout)
+
+        Utils.cleanWidget(self.central_widget)
+
     def setCentralWidgetLayout(self, layout):
         """
         Set layout for the windows
@@ -98,5 +121,5 @@ class BasicMainWindow(QMainWindow):
         Returns
         -------
         """
-        self.grid = layout
-        self.central_widget.setLayout(self.grid)
+        self._cleanCentralWidget()
+        self.central_widget.setLayout(layout)

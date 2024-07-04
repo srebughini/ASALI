@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (
 from src.backend.chemkin_to_cantera_converter import ChemkinToCanteraConverter
 from src.frontend.layout.basic import BasicLayout
 from src.frontend.style import FileType
-from src.frontend.window.utils import Utils
+from src.frontend.utils import Utils
 
 
 class ChemkinToCanteraConverterLayout(BasicLayout):

@@ -1,11 +1,8 @@
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QComboBox
+    QMainWindow, QLabel
 )
 
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.style import WidgetStyle, FileType
-from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
-from src.frontend.window.utils import Utils
 
 
 class CalculationMenuLayout(BasicLayout):
@@ -17,14 +14,15 @@ class CalculationMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self._select_calculation_option_list = ["...",
+                                                "Thermodynamic and transport properties",
+                                                "Vacuum properties",
+                                                "Chemical equilibrium",
+                                                "Reactor modeling"]
+
         super().__init__(main_window)
 
     def _loadSelectCalculationMenu(self):
-        """
-        Load a new window with the selected calculation menu
-        Returns
-        -------
-        """
         pass
 
     def initialize(self):
@@ -38,6 +36,13 @@ class CalculationMenuLayout(BasicLayout):
                                              self._loadSelectCalculationMenu,
                                              'Go to next step')
 
+        self.backButton = self._createButton('Back',
+                                             self.main_window.updateToMainMenuLayout,
+                                             'Go back to main menu')
+
+        self.selectCalculationDropDown = self._createDropdown(self._select_calculation_option_list,
+                                                              function=None)
+
     def create(self):
         """
         Update the interface
@@ -45,5 +50,9 @@ class CalculationMenuLayout(BasicLayout):
         -------
         """
         self.row_idx = self.row_idx + 1
+        self.addWidget(QLabel("Select the calculation to perform: "), self.row_idx, 0)
+        self.addWidget(self.selectCalculationDropDown, self.row_idx, 1)
 
-        self.addWidget(self.nextButton, self.row_idx, 0, 1, -1)
+        self.row_idx = self.row_idx + 1
+        self.addWidget(self.backButton, self.row_idx, 0)
+        self.addWidget(self.nextButton, self.row_idx, 1)

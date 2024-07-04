@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QComboBox
+    QMainWindow, QLabel
 )
 
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.style import WidgetStyle, FileType
+from src.frontend.style import FileType
 from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
-from src.frontend.window.utils import Utils
+from src.frontend.utils import Utils
 
 
 class MainMenuLayout(BasicLayout):
@@ -17,40 +17,16 @@ class MainMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self._select_chemistry_option_list = ["...",
+                                              "Default (only transport/thermodynamic)",
+                                              "Load CANTERA kinetic/properties file",
+                                              "Load ASALI kinetic file"]
+
+        self._make_chemistry_option_list = ["...",
+                                            "CHEMKIN -> CANTERA converter",
+                                            "Check ASALI kinetic scheme"]
+
         super().__init__(main_window)
-
-    def _createSelectChemistryDropDownMenu(self):
-        """
-        Create chemistry drop down menu for selection the files to be used
-        Returns
-        -------
-        dropdown: QComboBox
-            Chemistry dropdown
-        """
-        dropdown = QComboBox(self.main_window)
-        dropdown.addItems(["...",
-                           "Default (only transport/thermodynamic)",
-                           "Load CANTERA kinetic/properties file",
-                           "Load ASALI kinetic file"])
-        dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
-        dropdown.currentIndexChanged.connect(self._dropdownSelectChemistryMenuAction)
-        return dropdown
-
-    def _createMakeChemistryDropDownMenu(self):
-        """
-        Create chemistry drop down menu to make the chemistry files
-        Returns
-        -------
-        dropdown: QComboBox
-            Chemistry dropdown
-        """
-        dropdown = QComboBox(self.main_window)
-        dropdown.addItems(["...",
-                           "CHEMKIN -> CANTERA converter",
-                           "Check ASALI kinetic scheme"])
-        dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
-        dropdown.currentIndexChanged.connect(self._dropdownMakeChemistryMenuAction)
-        return dropdown
 
     def _dropdownSelectChemistryMenuAction(self):
         """
@@ -58,7 +34,10 @@ class MainMenuLayout(BasicLayout):
         Returns
         -------
         """
-        if self.selectChemistryDropDown.currentIndex() == 1:
+        if self.selectChemistryDropDown.currentIndex() == 0:
+            self.userInput.file_path = None
+            self.userInput.udk_file_path = None
+        elif self.selectChemistryDropDown.currentIndex() == 1:
             self.userInput.file_path = self.defaultInput.defaultChemistryPath
         elif self.selectChemistryDropDown.currentIndex() == 2:
             self.userInput.file_path = Utils.openFile(self.main_window,
@@ -95,8 +74,10 @@ class MainMenuLayout(BasicLayout):
         self.nextButton = self._createButton('Next',
                                              self.main_window.updateToCalculationMenuLayout,
                                              'Go to next step')
-        self.selectChemistryDropDown = self._createSelectChemistryDropDownMenu()
-        self.makeChemistryDropDown = self._createMakeChemistryDropDownMenu()
+        self.selectChemistryDropDown = self._createDropdown(self._select_chemistry_option_list,
+                                                            function=self._dropdownSelectChemistryMenuAction)
+        self.makeChemistryDropDown = self._createDropdown(self._make_chemistry_option_list,
+                                                          function=self._dropdownMakeChemistryMenuAction)
 
     def create(self):
         """

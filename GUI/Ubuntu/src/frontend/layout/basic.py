@@ -3,7 +3,7 @@ import os
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout, QPushButton
+    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -79,7 +79,7 @@ class BasicLayout(QGridLayout):
 
     def _createButton(self, title, function, tooltip):
         """
-        Create generic button to load files
+        Create generic button
         Parameters
         ----------
         title: str
@@ -101,13 +101,27 @@ class BasicLayout(QGridLayout):
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
 
-    def _createBasicLayout(self):
+    def _createDropdown(self, option_list, function=None):
         """
-        Create the basic layout commont to all layouts
+        Create generic dropdown menu
+        Parameters
+        ----------
+        option_list: List
+            List of options
+        function: Function (optional)
+            Function to be called when dropdown changed
+
         Returns
         -------
-
+        dropdown: QComboBox
+            Dropdown menu
         """
+        dropdown = QComboBox(self.main_window)
+        dropdown.addItems(option_list)
+        dropdown.setStyleSheet(WidgetStyle.DROPDOWN.value)
+        if function is not None:
+            dropdown.currentIndexChanged.connect(function)
+        return dropdown
 
     def initialize(self):
         """
