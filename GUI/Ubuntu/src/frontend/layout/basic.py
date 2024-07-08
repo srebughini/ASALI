@@ -1,11 +1,12 @@
 import os
+from abc import abstractmethod
 
 import beerpy
 
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy
 )
-from PyQt5.QtGui import QPixmap, QStandardItemModel, QStandardItem, QFont, QDoubleValidator
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
 from src.frontend.style import WidgetStyle
@@ -24,9 +25,8 @@ class BasicLayout(QGridLayout):
         # Set backend variables
         super().__init__()
         self.main_window = main_window
-        self.userInput = self.main_window.userInput
-        self.defaultInput = self.main_window.defaultInput
         self.title = self.main_window.title
+
         self.nextButtonText = Utils.padStringCenter("Next \u2B9E")
         self.nextButtonToolTip = "Go to the next step"
         self.backButtonText = Utils.padStringCenter("\u2B9C Back")
@@ -36,7 +36,7 @@ class BasicLayout(QGridLayout):
 
         # Create logo
         self.row_idx = 0
-        self.addWidget(self._createLogo(os.path.join(self.defaultInput.imagePath, "BigLogo.png")),
+        self.addWidget(self._createLogo(os.path.join(self.main_window.defaultInput.imagePath, "BigLogo.png")),
                        self.row_idx, 0, 1, -1)
 
         # Create beer quote
@@ -149,22 +149,13 @@ class BasicLayout(QGridLayout):
         line_edit = QLineEdit(self.main_window)
         if validator is not None:
             line_edit.setValidator(validator)
-
-        """
-        line_edit.setText(Utils.padString("QEditLine"))
-        font_metrics = line_edit.fontMetrics()
-        text_width = font_metrics.width(line_edit.text())
-        line_edit.setFixedWidth(text_width)
-        line_edit.setText(None)
-        """
-
         line_edit.setText(text)
-
         line_edit.setStyleSheet(WidgetStyle.LINEEDIT.value)
         line_edit.setAlignment(alignment)
         line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         return line_edit
 
+    @abstractmethod
     def initialize(self):
         """
         Initialize the widgets
@@ -174,6 +165,7 @@ class BasicLayout(QGridLayout):
         """
         pass
 
+    @abstractmethod
     def create(self):
         """
         Update the interface

@@ -6,11 +6,10 @@ from cantera import Solution, Interface
 
 
 class UserInputHandler:
-    """
-    Class to handle input data from users
-    """
-
     def __init__(self):
+        """
+        Class to handle input data from users
+        """
         self._file_path = None
         self._udk_file_path = None
         self._gas_phase_name = None
@@ -68,6 +67,12 @@ class UserInputHandler:
         gas_phase_name: str
             Gas phase name
         """
+        if self._file_path is None:
+            return None
+
+        if self._gas_phase_name is None:
+            self._extract_gas_phase_name()
+
         return self._gas_phase_name
 
     def set_gas_phase_name(self, value):
@@ -90,6 +95,12 @@ class UserInputHandler:
         surface_phase_name: str
             surface phase name
         """
+        if self._file_path is None:
+            return None
+
+        if self._surface_phase_name is None:
+            self._extract_surface_phase_name()
+
         return self._surface_phase_name
 
     def set_surface_phase_name(self, value):

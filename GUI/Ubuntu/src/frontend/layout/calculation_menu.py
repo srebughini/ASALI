@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
 )
 from src.frontend.layout.basic import BasicLayout
 from src.frontend.utils import Utils
+from src.frontend.window.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesWindow
 
 
 class CalculationMenuLayout(BasicLayout):
@@ -33,20 +34,21 @@ class CalculationMenuLayout(BasicLayout):
         -------
 
         """
-        if self.makeChemistryDropDown.currentIndex() == 0:
+        if self.selectCalculationDropDown.currentIndex() == 0:
             Utils.errorMessage(self.main_window,
                                self.title,
                                QLabel("Please, select the calculation method!"))
-        elif self.makeChemistryDropDown.currentIndex() == 1:
-            #Utils.openNewWindow(self.main_window, ThermodynamicAndTransportWindow)
-            pass
-        elif self.makeChemistryDropDown.currentIndex() == 2:
+        elif self.selectCalculationDropDown.currentIndex() == 1:
+            window = Utils.createNewWindowObject(self.main_window, TransportAndThermodynamicPropertiesWindow)
+            window.runBackEnd()
+            Utils.openNewWindowFromObject(self.main_window, window)
+        elif self.selectCalculationDropDown.currentIndex() == 2:
             #Utils.openNewWindow(self.main_window, VacuumWindow)
             pass
-        elif self.makeChemistryDropDown.currentIndex() == 3:
+        elif self.selectCalculationDropDown.currentIndex() == 3:
             #Utils.openNewWindow(self.main_window, ChemicalEquilibriumWindow)
             pass
-        elif self.makeChemistryDropDown.currentIndex() == 4:
+        elif self.selectCalculationDropDown.currentIndex() == 4:
             #Utils.openNewWindow(self.main_window, ReactorWindow)
             pass
 
@@ -124,18 +126,18 @@ class CalculationMenuLayout(BasicLayout):
                                                               function=None)
 
         self.temperatureUdDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.defaultInput.temperatureUd],
+            [Utils.padString(ud) for ud in self.main_window.defaultInput.temperatureUd],
             function=None)
 
         self.temperatureLine = self._createLineEdit("25", Qt.AlignRight, QDoubleValidator())
 
         self.pressureUdDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.defaultInput.pressureUd],
+            [Utils.padString(ud) for ud in self.main_window.defaultInput.pressureUd],
             function=None)
 
         self.pressureLine = self._createLineEdit("101325", Qt.AlignRight, QDoubleValidator())
 
-        self.compositionUdDropDown = self._createDropdown(self.defaultInput.compositionUd, function=None)
+        self.compositionUdDropDown = self._createDropdown(self.main_window.defaultInput.compositionUd, function=None)
 
     def create(self):
         """

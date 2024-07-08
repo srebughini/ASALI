@@ -37,17 +37,17 @@ class MainMenuLayout(BasicLayout):
         -------
         """
         if self.selectChemistryDropDown.currentIndex() == 0:
-            self.userInput.file_path = None
-            self.userInput.udk_file_path = None
+            self.main_window.userInput.file_path = None
+            self.main_window.userInput.udk_file_path = None
         elif self.selectChemistryDropDown.currentIndex() == 1:
-            self.userInput.file_path = self.defaultInput.defaultChemistryPath
+            self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
         elif self.selectChemistryDropDown.currentIndex() == 2:
-            self.userInput.file_path = Utils.openFile(self.main_window,
-                                                      file_type=FileType.CANTERA.value)
+            self.main_window.userInput.file_path = Utils.openFile(self.main_window,
+                                                       file_type=FileType.CANTERA.value)
         elif self.selectChemistryDropDown.currentIndex() == 3:
-            self.userInput.file_path = self.defaultInput.defaultChemistryPath
-            self.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                          file_type=FileType.ASALI.value)
+            self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
+            self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
+                                                           file_type=FileType.ASALI.value)
 
     def _dropdownMakeChemistryMenuAction(self):
         """
@@ -56,12 +56,12 @@ class MainMenuLayout(BasicLayout):
         -------
         """
         if self.makeChemistryDropDown.currentIndex() == 1:
-            Utils.openNewWindow(self.main_window, ChemkinToCanteraConverterWindow)
+            Utils.openNewWindowFromClass(self.main_window, ChemkinToCanteraConverterWindow)
         elif self.makeChemistryDropDown.currentIndex() == 2:
-            self.userInput.file_path = self.defaultInput.defaultChemistryPath
-            self.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                          file_type=FileType.ASALI.value)
-            if self.userInput.check_udk_input_file():
+            self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
+            self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
+                                                           file_type=FileType.ASALI.value)
+            if self.main_window.userInput.check_udk_input_file():
                 Utils.doneMessage(self.main_window,
                                   self.title,
                                   QLabel("ASALI user defined kinetic file is correct!"))

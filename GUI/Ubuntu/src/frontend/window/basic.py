@@ -18,10 +18,6 @@ class BasicMainWindow(QMainWindow):
     def __init__(self, parent=None):
         """
         Basic class to setup all windows structures
-        Parameters
-        ----------
-        layout: QGridLayout
-            Layout to be used
         """
         # Set backend variables
         super().__init__(parent)
@@ -120,7 +116,17 @@ class BasicMainWindow(QMainWindow):
         Returns
         -------
         """
+        layout.userInput = self.userInput
         self._cleanCentralWidget()
         self.central_widget.setLayout(layout)
         self.central_widget.adjustSize()
         self.adjustSize()
+
+    def runBackEnd(self):
+        """
+        Run backend to update frontend
+        Returns
+        -------
+
+        """
+        self.central_widget.layout().run_backend()

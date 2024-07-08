@@ -11,6 +11,7 @@ class Utils:
     """
     Class to handle utilities functions
     """
+
     @staticmethod
     def stringLength():
         """
@@ -68,7 +69,7 @@ class Utils:
         return widget
 
     @staticmethod
-    def openNewWindow(main_window, new_window_class):
+    def openNewWindowFromClass(main_window, new_window_class):
         """
         Open a new window
         Parameters
@@ -81,8 +82,46 @@ class Utils:
         Returns
         -------
         """
-        window = new_window_class(main_window)
-        window.show()
+        # window = new_window_class(main_window)
+        # window.userInput = main_window.userInput
+        # window.show()
+        Utils.openNewWindowFromObject(main_window, Utils.createNewWindowObject(main_window, new_window_class))
+
+    @staticmethod
+    def createNewWindowObject(main_window, new_window_class):
+        """
+        Open a new window
+        Parameters
+        ----------
+        main_window: QMainWindow
+            Main window that is hosting the new window
+        new_window_class: Callable class
+            New window class to be opened
+
+        Returns
+        -------
+        new_window: QMainWindow
+            New window object
+        """
+        new_window = new_window_class(main_window)
+        new_window.userInput = main_window.userInput
+        return new_window
+
+    @staticmethod
+    def openNewWindowFromObject(main_window, new_window):
+        """
+        Open a new window
+        Parameters
+        ----------
+        main_window: QMainWindow
+            Main window that is hosting the new window
+        new_window: QMainWindow
+            New window to be opened
+
+        Returns
+        -------
+        """
+        new_window.show()
 
     @staticmethod
     def openFile(main_window, title="Load file", file_type="All Files (*)"):

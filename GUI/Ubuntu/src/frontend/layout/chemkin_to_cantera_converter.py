@@ -20,7 +20,7 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._clean_label_text = "Not selected"
+        self._clean_label_text = Utils.padStringCenter("Not selected")
 
         super().__init__(main_window)
 
@@ -32,7 +32,7 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         label: QLabel
             Empty Label
         """
-        label = QLabel("Not selected")
+        label = QLabel(self._clean_label_text)
         label.setAlignment(Qt.AlignCenter)
         return label
 
@@ -105,15 +105,15 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         surface_file_path = None if self.surfaceLabel.text() == self._clean_label_text else self.surfaceLabel.text()
 
         if output_file_path is not None:
-            if self.userInput.check_file_extension(output_file_path, ".yaml"):
+            if self.main_window.userInput.check_file_extension(output_file_path, ".yaml"):
                 ChemkinToCanteraConverter.convert(kinetic_file_path,
                                                   thermo_file_path,
                                                   transport_file_path,
                                                   surface_file_path,
                                                   output_file_path)
 
-                self.userInput.file_path = output_file_path
-                if self.userInput.check_cantera_input_file():
+                self.main_window.userInput.file_path = output_file_path
+                if self.main_window.userInput.check_cantera_input_file():
                     Utils.doneMessage(self.main_window,
                                       self.title,
                                       QLabel("CHEMKIN to CANTERA conversion completed!"))
@@ -134,28 +134,28 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         self.kineticLabel = self._createEmptyLabel()
         self.surfaceLabel = self._createEmptyLabel()
 
-        self.convertButton = self._createButton('Convert',
+        self.convertButton = self._createButton(Utils.padStringCenter('Convert'),
                                                 self._convert,
                                                 'Run CHEMKIN -> CANTERA converter')
-        self.cleanButton = self._createButton('Clean',
+        self.cleanButton = self._createButton(Utils.padStringCenter('Clean'),
                                               self._clean,
                                               'Clean input file path')
-        self.loadThermoButton = self._createButton('Select thermo file',
+        self.loadThermoButton = self._createButton(Utils.padStringCenter('Select thermo file'),
                                                    partial(self._loadFile,
                                                            self.thermoLabel),
                                                    'Load thermo properties file')
 
-        self.loadTransportButton = self._createButton('Select transport file',
+        self.loadTransportButton = self._createButton(Utils.padStringCenter('Select transport file'),
                                                       partial(self._loadFile,
                                                               self.transportLabel),
                                                       'Load transport properties file')
 
-        self.loadKineticButton = self._createButton('Select gas kinetic file',
+        self.loadKineticButton = self._createButton(Utils.padStringCenter('Select gas kinetic file'),
                                                     partial(self._loadFile,
                                                             self.kineticLabel),
                                                     'Load gas kinetic file')
 
-        self.loadSurfaceButton = self._createButton('Select surface kinetic file (optional)',
+        self.loadSurfaceButton = self._createButton(Utils.padString('Select surface kinetic file (optional)'),
                                                     partial(self._loadFile,
                                                             self.surfaceLabel),
                                                     'Load surface kinetic file')
