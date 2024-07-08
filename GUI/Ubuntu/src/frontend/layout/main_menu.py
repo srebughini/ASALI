@@ -73,9 +73,9 @@ class MainMenuLayout(BasicLayout):
         -------
 
         """
-        self.nextButton = self._createButton('Next',
+        self.nextButton = self._createButton(self.nextButtonText,
                                              self.main_window.updateToCalculationMenuLayout,
-                                             'Go to next step')
+                                             self.nextButtonToolTip)
         self.selectChemistryDropDown = self._createDropdown(self._select_chemistry_option_list,
                                                             function=self._dropdownSelectChemistryMenuAction)
         self.makeChemistryDropDown = self._createDropdown(self._make_chemistry_option_list,
@@ -88,17 +88,12 @@ class MainMenuLayout(BasicLayout):
         -------
         """
         self.row_idx = self.row_idx + 1
-
-        # self.addWidget(QLabel(Utils.padString("Select the chemistry file: ")), self.row_idx, 0)
-        # self.addWidget(self.selectChemistryDropDown, self.row_idx, 1)
         self.addWidget(self.selectChemistryDropDown, self.row_idx, 0)
 
         self.row_idx = self.row_idx + 1
         self.addWidget(QLabel('<p style="text-align: center"><b>or</b></p>'), self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        # self.addWidget(QLabel(Utils.padString("Select how to make the chemistry file: ")), self.row_idx, 0)
-        # self.addWidget(self.makeChemistryDropDown, self.row_idx, 1)
         self.addWidget(self.makeChemistryDropDown, self.row_idx, 0)
 
         self.row_idx = self.row_idx + 1

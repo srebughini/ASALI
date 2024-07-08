@@ -20,7 +20,7 @@ class Utils:
         length: int
             String length
         """
-        return 40
+        return 20
 
     @staticmethod
     def cleanLayout(layout):
@@ -377,5 +377,24 @@ class Utils:
         """
         new_str = f"{original_str:<{Utils.stringLength()}}"
         if len(new_str) < len(original_str):
-            print("Error in lenght str")
+            print("Error in length str", original_str)
+        return new_str
+
+    @staticmethod
+    def padStringCenter(original_str):
+        """
+        Pad a string to fixed length with text at the center
+        Parameters
+        ----------
+        original_str: str
+            Original string
+
+        Returns
+        -------
+        new_str: str
+            New string of fixed length
+        """
+        new_str = f"{original_str:^{Utils.stringLength()}}"
+        if len(new_str) < len(original_str):
+            print("Error in length str", original_str)
         return new_str

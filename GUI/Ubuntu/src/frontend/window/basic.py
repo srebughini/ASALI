@@ -31,7 +31,6 @@ class BasicMainWindow(QMainWindow):
 
         self.setWindowTitle(self.title)
 
-        # self.setGeometry(100, 100, 800, 600)
         self.icon = QIcon(os.path.join(self.defaultInput.imagePath, "Icon.png"))
         self.setWindowIcon(self.icon)
         self.setStyleSheet(WidgetStyle.WINDOW.value)
@@ -123,3 +122,5 @@ class BasicMainWindow(QMainWindow):
         """
         self._cleanCentralWidget()
         self.central_widget.setLayout(layout)
+        self.central_widget.adjustSize()
+        self.adjustSize()

@@ -3,7 +3,7 @@ import os
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit
+    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy
 )
 from PyQt5.QtGui import QPixmap, QStandardItemModel, QStandardItem, QFont, QDoubleValidator
 from PyQt5.QtCore import Qt
@@ -27,8 +27,12 @@ class BasicLayout(QGridLayout):
         self.userInput = self.main_window.userInput
         self.defaultInput = self.main_window.defaultInput
         self.title = self.main_window.title
+        self.nextButtonText = Utils.padStringCenter("Next \u2B9E")
+        self.nextButtonToolTip = "Go to the next step"
+        self.backButtonText = Utils.padStringCenter("\u2B9C Back")
+        self.backButtonToolTip = "Go to the previous step"
 
-        self.setVerticalSpacing(25)
+        self.setVerticalSpacing(15)
 
         # Create logo
         self.row_idx = 0
@@ -125,11 +129,15 @@ class BasicLayout(QGridLayout):
             dropdown.currentIndexChanged.connect(function)
         return dropdown
 
-    def _createLineEdit(self, validator):
+    def _createLineEdit(self, text, alignment, validator):
         """
         Create Qline for input
         Parameters
         ----------
+        text: str
+            Text to be added as example
+        alignment: Qt.Alignment
+            Alignment of the text
         validator: QValidator
             Validator for format
 
@@ -139,15 +147,22 @@ class BasicLayout(QGridLayout):
             Edit line for input
         """
         line_edit = QLineEdit(self.main_window)
-        line_edit.setValidator(validator)
+        if validator is not None:
+            line_edit.setValidator(validator)
 
-        line_edit.setText(Utils.padString(""))
+        """
+        line_edit.setText(Utils.padString("QEditLine"))
         font_metrics = line_edit.fontMetrics()
         text_width = font_metrics.width(line_edit.text())
         line_edit.setFixedWidth(text_width)
         line_edit.setText(None)
+        """
+
+        line_edit.setText(text)
 
         line_edit.setStyleSheet(WidgetStyle.LINEEDIT.value)
+        line_edit.setAlignment(alignment)
+        line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         return line_edit
 
     def initialize(self):
