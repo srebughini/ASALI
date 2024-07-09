@@ -14,6 +14,10 @@ class UserInputHandler:
         self._udk_file_path = None
         self._gas_phase_name = None
         self._surface_phase_name = None
+        self._temperature = 0.0
+        self._pressure = 0.0
+        self._mole_fraction = {}
+        self._mass_fraction = {}
 
     def get_file_path(self):
         """
@@ -36,6 +40,94 @@ class UserInputHandler:
 
     # Creating a property object for chemistry file path
     file_path = property(get_file_path, set_file_path)
+
+    def get_temperature(self):
+        """
+        Get mixture temperature
+        Returns
+        -------
+        temperature: dict
+            Mixture temperature
+        """
+        return self._temperature
+
+    def set_temperature(self, value):
+        """
+        Set mixture temperature
+        Returns
+        -------
+
+        """
+        self._temperature = value
+
+    # Creating a property object for gas mixture temperature
+    temperature = property(get_temperature, set_temperature)
+
+    def get_pressure(self):
+        """
+        Get mixture pressure
+        Returns
+        -------
+        pressure: dict
+            Mixture pressure
+        """
+        return self._pressure
+
+    def set_pressure(self, value):
+        """
+        Set mixture pressure
+        Returns
+        -------
+
+        """
+        self._pressure = value
+
+    # Creating a property object for gas mixture pressure
+    pressure = property(get_pressure, set_pressure)
+
+    def get_mole_fraction(self):
+        """
+        Get mixture mole fraction
+        Returns
+        -------
+        mole_fraction: dict
+            Mixture mole fraction
+        """
+        return self._mole_fraction
+
+    def set_mole_fraction(self, value):
+        """
+        Set mixture mole fraction
+        Returns
+        -------
+
+        """
+        self._mole_fraction = value
+
+    def get_mass_fraction(self):
+        """
+        Get mixture mass fraction
+        Returns
+        -------
+        mass_fraction: dict
+            Mixture mass fraction
+        """
+        return self._mass_fraction
+
+    def set_mass_fraction(self, value):
+        """
+        Set mixture mass fraction
+        Returns
+        -------
+
+        """
+        self._mass_fraction = value
+
+    # Creating a property object for gas mixture mass fraction
+    mass_fraction = property(get_mass_fraction, set_mass_fraction)
+
+    # Creating a property object for gas mixture mole fraction
+    mole_fraction = property(get_mole_fraction, set_mole_fraction)
 
     def get_udk_file_path(self):
         """
@@ -216,22 +308,3 @@ class UserInputHandler:
         """
         file_name, _ = os.path.splitext(file_path)
         return file_name + target_extension
-
-    @staticmethod
-    def from_human_to_code_ud(ud):
-        """
-        Convert from human to code unit dimensions
-        Parameters
-        ----------
-        ud: str
-            Unit dimension in human format
-
-        Returns
-        -------
-        ud: str
-            Unit dimension in code format
-        """
-        cud = ud.replace("°", "deg")
-        cud = cud.replace("\u00b3", "**3")
-        cud = cud.replace("\u00b2", "**2")
-        return cud

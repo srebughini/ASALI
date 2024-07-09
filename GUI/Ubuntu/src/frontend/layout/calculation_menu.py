@@ -7,6 +7,8 @@ from src.frontend.layout.basic import BasicLayout
 from src.frontend.utils import Utils
 from src.frontend.window.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesWindow
 
+import numpy as np
+
 
 class CalculationMenuLayout(BasicLayout):
     def __init__(self, main_window):
@@ -23,7 +25,8 @@ class CalculationMenuLayout(BasicLayout):
                                                 Utils.padString("Chemical equilibrium"),
                                                 Utils.padString("Reactor modeling")]
 
-        self._n_input_specie = 0
+        self._specie_names_idx = list()
+        self._composition_idx = list()
 
         super().__init__(main_window)
 
@@ -39,17 +42,18 @@ class CalculationMenuLayout(BasicLayout):
                                self.title,
                                QLabel("Please, select the calculation method!"))
         elif self.selectCalculationDropDown.currentIndex() == 1:
-            window = Utils.createNewWindowObject(self.main_window, TransportAndThermodynamicPropertiesWindow)
-            window.runBackEnd()
-            Utils.openNewWindowFromObject(self.main_window, window)
+            if self.getUserInput():
+                window = Utils.createNewWindowObject(self.main_window, TransportAndThermodynamicPropertiesWindow)
+                window.runBackEnd()
+                Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 2:
-            #Utils.openNewWindow(self.main_window, VacuumWindow)
+            # Utils.openNewWindow(self.main_window, VacuumWindow)
             pass
         elif self.selectCalculationDropDown.currentIndex() == 3:
-            #Utils.openNewWindow(self.main_window, ChemicalEquilibriumWindow)
+            # Utils.openNewWindow(self.main_window, ChemicalEquilibriumWindow)
             pass
         elif self.selectCalculationDropDown.currentIndex() == 4:
-            #Utils.openNewWindow(self.main_window, ReactorWindow)
+            # Utils.openNewWindow(self.main_window, ReactorWindow)
             pass
 
     def _addButtons(self, row_idx):
@@ -70,7 +74,7 @@ class CalculationMenuLayout(BasicLayout):
         self.addWidget(self._createButton(Utils.padStringCenter('Add specie'),
                                           self._updateLayoutWithSpecieLine,
                                           'Add input species'), row_idx, 1)
-        self.addWidget(self._createButton(self.nextButtonText,
+        self.addWidget(self._createButton(Utils.padStringCenter('Calculate'),
                                           self._loadSelectedCalculationMenu,
                                           self.nextButtonToolTip), row_idx, 2)
 
@@ -98,10 +102,11 @@ class CalculationMenuLayout(BasicLayout):
         -------
 
         """
-        self._n_input_specie = self._n_input_specie + 1
-        self.addWidget(QLabel(Utils.padString(f"Specie #{self._n_input_specie}")), row_idx, 0)
+        self.addWidget(QLabel(Utils.padString(f"Specie #{len(self._specie_names_idx) + 1}")), row_idx, 0)
         self.addWidget(self._createLineEdit("H2", Qt.AlignRight, None), row_idx, 1)
+        self._specie_names_idx.append(self.count() - 1)
         self.addWidget(self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator()), row_idx, 2)
+        self._composition_idx.append(self.count() - 1)
 
     def _updateLayoutWithSpecieLine(self):
         """
@@ -114,6 +119,54 @@ class CalculationMenuLayout(BasicLayout):
         self._addSpeciesInputLine(self.row_idx)
         self.row_idx = self.row_idx + 1
         self._addButtons(self.row_idx)
+
+    def _extractInputComposition(self):
+        """
+        Extract input composition
+        Returns
+        -------
+        composition: dict
+            User input composition
+        """
+        names = [self.itemAt(i).widget().text() for i in self._specie_names_idx]
+        composition = [float(self.itemAt(i).widget().text()) for i in self._composition_idx]
+
+        if np.fabs(sum(composition) - 1.0) > 1e-06:
+            Utils.errorMessage(self.main_window,
+                               self.title,
+                               QLabel("Sum of composition is > 1!!!"))
+            return None
+
+        return dict(zip(names, composition))
+
+    def getUserInput(self):
+        """
+        Get temperature, composition and pressure from input
+        Returns
+        -------
+
+        """
+        temperature = {"value": float(self.temperatureLine.text()),
+                       "ud": self.temperatureUdDropDown.currentText()}
+        pressure = {"value": float(self.pressureLine.text()),
+                    "ud": self.pressureUdDropDown.currentText()}
+
+        composition = self._extractInputComposition()
+
+        if composition is None:
+            return False
+
+        self.main_window.userInput.temperature = temperature
+        self.main_window.userInput.pressure = pressure
+
+        if self.compositionUdDropDown.currentIndex() == 0:
+            self.main_window.userInput.mass_fraction = composition
+            self.main_window.userInput.mole_fraction = {}
+        elif self.compositionUdDropDown.currentIndex() == 1:
+            self.main_window.userInput.mass_fraction = {}
+            self.main_window.userInput.mole_fraction = composition
+
+        return True
 
     def initialize(self):
         """
@@ -129,7 +182,7 @@ class CalculationMenuLayout(BasicLayout):
             [Utils.padString(ud) for ud in self.main_window.defaultInput.temperatureUd],
             function=None)
 
-        self.temperatureLine = self._createLineEdit("25", Qt.AlignRight, QDoubleValidator())
+        self.temperatureLine = self._createLineEdit("298.15", Qt.AlignRight, QDoubleValidator())
 
         self.pressureUdDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.pressureUd],

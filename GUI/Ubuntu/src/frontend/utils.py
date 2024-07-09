@@ -82,10 +82,7 @@ class Utils:
         Returns
         -------
         """
-        # window = new_window_class(main_window)
-        # window.userInput = main_window.userInput
-        # window.show()
-        Utils.openNewWindowFromObject(main_window, Utils.createNewWindowObject(main_window, new_window_class))
+        Utils.openNewWindowFromObject(Utils.createNewWindowObject(main_window, new_window_class))
 
     @staticmethod
     def createNewWindowObject(main_window, new_window_class):
@@ -108,13 +105,11 @@ class Utils:
         return new_window
 
     @staticmethod
-    def openNewWindowFromObject(main_window, new_window):
+    def openNewWindowFromObject(new_window):
         """
         Open a new window
         Parameters
         ----------
-        main_window: QMainWindow
-            Main window that is hosting the new window
         new_window: QMainWindow
             New window to be opened
 
@@ -437,3 +432,19 @@ class Utils:
         if len(new_str) < len(original_str):
             print("Error in length str", original_str)
         return new_str
+
+    @staticmethod
+    def fromNumberToString(number):
+        """
+        Convert number to string
+        Parameters
+        ----------
+        number: float
+            Number to be converted
+
+        Returns
+        -------
+        number_as_str: str
+            Number as string
+        """
+        return f"{number:.2E}"
