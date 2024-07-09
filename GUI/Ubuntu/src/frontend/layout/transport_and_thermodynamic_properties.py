@@ -19,7 +19,26 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self._empty_label = Utils.padString("")
         super().__init__(main_window)
 
-    def run_backend(self):
+    def _updateProperties(self):
+        """
+        Update estimated properties
+        Returns
+        -------
+        """
+        # Transport properties
+        rho = self.properties.density(self.rhoDropDown.currentText())
+        mw = self.properties.molecular_weight(self.mwDropDown.currentText())
+        mu = self.properties.viscosity(self.muDropDown.currentText())
+        cond = self.properties.thermal_conductivity(self.condDropDown.currentText())
+        diff_mix = self.properties.mixture_diffusivity(self.diffMixDropDown.currentText())
+
+        self.rhoLabel.setText(Utils.padString(Utils.fromNumberToString(rho)))
+        self.mwLabel.setText(Utils.padString(Utils.fromNumberToString(mw)))
+        self.muLabel.setText(Utils.padString(Utils.fromNumberToString(mu)))
+        self.condLabel.setText(Utils.padString(Utils.fromNumberToString(cond)))
+        self.diffMixLabel.setText(Utils.fromDictToString(diff_mix))
+
+    def runBackend(self):
         """
         Run backend to update frontend
         Returns
@@ -48,17 +67,9 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
                                                                        pressure_ud,
                                                                        self.main_window.userInput.mass_fraction)
 
-        rho = self.properties.density(self.rhoDropDown.currentText())
-        mw = self.properties.molecular_weight(self.mwDropDown.currentText())
-        mu = self.properties.viscosity(self.muDropDown.currentText())
-        cond = self.properties.thermal_conductivity(self.condDropDown.currentText())
-        diff_mix = self.properties.mixture_diffusivity(self.diffMixDropDown.currentText())
+        self._updateProperties()
 
-        self.rhoLabel.setText(Utils.padString(Utils.fromNumberToString(rho)))
-        self.mwLabel.setText(Utils.padString(Utils.fromNumberToString(mw)))
-        self.muLabel.setText(Utils.padString(Utils.fromNumberToString(mu)))
-        self.condLabel.setText(Utils.padString(Utils.fromNumberToString(cond)))
-        self.diffMixLabel.setText(Utils.fromDictToString(diff_mix))
+
 
     def initialize(self):
         """
@@ -70,31 +81,31 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         # Density
         self.rhoDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.densityUd],
-            function=None)
+            function=self._updateProperties)
         self.rhoLabel = QLabel(self._empty_label)
 
         # Molecular weight
         self.mwDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.molecularWeigthUd],
-            function=None)
+            function=self._updateProperties)
         self.mwLabel = QLabel(self._empty_label)
 
         # Viscosity
         self.muDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.viscosityUd],
-            function=None)
+            function=self._updateProperties)
         self.muLabel = QLabel(self._empty_label)
 
         # Thermal conductivity
         self.condDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.thermalConductivityUd],
-            function=None)
+            function=self._updateProperties)
         self.condLabel = QLabel(self._empty_label)
 
         # Mixture diffusivity
         self.diffMixDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.diffusivityUd],
-            function=None)
+            function=self._updateProperties)
         self.diffMixLabel = QLabel(self._empty_label)
 
     def create(self):

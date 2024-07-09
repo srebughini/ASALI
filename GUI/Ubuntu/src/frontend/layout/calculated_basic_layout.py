@@ -15,7 +15,7 @@ class CalculatedBasicLayout(BasicLayout):
         super().__init__(main_window)
 
     @abstractmethod
-    def run_backend(self):
+    def runBackend(self):
         """
         Run backend to update frontend
         Returns

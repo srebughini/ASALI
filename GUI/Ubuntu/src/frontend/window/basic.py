@@ -129,4 +129,4 @@ class BasicMainWindow(QMainWindow):
         -------
 
         """
-        self.central_widget.layout().run_backend()
+        self.central_widget.layout().runBackend()
