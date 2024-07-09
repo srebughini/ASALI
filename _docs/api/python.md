@@ -109,7 +109,7 @@ ASALI estimates different thermodynamic and transport properties (`p` is the Asa
                 <td>Pa*s</td>
             </tr>
             <tr>
-                <th scope="row"><b><i>p.SpeciesMolarSpecificHeat</i></b></th>
+                <th scope="row"><b><i>p.species_molar_specific_heat</i></b></th>
                 <td>Single specie specific heat</td>
                 <td><i>1D array</i></td>
                 <td>J/kmol/K</td>
