@@ -194,7 +194,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton("Close", clicked=dialog.close)
+        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create a layout for the dialog
@@ -338,7 +338,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton("Close", clicked=dialog.close)
+        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon
@@ -377,7 +377,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton("Close", clicked=dialog.close)
+        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon
@@ -448,3 +448,20 @@ class Utils:
             Number as string
         """
         return f"{number:.2E}"
+
+    @staticmethod
+    def fromDictToString(dictionary):
+        """
+        Convert dict to table like string
+        Parameters
+        ----------
+        dictionary: dict
+            Dictionary to be converted
+
+        Returns
+        -------
+        dictionary_as_table: str
+            Dictionary as string
+
+        """
+        return "\n".join([Utils.padString(f"{k}:\t{Utils.fromNumberToString(v)}") for k, v in dictionary.items()])

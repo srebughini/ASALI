@@ -52,12 +52,13 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         mw = self.properties.molecular_weight(self.mwDropDown.currentText())
         mu = self.properties.viscosity(self.muDropDown.currentText())
         cond = self.properties.thermal_conductivity(self.condDropDown.currentText())
-        diff_mix = self.properties.mixture_diffusivity(self.condDropDown.currentText())
+        diff_mix = self.properties.mixture_diffusivity(self.diffMixDropDown.currentText())
 
         self.rhoLabel.setText(Utils.padString(Utils.fromNumberToString(rho)))
         self.mwLabel.setText(Utils.padString(Utils.fromNumberToString(mw)))
         self.muLabel.setText(Utils.padString(Utils.fromNumberToString(mu)))
         self.condLabel.setText(Utils.padString(Utils.fromNumberToString(cond)))
+        self.diffMixLabel.setText(Utils.fromDictToString(diff_mix))
 
     def initialize(self):
         """

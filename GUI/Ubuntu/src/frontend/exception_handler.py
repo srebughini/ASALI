@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QVBoxLayout, QComboBox, QMessageBox, QHBoxLayout, QGridLayout
 
 from src.frontend.style import WidgetStyle
+from src.frontend.utils import Utils
 
 
 class ExceptionHandler:
@@ -38,7 +39,7 @@ class ExceptionHandler:
         dialog.setWindowTitle("Error")
 
         # Create the main message label
-        main_message = QLabel("Something went wrong!")
+        main_message = QLabel(Utils.padStringCenter("Something went wrong!"))
 
         # Create error label
         error_label = QLabel(error_msg)
@@ -47,11 +48,11 @@ class ExceptionHandler:
         error_label.hide()
 
         # Create the close button
-        show_error_button = QPushButton("Show details", clicked=error_label.show)
+        show_error_button = QPushButton(Utils.padStringCenter("Show details"), clicked=error_label.show)
         show_error_button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the close button
-        close_button = QPushButton("Close", clicked=dialog.close)
+        close_button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
         close_button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon
