@@ -34,6 +34,7 @@ class DefaultInputHandler:
         self._viscosityUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in self._uc.viscosity_ud().keys()]
         self._powerUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ["W", "kW", "cal/s", "kcal/s"]]
         self._timeUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ['s', 'min', 'h']]
+        self._energyUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ['J', 'kJ', 'cal', 'kcal']]
 
         self._thermalConductivityUd = [f"{ud}/K" for ud in DefaultInputHandler.create_fractional_ud(self._powerUd,
                                                                                                     self._lengthUd)]
@@ -41,6 +42,13 @@ class DefaultInputHandler:
         self._densityUd = DefaultInputHandler.create_fractional_ud(self._massUd, self._volumeUd)
         self._molecularWeightUd = DefaultInputHandler.create_fractional_ud(self._massUd, self._moleUd)
         self._diffusivityUd = DefaultInputHandler.create_fractional_ud(self._areaUd, self._timeUd)
+
+        self._enthalpyUd = DefaultInputHandler.create_fractional_ud(self._energyUd,
+                                                                    ["kg", "g", "kmol", "mol"])
+
+        self._entropyUd = [f"{ud}/K" for ud in self._enthalpyUd]
+        self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
+        self._specificHeatUd = self._entropyUd
 
     @staticmethod
     def create_fractional_ud(numerator, denominator):
@@ -223,3 +231,37 @@ class DefaultInputHandler:
             Thermal diffusivity unit dimensions
         """
         return self._diffusivityUd
+
+    @property
+    def enthalpyUd(self):
+        """
+        Access to the enthalpy unit dimensions
+        Returns
+        -------
+        enthalpyUd: list
+            Enthalpy unit dimensions
+        """
+        return self._enthalpyUd
+
+    @property
+    def entropyUd(self):
+        """
+        Access to the entropy unit dimensions
+        Returns
+        -------
+        entropyUd: list
+            Entropy unit dimensions
+        """
+        return self._entropyUd
+
+    @property
+    def specificHeatUd(self):
+        """
+        Access to the specific heat unit dimensions
+        Returns
+        -------
+        specificHeatUd: list
+            Specific heat unit dimensions
+        """
+        return self._specificHeatUd
+

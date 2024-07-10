@@ -26,6 +26,14 @@ class WidgetStyle(Enum):
             font: italic;
             """
 
+    HIGHLIGHTLABEL = f"""
+            QLabel {{
+                color: {ColorPalette.ORANGE.value};
+                padding: 5px;
+                font: bold;
+            }}
+            """
+
     BUTTON = f"""
             QPushButton {{
                 background-color: {ColorPalette.LIGHTBLUE.value};

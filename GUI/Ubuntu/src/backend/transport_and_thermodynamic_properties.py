@@ -156,6 +156,64 @@ class TransportAndThermodynamicProperties:
         names = np.asarray(self._gas.species_names)[diff_mask]
         diff_mix = total_diff_mix[diff_mask]
 
-        return dict(
-            zip(names, [self._uc.convert_from_square_meter_per_seconds(d, DefaultInputHandler.from_human_to_code_ud(ud))
-                        for d in diff_mix]))
+        return dict(zip(names,
+                        [self._uc.convert_from_square_meter_per_seconds(d,
+                                                                        DefaultInputHandler.from_human_to_code_ud(ud))
+                         for d in diff_mix]))
+
+    def specific_heat(self, ud):
+        """
+        Return specific heat of mixture
+        Parameters
+        ----------
+        ud: str
+            Unit dimensions in human format
+        Returns
+        -------
+        cp: float
+            Gas mixture specific heat
+        """
+        if 'mol' in ud.lower():
+            return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.cp_mole,
+                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+
+        return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.cp_mass,
+                                                             DefaultInputHandler.from_human_to_code_ud(ud))
+
+    def enthalpy(self, ud):
+        """
+        Return enthalpy of mixture
+        Parameters
+        ----------
+        ud: str
+            Unit dimensions in human format
+        Returns
+        -------
+        cp: float
+            Gas mixture enthalpy
+        """
+        if 'mol' in ud.lower():
+            return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.enthalpy_mole,
+                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+
+        return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.enthalpy_mass,
+                                                             DefaultInputHandler.from_human_to_code_ud(ud))
+
+    def entropy(self, ud):
+        """
+        Return entropy of mixture
+        Parameters
+        ----------
+        ud: str
+            Unit dimensions in human format
+        Returns
+        -------
+        cp: float
+            Gas mixture entropy
+        """
+        if 'mol' in ud.lower():
+            return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.entropy_mole,
+                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+
+        return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.entropy_mass,
+                                                             DefaultInputHandler.from_human_to_code_ud(ud))

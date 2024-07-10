@@ -1,9 +1,11 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
 from src.backend.transport_and_thermodynamic_properties import TransportAndThermodynamicProperties
 from src.frontend.layout.calculated_basic_layout import CalculatedBasicLayout
+from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
 
 
@@ -38,6 +40,15 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self.condLabel.setText(Utils.padString(Utils.fromNumberToString(cond)))
         self.diffMixLabel.setText(Utils.fromDictToString(diff_mix))
 
+        # Thermodynamic properties
+        h = self.properties.enthalpy(self.enthalpyDropDown.currentText())
+        s = self.properties.entropy(self.entropyDropDown.currentText())
+        cp = self.properties.specific_heat(self.specificHeatDropDown.currentText())
+
+        self.enthalpyLabel.setText(Utils.padString(Utils.fromNumberToString(h)))
+        self.entropyLabel.setText(Utils.padString(Utils.fromNumberToString(s)))
+        self.specificHeatLabel.setText(Utils.padString(Utils.fromNumberToString(cp)))
+
     def runBackend(self):
         """
         Run backend to update frontend
@@ -69,8 +80,6 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
 
         self._updateProperties()
 
-
-
     def initialize(self):
         """
         Initialize the widgets
@@ -78,6 +87,15 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         -------
 
         """
+        # Titles label
+        self.thermoLabel = QLabel("Thermodynamic properties")
+        self.thermoLabel.setStyleSheet(WidgetStyle.HIGHLIGHTLABEL.value)
+        self.thermoLabel.setAlignment(Qt.AlignCenter)
+
+        self.transportLabel = QLabel("Transport properties")
+        self.transportLabel.setStyleSheet(WidgetStyle.HIGHLIGHTLABEL.value)
+        self.transportLabel.setAlignment(Qt.AlignCenter)
+
         # Density
         self.rhoDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.densityUd],
@@ -108,6 +126,24 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
             function=self._updateProperties)
         self.diffMixLabel = QLabel(self._empty_label)
 
+        # Enthalpy
+        self.enthalpyDropDown = self._createDropdown(
+            [Utils.padString(ud) for ud in self.main_window.defaultInput.enthalpyUd],
+            function=self._updateProperties)
+        self.enthalpyLabel = QLabel(self._empty_label)
+
+        # Entropy
+        self.entropyDropDown = self._createDropdown(
+            [Utils.padString(ud) for ud in self.main_window.defaultInput.entropyUd],
+            function=self._updateProperties)
+        self.entropyLabel = QLabel(self._empty_label)
+
+        # Specific heat
+        self.specificHeatDropDown = self._createDropdown(
+            [Utils.padString(ud) for ud in self.main_window.defaultInput.specificHeatUd],
+            function=self._updateProperties)
+        self.specificHeatLabel = QLabel(self._empty_label)
+
     def create(self):
         """
         Update the interface
@@ -116,7 +152,7 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         """
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel('<p style="text-align: center"><b>Transport properties</b></p>'), self.row_idx, 0, 1, -1)
+        self.addWidget(self.transportLabel, self.row_idx, 0, 1, -1)
 
         # Density
         self.row_idx = self.row_idx + 1
@@ -149,5 +185,22 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self.addWidget(self.diffMixDropDown, self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel('<p style="text-align: center"><b>Thermodynamic properties</b></p>'), self.row_idx, 0, 1,
-                       -1)
+        self.addWidget(self.thermoLabel,self.row_idx, 0, 1, -1)
+
+        # Enthalpy
+        self.row_idx = self.row_idx + 1
+        self.addWidget(QLabel(Utils.padString("Enthalpy")), self.row_idx, 0)
+        self.addWidget(self.enthalpyLabel, self.row_idx, 1)
+        self.addWidget(self.enthalpyDropDown, self.row_idx, 2)
+
+        # Entropy
+        self.row_idx = self.row_idx + 1
+        self.addWidget(QLabel(Utils.padString("Entropy")), self.row_idx, 0)
+        self.addWidget(self.entropyLabel, self.row_idx, 1)
+        self.addWidget(self.entropyDropDown, self.row_idx, 2)
+
+        # Specific heat
+        self.row_idx = self.row_idx + 1
+        self.addWidget(QLabel(Utils.padString("Specific heat")), self.row_idx, 0)
+        self.addWidget(self.specificHeatLabel, self.row_idx, 1)
+        self.addWidget(self.specificHeatDropDown, self.row_idx, 2)
