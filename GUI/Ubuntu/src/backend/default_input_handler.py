@@ -50,6 +50,12 @@ class DefaultInputHandler:
         self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
         self._specificHeatUd = self._entropyUd
 
+        self._chemicalEquilibriumParser = {"Fixed temperature and pressure": "TP",
+                                           "Fixed specific enthalpy and pressure": "HP",
+                                           "Fixed specific internal energy and specific volume": "UV",
+                                           "Fixed specific entropy and specific volume": "SV",
+                                           "Fixed specific entropy and pressure": "SP"}
+
     @staticmethod
     def create_fractional_ud(numerator, denominator):
         """
@@ -264,4 +270,15 @@ class DefaultInputHandler:
             Specific heat unit dimensions
         """
         return self._specificHeatUd
+
+    @property
+    def humanChemicalEquilibriumOptions(self):
+        """
+        Access to the human chemical equilibrium options
+        Returns
+        -------
+        chemEqOptions: list
+            List of chemical equilibrium options
+        """
+        return list(self._chemicalEquilibriumParser.keys())
 
