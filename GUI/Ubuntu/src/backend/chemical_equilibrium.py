@@ -13,3 +13,16 @@ class ChemicalEquilibrium(BasicCalculation):
             Gas phase name
         """
         super().__init__(cantera_input_file, gas_phase_name)
+
+    def equilibrate(self, equilibrium_type):
+        """
+        Run Cantera chemical equilibrium model
+        Parameters
+        ----------
+        equilibrium_type: str
+            Type of chemical equilibrium to be calculated
+
+        Returns
+        -------
+        """
+        self._gas.equilibrate(equilibrium_type)

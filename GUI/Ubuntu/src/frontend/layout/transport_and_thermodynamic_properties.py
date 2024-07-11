@@ -21,18 +21,18 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self._empty_label = Utils.padString("")
         super().__init__(main_window)
 
-    def _updateProperties(self):
+    def _updateProperties(self, cl):
         """
         Update estimated properties
         Returns
         -------
         """
         # Transport properties
-        rho = self.properties.density(self.rhoDropDown.currentText())
-        mw = self.properties.molecular_weight(self.mwDropDown.currentText())
-        mu = self.properties.viscosity(self.muDropDown.currentText())
-        cond = self.properties.thermal_conductivity(self.condDropDown.currentText())
-        diff_mix = self.properties.mixture_diffusivity(self.diffMixDropDown.currentText())
+        rho = cl.density(self.rhoDropDown.currentText())
+        mw = cl.molecular_weight(self.mwDropDown.currentText())
+        mu = cl.viscosity(self.muDropDown.currentText())
+        cond = cl.thermal_conductivity(self.condDropDown.currentText())
+        diff_mix = cl.mixture_diffusivity(self.diffMixDropDown.currentText())
 
         self.rhoLabel.setText(Utils.padString(Utils.fromNumberToString(rho)))
         self.mwLabel.setText(Utils.padString(Utils.fromNumberToString(mw)))
@@ -41,9 +41,9 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self.diffMixLabel.setText(Utils.fromDictToString(diff_mix))
 
         # Thermodynamic properties
-        h = self.properties.enthalpy(self.enthalpyDropDown.currentText())
-        s = self.properties.entropy(self.entropyDropDown.currentText())
-        cp = self.properties.specific_heat(self.specificHeatDropDown.currentText())
+        h = cl.enthalpy(self.enthalpyDropDown.currentText())
+        s = cl.entropy(self.entropyDropDown.currentText())
+        cp = cl.specific_heat(self.specificHeatDropDown.currentText())
 
         self.enthalpyLabel.setText(Utils.padString(Utils.fromNumberToString(h)))
         self.entropyLabel.setText(Utils.padString(Utils.fromNumberToString(s)))
@@ -56,29 +56,9 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         -------
 
         """
-        self.properties = TransportAndThermodynamicProperties(self.main_window.userInput.file_path,
-                                                              self.main_window.userInput.gas_phase_name)
-
-        temperature_value = self.main_window.userInput.temperature["value"]
-        temperature_ud = self.main_window.userInput.temperature["ud"]
-        pressure_value = self.main_window.userInput.pressure["value"]
-        pressure_ud = self.main_window.userInput.pressure["ud"]
-
-        if len(self.main_window.userInput.mole_fraction) > 0:
-            self.properties.set_temperature_pressure_and_mole_fraction(temperature_value,
-                                                                       temperature_ud,
-                                                                       pressure_value,
-                                                                       pressure_ud,
-                                                                       self.main_window.userInput.mole_fraction)
-
-        if len(self.main_window.userInput.mass_fraction) > 0:
-            self.properties.set_temperature_pressure_and_mass_fraction(temperature_value,
-                                                                       temperature_ud,
-                                                                       pressure_value,
-                                                                       pressure_ud,
-                                                                       self.main_window.userInput.mass_fraction)
-
-        self._updateProperties()
+        self.cl = self._setGasMixtureUserInput(TransportAndThermodynamicProperties(self.main_window.userInput.file_path,
+                                                                                   self.main_window.userInput.gas_phase_name))
+        self._updateProperties(self.cl)
 
     def initialize(self):
         """
@@ -185,7 +165,7 @@ class TransportAndThermodynamicPropertiesLayout(CalculatedBasicLayout):
         self.addWidget(self.diffMixDropDown, self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.thermoLabel,self.row_idx, 0, 1, -1)
+        self.addWidget(self.thermoLabel, self.row_idx, 0, 1, -1)
 
         # Enthalpy
         self.row_idx = self.row_idx + 1

@@ -282,3 +282,17 @@ class DefaultInputHandler:
         """
         return list(self._chemicalEquilibriumParser.keys())
 
+    def from_human_eq_to_code_eq(self, heq):
+        """
+        Convert from human chemical equilibrium type to code
+        Parameters
+        ----------
+        heq: str
+            Human chemical equilibrium type
+
+        Returns
+        -------
+        ceq: str
+            Code chemical equilibrium type
+        """
+        return self._chemicalEquilibriumParser[heq]

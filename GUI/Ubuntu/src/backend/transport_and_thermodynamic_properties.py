@@ -1,7 +1,3 @@
-import cantera as ct
-import numpy as np
-from asali.utils.unit_converter import UnitConverter
-
 from src.backend.basic_calculation import BasicCalculation
 from src.backend.default_input_handler import DefaultInputHandler
 
@@ -95,12 +91,9 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         diff_mix_zero = total_diff_mix == 0
         total_diff_mix[diff_mix_zero] = self._gas.binary_diff_coeffs[diff_mix_zero, diff_mix_zero]
 
-        diff_mask = np.logical_not(np.fabs(total_diff_mix * np.asarray(self._gas.Y)) < 1e-16)
+        diff_mix = total_diff_mix[self._species_mask]
 
-        names = np.asarray(self._gas.species_names)[diff_mask]
-        diff_mix = total_diff_mix[diff_mask]
-
-        return dict(zip(names,
+        return dict(zip(self._species_names,
                         [self._uc.convert_from_square_meter_per_seconds(d,
                                                                         DefaultInputHandler.from_human_to_code_ud(ud))
                          for d in diff_mix]))

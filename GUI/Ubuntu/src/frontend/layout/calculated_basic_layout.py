@@ -14,6 +14,33 @@ class CalculatedBasicLayout(BasicLayout):
         """
         super().__init__(main_window)
 
+    def _setGasMixtureUserInput(self, cl):
+        """
+        Set gas mixture input composition, temperature and pressure
+        Returns
+        -------
+        """
+        temperature_value = self.main_window.userInput.temperature["value"]
+        temperature_ud = self.main_window.userInput.temperature["ud"]
+        pressure_value = self.main_window.userInput.pressure["value"]
+        pressure_ud = self.main_window.userInput.pressure["ud"]
+
+        if len(self.main_window.userInput.mole_fraction) > 0:
+            cl.set_temperature_pressure_and_mole_fraction(temperature_value,
+                                                          temperature_ud,
+                                                          pressure_value,
+                                                          pressure_ud,
+                                                          self.main_window.userInput.mole_fraction)
+
+        if len(self.main_window.userInput.mass_fraction) > 0:
+            cl.set_temperature_pressure_and_mass_fraction(temperature_value,
+                                                          temperature_ud,
+                                                          pressure_value,
+                                                          pressure_ud,
+                                                          self.main_window.userInput.mass_fraction)
+
+        return cl
+
     @abstractmethod
     def runBackend(self):
         """

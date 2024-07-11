@@ -465,3 +465,25 @@ class Utils:
 
         """
         return "\n".join([Utils.padString(f"{k}:\t{Utils.fromNumberToString(v)}") for k, v in dictionary.items()])
+
+    @staticmethod
+    def fromListToString(vector, horizontal=False):
+        """
+        Convert list to table like string
+        Parameters
+        ----------
+        vector: list
+            List to be converted
+        horizontal: bool (optional)
+            Enable/Disable the horizontal orientation
+
+        Returns
+        -------
+        vector_as_string: str
+            Vector as string
+
+        """
+        if horizontal:
+            return "\t".join([Utils.padString(f"{Utils.fromNumberToString(v)}") for v in vector])
+
+        return "\n".join([Utils.padString(f"{Utils.fromNumberToString(v)}") for v in vector])
