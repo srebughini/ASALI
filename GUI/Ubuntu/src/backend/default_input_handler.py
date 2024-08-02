@@ -46,6 +46,9 @@ class DefaultInputHandler:
         self._enthalpyUd = DefaultInputHandler.create_fractional_ud(self._energyUd,
                                                                     ["kg", "g", "kmol", "mol"])
 
+        self._velocityUd = DefaultInputHandler.create_fractional_ud(self._lengthUd,
+                                                                    self._timeUd)
+
         self._entropyUd = [f"{ud}/K" for ud in self._enthalpyUd]
         self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
         self._specificHeatUd = self._entropyUd
@@ -270,6 +273,28 @@ class DefaultInputHandler:
             Specific heat unit dimensions
         """
         return self._specificHeatUd
+
+    @property
+    def velocityUd(self):
+        """
+        Access to the velocity unit dimensions
+        Returns
+        -------
+        specificHeatUd: list
+            Velocity unit dimensions
+        """
+        return self._velocityUd
+
+    @property
+    def lengthUd(self):
+        """
+        Access to the length unit dimensions
+        Returns
+        -------
+        specificHeatUd: list
+            Length unit dimensions
+        """
+        return self._lengthUd
 
     @property
     def humanChemicalEquilibriumOptions(self):

@@ -7,11 +7,12 @@ from src.frontend.layout.basic import BasicLayout
 from src.frontend.utils import Utils
 from src.frontend.window.chemical_equilibrium import ChemicalEquilibriumWindow
 from src.frontend.window.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesWindow
+from src.frontend.window.vacuum_properties import VacuumPropertiesWindow
 
 import numpy as np
 
 
-class CalculationMenuLayout(BasicLayout):
+class CalculationMainMenuLayout(BasicLayout):
     def __init__(self, main_window):
         """
         Calculation menu layout
@@ -48,8 +49,10 @@ class CalculationMenuLayout(BasicLayout):
                 window.runBackEnd()
                 Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 2:
-            # Utils.openNewWindow(self.main_window, VacuumWindow)
-            pass
+            if self.getUserInput():
+                window = Utils.createNewWindowObject(self.main_window, VacuumPropertiesWindow)
+                window.runBackEnd()
+                Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 3:
             if self.getUserInput():
                 window = Utils.createNewWindowObject(self.main_window, ChemicalEquilibriumWindow)

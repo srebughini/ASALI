@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 
 from src.frontend.exception_handler import ExceptionHandler
-from src.frontend.window.selection_menu import SelectionMenuWindow
+from src.frontend.window.main_menu import MainMenuWindow
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     app.setStyle("Fusion")
 
     # Create and show the main window
-    mainWindow = SelectionMenuWindow()
+    mainWindow = MainMenuWindow()
     mainWindow.show()
 
     sys.exit(app.exec_())

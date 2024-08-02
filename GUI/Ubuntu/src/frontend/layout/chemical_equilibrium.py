@@ -3,11 +3,11 @@ from PyQt5.QtWidgets import (
 )
 
 from src.backend.chemical_equilibrium import ChemicalEquilibrium
-from src.frontend.layout.calculated_basic_layout import CalculatedBasicLayout
+from src.frontend.layout.calculation_basic_layout import CalculationBasicLayout
 from src.frontend.utils import Utils
 
 
-class ChemicalEquilibriumLayout(CalculatedBasicLayout):
+class ChemicalEquilibriumLayout(CalculationBasicLayout):
     def __init__(self, main_window):
         """
         Transport and thermodynamic properties
@@ -19,19 +19,19 @@ class ChemicalEquilibriumLayout(CalculatedBasicLayout):
         self._empty_label = Utils.padString("")
         super().__init__(main_window)
 
-    def _updateProperties(self, cl):
+    def _updateProperties(self):
         """
         Update estimated properties
         Returns
         -------
         """
-        cl.equilibrate(self.main_window.defaultInput.from_human_eq_to_code_eq(self.eqDropDown.currentText()))
+        self.cl.equilibrate(self.main_window.defaultInput.from_human_eq_to_code_eq(self.eqDropDown.currentText()))
 
-        T = cl.temperature(self.temperatureUdDropDown.currentText())
-        P = cl.pressure(self.pressureUdDropDown.currentText())
-        x = list(cl.mole_fraction().values())
-        y = list(cl.mass_fraction().values())
-        n = cl.species_names()
+        T = self.cl.temperature(self.temperatureUdDropDown.currentText())
+        P = self.cl.pressure(self.pressureUdDropDown.currentText())
+        x = list(self.cl.mole_fraction().values())
+        y = list(self.cl.mass_fraction().values())
+        n = self.cl.species_names()
 
         self.temperatureLabel.setText(Utils.padString(Utils.fromNumberToString(T)))
         self.pressureLabel.setText(Utils.padString(Utils.fromNumberToString(P)))
@@ -48,7 +48,7 @@ class ChemicalEquilibriumLayout(CalculatedBasicLayout):
         """
         self.cl = self._setGasMixtureUserInput(ChemicalEquilibrium(self.main_window.userInput.file_path,
                                                                    self.main_window.userInput.gas_phase_name))
-        self._updateProperties(self.cl)
+        self._updateProperties()
 
     def initialize(self):
         """

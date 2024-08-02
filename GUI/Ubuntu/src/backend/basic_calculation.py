@@ -142,3 +142,18 @@ class BasicCalculation(ABC):
             Pressure
         """
         return self._uc.convert_to_pascal(self._gas.P, DefaultInputHandler.from_human_to_code_ud(ud))
+
+    def specie_index(self, specie_name):
+        """
+        Return specie index from specie name
+        Parameters
+        ----------
+        specie_name: str
+            Single specie name
+
+        Returns
+        -------
+        specie_idx: int
+            Single specie index
+        """
+        return self._species_names.index(specie_name)

@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QLabel
 
-from src.frontend.layout.calculation_menu import CalculationMenuLayout
+from src.frontend.layout.calculation_main_menu import CalculationMainMenuLayout
 from src.frontend.utils import Utils
 from src.frontend.window.basic import BasicMainWindow
 from src.frontend.layout.main_menu import MainMenuLayout
 
 
-class SelectionMenuWindow(BasicMainWindow):
+class MainMenuWindow(BasicMainWindow):
     def __init__(self, parent=None):
         """
         Main menu window
@@ -25,7 +25,7 @@ class SelectionMenuWindow(BasicMainWindow):
                                self.title,
                                QLabel("Chemistry file not selected!"))
         else:
-            self.setCentralWidgetLayout(CalculationMenuLayout(self))
+            self.setCentralWidgetLayout(CalculationMainMenuLayout(self))
 
     def updateToMainMenuLayout(self):
         """

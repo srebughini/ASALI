@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (
 )
 
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.style import FileType, WidgetStyle
+from src.frontend.style import FileType
 from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
 from src.frontend.utils import Utils
 
