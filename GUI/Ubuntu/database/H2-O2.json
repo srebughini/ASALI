@@ -1,0 +1,26 @@
+{
+  "species": [
+    "H2",
+    "O2",
+    "H2O"
+  ],
+  "temperature": "T",
+  "reactions": [
+    {
+      "id": "r1",
+      "formula": "2 H2 + O2 -> 2 H2O",
+      "rate": "2.5 * [H2]^2 * [O2] * T ^ 0.5 / (1 + [O2])",
+      "specie_units": "mass_fraction",
+      "rate_units": "kmol/m2/s",
+      "type": "heterogeneous"
+    },
+    {
+      "id": "r2",
+      "formula": "2 H2 + O2 -> 2 H2O",
+      "rate": "1.5 * [H2] * [O2]",
+      "specie_units": "mass_fraction",
+      "rate_units": "kmol/m3/s",
+      "type": "homogeneous"
+    }
+  ]
+}

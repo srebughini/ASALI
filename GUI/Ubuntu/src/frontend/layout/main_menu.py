@@ -20,8 +20,7 @@ class MainMenuLayout(BasicLayout):
         self._select_chemistry_option_list = [
             Utils.padString("...Select chemistry file..."),
             Utils.padString("Default (no kinetic model)"),
-            Utils.padString("Load CANTERA kinetic/properties file"),
-            Utils.padString("Load ASALI kinetic file")]
+            Utils.padString("Load CANTERA kinetic/properties file")]
 
         self._make_chemistry_option_list = [
             Utils.padString("...Make/Check the chemistry file..."),
@@ -41,13 +40,11 @@ class MainMenuLayout(BasicLayout):
             self.main_window.userInput.udk_file_path = None
         elif self.selectChemistryDropDown.currentIndex() == 1:
             self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
+            self.main_window.userInput.udk_file_path = None
         elif self.selectChemistryDropDown.currentIndex() == 2:
             self.main_window.userInput.file_path = Utils.openFile(self.main_window,
                                                                   file_type=FileType.CANTERA.value)
-        elif self.selectChemistryDropDown.currentIndex() == 3:
-            self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
-            self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                                      file_type=FileType.ASALI.value)
+            self.main_window.userInput.udk_file_path = None
 
     def _dropdownMakeChemistryMenuAction(self):
         """

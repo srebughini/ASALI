@@ -1,8 +1,10 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
 from src.frontend.layout.basic import BasicLayout
+from src.frontend.style import FileType, WidgetStyle
 from src.frontend.utils import Utils
 
 
@@ -30,7 +32,25 @@ class BasicReactorLayout(BasicLayout):
 
         self.runButtonText = Utils.padStringCenter("Run model")
         self.runButtonToolTip = "Run reactor model"
+
+        self.udkButtonText = Utils.padStringCenter("Load")
+        self.udkButtonToolTip = "Load ASALI kinetic model"
         super().__init__(main_window)
+
+    def _loadAsaliKineitcModel(self):
+        """
+        Load Asali kinetic model
+        Returns
+        -------
+
+        """
+        self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
+                                                                  file_type=FileType.ASALI.value)
+
+        if self.main_window.userInput.udk_file_path is None:
+            self.udkLoadLabel.setText(Utils.padString("Not loaded"))
+        else:
+            self.udkLoadLabel.setText(Utils.padString("Loaded"))
 
     def _checkInputFiles(self):
         """
@@ -111,6 +131,33 @@ class BasicReactorLayout(BasicLayout):
         self.runButton = self._createButton(self.runButtonText,
                                             self._runModel,
                                             self.runButtonToolTip)
+
+    def _createBackButton(self):
+        """
+        Create back button
+        Returns
+        -------
+
+        """
+        self.backButton = self._createButton(self.backButtonText,
+                                             self.main_window.updateToBasic,
+                                             self.backButtonToolTip)
+
+    def _createAsaliKineticObjects(self):
+        """
+        Create ASALI kinetic button
+        Returns
+        -------
+
+        """
+        self.udkButton = self._createButton(self.udkButtonText,
+                                            self._loadAsaliKineitcModel,
+                                            self.udkButtonToolTip)
+
+        self.udkLabel = QLabel("ASALI kinetic model:")
+        self.udkLoadLabel = QLabel(Utils.padString("Not loaded"))
+        self.udkLoadLabel.setStyleSheet(WidgetStyle.HIGHLIGHTLABEL.value)
+        self.udkLoadLabel.setAlignment(Qt.AlignCenter)
 
     def runBackend(self):
         """

@@ -33,7 +33,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
             geometryValue = float(self.geometryEditLine.text())
 
         v = self.cl.mean_gas_velocity(self.speciesDropDown.currentText(), self.vDropDown.currentText())
-        l = self.cl.mean_free_path(self.speciesDropDown.currentText(), self.lDropDown.currentText())
+        mfp = self.cl.mean_free_path(self.speciesDropDown.currentText(), self.lDropDown.currentText())
         kn = self.cl.knudsen_number(self.speciesDropDown.currentText(),
                                     geometryValue,
                                     self.geometryDropDown.currentText())
@@ -43,7 +43,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
                                    self.geometryDropDown.currentText())
 
         self.vLabel.setText(Utils.padString(Utils.fromNumberToString(v)))
-        self.lLabel.setText(Utils.padString(Utils.fromNumberToString(l)))
+        self.lLabel.setText(Utils.padString(Utils.fromNumberToString(mfp)))
         self.knLabel.setText(Utils.padString(Utils.fromNumberToString(kn)))
         self.diffLabel.setText(Utils.padString(Utils.fromNumberToString(diff)))
 

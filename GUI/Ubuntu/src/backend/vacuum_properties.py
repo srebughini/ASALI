@@ -113,9 +113,9 @@ class VacuumProperties(BasicCalculation):
             Mean free path
         """
         idx = self.specie_index(specie_name)
-        l = VacuumProperties.calculate_mean_free_path(self._gas.T, self._gas.P, 10.)  # TODO
+        mfp = VacuumProperties.calculate_mean_free_path(self._gas.T, self._gas.P, 10.)  # TODO
 
-        return self._uc.convert_from_meter(l,
+        return self._uc.convert_from_meter(mfp,
                                            DefaultInputHandler.from_human_to_code_ud(ud))
 
     def knudsen_number(self, specie_name, length, length_ud):

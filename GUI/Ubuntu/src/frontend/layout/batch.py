@@ -101,8 +101,9 @@ class BatchLayout(BasicReactorLayout):
         Returns
         -------
         """
-        self._createReactorSelectionDropDown()
         self._createRunButton()
+        self._createBackButton()
+        self._createAsaliKineticObjects()
 
         # Headline
         self.headlineLabel = QLabel(self._select_reactor_list[1])
@@ -139,10 +140,12 @@ class BatchLayout(BasicReactorLayout):
         -------
         """
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.reactorDropDown, self.row_idx, 0, 1, -1)
+        self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)
+        self.addWidget(self.udkLabel, self.row_idx, 0)
+        self.addWidget(self.udkLoadLabel, self.row_idx, 1)
+        self.addWidget(self.udkButton, self.row_idx, 2)
 
         # Volume
         self.row_idx = self.row_idx + 1
@@ -175,4 +178,5 @@ class BatchLayout(BasicReactorLayout):
 
         # Run
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.runButton, self.row_idx, 0, 1, -1)
+        self.addWidget(self.backButton, self.row_idx, 0)
+        self.addWidget(self.runButton, self.row_idx, 2)
