@@ -28,12 +28,19 @@ class VacuumPropertiesLayout(CalculationBasicLayout):
         Returns
         -------
         """
+        geometryValue = 0.0
+        if Utils.isFloat(self.geometryEditLine.text()):
+            geometryValue = float(self.geometryEditLine.text())
+
         v = self.cl.mean_gas_velocity(self.speciesDropDown.currentText(), self.vDropDown.currentText())
         l = self.cl.mean_free_path(self.speciesDropDown.currentText(), self.lDropDown.currentText())
         kn = self.cl.knudsen_number(self.speciesDropDown.currentText(),
-                               float(self.geometryEditLine.text()),
-                               self.geometryDropDown.currentText())
-        diff = self.cl.diffusivity(self.speciesDropDown.currentText(), self.diffDropDown.currentText())
+                                    geometryValue,
+                                    self.geometryDropDown.currentText())
+        diff = self.cl.diffusivity(self.speciesDropDown.currentText(),
+                                   self.diffDropDown.currentText(),
+                                   geometryValue,
+                                   self.geometryDropDown.currentText())
 
         self.vLabel.setText(Utils.padString(Utils.fromNumberToString(v)))
         self.lLabel.setText(Utils.padString(Utils.fromNumberToString(l)))
@@ -73,7 +80,10 @@ class VacuumPropertiesLayout(CalculationBasicLayout):
         self.geometryDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.lengthUd],
             function=self._updateProperties)
-        self.geometryEditLine = self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator())
+        self.geometryEditLine = self._createLineEdit("0.5",
+                                                     Qt.AlignRight,
+                                                     QDoubleValidator(),
+                                                     f=self._updateProperties)
 
         # Species
         self.speciesDropDown = self._createDropdown(list(), function=self._updateProperties)

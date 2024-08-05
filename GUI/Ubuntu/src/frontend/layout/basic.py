@@ -129,7 +129,7 @@ class BasicLayout(QGridLayout):
             dropdown.currentIndexChanged.connect(function)
         return dropdown
 
-    def _createLineEdit(self, text, alignment, validator):
+    def _createLineEdit(self, text, alignment, validator, f=None):
         """
         Create Qline for input
         Parameters
@@ -140,6 +140,8 @@ class BasicLayout(QGridLayout):
             Alignment of the text
         validator: QValidator
             Validator for format
+        f: func
+            Function to be run when text is changed
 
         Returns
         -------
@@ -153,6 +155,10 @@ class BasicLayout(QGridLayout):
         line_edit.setStyleSheet(WidgetStyle.LINEEDIT.value)
         line_edit.setAlignment(alignment)
         line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        if f is not None:
+            line_edit.textChanged.connect(f)
+
         return line_edit
 
     @abstractmethod

@@ -13,6 +13,28 @@ class Utils:
     """
 
     @staticmethod
+    def isFloat(element):
+        """
+        Function to check if str can be parsed to float
+        Parameters
+        ----------
+        element: str
+            Element to be parsed
+
+        Returns
+        -------
+        check: bool
+            True is can be parsed to float, False if not
+        """
+        if element is None:
+            return False
+        try:
+            float(element)
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
     def stringLength():
         """
         Return maximum string length
