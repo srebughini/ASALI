@@ -12,7 +12,7 @@ class DefaultInputHandler:
         self._databasePath = os.path.join("database")
         self._defaultChemistryPath = os.path.join(self._databasePath, "data.yaml")
         self._uc = UnitConverter()
-        self._temperatureUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in
+        self._temperatureUd = [DefaultInputHandler.from_code_to_human(ud) for ud in
                                self._uc.temperature_ud().keys()]
         self._pressureUd = ['Pa',
                             'kPa',
@@ -26,15 +26,15 @@ class DefaultInputHandler:
         self._compositionUd = ['Mass fraction',
                                'Mole fraction']
 
-        self._massUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in self._uc.mass_ud().keys()]
-        self._lengthUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ["m", "cm", "mm"]]
-        self._areaUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ["m**2", "cm**2", "mm**2"]]
-        self._volumeUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ["m**3", "cm**3", "mm**3"]]
-        self._moleUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in self._uc.mole_ud().keys()]
-        self._viscosityUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in self._uc.viscosity_ud().keys()]
-        self._powerUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ["W", "kW", "cal/s", "kcal/s"]]
-        self._timeUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ['s', 'min', 'h']]
-        self._energyUd = [DefaultInputHandler.from_code_to_code_human(ud) for ud in ['J', 'kJ', 'cal', 'kcal']]
+        self._massUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.mass_ud().keys()]
+        self._lengthUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m", "cm", "mm"]]
+        self._areaUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m**2", "cm**2", "mm**2"]]
+        self._volumeUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m**3", "cm**3", "mm**3"]]
+        self._moleUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.mole_ud().keys()]
+        self._viscosityUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.viscosity_ud().keys()]
+        self._powerUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["W", "kW", "cal/s", "kcal/s"]]
+        self._timeUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ['s', 'min', 'h']]
+        self._energyUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ['J', 'kJ', 'cal', 'kcal']]
 
         self._thermalConductivityUd = [f"{ud}/K" for ud in DefaultInputHandler.create_fractional_ud(self._powerUd,
                                                                                                     self._lengthUd)]
@@ -52,6 +52,7 @@ class DefaultInputHandler:
         self._entropyUd = [f"{ud}/K" for ud in self._enthalpyUd]
         self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
         self._specificHeatUd = self._entropyUd
+        self._oneOverLengthUd = [f"1/{ud}" for ud in self._lengthUd]
 
         self._chemicalEquilibriumParser = {"Fixed temperature and pressure": "TP",
                                            "Fixed specific enthalpy and pressure": "HP",
@@ -102,7 +103,7 @@ class DefaultInputHandler:
         return cud.strip()
 
     @staticmethod
-    def from_code_to_code_human(ud):
+    def from_code_to_human(ud):
         """
         Convert from code to human unit dimensions
         Parameters
@@ -286,15 +287,48 @@ class DefaultInputHandler:
         return self._velocityUd
 
     @property
+    def volumeUd(self):
+        """
+        Access to the volume unit dimensions
+        Returns
+        -------
+        volumeUd: list
+            Length unit dimensions
+        """
+        return self._volumeUd
+
+    @property
     def lengthUd(self):
         """
         Access to the length unit dimensions
         Returns
         -------
-        specificHeatUd: list
+        lengthUd: list
             Length unit dimensions
         """
         return self._lengthUd
+
+    @property
+    def timeUd(self):
+        """
+        Access to the time unit dimensions
+        Returns
+        -------
+        timeUd: list
+            Length unit dimensions
+        """
+        return self._timeUd
+
+    @property
+    def oneOverLengthUd(self):
+        """
+        Access to the 1/length unit dimensions
+        Returns
+        -------
+        oneOverLengthUd: list
+            1/Length unit dimensions
+        """
+        return self._oneOverLengthUd
 
     @property
     def humanChemicalEquilibriumOptions(self):

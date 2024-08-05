@@ -3,11 +3,11 @@ from PyQt5.QtWidgets import (
 )
 
 from src.backend.chemical_equilibrium import ChemicalEquilibrium
-from src.frontend.layout.calculation_basic_layout import CalculationBasicLayout
+from src.frontend.layout.basic_calculation import BasicCalculationLayout
 from src.frontend.utils import Utils
 
 
-class ChemicalEquilibriumLayout(CalculationBasicLayout):
+class ChemicalEquilibriumLayout(BasicCalculationLayout):
     def __init__(self, main_window):
         """
         Transport and thermodynamic properties

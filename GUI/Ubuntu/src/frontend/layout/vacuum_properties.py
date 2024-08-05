@@ -5,12 +5,12 @@ from PyQt5.QtWidgets import (
 )
 
 from src.backend.vacuum_properties import VacuumProperties
-from src.frontend.layout.calculation_basic_layout import CalculationBasicLayout
+from src.frontend.layout.basic_calculation import BasicCalculationLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
 
 
-class VacuumPropertiesLayout(CalculationBasicLayout):
+class VacuumPropertiesLayout(BasicCalculationLayout):
     def __init__(self, main_window):
         """
         Transport and thermodynamic properties
@@ -52,7 +52,6 @@ class VacuumPropertiesLayout(CalculationBasicLayout):
         Run backend to update frontend
         Returns
         -------
-
         """
 
         self.cl = self._setGasMixtureUserInput(VacuumProperties(self.main_window.userInput.file_path,
@@ -76,7 +75,7 @@ class VacuumPropertiesLayout(CalculationBasicLayout):
         self.resultLabel.setStyleSheet(WidgetStyle.HIGHLIGHTLABEL.value)
         self.resultLabel.setAlignment(Qt.AlignCenter)
 
-        # Length
+        # Geometry
         self.geometryDropDown = self._createDropdown(
             [Utils.padString(ud) for ud in self.main_window.defaultInput.lengthUd],
             function=self._updateProperties)

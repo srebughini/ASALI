@@ -14,8 +14,8 @@ class UserInputHandler:
         self._udk_file_path = None
         self._gas_phase_name = None
         self._surface_phase_name = None
-        self._temperature = 0.0
-        self._pressure = 0.0
+        self._temperature = {}
+        self._pressure = {}
         self._mole_fraction = {}
         self._mass_fraction = {}
 
@@ -248,10 +248,11 @@ class UserInputHandler:
 
         self._extract_gas_phase_name()
         self._extract_surface_phase_name()
-        gas = Solution(self._file_path)
 
+        gas = Solution(self._file_path)
         if self._surface_phase_name is not None:
             phase = Interface(self._file_path, self._surface_phase_name, [gas])
+
         return True
 
     def check_udk_input_file(self):

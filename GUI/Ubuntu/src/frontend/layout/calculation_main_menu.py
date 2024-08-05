@@ -1,11 +1,12 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QLineEdit
+    QMainWindow, QLabel
 )
 from src.frontend.layout.basic import BasicLayout
 from src.frontend.utils import Utils
 from src.frontend.window.chemical_equilibrium import ChemicalEquilibriumWindow
+from src.frontend.window.reactors import ReactorsWindow
 from src.frontend.window.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesWindow
 from src.frontend.window.vacuum_properties import VacuumPropertiesWindow
 
@@ -59,8 +60,10 @@ class CalculationMainMenuLayout(BasicLayout):
                 window.runBackEnd()
                 Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 4:
-            # Utils.openNewWindow(self.main_window, ReactorWindow)
-            pass
+            if self.getUserInput():
+                window = Utils.createNewWindowObject(self.main_window, ReactorsWindow)
+                window.runBackEnd()
+                Utils.openNewWindowFromObject(window)
 
     def _addButtons(self, row_idx):
         """

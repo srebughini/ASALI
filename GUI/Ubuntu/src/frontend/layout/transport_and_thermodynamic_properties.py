@@ -4,12 +4,12 @@ from PyQt5.QtWidgets import (
 )
 
 from src.backend.transport_and_thermodynamic_properties import TransportAndThermodynamicProperties
-from src.frontend.layout.calculation_basic_layout import CalculationBasicLayout
+from src.frontend.layout.basic_calculation import BasicCalculationLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
 
 
-class TransportAndThermodynamicPropertiesLayout(CalculationBasicLayout):
+class TransportAndThermodynamicPropertiesLayout(BasicCalculationLayout):
     def __init__(self, main_window):
         """
         Transport and thermodynamic properties

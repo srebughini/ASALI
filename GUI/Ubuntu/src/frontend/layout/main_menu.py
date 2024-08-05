@@ -43,11 +43,11 @@ class MainMenuLayout(BasicLayout):
             self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
         elif self.selectChemistryDropDown.currentIndex() == 2:
             self.main_window.userInput.file_path = Utils.openFile(self.main_window,
-                                                       file_type=FileType.CANTERA.value)
+                                                                  file_type=FileType.CANTERA.value)
         elif self.selectChemistryDropDown.currentIndex() == 3:
             self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
             self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                           file_type=FileType.ASALI.value)
+                                                                      file_type=FileType.ASALI.value)
 
     def _dropdownMakeChemistryMenuAction(self):
         """
@@ -60,7 +60,7 @@ class MainMenuLayout(BasicLayout):
         elif self.makeChemistryDropDown.currentIndex() == 2:
             self.main_window.userInput.file_path = self.main_window.defaultInput.defaultChemistryPath
             self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                           file_type=FileType.ASALI.value)
+                                                                      file_type=FileType.ASALI.value)
             if self.main_window.userInput.check_udk_input_file():
                 Utils.doneMessage(self.main_window,
                                   self.title,

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QMainWindow
 from src.frontend.layout.basic import BasicLayout
 
 
-class CalculationBasicLayout(BasicLayout):
+class BasicCalculationLayout(BasicLayout):
     def __init__(self, main_window):
         """
         Abstract class for properties and reactors layouts
