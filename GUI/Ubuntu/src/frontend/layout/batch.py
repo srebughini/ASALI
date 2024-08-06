@@ -94,7 +94,9 @@ class BatchLayout(BasicReactorLayout):
             input_dict.update({"x": None,
                                "y": self.main_window.userInput.mass_fraction})
 
-        reactor_model.run(input_dict)
+        if reactor_model.run(input_dict):
+            pass
+            # Open function for saving and plotting
 
     def initialize(self):
         """

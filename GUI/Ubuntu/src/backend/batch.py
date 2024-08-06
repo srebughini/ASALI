@@ -1,5 +1,7 @@
 import numpy as np
-from asali.plotters.reactor import ReactorPlotter
+import matplotlib.pyplot as plt
+
+from asali.plotters.batch import BatchPlotter
 from asali.reactors.batch import BatchReactor
 
 from src.backend.basic_reactor import BasicReactor
@@ -82,11 +84,44 @@ class BatchModel(BasicReactor):
 
         self.reactor_class.solve(tspan, 's')
 
+    def save(self, option_dict):
+        """
+        Method to save the results of the reactor model
+        Parameters
+        ----------
+        option_dict: dict
+            Option parameters for saving
 
-        # TODO: Add option to save data on file and options to plot
+        Returns
+        -------
 
-        plt = ReactorPlotter(self.reactor_class)
-        plt.plot_species_mass_fraction(['H2', 'H2O', 'O2'])
-        plt.plot_species_mole_fraction(['H2', 'H2O', 'O2'])
-        plt.plot_temperature()
+        """
+        pass
+
+    def plot(self, plot_dict):
+        """
+        Method to plot the results of the reactor model
+        Parameters
+        ----------
+        plot_dict: dict
+            Option parameters for plotting
+
+        Returns
+        -------
+
+        """
+        plotter = BatchPlotter(self.reactor_class, colormap=self.colormap)
+
+        if plot_dict["T"]:
+            plotter.plot_temperature(plt)
+
+        if len(plot_dict["x"]) > 0:
+            plotter.plot_species_mole_fraction(plt, plot_dict["x"])
+
+        if len(plot_dict["y"]) > 0:
+            plotter.plot_species_mass_fraction(plt, plot_dict["y"])
+
+        if len(plot_dict["z"]) > 0:
+            plotter.plot_species_mass_fraction(plt, plot_dict["z"])
+
         plt.show()
