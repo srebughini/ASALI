@@ -76,7 +76,6 @@ class CalculationMainMenuLayout(BasicLayout):
         -------
 
         """
-        self.row_idx = self.row_idx + 1
         self.addWidget(self._createButton(self.backButtonText,
                                           self.main_window.updateToMainMenuLayout,
                                           self.backButtonToolTip), row_idx, 0)

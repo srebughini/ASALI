@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
@@ -7,6 +8,7 @@ from src.frontend.layout.basic import BasicLayout
 from src.frontend.style import FileType, WidgetStyle
 from src.frontend.utils import Utils
 
+import numpy as np
 
 class BasicReactorLayout(BasicLayout):
     def __init__(self, main_window):
@@ -35,55 +37,11 @@ class BasicReactorLayout(BasicLayout):
 
         self.udkButtonText = Utils.padStringCenter("Load")
         self.udkButtonToolTip = "Load ASALI kinetic model"
+
+        self._coverage_names_idx = list()
+        self._coverage_composition_idx = list()
+
         super().__init__(main_window)
-
-    def _loadAsaliKineitcModel(self):
-        """
-        Load Asali kinetic model
-        Returns
-        -------
-
-        """
-        self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
-                                                                  file_type=FileType.ASALI.value)
-
-        if self.main_window.userInput.udk_file_path is None:
-            self.udkLoadLabel.setText(Utils.padString("Not loaded"))
-        else:
-            self.udkLoadLabel.setText(Utils.padString("Loaded"))
-
-    def _checkInputFiles(self):
-        """
-        Check the input files to be used for reactor simulation
-        Returns
-        -------
-
-        """
-        if not self.main_window.userInput.check_cantera_input_file():
-            Utils.errorMessage(self.main_window,
-                               self.title,
-                               QLabel("Wrong CANTERA input file."))
-
-        if self.main_window.userInput.surface_phase_name is None:
-            if self.main_window.userInput.udk_file_path is None:
-                Utils.errorMessage(self.main_window,
-                                   self.title,
-                                   QLabel("""The provided CANTERA file does not have surface reactions."""))
-
-        if self.main_window.userInput.udk_file_path is not None:
-            if not self.main_window.userInput.check_udk_input_file():
-                Utils.errorMessage(self.main_window,
-                                   self.title,
-                                   QLabel("Wrong ASALI input file."))
-
-    def _runModel(self):
-        """
-        Function to run the reactor model
-        Returns
-        -------
-
-        """
-        pass
 
     def _updateLayout(self):
         """
@@ -111,6 +69,18 @@ class BasicReactorLayout(BasicLayout):
             pass
             # self.main_window.updateToTransientHet1dReactor()
 
+    def _updateLayoutWithCoverageLine(self):
+        """
+        Update the layout by adding specie input line
+        Returns
+        -------
+
+        """
+        self._removeButtons()
+        self._addCoverageInputLine(self.row_idx)
+        self.row_idx = self.row_idx + 1
+        self._addButtons(self.row_idx)
+
     def _createReactorSelectionDropDown(self):
         """
         Create reactor selection drop down menu
@@ -121,43 +91,156 @@ class BasicReactorLayout(BasicLayout):
         self.reactorDropDown = self._createDropdown(self._select_reactor_list,
                                                     function=self._updateLayout)
 
-    def _createRunButton(self):
+    def _createUdkLabel(self):
         """
-        Create run button
+        Create user defined kinetic label
         Returns
         -------
 
         """
-        self.runButton = self._createButton(self.runButtonText,
-                                            self._runModel,
-                                            self.runButtonToolTip)
-
-    def _createBackButton(self):
-        """
-        Create back button
-        Returns
-        -------
-
-        """
-        self.backButton = self._createButton(self.backButtonText,
-                                             self.main_window.updateToBasic,
-                                             self.backButtonToolTip)
-
-    def _createAsaliKineticObjects(self):
-        """
-        Create ASALI kinetic button
-        Returns
-        -------
-
-        """
-        self.udkButton = self._createButton(self.udkButtonText,
-                                            self._loadAsaliKineitcModel,
-                                            self.udkButtonToolTip)
-
-        self.udkLabel = QLabel("ASALI kinetic model:")
         self.udkLoadLabel = QLabel(Utils.padString("Not loaded"))
         self.udkLoadLabel.setStyleSheet(WidgetStyle.HIGHLIGHTLABEL.value)
         self.udkLoadLabel.setAlignment(Qt.AlignCenter)
+
+    def _addCoverageInputLine(self, row_idx):
+        """
+        Add input coverage line
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the input line
+
+        Returns
+        -------
+
+        """
+        self.addWidget(QLabel(Utils.padString(f"Coverage #{len(self._coverage_names_idx) + 1}")), row_idx, 0)
+        self.addWidget(self._createLineEdit("Rh(s)", Qt.AlignRight, None), row_idx, 1)
+        self._coverage_names_idx.append(self.count() - 1)
+        self.addWidget(self._createLineEdit("1", Qt.AlignRight, QDoubleValidator()), row_idx, 2)
+        self._coverage_composition_idx.append(self.count() - 1)
+
+    def _addButtons(self, row_idx):
+        """
+        Add Back, Add Species and Run model buttons
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        self.addWidget(self._createButton(self.backButtonText,
+                                          self.main_window.updateToBasic,
+                                          self.backButtonToolTip), row_idx, 0)
+        self.addWidget(self._createButton(Utils.padStringCenter('Add coverage'),
+                                          self._updateLayoutWithCoverageLine,
+                                          'Add input coverage specie'), row_idx, 1)
+        self.addWidget(self._createButton(self.runButtonText,
+                                          self.runModel,
+                                          self.runButtonToolTip), row_idx, 2)
+
+    def _addUdk(self, row_idx):
+        """
+        Create ASALI user defined kinetic objects
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        self.addWidget(QLabel("ASALI kinetic model:"), row_idx, 0)
+        self.addWidget(self.udkLoadLabel, row_idx, 1)
+        self.addWidget(self._createButton(self.udkButtonText,
+                                          self._loadUdkModel,
+                                          self.udkButtonToolTip), row_idx, 2)
+
+    def _loadUdkModel(self):
+        """
+        Load Asali kinetic model
+        Returns
+        -------
+
+        """
+        self.main_window.userInput.udk_file_path = Utils.openFile(self.main_window,
+                                                                  file_type=FileType.ASALI.value)
+
+        self.udkLoadLabel.setText(Utils.padString("Not loaded"))
+
+        if self.main_window.userInput.udk_file_path is not None:
+            if self.main_window.userInput.check_udk_input_file():
+                self.udkLoadLabel.setText(Utils.padString("Loaded"))
+            else:
+                Utils.errorMessage(self.main_window,
+                                   self.title,
+                                   QLabel("Wrong ASALI input file."))
+
+    def _checkInputFiles(self):
+        """
+        Check the input files to be used for reactor simulation
+        Returns
+        -------
+
+        """
+        if not self.main_window.userInput.check_cantera_input_file():
+            Utils.errorMessage(self.main_window,
+                               self.title,
+                               QLabel("Wrong CANTERA input file."))
+
+        if self.main_window.userInput.surface_phase_name is None:
+            if self.main_window.userInput.udk_file_path is None:
+                Utils.errorMessage(self.main_window,
+                                   self.title,
+                                   QLabel("""The provided CANTERA file does not have surface reactions."""))
+
+        if self.main_window.userInput.udk_file_path is not None:
+            if not self.main_window.userInput.check_udk_input_file():
+                Utils.errorMessage(self.main_window,
+                                   self.title,
+                                   QLabel("Wrong ASALI input file."))
+
+    def _removeButtons(self):
+        """
+        Remove Next, Back and Species buttons
+        Returns
+        -------
+
+        """
+        n_widget = self.count()
+        self.itemAt(n_widget - 1).widget().setParent(None)
+        self.itemAt(n_widget - 2).widget().setParent(None)
+        self.itemAt(n_widget - 3).widget().setParent(None)
+
+    def _extractInputComposition(self):
+        """
+        Extract input composition
+        Returns
+        -------
+        composition: dict
+            User input composition
+        """
+        names = [self.itemAt(i).widget().text() for i in self._coverage_names_idx]
+        composition = [float(self.itemAt(i).widget().text()) for i in self._coverage_composition_idx]
+
+        if np.fabs(sum(composition) - 1.0) > 1e-06:
+            Utils.errorMessage(self.main_window,
+                               self.title,
+                               QLabel("Sum of coverage composition is > 1!!!"))
+            return None
+
+        return dict(zip(names, composition))
+
+    def runModel(self):
+        """
+        Function to run the reactor model
+        Returns
+        -------
+
+        """
+        pass
 
     def runBackend(self):
         """

@@ -51,7 +51,7 @@ class BatchLayout(BasicReactorLayout):
         self._checkEditLineFloatInput(self.tEditLine, "integration time")
         self._checkEditLineFloatInput(self.tsEditLine, "time step")
 
-    def _runModel(self):
+    def runModel(self):
         """
         Function to run the reactor model
         Returns
@@ -61,9 +61,9 @@ class BatchLayout(BasicReactorLayout):
         self._checkInputFiles()
         self._checkEditLineInputs()
 
-        b = BatchModel(self.main_window.userInput.file_path,
-                       self.main_window.userInput.gas_phase_name,
-                       self.main_window.userInput.surface_phase_name)
+        reactor_model = BatchModel(self.main_window.userInput.file_path,
+                                   self.main_window.userInput.gas_phase_name,
+                                   self.main_window.userInput.surface_phase_name)
 
         input_dict = {"udk": self.main_window.userInput.udk_file_path,
                       "T": {"value": self.main_window.userInput.temperature["value"],
@@ -83,7 +83,8 @@ class BatchLayout(BasicReactorLayout):
                       "step": {"value": float(self.tsEditLine.text()),
                                "ud": self.main_window.defaultInput.from_human_to_code_ud(
                                    self.tsDropDown.currentText())},
-                      "energy": self.energyDropDown.currentText().strip()}
+                      "energy": self.energyDropDown.currentText().strip(),
+                      "z": self._extractInputComposition()}
 
         if len(self.main_window.userInput.mole_fraction) > 0:
             input_dict.update({"x": self.main_window.userInput.mole_fraction,
@@ -93,7 +94,7 @@ class BatchLayout(BasicReactorLayout):
             input_dict.update({"x": None,
                                "y": self.main_window.userInput.mass_fraction})
 
-        b.run(input_dict)
+        reactor_model.run(input_dict)
 
     def initialize(self):
         """
@@ -101,9 +102,7 @@ class BatchLayout(BasicReactorLayout):
         Returns
         -------
         """
-        self._createRunButton()
-        self._createBackButton()
-        self._createAsaliKineticObjects()
+        self._createUdkLabel()
 
         # Headline
         self.headlineLabel = QLabel(self._select_reactor_list[1])
@@ -143,9 +142,7 @@ class BatchLayout(BasicReactorLayout):
         self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.udkLabel, self.row_idx, 0)
-        self.addWidget(self.udkLoadLabel, self.row_idx, 1)
-        self.addWidget(self.udkButton, self.row_idx, 2)
+        self._addUdk(self.row_idx)
 
         # Volume
         self.row_idx = self.row_idx + 1
@@ -176,7 +173,14 @@ class BatchLayout(BasicReactorLayout):
         self.addWidget(self.tsEditLine, self.row_idx, 1)
         self.addWidget(self.tsDropDown, self.row_idx, 2)
 
+        # Coverage composition
+        self.row_idx = self.row_idx + 1
+        self.addWidget(QLabel(Utils.padString("Chemical formula")), self.row_idx, 1)
+        self.addWidget(QLabel(Utils.padString("Composition")), self.row_idx, 2)
+
+        self.row_idx = self.row_idx + 1
+        self._addCoverageInputLine(self.row_idx)
+
         # Run
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.backButton, self.row_idx, 0)
-        self.addWidget(self.runButton, self.row_idx, 2)
+        self._addButtons(self.row_idx)

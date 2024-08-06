@@ -1,10 +1,6 @@
 from abc import ABC, abstractmethod
 
-import numpy as np
 from asali.utils.unit_converter import UnitConverter
-
-from src.backend.default_input_handler import DefaultInputHandler
-
 
 class BasicReactor(ABC):
     def __init__(self, cantera_input_file, gas_phase_name, surface_phase_name):
@@ -20,9 +16,9 @@ class BasicReactor(ABC):
             Surface phase name
         """
         self._uc = UnitConverter()
-        self.r = self.initialize_reactor_class(cantera_input_file,
-                                               gas_phase_name,
-                                               surface_phase_name)
+        self.reactor_class = self.initialize_reactor_class(cantera_input_file,
+                                                           gas_phase_name,
+                                                           surface_phase_name)
 
     @abstractmethod
     def initialize_reactor_class(self,

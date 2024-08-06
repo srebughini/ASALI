@@ -53,23 +53,22 @@ class BatchModel(BasicReactor):
         -------
 
         """
-
-        print(input_dict)
-
         if input_dict["udk"] is not None:
-            self.r.set_user_defined_kinetic_model(input_dict["udk_file_path"])
-        self.r.set_volume(input_dict["V"]["value"], input_dict["V"]["ud"])
-        self.r.set_pressure(input_dict["P"]["value"], input_dict["P"]["ud"])
-        self.r.set_catalytic_load(input_dict["alfa"]["value"], input_dict["alfa"]["ud"])
+            self.reactor_class.set_user_defined_kinetic_model(input_dict["udk"])
+        else:
+            self.reactor_class.set_initial_coverage(input_dict["z"])
+        self.reactor_class.set_volume(input_dict["V"]["value"], input_dict["V"]["ud"])
+        self.reactor_class.set_pressure(input_dict["P"]["value"], input_dict["P"]["ud"])
+        self.reactor_class.set_catalytic_load(input_dict["alfa"]["value"], input_dict["alfa"]["ud"])
 
         if input_dict["x"] is not None:
-            self.r.set_initial_mole_fraction(input_dict["x"])
+            self.reactor_class.set_initial_mole_fraction(input_dict["x"])
 
         if input_dict["y"] is not None:
-            self.r.set_initial_mass_fraction(input_dict["y"])
+            self.reactor_class.set_initial_mass_fraction(input_dict["y"])
 
-        self.r.set_initial_temperature(input_dict["T"]["value"], input_dict["T"]["ud"])
-        self.r.set_energy(input_dict["energy"])
+        self.reactor_class.set_initial_temperature(input_dict["T"]["value"], input_dict["T"]["ud"])
+        self.reactor_class.set_energy(input_dict["energy"])
 
         tmax = self._uc.convert_to_seconds(input_dict["time"]["value"],
                                            input_dict["time"]["ud"])
@@ -81,9 +80,12 @@ class BatchModel(BasicReactor):
 
         tspan = np.linspace(0., tmax, num=num, endpoint=True)
 
-        self.r.solve(tspan, 's')
+        self.reactor_class.solve(tspan, 's')
 
-        plt = ReactorPlotter(self.r)
+
+        # TODO: Add option to save data on file and options to plot
+
+        plt = ReactorPlotter(self.reactor_class)
         plt.plot_species_mass_fraction(['H2', 'H2O', 'O2'])
         plt.plot_species_mole_fraction(['H2', 'H2O', 'O2'])
         plt.plot_temperature()
