@@ -33,7 +33,7 @@ class CalculationMainMenuLayout(BasicLayout):
 
         super().__init__(main_window)
 
-    def _loadSelectedCalculationMenu(self):
+    def _loadSelectedCalculationMenu(self) -> None:
         """
         Load select calculation Menu
         Returns
@@ -47,25 +47,25 @@ class CalculationMainMenuLayout(BasicLayout):
         elif self.selectCalculationDropDown.currentIndex() == 1:
             if self.getUserInput():
                 window = Utils.createNewWindowObject(self.main_window, TransportAndThermodynamicPropertiesWindow)
-                window.runBackEnd()
+                window.runBackend()
                 Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 2:
             if self.getUserInput():
                 window = Utils.createNewWindowObject(self.main_window, VacuumPropertiesWindow)
-                window.runBackEnd()
+                window.runBackend()
                 Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 3:
             if self.getUserInput():
                 window = Utils.createNewWindowObject(self.main_window, ChemicalEquilibriumWindow)
-                window.runBackEnd()
+                window.runBackend()
                 Utils.openNewWindowFromObject(window)
         elif self.selectCalculationDropDown.currentIndex() == 4:
             if self.getUserInput():
                 window = Utils.createNewWindowObject(self.main_window, ReactorsWindow)
-                window.runBackEnd()
+                window.runBackend()
                 Utils.openNewWindowFromObject(window)
 
-    def _addButtons(self, row_idx):
+    def _addButtons(self, row_idx) -> None:
         """
         Add Next, Back and Add Species buttons
         Parameters
@@ -86,7 +86,7 @@ class CalculationMainMenuLayout(BasicLayout):
                                           self._loadSelectedCalculationMenu,
                                           self.nextButtonToolTip), row_idx, 2)
 
-    def _removeButtons(self):
+    def _removeButtons(self) -> None:
         """
         Remove Next, Back and Species buttons
         Returns
@@ -98,7 +98,7 @@ class CalculationMainMenuLayout(BasicLayout):
         self.itemAt(n_widget - 2).widget().setParent(None)
         self.itemAt(n_widget - 3).widget().setParent(None)
 
-    def _addSpeciesInputLine(self, row_idx):
+    def _addSpeciesInputLine(self, row_idx) -> None:
         """
         Add input species line
         Parameters
@@ -116,7 +116,7 @@ class CalculationMainMenuLayout(BasicLayout):
         self.addWidget(self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator()), row_idx, 2)
         self._composition_idx.append(self.count() - 1)
 
-    def _updateLayoutWithSpecieLine(self):
+    def _updateLayoutWithSpecieLine(self) -> None:
         """
         Update the layout by adding specie input line
         Returns
@@ -128,7 +128,7 @@ class CalculationMainMenuLayout(BasicLayout):
         self.row_idx = self.row_idx + 1
         self._addButtons(self.row_idx)
 
-    def _extractInputComposition(self):
+    def _extractInputComposition(self) -> dict:
         """
         Extract input composition
         Returns
@@ -147,12 +147,13 @@ class CalculationMainMenuLayout(BasicLayout):
 
         return dict(zip(names, composition))
 
-    def getUserInput(self):
+    def getUserInput(self) -> bool:
         """
         Get temperature, composition and pressure from input
         Returns
         -------
-
+        check: bool
+            True if everything is correct
         """
         temperature = {"value": float(self.temperatureLine.text()),
                        "ud": self.temperatureUdDropDown.currentText()}
@@ -176,7 +177,7 @@ class CalculationMainMenuLayout(BasicLayout):
 
         return True
 
-    def initialize(self):
+    def initialize(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -200,7 +201,7 @@ class CalculationMainMenuLayout(BasicLayout):
 
         self.compositionUdDropDown = self._createDropdown(self.main_window.defaultInput.compositionUd, function=None)
 
-    def create(self):
+    def create(self) -> None:
         """
         Update the interface
         Returns

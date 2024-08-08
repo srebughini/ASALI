@@ -22,11 +22,12 @@ class BasicReactor(ABC):
                                                            gas_phase_name,
                                                            surface_phase_name)
         self.colormap = "Blues"
+
     @abstractmethod
     def initialize_reactor_class(self,
                                  cantera_input_file,
                                  gas_phase_name,
-                                 surface_phase_name):
+                                 surface_phase_name) -> None:
         """
         Abstract method to initialize reactor class
         Parameters
@@ -46,7 +47,7 @@ class BasicReactor(ABC):
         return None
 
     @abstractmethod
-    def run(self, input_dict):
+    def run(self, input_dict) -> None:
         """
         Abstract method to run reactor model
         Parameters
@@ -60,7 +61,7 @@ class BasicReactor(ABC):
         pass
 
     @abstractmethod
-    def save(self, option_dict):
+    def save(self, option_dict) -> None:
         """
         Abstract method to save the results of the reactor model
         Parameters
@@ -75,7 +76,7 @@ class BasicReactor(ABC):
         pass
 
     @abstractmethod
-    def plot(self, plot_dict):
+    def plot(self, plot_dict) -> None:
         """
         Abstract method to plot the results of the reactor model
         Parameters
@@ -88,3 +89,33 @@ class BasicReactor(ABC):
 
         """
         pass
+
+    def gas_species_list(self) -> list:
+        """
+        Return gas species list
+        Returns
+        -------
+        gas_species_names: list
+            List of gas species names
+        """
+        return self.reactor_class.gas.species_names
+
+    def coverage_list(self) -> list:
+        """
+        Return coverage list
+        Returns
+        -------
+        coverage_names: list
+            List of coverage names
+        """
+        return self.reactor_class.surf.species_names
+
+    def variables_list(self) -> list:
+        """
+        Return no species variable list
+        Returns
+        -------
+        variable_list: list
+            List of variables
+        """
+        return ["Temperature", "Pressure"]

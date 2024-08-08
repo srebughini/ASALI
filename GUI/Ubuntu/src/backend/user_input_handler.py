@@ -4,6 +4,8 @@ import yaml
 from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
+from src.backend.basic_reactor import BasicReactor
+
 
 class UserInputHandler:
     def __init__(self):
@@ -14,12 +16,13 @@ class UserInputHandler:
         self._udk_file_path = None
         self._gas_phase_name = None
         self._surface_phase_name = None
+        self._reactor_model_backend = None
         self._temperature = {}
         self._pressure = {}
         self._mole_fraction = {}
         self._mass_fraction = {}
 
-    def get_file_path(self):
+    def get_file_path(self) -> str:
         """
         Get chemistry file path
         Returns
@@ -29,9 +32,13 @@ class UserInputHandler:
         """
         return self._file_path
 
-    def set_file_path(self, value):
+    def set_file_path(self, value) -> None:
         """
         Set chemistry file path
+        Parameters
+        ----------
+        value: str
+            Chemistry file path
         Returns
         -------
 
@@ -41,7 +48,7 @@ class UserInputHandler:
     # Creating a property object for chemistry file path
     file_path = property(get_file_path, set_file_path)
 
-    def get_temperature(self):
+    def get_temperature(self) -> dict:
         """
         Get mixture temperature
         Returns
@@ -51,9 +58,13 @@ class UserInputHandler:
         """
         return self._temperature
 
-    def set_temperature(self, value):
+    def set_temperature(self, value) -> None:
         """
         Set mixture temperature
+        Parameters
+        ----------
+        value: dict
+            Mixture temperature
         Returns
         -------
 
@@ -63,7 +74,7 @@ class UserInputHandler:
     # Creating a property object for gas mixture temperature
     temperature = property(get_temperature, set_temperature)
 
-    def get_pressure(self):
+    def get_pressure(self) -> dict:
         """
         Get mixture pressure
         Returns
@@ -73,9 +84,13 @@ class UserInputHandler:
         """
         return self._pressure
 
-    def set_pressure(self, value):
+    def set_pressure(self, value) -> None:
         """
         Set mixture pressure
+        Parameters
+        ----------
+        value: dict
+            Mixture pressure
         Returns
         -------
 
@@ -85,7 +100,7 @@ class UserInputHandler:
     # Creating a property object for gas mixture pressure
     pressure = property(get_pressure, set_pressure)
 
-    def get_mole_fraction(self):
+    def get_mole_fraction(self) -> dict:
         """
         Get mixture mole fraction
         Returns
@@ -95,16 +110,20 @@ class UserInputHandler:
         """
         return self._mole_fraction
 
-    def set_mole_fraction(self, value):
+    def set_mole_fraction(self, value) -> None:
         """
         Set mixture mole fraction
+        Parameters
+        ----------
+        value: dict
+            Mixture mole fraction
         Returns
         -------
 
         """
         self._mole_fraction = value
 
-    def get_mass_fraction(self):
+    def get_mass_fraction(self) -> dict:
         """
         Get mixture mass fraction
         Returns
@@ -114,9 +133,13 @@ class UserInputHandler:
         """
         return self._mass_fraction
 
-    def set_mass_fraction(self, value):
+    def set_mass_fraction(self, value) -> None:
         """
         Set mixture mass fraction
+        Parameters
+        ----------
+        value: dict
+            Mixture mass fraction
         Returns
         -------
 
@@ -129,7 +152,7 @@ class UserInputHandler:
     # Creating a property object for gas mixture mole fraction
     mole_fraction = property(get_mole_fraction, set_mole_fraction)
 
-    def get_udk_file_path(self):
+    def get_udk_file_path(self) -> str:
         """
         Get chemistry file path
         Returns
@@ -139,9 +162,13 @@ class UserInputHandler:
         """
         return self._udk_file_path
 
-    def set_udk_file_path(self, value):
+    def set_udk_file_path(self, value) -> None:
         """
         Set chemistry file path
+        Parameters
+        ----------
+        value: str
+            Chemistry file path
         Returns
         -------
 
@@ -167,9 +194,13 @@ class UserInputHandler:
 
         return self._gas_phase_name
 
-    def set_gas_phase_name(self, value):
+    def set_gas_phase_name(self, value) -> None:
         """
         Set gas phase name
+        Parameters
+        ----------
+        value: str
+            Gas phase name
         Returns
         -------
 
@@ -195,9 +226,13 @@ class UserInputHandler:
 
         return self._surface_phase_name
 
-    def set_surface_phase_name(self, value):
+    def set_surface_phase_name(self, value) -> None:
         """
         Set surface phase name
+        Parameters
+        ----------
+        value: str
+            surface phase name
         Returns
         -------
 
@@ -207,7 +242,35 @@ class UserInputHandler:
     # Creating a property object for surface phase name
     surface_phase_name = property(get_surface_phase_name, set_surface_phase_name)
 
-    def _extract_gas_phase_name(self):
+    def get_reactor_model_backend(self) -> BasicReactor:
+        """
+        Get reactor model class
+        Returns
+        -------
+        reactor_model_backend: Derived class of backend/BasicReactor
+            Class wrapping ASALIPY reactor class
+        """
+
+        return self._reactor_model_backend
+
+    def set_reactor_model_backend(self, value) -> None:
+        """
+        Set reactor model class
+        Parameters
+        ----------
+        value: Derived class of backend/BasicReactor
+            Class wrapping ASALIPY reactor class
+
+        Returns
+        -------
+
+        """
+        self._reactor_model_backend = value
+
+    # Creating a property object for surface phase name
+    reactor_model_backend = property(get_reactor_model_backend, set_reactor_model_backend)
+
+    def _extract_gas_phase_name(self) -> None:
         """
         Extract gas phase name from .yaml file
         Returns
@@ -221,7 +284,7 @@ class UserInputHandler:
                     self._gas_phase_name = p["name"]
                     break
 
-    def _extract_surface_phase_name(self):
+    def _extract_surface_phase_name(self) -> None:
         """
         Extract surface phase name from .yaml file
         Returns
@@ -235,7 +298,7 @@ class UserInputHandler:
                     self._surface_phase_name = p["name"]
                     break
 
-    def check_cantera_input_file(self):
+    def check_cantera_input_file(self) -> bool:
         """
         Check .yaml input file of cantera
         Returns
@@ -255,7 +318,7 @@ class UserInputHandler:
 
         return True
 
-    def check_udk_input_file(self):
+    def check_udk_input_file(self) -> bool:
         """
         Check .json input file of user define kinetic model
         Returns
@@ -273,7 +336,7 @@ class UserInputHandler:
         return False
 
     @staticmethod
-    def check_file_extension(file_path, required_extension):
+    def check_file_extension(file_path, required_extension) -> bool:
         """
         Check the file extension
         Parameters
@@ -292,7 +355,7 @@ class UserInputHandler:
         return file_extension == required_extension
 
     @staticmethod
-    def replace_file_extension(file_path, target_extension):
+    def replace_file_extension(file_path, target_extension) -> str:
         """
         Check the file extension
         Parameters

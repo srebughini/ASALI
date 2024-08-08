@@ -4,7 +4,7 @@ from abc import abstractmethod
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy
+    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy, QCheckBox
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -46,7 +46,7 @@ class BasicLayout(QGridLayout):
         self.initialize()
         self.create()
 
-    def _createLogo(self, logo_path):
+    def _createLogo(self, logo_path) -> QLabel:
         """
         Create img from path
         Parameters
@@ -67,7 +67,7 @@ class BasicLayout(QGridLayout):
         label.setStyleSheet(WidgetStyle.LOGO.value)
         return label
 
-    def _createBeerLabel(self):
+    def _createBeerLabel(self) -> QLabel:
         """
         Create beer quote label
         Returns
@@ -82,7 +82,7 @@ class BasicLayout(QGridLayout):
         label.setStyleSheet(WidgetStyle.ITALICLABEL.value)
         return label
 
-    def _createButton(self, title, function, tooltip):
+    def _createButton(self, title, function, tooltip) -> QPushButton:
         """
         Create generic button
         Parameters
@@ -106,7 +106,7 @@ class BasicLayout(QGridLayout):
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
 
-    def _createDropdown(self, option_list, function=None):
+    def _createDropdown(self, option_list, function=None) -> QComboBox:
         """
         Create generic dropdown menu
         Parameters
@@ -129,7 +129,7 @@ class BasicLayout(QGridLayout):
             dropdown.currentIndexChanged.connect(function)
         return dropdown
 
-    def _createLineEdit(self, text, alignment, validator, f=None):
+    def _createLineEdit(self, text, alignment, validator, f=None) -> QLineEdit:
         """
         Create Qline for input
         Parameters
@@ -161,8 +161,25 @@ class BasicLayout(QGridLayout):
 
         return line_edit
 
+    def _createCheckBox(self, text) -> QCheckBox:
+        """
+        Create check box
+        Parameters
+        ----------
+        text: str
+            Text to be added
+
+        Returns
+        -------
+        checkbox: QCheckBox
+            Check box for input
+        """
+        checkbox = QCheckBox(text, self.main_window)
+        checkbox.setStyleSheet(WidgetStyle.CHECKBOX.value)
+        return checkbox
+
     @abstractmethod
-    def initialize(self):
+    def initialize(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -172,7 +189,7 @@ class BasicLayout(QGridLayout):
         pass
 
     @abstractmethod
-    def create(self):
+    def create(self) -> None:
         """
         Update the interface
         Returns

@@ -69,3 +69,18 @@ class WidgetStyle(Enum):
             }}
 
         """
+
+    CHECKBOX = f"""
+            QCheckBox::indicator {{
+                border-radius: 10px; /* Makes the indicator circular */
+                background-color: {ColorPalette.LIGHTBLUE.value};
+            }}
+            
+            QCheckBox::indicator:checked {{
+                    background-color: {ColorPalette.ORANGE.value};
+            }}
+            
+            QCheckBox::indicator:pressed {{
+                    background-color: {ColorPalette.ORANGE.value}; /* Optional: Change color when pressed */
+            }}
+        """

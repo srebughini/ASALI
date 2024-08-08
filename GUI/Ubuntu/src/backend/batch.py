@@ -25,9 +25,9 @@ class BatchModel(BasicReactor):
     def initialize_reactor_class(self,
                                  cantera_input_file,
                                  gas_phase_name,
-                                 surface_phase_name):
+                                 surface_phase_name) -> BatchReactor:
         """
-        Method to initialize BatchReactor class
+        Initialize BatchReactor class
         Parameters
         ----------
         cantera_input_file: str
@@ -44,7 +44,7 @@ class BatchModel(BasicReactor):
         """
         return BatchReactor(cantera_input_file, gas_phase_name, surface_phase_name)
 
-    def run(self, input_dict):
+    def run(self, input_dict) -> None:
         """
         Run BatchReactor model
         Parameters
@@ -78,15 +78,15 @@ class BatchModel(BasicReactor):
         tstep = self._uc.convert_to_seconds(input_dict["step"]["value"],
                                             input_dict["step"]["ud"])
 
-        num = int(tmax/tstep) + 1
+        num = int(tmax / tstep) + 1
 
         tspan = np.linspace(0., tmax, num=num, endpoint=True)
 
         self.reactor_class.solve(tspan, 's')
 
-    def save(self, option_dict):
+    def save(self, option_dict) -> None:
         """
-        Method to save the results of the reactor model
+        Save the results of the reactor model
         Parameters
         ----------
         option_dict: dict
@@ -98,9 +98,9 @@ class BatchModel(BasicReactor):
         """
         pass
 
-    def plot(self, plot_dict):
+    def plot(self, plot_dict) -> None:
         """
-        Method to plot the results of the reactor model
+        Plot the results of the reactor model
         Parameters
         ----------
         plot_dict: dict

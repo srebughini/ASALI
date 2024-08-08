@@ -8,6 +8,7 @@ from src.backend.batch import BatchModel
 from src.frontend.layout.basic_reactor import BasicReactorLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
+from src.frontend.window.plot_and_save import PlotAndSaveWindow
 
 
 class BatchLayout(BasicReactorLayout):
@@ -21,7 +22,7 @@ class BatchLayout(BasicReactorLayout):
         """
         super().__init__(main_window)
 
-    def _checkEditLineFloatInput(self, editLine, variableName):
+    def _checkEditLineFloatInput(self, editLine, variableName) -> None:
         """
         Check single edit line input
         Parameters
@@ -39,7 +40,7 @@ class BatchLayout(BasicReactorLayout):
                                self.title,
                                QLabel(f"Wrong {variableName} value."))
 
-    def _checkEditLineInputs(self):
+    def _checkEditLineInputs(self) -> None:
         """
         Check all the input in edit line format
         Returns
@@ -51,7 +52,7 @@ class BatchLayout(BasicReactorLayout):
         self._checkEditLineFloatInput(self.tEditLine, "integration time")
         self._checkEditLineFloatInput(self.tsEditLine, "time step")
 
-    def runModel(self):
+    def runModel(self) -> None:
         """
         Function to run the reactor model
         Returns
@@ -61,9 +62,9 @@ class BatchLayout(BasicReactorLayout):
         self._checkInputFiles()
         self._checkEditLineInputs()
 
-        reactor_model = BatchModel(self.main_window.userInput.file_path,
-                                   self.main_window.userInput.gas_phase_name,
-                                   self.main_window.userInput.surface_phase_name)
+        self.main_window.userInput.reactor_model_backend = BatchModel(self.main_window.userInput.file_path,
+                                                                      self.main_window.userInput.gas_phase_name,
+                                                                      self.main_window.userInput.surface_phase_name)
 
         input_dict = {"udk": self.main_window.userInput.udk_file_path,
                       "T": {"value": self.main_window.userInput.temperature["value"],
@@ -94,11 +95,13 @@ class BatchLayout(BasicReactorLayout):
             input_dict.update({"x": None,
                                "y": self.main_window.userInput.mass_fraction})
 
-        if reactor_model.run(input_dict):
-            pass
-            # Open function for saving and plotting
+        self.main_window.userInput.reactor_model_backend.run(input_dict)
 
-    def initialize(self):
+        window = Utils.createNewWindowObject(self.main_window, PlotAndSaveWindow)
+        window.runBackend()
+        Utils.openNewWindowFromObject(window)
+
+    def initialize(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -134,7 +137,7 @@ class BatchLayout(BasicReactorLayout):
             [Utils.padString(ud) for ud in self.main_window.defaultInput.timeUd])
         self.tsEditLine = self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator())
 
-    def create(self):
+    def create(self) -> None:
         """
         Update the interface
         Returns

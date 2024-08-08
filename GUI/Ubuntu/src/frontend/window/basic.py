@@ -1,10 +1,10 @@
 import os
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QToolBar, QAction, QWidget, QGridLayout
+    QMainWindow, QToolBar, QAction, QWidget, QGridLayout, QDesktopWidget
 )
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
 from functools import partial
 
@@ -50,7 +50,7 @@ class BasicMainWindow(QMainWindow):
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
 
-    def _resetUserInput(self):
+    def _resetUserInput(self) -> None:
         """
         Reset user input values
         Returns
@@ -60,7 +60,7 @@ class BasicMainWindow(QMainWindow):
         self.userInput.udk_file_path = None
         self.userInput.file_path = None
 
-    def _createToolBar(self):
+    def _createToolBar(self) -> None:
         """
         Create QToolBar
         Returns
@@ -70,7 +70,7 @@ class BasicMainWindow(QMainWindow):
         self.optionToolBar.setMovable(False)
         self.addToolBar(self.optionToolBar)
 
-    def _createActions(self):
+    def _createActions(self) -> None:
         """
         Create QAction for QToolBar
         Returns
@@ -81,7 +81,7 @@ class BasicMainWindow(QMainWindow):
         self.disclaimerAction = QAction("&Disclaimer", self)
         self.exitAction = QAction("&Exit", self)
 
-    def _connectActions(self):
+    def _connectActions(self) -> None:
         """
         Connect QAction to class functions
         Returns
@@ -91,7 +91,7 @@ class BasicMainWindow(QMainWindow):
         self.disclaimerAction.triggered.connect(partial(Utils.disclaimerMessage, self))
         self.exitAction.triggered.connect(self.close)
 
-    def _cleanCentralWidget(self):
+    def _cleanCentralWidget(self) -> None:
         """
         Clean the central widget by remove all children
         Returns
@@ -105,7 +105,7 @@ class BasicMainWindow(QMainWindow):
 
         Utils.cleanWidget(self.central_widget)
 
-    def setCentralWidgetLayout(self, layout):
+    def setCentralWidgetLayout(self, layout) -> None:
         """
         Set layout for the windows
         Parameters
@@ -116,13 +116,24 @@ class BasicMainWindow(QMainWindow):
         Returns
         -------
         """
+
+        """
         layout.userInput = self.userInput
         self._cleanCentralWidget()
         self.central_widget.setLayout(layout)
         self.central_widget.adjustSize()
         self.adjustSize()
+        self.centerWindowOnActiveScreen()
+        """
+        layout.userInput = self.userInput
+        self._cleanCentralWidget()
+        self.central_widget.setLayout(layout)
+        self.central_widget.adjustSize()
+        self.adjustSize()
+        self.updateGeometry()
+        QTimer.singleShot(0, self.centerWindowOnActiveScreen)
 
-    def runBackEnd(self):
+    def runBackend(self) -> None:
         """
         Run backend to update frontend
         Returns
@@ -130,3 +141,25 @@ class BasicMainWindow(QMainWindow):
 
         """
         self.central_widget.layout().runBackend()
+
+    def centerWindowOnActiveScreen(self) -> None:
+        """
+        Center the window on the active screen
+        Returns
+        -------
+
+        """
+        # Get the screen's available geometry (excluding taskbars, etc.)
+        screen_geometry = QDesktopWidget().availableGeometry(self)
+
+        # Get the geometry of the window (including its frame)
+        window_geometry = self.frameGeometry()
+
+        # Calculate the center point of the screen
+        screen_center = screen_geometry.center()
+
+        # Move the window's center to the center of the screen
+        window_geometry.moveCenter(screen_center)
+
+        # Move the window to the calculated top-left point
+        self.move(window_geometry.topLeft())
