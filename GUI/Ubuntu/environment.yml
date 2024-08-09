@@ -8,3 +8,5 @@ dependencies:
   - beerpy
   - sympy
   - pyqt
+  - pandas
+  - xlsxwriter

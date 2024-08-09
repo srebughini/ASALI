@@ -14,6 +14,16 @@ class ColorPalette(Enum):
     ORANGE = "#DB901F"
 
 
+class SheetNames(Enum):
+    X = "mole_fraction"
+    Y = "mass_fraction"
+    Z = "coverage"
+    T = "temperature"
+
+class ColumnNames(Enum):
+    time = "Time [s]"
+    temperature = "Temperature [K]"
+
 class WidgetStyle(Enum):
     WINDOW = f"""
             background-color: {ColorPalette.BLUE.value}; 

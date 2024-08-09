@@ -1,10 +1,12 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from asali.plotters.batch import BatchPlotter
 from asali.reactors.batch import BatchReactor
 
 from src.backend.basic_reactor import BasicReactor
+from src.frontend.style import SheetNames, ColumnNames
 
 
 class BatchModel(BasicReactor):
@@ -84,19 +86,34 @@ class BatchModel(BasicReactor):
 
         self.reactor_class.solve(tspan, 's')
 
-    def save(self, option_dict) -> None:
+    def get_results(self) -> dict:
         """
         Save the results of the reactor model
-        Parameters
-        ----------
-        option_dict: dict
-            Option parameters for saving
-
         Returns
         -------
-
+        output_dict: dict
+            Dict of Pandas DataFrame to be plotted
         """
-        pass
+        x = self.reactor_class.get_mole_fraction()
+        y = self.reactor_class.get_mass_fraction()
+        z = self.reactor_class.get_coverage()
+        t = self.reactor_class.get_time(self.timeUd)
+
+        output_dict = {SheetNames.X.value: pd.DataFrame({ColumnNames.time.value: t}),
+                       SheetNames.Y.value: pd.DataFrame({ColumnNames.time.value: t}),
+                       SheetNames.Z.value: pd.DataFrame({ColumnNames.time.value: t}),
+                       SheetNames.T.value: pd.DataFrame({ColumnNames.time.value: t})}
+
+        for i, n in enumerate(self.gas_species_list()):
+            output_dict[SheetNames.X.value][n] = x[:, i]
+            output_dict[SheetNames.Y.value][n] = y[:, i]
+
+        for i, n in enumerate(self.coverage_list()):
+            output_dict[SheetNames.Z.value][n] = z[:, i]
+
+        output_dict[SheetNames.T.value][ColumnNames.temperature.value] = self.reactor_class.get_temperature()
+
+        return output_dict
 
     def plot(self, plot_dict) -> None:
         """
@@ -122,6 +139,6 @@ class BatchModel(BasicReactor):
             plotter.plot_species_mass_fraction(plt, plot_dict["y"])
 
         if len(plot_dict["z"]) > 0:
-            plotter.plot_species_mass_fraction(plt, plot_dict["z"])
+            plotter.plot_coverage(plt, plot_dict["z"])
 
         plt.show()

@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from asali.utils.unit_converter import UnitConverter
-from asali.plotters.reactor import ReactorPlotter
 
 
 class BasicReactor(ABC):
@@ -22,6 +21,7 @@ class BasicReactor(ABC):
                                                            gas_phase_name,
                                                            surface_phase_name)
         self.colormap = "Blues"
+        self.timeUd = "s"
 
     @abstractmethod
     def initialize_reactor_class(self,
@@ -61,17 +61,13 @@ class BasicReactor(ABC):
         pass
 
     @abstractmethod
-    def save(self, option_dict) -> None:
+    def get_results(self) -> dict:
         """
         Abstract method to save the results of the reactor model
-        Parameters
-        ----------
-        option_dict: dict
-            Option parameters for saving
-
         Returns
         -------
-
+        output_dict: dict
+            Dict of Pandas DataFrame to be plotted
         """
         pass
 
@@ -109,13 +105,3 @@ class BasicReactor(ABC):
             List of coverage names
         """
         return self.reactor_class.surf.species_names
-
-    def variables_list(self) -> list:
-        """
-        Return no species variable list
-        Returns
-        -------
-        variable_list: list
-            List of variables
-        """
-        return ["Temperature", "Pressure"]

@@ -1,10 +1,10 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget
+from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, \
+    QMainWindow
 
 from src.frontend.style import WidgetStyle, ColorPalette
 
-
-# from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
+import os
 
 
 class Utils:
@@ -13,7 +13,7 @@ class Utils:
     """
 
     @staticmethod
-    def isFloat(element):
+    def isFloat(element) -> bool:
         """
         Function to check if str can be parsed to float
         Parameters
@@ -35,7 +35,7 @@ class Utils:
             return False
 
     @staticmethod
-    def stringLength():
+    def stringLength() -> int:
         """
         Return maximum string length
         Returns
@@ -46,7 +46,7 @@ class Utils:
         return 20
 
     @staticmethod
-    def cleanLayout(layout):
+    def cleanLayout(layout) -> QGridLayout:
         """
         Clean the whole layout without removing the layout
         Parameters
@@ -70,7 +70,7 @@ class Utils:
         return layout
 
     @staticmethod
-    def cleanWidget(widget):
+    def cleanWidget(widget) -> QWidget:
         """
         Clean a widget by remove all children
         Parameters
@@ -91,7 +91,7 @@ class Utils:
         return widget
 
     @staticmethod
-    def openNewWindowFromClass(main_window, new_window_class):
+    def openNewWindowFromClass(main_window, new_window_class) -> None:
         """
         Open a new window
         Parameters
@@ -107,7 +107,7 @@ class Utils:
         Utils.openNewWindowFromObject(Utils.createNewWindowObject(main_window, new_window_class))
 
     @staticmethod
-    def createNewWindowObject(main_window, new_window_class):
+    def createNewWindowObject(main_window, new_window_class) -> QMainWindow:
         """
         Open a new window
         Parameters
@@ -127,7 +127,7 @@ class Utils:
         return new_window
 
     @staticmethod
-    def openNewWindowFromObject(new_window):
+    def openNewWindowFromObject(new_window) -> None:
         """
         Open a new window
         Parameters
@@ -141,7 +141,7 @@ class Utils:
         new_window.show()
 
     @staticmethod
-    def openFile(main_window, title="Load file", file_type="All Files (*)"):
+    def openFile(main_window, title="Load file", file_type="All Files (*)") -> str:
         """
         Dialog window to open file
         Parameters
@@ -169,7 +169,7 @@ class Utils:
         return fileTuple[0]
 
     @staticmethod
-    def saveFile(main_window, title="Save file", file_type="All Files (*)"):
+    def saveFile(main_window, title="Save file", file_type="All Files (*)", default_extension=None) -> str:
         """
         Dialog window to save file
         Parameters
@@ -180,23 +180,34 @@ class Utils:
             QFileDialog title
         file_type: str
             QFileDialog message
+        default_extension: str
+            Default extension
 
         Returns
         -------
         file_path: str
             File path
         """
-        fileTuple = QFileDialog.getSaveFileName(main_window,
-                                                title,
-                                                "",
-                                                file_type)
-        if len(fileTuple[0]) == 0:
+        file_path, selected_filter = QFileDialog.getSaveFileName(main_window, title, "", file_type)
+
+        if not file_path:
             return None
 
-        return fileTuple[0]
+        if default_extension is None:
+            return file_path
+
+        file_path_split = os.path.splitext(file_path)
+
+        if len(file_path_split) == 2:
+            return "{}{}".format(file_path_split[0], default_extension)
+
+        if file_path_split[1] == ".*":
+            return "{}{}".format(file_path_split[0], default_extension)
+
+        return file_path
 
     @staticmethod
-    def dialogMessage(main_window, title, msg):
+    def dialogMessage(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -231,7 +242,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def questionMessage(main_window, title, msg):
+    def questionMessage(main_window, title, msg) -> bool:
         """
         Question message box
         Parameters
@@ -265,7 +276,7 @@ class Utils:
             return False
 
     @staticmethod
-    def disclaimerMessage(main_window):
+    def disclaimerMessage(main_window) -> None:
         """
         Show disclaimer with QDialog
         Parameters
@@ -293,7 +304,7 @@ class Utils:
         Utils.dialogMessage(main_window, "Disclaimer", msg)
 
     @staticmethod
-    def contactMessage(main_window):
+    def contactMessage(main_window) -> None:
         """
         Show contact with QDialog
         Parameters
@@ -327,7 +338,7 @@ class Utils:
         Utils.dialogMessage(main_window, "Contacts", msg)
 
     @staticmethod
-    def somethingWentWrongMessage(main_window, title):
+    def somethingWentWrongMessage(main_window, title) -> None:
         """
         Show something went wrong message with QDialog
         Parameters
@@ -340,7 +351,7 @@ class Utils:
         Utils.dialogMessage(main_window, title, "Something went wrong!")
 
     @staticmethod
-    def doneMessage(main_window, title, msg):
+    def doneMessage(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -379,7 +390,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def errorMessage(main_window, title, msg):
+    def errorMessage(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -418,7 +429,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def padString(original_str):
+    def padString(original_str) -> str:
         """
         Pad a string to fixed length
         Parameters
@@ -437,7 +448,7 @@ class Utils:
         return new_str
 
     @staticmethod
-    def padStringCenter(original_str):
+    def padStringCenter(original_str) -> str:
         """
         Pad a string to fixed length with text at the center
         Parameters
@@ -456,7 +467,7 @@ class Utils:
         return new_str
 
     @staticmethod
-    def fromNumberToString(number):
+    def fromNumberToString(number) -> str:
         """
         Convert number to string
         Parameters
@@ -472,7 +483,7 @@ class Utils:
         return f"{number:.2E}"
 
     @staticmethod
-    def fromDictToString(dictionary):
+    def fromDictToString(dictionary) -> str:
         """
         Convert dict to table like string
         Parameters
@@ -489,7 +500,7 @@ class Utils:
         return "\n".join([Utils.padString(f"{k}:\t{Utils.fromNumberToString(v)}") for k, v in dictionary.items()])
 
     @staticmethod
-    def fromListToString(vector, horizontal=False):
+    def fromListToString(vector, horizontal=False) -> str:
         """
         Convert list to table like string
         Parameters
