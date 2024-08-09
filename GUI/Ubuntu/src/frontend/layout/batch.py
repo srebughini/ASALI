@@ -22,45 +22,27 @@ class BatchLayout(BasicReactorLayout):
         """
         super().__init__(main_window)
 
-    def _checkEditLineFloatInput(self, editLine, variableName) -> None:
-        """
-        Check single edit line input
-        Parameters
-        ----------
-        editLine: QLineEdit
-            Edit line object
-        variableName: str
-            Variable name
-
-        Returns
-        -------
-        """
-        if not Utils.isFloat(editLine.text()):
-            Utils.errorMessage(self.main_window,
-                               self.title,
-                               QLabel(f"Wrong {variableName} value."))
-
-    def _checkEditLineInputs(self) -> None:
+    def _check_edit_line_inputs(self) -> None:
         """
         Check all the input in edit line format
         Returns
         -------
 
         """
-        self._checkEditLineFloatInput(self.vEditLine, "volume")
-        self._checkEditLineFloatInput(self.alfaEditLine, "catalytic load")
-        self._checkEditLineFloatInput(self.tEditLine, "integration time")
-        self._checkEditLineFloatInput(self.tsEditLine, "time step")
+        self._check_edit_line_float_input(self.vEditLine, "volume")
+        self._check_edit_line_float_input(self.alfaEditLine, "catalytic load")
+        self._check_edit_line_float_input(self.tEditLine, "integration time")
+        self._check_edit_line_float_input(self.tsEditLine, "time step")
 
-    def runModel(self) -> None:
+    def run_reactor_model(self) -> None:
         """
         Function to run the reactor model
         Returns
         -------
 
         """
-        self._checkInputFiles()
-        self._checkEditLineInputs()
+        self._check_input_files()
+        self._check_edit_line_inputs()
 
         self.main_window.userInput.reactor_model_backend = BatchModel(self.main_window.userInput.file_path,
                                                                       self.main_window.userInput.gas_phase_name,
@@ -85,7 +67,7 @@ class BatchLayout(BasicReactorLayout):
                                "ud": self.main_window.defaultInput.from_human_to_code_ud(
                                    self.tsDropDown.currentText())},
                       "energy": self.energyDropDown.currentText().strip(),
-                      "z": self._extractInputComposition()}
+                      "z": self._extract_coverage_input_composition()}
 
         if len(self.main_window.userInput.mole_fraction) > 0:
             input_dict.update({"x": self.main_window.userInput.mole_fraction,
@@ -97,9 +79,9 @@ class BatchLayout(BasicReactorLayout):
 
         self.main_window.userInput.reactor_model_backend.run(input_dict)
 
-        window = Utils.createNewWindowObject(self.main_window, PlotAndSaveWindow)
+        window = Utils.create_new_window_object(self.main_window, PlotAndSaveWindow)
         window.runBackend()
-        Utils.openNewWindowFromObject(window)
+        Utils.open_new_window_from_object(window)
 
     def initialize(self) -> None:
         """
@@ -107,7 +89,7 @@ class BatchLayout(BasicReactorLayout):
         Returns
         -------
         """
-        self._createUdkLabel()
+        self._create_udk_label()
 
         # Headline
         self.headlineLabel = QLabel(self._select_reactor_list[1])
@@ -115,27 +97,27 @@ class BatchLayout(BasicReactorLayout):
         self.headlineLabel.setAlignment(Qt.AlignCenter)
 
         # Volume
-        self.vDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.volumeUd])
-        self.vEditLine = self._createLineEdit("10.0", Qt.AlignRight, QDoubleValidator())
+        self.vDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.volume_ud])
+        self.vEditLine = self._create_line_edit("10.0", Qt.AlignRight, QDoubleValidator())
 
         # Catalytic load
-        self.alfaDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.oneOverLengthUd])
-        self.alfaEditLine = self._createLineEdit("15.0", Qt.AlignRight, QDoubleValidator())
+        self.alfaDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.one_over_length_ud])
+        self.alfaEditLine = self._create_line_edit("15.0", Qt.AlignRight, QDoubleValidator())
 
         # Energy
-        self.energyDropDown = self._createDropdown(self._on_off_list)
+        self.energyDropDown = self._create_dropdown(self._on_off_list)
 
         # Time
-        self.tDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.timeUd])
-        self.tEditLine = self._createLineEdit("5", Qt.AlignRight, QDoubleValidator())
+        self.tDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
+        self.tEditLine = self._create_line_edit("5", Qt.AlignRight, QDoubleValidator())
 
         # Time step
-        self.tsDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.timeUd])
-        self.tsEditLine = self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator())
+        self.tsDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
+        self.tsEditLine = self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator())
 
     def create(self) -> None:
         """
@@ -147,45 +129,45 @@ class BatchLayout(BasicReactorLayout):
         self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self._addUdk(self.row_idx)
+        self._add_udk(self.row_idx)
 
         # Volume
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Volume:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Volume:")), self.row_idx, 0)
         self.addWidget(self.vEditLine, self.row_idx, 1)
         self.addWidget(self.vDropDown, self.row_idx, 2)
 
         # Catalytic load
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Catalytic load:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Catalytic load:")), self.row_idx, 0)
         self.addWidget(self.alfaEditLine, self.row_idx, 1)
         self.addWidget(self.alfaDropDown, self.row_idx, 2)
 
         # Energy
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Energy balance:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Energy balance:")), self.row_idx, 0)
         self.addWidget(self.energyDropDown, self.row_idx, 1, 1, -1)
 
         # Time
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Integration time:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Integration time:")), self.row_idx, 0)
         self.addWidget(self.tEditLine, self.row_idx, 1)
         self.addWidget(self.tDropDown, self.row_idx, 2)
 
         # Time step
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Integration time step:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Integration time step:")), self.row_idx, 0)
         self.addWidget(self.tsEditLine, self.row_idx, 1)
         self.addWidget(self.tsDropDown, self.row_idx, 2)
 
         # Coverage composition
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Chemical formula")), self.row_idx, 1)
-        self.addWidget(QLabel(Utils.padString("Composition")), self.row_idx, 2)
+        self.addWidget(QLabel(Utils.pad_string("Chemical formula")), self.row_idx, 1)
+        self.addWidget(QLabel(Utils.pad_string("Composition")), self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self._addCoverageInputLine(self.row_idx)
+        self._add_coverage_input_line(self.row_idx)
 
         # Run
         self.row_idx = self.row_idx + 1
-        self._addButtons(self.row_idx)
+        self._add_buttons(self.row_idx)

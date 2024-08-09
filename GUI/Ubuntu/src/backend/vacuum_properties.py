@@ -19,7 +19,7 @@ class VacuumProperties(BasicCalculation):
         super().__init__(cantera_input_file, gas_phase_name)
 
     @staticmethod
-    def calculate_mean_gas_velocity(temp, mw):
+    def calculate_mean_gas_velocity(temp, mw) -> float:
         """
         Calculate mean gas velocity
         Parameters
@@ -37,7 +37,7 @@ class VacuumProperties(BasicCalculation):
         return np.sqrt(8. * 8314. * temp / (np.pi * mw))
 
     @staticmethod
-    def calculate_mean_free_path(temp, press, ljdiameter):
+    def calculate_mean_free_path(temp, press, ljdiameter) -> float:
         """
         Calculate mean free path
         Parameters
@@ -57,7 +57,7 @@ class VacuumProperties(BasicCalculation):
         return 1.38064852 * 1e-03 * temp / (np.sqrt(2) * press * np.square(ljdiameter))
 
     @staticmethod
-    def calculate_knudsen_number(temp, press, ljdiameter, length):
+    def calculate_knudsen_number(temp, press, ljdiameter, length) -> float:
         """
         Calculate mean free path
         Parameters
@@ -78,7 +78,7 @@ class VacuumProperties(BasicCalculation):
         """
         return length / VacuumProperties.calculate_mean_free_path(temp, press, ljdiameter)
 
-    def mean_gas_velocity(self, specie_name, ud):
+    def mean_gas_velocity(self, specie_name, ud) -> float:
         """
         Return mean gas velocity of the single specie
         Parameters
@@ -98,7 +98,7 @@ class VacuumProperties(BasicCalculation):
         return self._uc.convert_from_meter_per_seconds(v,
                                                        DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def mean_free_path(self, specie_name, ud):
+    def mean_free_path(self, specie_name, ud) -> float:
         """
         Return mean free path of the single specie
         Parameters
@@ -118,7 +118,7 @@ class VacuumProperties(BasicCalculation):
         return self._uc.convert_from_meter(mfp,
                                            DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def knudsen_number(self, specie_name, length, length_ud):
+    def knudsen_number(self, specie_name, length, length_ud) -> float:
         """
         Return Knudsen number of the single specie
         Parameters
@@ -144,7 +144,7 @@ class VacuumProperties(BasicCalculation):
 
         return kn
 
-    def diffusivity(self, specie_name, ud, length, length_ud):
+    def diffusivity(self, specie_name, ud, length, length_ud) -> float:
         """
         Return diffusivity single specie
         Parameters

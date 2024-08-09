@@ -19,14 +19,14 @@ class PlotAndSaveLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._empty_label = Utils.padString("")
+        self._empty_label = Utils.pad_string("")
 
-        self._save_format_list = [Utils.padString(".xlsx")]  # 0
+        self._save_format_list = [Utils.pad_string(".xlsx")]  # 0
 
-        self.saveButtonText = Utils.padStringCenter("Save")
+        self.saveButtonText = Utils.pad_string_center("Save")
         self.saveButtonToolTip = "Save data"
 
-        self.plotButtonText = Utils.padStringCenter("Plot")
+        self.plotButtonText = Utils.pad_string_center("Plot")
         self.plotButtonToolTip = "Plot data"
 
         self.species_names = list()
@@ -34,27 +34,41 @@ class PlotAndSaveLayout(BasicLayout):
 
         super().__init__(main_window)
 
-    def _saveToExcel(self, file_path, output_dict):
+    def _save_to_excel(self, file_path, output_dict) -> bool:
+        """
+        Save results into excel format
+        Parameters
+        ----------
+        file_path: str
+            File path
+        output_dict: dict
+            Results in dict format. Dictionary of Pandas Dataframe
+
+        Returns
+        -------
+        check: bool
+            If True the saving is successfully
+        """
         try:
             with pd.ExcelWriter(file_path) as writer:
                 for sheet_name, df in output_dict.items():
                     df.to_excel(writer, sheet_name=sheet_name, index=False)
 
             # If saving is successful, show a success message
-            Utils.dialogMessage(self.main_window,
-                                self.title,
-                                QLabel("File saved successfully!"))
+            Utils.dialog_message(self.main_window,
+                                 self.title,
+                                 QLabel("File saved successfully!"))
 
         except Exception as e:
             # If an error occurs, show an error message
-            Utils.errorMessage(self.main_window,
-                               self.title,
-                               QLabel(f"Failed to save file: {str(e)}"))
+            Utils.error_message(self.main_window,
+                                self.title,
+                                QLabel(f"Failed to save file: {str(e)}"))
             return False
 
         return True
 
-    def _saveData(self):
+    def _save_data(self) -> None:
         """
         Save data
         Returns
@@ -62,15 +76,15 @@ class PlotAndSaveLayout(BasicLayout):
 
         """
         if self.saveFormatDropDown.currentIndex() == 0:
-            file_path = Utils.saveFile(self.main_window,
-                                       file_type=FileType.EXCEL.value,
-                                       default_extension=self.saveFormatDropDown.currentText().strip())
+            file_path = Utils.save_file(self.main_window,
+                                        file_type=FileType.EXCEL.value,
+                                        default_extension=self.saveFormatDropDown.currentText().strip())
 
             if file_path is not None:
-                self._saveToExcel(file_path,
-                                  self.main_window.userInput.reactor_model_backend.get_results())
+                self._save_to_excel(file_path,
+                                    self.main_window.userInput.reactor_model_backend.get_results())
 
-    def _plotData(self):
+    def _plot_data(self) -> None:
         """
         Plot data
         Returns
@@ -94,18 +108,7 @@ class PlotAndSaveLayout(BasicLayout):
 
         self.main_window.userInput.reactor_model_backend.plot(plot_dict)
 
-    def _removeButtons(self) -> None:
-        """
-        Remove Next, Back and Species buttons
-        Returns
-        -------
-
-        """
-        n_widget = self.count()
-        self.itemAt(n_widget - 1).widget().setParent(None)
-        self.itemAt(n_widget - 2).widget().setParent(None)
-
-    def _addButtons(self, row_idx) -> None:
+    def _add_buttons(self, row_idx) -> None:
         """
         Add Back, Add Species and Run model buttons
         Parameters
@@ -117,23 +120,23 @@ class PlotAndSaveLayout(BasicLayout):
 
         """
 
-        self.addWidget(self._createButton(self.saveButtonText,
-                                          self._saveData,
-                                          self.saveButtonToolTip), row_idx, 0)
-        self.addWidget(self._createButton(self.plotButtonText,
-                                          self._plotData,
-                                          self.plotButtonToolTip), row_idx, 2)
+        self.addWidget(self._create_button(self.saveButtonText,
+                                           self._save_data,
+                                           self.saveButtonToolTip), row_idx, 0)
+        self.addWidget(self._create_button(self.plotButtonText,
+                                           self._plot_data,
+                                           self.plotButtonToolTip), row_idx, 2)
 
-    def _updateLayoutWithBackendInfo(self) -> None:
+    def _update_layout_with_backend_info(self) -> None:
         """
         Update the layout with the info coming from backend
         Returns
         -------
 
         """
-        self.gasSpeciesCheckBoxList = [self._createCheckBox(s) for s in self.species_names]
-        self.coverageCheckBoxList = [self._createCheckBox(c) for c in self.coverage_names]
-        self.temperatureCheckBox = self._createCheckBox("Temperature")
+        self.gasSpeciesCheckBoxList = [self._create_check_box(s) for s in self.species_names]
+        self.coverageCheckBoxList = [self._create_check_box(c) for c in self.coverage_names]
+        self.temperatureCheckBox = self._create_check_box("Temperature")
 
         self.row_idx = self.row_idx + 1
         for i, check in enumerate(self.gasSpeciesCheckBoxList):
@@ -148,9 +151,9 @@ class PlotAndSaveLayout(BasicLayout):
                                            len(self.coverage_names)])
 
         self.row_idx = self.row_idx + 1
-        self._addButtons(self.row_idx)
+        self._add_buttons(self.row_idx)
 
-    def runBackend(self) -> None:
+    def run_backend(self) -> None:
         """
         Run backend to extract information from the reactor model
         Returns
@@ -159,7 +162,7 @@ class PlotAndSaveLayout(BasicLayout):
         self.species_names = self.main_window.userInput.reactor_model_backend.gas_species_list()
         self.coverage_names = self.main_window.userInput.reactor_model_backend.coverage_list()
 
-        self._updateLayoutWithBackendInfo()
+        self._update_layout_with_backend_info()
 
     def initialize(self) -> None:
         """
@@ -172,8 +175,8 @@ class PlotAndSaveLayout(BasicLayout):
         self.headlineLabel.setStyleSheet(WidgetStyle.ITALICLABEL.value)
         self.headlineLabel.setAlignment(Qt.AlignCenter)
 
-        self.compositionUdDropDown = self._createDropdown(self.main_window.defaultInput.compositionUd, function=None)
-        self.saveFormatDropDown = self._createDropdown(self._save_format_list, function=None)
+        self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
+        self.saveFormatDropDown = self._create_dropdown(self._save_format_list, function=None)
 
     def create(self) -> None:
         """
@@ -182,11 +185,11 @@ class PlotAndSaveLayout(BasicLayout):
         -------
         """
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Composition type:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Composition type:")), self.row_idx, 0)
         self.addWidget(self.compositionUdDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Saving format:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Saving format:")), self.row_idx, 0)
         self.addWidget(self.saveFormatDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1

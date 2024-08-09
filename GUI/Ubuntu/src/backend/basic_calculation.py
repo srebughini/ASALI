@@ -28,7 +28,7 @@ class BasicCalculation(ABC):
                                                    temperature_ud,
                                                    pressure,
                                                    pressure_ud,
-                                                   mass_fraction):
+                                                   mass_fraction) -> None:
         """
         Set temperature, pressure and mass fraction of the gas mixture
         Parameters
@@ -58,7 +58,7 @@ class BasicCalculation(ABC):
                                                    temperature_ud,
                                                    pressure,
                                                    pressure_ud,
-                                                   mole_fraction):
+                                                   mole_fraction) -> None:
         """
         Set temperature, pressure and mole fraction of the gas mixture
         Parameters
@@ -83,7 +83,7 @@ class BasicCalculation(ABC):
         self._gas.TPX = T, P, mole_fraction
         self._species_mask = np.asarray([True if s in self._species_names else False for s in self._gas.species_names])
 
-    def species_names(self):
+    def species_names(self) -> list:
         """
         Return species names
         Returns
@@ -93,7 +93,7 @@ class BasicCalculation(ABC):
         """
         return self._species_names
 
-    def mole_fraction(self):
+    def mole_fraction(self) -> dict:
         """
         Return mole Fraction
         Returns
@@ -104,7 +104,7 @@ class BasicCalculation(ABC):
         x = np.asarray(self._gas.X)
         return dict(zip(self._species_names, x[self._species_mask]))
 
-    def mass_fraction(self):
+    def mass_fraction(self) -> dict:
         """
         Return mass Fraction
         Returns
@@ -115,7 +115,7 @@ class BasicCalculation(ABC):
         y = np.asarray(self._gas.Y)
         return dict(zip(self._species_names, y[self._species_mask]))
 
-    def temperature(self, ud):
+    def temperature(self, ud) -> float:
         """
         Return temperature
         Parameters
@@ -129,7 +129,7 @@ class BasicCalculation(ABC):
         """
         return self._uc.convert_to_kelvin(self._gas.T, DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def pressure(self, ud):
+    def pressure(self, ud) -> float:
         """
         Return pressure
         Parameters
@@ -143,7 +143,7 @@ class BasicCalculation(ABC):
         """
         return self._uc.convert_to_pascal(self._gas.P, DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def specie_index(self, specie_name):
+    def specie_index(self, specie_name) -> int:
         """
         Return specie index from specie name
         Parameters

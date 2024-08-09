@@ -12,26 +12,26 @@ class MainMenuWindow(BasicMainWindow):
         Main menu window
         """
         super().__init__(parent)
-        self.updateToMainMenuLayout()
+        self.update_to_main_menu_layout()
 
-    def updateToCalculationMenuLayout(self):
+    def update_to_calculation_menu_layout(self) -> None:
         """
         Update to the CalculationMenuLayout
         Returns
         -------
         """
         if self.userInput.udk_file_path is None and self.userInput.file_path is None:
-            Utils.errorMessage(self,
-                               self.title,
-                               QLabel("Chemistry file not selected!"))
+            Utils.error_message(self,
+                                self.title,
+                                QLabel("Chemistry file not selected!"))
         else:
-            self.setCentralWidgetLayout(CalculationMainMenuLayout(self))
+            self.set_central_widget_layout(CalculationMainMenuLayout(self))
 
-    def updateToMainMenuLayout(self):
+    def update_to_main_menu_layout(self) -> None:
         """
         Update to the MainMenuLayout
         Returns
         -------
         """
-        self._resetUserInput()
-        self.setCentralWidgetLayout(MainMenuLayout(self))
+        self._reset_user_input()
+        self.set_central_widget_layout(MainMenuLayout(self))

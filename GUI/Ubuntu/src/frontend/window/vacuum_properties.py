@@ -8,4 +8,4 @@ class VacuumPropertiesWindow(BasicMainWindow):
         Main menu window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(VacuumPropertiesLayout(self))
+        self.set_central_widget_layout(VacuumPropertiesLayout(self))

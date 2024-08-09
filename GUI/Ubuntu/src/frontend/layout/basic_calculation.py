@@ -1,6 +1,7 @@
 from abc import abstractmethod
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QLabel
 from src.frontend.layout.basic import BasicLayout
+from src.frontend.utils import Utils
 
 
 class BasicCalculationLayout(BasicLayout):
@@ -14,7 +15,7 @@ class BasicCalculationLayout(BasicLayout):
         """
         super().__init__(main_window)
 
-    def _setGasMixtureUserInput(self, cl):
+    def _set_gas_mixture_user_input(self, cl):
         """
         Set gas mixture input composition, temperature and pressure
         Returns
@@ -41,8 +42,26 @@ class BasicCalculationLayout(BasicLayout):
 
         return cl
 
+    def _check_edit_line_float_input(self, editLine, variableName) -> None:
+        """
+        Check single edit line input
+        Parameters
+        ----------
+        editLine: QLineEdit
+            Edit line object
+        variableName: str
+            Variable name
+
+        Returns
+        -------
+        """
+        if not Utils.is_float(editLine.text()):
+            Utils.error_message(self.main_window,
+                                self.title,
+                                QLabel(f"Wrong {variableName} value."))
+
     @abstractmethod
-    def runBackend(self):
+    def run_backend(self):
         """
         Run backend to update frontend
         Returns

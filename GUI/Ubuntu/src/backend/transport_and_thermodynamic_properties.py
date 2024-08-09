@@ -15,7 +15,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         """
         super().__init__(cantera_input_file, gas_phase_name)
 
-    def density(self, ud):
+    def density(self, ud) -> float:
         """
         Return density of the mixture
         Parameters
@@ -30,7 +30,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_kg_per_cubic_meter(self._gas.density,
                                                         DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def viscosity(self, ud):
+    def viscosity(self, ud) -> float:
         """
         Return viscosity of mixture
         Parameters
@@ -45,7 +45,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_pascal_seconds(self._gas.viscosity,
                                                     DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def molecular_weight(self, ud):
+    def molecular_weight(self, ud) -> float:
         """
         Return molecular weight of mixture
         Parameters
@@ -60,7 +60,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_kg_per_kmol(self._gas.mean_molecular_weight,
                                                  DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def thermal_conductivity(self, ud):
+    def thermal_conductivity(self, ud) -> float:
         """
         Return thermal conductivity of mixture
         Parameters
@@ -75,7 +75,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_watt_per_meter_per_kelvin(self._gas.thermal_conductivity,
                                                                DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def mixture_diffusivity(self, ud):
+    def mixture_diffusivity(self, ud) -> dict:
         """
         Return species mixture diffusivity of mixture
         Parameters
@@ -98,7 +98,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
                                                                         DefaultInputHandler.from_human_to_code_ud(ud))
                          for d in diff_mix]))
 
-    def specific_heat(self, ud):
+    def specific_heat(self, ud) -> float:
         """
         Return specific heat of mixture
         Parameters
@@ -117,7 +117,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.cp_mass,
                                                              DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def enthalpy(self, ud):
+    def enthalpy(self, ud) -> float:
         """
         Return enthalpy of mixture
         Parameters
@@ -136,7 +136,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.enthalpy_mass,
                                                              DefaultInputHandler.from_human_to_code_ud(ud))
 
-    def entropy(self, ud):
+    def entropy(self, ud) -> float:
         """
         Return entropy of mixture
         Parameters

@@ -27,26 +27,26 @@ class BasicLayout(QGridLayout):
         self.main_window = main_window
         self.title = self.main_window.title
 
-        self.nextButtonText = Utils.padStringCenter("Next \u2B9E")
+        self.nextButtonText = Utils.pad_string_center("Next \u2B9E")
         self.nextButtonToolTip = "Go to the next step"
-        self.backButtonText = Utils.padStringCenter("\u2B9C Back")
+        self.backButtonText = Utils.pad_string_center("\u2B9C Back")
         self.backButtonToolTip = "Go to the previous step"
 
         self.setVerticalSpacing(15)
 
         # Create logo
         self.row_idx = 0
-        self.addWidget(self._createLogo(os.path.join(self.main_window.defaultInput.imagePath, "BigLogo.png")),
+        self.addWidget(self._create_logo(os.path.join(self.main_window.defaultInput.image_path, "BigLogo.png")),
                        self.row_idx, 0, 1, -1)
 
         # Create beer quote
         self.row_idx = self.row_idx + 1
-        self.addWidget(self._createBeerLabel(), self.row_idx, 0, 1, -1)
+        self.addWidget(self._create_beer_label(), self.row_idx, 0, 1, -1)
 
         self.initialize()
         self.create()
 
-    def _createLogo(self, logo_path) -> QLabel:
+    def _create_logo(self, logo_path) -> QLabel:
         """
         Create img from path
         Parameters
@@ -67,7 +67,7 @@ class BasicLayout(QGridLayout):
         label.setStyleSheet(WidgetStyle.LOGO.value)
         return label
 
-    def _createBeerLabel(self) -> QLabel:
+    def _create_beer_label(self) -> QLabel:
         """
         Create beer quote label
         Returns
@@ -82,7 +82,7 @@ class BasicLayout(QGridLayout):
         label.setStyleSheet(WidgetStyle.ITALICLABEL.value)
         return label
 
-    def _createButton(self, title, function, tooltip) -> QPushButton:
+    def _create_button(self, title, function, tooltip) -> QPushButton:
         """
         Create generic button
         Parameters
@@ -106,7 +106,7 @@ class BasicLayout(QGridLayout):
         button.setStyleSheet(WidgetStyle.BUTTON.value)
         return button
 
-    def _createDropdown(self, option_list, function=None) -> QComboBox:
+    def _create_dropdown(self, option_list, function=None) -> QComboBox:
         """
         Create generic dropdown menu
         Parameters
@@ -129,7 +129,7 @@ class BasicLayout(QGridLayout):
             dropdown.currentIndexChanged.connect(function)
         return dropdown
 
-    def _createLineEdit(self, text, alignment, validator, f=None) -> QLineEdit:
+    def _create_line_edit(self, text, alignment, validator, f=None) -> QLineEdit:
         """
         Create Qline for input
         Parameters
@@ -161,7 +161,7 @@ class BasicLayout(QGridLayout):
 
         return line_edit
 
-    def _createCheckBox(self, text) -> QCheckBox:
+    def _create_check_box(self, text) -> QCheckBox:
         """
         Create check box
         Parameters
@@ -177,6 +177,21 @@ class BasicLayout(QGridLayout):
         checkbox = QCheckBox(text, self.main_window)
         checkbox.setStyleSheet(WidgetStyle.CHECKBOX.value)
         return checkbox
+
+    def _remove_last_widgets(self, n) -> None:
+        """
+        Remove last widgets
+        Parameters
+        ----------
+        n: int
+            Number of widget to be removed
+        Returns
+        -------
+
+        """
+        n_widget = self.count()
+        for i in range(0, n):
+            self.itemAt(n_widget - (i + 1)).widget().setParent(None)
 
     @abstractmethod
     def initialize(self) -> None:

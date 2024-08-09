@@ -14,7 +14,7 @@ class ChemicalEquilibrium(BasicCalculation):
         """
         super().__init__(cantera_input_file, gas_phase_name)
 
-    def equilibrate(self, equilibrium_type):
+    def equilibrate(self, equilibrium_type) -> None:
         """
         Run Cantera chemical equilibrium model
         Parameters

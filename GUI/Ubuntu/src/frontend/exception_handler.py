@@ -13,7 +13,7 @@ class ExceptionHandler:
     """
 
     @staticmethod
-    def showDialog(main_window, exc_type, exc_value, exc_traceback) -> None:
+    def show_dialog(main_window, exc_type, exc_value, exc_traceback) -> None:
         """
         Displays an exception dialog with the error details.
 
@@ -39,7 +39,7 @@ class ExceptionHandler:
         dialog.setWindowTitle("Error")
 
         # Create the main message label
-        main_message = QLabel(Utils.padStringCenter("Something went wrong!"))
+        main_message = QLabel(Utils.pad_string_center("Something went wrong!"))
 
         # Create error label
         error_label = QLabel(error_msg)
@@ -48,11 +48,11 @@ class ExceptionHandler:
         error_label.hide()
 
         # Create the close button
-        show_error_button = QPushButton(Utils.padStringCenter("Show details"), clicked=error_label.show)
+        show_error_button = QPushButton(Utils.pad_string_center("Show details"), clicked=error_label.show)
         show_error_button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the close button
-        close_button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
+        close_button = QPushButton(Utils.pad_string_center("Close"), clicked=dialog.close)
         close_button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon

@@ -27,7 +27,7 @@ class BasicMainWindow(QMainWindow):
 
         self.setWindowTitle(self.title)
 
-        self.icon = QIcon(os.path.join(self.defaultInput.imagePath, "Icon.png"))
+        self.icon = QIcon(os.path.join(self.defaultInput.image_path, "Icon.png"))
         self.setWindowIcon(self.icon)
         self.setStyleSheet(WidgetStyle.WINDOW.value)
         self.setWindowFlags(
@@ -39,18 +39,18 @@ class BasicMainWindow(QMainWindow):
         )
 
         # Create tool bar
-        self._createToolBar()
-        self._createActions()
+        self._create_tool_bar()
+        self._create_actions()
         self.optionToolBar.addAction(self.contactAction)
         self.optionToolBar.addAction(self.disclaimerAction)
         self.optionToolBar.addAction(self.exitAction)
-        self._connectActions()
+        self._connect_actions()
 
         # Central widget and layout
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
 
-    def _resetUserInput(self) -> None:
+    def _reset_user_input(self) -> None:
         """
         Reset user input values
         Returns
@@ -60,7 +60,7 @@ class BasicMainWindow(QMainWindow):
         self.userInput.udk_file_path = None
         self.userInput.file_path = None
 
-    def _createToolBar(self) -> None:
+    def _create_tool_bar(self) -> None:
         """
         Create QToolBar
         Returns
@@ -70,7 +70,7 @@ class BasicMainWindow(QMainWindow):
         self.optionToolBar.setMovable(False)
         self.addToolBar(self.optionToolBar)
 
-    def _createActions(self) -> None:
+    def _create_actions(self) -> None:
         """
         Create QAction for QToolBar
         Returns
@@ -81,17 +81,17 @@ class BasicMainWindow(QMainWindow):
         self.disclaimerAction = QAction("&Disclaimer", self)
         self.exitAction = QAction("&Exit", self)
 
-    def _connectActions(self) -> None:
+    def _connect_actions(self) -> None:
         """
         Connect QAction to class functions
         Returns
         -------
         """
-        self.contactAction.triggered.connect(partial(Utils.contactMessage, self))
-        self.disclaimerAction.triggered.connect(partial(Utils.disclaimerMessage, self))
+        self.contactAction.triggered.connect(partial(Utils.contact_message, self))
+        self.disclaimerAction.triggered.connect(partial(Utils.disclaimer_message, self))
         self.exitAction.triggered.connect(self.close)
 
-    def _cleanCentralWidget(self) -> None:
+    def _clean_central_widget(self) -> None:
         """
         Clean the central widget by remove all children
         Returns
@@ -99,13 +99,13 @@ class BasicMainWindow(QMainWindow):
         """
         layout = self.central_widget.layout()
         if layout is not None:
-            Utils.cleanLayout(layout)
+            Utils.clean_layout(layout)
             # Clear the layout from the central widget
             QWidget().setLayout(layout)
 
-        Utils.cleanWidget(self.central_widget)
+        Utils.clean_widget(self.central_widget)
 
-    def setCentralWidgetLayout(self, layout) -> None:
+    def set_central_widget_layout(self, layout) -> None:
         """
         Set layout for the windows
         Parameters
@@ -116,33 +116,24 @@ class BasicMainWindow(QMainWindow):
         Returns
         -------
         """
-
-        """
         layout.userInput = self.userInput
-        self._cleanCentralWidget()
-        self.central_widget.setLayout(layout)
-        self.central_widget.adjustSize()
-        self.adjustSize()
-        self.centerWindowOnActiveScreen()
-        """
-        layout.userInput = self.userInput
-        self._cleanCentralWidget()
+        self._clean_central_widget()
         self.central_widget.setLayout(layout)
         self.central_widget.adjustSize()
         self.adjustSize()
         self.updateGeometry()
-        QTimer.singleShot(0, self.centerWindowOnActiveScreen)
+        QTimer.singleShot(0, self.center_window_on_active_screen)
 
-    def runBackend(self) -> None:
+    def run_backend(self) -> None:
         """
         Run backend to update frontend
         Returns
         -------
 
         """
-        self.central_widget.layout().runBackend()
+        self.central_widget.layout().run_backend()
 
-    def centerWindowOnActiveScreen(self) -> None:
+    def center_window_on_active_screen(self) -> None:
         """
         Center the window on the active screen
         Returns

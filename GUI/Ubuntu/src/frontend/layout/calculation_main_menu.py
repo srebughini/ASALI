@@ -22,18 +22,18 @@ class CalculationMainMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._select_calculation_option_list = [Utils.padString("...Calculation to be performed..."),
-                                                Utils.padString("Thermodynamic and transport properties"),
-                                                Utils.padString("Vacuum properties"),
-                                                Utils.padString("Chemical equilibrium"),
-                                                Utils.padString("Reactor modeling")]
+        self._select_calculation_option_list = [Utils.pad_string("...Calculation to be performed..."),
+                                                Utils.pad_string("Thermodynamic and transport properties"),
+                                                Utils.pad_string("Vacuum properties"),
+                                                Utils.pad_string("Chemical equilibrium"),
+                                                Utils.pad_string("Reactor modeling")]
 
         self._specie_names_idx = list()
         self._composition_idx = list()
 
         super().__init__(main_window)
 
-    def _loadSelectedCalculationMenu(self) -> None:
+    def _load_selected_calculation_menu(self) -> None:
         """
         Load select calculation Menu
         Returns
@@ -41,31 +41,31 @@ class CalculationMainMenuLayout(BasicLayout):
 
         """
         if self.selectCalculationDropDown.currentIndex() == 0:
-            Utils.errorMessage(self.main_window,
-                               self.title,
-                               QLabel("Please, select the calculation method!"))
+            Utils.error_message(self.main_window,
+                                self.title,
+                                QLabel("Please, select the calculation method!"))
         elif self.selectCalculationDropDown.currentIndex() == 1:
-            if self.getUserInput():
-                window = Utils.createNewWindowObject(self.main_window, TransportAndThermodynamicPropertiesWindow)
+            if self.get_user_input():
+                window = Utils.create_new_window_object(self.main_window, TransportAndThermodynamicPropertiesWindow)
                 window.runBackend()
-                Utils.openNewWindowFromObject(window)
+                Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 2:
-            if self.getUserInput():
-                window = Utils.createNewWindowObject(self.main_window, VacuumPropertiesWindow)
+            if self.get_user_input():
+                window = Utils.create_new_window_object(self.main_window, VacuumPropertiesWindow)
                 window.runBackend()
-                Utils.openNewWindowFromObject(window)
+                Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 3:
-            if self.getUserInput():
-                window = Utils.createNewWindowObject(self.main_window, ChemicalEquilibriumWindow)
+            if self.get_user_input():
+                window = Utils.create_new_window_object(self.main_window, ChemicalEquilibriumWindow)
                 window.runBackend()
-                Utils.openNewWindowFromObject(window)
+                Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 4:
-            if self.getUserInput():
-                window = Utils.createNewWindowObject(self.main_window, ReactorsWindow)
+            if self.get_user_input():
+                window = Utils.create_new_window_object(self.main_window, ReactorsWindow)
                 window.runBackend()
-                Utils.openNewWindowFromObject(window)
+                Utils.open_new_window_from_object(window)
 
-    def _addButtons(self, row_idx) -> None:
+    def _add_buttons(self, row_idx) -> None:
         """
         Add Next, Back and Add Species buttons
         Parameters
@@ -76,29 +76,17 @@ class CalculationMainMenuLayout(BasicLayout):
         -------
 
         """
-        self.addWidget(self._createButton(self.backButtonText,
-                                          self.main_window.updateToMainMenuLayout,
-                                          self.backButtonToolTip), row_idx, 0)
-        self.addWidget(self._createButton(Utils.padStringCenter('Add specie'),
-                                          self._updateLayoutWithSpecieLine,
+        self.addWidget(self._create_button(self.backButtonText,
+                                           self.main_window.updateToMainMenuLayout,
+                                           self.backButtonToolTip), row_idx, 0)
+        self.addWidget(self._create_button(Utils.pad_string_center('Add specie'),
+                                           self._update_layout_with_specie_line,
                                           'Add input species'), row_idx, 1)
-        self.addWidget(self._createButton(Utils.padStringCenter('Calculate'),
-                                          self._loadSelectedCalculationMenu,
-                                          self.nextButtonToolTip), row_idx, 2)
+        self.addWidget(self._create_button(Utils.pad_string_center('Calculate'),
+                                           self._load_selected_calculation_menu,
+                                           self.nextButtonToolTip), row_idx, 2)
 
-    def _removeButtons(self) -> None:
-        """
-        Remove Next, Back and Species buttons
-        Returns
-        -------
-
-        """
-        n_widget = self.count()
-        self.itemAt(n_widget - 1).widget().setParent(None)
-        self.itemAt(n_widget - 2).widget().setParent(None)
-        self.itemAt(n_widget - 3).widget().setParent(None)
-
-    def _addSpeciesInputLine(self, row_idx) -> None:
+    def _add_species_input_line(self, row_idx) -> None:
         """
         Add input species line
         Parameters
@@ -110,25 +98,25 @@ class CalculationMainMenuLayout(BasicLayout):
         -------
 
         """
-        self.addWidget(QLabel(Utils.padString(f"Specie #{len(self._specie_names_idx) + 1}")), row_idx, 0)
-        self.addWidget(self._createLineEdit("H2", Qt.AlignRight, None), row_idx, 1)
+        self.addWidget(QLabel(Utils.pad_string(f"Specie #{len(self._specie_names_idx) + 1}")), row_idx, 0)
+        self.addWidget(self._create_line_edit("H2", Qt.AlignRight, None), row_idx, 1)
         self._specie_names_idx.append(self.count() - 1)
-        self.addWidget(self._createLineEdit("0.5", Qt.AlignRight, QDoubleValidator()), row_idx, 2)
+        self.addWidget(self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator()), row_idx, 2)
         self._composition_idx.append(self.count() - 1)
 
-    def _updateLayoutWithSpecieLine(self) -> None:
+    def _update_layout_with_specie_line(self) -> None:
         """
         Update the layout by adding specie input line
         Returns
         -------
 
         """
-        self._removeButtons()
-        self._addSpeciesInputLine(self.row_idx)
+        self._remove_last_widgets(3)
+        self._add_species_input_line(self.row_idx)
         self.row_idx = self.row_idx + 1
-        self._addButtons(self.row_idx)
+        self._add_buttons(self.row_idx)
 
-    def _extractInputComposition(self) -> dict:
+    def _extract_species_input_composition(self) -> dict:
         """
         Extract input composition
         Returns
@@ -140,14 +128,14 @@ class CalculationMainMenuLayout(BasicLayout):
         composition = [float(self.itemAt(i).widget().text()) for i in self._composition_idx]
 
         if np.fabs(sum(composition) - 1.0) > 1e-06:
-            Utils.errorMessage(self.main_window,
-                               self.title,
-                               QLabel("Sum of composition is > 1!!!"))
+            Utils.error_message(self.main_window,
+                                self.title,
+                                QLabel("Sum of composition is > 1!!!"))
             return None
 
         return dict(zip(names, composition))
 
-    def getUserInput(self) -> bool:
+    def get_user_input(self) -> bool:
         """
         Get temperature, composition and pressure from input
         Returns
@@ -160,7 +148,7 @@ class CalculationMainMenuLayout(BasicLayout):
         pressure = {"value": float(self.pressureLine.text()),
                     "ud": self.pressureUdDropDown.currentText()}
 
-        composition = self._extractInputComposition()
+        composition = self._extract_species_input_composition()
 
         if composition is None:
             return False
@@ -184,22 +172,22 @@ class CalculationMainMenuLayout(BasicLayout):
         -------
 
         """
-        self.selectCalculationDropDown = self._createDropdown(self._select_calculation_option_list,
-                                                              function=None)
+        self.selectCalculationDropDown = self._create_dropdown(self._select_calculation_option_list,
+                                                               function=None)
 
-        self.temperatureUdDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.temperatureUd],
+        self.temperatureUdDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.temperature_ud],
             function=None)
 
-        self.temperatureLine = self._createLineEdit("298.15", Qt.AlignRight, QDoubleValidator())
+        self.temperatureLine = self._create_line_edit("298.15", Qt.AlignRight, QDoubleValidator())
 
-        self.pressureUdDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.pressureUd],
+        self.pressureUdDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.pressure_ud],
             function=None)
 
-        self.pressureLine = self._createLineEdit("101325", Qt.AlignRight, QDoubleValidator())
+        self.pressureLine = self._create_line_edit("101325", Qt.AlignRight, QDoubleValidator())
 
-        self.compositionUdDropDown = self._createDropdown(self.main_window.defaultInput.compositionUd, function=None)
+        self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
 
     def create(self) -> None:
         """
@@ -211,25 +199,25 @@ class CalculationMainMenuLayout(BasicLayout):
         self.addWidget(self.selectCalculationDropDown, self.row_idx, 0, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Temperature:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Temperature:")), self.row_idx, 0)
         self.addWidget(self.temperatureLine, self.row_idx, 1)
         self.addWidget(self.temperatureUdDropDown, self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Pressure:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Pressure:")), self.row_idx, 0)
         self.addWidget(self.pressureLine, self.row_idx, 1)
         self.addWidget(self.pressureUdDropDown, self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Composition type:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Composition type:")), self.row_idx, 0)
         self.addWidget(self.compositionUdDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Chemical formula")), self.row_idx, 1)
-        self.addWidget(QLabel(Utils.padString("Composition")), self.row_idx, 2)
+        self.addWidget(QLabel(Utils.pad_string("Chemical formula")), self.row_idx, 1)
+        self.addWidget(QLabel(Utils.pad_string("Composition")), self.row_idx, 2)
 
         self.row_idx = self.row_idx + 1
-        self._addSpeciesInputLine(self.row_idx)
+        self._add_species_input_line(self.row_idx)
 
         self.row_idx = self.row_idx + 1
-        self._addButtons(self.row_idx)
+        self._add_buttons(self.row_idx)

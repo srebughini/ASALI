@@ -9,25 +9,25 @@ class ReactorsWindow(BasicMainWindow):
         Reactor selection window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(BasicReactorLayout(self))
+        self.set_central_widget_layout(BasicReactorLayout(self))
 
-    def updateToBasic(self):
+    def update_to_basic(self) -> None:
         """
         Update to BasicReactorLayout
         Returns
         -------
         """
-        self.setCentralWidgetLayout(BasicReactorLayout(self))
+        self.set_central_widget_layout(BasicReactorLayout(self))
 
-    def updateToBatchReactor(self):
+    def update_to_batch_reactor(self) -> None:
         """
         Update to the BatchReactorLayout
         Returns
         -------
         """
-        self.setCentralWidgetLayout(BatchLayout(self))
+        self.set_central_widget_layout(BatchLayout(self))
 
-    def updateToCstrReactor(self):
+    def update_to_cstr_reactor(self) -> None:
         """
         Update to the CstrReactorLayout
         Returns

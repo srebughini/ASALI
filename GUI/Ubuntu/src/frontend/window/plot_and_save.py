@@ -8,4 +8,4 @@ class PlotAndSaveWindow(BasicMainWindow):
         Main menu window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(PlotAndSaveLayout(self))
+        self.set_central_widget_layout(PlotAndSaveLayout(self))

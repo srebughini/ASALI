@@ -1,4 +1,5 @@
 import os
+from typing import Iterable
 
 from asali.utils.unit_converter import UnitConverter
 
@@ -61,7 +62,7 @@ class DefaultInputHandler:
                                            "Fixed specific entropy and pressure": "SP"}
 
     @staticmethod
-    def create_fractional_ud(numerator, denominator):
+    def create_fractional_ud(numerator, denominator) -> list:
         """
         Create fractional unit dimensions
         Parameters
@@ -84,7 +85,7 @@ class DefaultInputHandler:
         return f
 
     @staticmethod
-    def from_human_to_code_ud(ud):
+    def from_human_to_code_ud(ud) -> str:
         """
         Convert from human to code unit dimensions
         Parameters
@@ -103,7 +104,7 @@ class DefaultInputHandler:
         return cud.strip()
 
     @staticmethod
-    def from_code_to_human(ud):
+    def from_code_to_human(ud) -> str:
         """
         Convert from code to human unit dimensions
         Parameters
@@ -122,7 +123,7 @@ class DefaultInputHandler:
         return cud.strip()
 
     @property
-    def imagePath(self):
+    def image_path(self) -> str:
         """
         Access to the image path
         Returns
@@ -133,7 +134,7 @@ class DefaultInputHandler:
         return self._imagePath
 
     @property
-    def databasePath(self):
+    def database_path(self) -> str:
         """
         Access to the database path
         Returns
@@ -144,7 +145,7 @@ class DefaultInputHandler:
         return self._databasePath
 
     @property
-    def defaultChemistryPath(self):
+    def default_chemistry_path(self) -> str:
         """
         Access to the chemistry path
         Returns
@@ -155,7 +156,7 @@ class DefaultInputHandler:
         return self._defaultChemistryPath
 
     @property
-    def temperatureUd(self):
+    def temperature_ud(self) -> list:
         """
         Access to the temperature unit dimensions
         Returns
@@ -166,7 +167,7 @@ class DefaultInputHandler:
         return self._temperatureUd
 
     @property
-    def pressureUd(self):
+    def pressure_ud(self) -> list:
         """
         Access to the pressure unit dimensions
         Returns
@@ -177,7 +178,7 @@ class DefaultInputHandler:
         return self._pressureUd
 
     @property
-    def compositionUd(self):
+    def composition_ud(self) -> list:
         """
         Access to the composition unit dimensions
         Returns
@@ -188,7 +189,7 @@ class DefaultInputHandler:
         return self._compositionUd
 
     @property
-    def densityUd(self):
+    def density_ud(self) -> Iterable:
         """
         Access to the density unit dimensions
         Returns
@@ -199,7 +200,7 @@ class DefaultInputHandler:
         return self._densityUd
 
     @property
-    def molecularWeigthUd(self):
+    def molecular_weight_ud(self) -> Iterable:
         """
         Access to the molecular weight unit dimensions
         Returns
@@ -210,7 +211,7 @@ class DefaultInputHandler:
         return self._molecularWeightUd
 
     @property
-    def viscosityUd(self):
+    def viscosity_ud(self) -> list:
         """
         Access to the viscosity unit dimensions
         Returns
@@ -221,7 +222,7 @@ class DefaultInputHandler:
         return self._viscosityUd
 
     @property
-    def thermalConductivityUd(self):
+    def thermal_conductivity_ud(self) -> list:
         """
         Access to the thermal conductivity unit dimensions
         Returns
@@ -232,7 +233,7 @@ class DefaultInputHandler:
         return self._thermalConductivityUd
 
     @property
-    def diffusivityUd(self):
+    def diffusivity_ud(self) -> Iterable:
         """
         Access to the diffusivity unit dimensions
         Returns
@@ -243,7 +244,7 @@ class DefaultInputHandler:
         return self._diffusivityUd
 
     @property
-    def enthalpyUd(self):
+    def enthalpy_ud(self) -> Iterable:
         """
         Access to the enthalpy unit dimensions
         Returns
@@ -254,7 +255,7 @@ class DefaultInputHandler:
         return self._enthalpyUd
 
     @property
-    def entropyUd(self):
+    def entropy_ud(self) -> list:
         """
         Access to the entropy unit dimensions
         Returns
@@ -265,7 +266,7 @@ class DefaultInputHandler:
         return self._entropyUd
 
     @property
-    def specificHeatUd(self):
+    def specific_heat_ud(self)  -> list:
         """
         Access to the specific heat unit dimensions
         Returns
@@ -276,7 +277,7 @@ class DefaultInputHandler:
         return self._specificHeatUd
 
     @property
-    def velocityUd(self):
+    def velocity_ud(self) -> Iterable:
         """
         Access to the velocity unit dimensions
         Returns
@@ -287,7 +288,7 @@ class DefaultInputHandler:
         return self._velocityUd
 
     @property
-    def volumeUd(self):
+    def volume_ud(self) -> list:
         """
         Access to the volume unit dimensions
         Returns
@@ -298,7 +299,7 @@ class DefaultInputHandler:
         return self._volumeUd
 
     @property
-    def lengthUd(self):
+    def length_ud(self) -> list:
         """
         Access to the length unit dimensions
         Returns
@@ -309,7 +310,7 @@ class DefaultInputHandler:
         return self._lengthUd
 
     @property
-    def timeUd(self):
+    def time_ud(self) -> list:
         """
         Access to the time unit dimensions
         Returns
@@ -320,7 +321,7 @@ class DefaultInputHandler:
         return self._timeUd
 
     @property
-    def oneOverLengthUd(self):
+    def one_over_length_ud(self) -> list:
         """
         Access to the 1/length unit dimensions
         Returns
@@ -331,7 +332,7 @@ class DefaultInputHandler:
         return self._oneOverLengthUd
 
     @property
-    def humanChemicalEquilibriumOptions(self):
+    def human_chemical_equilibrium_options(self) -> list:
         """
         Access to the human chemical equilibrium options
         Returns
@@ -341,7 +342,7 @@ class DefaultInputHandler:
         """
         return list(self._chemicalEquilibriumParser.keys())
 
-    def from_human_eq_to_code_eq(self, heq):
+    def from_human_eq_to_code_eq(self, heq) -> str:
         """
         Convert from human chemical equilibrium type to code
         Parameters

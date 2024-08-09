@@ -8,4 +8,4 @@ class ChemkinToCanteraConverterWindow(BasicMainWindow):
         CHEMKIN -> CANTERA converter window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(ChemkinToCanteraConverterLayout(self))
+        self.set_central_widget_layout(ChemkinToCanteraConverterLayout(self))

@@ -8,4 +8,4 @@ class TransportAndThermodynamicPropertiesWindow(BasicMainWindow):
         Main menu window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(TransportAndThermodynamicPropertiesLayout(self))
+        self.set_central_widget_layout(TransportAndThermodynamicPropertiesLayout(self))

@@ -8,4 +8,4 @@ class ChemicalEquilibriumWindow(BasicMainWindow):
         Main menu window
         """
         super().__init__(parent)
-        self.setCentralWidgetLayout(ChemicalEquilibriumLayout(self))
+        self.set_central_widget_layout(ChemicalEquilibriumLayout(self))

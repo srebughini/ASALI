@@ -19,17 +19,17 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._empty_label = Utils.padString("")
+        self._empty_label = Utils.pad_string("")
         super().__init__(main_window)
 
-    def _updateProperties(self):
+    def _update_properties(self) -> None:
         """
         Update estimated properties
         Returns
         -------
         """
         geometryValue = 0.0
-        if Utils.isFloat(self.geometryEditLine.text()):
+        if Utils.is_float(self.geometryEditLine.text()):
             geometryValue = float(self.geometryEditLine.text())
 
         v = self.cl.mean_gas_velocity(self.speciesDropDown.currentText(), self.vDropDown.currentText())
@@ -42,25 +42,25 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
                                    geometryValue,
                                    self.geometryDropDown.currentText())
 
-        self.vLabel.setText(Utils.padString(Utils.fromNumberToString(v)))
-        self.lLabel.setText(Utils.padString(Utils.fromNumberToString(mfp)))
-        self.knLabel.setText(Utils.padString(Utils.fromNumberToString(kn)))
-        self.diffLabel.setText(Utils.padString(Utils.fromNumberToString(diff)))
+        self.vLabel.setText(Utils.pad_string(Utils.from_number_to_string(v)))
+        self.lLabel.setText(Utils.pad_string(Utils.from_number_to_string(mfp)))
+        self.knLabel.setText(Utils.pad_string(Utils.from_number_to_string(kn)))
+        self.diffLabel.setText(Utils.pad_string(Utils.from_number_to_string(diff)))
 
-    def runBackend(self):
+    def run_backend(self) -> None:
         """
         Run backend to update frontend
         Returns
         -------
         """
 
-        self.cl = self._setGasMixtureUserInput(VacuumProperties(self.main_window.userInput.file_path,
-                                                                self.main_window.userInput.gas_phase_name))
+        self.cl = self._set_gas_mixture_user_input(VacuumProperties(self.main_window.userInput.file_path,
+                                                                    self.main_window.userInput.gas_phase_name))
 
         self.speciesDropDown.addItems(self.cl.species_names())
-        self._updateProperties()
+        self._update_properties()
 
-    def initialize(self):
+    def initialize(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -76,39 +76,39 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         self.resultLabel.setAlignment(Qt.AlignCenter)
 
         # Geometry
-        self.geometryDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.lengthUd],
-            function=self._updateProperties)
-        self.geometryEditLine = self._createLineEdit("0.5",
-                                                     Qt.AlignRight,
-                                                     QDoubleValidator(),
-                                                     f=self._updateProperties)
+        self.geometryDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud],
+            function=self._update_properties)
+        self.geometryEditLine = self._create_line_edit("0.5",
+                                                       Qt.AlignRight,
+                                                       QDoubleValidator(),
+                                                       f=self._update_properties)
 
         # Species
-        self.speciesDropDown = self._createDropdown(list(), function=self._updateProperties)
+        self.speciesDropDown = self._create_dropdown(list(), function=self._update_properties)
 
         # Mean gas velocity
-        self.vDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.velocityUd],
-            function=self._updateProperties)
+        self.vDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.velocity_ud],
+            function=self._update_properties)
         self.vLabel = QLabel(self._empty_label)
 
         # Mean free path
-        self.lDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.lengthUd],
-            function=self._updateProperties)
+        self.lDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud],
+            function=self._update_properties)
         self.lLabel = QLabel(self._empty_label)
 
         # Knudsen number
         self.knLabel = QLabel(self._empty_label)
 
         # Diffusivity
-        self.diffDropDown = self._createDropdown(
-            [Utils.padString(ud) for ud in self.main_window.defaultInput.diffusivityUd],
-            function=self._updateProperties)
+        self.diffDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.diffusivity_ud],
+            function=self._update_properties)
         self.diffLabel = QLabel(self._empty_label)
 
-    def create(self):
+    def create(self) -> None:
         """
         Update the interface
         Returns
@@ -119,13 +119,13 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
 
         # Geometry
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Geometry characteristic length:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Geometry characteristic length:")), self.row_idx, 0)
         self.addWidget(self.geometryEditLine, self.row_idx, 1)
         self.addWidget(self.geometryDropDown, self.row_idx, 2)
 
         # Species
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Select specie:")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Select specie:")), self.row_idx, 0)
         self.addWidget(self.speciesDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1
@@ -133,23 +133,23 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
 
         # Mean gas velocity
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Mean gas velocity")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Mean gas velocity")), self.row_idx, 0)
         self.addWidget(self.vLabel, self.row_idx, 1)
         self.addWidget(self.vDropDown, self.row_idx, 2)
 
         # Mean free path
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Mean free path")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Mean free path")), self.row_idx, 0)
         self.addWidget(self.lLabel, self.row_idx, 1)
         self.addWidget(self.lDropDown, self.row_idx, 2)
 
         # Mixture diffusivity
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Diffusivity")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Diffusivity")), self.row_idx, 0)
         self.addWidget(self.diffLabel, self.row_idx, 1)
         self.addWidget(self.diffDropDown, self.row_idx, 2)
 
         # Mixture diffusivity
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.padString("Knudsen number")), self.row_idx, 0)
+        self.addWidget(QLabel(Utils.pad_string("Knudsen number")), self.row_idx, 0)
         self.addWidget(self.knLabel, self.row_idx, 1)

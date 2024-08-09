@@ -11,7 +11,7 @@ class ChemkinToCanteraConverter:
                 thermodynamic_file_path,
                 transport_file_path,
                 surface_file_path,
-                output_file_path):
+                output_file_path) -> None:
         """
         Convert from CHEMKIN input files to Cantera .yaml file
         Parameters

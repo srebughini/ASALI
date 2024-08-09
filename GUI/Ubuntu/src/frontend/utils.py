@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, \
-    QMainWindow
+    QMainWindow, QHBoxLayout
 
 from src.frontend.style import WidgetStyle, ColorPalette
 
@@ -13,7 +13,7 @@ class Utils:
     """
 
     @staticmethod
-    def isFloat(element) -> bool:
+    def is_float(element) -> bool:
         """
         Function to check if str can be parsed to float
         Parameters
@@ -35,7 +35,7 @@ class Utils:
             return False
 
     @staticmethod
-    def stringLength() -> int:
+    def string_length() -> int:
         """
         Return maximum string length
         Returns
@@ -46,7 +46,7 @@ class Utils:
         return 20
 
     @staticmethod
-    def cleanLayout(layout) -> QGridLayout:
+    def clean_layout(layout) -> QVBoxLayout | QGridLayout | QHBoxLayout:
         """
         Clean the whole layout without removing the layout
         Parameters
@@ -65,12 +65,12 @@ class Utils:
                 if widget is not None:
                     widget.deleteLater()
                 else:
-                    Utils.cleanLayout(item.layout())
+                    Utils.clean_layout(item.layout())
 
         return layout
 
     @staticmethod
-    def cleanWidget(widget) -> QWidget:
+    def clean_widget(widget) -> QWidget:
         """
         Clean a widget by remove all children
         Parameters
@@ -91,7 +91,7 @@ class Utils:
         return widget
 
     @staticmethod
-    def openNewWindowFromClass(main_window, new_window_class) -> None:
+    def open_new_window_from_class(main_window, new_window_class) -> None:
         """
         Open a new window
         Parameters
@@ -104,10 +104,10 @@ class Utils:
         Returns
         -------
         """
-        Utils.openNewWindowFromObject(Utils.createNewWindowObject(main_window, new_window_class))
+        Utils.open_new_window_from_object(Utils.create_new_window_object(main_window, new_window_class))
 
     @staticmethod
-    def createNewWindowObject(main_window, new_window_class) -> QMainWindow:
+    def create_new_window_object(main_window, new_window_class) -> QMainWindow:
         """
         Open a new window
         Parameters
@@ -127,7 +127,7 @@ class Utils:
         return new_window
 
     @staticmethod
-    def openNewWindowFromObject(new_window) -> None:
+    def open_new_window_from_object(new_window) -> None:
         """
         Open a new window
         Parameters
@@ -141,7 +141,7 @@ class Utils:
         new_window.show()
 
     @staticmethod
-    def openFile(main_window, title="Load file", file_type="All Files (*)") -> str:
+    def open_file(main_window, title="Load file", file_type="All Files (*)") -> str | None:
         """
         Dialog window to open file
         Parameters
@@ -169,7 +169,7 @@ class Utils:
         return fileTuple[0]
 
     @staticmethod
-    def saveFile(main_window, title="Save file", file_type="All Files (*)", default_extension=None) -> str:
+    def save_file(main_window, title="Save file", file_type="All Files (*)", default_extension=None) -> str | None:
         """
         Dialog window to save file
         Parameters
@@ -207,7 +207,7 @@ class Utils:
         return file_path
 
     @staticmethod
-    def dialogMessage(main_window, title, msg) -> None:
+    def dialog_message(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -227,7 +227,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
+        button = QPushButton(Utils.pad_string_center("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create a layout for the dialog
@@ -242,7 +242,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def questionMessage(main_window, title, msg) -> bool:
+    def question_message(main_window, title, msg) -> bool:
         """
         Question message box
         Parameters
@@ -276,7 +276,7 @@ class Utils:
             return False
 
     @staticmethod
-    def disclaimerMessage(main_window) -> None:
+    def disclaimer_message(main_window) -> None:
         """
         Show disclaimer with QDialog
         Parameters
@@ -301,10 +301,10 @@ class Utils:
         of the GNU General Public License along with ASALI. If not, see 
         http://www.gnu.org/licenses/.
         """)
-        Utils.dialogMessage(main_window, "Disclaimer", msg)
+        Utils.dialog_message(main_window, "Disclaimer", msg)
 
     @staticmethod
-    def contactMessage(main_window) -> None:
+    def contact_message(main_window) -> None:
         """
         Show contact with QDialog
         Parameters
@@ -335,10 +335,10 @@ class Utils:
         </p>
         """)
         msg.setOpenExternalLinks(True)
-        Utils.dialogMessage(main_window, "Contacts", msg)
+        Utils.dialog_message(main_window, "Contacts", msg)
 
     @staticmethod
-    def somethingWentWrongMessage(main_window, title) -> None:
+    def something_went_wrong_message(main_window, title) -> None:
         """
         Show something went wrong message with QDialog
         Parameters
@@ -348,10 +348,10 @@ class Utils:
         Returns
         -------
         """
-        Utils.dialogMessage(main_window, title, "Something went wrong!")
+        Utils.dialog_message(main_window, title, QLabel("Something went wrong!"))
 
     @staticmethod
-    def doneMessage(main_window, title, msg) -> None:
+    def done_message(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -371,7 +371,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
+        button = QPushButton(Utils.pad_string_center("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon
@@ -390,7 +390,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def errorMessage(main_window, title, msg) -> None:
+    def error_message(main_window, title, msg) -> None:
         """
         Show message with QDialog
         Parameters
@@ -410,7 +410,7 @@ class Utils:
         dialog.setWindowTitle(title)
 
         # Add a button
-        button = QPushButton(Utils.padStringCenter("Close"), clicked=dialog.close)
+        button = QPushButton(Utils.pad_string_center("Close"), clicked=dialog.close)
         button.setStyleSheet(WidgetStyle.BUTTON.value)
 
         # Create the error icon
@@ -429,7 +429,7 @@ class Utils:
         dialog.exec_()
 
     @staticmethod
-    def padString(original_str) -> str:
+    def pad_string(original_str) -> str:
         """
         Pad a string to fixed length
         Parameters
@@ -442,13 +442,13 @@ class Utils:
         new_str: str
             New string of fixed length
         """
-        new_str = f"{original_str:<{Utils.stringLength()}}"
+        new_str = f"{original_str:<{Utils.string_length()}}"
         if len(new_str) < len(original_str):
             print("Error in length str", original_str)
         return new_str
 
     @staticmethod
-    def padStringCenter(original_str) -> str:
+    def pad_string_center(original_str) -> str:
         """
         Pad a string to fixed length with text at the center
         Parameters
@@ -461,13 +461,13 @@ class Utils:
         new_str: str
             New string of fixed length
         """
-        new_str = f"{original_str:^{Utils.stringLength()}}"
+        new_str = f"{original_str:^{Utils.string_length()}}"
         if len(new_str) < len(original_str):
             print("Error in length str", original_str)
         return new_str
 
     @staticmethod
-    def fromNumberToString(number) -> str:
+    def from_number_to_string(number) -> str:
         """
         Convert number to string
         Parameters
@@ -483,7 +483,7 @@ class Utils:
         return f"{number:.2E}"
 
     @staticmethod
-    def fromDictToString(dictionary) -> str:
+    def from_dict_to_string(dictionary) -> str:
         """
         Convert dict to table like string
         Parameters
@@ -497,10 +497,10 @@ class Utils:
             Dictionary as string
 
         """
-        return "\n".join([Utils.padString(f"{k}:\t{Utils.fromNumberToString(v)}") for k, v in dictionary.items()])
+        return "\n".join([Utils.pad_string(f"{k}:\t{Utils.from_number_to_string(v)}") for k, v in dictionary.items()])
 
     @staticmethod
-    def fromListToString(vector, horizontal=False) -> str:
+    def from_list_to_string(vector, horizontal=False) -> str:
         """
         Convert list to table like string
         Parameters
@@ -517,6 +517,6 @@ class Utils:
 
         """
         if horizontal:
-            return "\t".join([Utils.padString(f"{Utils.fromNumberToString(v)}") for v in vector])
+            return "\t".join([Utils.pad_string(f"{Utils.from_number_to_string(v)}") for v in vector])
 
-        return "\n".join([Utils.padString(f"{Utils.fromNumberToString(v)}") for v in vector])
+        return "\n".join([Utils.pad_string(f"{Utils.from_number_to_string(v)}") for v in vector])
