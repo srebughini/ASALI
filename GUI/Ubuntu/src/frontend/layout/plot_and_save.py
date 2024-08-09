@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (
 )
 
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.style import WidgetStyle
+from src.frontend.style import WidgetStyle, FileType
 from src.frontend.utils import Utils
 
 
@@ -49,7 +49,7 @@ class PlotAndSaveLayout(BasicLayout):
             # If an error occurs, show an error message
             Utils.errorMessage(self.main_window,
                                self.title,
-                               QLabel(f"Failed to save file:\n{str(e)}"))
+                               QLabel(f"Failed to save file: {str(e)}"))
             return False
 
         return True
@@ -61,15 +61,14 @@ class PlotAndSaveLayout(BasicLayout):
         -------
 
         """
-        file_path = Utils.saveFile(self.main_window,
-                                   file_type=self.saveFormatDropDown.currentText().strip(),
-                                   default_extension=self.saveFormatDropDown.currentText().strip())
+        if self.saveFormatDropDown.currentIndex() == 0:
+            file_path = Utils.saveFile(self.main_window,
+                                       file_type=FileType.EXCEL.value,
+                                       default_extension=self.saveFormatDropDown.currentText().strip())
 
-        if file_path is not None:
-            results_dict = self.main_window.userInput.reactor_model_backend.get_results()
-
-            if self.saveFormatDropDown.currentIndex() == 0:
-                self._saveToExcel(file_path, results_dict)
+            if file_path is not None:
+                self._saveToExcel(file_path,
+                                  self.main_window.userInput.reactor_model_backend.get_results())
 
     def _plotData(self):
         """

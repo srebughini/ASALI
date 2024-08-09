@@ -13,7 +13,7 @@ class ExceptionHandler:
     """
 
     @staticmethod
-    def showDialog(main_window, exc_type, exc_value, exc_traceback):
+    def showDialog(main_window, exc_type, exc_value, exc_traceback) -> None:
         """
         Displays an exception dialog with the error details.
 

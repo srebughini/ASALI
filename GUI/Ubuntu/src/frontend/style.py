@@ -5,6 +5,7 @@ class FileType(Enum):
     CANTERA = "CANTERA file type (*.yaml)"
     ASALI = "ASALI file type (*.json)"
     CHEMKIN = "CHEMIKIN file type (*.kin;*.sur; *.tdc;*.tra;*.ckin)"
+    EXCEL = "Excel file type (*.xlsx;*.xls)"
 
 
 class ColorPalette(Enum):
@@ -20,9 +21,11 @@ class SheetNames(Enum):
     Z = "coverage"
     T = "temperature"
 
+
 class ColumnNames(Enum):
     time = "Time [s]"
     temperature = "Temperature [K]"
+
 
 class WidgetStyle(Enum):
     WINDOW = f"""
