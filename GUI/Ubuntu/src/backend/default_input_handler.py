@@ -266,7 +266,7 @@ class DefaultInputHandler:
         return self._entropyUd
 
     @property
-    def specific_heat_ud(self)  -> list:
+    def specific_heat_ud(self) -> list:
         """
         Access to the specific heat unit dimensions
         Returns
