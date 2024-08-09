@@ -193,6 +193,24 @@ class BasicLayout(QGridLayout):
         for i in range(0, n):
             self.itemAt(n_widget - (i + 1)).widget().setParent(None)
 
+    def _check_edit_line_float_input(self, edit_line, variable_name) -> None:
+        """
+        Check single edit line input
+        Parameters
+        ----------
+        edit_line: QLineEdit
+            Edit line object
+        variable_name: str
+            Variable name
+
+        Returns
+        -------
+        """
+        if not Utils.is_float(edit_line.text()):
+            Utils.error_message(self.main_window,
+                                self.title,
+                                QLabel(f"Wrong {variable_name} value."))
+
     @abstractmethod
     def initialize(self) -> None:
         """

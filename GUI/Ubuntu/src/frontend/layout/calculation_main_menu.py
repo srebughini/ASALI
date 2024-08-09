@@ -47,22 +47,22 @@ class CalculationMainMenuLayout(BasicLayout):
         elif self.selectCalculationDropDown.currentIndex() == 1:
             if self.get_user_input():
                 window = Utils.create_new_window_object(self.main_window, TransportAndThermodynamicPropertiesWindow)
-                window.runBackend()
+                window.run_backend()
                 Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 2:
             if self.get_user_input():
                 window = Utils.create_new_window_object(self.main_window, VacuumPropertiesWindow)
-                window.runBackend()
+                window.run_backend()
                 Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 3:
             if self.get_user_input():
                 window = Utils.create_new_window_object(self.main_window, ChemicalEquilibriumWindow)
-                window.runBackend()
+                window.run_backend()
                 Utils.open_new_window_from_object(window)
         elif self.selectCalculationDropDown.currentIndex() == 4:
             if self.get_user_input():
                 window = Utils.create_new_window_object(self.main_window, ReactorsWindow)
-                window.runBackend()
+                window.run_backend()
                 Utils.open_new_window_from_object(window)
 
     def _add_buttons(self, row_idx) -> None:
@@ -77,7 +77,7 @@ class CalculationMainMenuLayout(BasicLayout):
 
         """
         self.addWidget(self._create_button(self.backButtonText,
-                                           self.main_window.updateToMainMenuLayout,
+                                           self.main_window.update_to_main_menu_layout,
                                            self.backButtonToolTip), row_idx, 0)
         self.addWidget(self._create_button(Utils.pad_string_center('Add specie'),
                                            self._update_layout_with_specie_line,
@@ -116,7 +116,7 @@ class CalculationMainMenuLayout(BasicLayout):
         self.row_idx = self.row_idx + 1
         self._add_buttons(self.row_idx)
 
-    def _extract_species_input_composition(self) -> dict:
+    def _extract_species_input_composition(self) -> dict | None:
         """
         Extract input composition
         Returns

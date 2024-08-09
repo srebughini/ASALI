@@ -52,11 +52,11 @@ class BasicReactorLayout(BasicLayout):
 
         """
         if self.reactorDropDown.currentIndex() == 0:
-            self.main_window.updateToBasic()
+            self.main_window.update_to_basic()
         elif self.reactorDropDown.currentIndex() == 1:
-            self.main_window.updateToBatchReactor()
+            self.main_window.update_to_batch_reactor()
         elif self.reactorDropDown.currentIndex() == 2:
-            self.main_window.updateToCstrReactor()
+            self.main_window.update_to_cstr_reactor()
         elif self.reactorDropDown.currentIndex() == 3:
             pass
             # self.main_window.updateToSteadyPh1dReactor()
@@ -133,7 +133,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.addWidget(self._create_button(self.backButtonText,
-                                           self.main_window.updateToBasic,
+                                           self.main_window.update_to_basic,
                                            self.backButtonToolTip), row_idx, 0)
         self.addWidget(self._create_button(Utils.pad_string_center('Add coverage'),
                                            self._update_layout_with_coverage_line,
@@ -203,7 +203,7 @@ class BasicReactorLayout(BasicLayout):
                                     self.title,
                                     QLabel("Wrong ASALI input file."))
 
-    def _extract_coverage_input_composition(self) -> dict:
+    def _extract_coverage_input_composition(self) -> dict | None:
         """
         Extract input composition
         Returns

@@ -42,24 +42,6 @@ class BasicCalculationLayout(BasicLayout):
 
         return cl
 
-    def _check_edit_line_float_input(self, editLine, variableName) -> None:
-        """
-        Check single edit line input
-        Parameters
-        ----------
-        editLine: QLineEdit
-            Edit line object
-        variableName: str
-            Variable name
-
-        Returns
-        -------
-        """
-        if not Utils.is_float(editLine.text()):
-            Utils.error_message(self.main_window,
-                                self.title,
-                                QLabel(f"Wrong {variableName} value."))
-
     @abstractmethod
     def run_backend(self):
         """

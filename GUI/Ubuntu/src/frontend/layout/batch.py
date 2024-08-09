@@ -80,7 +80,7 @@ class BatchLayout(BasicReactorLayout):
         self.main_window.userInput.reactor_model_backend.run(input_dict)
 
         window = Utils.create_new_window_object(self.main_window, PlotAndSaveWindow)
-        window.runBackend()
+        window.run_backend()
         Utils.open_new_window_from_object(window)
 
     def initialize(self) -> None:

@@ -71,7 +71,7 @@ class MainMenuLayout(BasicLayout):
 
         """
         self.nextButton = self._create_button(self.nextButtonText,
-                                              self.main_window.updateToCalculationMenuLayout,
+                                              self.main_window.update_to_calculation_menu_layout,
                                               self.nextButtonToolTip)
         self.selectChemistryDropDown = self._create_dropdown(self._select_chemistry_option_list,
                                                              function=self._dropdown_select_chemistry_menu_action)
