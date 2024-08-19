@@ -16,6 +16,16 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.eqDropDown = None
+        self.temperatureUdDropDown = None
+        self.pressureUdDropDown = None
+        self.temperatureLabel = None
+        self.pressureLabel = None
+        self.xLabel = None
+        self.yLabel =None
+        self.nLabel = None
+        self.cl = None
+
         self._empty_label = Utils.pad_string("")
         super().__init__(main_window)
 

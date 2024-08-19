@@ -19,6 +19,19 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.inputLabel = None
+        self.resultLabel = None
+        self.geometryDropDown = None
+        self.geometryEditLine = None
+        self.speciesDropDown = None
+        self.vDropDown = None
+        self.vLabel = None
+        self.lDropDown = None
+        self.lLabel = None
+        self.knLabel = None
+        self.diffDropDown = None
+        self.diffLabel = None
+
         self._empty_label = Utils.pad_string("")
         super().__init__(main_window)
 
@@ -82,7 +95,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         self.geometryEditLine = self._create_line_edit("0.5",
                                                        Qt.AlignRight,
                                                        QDoubleValidator(),
-                                                       f=self._update_properties)
+                                                       function=self._update_properties)
 
         # Species
         self.speciesDropDown = self._create_dropdown(list(), function=self._update_properties)

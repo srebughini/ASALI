@@ -6,9 +6,11 @@ from PyQt5.QtWidgets import (
 
 from src.backend.batch import BatchModel
 from src.frontend.layout.basic_reactor import BasicReactorLayout
+from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
-from src.frontend.window.plot_and_save import PlotAndSaveWindow
+from src.frontend.window.basic import BasicMainWindow
+from src.frontend.window._plot_and_save import PlotAndSaveWindow
 
 
 class BatchLayout(BasicReactorLayout):
@@ -20,6 +22,17 @@ class BatchLayout(BasicReactorLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.headlineLabel = None
+        self.vDropDown = None
+        self.vEditLine = None
+        self.alfaDropDown = None
+        self.alfaEditLine = None
+        self.energyDropDown = None
+        self.tDropDown = None
+        self.tEditLine = None
+        self.tsDropDown = None
+        self.tsEditLine = None
+
         super().__init__(main_window)
 
     def _check_edit_line_inputs(self) -> None:
@@ -79,9 +92,7 @@ class BatchLayout(BasicReactorLayout):
 
         self.main_window.userInput.reactor_model_backend.run(input_dict)
 
-        window = Utils.create_new_window_object(self.main_window, PlotAndSaveWindow)
-        window.run_backend()
-        Utils.open_new_window_from_object(window)
+        Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
 
     def initialize(self) -> None:
         """

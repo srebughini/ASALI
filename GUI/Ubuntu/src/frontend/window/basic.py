@@ -140,17 +140,20 @@ class BasicMainWindow(QMainWindow):
         -------
 
         """
-        # Get the screen's available geometry (excluding taskbars, etc.)
         screen_geometry = QDesktopWidget().availableGeometry(self)
-
-        # Get the geometry of the window (including its frame)
         window_geometry = self.frameGeometry()
-
-        # Calculate the center point of the screen
         screen_center = screen_geometry.center()
-
-        # Move the window's center to the center of the screen
         window_geometry.moveCenter(screen_center)
-
-        # Move the window to the calculated top-left point
         self.move(window_geometry.topLeft())
+
+    def update_layout(self, layout_class) -> None:
+        """
+        Update layout of the window using a layout class
+        Parameters
+        ----------
+        layout_class: Derived class of BasicLayout
+
+        Returns
+        -------
+        """
+        self.set_central_widget_layout(layout_class(self))

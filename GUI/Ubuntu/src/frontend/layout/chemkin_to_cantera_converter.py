@@ -20,8 +20,18 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self._clean_label_text = Utils.pad_string_center("Not selected")
+        self.thermoLabel = None
+        self.transportLabel = None
+        self.kineticLabel = None
+        self.surfaceLabel = None
+        self.convertButton = None
+        self.cleanButton = None
+        self.loadThermoButton = None
+        self.loadTransportButton = None
+        self.loadKineticButton = None
+        self.loadSurfaceButton = None
 
+        self._clean_label_text = Utils.pad_string_center("Not selected")
         super().__init__(main_window)
 
     def _create_empty_label(self) -> QLabel:
@@ -94,7 +104,7 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         -------
         """
         output_file_path = Utils.save_file(self.main_window,
-                                          "Save file",
+                                           "Save file",
                                            file_type=FileType.CANTERA.value)
 
         kinetic_file_path = self._parse_path(self.kineticLabel)
@@ -120,6 +130,15 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
                                         self.title,
                                         QLabel("Something is wrong in the generated file!"))
 
+    def run_backend(self) -> None:
+        """
+        Run backend to update frontend
+        Returns
+        -------
+
+        """
+        pass
+
     def initialize(self) -> None:
         """
         Initialize the widgets
@@ -134,29 +153,29 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
 
         self.convertButton = self._create_button(Utils.pad_string_center('Convert'),
                                                  self._convert,
-                                                'Run CHEMKIN -> CANTERA converter')
+                                                 'Run CHEMKIN -> CANTERA converter')
         self.cleanButton = self._create_button(Utils.pad_string_center('Clean'),
                                                self._clean,
-                                              'Clean input file path')
+                                               'Clean input file path')
         self.loadThermoButton = self._create_button(Utils.pad_string_center('Select thermo file'),
                                                     partial(self._load_file,
                                                             self.thermoLabel),
-                                                   'Load thermo properties file')
+                                                    'Load thermo properties file')
 
         self.loadTransportButton = self._create_button(Utils.pad_string_center('Select transport file'),
                                                        partial(self._load_file,
                                                                self.transportLabel),
-                                                      'Load transport properties file')
+                                                       'Load transport properties file')
 
         self.loadKineticButton = self._create_button(Utils.pad_string_center('Select gas kinetic file'),
                                                      partial(self._load_file,
                                                              self.kineticLabel),
-                                                    'Load gas kinetic file')
+                                                     'Load gas kinetic file')
 
         self.loadSurfaceButton = self._create_button(Utils.pad_string('Select surface kinetic file (optional)'),
                                                      partial(self._load_file,
                                                              self.surfaceLabel),
-                                                    'Load surface kinetic file')
+                                                     'Load surface kinetic file')
 
     def create(self) -> None:
         """

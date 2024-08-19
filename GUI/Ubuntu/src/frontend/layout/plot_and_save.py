@@ -19,6 +19,10 @@ class PlotAndSaveLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.saveFormatDropDown = None
+        self.compositionUdDropDown = None
+        self.headlineLabel = None
+
         self._empty_label = Utils.pad_string("")
 
         self._save_format_list = [Utils.pad_string(".xlsx")]  # 0

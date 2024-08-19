@@ -3,8 +3,9 @@ from PyQt5.QtWidgets import (
 )
 
 from src.frontend.layout.basic import BasicLayout
+from src.frontend.layout.chemkin_to_cantera_converter import ChemkinToCanteraConverterLayout
 from src.frontend.style import FileType
-from src.frontend.window.chemkin_to_cantera_converter import ChemkinToCanteraConverterWindow
+from src.frontend.window.basic import BasicMainWindow
 from src.frontend.utils import Utils
 
 
@@ -17,6 +18,10 @@ class MainMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.nextButton = None
+        self.selectChemistryDropDown = None
+        self.makeChemistryDropDown = None
+
         self._select_chemistry_option_list = [
             Utils.pad_string("...Select chemistry file..."),
             Utils.pad_string("Default (no kinetic model)"),
@@ -53,7 +58,7 @@ class MainMenuLayout(BasicLayout):
         -------
         """
         if self.makeChemistryDropDown.currentIndex() == 1:
-            Utils.open_new_window_from_class(self.main_window, ChemkinToCanteraConverterWindow)
+            Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, ChemkinToCanteraConverterLayout)
         elif self.makeChemistryDropDown.currentIndex() == 2:
             self.main_window.userInput.file_path = self.main_window.defaultInput.default_chemistry_path
             self.main_window.userInput.udk_file_path = Utils.open_file(self.main_window,
@@ -62,6 +67,15 @@ class MainMenuLayout(BasicLayout):
                 Utils.done_message(self.main_window,
                                    self.title,
                                    QLabel("ASALI user defined kinetic file is correct!"))
+
+    def run_backend(self) -> None:
+        """
+        Run backend to update frontend
+        Returns
+        -------
+
+        """
+        pass
 
     def initialize(self) -> None:
         """

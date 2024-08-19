@@ -4,11 +4,13 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 from src.frontend.layout.basic import BasicLayout
+from src.frontend.layout.basic_reactor import BasicReactorLayout
+from src.frontend.layout.chemical_equilibrium import ChemicalEquilibriumLayout
+from src.frontend.layout.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesLayout
+from src.frontend.layout.vacuum_properties import VacuumPropertiesLayout
 from src.frontend.utils import Utils
-from src.frontend.window.chemical_equilibrium import ChemicalEquilibriumWindow
-from src.frontend.window.reactors import ReactorsWindow
-from src.frontend.window.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesWindow
-from src.frontend.window.vacuum_properties import VacuumPropertiesWindow
+from src.frontend.window.basic import BasicMainWindow
+from src.frontend.window.reactors_menu import ReactorsMenuWindow
 
 import numpy as np
 
@@ -22,6 +24,13 @@ class CalculationMainMenuLayout(BasicLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.selectCalculationDropDown = None
+        self.temperatureUdDropDown = None
+        self.temperatureLine = None
+        self.pressureUdDropDown = None
+        self.pressureLine = None
+        self.compositionUdDropDown = None
+
         self._select_calculation_option_list = [Utils.pad_string("...Calculation to be performed..."),
                                                 Utils.pad_string("Thermodynamic and transport properties"),
                                                 Utils.pad_string("Vacuum properties"),
@@ -46,24 +55,23 @@ class CalculationMainMenuLayout(BasicLayout):
                                 QLabel("Please, select the calculation method!"))
         elif self.selectCalculationDropDown.currentIndex() == 1:
             if self.get_user_input():
-                window = Utils.create_new_window_object(self.main_window, TransportAndThermodynamicPropertiesWindow)
-                window.run_backend()
-                Utils.open_new_window_from_object(window)
+                Utils.open_new_window_from_layout(self.main_window,
+                                                  BasicMainWindow,
+                                                  TransportAndThermodynamicPropertiesLayout)
         elif self.selectCalculationDropDown.currentIndex() == 2:
             if self.get_user_input():
-                window = Utils.create_new_window_object(self.main_window, VacuumPropertiesWindow)
-                window.run_backend()
-                Utils.open_new_window_from_object(window)
+                Utils.open_new_window_from_layout(self.main_window,
+                                                  BasicMainWindow,
+                                                  VacuumPropertiesLayout)
         elif self.selectCalculationDropDown.currentIndex() == 3:
             if self.get_user_input():
-                window = Utils.create_new_window_object(self.main_window, ChemicalEquilibriumWindow)
-                window.run_backend()
-                Utils.open_new_window_from_object(window)
+                Utils.open_new_window_from_layout(self.main_window,
+                                                  BasicMainWindow,
+                                                  ChemicalEquilibriumLayout)
         elif self.selectCalculationDropDown.currentIndex() == 4:
             if self.get_user_input():
-                window = Utils.create_new_window_object(self.main_window, ReactorsWindow)
-                window.run_backend()
-                Utils.open_new_window_from_object(window)
+                Utils.open_new_window_from_window(self.main_window,
+                                                  ReactorsMenuWindow)
 
     def _add_buttons(self, row_idx) -> None:
         """
@@ -81,7 +89,7 @@ class CalculationMainMenuLayout(BasicLayout):
                                            self.backButtonToolTip), row_idx, 0)
         self.addWidget(self._create_button(Utils.pad_string_center('Add specie'),
                                            self._update_layout_with_specie_line,
-                                          'Add input species'), row_idx, 1)
+                                           'Add input species'), row_idx, 1)
         self.addWidget(self._create_button(Utils.pad_string_center('Calculate'),
                                            self._load_selected_calculation_menu,
                                            self.nextButtonToolTip), row_idx, 2)
@@ -164,6 +172,15 @@ class CalculationMainMenuLayout(BasicLayout):
             self.main_window.userInput.mole_fraction = composition
 
         return True
+
+    def run_backend(self) -> None:
+        """
+        Run backend to update frontend
+        Returns
+        -------
+
+        """
+        pass
 
     def initialize(self) -> None:
         """

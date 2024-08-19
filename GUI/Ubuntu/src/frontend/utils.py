@@ -91,53 +91,42 @@ class Utils:
         return widget
 
     @staticmethod
-    def open_new_window_from_class(main_window, new_window_class) -> None:
+    def open_new_window_from_layout(main_window, new_window_class, new_layout_class) -> None:
         """
         Open a new window
         Parameters
         ----------
         main_window: QMainWindow
             Main window that is hosting the new window
-        new_window_class: Callable class
+        new_window_class: BasicMainWindow derived class
             New window class to be opened
-
+        new_layout_class: BasicLayout derived class
+            New layout set to the window
         Returns
         -------
         """
-        Utils.open_new_window_from_object(Utils.create_new_window_object(main_window, new_window_class))
+        new_window = new_window_class(main_window)
+        new_window.update_layout(new_layout_class)
+        new_window.userInput = main_window.userInput
+        new_window.run_backend()
+        new_window.show()
 
     @staticmethod
-    def create_new_window_object(main_window, new_window_class) -> QMainWindow:
+    def open_new_window_from_window(main_window, new_window_class) -> None:
         """
         Open a new window
         Parameters
         ----------
         main_window: QMainWindow
             Main window that is hosting the new window
-        new_window_class: Callable class
+        new_window_class: BasicMainWindow derived class
             New window class to be opened
-
         Returns
         -------
-        new_window: QMainWindow
-            New window object
         """
         new_window = new_window_class(main_window)
         new_window.userInput = main_window.userInput
-        return new_window
-
-    @staticmethod
-    def open_new_window_from_object(new_window) -> None:
-        """
-        Open a new window
-        Parameters
-        ----------
-        new_window: QMainWindow
-            New window to be opened
-
-        Returns
-        -------
-        """
+        new_window.run_backend()
         new_window.show()
 
     @staticmethod

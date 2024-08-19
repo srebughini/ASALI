@@ -3,7 +3,7 @@ from src.frontend.layout.batch import BatchLayout
 from src.frontend.window.basic import BasicMainWindow
 
 
-class ReactorsWindow(BasicMainWindow):
+class ReactorsMenuWindow(BasicMainWindow):
     def __init__(self, parent=None):
         """
         Reactor selection window

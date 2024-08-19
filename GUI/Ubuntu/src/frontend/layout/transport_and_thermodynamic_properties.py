@@ -18,6 +18,25 @@ class TransportAndThermodynamicPropertiesLayout(BasicCalculationLayout):
         main_window: QMainWindow
             Window where the layout should be applied
         """
+        self.thermoLabel = None
+        self.transportLabel = None
+        self.rhoDropDown = None
+        self.rhoLabel = None
+        self.mwDropDown = None
+        self.mwLabel = None
+        self.muDropDown = None
+        self.muLabel = None
+        self.condDropDown = None
+        self.condLabel = None
+        self.diffMixDropDown = None
+        self.diffMixLabel = None
+        self.enthalpyDropDown = None
+        self.enthalpyLabel = None
+        self.entropyDropDown = None
+        self.entropyLabel = None
+        self.specificHeatDropDown = None
+        self.specificHeatLabel = None
+
         self._empty_label = Utils.pad_string("")
         super().__init__(main_window)
 
