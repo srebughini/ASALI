@@ -40,6 +40,10 @@ class BasicReactorLayout(BasicLayout):
         self.udkButtonToolTip = "Load ASALI kinetic model"
 
         self.addCoverageButtonText = Utils.pad_string_center("Add coverage")
+        self.addCoverageToolTip = "Add coverage specie input"
+
+        self.addSpecieButtonText = Utils.pad_string_center("Add specie")
+        self.addSpecieToolTip = "Add initial specie input"
 
         self._coverage_names_idx = list()
         self._coverage_composition_idx = list()

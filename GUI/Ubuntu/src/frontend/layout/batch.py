@@ -38,9 +38,9 @@ class BatchLayout(BasicReactorLayout):
                        self._reactor_properties_col_idx,
                        1,
                        self._sub_grid_width)
-        self.addWidget(self._create_button(Utils.pad_string_center('Add coverage'),
+        self.addWidget(self._create_button(self.addCoverageButtonText,
                                            self._update_layout_with_coverage_line,
-                                           'Add input coverage specie'),
+                                           self.addCoverageToolTip),
                        row_idx,
                        self._coverage_col_idx,
                        1,
