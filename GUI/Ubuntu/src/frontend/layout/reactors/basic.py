@@ -1,7 +1,9 @@
+from abc import abstractmethod
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout
+    QMainWindow, QLabel
 )
 
 from src.frontend.layout.basic import BasicLayout
@@ -102,8 +104,7 @@ class BasicReactorLayout(BasicLayout):
         elif self.reactorDropDown.currentIndex() == 2:
             self.main_window.update_to_cstr_reactor()
         elif self.reactorDropDown.currentIndex() == 3:
-            pass
-            # self.main_window.updateToSteadyPh1dReactor()
+            self.main_window.update_to_ph1d_steady_state_reactor()
         elif self.reactorDropDown.currentIndex() == 4:
             pass
             # self.main_window.updateToTransientPh1dReactor()
@@ -198,6 +199,28 @@ class BasicReactorLayout(BasicLayout):
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.volume_ud])
         self.vEditLine = self._create_line_edit("10.0", Qt.AlignRight, QDoubleValidator())
 
+    def _create_diameter_input_line(self) -> None:
+        """
+        Create diameter widgets
+        Returns
+        -------
+
+        """
+        self.dDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+        self.dEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
+
+    def _create_reactor_length_input_line(self) -> None:
+        """
+        Create length widgets
+        Returns
+        -------
+
+        """
+        self.lDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+        self.lEditLine = self._create_line_edit("2.5", Qt.AlignRight, QDoubleValidator())
+
     def _create_catalytic_load_input_line(self) -> None:
         """
         Create catalytic load widgets
@@ -217,6 +240,33 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.energyDropDown = self._create_dropdown(self._on_off_list)
+
+    def _create_diffusion_input_line(self) -> None:
+        """
+        Create diffusion widgets
+        Returns
+        -------
+
+        """
+        self.diffusionDropDown = self._create_dropdown(self._on_off_list)
+
+    def _create_inert_specie_input_line(self) -> None:
+        """
+        Create inert specie widgets
+        Returns
+        -------
+
+        """
+        self.inertSpecieEditLine = self._create_line_edit("AR", Qt.AlignRight, None)
+
+    def _create_inert_coverage_input_line(self) -> None:
+        """
+        Create inert coverage widgets
+        Returns
+        -------
+
+        """
+        self.inertCoverageEditLine = self._create_line_edit("Rh(s)", Qt.AlignRight, None)
 
     def _create_integration_time_input_line(self) -> None:
         """
@@ -239,6 +289,17 @@ class BasicReactorLayout(BasicLayout):
         self.tsDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
         self.tsEditLine = self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator())
+
+    def _create_reactor_length_step_input_line(self) -> None:
+        """
+        Create length step widgets
+        Returns
+        -------
+
+        """
+        self.dlDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+        self.dlEditLine = self._create_line_edit("0.005", Qt.AlignRight, QDoubleValidator())
 
     def _create_mass_flow_rate_input_line(self) -> None:
         """
@@ -303,6 +364,40 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(QLabel(Utils.pad_string("Volume:")), row_idx, col_idx)
         self.addWidget(self.vEditLine, row_idx, col_idx + 1)
         self.addWidget(self.vDropDown, row_idx, col_idx + 2)
+
+    def _add_diameter_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add diameter input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Diameter:")), row_idx, col_idx)
+        self.addWidget(self.dEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.dDropDown, row_idx, col_idx + 2)
+
+    def _add_reactor_length_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add reactor length input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Length:")), row_idx, col_idx)
+        self.addWidget(self.lEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.lDropDown, row_idx, col_idx + 2)
 
     def _add_udk_input_line(self, row_idx, col_idx) -> None:
         """
@@ -375,6 +470,23 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(QLabel(Utils.pad_string("Energy balance:")), row_idx, col_idx)
         self.addWidget(self.energyDropDown, row_idx, col_idx + 1, 1, 2)
 
+    def _add_diffusion_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add diffusion input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+
+        """
+        self.addWidget(QLabel(Utils.pad_string("Diffusion:")), row_idx, col_idx)
+        self.addWidget(self.diffusionDropDown, row_idx, col_idx + 1, 1, 2)
+
     def _add_integration_time_input_line(self, row_idx, col_idx) -> None:
         """
         Add integration time input line
@@ -391,6 +503,38 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(QLabel(Utils.pad_string("Integration time:")), row_idx, col_idx)
         self.addWidget(self.tEditLine, row_idx, col_idx + 1)
         self.addWidget(self.tDropDown, row_idx, col_idx + 2)
+
+    def _add_inert_specie_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add inert specie input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Inert specie:")), row_idx, col_idx)
+        self.addWidget(self.inertSpecieEditLine, row_idx, col_idx + 1, 1, 2)
+
+    def _add_inert_coverage_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add inert coverage input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Inert coverage:")), row_idx, col_idx)
+        self.addWidget(self.inertCoverageEditLine, row_idx, col_idx + 1, 1, 2)
 
     def _add_time_step_input_line(self, row_idx, col_idx) -> None:
         """
@@ -409,6 +553,23 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(self.tsEditLine, row_idx, col_idx + 1)
         self.addWidget(self.tsDropDown, row_idx, col_idx + 2)
 
+    def _add_reactor_length_step_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add reactor length step input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Reactor length step:")), row_idx, col_idx)
+        self.addWidget(self.dlEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.dlDropDown, row_idx, col_idx + 2)
+
     def _add_mass_flow_rate_input_line(self, row_idx, col_idx) -> None:
         """
         Add mass flow rate input line
@@ -425,7 +586,6 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(QLabel(Utils.pad_string("Mass flow rate:")), row_idx, col_idx)
         self.addWidget(self.qEditLine, row_idx, col_idx + 1)
         self.addWidget(self.qDropDown, row_idx, col_idx + 2)
-
 
     def _add_initial_temperature_input_line(self, row_idx, col_idx) -> None:
         """
@@ -584,15 +744,6 @@ class BasicReactorLayout(BasicLayout):
 
         return dict(zip(names, composition))
 
-    def run_reactor_model(self) -> None:
-        """
-        Function to run the reactor model
-        Returns
-        -------
-
-        """
-        pass
-
     def run_backend(self) -> None:
         """
         Run backend to update frontend
@@ -602,19 +753,30 @@ class BasicReactorLayout(BasicLayout):
         """
         pass
 
+    @abstractmethod
+    def run_reactor_model(self) -> None:
+        """
+        Function to run the reactor model
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
     def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
         -------
         """
-        self._create_reactor_selection_dropdown()
+        pass
 
+    @abstractmethod
     def generate_layout(self) -> None:
         """
         Update the interface
         Returns
         -------
         """
-        self.row_idx = self.row_idx + 1
-        self.addWidget(self.reactorDropDown, self.row_idx, 0, 1, -1)
+        pass

@@ -1,6 +1,7 @@
-from src.frontend.layout.basic_reactor import BasicReactorLayout
-from src.frontend.layout.batch import BatchLayout
-from src.frontend.layout.cstr import CstrLayout
+from src.frontend.layout.reactors.batch import BatchLayout
+from src.frontend.layout.reactors.cstr import CstrLayout
+from src.frontend.layout.reactors.selection_menu import ReactorSelectionMenuLayout
+from src.frontend.layout.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactorLayout
 from src.frontend.window.basic import BasicMainWindow
 
 
@@ -10,7 +11,7 @@ class ReactorsMenuWindow(BasicMainWindow):
         Reactor selection window
         """
         super().__init__(parent)
-        self.set_central_widget_layout(BasicReactorLayout(self))
+        self.set_central_widget_layout(ReactorSelectionMenuLayout(self))
 
     def update_to_basic(self) -> None:
         """
@@ -18,7 +19,7 @@ class ReactorsMenuWindow(BasicMainWindow):
         Returns
         -------
         """
-        self.set_central_widget_layout(BasicReactorLayout(self))
+        self.set_central_widget_layout(ReactorSelectionMenuLayout(self))
 
     def update_to_batch_reactor(self) -> None:
         """
@@ -35,3 +36,11 @@ class ReactorsMenuWindow(BasicMainWindow):
         -------
         """
         self.set_central_widget_layout(CstrLayout(self))
+
+    def update_to_ph1d_steady_state_reactor(self) -> None:
+        """
+        Update to the CstrReactorLayout
+        Returns
+        -------
+        """
+        self.set_central_widget_layout(SteadyStatePseudoHomogeneous1DReactorLayout(self))

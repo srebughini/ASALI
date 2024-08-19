@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.layout.basic_reactor import BasicReactorLayout
 from src.frontend.layout.chemical_equilibrium import ChemicalEquilibriumLayout
 from src.frontend.layout.transport_and_thermodynamic_properties import TransportAndThermodynamicPropertiesLayout
 from src.frontend.layout.vacuum_properties import VacuumPropertiesLayout

@@ -3,78 +3,22 @@ from PyQt5.QtWidgets import (
 )
 
 from src.backend.cstr import CstrModel
-from src.frontend.layout.basic_reactor import BasicReactorLayout
+from src.frontend.layout.reactors.basic_transient import BasicTransientReactorLayout
 from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.utils import Utils
 from src.frontend.window.basic import BasicMainWindow
 
 
-class CstrLayout(BasicReactorLayout):
+class CstrLayout(BasicTransientReactorLayout):
     def __init__(self, main_window):
         """
-        Continuos stirred tank reactor layout
+        Continuous stirred tank reactor layout
         Parameters
         ----------
         main_window: QMainWindow
             Window where the layout should be applied
         """
         super().__init__(main_window)
-
-    def _add_buttons(self, row_idx) -> None:
-        """
-        Add Back, Run model, Add Coverage and Add Specie buttons
-        Parameters
-        ----------
-        row_idx: int
-            Row index where to add the buttons
-        Returns
-        -------
-
-        """
-        self.addWidget(self._create_button(self.backButtonText,
-                                           self.main_window.update_to_basic,
-                                           self.backButtonToolTip),
-                       row_idx,
-                       self._reactor_properties_col_idx,
-                       1,
-                       self._sub_grid_width)
-        self.addWidget(self._create_button(self.runButtonText,
-                                           self.run_reactor_model,
-                                           self.runButtonToolTip),
-                       row_idx,
-                       self._solving_options_col_idx,
-                       1,
-                       self._sub_grid_width)
-        self.addWidget(self._create_button(self.addCoverageButtonText,
-                                           self._update_layout_with_coverage_line,
-                                           self.addCoverageToolTip),
-                       row_idx,
-                       self._coverage_col_idx,
-                       1,
-                       self._sub_grid_width)
-        self.addWidget(self._create_button(self.addSpecieButtonText,
-                                           self._update_layout_with_specie_line,
-                                           self.addSpecieToolTip),
-                       row_idx,
-                       self._initial_conditions_col_idx,
-                       1,
-                       self._sub_grid_width)
-
-    def _remove_buttons(self, row_idx) -> None:
-        """
-        Remove Back, Run model, Add Coverage and Add Specie buttons
-        Parameters
-        ----------
-        row_idx: int
-            Row index where to add the buttons
-        Returns
-        -------
-
-        """
-        self._remove_widget(row_idx, self._reactor_properties_col_idx)
-        self._remove_widget(row_idx, self._coverage_col_idx)
-        self._remove_widget(row_idx, self._solving_options_col_idx)
-        self._remove_widget(row_idx, self._initial_conditions_col_idx)
 
     def run_reactor_model(self) -> None:
         """
