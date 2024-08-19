@@ -64,32 +64,6 @@ class BasicReactorLayout(BasicLayout):
 
         super().__init__(main_window)
 
-    def _add_buttons(self, row_idx) -> None:
-        """
-        Add buttons
-        Parameters
-        ----------
-        row_idx: int
-            Row index where to add the buttons
-        Returns
-        -------
-
-        """
-        pass
-
-    def _remove_buttons(self, row_idx) -> None:
-        """
-        Remove buttons
-        Parameters
-        ----------
-        row_idx: int
-            Row index where to add the buttons
-        Returns
-        -------
-
-        """
-        pass
-
     def _update_layout(self) -> None:
         """
         Update layout based on reactor selection
@@ -747,6 +721,48 @@ class BasicReactorLayout(BasicLayout):
     def run_backend(self) -> None:
         """
         Run backend to update frontend
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
+    def _add_buttons(self, row_idx) -> None:
+        """
+        Add buttons
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
+    def _remove_buttons(self, row_idx) -> None:
+        """
+        Remove buttons
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
+    def _add_headlines(self, row_idx) -> None:
+        """
+        Add headlines for user input
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
         Returns
         -------
 

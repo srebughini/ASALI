@@ -110,10 +110,6 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
         self._create_inert_coverage_input_line()
         self._create_inert_specie_input_line()
 
-        # Initial conditions
-        self._create_initial_temperature_input_line()
-        self._create_composition_type_input_line()
-
     def generate_layout(self) -> None:
         """
         Update the interface
@@ -123,23 +119,9 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
         self.row_idx = self.row_idx + 1
         self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)
 
-        # 1 row (headlines)
+        # 1 row
         self.row_idx = self.row_idx + 1
-        self.addWidget(self.reactorPropertiesLabel,
-                       self.row_idx,
-                       self._reactor_properties_col_idx,
-                       1,
-                       self._sub_grid_width)
-        self.addWidget(self.solvingOptionLabel,
-                       self.row_idx,
-                       self._solving_options_col_idx,
-                       1,
-                       self._sub_grid_width)
-        self.addWidget(self.coverageLabel,
-                       self.row_idx,
-                       self._coverage_col_idx,
-                       1,
-                       self._sub_grid_width)
+        self._add_headlines(self.row_idx)
 
         # 2 row
         self.row_idx = self.row_idx + 1

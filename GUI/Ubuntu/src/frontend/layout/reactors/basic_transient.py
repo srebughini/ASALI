@@ -74,6 +74,38 @@ class BasicTransientReactorLayout(BasicReactorLayout):
         self._remove_widget(row_idx, self._solving_options_col_idx)
         self._remove_widget(row_idx, self._initial_conditions_col_idx)
 
+    def _add_headlines(self, row_idx) -> None:
+        """
+        Add headlines for user input
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        self.addWidget(self.reactorPropertiesLabel,
+                       row_idx,
+                       self._reactor_properties_col_idx,
+                       1,
+                       self._sub_grid_width)
+        self.addWidget(self.solvingOptionLabel,
+                       row_idx,
+                       self._solving_options_col_idx,
+                       1,
+                       self._sub_grid_width)
+        self.addWidget(self.coverageLabel,
+                       row_idx,
+                       self._coverage_col_idx,
+                       1,
+                       self._sub_grid_width)
+        self.addWidget(self.initialConditionsLabel,
+                       row_idx,
+                       self._initial_conditions_col_idx,
+                       1,
+                       self._sub_grid_width)
+
     @abstractmethod
     def run_reactor_model(self) -> None:
         """

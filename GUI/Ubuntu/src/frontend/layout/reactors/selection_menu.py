@@ -16,6 +16,45 @@ class ReactorSelectionMenuLayout(BasicReactorLayout):
         """
         super().__init__(main_window)
 
+    def _add_buttons(self, row_idx) -> None:
+        """
+        Add buttons
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        pass
+
+    def _remove_buttons(self, row_idx) -> None:
+        """
+        Remove buttons
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        pass
+
+    def _add_headlines(self, row_idx) -> None:
+        """
+        Add headlines for user input
+        Parameters
+        ----------
+        row_idx: int
+            Row index where to add the buttons
+        Returns
+        -------
+
+        """
+        pass
+
     def run_reactor_model(self) -> None:
         """
         Function to run the reactor model
