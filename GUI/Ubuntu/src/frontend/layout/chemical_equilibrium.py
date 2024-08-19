@@ -60,7 +60,7 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
                                                                        self.main_window.userInput.gas_phase_name))
         self._update_properties()
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -85,7 +85,7 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
         self.yLabel = QLabel(self._empty_label)
         self.nLabel = QLabel(self._empty_label)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

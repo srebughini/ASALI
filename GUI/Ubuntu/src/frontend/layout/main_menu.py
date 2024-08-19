@@ -77,7 +77,7 @@ class MainMenuLayout(BasicLayout):
         """
         pass
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -92,7 +92,7 @@ class MainMenuLayout(BasicLayout):
         self.makeChemistryDropDown = self._create_dropdown(self._make_chemistry_option_list,
                                                            function=self._dropdown_make_chemistry_menu_action)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

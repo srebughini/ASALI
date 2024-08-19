@@ -73,7 +73,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         self.speciesDropDown.addItems(self.cl.species_names())
         self._update_properties()
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -121,7 +121,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
             function=self._update_properties)
         self.diffLabel = QLabel(self._empty_label)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

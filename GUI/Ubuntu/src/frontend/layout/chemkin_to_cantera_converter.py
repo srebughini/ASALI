@@ -139,7 +139,7 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         """
         pass
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -177,7 +177,7 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
                                                              self.surfaceLabel),
                                                      'Load surface kinetic file')
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
          Update the interface
          Returns

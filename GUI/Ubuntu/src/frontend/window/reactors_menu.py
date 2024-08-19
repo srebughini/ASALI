@@ -1,5 +1,6 @@
 from src.frontend.layout.basic_reactor import BasicReactorLayout
 from src.frontend.layout.batch import BatchLayout
+from src.frontend.layout.cstr import CstrLayout
 from src.frontend.window.basic import BasicMainWindow
 
 
@@ -33,4 +34,4 @@ class ReactorsMenuWindow(BasicMainWindow):
         Returns
         -------
         """
-        pass
+        self.set_central_widget_layout(CstrLayout(self))

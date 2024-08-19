@@ -1,18 +1,18 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
 from asali.plotters.batch import BatchPlotter
-from asali.reactors.batch import BatchReactor
+
+from asali.reactors.cstr import CstrReactor
 
 from src.backend.basic_reactor import BasicReactor
 from src.frontend.style import SheetNames, ColumnNames
 
 
-class BatchModel(BasicReactor):
+class CstrModel(BasicReactor):
     def __init__(self, cantera_input_file, gas_phase_name, surface_phase_name):
         """
-        Batch reactor model
+        Continuous stirred tank reactor model
         Parameters
         ----------
         cantera_input_file: str
@@ -27,9 +27,9 @@ class BatchModel(BasicReactor):
     def initialize_reactor_class(self,
                                  cantera_input_file,
                                  gas_phase_name,
-                                 surface_phase_name) -> BatchReactor:
+                                 surface_phase_name) -> CstrReactor:
         """
-        Initialize BatchReactor class
+        Initialize CstrReactor class
         Parameters
         ----------
         cantera_input_file: str
@@ -44,11 +44,11 @@ class BatchModel(BasicReactor):
         r: object
             ASALI reactor class
         """
-        return BatchReactor(cantera_input_file, gas_phase_name, surface_phase_name)
+        return CstrReactor(cantera_input_file, gas_phase_name, surface_phase_name)
 
     def run(self, input_dict) -> None:
         """
-        Run BatchReactor model
+        Run CstrReactor model
         Parameters
         ----------
         input_dict: dict
@@ -61,9 +61,11 @@ class BatchModel(BasicReactor):
             self.reactor_class.set_user_defined_kinetic_model(input_dict["udk"])
         else:
             self.reactor_class.set_initial_coverage(input_dict["theta"])
+
         self.reactor_class.set_volume(input_dict["V"]["value"], input_dict["V"]["ud"])
         self.reactor_class.set_pressure(input_dict["P"]["value"], input_dict["P"]["ud"])
         self.reactor_class.set_catalytic_load(input_dict["alfa"]["value"], input_dict["alfa"]["ud"])
+        self.reactor_class.set_mass_flow_rate(input_dict["q"]["value"], input_dict["q"]["ud"])
 
         if input_dict["x"] is not None:
             self.reactor_class.set_initial_mole_fraction(input_dict["x"])
@@ -71,7 +73,14 @@ class BatchModel(BasicReactor):
         if input_dict["y"] is not None:
             self.reactor_class.set_initial_mass_fraction(input_dict["y"])
 
+        if input_dict["x_in"] is not None:
+            self.reactor_class.set_inlet_mole_fraction(input_dict["x_in"])
+
+        if input_dict["y_in"] is not None:
+            self.reactor_class.set_inlet_mass_fraction(input_dict["y_in"])
+
         self.reactor_class.set_initial_temperature(input_dict["T"]["value"], input_dict["T"]["ud"])
+        self.reactor_class.set_inlet_temperature(input_dict["T_in"]["value"], input_dict["T_in"]["ud"])
         self.reactor_class.set_energy(input_dict["energy"])
 
         tmax = self._uc.convert_to_seconds(input_dict["time"]["value"],

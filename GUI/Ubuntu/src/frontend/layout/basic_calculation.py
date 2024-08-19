@@ -53,7 +53,7 @@ class BasicCalculationLayout(BasicLayout):
         pass
 
     @abstractmethod
-    def initialize(self):
+    def create_layout_components(self):
         """
         Initialize the widgets
         Returns
@@ -63,7 +63,7 @@ class BasicCalculationLayout(BasicLayout):
         pass
 
     @abstractmethod
-    def create(self):
+    def generate_layout(self):
         """
         Update the interface
         Returns

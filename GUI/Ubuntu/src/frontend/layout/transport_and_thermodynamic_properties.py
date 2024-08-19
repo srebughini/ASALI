@@ -79,7 +79,7 @@ class TransportAndThermodynamicPropertiesLayout(BasicCalculationLayout):
                                                                                        self.main_window.userInput.gas_phase_name))
         self._update_properties()
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -143,7 +143,7 @@ class TransportAndThermodynamicPropertiesLayout(BasicCalculationLayout):
             function=self._update_properties)
         self.specificHeatLabel = QLabel(self._empty_label)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

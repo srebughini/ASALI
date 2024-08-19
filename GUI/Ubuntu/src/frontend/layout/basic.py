@@ -4,7 +4,7 @@ from abc import abstractmethod
 import beerpy
 
 from PyQt5.QtWidgets import (
-    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy, QCheckBox
+    QMainWindow, QLabel, QGridLayout, QPushButton, QComboBox, QLineEdit, QSizePolicy, QCheckBox, QLayout
 )
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
@@ -33,6 +33,7 @@ class BasicLayout(QGridLayout):
         self.backButtonToolTip = "Go to the previous step"
 
         self.setVerticalSpacing(15)
+        self.setHorizontalSpacing(12)
 
         # Create logo
         self.row_idx = 0
@@ -43,8 +44,8 @@ class BasicLayout(QGridLayout):
         self.row_idx = self.row_idx + 1
         self.addWidget(self._create_beer_label(), self.row_idx, 0, 1, -1)
 
-        self.initialize()
-        self.create()
+        self.create_layout_components()
+        self.generate_layout()
 
     def _create_logo(self, logo_path) -> QLabel:
         """
@@ -154,7 +155,11 @@ class BasicLayout(QGridLayout):
         line_edit.setText(text)
         line_edit.setStyleSheet(WidgetStyle.LINEEDIT.value)
         line_edit.setAlignment(alignment)
-        line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        font_metrics = line_edit.fontMetrics()
+        text_width = font_metrics.horizontalAdvance(Utils.pad_string(text))
+        line_edit.setMinimumWidth(text_width)
 
         if function is not None:
             line_edit.textChanged.connect(function)
@@ -193,6 +198,22 @@ class BasicLayout(QGridLayout):
         for i in range(0, n):
             self.itemAt(n_widget - (i + 1)).widget().setParent(None)
 
+    def _remove_widget(self, row_idx, col_idx) -> None:
+        """
+        Remove last widgets
+        Parameters
+        ----------
+        row_idx: int
+            Row position of the widget to be removed
+        col_idx: int
+            Col position of the widget to be remove
+
+        Returns
+        -------
+
+        """
+        self.itemAtPosition(row_idx, col_idx).widget().setParent(None)
+
     def _check_edit_line_float_input(self, edit_line, variable_name) -> None:
         """
         Check single edit line input
@@ -212,7 +233,7 @@ class BasicLayout(QGridLayout):
                                 QLabel(f"Wrong {variable_name} value."))
 
     @abstractmethod
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -222,7 +243,7 @@ class BasicLayout(QGridLayout):
         pass
 
     @abstractmethod
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

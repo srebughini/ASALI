@@ -44,6 +44,7 @@ class WidgetStyle(Enum):
                 color: {ColorPalette.ORANGE.value};
                 padding: 5px;
                 font: bold;
+                border-bottom: 1px solid {ColorPalette.ORANGE.value};
             }}
             """
 

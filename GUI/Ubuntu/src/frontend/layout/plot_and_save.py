@@ -168,7 +168,7 @@ class PlotAndSaveLayout(BasicLayout):
 
         self._update_layout_with_backend_info()
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -182,7 +182,7 @@ class PlotAndSaveLayout(BasicLayout):
         self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
         self.saveFormatDropDown = self._create_dropdown(self._save_format_list, function=None)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

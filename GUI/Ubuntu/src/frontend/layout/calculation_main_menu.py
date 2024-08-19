@@ -182,7 +182,7 @@ class CalculationMainMenuLayout(BasicLayout):
         """
         pass
 
-    def initialize(self) -> None:
+    def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
@@ -206,7 +206,7 @@ class CalculationMainMenuLayout(BasicLayout):
 
         self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
 
-    def create(self) -> None:
+    def generate_layout(self) -> None:
         """
         Update the interface
         Returns

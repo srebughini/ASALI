@@ -50,6 +50,9 @@ class DefaultInputHandler:
         self._velocityUd = DefaultInputHandler.create_fractional_ud(self._lengthUd,
                                                                     self._timeUd)
 
+        self._massFlowRateUd = DefaultInputHandler.create_fractional_ud(self._massUd,
+                                                                        self._timeUd)
+
         self._entropyUd = [f"{ud}/K" for ud in self._enthalpyUd]
         self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
         self._specificHeatUd = self._entropyUd
@@ -330,6 +333,17 @@ class DefaultInputHandler:
             1/Length unit dimensions
         """
         return self._oneOverLengthUd
+
+    @property
+    def mass_flow_rate_ud(self) -> Iterable:
+        """
+        Access to the mass flow rate unit dimensions
+        Returns
+        -------
+        volumeUd: list
+            Mass flow rate unit dimensions
+        """
+        return self._massFlowRateUd
 
     @property
     def human_chemical_equilibrium_options(self) -> list:
