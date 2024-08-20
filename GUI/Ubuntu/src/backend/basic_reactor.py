@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from asali.plotters.reactor import ReactorPlotter
 from asali.utils.unit_converter import UnitConverter
 
 
@@ -22,6 +23,7 @@ class BasicReactor(ABC):
                                                            surface_phase_name)
         self.colormap = "Blues"
         self.timeUd = "s"
+        self.lengthUd = "m"
 
     @abstractmethod
     def initialize_reactor_class(self,
@@ -71,10 +73,9 @@ class BasicReactor(ABC):
         """
         pass
 
-    @abstractmethod
     def plot(self, plot_dict) -> None:
         """
-        Abstract method to plot the results of the reactor model
+        Plot the results of the reactor model
         Parameters
         ----------
         plot_dict: dict
@@ -84,7 +85,21 @@ class BasicReactor(ABC):
         -------
 
         """
-        pass
+        plotter = ReactorPlotter(self.reactor_class, colormap=self.colormap)
+
+        if plot_dict["T"]:
+            plotter.plot_temperature()
+
+        if len(plot_dict["x"]) > 0:
+            plotter.plot_species_mole_fraction(plot_dict["x"])
+
+        if len(plot_dict["y"]) > 0:
+            plotter.plot_species_mass_fraction(plot_dict["y"])
+
+        if len(plot_dict["z"]) > 0:
+            plotter.plot_coverage(plot_dict["z"])
+
+        plotter.show()
 
     def gas_species_list(self) -> list:
         """

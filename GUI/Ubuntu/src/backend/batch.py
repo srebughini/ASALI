@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from asali.plotters.batch import BatchPlotter
 from asali.reactors.batch import BatchReactor
 
 from src.backend.basic_reactor import BasicReactor
@@ -115,30 +113,4 @@ class BatchModel(BasicReactor):
 
         return output_dict
 
-    def plot(self, plot_dict) -> None:
-        """
-        Plot the results of the reactor model
-        Parameters
-        ----------
-        plot_dict: dict
-            Option parameters for plotting
 
-        Returns
-        -------
-
-        """
-        plotter = BatchPlotter(self.reactor_class, colormap=self.colormap)
-
-        if plot_dict["T"]:
-            plotter.plot_temperature(plt)
-
-        if len(plot_dict["x"]) > 0:
-            plotter.plot_species_mole_fraction(plt, plot_dict["x"])
-
-        if len(plot_dict["y"]) > 0:
-            plotter.plot_species_mass_fraction(plt, plot_dict["y"])
-
-        if len(plot_dict["z"]) > 0:
-            plotter.plot_coverage(plt, plot_dict["z"])
-
-        plt.show()

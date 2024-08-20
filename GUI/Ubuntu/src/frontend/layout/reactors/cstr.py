@@ -32,7 +32,7 @@ class CstrLayout(BasicTransientReactorLayout):
         self._check_edit_line_float_input(self.alfaEditLine, "catalytic load")
         self._check_edit_line_float_input(self.tEditLine, "integration time")
         self._check_edit_line_float_input(self.tsEditLine, "time step")
-        self._check_edit_line_float_input(self.qEditLine, "time step")
+        self._check_edit_line_float_input(self.qEditLine, "mass flow rate")
         self._check_edit_line_float_input(self.tinEditLine, "initial temperature")
 
         self.main_window.userInput.reactor_model_backend = CstrModel(self.main_window.userInput.file_path,

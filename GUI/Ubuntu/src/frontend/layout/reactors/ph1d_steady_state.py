@@ -2,7 +2,11 @@ from PyQt5.QtWidgets import (
     QMainWindow
 )
 
+from src.backend.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactorModel
+from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.layout.reactors.basic_steady_state import BasicSteadyStateReactorLayout
+from src.frontend.utils import Utils
+from src.frontend.window.basic import BasicMainWindow
 
 
 class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout):
@@ -23,21 +27,17 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
         -------
 
         """
-
-        pass
-
-        """
         self._check_input_files()
-        self._check_edit_line_float_input(self.vEditLine, "volume")
+        self._check_edit_line_float_input(self.dEditLine, "diameter")
+        self._check_edit_line_float_input(self.lEditLine, "length")
+        self._check_edit_line_float_input(self.dlEditLine, "length step")
         self._check_edit_line_float_input(self.alfaEditLine, "catalytic load")
-        self._check_edit_line_float_input(self.tEditLine, "integration time")
-        self._check_edit_line_float_input(self.tsEditLine, "time step")
-        self._check_edit_line_float_input(self.qEditLine, "time step")
-        self._check_edit_line_float_input(self.tinEditLine, "initial temperature")
+        self._check_edit_line_float_input(self.qEditLine, "mass flow rate")
 
-        self.main_window.userInput.reactor_model_backend = CstrModel(self.main_window.userInput.file_path,
-                                                                     self.main_window.userInput.gas_phase_name,
-                                                                     self.main_window.userInput.surface_phase_name)
+        self.main_window.userInput.reactor_model_backend = SteadyStatePseudoHomogeneous1DReactorModel(
+            self.main_window.userInput.file_path,
+            self.main_window.userInput.gas_phase_name,
+            self.main_window.userInput.surface_phase_name)
 
         input_dict = {"udk": self.main_window.userInput.udk_file_path,
                       "T_in": {"value": self.main_window.userInput.temperature["value"],
@@ -46,23 +46,24 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
                       "P": {"value": self.main_window.userInput.pressure["value"],
                             "ud": self.main_window.defaultInput.from_human_to_code_ud(
                                 self.main_window.userInput.pressure["ud"])},
-                      "V": {"value": float(self.vEditLine.text()),
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.vDropDown.currentText())},
+                      "D": {"value": float(self.dEditLine.text()),
+                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.dDropDown.currentText())},
                       "alfa": {"value": float(self.alfaEditLine.text()),
                                "ud": self.main_window.defaultInput.from_human_to_code_ud(
                                    self.alfaDropDown.currentText())},
-                      "time": {"value": float(self.tEditLine.text()),
+                      "L": {"value": float(self.lEditLine.text()),
                                "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.tDropDown.currentText())},
-                      "step": {"value": float(self.tsEditLine.text()),
+                                   self.lDropDown.currentText())},
+                      "dL": {"value": float(self.dlEditLine.text()),
                                "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.tsDropDown.currentText())},
+                                   self.dlDropDown.currentText())},
                       "energy": self.energyDropDown.currentText().strip(),
+                      "diffusion": self.diffusionDropDown.currentText().strip(),
                       "theta": self._extract_coverage_input_composition(),
                       "q": {"value": float(self.qEditLine.text()),
                             "ud": self.main_window.defaultInput.from_human_to_code_ud(self.qDropDown.currentText())},
-                      "T": {"value": float(self.tinEditLine.text()),
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.tinDropDown.currentText())}
+                      "inert": {"coverage": self.inertCoverageEditLine.text().strip(),
+                                "specie": self.inertSpecieEditLine.text().strip()}
                       }
 
         if len(self.main_window.userInput.mole_fraction) > 0:
@@ -73,18 +74,9 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
             input_dict.update({"x_in": None,
                                "y_in": self.main_window.userInput.mass_fraction})
 
-        if "mole" in self.compositionUdDropDown.currentText().lower():
-            input_dict.update({"x": self._extract_initial_species_composition(),
-                               "y": None})
-
-        if "mass" in self.compositionUdDropDown.currentText().lower():
-            input_dict.update({"x": None,
-                               "y": self._extract_initial_species_composition()})
-
         self.main_window.userInput.reactor_model_backend.run(input_dict)
 
         Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
-        """
 
     def create_layout_components(self) -> None:
         """

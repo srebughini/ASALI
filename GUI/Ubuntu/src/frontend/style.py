@@ -25,6 +25,7 @@ class SheetNames(Enum):
 class ColumnNames(Enum):
     time = "Time [s]"
     temperature = "Temperature [K]"
+    length = "Length [m]"
 
 
 class WidgetStyle(Enum):
