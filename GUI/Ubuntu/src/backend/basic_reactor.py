@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 from asali.plotters.reactor import ReactorPlotter
 from asali.utils.unit_converter import UnitConverter
 
+from src.frontend.style import BasicUnitDimension
+
 
 class BasicReactor(ABC):
     def __init__(self, cantera_input_file, gas_phase_name, surface_phase_name):
@@ -22,8 +24,8 @@ class BasicReactor(ABC):
                                                            gas_phase_name,
                                                            surface_phase_name)
         self.colormap = "Blues"
-        self.timeUd = "s"
-        self.lengthUd = "m"
+        self.timeUd = BasicUnitDimension.time.value
+        self.lengthUd = BasicUnitDimension.length.value
 
     @abstractmethod
     def initialize_reactor_class(self,

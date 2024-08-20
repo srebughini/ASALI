@@ -1,5 +1,6 @@
 from src.frontend.layout.reactors.batch import BatchLayout
 from src.frontend.layout.reactors.cstr import CstrLayout
+from src.frontend.layout.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactorLayout
 from src.frontend.layout.reactors.selection_menu import ReactorSelectionMenuLayout
 from src.frontend.layout.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactorLayout
 from src.frontend.window.basic import BasicMainWindow
@@ -39,8 +40,16 @@ class ReactorsMenuWindow(BasicMainWindow):
 
     def update_to_ph1d_steady_state_reactor(self) -> None:
         """
-        Update to the CstrReactorLayout
+        Update to the SteadyStatePseudoHomogeneous1DReactorLayout
         Returns
         -------
         """
         self.set_central_widget_layout(SteadyStatePseudoHomogeneous1DReactorLayout(self))
+
+    def update_to_ph1d_transient_reactor(self) -> None:
+        """
+        Update to the TransientPseudoHomogeneous1DReactorLayout
+        Returns
+        -------
+        """
+        self.set_central_widget_layout(TransientPseudoHomogeneous1DReactorLayout(self))

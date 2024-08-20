@@ -4,7 +4,7 @@ import pandas as pd
 from asali.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactor
 
 from src.backend.basic_reactor import BasicReactor
-from src.frontend.style import SheetNames, ColumnNames
+from src.frontend.style import SheetNames, ColumnNames, ReactorVariablesName
 
 
 class SteadyStatePseudoHomogeneous1DReactorModel(BasicReactor):
@@ -27,7 +27,7 @@ class SteadyStatePseudoHomogeneous1DReactorModel(BasicReactor):
                                  gas_phase_name,
                                  surface_phase_name) -> SteadyStatePseudoHomogeneous1DReactor:
         """
-        Initialize CstrReactor class
+        Initialize SteadyStatePseudoHomogeneous1DReactor class
         Parameters
         ----------
         cantera_input_file: str
@@ -55,39 +55,45 @@ class SteadyStatePseudoHomogeneous1DReactorModel(BasicReactor):
         -------
 
         """
-        if input_dict["udk"] is not None:
-            self.reactor_class.set_user_defined_kinetic_model(input_dict["udk"])
+        if input_dict[ReactorVariablesName.udk] is not None:
+            self.reactor_class.set_user_defined_kinetic_model(input_dict[ReactorVariablesName.udk])
         else:
-            self.reactor_class.set_initial_coverage(input_dict["theta"])
+            self.reactor_class.set_initial_coverage(input_dict[ReactorVariablesName.z])
 
-        L = self._uc.convert_to_meter(input_dict["L"]["value"],
-                                      input_dict["L"]["ud"])
+        L = self._uc.convert_to_meter(input_dict[ReactorVariablesName.length].value,
+                                      input_dict[ReactorVariablesName.length].ud)
 
-        dL = self._uc.convert_to_meter(input_dict["dL"]["value"],
-                                       input_dict["dL"]["ud"])
+        dL = self._uc.convert_to_meter(input_dict[ReactorVariablesName.lengthStep].value,
+                                       input_dict[ReactorVariablesName.lengthStep].ud)
 
         num = int(L / dL) + 1
 
         length = np.linspace(0., L, num=num, endpoint=True)
 
-        self.reactor_class.set_length(length, 'm')
+        self.reactor_class.set_length(length, self.lengthUd)
 
-        self.reactor_class.set_diameter(input_dict["D"]["value"], input_dict["D"]["ud"])
-        self.reactor_class.set_pressure(input_dict["P"]["value"], input_dict["P"]["ud"])
-        self.reactor_class.set_catalytic_load(input_dict["alfa"]["value"], input_dict["alfa"]["ud"])
-        self.reactor_class.set_mass_flow_rate(input_dict["q"]["value"], input_dict["q"]["ud"])
+        self.reactor_class.set_diameter(input_dict[ReactorVariablesName.diameter].value,
+                                        input_dict[ReactorVariablesName.diameter].ud)
+        self.reactor_class.set_pressure(input_dict[ReactorVariablesName.pressure].value,
+                                        input_dict[ReactorVariablesName.pressure].ud)
+        self.reactor_class.set_catalytic_load(input_dict[ReactorVariablesName.alfa].value,
+                                              input_dict[ReactorVariablesName.alfa].ud)
+        self.reactor_class.set_mass_flow_rate(input_dict[ReactorVariablesName.massFlowRate].value,
+                                              input_dict[ReactorVariablesName.massFlowRate].ud)
 
-        if input_dict["x_in"] is not None:
-            self.reactor_class.set_inlet_mole_fraction(input_dict["x_in"])
+        if input_dict[ReactorVariablesName.x] is not None:
+            self.reactor_class.set_inlet_mole_fraction(input_dict[ReactorVariablesName.x])
 
-        if input_dict["y_in"] is not None:
-            self.reactor_class.set_inlet_mass_fraction(input_dict["y_in"])
+        if input_dict[ReactorVariablesName.y] is not None:
+            self.reactor_class.set_inlet_mass_fraction(input_dict[ReactorVariablesName.y])
 
-        self.reactor_class.set_inlet_temperature(input_dict["T_in"]["value"], input_dict["T_in"]["ud"])
-        self.reactor_class.set_energy(input_dict["energy"])
-        self.reactor_class.set_inert_specie(input_dict["inert"]["specie"])
-        self.reactor_class.set_inert_coverage(input_dict["inert"]["coverage"])
-        self.reactor_class.set_gas_diffusion(input_dict["diffusion"])
+        self.reactor_class.set_inlet_temperature(input_dict[ReactorVariablesName.temperature].value,
+                                                 input_dict[ReactorVariablesName.temperature].ud)
+        self.reactor_class.set_energy(input_dict[ReactorVariablesName.energy])
+
+        self.reactor_class.set_inert_specie(input_dict[ReactorVariablesName.inertSpecie])
+        self.reactor_class.set_inert_coverage(input_dict[ReactorVariablesName.inertCoverage])
+        self.reactor_class.set_gas_diffusion(input_dict[ReactorVariablesName.diffusion])
 
         self.reactor_class.solve()
 

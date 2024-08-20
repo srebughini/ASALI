@@ -22,10 +22,40 @@ class SheetNames(Enum):
     T = "temperature"
 
 
+class ReactorVariablesName(Enum):
+    volume = "volume"
+    alfa = "catalytic load"
+    time = "integration time"
+    timeStep = "time step"
+    massFlowRate = "mass flow rate"
+    initialTemperature = "initial temperature"
+    diameter = "diameter"
+    length = "length"
+    lengthStep = "length step"
+    udk = "user defined kinetic"
+    temperature = "inlet temperature"
+    pressure = "pressure"
+    energy = "energy"
+    z = "initial coverage"
+    initialX = "initial mole fraction"
+    initialY = "initial mass fraction"
+    x = "inlet mole fraction"
+    y = "inlet mass fraction"
+    diffusion = "diffusion"
+    inertCoverage = "inert coverage"
+    inertSpecie = "inert specie"
+
+
+class BasicUnitDimension(Enum):
+    time = "s"
+    temperature = "K"
+    length = "m"
+
+
 class ColumnNames(Enum):
-    time = "Time [s]"
-    temperature = "Temperature [K]"
-    length = "Length [m]"
+    time = f"Time [{BasicUnitDimension.time.value}]"
+    temperature = f"Temperature [{BasicUnitDimension.temperature.value}]"
+    length = f"Length [{BasicUnitDimension.length.value}]"
 
 
 class WidgetStyle(Enum):

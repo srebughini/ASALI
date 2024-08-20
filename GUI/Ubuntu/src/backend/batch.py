@@ -4,7 +4,7 @@ import pandas as pd
 from asali.reactors.batch import BatchReactor
 
 from src.backend.basic_reactor import BasicReactor
-from src.frontend.style import SheetNames, ColumnNames
+from src.frontend.style import SheetNames, ColumnNames, ReactorVariablesName
 
 
 class BatchModel(BasicReactor):
@@ -55,34 +55,39 @@ class BatchModel(BasicReactor):
         -------
 
         """
-        if input_dict["udk"] is not None:
-            self.reactor_class.set_user_defined_kinetic_model(input_dict["udk"])
+        if input_dict[ReactorVariablesName.udk] is not None:
+            self.reactor_class.set_user_defined_kinetic_model(input_dict[ReactorVariablesName.udk])
         else:
-            self.reactor_class.set_initial_coverage(input_dict["theta"])
-        self.reactor_class.set_volume(input_dict["V"]["value"], input_dict["V"]["ud"])
-        self.reactor_class.set_pressure(input_dict["P"]["value"], input_dict["P"]["ud"])
-        self.reactor_class.set_catalytic_load(input_dict["alfa"]["value"], input_dict["alfa"]["ud"])
+            self.reactor_class.set_initial_coverage(input_dict[ReactorVariablesName.z])
 
-        if input_dict["x"] is not None:
-            self.reactor_class.set_initial_mole_fraction(input_dict["x"])
+        self.reactor_class.set_volume(input_dict[ReactorVariablesName.volume].value,
+                                      input_dict[ReactorVariablesName.volume].ud)
+        self.reactor_class.set_pressure(input_dict[ReactorVariablesName.pressure].value,
+                                        input_dict[ReactorVariablesName.pressure].ud)
+        self.reactor_class.set_catalytic_load(input_dict[ReactorVariablesName.alfa].value,
+                                              input_dict[ReactorVariablesName.alfa].ud)
 
-        if input_dict["y"] is not None:
-            self.reactor_class.set_initial_mass_fraction(input_dict["y"])
+        if input_dict[ReactorVariablesName.initialX] is not None:
+            self.reactor_class.set_initial_mole_fraction(input_dict[ReactorVariablesName.initialX])
 
-        self.reactor_class.set_initial_temperature(input_dict["T"]["value"], input_dict["T"]["ud"])
-        self.reactor_class.set_energy(input_dict["energy"])
+        if input_dict[ReactorVariablesName.initialY] is not None:
+            self.reactor_class.set_initial_mass_fraction(input_dict[ReactorVariablesName.initialY])
 
-        tmax = self._uc.convert_to_seconds(input_dict["time"]["value"],
-                                           input_dict["time"]["ud"])
+        self.reactor_class.set_initial_temperature(input_dict[ReactorVariablesName.initialTemperature].value,
+                                                   input_dict[ReactorVariablesName.initialTemperature].ud)
+        self.reactor_class.set_energy(input_dict[ReactorVariablesName.energy])
 
-        tstep = self._uc.convert_to_seconds(input_dict["step"]["value"],
-                                            input_dict["step"]["ud"])
+        tmax = self._uc.convert_to_seconds(input_dict[ReactorVariablesName.time].value,
+                                           input_dict[ReactorVariablesName.time].ud)
+
+        tstep = self._uc.convert_to_seconds(input_dict[ReactorVariablesName.timeStep].value,
+                                            input_dict[ReactorVariablesName.timeStep].ud)
 
         num = int(tmax / tstep) + 1
 
         tspan = np.linspace(0., tmax, num=num, endpoint=True)
 
-        self.reactor_class.solve(tspan, 's')
+        self.reactor_class.solve(tspan, self.timeUd)
 
     def get_results(self) -> dict:
         """
@@ -112,5 +117,3 @@ class BatchModel(BasicReactor):
         output_dict[SheetNames.T.value][ColumnNames.temperature.value] = self.reactor_class.get_temperature()
 
         return output_dict
-
-

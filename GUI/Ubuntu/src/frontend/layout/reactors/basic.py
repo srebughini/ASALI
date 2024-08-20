@@ -80,8 +80,7 @@ class BasicReactorLayout(BasicLayout):
         elif self.reactorDropDown.currentIndex() == 3:
             self.main_window.update_to_ph1d_steady_state_reactor()
         elif self.reactorDropDown.currentIndex() == 4:
-            pass
-            # self.main_window.updateToTransientPh1dReactor()
+            self.main_window.update_to_ph1d_transient_reactor()
         elif self.reactorDropDown.currentIndex() == 5:
             pass
             # self.main_window.updateToSteadyHet1dReactor()
@@ -169,9 +168,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.vDropDown = self._create_dropdown(
+        self.volumeDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.volume_ud])
-        self.vEditLine = self._create_line_edit("10.0", Qt.AlignRight, QDoubleValidator())
+        self.volumeEditLine = self._create_line_edit("10.0", Qt.AlignRight, QDoubleValidator())
 
     def _create_diameter_input_line(self) -> None:
         """
@@ -180,9 +179,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.dDropDown = self._create_dropdown(
+        self.diameterDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
-        self.dEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
+        self.diameterEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
 
     def _create_reactor_length_input_line(self) -> None:
         """
@@ -191,9 +190,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.lDropDown = self._create_dropdown(
+        self.lengthDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
-        self.lEditLine = self._create_line_edit("2.5", Qt.AlignRight, QDoubleValidator())
+        self.lengthEditLine = self._create_line_edit("2.5", Qt.AlignRight, QDoubleValidator())
 
     def _create_catalytic_load_input_line(self) -> None:
         """
@@ -249,9 +248,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.tDropDown = self._create_dropdown(
+        self.timeDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
-        self.tEditLine = self._create_line_edit("5", Qt.AlignRight, QDoubleValidator())
+        self.timeEditLine = self._create_line_edit("5", Qt.AlignRight, QDoubleValidator())
 
     def _create_time_step_input_line(self) -> None:
         """
@@ -260,9 +259,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.tsDropDown = self._create_dropdown(
+        self.timeStepDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
-        self.tsEditLine = self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator())
+        self.timeStepEditLine = self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator())
 
     def _create_reactor_length_step_input_line(self) -> None:
         """
@@ -271,9 +270,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.dlDropDown = self._create_dropdown(
+        self.lengthStepDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
-        self.dlEditLine = self._create_line_edit("0.005", Qt.AlignRight, QDoubleValidator())
+        self.lengthStepEditLine = self._create_line_edit("0.005", Qt.AlignRight, QDoubleValidator())
 
     def _create_mass_flow_rate_input_line(self) -> None:
         """
@@ -282,9 +281,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.qDropDown = self._create_dropdown(
+        self.massFlowRateDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.mass_flow_rate_ud])
-        self.qEditLine = self._create_line_edit("1.0", Qt.AlignRight, QDoubleValidator())
+        self.massFlowRateEditLine = self._create_line_edit("1.0", Qt.AlignRight, QDoubleValidator())
 
     def _create_initial_temperature_input_line(self) -> None:
         """
@@ -293,9 +292,9 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.tinDropDown = self._create_dropdown(
+        self.initialTemperatureDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.defaultInput.temperature_ud])
-        self.tinEditLine = self._create_line_edit("298.15", Qt.AlignRight, QDoubleValidator())
+        self.initialTemperatureEditLine = self._create_line_edit("298.15", Qt.AlignRight, QDoubleValidator())
 
     def _create_composition_type_input_line(self) -> None:
         """
@@ -336,8 +335,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Volume:")), row_idx, col_idx)
-        self.addWidget(self.vEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.vDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.volumeEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.volumeDropDown, row_idx, col_idx + 2)
 
     def _add_diameter_input_line(self, row_idx, col_idx) -> None:
         """
@@ -353,8 +352,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Diameter:")), row_idx, col_idx)
-        self.addWidget(self.dEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.dDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.diameterEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.diameterDropDown, row_idx, col_idx + 2)
 
     def _add_reactor_length_input_line(self, row_idx, col_idx) -> None:
         """
@@ -370,8 +369,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Length:")), row_idx, col_idx)
-        self.addWidget(self.lEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.lDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.lengthEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.lengthDropDown, row_idx, col_idx + 2)
 
     def _add_udk_input_line(self, row_idx, col_idx) -> None:
         """
@@ -475,8 +474,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Integration time:")), row_idx, col_idx)
-        self.addWidget(self.tEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.tDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.timeEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.timeDropDown, row_idx, col_idx + 2)
 
     def _add_inert_specie_input_line(self, row_idx, col_idx) -> None:
         """
@@ -524,8 +523,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Integration time step:")), row_idx, col_idx)
-        self.addWidget(self.tsEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.tsDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.timeStepEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.timeStepDropDown, row_idx, col_idx + 2)
 
     def _add_reactor_length_step_input_line(self, row_idx, col_idx) -> None:
         """
@@ -541,8 +540,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Reactor length step:")), row_idx, col_idx)
-        self.addWidget(self.dlEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.dlDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.lengthStepEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.lengthStepDropDown, row_idx, col_idx + 2)
 
     def _add_mass_flow_rate_input_line(self, row_idx, col_idx) -> None:
         """
@@ -558,8 +557,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel(Utils.pad_string("Mass flow rate:")), row_idx, col_idx)
-        self.addWidget(self.qEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.qDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.massFlowRateEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.massFlowRateDropDown, row_idx, col_idx + 2)
 
     def _add_initial_temperature_input_line(self, row_idx, col_idx) -> None:
         """
@@ -575,8 +574,8 @@ class BasicReactorLayout(BasicLayout):
         -------
         """
         self.addWidget(QLabel("Temperature:"), row_idx, col_idx)
-        self.addWidget(self.tinEditLine, row_idx, col_idx + 1)
-        self.addWidget(self.tinDropDown, row_idx, col_idx + 2)
+        self.addWidget(self.initialTemperatureEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.initialTemperatureDropDown, row_idx, col_idx + 2)
 
     def _add_initial_composition_type_input_line(self, row_idx, col_idx) -> None:
         """

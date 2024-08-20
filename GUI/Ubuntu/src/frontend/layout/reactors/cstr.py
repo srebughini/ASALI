@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 from PyQt5.QtWidgets import (
     QMainWindow
 )
@@ -5,6 +7,7 @@ from PyQt5.QtWidgets import (
 from src.backend.cstr import CstrModel
 from src.frontend.layout.reactors.basic_transient import BasicTransientReactorLayout
 from src.frontend.layout.plot_and_save import PlotAndSaveLayout
+from src.frontend.style import ReactorVariablesName
 from src.frontend.utils import Utils
 from src.frontend.window.basic import BasicMainWindow
 
@@ -28,58 +31,69 @@ class CstrLayout(BasicTransientReactorLayout):
 
         """
         self._check_input_files()
-        self._check_edit_line_float_input(self.vEditLine, "volume")
-        self._check_edit_line_float_input(self.alfaEditLine, "catalytic load")
-        self._check_edit_line_float_input(self.tEditLine, "integration time")
-        self._check_edit_line_float_input(self.tsEditLine, "time step")
-        self._check_edit_line_float_input(self.qEditLine, "mass flow rate")
-        self._check_edit_line_float_input(self.tinEditLine, "initial temperature")
+        self._check_edit_line_float_input(self.volumeEditLine, ReactorVariablesName.volume.value)
+        self._check_edit_line_float_input(self.alfaEditLine, ReactorVariablesName.alfa.value)
+        self._check_edit_line_float_input(self.timeEditLine, ReactorVariablesName.time.value)
+        self._check_edit_line_float_input(self.timeStepEditLine, ReactorVariablesName.timeStep.value)
+        self._check_edit_line_float_input(self.massFlowRateEditLine, ReactorVariablesName.massFlowRate.value)
+        self._check_edit_line_float_input(self.initialTemperatureEditLine,
+                                          ReactorVariablesName.initialTemperature.value)
 
         self.main_window.userInput.reactor_model_backend = CstrModel(self.main_window.userInput.file_path,
                                                                      self.main_window.userInput.gas_phase_name,
                                                                      self.main_window.userInput.surface_phase_name)
 
-        input_dict = {"udk": self.main_window.userInput.udk_file_path,
-                      "T_in": {"value": self.main_window.userInput.temperature["value"],
-                               "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.main_window.userInput.temperature["ud"])},
-                      "P": {"value": self.main_window.userInput.pressure["value"],
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                self.main_window.userInput.pressure["ud"])},
-                      "V": {"value": float(self.vEditLine.text()),
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.vDropDown.currentText())},
-                      "alfa": {"value": float(self.alfaEditLine.text()),
-                               "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.alfaDropDown.currentText())},
-                      "time": {"value": float(self.tEditLine.text()),
-                               "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.tDropDown.currentText())},
-                      "step": {"value": float(self.tsEditLine.text()),
-                               "ud": self.main_window.defaultInput.from_human_to_code_ud(
-                                   self.tsDropDown.currentText())},
-                      "energy": self.energyDropDown.currentText().strip(),
-                      "theta": self._extract_coverage_input_composition(),
-                      "q": {"value": float(self.qEditLine.text()),
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.qDropDown.currentText())},
-                      "T": {"value": float(self.tinEditLine.text()),
-                            "ud": self.main_window.defaultInput.from_human_to_code_ud(self.tinDropDown.currentText())}
-                      }
+        input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
+                      ReactorVariablesName.temperature: SimpleNamespace(
+                          value=self.main_window.userInput.temperature["value"],
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.main_window.userInput.temperature["ud"])),
+                      ReactorVariablesName.pressure: SimpleNamespace(
+                          value=self.main_window.userInput.pressure["value"],
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.main_window.userInput.pressure["ud"])),
+                      ReactorVariablesName.volume: SimpleNamespace(
+                          value=float(self.volumeEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.volumeDropDown.currentText())),
+                      ReactorVariablesName.alfa: SimpleNamespace(
+                          value=float(self.alfaEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.alfaDropDown.currentText())),
+                      ReactorVariablesName.time: SimpleNamespace(
+                          value=float(self.timeEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.timeDropDown.currentText())),
+                      ReactorVariablesName.timeStep: SimpleNamespace(
+                          value=float(self.timeStepEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.timeStepDropDown.currentText())),
+                      ReactorVariablesName.energy: self.energyDropDown.currentText().strip(),
+                      ReactorVariablesName.z: self._extract_coverage_input_composition(),
+                      ReactorVariablesName.massFlowRate: SimpleNamespace(
+                          value=float(self.massFlowRateEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.massFlowRateDropDown.currentText())),
+                      ReactorVariablesName.initialTemperature: SimpleNamespace(
+                          value=float(self.initialTemperatureEditLine.text()),
+                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                              self.initialTemperatureDropDown.currentText()))}
 
         if len(self.main_window.userInput.mole_fraction) > 0:
-            input_dict.update({"x_in": self.main_window.userInput.mole_fraction,
-                               "y_in": None})
+            input_dict.update({ReactorVariablesName.x: self.main_window.userInput.mole_fraction,
+                               ReactorVariablesName.y: None})
 
         if len(self.main_window.userInput.mass_fraction) > 0:
-            input_dict.update({"x_in": None,
-                               "y_in": self.main_window.userInput.mass_fraction})
+            input_dict.update({ReactorVariablesName.x: None,
+                               ReactorVariablesName.y: self.main_window.userInput.mass_fraction})
 
         if "mole" in self.compositionUdDropDown.currentText().lower():
-            input_dict.update({"x": self._extract_initial_species_composition(),
-                               "y": None})
+            input_dict.update({ReactorVariablesName.initialX: self._extract_initial_species_composition(),
+                               ReactorVariablesName.initialY: None})
 
         if "mass" in self.compositionUdDropDown.currentText().lower():
-            input_dict.update({"x": None,
-                               "y": self._extract_initial_species_composition()})
+            input_dict.update({ReactorVariablesName.initialX: None,
+                               ReactorVariablesName.initialY: self._extract_initial_species_composition()})
 
         self.main_window.userInput.reactor_model_backend.run(input_dict)
 
@@ -122,7 +136,6 @@ class CstrLayout(BasicTransientReactorLayout):
         # 1 row
         self.row_idx = self.row_idx + 1
         self._add_headlines(self.row_idx)
-
 
         # 2 row
         self.row_idx = self.row_idx + 1
