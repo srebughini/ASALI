@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
+from src.backend.utils import ReactorResultsFormat
 from src.frontend.layout.basic import BasicLayout
 from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.style import FileType, WidgetStyle
@@ -748,13 +749,11 @@ class BasicReactorLayout(BasicLayout):
                 self.main_window.userInput.gas_phase_name,
                 self.main_window.userInput.surface_phase_name)
 
-            # TODO
-            """
-            self.main_window.userInput.reactor_model_backend.set_independet_variable_results(
+            self.main_window.userInput.reactor_model_backend.set_independent_variable_results(
                 self.main_window.reactor_model_results[ReactorResultsFormat.x])
-            self.main_window.userInput.reactor_model_backend.set_dependet_variable_results(
+            self.main_window.userInput.reactor_model_backend.set_dependent_variable_results(
                 self.main_window.reactor_model_results[ReactorResultsFormat.y])
-            """
+
             Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
 
     def run_backend(self) -> None:
