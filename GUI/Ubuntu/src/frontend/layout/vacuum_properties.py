@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
-from src.frontend.layout.reactors.vacuum_properties import VacuumProperties
+from src.backend.vacuum_properties import VacuumProperties
 from src.frontend.layout.basic_calculation import BasicCalculationLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
