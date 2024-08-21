@@ -179,7 +179,7 @@ class PlotAndSaveLayout(BasicLayout):
         self.headlineLabel.setStyleSheet(WidgetStyle.ITALICLABEL.value)
         self.headlineLabel.setAlignment(Qt.AlignCenter)
 
-        self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
+        self.compositionUdDropDown = self._create_dropdown(self.main_window.ud_handler.composition_ud, function=None)
         self.saveFormatDropDown = self._create_dropdown(self._save_format_list, function=None)
 
     def generate_layout(self) -> None:

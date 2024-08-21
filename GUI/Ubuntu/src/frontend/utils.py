@@ -1,16 +1,70 @@
+from enum import Enum
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, \
-    QMainWindow, QHBoxLayout
+from PyQt5.QtWidgets import (QFileDialog, QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget,
+                             QMainWindow, QHBoxLayout)
 
 from src.frontend.style import WidgetStyle, ColorPalette
 
 import os
+
+class SheetNames(Enum):
+    X = "mole_fraction"
+    Y = "mass_fraction"
+    Z = "coverage"
+    T = "temperature"
+
+
+class ReactorVariablesName(Enum):
+    volume = "volume"
+    alfa = "catalytic load"
+    time = "integration time"
+    timeStep = "time step"
+    massFlowRate = "mass flow rate"
+    initialTemperature = "initial temperature"
+    diameter = "diameter"
+    length = "length"
+    lengthStep = "length step"
+    udk = "user defined kinetic"
+    temperature = "inlet temperature"
+    pressure = "pressure"
+    energy = "energy"
+    z = "initial coverage"
+    initialX = "initial mole fraction"
+    initialY = "initial mass fraction"
+    x = "inlet mole fraction"
+    y = "inlet mass fraction"
+    diffusion = "diffusion"
+    inertCoverage = "inert coverage"
+    inertSpecie = "inert specie"
+
+
+class BasicUnitDimension(Enum):
+    time = "s"
+    temperature = "K"
+    length = "m"
+
+
+class ColumnNames(Enum):
+    time = f"Time [{BasicUnitDimension.time.value}]"
+    temperature = f"Temperature [{BasicUnitDimension.temperature.value}]"
+    length = f"Length [{BasicUnitDimension.length.value}]"
 
 
 class Utils:
     """
     Class to handle utilities functions
     """
+    @staticmethod
+    def window_title() -> str:
+        """
+        Get window title
+        Returns
+        -------
+        title: str
+            Window title
+        """
+        return "ASALI"
 
     @staticmethod
     def is_float(element) -> bool:

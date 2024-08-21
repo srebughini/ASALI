@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 
+from src.backend.utils import DefaultPath
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
 
@@ -37,7 +38,7 @@ class BasicLayout(QGridLayout):
 
         # Create logo
         self.row_idx = 0
-        self.addWidget(self._create_logo(os.path.join(self.main_window.defaultInput.image_path, "BigLogo.png")),
+        self.addWidget(self._create_logo(os.path.join(DefaultPath.images.value, "BigLogo.png")),
                        self.row_idx, 0, 1, -1)
 
         # Create beer quote

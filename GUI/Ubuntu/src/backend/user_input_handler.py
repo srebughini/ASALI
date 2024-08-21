@@ -4,7 +4,7 @@ import yaml
 from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
-from src.backend.basic_reactor import BasicReactor
+from src.backend._basic_reactor import BasicReactor
 
 
 class UserInputHandler:

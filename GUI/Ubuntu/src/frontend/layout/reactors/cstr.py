@@ -1,15 +1,12 @@
 from types import SimpleNamespace
 
-from PyQt5.QtWidgets import (
-    QMainWindow
-)
+from PyQt5.QtWidgets import QMainWindow
 
-from src.backend.cstr import CstrModel
+from asali.reactors.cstr import CstrReactor
+
+from src.backend.reactors import run_cstr_reactor_model
 from src.frontend.layout.reactors.basic_transient import BasicTransientReactorLayout
-from src.frontend.layout.plot_and_save import PlotAndSaveLayout
-from src.frontend.style import ReactorVariablesName
-from src.frontend.utils import Utils
-from src.frontend.window.basic import BasicMainWindow
+from src.frontend.utils import ReactorVariablesName
 
 
 class CstrLayout(BasicTransientReactorLayout):
@@ -22,13 +19,16 @@ class CstrLayout(BasicTransientReactorLayout):
             Window where the layout should be applied
         """
         super().__init__(main_window)
+        self.reactor_model_function = run_cstr_reactor_model
+        self.reactor_model_class = CstrReactor
 
-    def run_reactor_model(self) -> None:
+    def read_input(self) -> dict:
         """
-        Function to run the reactor model
+        Function to read user input
         Returns
         -------
-
+        input_dict: dict
+            User input
         """
         self._check_input_files()
         self._check_edit_line_float_input(self.volumeEditLine, ReactorVariablesName.volume.value)
@@ -39,44 +39,40 @@ class CstrLayout(BasicTransientReactorLayout):
         self._check_edit_line_float_input(self.initialTemperatureEditLine,
                                           ReactorVariablesName.initialTemperature.value)
 
-        self.main_window.userInput.reactor_model_backend = CstrModel(self.main_window.userInput.file_path,
-                                                                     self.main_window.userInput.gas_phase_name,
-                                                                     self.main_window.userInput.surface_phase_name)
-
         input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
                       ReactorVariablesName.temperature: SimpleNamespace(
                           value=self.main_window.userInput.temperature["value"],
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.main_window.userInput.temperature["ud"])),
                       ReactorVariablesName.pressure: SimpleNamespace(
                           value=self.main_window.userInput.pressure["value"],
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.main_window.userInput.pressure["ud"])),
                       ReactorVariablesName.volume: SimpleNamespace(
                           value=float(self.volumeEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.volumeDropDown.currentText())),
                       ReactorVariablesName.alfa: SimpleNamespace(
                           value=float(self.alfaEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.alfaDropDown.currentText())),
                       ReactorVariablesName.time: SimpleNamespace(
                           value=float(self.timeEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.timeDropDown.currentText())),
                       ReactorVariablesName.timeStep: SimpleNamespace(
                           value=float(self.timeStepEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.timeStepDropDown.currentText())),
                       ReactorVariablesName.energy: self.energyDropDown.currentText().strip(),
                       ReactorVariablesName.z: self._extract_coverage_input_composition(),
                       ReactorVariablesName.massFlowRate: SimpleNamespace(
                           value=float(self.massFlowRateEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.massFlowRateDropDown.currentText())),
                       ReactorVariablesName.initialTemperature: SimpleNamespace(
                           value=float(self.initialTemperatureEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.initialTemperatureDropDown.currentText()))}
 
         if len(self.main_window.userInput.mole_fraction) > 0:
@@ -95,9 +91,7 @@ class CstrLayout(BasicTransientReactorLayout):
             input_dict.update({ReactorVariablesName.initialX: None,
                                ReactorVariablesName.initialY: self._extract_initial_species_composition()})
 
-        self.main_window.userInput.reactor_model_backend.run(input_dict)
-
-        Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
+        return input_dict
 
     def create_layout_components(self) -> None:
         """

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
-from src.backend.vacuum_properties import VacuumProperties
+from src.frontend.layout.reactors.vacuum_properties import VacuumProperties
 from src.frontend.layout.basic_calculation import BasicCalculationLayout
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
@@ -90,7 +90,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
 
         # Geometry
         self.geometryDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud],
             function=self._update_properties)
         self.geometryEditLine = self._create_line_edit("0.5",
                                                        Qt.AlignRight,
@@ -102,13 +102,13 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
 
         # Mean gas velocity
         self.vDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.velocity_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.velocity_ud],
             function=self._update_properties)
         self.vLabel = QLabel(self._empty_label)
 
         # Mean free path
         self.lDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud],
             function=self._update_properties)
         self.lLabel = QLabel(self._empty_label)
 
@@ -117,7 +117,7 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
 
         # Diffusivity
         self.diffDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.diffusivity_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.diffusivity_ud],
             function=self._update_properties)
         self.diffLabel = QLabel(self._empty_label)
 

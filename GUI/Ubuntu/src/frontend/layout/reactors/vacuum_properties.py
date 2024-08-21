@@ -2,7 +2,7 @@ from src.backend.basic_calculation import BasicCalculation
 
 import numpy as np
 
-from src.backend.default_input_handler import DefaultInputHandler
+from src.backend.utils import UnitDimensionHandler
 
 
 class VacuumProperties(BasicCalculation):
@@ -96,7 +96,7 @@ class VacuumProperties(BasicCalculation):
         v = VacuumProperties.calculate_mean_gas_velocity(self._gas.T, self._gas.molecular_weights[idx])
 
         return self._uc.convert_from_meter_per_seconds(v,
-                                                       DefaultInputHandler.from_human_to_code_ud(ud))
+                                                       UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def mean_free_path(self, specie_name, ud) -> float:
         """
@@ -116,7 +116,7 @@ class VacuumProperties(BasicCalculation):
         mfp = VacuumProperties.calculate_mean_free_path(self._gas.T, self._gas.P, 10.)  # TODO
 
         return self._uc.convert_from_meter(mfp,
-                                           DefaultInputHandler.from_human_to_code_ud(ud))
+                                           UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def knudsen_number(self, specie_name, length, length_ud) -> float:
         """
@@ -139,7 +139,7 @@ class VacuumProperties(BasicCalculation):
                                                        self._gas.P,
                                                        10.,  # TODO
                                                        self._uc.convert_to_meter(length,
-                                                                                 DefaultInputHandler.from_human_to_code_ud(
+                                                                                 UnitDimensionHandler.from_human_to_code_ud(
                                                                                      length_ud)))
 
         return kn
@@ -163,7 +163,7 @@ class VacuumProperties(BasicCalculation):
             Diffusivity
         """
         idx = self.specie_index(specie_name)
-        d = self._uc.convert_to_meter(length, DefaultInputHandler.from_human_to_code_ud(length_ud))
+        d = self._uc.convert_to_meter(length, UnitDimensionHandler.from_human_to_code_ud(length_ud))
         kn = VacuumProperties.calculate_knudsen_number(self._gas.T,
                                                        self._gas.P,
                                                        10.,
@@ -179,4 +179,4 @@ class VacuumProperties(BasicCalculation):
         diff_mix = total_diff_mix[self._species_mask]
 
         return self._uc.convert_from_square_meter_per_seconds(diff_mix[idx],
-                                                              DefaultInputHandler.from_human_to_code_ud(ud))
+                                                              UnitDimensionHandler.from_human_to_code_ud(ud))

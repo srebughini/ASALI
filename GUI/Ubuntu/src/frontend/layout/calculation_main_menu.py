@@ -192,18 +192,18 @@ class CalculationMainMenuLayout(BasicLayout):
                                                                function=None)
 
         self.temperatureUdDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.temperature_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.temperature_ud],
             function=None)
 
         self.temperatureLine = self._create_line_edit("298.15", Qt.AlignRight, QDoubleValidator())
 
         self.pressureUdDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.pressure_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.pressure_ud],
             function=None)
 
         self.pressureLine = self._create_line_edit("101325", Qt.AlignRight, QDoubleValidator())
 
-        self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
+        self.compositionUdDropDown = self._create_dropdown(self.main_window.ud_handler.composition_ud, function=None)
 
     def generate_layout(self) -> None:
         """

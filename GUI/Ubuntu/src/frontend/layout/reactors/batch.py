@@ -1,13 +1,9 @@
-from PyQt5.QtWidgets import (
-    QMainWindow
-)
+from PyQt5.QtWidgets import QMainWindow
+from asali.reactors.batch import BatchReactor
 
-from src.backend.batch import BatchModel
+from src.backend.reactors import run_batch_reactor_model
 from src.frontend.layout.reactors.basic_steady_state import BasicSteadyStateReactorLayout
-from src.frontend.layout.plot_and_save import PlotAndSaveLayout
-from src.frontend.style import ReactorVariablesName
-from src.frontend.utils import Utils
-from src.frontend.window.basic import BasicMainWindow
+from src.frontend.utils import ReactorVariablesName
 from types import SimpleNamespace
 
 
@@ -21,13 +17,16 @@ class BatchLayout(BasicSteadyStateReactorLayout):
             Window where the layout should be applied
         """
         super().__init__(main_window)
+        self.reactor_model_function = run_batch_reactor_model
+        self.reactor_model_class = BatchReactor
 
-    def run_reactor_model(self) -> None:
+    def read_input(self) -> dict:
         """
-        Function to run the reactor model
+        Function to read user input
         Returns
         -------
-
+        input_dict: dict
+            User input
         """
         self._check_input_files()
         self._check_edit_line_float_input(self.volumeEditLine, ReactorVariablesName.volume.value)
@@ -35,34 +34,30 @@ class BatchLayout(BasicSteadyStateReactorLayout):
         self._check_edit_line_float_input(self.timeEditLine, ReactorVariablesName.time.value)
         self._check_edit_line_float_input(self.timeStepEditLine, ReactorVariablesName.timeStep.value)
 
-        self.main_window.userInput.reactor_model_backend = BatchModel(self.main_window.userInput.file_path,
-                                                                      self.main_window.userInput.gas_phase_name,
-                                                                      self.main_window.userInput.surface_phase_name)
-
         input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
                       ReactorVariablesName.initialTemperature: SimpleNamespace(
                           value=self.main_window.userInput.temperature["value"],
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.main_window.userInput.temperature["ud"])),
                       ReactorVariablesName.pressure: SimpleNamespace(
                           value=self.main_window.userInput.pressure["value"],
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.main_window.userInput.pressure["ud"])),
                       ReactorVariablesName.volume: SimpleNamespace(
                           value=float(self.volumeEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.volumeDropDown.currentText())),
                       ReactorVariablesName.alfa: SimpleNamespace(
                           value=float(self.alfaEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.alfaDropDown.currentText())),
                       ReactorVariablesName.time: SimpleNamespace(
                           value=float(self.timeEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.timeDropDown.currentText())),
                       ReactorVariablesName.timeStep: SimpleNamespace(
                           value=float(self.timeStepEditLine.text()),
-                          ud=self.main_window.defaultInput.from_human_to_code_ud(
+                          ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.timeStepDropDown.currentText())),
                       ReactorVariablesName.energy: self.energyDropDown.currentText().strip(),
                       ReactorVariablesName.z: self._extract_coverage_input_composition()}
@@ -75,9 +70,7 @@ class BatchLayout(BasicSteadyStateReactorLayout):
             input_dict.update({ReactorVariablesName.initialX: None,
                                ReactorVariablesName.initialY: self.main_window.userInput.mass_fraction})
 
-        self.main_window.userInput.reactor_model_backend.run(input_dict)
-
-        Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
+        return input_dict
 
     def create_layout_components(self) -> None:
         """

@@ -1,5 +1,5 @@
 from src.backend.basic_calculation import BasicCalculation
-from src.backend.default_input_handler import DefaultInputHandler
+from src.backend.utils import UnitDimensionHandler
 
 
 class TransportAndThermodynamicProperties(BasicCalculation):
@@ -28,7 +28,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
             Gas mixture density
         """
         return self._uc.convert_from_kg_per_cubic_meter(self._gas.density,
-                                                        DefaultInputHandler.from_human_to_code_ud(ud))
+                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def viscosity(self, ud) -> float:
         """
@@ -43,7 +43,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
             Gas mixture viscosity
         """
         return self._uc.convert_from_pascal_seconds(self._gas.viscosity,
-                                                    DefaultInputHandler.from_human_to_code_ud(ud))
+                                                    UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def molecular_weight(self, ud) -> float:
         """
@@ -58,7 +58,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
             Gas mixture molecular weight
         """
         return self._uc.convert_from_kg_per_kmol(self._gas.mean_molecular_weight,
-                                                 DefaultInputHandler.from_human_to_code_ud(ud))
+                                                 UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def thermal_conductivity(self, ud) -> float:
         """
@@ -73,7 +73,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
             Gas mixture thermal conductivity
         """
         return self._uc.convert_from_watt_per_meter_per_kelvin(self._gas.thermal_conductivity,
-                                                               DefaultInputHandler.from_human_to_code_ud(ud))
+                                                               UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def mixture_diffusivity(self, ud) -> dict:
         """
@@ -95,7 +95,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
 
         return dict(zip(self._species_names,
                         [self._uc.convert_from_square_meter_per_seconds(d,
-                                                                        DefaultInputHandler.from_human_to_code_ud(ud))
+                                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
                          for d in diff_mix]))
 
     def specific_heat(self, ud) -> float:
@@ -112,10 +112,10 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         """
         if 'mol' in ud.lower():
             return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.cp_mole,
-                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+                                                                   UnitDimensionHandler.from_human_to_code_ud(ud))
 
         return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.cp_mass,
-                                                             DefaultInputHandler.from_human_to_code_ud(ud))
+                                                             UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def enthalpy(self, ud) -> float:
         """
@@ -131,10 +131,10 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         """
         if 'mol' in ud.lower():
             return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.enthalpy_mole,
-                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+                                                                   UnitDimensionHandler.from_human_to_code_ud(ud))
 
         return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.enthalpy_mass,
-                                                             DefaultInputHandler.from_human_to_code_ud(ud))
+                                                             UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def entropy(self, ud) -> float:
         """
@@ -150,7 +150,7 @@ class TransportAndThermodynamicProperties(BasicCalculation):
         """
         if 'mol' in ud.lower():
             return self._uc.convert_from_joule_per_kmol_per_kelvin(self._gas.entropy_mole,
-                                                                   DefaultInputHandler.from_human_to_code_ud(ud))
+                                                                   UnitDimensionHandler.from_human_to_code_ud(ud))
 
         return self._uc.convert_from_joule_per_kg_per_kelvin(self._gas.entropy_mass,
-                                                             DefaultInputHandler.from_human_to_code_ud(ud))
+                                                             UnitDimensionHandler.from_human_to_code_ud(ud))

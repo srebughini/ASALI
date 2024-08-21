@@ -8,10 +8,12 @@ from PyQt5.QtCore import Qt, QTimer
 
 from functools import partial
 
-from src.backend.default_input_handler import DefaultInputHandler
+from src.backend.utils import UnitDimensionHandler, DefaultPath
 from src.backend.user_input_handler import UserInputHandler
+from src.frontend.layout.reactors.worker import Worker
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
+from src.frontend.window.run_bar import RunBarWindow
 
 
 class BasicMainWindow(QMainWindow):
@@ -21,13 +23,14 @@ class BasicMainWindow(QMainWindow):
         """
         # Set backend variables
         super().__init__(parent)
-        self.userInput = UserInputHandler()
-        self.defaultInput = DefaultInputHandler()
-        self.title = "ASALI"
+        self._reactor_model_results = None
 
+        self.userInput = UserInputHandler()
+        self.ud_handler = UnitDimensionHandler()
+        self.title = Utils.window_title()
         self.setWindowTitle(self.title)
 
-        self.icon = QIcon(os.path.join(self.defaultInput.image_path, "Icon.png"))
+        self.icon = QIcon(DefaultPath.icon.value)
         self.setWindowIcon(self.icon)
         self.setStyleSheet(WidgetStyle.WINDOW.value)
         self.setWindowFlags(
@@ -49,6 +52,10 @@ class BasicMainWindow(QMainWindow):
         # Central widget and layout
         self.central_widget = QWidget(self)
         self.setCentralWidget(self.central_widget)
+
+        self.runBar = RunBarWindow()
+        self.worker = Worker()
+        self.worker.finished.connect(self.on_finished_for_worker)
 
     def _reset_user_input(self) -> None:
         """
@@ -105,6 +112,34 @@ class BasicMainWindow(QMainWindow):
 
         Utils.clean_widget(self.central_widget)
 
+    def get_reactor_model_results(self) -> dict:
+        """
+        Get reactor model results
+        Returns
+        -------
+        worker: dict
+            Reactor model results
+        """
+
+        return self._reactor_model_results
+
+    def set_reactor_model_results(self, value) -> None:
+        """
+        Set reactor model results
+        Parameters
+        ----------
+        value: dict
+            Reactor model results
+
+        Returns
+        -------
+
+        """
+        self._reactor_model_results = value
+
+    # Creating a property object for surface phase name
+    reactor_model_results = property(get_reactor_model_results, set_reactor_model_results)
+
     def set_central_widget_layout(self, layout) -> None:
         """
         Set layout for the windows
@@ -157,3 +192,13 @@ class BasicMainWindow(QMainWindow):
         -------
         """
         self.set_central_widget_layout(layout_class(self))
+
+    def on_finished_for_worker(self, result) -> None:
+        """
+        Closes the run bar window
+        Returns
+        -------
+
+        """
+        self.runBar.close_run_bar()
+        self._reactor_model_results = result

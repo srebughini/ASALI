@@ -15,49 +15,6 @@ class ColorPalette(Enum):
     ORANGE = "#DB901F"
 
 
-class SheetNames(Enum):
-    X = "mole_fraction"
-    Y = "mass_fraction"
-    Z = "coverage"
-    T = "temperature"
-
-
-class ReactorVariablesName(Enum):
-    volume = "volume"
-    alfa = "catalytic load"
-    time = "integration time"
-    timeStep = "time step"
-    massFlowRate = "mass flow rate"
-    initialTemperature = "initial temperature"
-    diameter = "diameter"
-    length = "length"
-    lengthStep = "length step"
-    udk = "user defined kinetic"
-    temperature = "inlet temperature"
-    pressure = "pressure"
-    energy = "energy"
-    z = "initial coverage"
-    initialX = "initial mole fraction"
-    initialY = "initial mass fraction"
-    x = "inlet mole fraction"
-    y = "inlet mass fraction"
-    diffusion = "diffusion"
-    inertCoverage = "inert coverage"
-    inertSpecie = "inert specie"
-
-
-class BasicUnitDimension(Enum):
-    time = "s"
-    temperature = "K"
-    length = "m"
-
-
-class ColumnNames(Enum):
-    time = f"Time [{BasicUnitDimension.time.value}]"
-    temperature = f"Temperature [{BasicUnitDimension.temperature.value}]"
-    length = f"Length [{BasicUnitDimension.length.value}]"
-
-
 class WidgetStyle(Enum):
     WINDOW = f"""
             background-color: {ColorPalette.BLUE.value}; 
@@ -127,5 +84,15 @@ class WidgetStyle(Enum):
             
             QCheckBox::indicator:pressed {{
                     background-color: {ColorPalette.ORANGE.value}; /* Optional: Change color when pressed */
+            }}
+        """
+
+    PROGRESSBAR = f"""
+            QProgressBar {{
+                background-color: {ColorPalette.LIGHTBLUE.value};  /* Background color */
+            }}
+            QProgressBar::chunk {{
+                background-color: {ColorPalette.ORANGE.value};  /* Progress bar color */
+                width: 20px;  /* Optional chunk width for indeterminate mode */
             }}
         """

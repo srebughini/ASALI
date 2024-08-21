@@ -1,19 +1,29 @@
 import os
+from enum import Enum
 from typing import Iterable
 
 from asali.utils.unit_converter import UnitConverter
 
 
-class DefaultInputHandler:
+class ReactorResultsFormat(Enum):
+    x = "independent variable"
+    y = "dependent variable"
+
+
+class DefaultPath(Enum):
+    images = os.path.join("images")
+    database = os.path.join("database")
+    defaultChemistry = os.path.join("database", "data.yaml")
+    icon = os.path.join("images", "Icon.png")
+
+
+class UnitDimensionHandler:
     def __init__(self):
         """
-        Class to handle the default input
+        Class to handle unit dimension
         """
-        self._imagePath = os.path.join("images")
-        self._databasePath = os.path.join("database")
-        self._defaultChemistryPath = os.path.join(self._databasePath, "data.yaml")
         self._uc = UnitConverter()
-        self._temperatureUd = [DefaultInputHandler.from_code_to_human(ud) for ud in
+        self._temperatureUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in
                                self._uc.temperature_ud().keys()]
         self._pressureUd = ['Pa',
                             'kPa',
@@ -27,31 +37,31 @@ class DefaultInputHandler:
         self._compositionUd = ['Mass fraction',
                                'Mole fraction']
 
-        self._massUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.mass_ud().keys()]
-        self._lengthUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m", "cm", "mm"]]
-        self._areaUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m**2", "cm**2", "mm**2"]]
-        self._volumeUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["m**3", "cm**3", "mm**3"]]
-        self._moleUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.mole_ud().keys()]
-        self._viscosityUd = [DefaultInputHandler.from_code_to_human(ud) for ud in self._uc.viscosity_ud().keys()]
-        self._powerUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ["W", "kW", "cal/s", "kcal/s"]]
-        self._timeUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ['s', 'min', 'h']]
-        self._energyUd = [DefaultInputHandler.from_code_to_human(ud) for ud in ['J', 'kJ', 'cal', 'kcal']]
+        self._massUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in self._uc.mass_ud().keys()]
+        self._lengthUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ["m", "cm", "mm"]]
+        self._areaUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ["m**2", "cm**2", "mm**2"]]
+        self._volumeUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ["m**3", "cm**3", "mm**3"]]
+        self._moleUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in self._uc.mole_ud().keys()]
+        self._viscosityUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in self._uc.viscosity_ud().keys()]
+        self._powerUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ["W", "kW", "cal/s", "kcal/s"]]
+        self._timeUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ['s', 'min', 'h']]
+        self._energyUd = [UnitDimensionHandler.from_code_to_human(ud) for ud in ['J', 'kJ', 'cal', 'kcal']]
 
-        self._thermalConductivityUd = [f"{ud}/K" for ud in DefaultInputHandler.create_fractional_ud(self._powerUd,
-                                                                                                    self._lengthUd)]
+        self._thermalConductivityUd = [f"{ud}/K" for ud in UnitDimensionHandler.create_fractional_ud(self._powerUd,
+                                                                                                     self._lengthUd)]
 
-        self._densityUd = DefaultInputHandler.create_fractional_ud(self._massUd, self._volumeUd)
-        self._molecularWeightUd = DefaultInputHandler.create_fractional_ud(self._massUd, self._moleUd)
-        self._diffusivityUd = DefaultInputHandler.create_fractional_ud(self._areaUd, self._timeUd)
+        self._densityUd = UnitDimensionHandler.create_fractional_ud(self._massUd, self._volumeUd)
+        self._molecularWeightUd = UnitDimensionHandler.create_fractional_ud(self._massUd, self._moleUd)
+        self._diffusivityUd = UnitDimensionHandler.create_fractional_ud(self._areaUd, self._timeUd)
 
-        self._enthalpyUd = DefaultInputHandler.create_fractional_ud(self._energyUd,
-                                                                    ["kg", "g", "kmol", "mol"])
+        self._enthalpyUd = UnitDimensionHandler.create_fractional_ud(self._energyUd,
+                                                                     ["kg", "g", "kmol", "mol"])
 
-        self._velocityUd = DefaultInputHandler.create_fractional_ud(self._lengthUd,
-                                                                    self._timeUd)
+        self._velocityUd = UnitDimensionHandler.create_fractional_ud(self._lengthUd,
+                                                                     self._timeUd)
 
-        self._massFlowRateUd = DefaultInputHandler.create_fractional_ud(self._massUd,
-                                                                        self._timeUd)
+        self._massFlowRateUd = UnitDimensionHandler.create_fractional_ud(self._massUd,
+                                                                         self._timeUd)
 
         self._entropyUd = [f"{ud}/K" for ud in self._enthalpyUd]
         self._entropyUd.extend([f"{ud}/°C" for ud in self._enthalpyUd])
@@ -124,39 +134,6 @@ class DefaultInputHandler:
         cud = cud.replace("**3", "\u00b3")
         cud = cud.replace("**2", "\u00b2")
         return cud.strip()
-
-    @property
-    def image_path(self) -> str:
-        """
-        Access to the image path
-        Returns
-        -------
-        imagePath: str
-            Default image path
-        """
-        return self._imagePath
-
-    @property
-    def database_path(self) -> str:
-        """
-        Access to the database path
-        Returns
-        -------
-        databasePath: str
-            Default database path
-        """
-        return self._databasePath
-
-    @property
-    def default_chemistry_path(self) -> str:
-        """
-        Access to the chemistry path
-        Returns
-        -------
-        defaultChemistryPath: str
-            Default chemistry path
-        """
-        return self._defaultChemistryPath
 
     @property
     def temperature_ud(self) -> list:

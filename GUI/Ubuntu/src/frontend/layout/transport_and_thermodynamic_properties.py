@@ -97,49 +97,49 @@ class TransportAndThermodynamicPropertiesLayout(BasicCalculationLayout):
 
         # Density
         self.rhoDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.density_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.density_ud],
             function=self._update_properties)
         self.rhoLabel = QLabel(self._empty_label)
 
         # Molecular weight
         self.mwDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.molecular_weight_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.molecular_weight_ud],
             function=self._update_properties)
         self.mwLabel = QLabel(self._empty_label)
 
         # Viscosity
         self.muDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.viscosity_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.viscosity_ud],
             function=self._update_properties)
         self.muLabel = QLabel(self._empty_label)
 
         # Thermal conductivity
         self.condDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.thermal_conductivity_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.thermal_conductivity_ud],
             function=self._update_properties)
         self.condLabel = QLabel(self._empty_label)
 
         # Mixture diffusivity
         self.diffMixDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.diffusivity_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.diffusivity_ud],
             function=self._update_properties)
         self.diffMixLabel = QLabel(self._empty_label)
 
         # Enthalpy
         self.enthalpyDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.enthalpy_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.enthalpy_ud],
             function=self._update_properties)
         self.enthalpyLabel = QLabel(self._empty_label)
 
         # Entropy
         self.entropyDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.entropy_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.entropy_ud],
             function=self._update_properties)
         self.entropyLabel = QLabel(self._empty_label)
 
         # Specific heat
         self.specificHeatDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.specific_heat_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.specific_heat_ud],
             function=self._update_properties)
         self.specificHeatLabel = QLabel(self._empty_label)
 

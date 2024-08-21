@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
+from src.backend.utils import DefaultPath
 from src.frontend.layout.basic import BasicLayout
 from src.frontend.layout.chemkin_to_cantera_converter import ChemkinToCanteraConverterLayout
 from src.frontend.style import FileType
@@ -44,7 +45,7 @@ class MainMenuLayout(BasicLayout):
             self.main_window.userInput.file_path = None
             self.main_window.userInput.udk_file_path = None
         elif self.selectChemistryDropDown.currentIndex() == 1:
-            self.main_window.userInput.file_path = self.main_window.defaultInput.default_chemistry_path
+            self.main_window.userInput.file_path = DefaultPath.defaultChemistry.value
             self.main_window.userInput.udk_file_path = None
         elif self.selectChemistryDropDown.currentIndex() == 2:
             self.main_window.userInput.file_path = Utils.open_file(self.main_window,
@@ -60,7 +61,7 @@ class MainMenuLayout(BasicLayout):
         if self.makeChemistryDropDown.currentIndex() == 1:
             Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, ChemkinToCanteraConverterLayout)
         elif self.makeChemistryDropDown.currentIndex() == 2:
-            self.main_window.userInput.file_path = self.main_window.defaultInput.default_chemistry_path
+            self.main_window.userInput.file_path = self.main_window.ud_handler.default_chemistry_path
             self.main_window.userInput.udk_file_path = Utils.open_file(self.main_window,
                                                                        file_type=FileType.ASALI.value)
             if self.main_window.userInput.check_udk_input_file():

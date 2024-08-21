@@ -22,7 +22,7 @@ class MainMenuWindow(BasicMainWindow):
         """
         if self.userInput.udk_file_path is None and self.userInput.file_path is None:
             Utils.error_message(self,
-                                self.title,
+                                Utils.window_title(),
                                 QLabel("Chemistry file not selected!"))
         else:
             self.set_central_widget_layout(CalculationMainMenuLayout(self))

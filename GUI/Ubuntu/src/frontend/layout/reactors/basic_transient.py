@@ -64,7 +64,7 @@ class BasicTransientReactorLayout(BasicReactorLayout):
         Parameters
         ----------
         row_idx: int
-            Row index where to add the buttons
+            Row index where to remove the buttons
         Returns
         -------
 
@@ -107,14 +107,15 @@ class BasicTransientReactorLayout(BasicReactorLayout):
                        self._sub_grid_width)
 
     @abstractmethod
-    def run_reactor_model(self) -> None:
+    def read_input(self) -> dict:
         """
-        Function to run the reactor model
+        Function to read user input
         Returns
         -------
-
+        input_dict: dict
+            User input
         """
-        pass
+        return {}
 
     @abstractmethod
     def create_layout_components(self) -> None:

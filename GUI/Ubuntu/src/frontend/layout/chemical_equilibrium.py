@@ -35,7 +35,7 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
         Returns
         -------
         """
-        self.cl.equilibrate(self.main_window.defaultInput.from_human_eq_to_code_eq(self.eqDropDown.currentText()))
+        self.cl.equilibrate(self.main_window.ud_handler.from_human_eq_to_code_eq(self.eqDropDown.currentText()))
 
         T = self.cl.temperature(self.temperatureUdDropDown.currentText())
         P = self.cl.pressure(self.pressureUdDropDown.currentText())
@@ -68,15 +68,15 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
 
         """
         self.eqDropDown = self._create_dropdown(
-            [Utils.pad_string(op) for op in self.main_window.defaultInput.human_chemical_equilibrium_options],
+            [Utils.pad_string(op) for op in self.main_window.ud_handler.human_chemical_equilibrium_options],
             function=self._update_properties)
 
         self.temperatureUdDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.temperature_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.temperature_ud],
             function=None)
 
         self.pressureUdDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.pressure_ud],
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.pressure_ud],
             function=None)
 
         self.temperatureLabel = QLabel(self._empty_label)

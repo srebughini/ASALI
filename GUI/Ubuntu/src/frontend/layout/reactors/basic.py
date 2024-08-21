@@ -7,10 +7,13 @@ from PyQt5.QtWidgets import (
 )
 
 from src.frontend.layout.basic import BasicLayout
+from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.style import FileType, WidgetStyle
 from src.frontend.utils import Utils
 
 import numpy as np
+
+from src.frontend.window.basic import BasicMainWindow
 
 
 class BasicReactorLayout(BasicLayout):
@@ -61,6 +64,9 @@ class BasicReactorLayout(BasicLayout):
 
         self._coverage_row_idx = 0
         self._initial_species_row_idx = 0
+
+        self.reactor_model_function = None
+        self.reactor_model_class = None
 
         super().__init__(main_window)
 
@@ -169,7 +175,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.volumeDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.volume_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.volume_ud])
         self.volumeEditLine = self._create_line_edit("10.0", Qt.AlignRight, QDoubleValidator())
 
     def _create_diameter_input_line(self) -> None:
@@ -180,7 +186,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.diameterDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
         self.diameterEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
 
     def _create_reactor_length_input_line(self) -> None:
@@ -191,7 +197,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.lengthDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
         self.lengthEditLine = self._create_line_edit("2.5", Qt.AlignRight, QDoubleValidator())
 
     def _create_catalytic_load_input_line(self) -> None:
@@ -202,7 +208,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.alfaDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.one_over_length_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.one_over_length_ud])
         self.alfaEditLine = self._create_line_edit("15.0", Qt.AlignRight, QDoubleValidator())
 
     def _create_energy_balance_input_line(self) -> None:
@@ -249,7 +255,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.timeDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.time_ud])
         self.timeEditLine = self._create_line_edit("5", Qt.AlignRight, QDoubleValidator())
 
     def _create_time_step_input_line(self) -> None:
@@ -260,7 +266,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.timeStepDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.time_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.time_ud])
         self.timeStepEditLine = self._create_line_edit("0.5", Qt.AlignRight, QDoubleValidator())
 
     def _create_reactor_length_step_input_line(self) -> None:
@@ -271,7 +277,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.lengthStepDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.length_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
         self.lengthStepEditLine = self._create_line_edit("0.005", Qt.AlignRight, QDoubleValidator())
 
     def _create_mass_flow_rate_input_line(self) -> None:
@@ -282,7 +288,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.massFlowRateDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.mass_flow_rate_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.mass_flow_rate_ud])
         self.massFlowRateEditLine = self._create_line_edit("1.0", Qt.AlignRight, QDoubleValidator())
 
     def _create_initial_temperature_input_line(self) -> None:
@@ -293,7 +299,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.initialTemperatureDropDown = self._create_dropdown(
-            [Utils.pad_string(ud) for ud in self.main_window.defaultInput.temperature_ud])
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.temperature_ud])
         self.initialTemperatureEditLine = self._create_line_edit("298.15", Qt.AlignRight, QDoubleValidator())
 
     def _create_composition_type_input_line(self) -> None:
@@ -303,7 +309,7 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.compositionUdDropDown = self._create_dropdown(self.main_window.defaultInput.composition_ud, function=None)
+        self.compositionUdDropDown = self._create_dropdown(self.main_window.ud_handler.composition_ud, function=None)
 
     def _create_headline_label(self, text) -> None:
         """
@@ -717,6 +723,40 @@ class BasicReactorLayout(BasicLayout):
 
         return dict(zip(names, composition))
 
+    def run_reactor_model(self) -> None:
+        """
+        Function to run the reactor model
+        Returns
+        -------
+
+        """
+        self.main_window.worker.task_function = self.reactor_model_function
+        self.main_window.worker.args = (self.main_window.userInput.file_path,
+                                        self.main_window.userInput.gas_phase_name,
+                                        self.main_window.userInput.surface_phase_name,
+                                        self.read_input())
+        self.main_window.runBar.worker = self.main_window.worker
+
+        self.main_window.runBar.reset_run_bar()
+        self.main_window.runBar.show()
+
+        self.main_window.worker.start()
+
+        if self.main_window.reactor_model_results is not None:
+            self.main_window.userInput.reactor_model_backend = self.reactor_model_class(
+                self.main_window.userInput.file_path,
+                self.main_window.userInput.gas_phase_name,
+                self.main_window.userInput.surface_phase_name)
+
+            # TODO
+            """
+            self.main_window.userInput.reactor_model_backend.set_independet_variable_results(
+                self.main_window.reactor_model_results[ReactorResultsFormat.x])
+            self.main_window.userInput.reactor_model_backend.set_dependet_variable_results(
+                self.main_window.reactor_model_results[ReactorResultsFormat.y])
+            """
+            Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
+
     def run_backend(self) -> None:
         """
         Run backend to update frontend
@@ -769,14 +809,15 @@ class BasicReactorLayout(BasicLayout):
         pass
 
     @abstractmethod
-    def run_reactor_model(self) -> None:
+    def read_input(self) -> dict:
         """
-        Function to run the reactor model
+        Function to read user input
         Returns
         -------
-
+        input_dict: dict
+            User input
         """
-        pass
+        return {}
 
     @abstractmethod
     def create_layout_components(self) -> None:

@@ -5,7 +5,7 @@ import numpy as np
 
 from asali.utils.unit_converter import UnitConverter
 
-from src.backend.default_input_handler import DefaultInputHandler
+from src.backend.utils import UnitDimensionHandler
 
 
 class BasicCalculation(ABC):
@@ -47,8 +47,8 @@ class BasicCalculation(ABC):
         Returns
         -------
         """
-        T = self._uc.convert_to_kelvin(temperature, DefaultInputHandler.from_human_to_code_ud(temperature_ud))
-        P = self._uc.convert_to_pascal(pressure, DefaultInputHandler.from_human_to_code_ud(pressure_ud))
+        T = self._uc.convert_to_kelvin(temperature, UnitDimensionHandler.from_human_to_code_ud(temperature_ud))
+        P = self._uc.convert_to_pascal(pressure, UnitDimensionHandler.from_human_to_code_ud(pressure_ud))
         self._species_names = list(mass_fraction.keys())
         self._gas.TPY = T, P, mass_fraction
         self._species_mask = np.asarray([True if s in self._species_names else False for s in self._gas.species_names])
@@ -77,8 +77,8 @@ class BasicCalculation(ABC):
         Returns
         -------
         """
-        T = self._uc.convert_to_kelvin(temperature, DefaultInputHandler.from_human_to_code_ud(temperature_ud))
-        P = self._uc.convert_to_pascal(pressure, DefaultInputHandler.from_human_to_code_ud(pressure_ud))
+        T = self._uc.convert_to_kelvin(temperature, UnitDimensionHandler.from_human_to_code_ud(temperature_ud))
+        P = self._uc.convert_to_pascal(pressure, UnitDimensionHandler.from_human_to_code_ud(pressure_ud))
         self._species_names = list(mole_fraction.keys())
         self._gas.TPX = T, P, mole_fraction
         self._species_mask = np.asarray([True if s in self._species_names else False for s in self._gas.species_names])
@@ -127,7 +127,7 @@ class BasicCalculation(ABC):
         T: float
             Temperature
         """
-        return self._uc.convert_to_kelvin(self._gas.T, DefaultInputHandler.from_human_to_code_ud(ud))
+        return self._uc.convert_to_kelvin(self._gas.T, UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def pressure(self, ud) -> float:
         """
@@ -141,7 +141,7 @@ class BasicCalculation(ABC):
         P: float
             Pressure
         """
-        return self._uc.convert_to_pascal(self._gas.P, DefaultInputHandler.from_human_to_code_ud(ud))
+        return self._uc.convert_to_pascal(self._gas.P, UnitDimensionHandler.from_human_to_code_ud(ud))
 
     def specie_index(self, specie_name) -> int:
         """
