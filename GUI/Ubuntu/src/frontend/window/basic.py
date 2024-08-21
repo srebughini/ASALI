@@ -1,5 +1,3 @@
-import os
-
 from PyQt5.QtWidgets import (
     QMainWindow, QToolBar, QAction, QWidget, QGridLayout, QDesktopWidget
 )
@@ -10,7 +8,7 @@ from functools import partial
 
 from src.backend.utils import UnitDimensionHandler, DefaultPath
 from src.backend.user_input_handler import UserInputHandler
-from src.frontend.layout.reactors.worker import Worker
+from src.frontend.worker import Worker
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
 from src.frontend.window.run_bar import RunBarWindow
