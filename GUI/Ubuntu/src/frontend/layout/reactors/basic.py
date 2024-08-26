@@ -67,7 +67,7 @@ class BasicReactorLayout(BasicLayout):
         self.reactor_model_class = None
 
         super().__init__(main_window)
-        self.main_window.userInput.reactor_parser = ReactorParser()
+        self.main_window.backend_frontend_manager.reactor_parser = ReactorParser()
 
     def _update_layout(self) -> None:
         """
@@ -647,13 +647,13 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.main_window.userInput.udk_file_path = Utils.open_file(self.main_window,
+        self.main_window.backend_frontend_manager.udk_file_path = Utils.open_file(self.main_window,
                                                                    file_type=FileType.ASALI.value)
 
         self.udkLoadLabel.setText(Utils.pad_string("Not loaded"))
 
-        if self.main_window.userInput.udk_file_path is not None:
-            if self.main_window.userInput.check_udk_input_file():
+        if self.main_window.backend_frontend_manager.udk_file_path is not None:
+            if self.main_window.backend_frontend_manager.check_udk_input_file():
                 self.udkLoadLabel.setText(Utils.pad_string("Loaded"))
             else:
                 Utils.error_message(self.main_window,
@@ -668,21 +668,21 @@ class BasicReactorLayout(BasicLayout):
         check: bool
             Results of the check
         """
-        if not self.main_window.userInput.check_cantera_input_file():
+        if not self.main_window.backend_frontend_manager.check_cantera_input_file():
             Utils.error_message(self.main_window,
                                 self.title,
                                 QLabel("Wrong CANTERA input file."))
             return False
 
-        if self.main_window.userInput.surface_phase_name is None:
-            if self.main_window.userInput.udk_file_path is None:
+        if self.main_window.backend_frontend_manager.surface_phase_name is None:
+            if self.main_window.backend_frontend_manager.udk_file_path is None:
                 Utils.error_message(self.main_window,
                                     self.title,
                                     QLabel("""The provided CANTERA file does not have surface reactions."""))
                 return False
 
-        if self.main_window.userInput.udk_file_path is not None:
-            if not self.main_window.userInput.check_udk_input_file():
+        if self.main_window.backend_frontend_manager.udk_file_path is not None:
+            if not self.main_window.backend_frontend_manager.check_udk_input_file():
                 Utils.error_message(self.main_window,
                                     self.title,
                                     QLabel("Wrong ASALI input file."))
@@ -739,9 +739,9 @@ class BasicReactorLayout(BasicLayout):
 
         if len(input_dict) > 0:
             self.main_window.worker.task_function = self.reactor_model_function
-            self.main_window.worker.args = (self.main_window.userInput.file_path,
-                                            self.main_window.userInput.gas_phase_name,
-                                            self.main_window.userInput.surface_phase_name,
+            self.main_window.worker.args = (self.main_window.backend_frontend_manager.file_path,
+                                            self.main_window.backend_frontend_manager.gas_phase_name,
+                                            self.main_window.backend_frontend_manager.surface_phase_name,
                                             input_dict)
             self.main_window.runBar.worker = self.main_window.worker
 

@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt, QTimer
 from functools import partial
 
 from src.backend.utils import UnitDimensionHandler, DefaultPath, ReactorResultsFormat
-from src.backend.user_input_handler import UserInputHandler
+from src.backend.backend_frontend_manager import BackendFrontendManager
 from src.frontend.layout.reactors.plot_and_save import PlotAndSaveLayout
 from src.frontend.worker import Worker
 from src.frontend.style import WidgetStyle
@@ -24,7 +24,7 @@ class BasicMainWindow(QMainWindow):
         super().__init__(parent)
         self._reactor_model_results = None
 
-        self.userInput = UserInputHandler()
+        self.backend_frontend_manager = BackendFrontendManager()
         self.ud_handler = UnitDimensionHandler()
         self.title = Utils.window_title()
         self.setWindowTitle(self.title)
@@ -63,8 +63,8 @@ class BasicMainWindow(QMainWindow):
         -------
 
         """
-        self.userInput.udk_file_path = None
-        self.userInput.file_path = None
+        self.backend_frontend_manager.udk_file_path = None
+        self.backend_frontend_manager.file_path = None
 
     def _create_tool_bar(self) -> None:
         """
@@ -150,7 +150,7 @@ class BasicMainWindow(QMainWindow):
         Returns
         -------
         """
-        layout.userInput = self.userInput
+        layout.userInput = self.backend_frontend_manager
         self._clean_central_widget()
         self.central_widget.setLayout(layout)
         self.central_widget.adjustSize()
@@ -207,11 +207,11 @@ class BasicMainWindow(QMainWindow):
         self.setEnabled(True)
 
         if results is not None:
-            reactor_model = results[ReactorResultsFormat.reactor](self.userInput.file_path,
-                                                                  self.userInput.gas_phase_name,
-                                                                  self.userInput.surface_phase_name)
+            reactor_model = results[ReactorResultsFormat.reactor](self.backend_frontend_manager.file_path,
+                                                                  self.backend_frontend_manager.gas_phase_name,
+                                                                  self.backend_frontend_manager.surface_phase_name)
 
             reactor_model.set_results(*results[ReactorResultsFormat.results])
 
-            self.userInput.reactor_parser.reactor_model = reactor_model
+            self.backend_frontend_manager.reactor_parser.reactor_model = reactor_model
             Utils.open_new_window_from_layout(self, BasicMainWindow, PlotAndSaveLayout)

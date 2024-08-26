@@ -113,15 +113,15 @@ class ChemkinToCanteraConverterLayout(BasicLayout):
         surface_file_path = None if self.surfaceLabel.text() == self._clean_label_text else self.surfaceLabel.text()
 
         if output_file_path is not None:
-            if self.main_window.userInput.check_file_extension(output_file_path, ".yaml"):
+            if self.main_window.backend_frontend_manager.check_file_extension(output_file_path, ".yaml"):
                 ChemkinToCanteraConverter.convert(kinetic_file_path,
                                                   thermo_file_path,
                                                   transport_file_path,
                                                   surface_file_path,
                                                   output_file_path)
 
-                self.main_window.userInput.file_path = output_file_path
-                if self.main_window.userInput.check_cantera_input_file():
+                self.main_window.backend_frontend_manager.file_path = output_file_path
+                if self.main_window.backend_frontend_manager.check_cantera_input_file():
                     Utils.done_message(self.main_window,
                                        self.title,
                                        QLabel("CHEMKIN to CANTERA conversion completed!"))

@@ -7,7 +7,7 @@ from cantera import Solution, Interface
 from src.backend.reactors.parser import ReactorParser
 
 
-class UserInputHandler:
+class BackendFrontendManager:
     def __init__(self):
         """
         Class to handle input data from users

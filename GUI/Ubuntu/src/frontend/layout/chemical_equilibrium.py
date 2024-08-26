@@ -56,8 +56,8 @@ class ChemicalEquilibriumLayout(BasicCalculationLayout):
         -------
 
         """
-        self.cl = self._set_gas_mixture_user_input(ChemicalEquilibrium(self.main_window.userInput.file_path,
-                                                                       self.main_window.userInput.gas_phase_name))
+        self.cl = self._set_gas_mixture_user_input(ChemicalEquilibrium(self.main_window.backend_frontend_manager.file_path,
+                                                                       self.main_window.backend_frontend_manager.gas_phase_name))
         self._update_properties()
 
     def create_layout_components(self) -> None:

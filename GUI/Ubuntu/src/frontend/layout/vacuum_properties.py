@@ -67,8 +67,8 @@ class VacuumPropertiesLayout(BasicCalculationLayout):
         -------
         """
 
-        self.cl = self._set_gas_mixture_user_input(VacuumProperties(self.main_window.userInput.file_path,
-                                                                    self.main_window.userInput.gas_phase_name))
+        self.cl = self._set_gas_mixture_user_input(VacuumProperties(self.main_window.backend_frontend_manager.file_path,
+                                                                    self.main_window.backend_frontend_manager.gas_phase_name))
 
         self.speciesDropDown.addItems(self.cl.species_names())
         self._update_properties()

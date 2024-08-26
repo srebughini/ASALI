@@ -64,7 +64,7 @@ class PlotAndSaveLayout(BasicLayout):
 
         if file_path is not None:
             save_dict["file_path"] = file_path
-            self.main_window.userInput.reactor_parser.save(save_dict)
+            self.main_window.backend_frontend_manager.reactor_parser.save(save_dict)
 
     def _select_all(self) -> None:
         """
@@ -143,7 +143,7 @@ class PlotAndSaveLayout(BasicLayout):
         if self.temperatureCheckBox.isChecked():
             plot_dict["T"] = True
 
-        self.main_window.userInput.reactor_parser.plot(plot_dict)
+        self.main_window.backend_frontend_manager.reactor_parser.plot(plot_dict)
 
     def _add_buttons(self, row_idx) -> None:
         """
@@ -199,8 +199,8 @@ class PlotAndSaveLayout(BasicLayout):
         Returns
         -------
         """
-        self.species_names = self.main_window.userInput.reactor_parser.gas_species_list()
-        self.coverage_names = self.main_window.userInput.reactor_parser.coverage_list()
+        self.species_names = self.main_window.backend_frontend_manager.reactor_parser.gas_species_list()
+        self.coverage_names = self.main_window.backend_frontend_manager.reactor_parser.coverage_list()
 
         self._update_layout_with_backend_info()
 

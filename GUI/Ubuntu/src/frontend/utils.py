@@ -9,15 +9,6 @@ from src.frontend.style import WidgetStyle, ColorPalette
 import os
 
 
-class SheetNames(Enum):
-    X = "mole_fraction"
-    Y = "mass_fraction"
-    Z = "coverage"
-    T = "temperature"
-    SPECIE = "{}_{}"
-    COVERAGE = "{}_{}"
-
-
 class ReactorVariablesName(Enum):
     volume = "volume"
     alfa = "catalytic load"
@@ -166,7 +157,7 @@ class Utils:
         """
         new_window = new_window_class(main_window)
         new_window.update_layout(new_layout_class)
-        new_window.userInput = main_window.userInput
+        new_window.backend_frontend_manager = main_window.backend_frontend_manager
         new_window.run_backend()
         new_window.show()
 
@@ -184,7 +175,7 @@ class Utils:
         -------
         """
         new_window = new_window_class(main_window)
-        new_window.userInput = main_window.userInput
+        new_window.backend_frontend_manager = main_window.backend_frontend_manager
         new_window.run_backend()
         new_window.show()
 

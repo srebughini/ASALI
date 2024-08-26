@@ -20,7 +20,7 @@ class MainMenuWindow(BasicMainWindow):
         Returns
         -------
         """
-        if self.userInput.udk_file_path is None and self.userInput.file_path is None:
+        if self.backend_frontend_manager.udk_file_path is None and self.backend_frontend_manager.file_path is None:
             Utils.error_message(self,
                                 Utils.window_title(),
                                 QLabel("Chemistry file not selected!"))

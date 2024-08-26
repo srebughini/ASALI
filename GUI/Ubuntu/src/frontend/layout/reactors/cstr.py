@@ -35,15 +35,15 @@ class CstrLayout(BasicTransientReactorLayout):
                                        ReactorVariablesName.initialTemperature: self.initialTemperatureEditLine}):
             return {}
 
-        input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
+        input_dict = {ReactorVariablesName.udk: self.main_window.backend_frontend_manager.udk_file_path,
                       ReactorVariablesName.temperature: SimpleNamespace(
-                          value=self.main_window.userInput.temperature["value"],
+                          value=self.main_window.backend_frontend_manager.temperature["value"],
                           ud=self.main_window.ud_handler.from_human_to_code_ud(
-                              self.main_window.userInput.temperature["ud"])),
+                              self.main_window.backend_frontend_manager.temperature["ud"])),
                       ReactorVariablesName.pressure: SimpleNamespace(
-                          value=self.main_window.userInput.pressure["value"],
+                          value=self.main_window.backend_frontend_manager.pressure["value"],
                           ud=self.main_window.ud_handler.from_human_to_code_ud(
-                              self.main_window.userInput.pressure["ud"])),
+                              self.main_window.backend_frontend_manager.pressure["ud"])),
                       ReactorVariablesName.volume: SimpleNamespace(
                           value=float(self.volumeEditLine.text()),
                           ud=self.main_window.ud_handler.from_human_to_code_ud(
@@ -71,13 +71,13 @@ class CstrLayout(BasicTransientReactorLayout):
                           ud=self.main_window.ud_handler.from_human_to_code_ud(
                               self.initialTemperatureDropDown.currentText()))}
 
-        if len(self.main_window.userInput.mole_fraction) > 0:
-            input_dict.update({ReactorVariablesName.x: self.main_window.userInput.mole_fraction,
+        if len(self.main_window.backend_frontend_manager.mole_fraction) > 0:
+            input_dict.update({ReactorVariablesName.x: self.main_window.backend_frontend_manager.mole_fraction,
                                ReactorVariablesName.y: None})
 
-        if len(self.main_window.userInput.mass_fraction) > 0:
+        if len(self.main_window.backend_frontend_manager.mass_fraction) > 0:
             input_dict.update({ReactorVariablesName.x: None,
-                               ReactorVariablesName.y: self.main_window.userInput.mass_fraction})
+                               ReactorVariablesName.y: self.main_window.backend_frontend_manager.mass_fraction})
 
         if "mole" in self.compositionUdDropDown.currentText().lower():
             input_dict.update({ReactorVariablesName.initialX: self._extract_initial_species_composition(),

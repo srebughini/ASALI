@@ -160,15 +160,15 @@ class CalculationMainMenuLayout(BasicLayout):
         if composition is None:
             return False
 
-        self.main_window.userInput.temperature = temperature
-        self.main_window.userInput.pressure = pressure
+        self.main_window.backend_frontend_manager.temperature = temperature
+        self.main_window.backend_frontend_manager.pressure = pressure
 
         if self.compositionUdDropDown.currentIndex() == 0:
-            self.main_window.userInput.mass_fraction = composition
-            self.main_window.userInput.mole_fraction = {}
+            self.main_window.backend_frontend_manager.mass_fraction = composition
+            self.main_window.backend_frontend_manager.mole_fraction = {}
         elif self.compositionUdDropDown.currentIndex() == 1:
-            self.main_window.userInput.mass_fraction = {}
-            self.main_window.userInput.mole_fraction = composition
+            self.main_window.backend_frontend_manager.mass_fraction = {}
+            self.main_window.backend_frontend_manager.mole_fraction = composition
 
         return True
 
