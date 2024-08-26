@@ -215,7 +215,7 @@ class BasicLayout(QGridLayout):
         """
         self.itemAtPosition(row_idx, col_idx).widget().setParent(None)
 
-    def _check_edit_line_float_input(self, edit_line, variable_name) -> None:
+    def _check_edit_line_float_input(self, edit_line, variable_name) -> bool:
         """
         Check single edit line input
         Parameters
@@ -227,11 +227,16 @@ class BasicLayout(QGridLayout):
 
         Returns
         -------
+        check: bool
+            Results of the check
         """
         if not Utils.is_float(edit_line.text()):
             Utils.error_message(self.main_window,
                                 self.title,
                                 QLabel(f"Wrong {variable_name} value."))
+            return False
+
+        return True
 
     @abstractmethod
     def create_layout_components(self) -> None:

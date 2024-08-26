@@ -2,9 +2,7 @@ from types import SimpleNamespace
 
 from PyQt5.QtWidgets import QMainWindow
 
-from asali.reactors.cstr import CstrReactor
-
-from src.backend.reactors import run_cstr_reactor_model
+from src.backend.reactors.runners import run_cstr_reactor_model
 from src.frontend.layout.reactors.basic_transient import BasicTransientReactorLayout
 from src.frontend.utils import ReactorVariablesName
 
@@ -20,7 +18,6 @@ class CstrLayout(BasicTransientReactorLayout):
         """
         super().__init__(main_window)
         self.reactor_model_function = run_cstr_reactor_model
-        self.reactor_model_class = CstrReactor
 
     def read_input(self) -> dict:
         """
@@ -30,14 +27,13 @@ class CstrLayout(BasicTransientReactorLayout):
         input_dict: dict
             User input
         """
-        self._check_input_files()
-        self._check_edit_line_float_input(self.volumeEditLine, ReactorVariablesName.volume.value)
-        self._check_edit_line_float_input(self.alfaEditLine, ReactorVariablesName.alfa.value)
-        self._check_edit_line_float_input(self.timeEditLine, ReactorVariablesName.time.value)
-        self._check_edit_line_float_input(self.timeStepEditLine, ReactorVariablesName.timeStep.value)
-        self._check_edit_line_float_input(self.massFlowRateEditLine, ReactorVariablesName.massFlowRate.value)
-        self._check_edit_line_float_input(self.initialTemperatureEditLine,
-                                          ReactorVariablesName.initialTemperature.value)
+        if not self._check_all_inputs({ReactorVariablesName.volume: self.volumeEditLine,
+                                       ReactorVariablesName.alfa: self.alfaEditLine,
+                                       ReactorVariablesName.time: self.timeEditLine,
+                                       ReactorVariablesName.timeStep: self.timeStepEditLine,
+                                       ReactorVariablesName.massFlowRate: self.massFlowRateEditLine,
+                                       ReactorVariablesName.initialTemperature: self.initialTemperatureEditLine}):
+            return {}
 
         input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
                       ReactorVariablesName.temperature: SimpleNamespace(

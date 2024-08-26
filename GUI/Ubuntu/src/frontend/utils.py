@@ -8,11 +8,14 @@ from src.frontend.style import WidgetStyle, ColorPalette
 
 import os
 
+
 class SheetNames(Enum):
     X = "mole_fraction"
     Y = "mass_fraction"
     Z = "coverage"
     T = "temperature"
+    SPECIE = "{}_{}"
+    COVERAGE = "{}_{}"
 
 
 class ReactorVariablesName(Enum):
@@ -49,12 +52,14 @@ class ColumnNames(Enum):
     time = f"Time [{BasicUnitDimension.time.value}]"
     temperature = f"Temperature [{BasicUnitDimension.temperature.value}]"
     length = f"Length [{BasicUnitDimension.length.value}]"
+    length_time = f"{length}/{time}"
 
 
 class Utils:
     """
     Class to handle utilities functions
     """
+
     @staticmethod
     def window_title() -> str:
         """

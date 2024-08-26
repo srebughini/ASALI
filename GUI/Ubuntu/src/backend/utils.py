@@ -6,8 +6,8 @@ from asali.utils.unit_converter import UnitConverter
 
 
 class ReactorResultsFormat(Enum):
-    x = "independent variable"
-    y = "dependent variable"
+    results = "results as tuple"
+    reactor = "reactor class name"
 
 
 class DefaultPath(Enum):

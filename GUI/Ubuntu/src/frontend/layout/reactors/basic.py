@@ -6,15 +6,12 @@ from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
 
-from src.backend.utils import ReactorResultsFormat
+from src.backend.reactors.parser import ReactorParser
 from src.frontend.layout.basic import BasicLayout
-from src.frontend.layout.plot_and_save import PlotAndSaveLayout
 from src.frontend.style import FileType, WidgetStyle
 from src.frontend.utils import Utils
 
 import numpy as np
-
-from src.frontend.window.basic import BasicMainWindow
 
 
 class BasicReactorLayout(BasicLayout):
@@ -70,6 +67,7 @@ class BasicReactorLayout(BasicLayout):
         self.reactor_model_class = None
 
         super().__init__(main_window)
+        self.main_window.userInput.reactor_parser = ReactorParser()
 
     def _update_layout(self) -> None:
         """
@@ -662,29 +660,35 @@ class BasicReactorLayout(BasicLayout):
                                     self.title,
                                     QLabel("Wrong ASALI input file."))
 
-    def _check_input_files(self) -> None:
+    def _check_input_files(self) -> bool:
         """
         Check the input files to be used for reactor simulation
         Returns
         -------
-
+        check: bool
+            Results of the check
         """
         if not self.main_window.userInput.check_cantera_input_file():
             Utils.error_message(self.main_window,
                                 self.title,
                                 QLabel("Wrong CANTERA input file."))
+            return False
 
         if self.main_window.userInput.surface_phase_name is None:
             if self.main_window.userInput.udk_file_path is None:
                 Utils.error_message(self.main_window,
                                     self.title,
                                     QLabel("""The provided CANTERA file does not have surface reactions."""))
+                return False
 
         if self.main_window.userInput.udk_file_path is not None:
             if not self.main_window.userInput.check_udk_input_file():
                 Utils.error_message(self.main_window,
                                     self.title,
                                     QLabel("Wrong ASALI input file."))
+                return False
+
+        return True
 
     def _extract_coverage_input_composition(self) -> dict | None:
         """
@@ -731,30 +735,22 @@ class BasicReactorLayout(BasicLayout):
         -------
 
         """
-        self.main_window.worker.task_function = self.reactor_model_function
-        self.main_window.worker.args = (self.main_window.userInput.file_path,
-                                        self.main_window.userInput.gas_phase_name,
-                                        self.main_window.userInput.surface_phase_name,
-                                        self.read_input())
-        self.main_window.runBar.worker = self.main_window.worker
+        input_dict = self.read_input()
 
-        self.main_window.runBar.reset_run_bar()
-        self.main_window.runBar.show()
+        if len(input_dict) > 0:
+            self.main_window.worker.task_function = self.reactor_model_function
+            self.main_window.worker.args = (self.main_window.userInput.file_path,
+                                            self.main_window.userInput.gas_phase_name,
+                                            self.main_window.userInput.surface_phase_name,
+                                            input_dict)
+            self.main_window.runBar.worker = self.main_window.worker
 
-        self.main_window.worker.start()
+            self.main_window.setEnabled(False)
 
-        if self.main_window.reactor_model_results is not None:
-            self.main_window.userInput.reactor_model_backend = self.reactor_model_class(
-                self.main_window.userInput.file_path,
-                self.main_window.userInput.gas_phase_name,
-                self.main_window.userInput.surface_phase_name)
+            self.main_window.runBar.reset_run_bar()
+            self.main_window.runBar.show()
 
-            self.main_window.userInput.reactor_model_backend.set_independent_variable_results(
-                self.main_window.reactor_model_results[ReactorResultsFormat.x])
-            self.main_window.userInput.reactor_model_backend.set_dependent_variable_results(
-                self.main_window.reactor_model_results[ReactorResultsFormat.y])
-
-            Utils.open_new_window_from_layout(self.main_window, BasicMainWindow, PlotAndSaveLayout)
+            self.main_window.worker.start()
 
     def run_backend(self) -> None:
         """
@@ -804,6 +800,22 @@ class BasicReactorLayout(BasicLayout):
         Returns
         -------
 
+        """
+        pass
+
+    @abstractmethod
+    def _check_all_inputs(self, variables_dict) -> bool:
+        """
+        Perform check on the user input
+        Parameters
+        ----------
+        variables_dict: dict
+            Dictionary of variables {ReactorVariablesName: QEditLine}
+
+        Returns
+        -------
+        check: bool
+            Results of the performed check
         """
         pass
 

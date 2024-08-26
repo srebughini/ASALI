@@ -13,22 +13,25 @@ from src.frontend.utils import Utils
 class PlotAndSaveLayout(BasicLayout):
     def __init__(self, main_window):
         """
-        Reactor selection layout
+        Plot reactor results
         Parameters
         ----------
         main_window: QMainWindow
             Window where the layout should be applied
         """
-        self.saveFormatDropDown = None
         self.compositionUdDropDown = None
+        self.colormapDropDown = None
         self.headlineLabel = None
 
         self._empty_label = Utils.pad_string("")
 
-        self._save_format_list = [Utils.pad_string(".xlsx")]  # 0
+        self._colormap_list = [Utils.pad_string(s) for s in ['Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds']]
 
         self.saveButtonText = Utils.pad_string_center("Save")
         self.saveButtonToolTip = "Save data"
+
+        self.selectButtonText = Utils.pad_string_center("Select all")
+        self.selectButtonToolTip = "Select All"
 
         self.plotButtonText = Utils.pad_string_center("Plot")
         self.plotButtonToolTip = "Plot data"
@@ -38,40 +41,6 @@ class PlotAndSaveLayout(BasicLayout):
 
         super().__init__(main_window)
 
-    def _save_to_excel(self, file_path, output_dict) -> bool:
-        """
-        Save results into excel format
-        Parameters
-        ----------
-        file_path: str
-            File path
-        output_dict: dict
-            Results in dict format. Dictionary of Pandas Dataframe
-
-        Returns
-        -------
-        check: bool
-            If True the saving is successfully
-        """
-        try:
-            with pd.ExcelWriter(file_path) as writer:
-                for sheet_name, df in output_dict.items():
-                    df.to_excel(writer, sheet_name=sheet_name, index=False)
-
-            # If saving is successful, show a success message
-            Utils.dialog_message(self.main_window,
-                                 self.title,
-                                 QLabel("File saved successfully!"))
-
-        except Exception as e:
-            # If an error occurs, show an error message
-            Utils.error_message(self.main_window,
-                                self.title,
-                                QLabel(f"Failed to save file: {str(e)}"))
-            return False
-
-        return True
-
     def _save_data(self) -> None:
         """
         Save data
@@ -79,14 +48,76 @@ class PlotAndSaveLayout(BasicLayout):
         -------
 
         """
-        if self.saveFormatDropDown.currentIndex() == 0:
-            file_path = Utils.save_file(self.main_window,
-                                        file_type=FileType.EXCEL.value,
-                                        default_extension=self.saveFormatDropDown.currentText().strip())
+        save_dict = {"x": False,
+                     "y": False,
+                     "file_path": None}
 
-            if file_path is not None:
-                self._save_to_excel(file_path,
-                                    self.main_window.userInput.reactor_model_backend.get_results())
+        if 'mole' in self.compositionUdDropDown.currentText().lower():
+            save_dict["x"] = True
+
+        if 'mass' in self.compositionUdDropDown.currentText().lower():
+            save_dict["y"] = True
+
+        file_path = Utils.save_file(self.main_window,
+                                    file_type=FileType.EXCEL.value,
+                                    default_extension=".xlsx")
+
+        if file_path is not None:
+            save_dict["file_path"] = file_path
+            self.main_window.userInput.reactor_parser.save(save_dict)
+
+    def _select_all(self) -> None:
+        """
+        Select or unselect all check boxs
+        Returns
+        -------
+
+        """
+        for c in self.gasSpeciesCheckBoxList:
+            c.setChecked(True)
+
+        for c in self.coverageCheckBoxList:
+            c.setChecked(True)
+
+        self.temperatureCheckBox.setChecked(True)
+
+    def _unselect_all(self) -> None:
+        """
+        Unselect all check boxs
+        Returns
+        -------
+
+        """
+        for c in self.gasSpeciesCheckBoxList:
+            c.setChecked(False)
+
+        for c in self.coverageCheckBoxList:
+            c.setChecked(False)
+
+        self.temperatureCheckBox.setChecked(False)
+
+    def _select_data(self) -> None:
+        """
+        Select or unselect all check box
+        Returns
+        -------
+
+        """
+        if not self.temperatureCheckBox.isChecked():
+            self._select_all()
+            return None
+
+        for c in self.gasSpeciesCheckBoxList:
+            if not c.isChecked():
+                self._select_all()
+                return None
+
+        for c in self.coverageCheckBoxList:
+            if not c.isChecked():
+                self._select_all()
+                return None
+
+        self._unselect_all()
 
     def _plot_data(self) -> None:
         """
@@ -107,10 +138,12 @@ class PlotAndSaveLayout(BasicLayout):
 
         plot_dict["z"] = [c.text() for c in self.coverageCheckBoxList if c.isChecked()]
 
+        plot_dict["colormap"] = self.colormapDropDown.currentText().strip()
+
         if self.temperatureCheckBox.isChecked():
             plot_dict["T"] = True
 
-        self.main_window.userInput.reactor_model_backend.plot(plot_dict)
+        self.main_window.userInput.reactor_parser.plot(plot_dict)
 
     def _add_buttons(self, row_idx) -> None:
         """
@@ -127,6 +160,9 @@ class PlotAndSaveLayout(BasicLayout):
         self.addWidget(self._create_button(self.saveButtonText,
                                            self._save_data,
                                            self.saveButtonToolTip), row_idx, 0)
+        self.addWidget(self._create_button(self.selectButtonText,
+                                           self._select_data,
+                                           self.selectButtonToolTip), row_idx, 1)
         self.addWidget(self._create_button(self.plotButtonText,
                                            self._plot_data,
                                            self.plotButtonToolTip), row_idx, 2)
@@ -163,8 +199,8 @@ class PlotAndSaveLayout(BasicLayout):
         Returns
         -------
         """
-        self.species_names = self.main_window.userInput.reactor_model_backend.gas_species_list()
-        self.coverage_names = self.main_window.userInput.reactor_model_backend.coverage_list()
+        self.species_names = self.main_window.userInput.reactor_parser.gas_species_list()
+        self.coverage_names = self.main_window.userInput.reactor_parser.coverage_list()
 
         self._update_layout_with_backend_info()
 
@@ -180,7 +216,7 @@ class PlotAndSaveLayout(BasicLayout):
         self.headlineLabel.setAlignment(Qt.AlignCenter)
 
         self.compositionUdDropDown = self._create_dropdown(self.main_window.ud_handler.composition_ud, function=None)
-        self.saveFormatDropDown = self._create_dropdown(self._save_format_list, function=None)
+        self.colormapDropDown = self._create_dropdown(self._colormap_list, function=None)
 
     def generate_layout(self) -> None:
         """
@@ -193,8 +229,8 @@ class PlotAndSaveLayout(BasicLayout):
         self.addWidget(self.compositionUdDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1
-        self.addWidget(QLabel(Utils.pad_string("Saving format:")), self.row_idx, 0)
-        self.addWidget(self.saveFormatDropDown, self.row_idx, 1, 1, -1)
+        self.addWidget(QLabel(Utils.pad_string("Plotting color map:")), self.row_idx, 0)
+        self.addWidget(self.colormapDropDown, self.row_idx, 1, 1, -1)
 
         self.row_idx = self.row_idx + 1
         self.addWidget(self.headlineLabel, self.row_idx, 0, 1, -1)

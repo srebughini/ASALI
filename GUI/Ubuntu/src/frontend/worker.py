@@ -87,6 +87,9 @@ class Worker(QThread):
         -------
 
         """
+        # Reset the stop event before starting a new run
+        self._stop_event.clear()
+
         # Start the external library function as a separate process
         self._process = multiprocessing.Process(target=self._task_function,
                                                 args=self._args,

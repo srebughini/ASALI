@@ -1,11 +1,11 @@
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QProgressBar, QLabel, QVBoxLayout, QPushButton
 
-from src.backend._basic_reactor import BasicReactor
 from src.backend.utils import DefaultPath
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
+from src.frontend.worker import Worker
 
 
 class RunBarWindow(QWidget):
@@ -49,24 +49,24 @@ class RunBarWindow(QWidget):
 
         self.setLayout(layout)
 
-    def get_worker(self) -> BasicReactor:
+    def get_worker(self) -> Worker:
         """
-        Get reactor model class
+        Get worker
         Returns
         -------
-        worker: Derived class of backend/BasicReactor
-            Class wrapping ASALIPY reactor class
+        worker: Worker
+            Worker class
         """
 
         return self._worker
 
     def set_worker(self, value) -> None:
         """
-        Set reactor model class
+        Set worker
         Parameters
         ----------
-        value: Derived class of backend/BasicReactor
-            Class wrapping ASALIPY reactor class
+        value: Worker
+            Worker class
 
         Returns
         -------
@@ -74,7 +74,7 @@ class RunBarWindow(QWidget):
         """
         self._worker = value
 
-    # Creating a property object for surface phase name
+    # Creating a property object for worker
     worker = property(get_worker, set_worker)
 
     def close_run_bar(self) -> None:

@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow
-from asali.reactors.batch import BatchReactor
 
-from src.backend.reactors import run_batch_reactor_model
+from src.backend.reactors.runners import run_batch_reactor_model
 from src.frontend.layout.reactors.basic_steady_state import BasicSteadyStateReactorLayout
 from src.frontend.utils import ReactorVariablesName
 from types import SimpleNamespace
@@ -18,7 +17,6 @@ class BatchLayout(BasicSteadyStateReactorLayout):
         """
         super().__init__(main_window)
         self.reactor_model_function = run_batch_reactor_model
-        self.reactor_model_class = BatchReactor
 
     def read_input(self) -> dict:
         """
@@ -28,11 +26,11 @@ class BatchLayout(BasicSteadyStateReactorLayout):
         input_dict: dict
             User input
         """
-        self._check_input_files()
-        self._check_edit_line_float_input(self.volumeEditLine, ReactorVariablesName.volume.value)
-        self._check_edit_line_float_input(self.alfaEditLine, ReactorVariablesName.alfa.value)
-        self._check_edit_line_float_input(self.timeEditLine, ReactorVariablesName.time.value)
-        self._check_edit_line_float_input(self.timeStepEditLine, ReactorVariablesName.timeStep.value)
+        if not self._check_all_inputs({ReactorVariablesName.volume: self.volumeEditLine,
+                                       ReactorVariablesName.alfa: self.alfaEditLine,
+                                       ReactorVariablesName.time: self.timeEditLine,
+                                       ReactorVariablesName.timeStep: self.timeStepEditLine}):
+            return {}
 
         input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
                       ReactorVariablesName.initialTemperature: SimpleNamespace(

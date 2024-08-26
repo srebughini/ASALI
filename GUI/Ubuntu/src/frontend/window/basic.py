@@ -6,8 +6,9 @@ from PyQt5.QtCore import Qt, QTimer
 
 from functools import partial
 
-from src.backend.utils import UnitDimensionHandler, DefaultPath
+from src.backend.utils import UnitDimensionHandler, DefaultPath, ReactorResultsFormat
 from src.backend.user_input_handler import UserInputHandler
+from src.frontend.layout.reactors.plot_and_save import PlotAndSaveLayout
 from src.frontend.worker import Worker
 from src.frontend.style import WidgetStyle
 from src.frontend.utils import Utils
@@ -53,7 +54,7 @@ class BasicMainWindow(QMainWindow):
 
         self.runBar = RunBarWindow()
         self.worker = Worker()
-        self.worker.finished.connect(self.on_finished_for_worker)
+        self.worker.finished.connect(self.on_finished_worker_for_reactor_models)
 
     def _reset_user_input(self) -> None:
         """
@@ -191,12 +192,26 @@ class BasicMainWindow(QMainWindow):
         """
         self.set_central_widget_layout(layout_class(self))
 
-    def on_finished_for_worker(self, result) -> None:
+    def on_finished_worker_for_reactor_models(self, results) -> None:
         """
-        Closes the run bar window
+        Close the run bar and open window to handling the results of reactors
+        Parameters
+        ----------
+        results: multiprocessing.Queue()
+            Results extracted from the Worker
+
         Returns
         -------
-
         """
         self.runBar.close_run_bar()
-        self._reactor_model_results = result
+        self.setEnabled(True)
+
+        if results is not None:
+            reactor_model = results[ReactorResultsFormat.reactor](self.userInput.file_path,
+                                                                  self.userInput.gas_phase_name,
+                                                                  self.userInput.surface_phase_name)
+
+            reactor_model.set_results(*results[ReactorResultsFormat.results])
+
+            self.userInput.reactor_parser.reactor_model = reactor_model
+            Utils.open_new_window_from_layout(self, BasicMainWindow, PlotAndSaveLayout)

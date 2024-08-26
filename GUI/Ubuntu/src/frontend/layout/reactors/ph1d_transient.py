@@ -1,8 +1,7 @@
 from types import SimpleNamespace
 from PyQt5.QtWidgets import QMainWindow
-from asali.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactor
 
-from src.backend.reactors import run_transient_pseudo_homogeneous_reactor_model
+from src.backend.reactors.runners import run_transient_pseudo_homogeneous_reactor_model
 from src.frontend.layout.reactors.basic_transient import BasicTransientReactorLayout
 from src.frontend.utils import ReactorVariablesName
 
@@ -18,7 +17,6 @@ class TransientPseudoHomogeneous1DReactorLayout(BasicTransientReactorLayout):
         """
         super().__init__(main_window)
         self.reactor_model_function = run_transient_pseudo_homogeneous_reactor_model
-        self.reactor_model_class = TransientPseudoHomogeneous1DReactor
 
     def read_input(self) -> dict:
         """
@@ -28,19 +26,13 @@ class TransientPseudoHomogeneous1DReactorLayout(BasicTransientReactorLayout):
         input_dict: dict
             Dictionary with the user inputs
         """
-        self._check_input_files()
-        self._check_edit_line_float_input(self.diameterEditLine,
-                                          ReactorVariablesName.diameter.value)
-        self._check_edit_line_float_input(self.lengthEditLine,
-                                          ReactorVariablesName.length.value)
-        self._check_edit_line_float_input(self.lengthStepEditLine,
-                                          ReactorVariablesName.lengthStep.value)
-        self._check_edit_line_float_input(self.alfaEditLine,
-                                          ReactorVariablesName.alfa.value)
-        self._check_edit_line_float_input(self.massFlowRateEditLine,
-                                          ReactorVariablesName.massFlowRate.value)
-        self._check_edit_line_float_input(self.initialTemperatureEditLine,
-                                          ReactorVariablesName.initialTemperature.value)
+        if not self._check_all_inputs({ReactorVariablesName.diameter: self.diameterEditLine,
+                                       ReactorVariablesName.length: self.lengthEditLine,
+                                       ReactorVariablesName.lengthStep: self.lengthStepEditLine,
+                                       ReactorVariablesName.alfa: self.alfaEditLine,
+                                       ReactorVariablesName.massFlowRate: self.massFlowRateEditLine,
+                                       ReactorVariablesName.initialTemperature: self.initialTemperatureEditLine}):
+            return {}
 
         input_dict = {ReactorVariablesName.udk: self.main_window.userInput.udk_file_path,
                       ReactorVariablesName.temperature: SimpleNamespace(

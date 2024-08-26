@@ -93,6 +93,28 @@ class BasicSteadyStateReactorLayout(BasicReactorLayout):
                        1,
                        self._sub_grid_width)
 
+    def _check_all_inputs(self, variables_dict) -> bool:
+        """
+        Perform check on the user input
+        Parameters
+        ----------
+        variables_dict: dict
+            Dictionary of variables {ReactorVariablesName: QEditLine}
+
+        Returns
+        -------
+        check: bool
+            Results of the performed check
+        """
+        if not self._check_input_files():
+            return False
+
+        for k, v in variables_dict.items():
+            if not self._check_edit_line_float_input(v, k.value):
+                return False
+
+        return True
+
     @abstractmethod
     def read_input(self) -> dict:
         """

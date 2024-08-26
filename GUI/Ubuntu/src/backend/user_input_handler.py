@@ -4,7 +4,7 @@ import yaml
 from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
-from src.backend._basic_reactor import BasicReactor
+from src.backend.reactors.parser import ReactorParser
 
 
 class UserInputHandler:
@@ -16,7 +16,7 @@ class UserInputHandler:
         self._udk_file_path = None
         self._gas_phase_name = None
         self._surface_phase_name = None
-        self._reactor_model_backend = None
+        self._reactor_parser = None
         self._temperature = {}
         self._pressure = {}
         self._mole_fraction = {}
@@ -242,33 +242,33 @@ class UserInputHandler:
     # Creating a property object for surface phase name
     surface_phase_name = property(get_surface_phase_name, set_surface_phase_name)
 
-    def get_reactor_model_backend(self) -> BasicReactor:
+    def get_reactor_parser(self) -> ReactorParser:
         """
-        Get reactor model class
+        Get reactor parser
         Returns
         -------
-        reactor_model_backend: Derived class of backend/BasicReactor
+        reactor_parser: Derived class of backend/reactors/BasicReactorParser
             Class wrapping ASALIPY reactor class
         """
 
-        return self._reactor_model_backend
+        return self._reactor_parser
 
-    def set_reactor_model_backend(self, value) -> None:
+    def set_reactor_parser(self, value) -> None:
         """
         Set reactor model class
         Parameters
         ----------
-        value: Derived class of backend/BasicReactor
+        value: Derived class of backend/reactors/BasicReactorParser
             Class wrapping ASALIPY reactor class
 
         Returns
         -------
 
         """
-        self._reactor_model_backend = value
+        self._reactor_parser = value
 
-    # Creating a property object for surface phase name
-    reactor_model_backend = property(get_reactor_model_backend, set_reactor_model_backend)
+    # Creating a property object for reactor parser
+    reactor_parser = property(get_reactor_parser, set_reactor_parser)
 
     def _extract_gas_phase_name(self) -> None:
         """

@@ -69,8 +69,10 @@ def run_batch_reactor_model(cantera_input_file,
 
     reactor_class.solve(tspan, BasicUnitDimension.time.value)
 
-    results.put({ReactorResultsFormat.x: reactor_class.get_time(BasicUnitDimension.time.value),
-                 ReactorResultsFormat.y: reactor_class.get_results()})
+    results.put({ReactorResultsFormat.results: (reactor_class.get_time(BasicUnitDimension.time.value),
+                                                reactor_class.get_results(),
+                                                None),
+                 ReactorResultsFormat.reactor: BatchReactor})
 
 
 def run_cstr_reactor_model(cantera_input_file,
@@ -146,8 +148,10 @@ def run_cstr_reactor_model(cantera_input_file,
 
     reactor_class.solve(tspan, BasicUnitDimension.time.value)
 
-    results.put({ReactorResultsFormat.x: reactor_class.get_time(BasicUnitDimension.time.value),
-                 ReactorResultsFormat.y: reactor_class.get_results()})
+    results.put({ReactorResultsFormat.results: (reactor_class.get_time(BasicUnitDimension.time.value),
+                                                reactor_class.get_results(),
+                                                None),
+                 ReactorResultsFormat.reactor: CstrReactor})
 
 
 def run_steady_state_pseudo_homogeneous_reactor_model(cantera_input_file,
@@ -218,8 +222,10 @@ def run_steady_state_pseudo_homogeneous_reactor_model(cantera_input_file,
 
     reactor_class.solve()
 
-    results.put({ReactorResultsFormat.x: reactor_class.get_length(BasicUnitDimension.length.value),
-                 ReactorResultsFormat.y: reactor_class.get_results()})
+    results.put({ReactorResultsFormat.results: (reactor_class.get_length(BasicUnitDimension.length.value),
+                                                reactor_class.get_results(),
+                                                None),
+                 ReactorResultsFormat.reactor: SteadyStatePseudoHomogeneous1DReactor})
 
 
 def run_transient_pseudo_homogeneous_reactor_model(cantera_input_file,
@@ -310,5 +316,7 @@ def run_transient_pseudo_homogeneous_reactor_model(cantera_input_file,
 
     reactor_class.solve(tspan, BasicUnitDimension.time.value)
 
-    results.put({ReactorResultsFormat.x: reactor_class.get_time(BasicUnitDimension.time.value),
-                 ReactorResultsFormat.y: reactor_class.get_results()})
+    results.put({ReactorResultsFormat.results: (reactor_class.get_time(BasicUnitDimension.time.value),
+                                                reactor_class.get_results(),
+                                                reactor_class.get_length(BasicUnitDimension.length.value)),
+                 ReactorResultsFormat.reactor: TransientPseudoHomogeneous1DReactor})
