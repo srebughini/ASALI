@@ -112,8 +112,11 @@ class VacuumProperties(BasicCalculation):
         l: float
             Mean free path
         """
-        idx = self.specie_index(specie_name)
-        mfp = VacuumProperties.calculate_mean_free_path(self._gas.T, self._gas.P, 10.)  # TODO
+        sp = self._gas.species(specie_name)
+
+        mfp = VacuumProperties.calculate_mean_free_path(self._gas.T,
+                                                        self._gas.P,
+                                                        sp.transport.diameter)
 
         return self._uc.convert_from_meter(mfp,
                                            UnitDimensionHandler.from_human_to_code_ud(ud))
@@ -134,10 +137,10 @@ class VacuumProperties(BasicCalculation):
         kn: float
             Knudsen number
         """
-        idx = self.specie_index(specie_name)
+        sp = self._gas.species(specie_name)
         kn = VacuumProperties.calculate_knudsen_number(self._gas.T,
                                                        self._gas.P,
-                                                       10.,  # TODO
+                                                       sp.transport.diameter,
                                                        self._uc.convert_to_meter(length,
                                                                                  UnitDimensionHandler.from_human_to_code_ud(
                                                                                      length_ud)))
@@ -163,10 +166,11 @@ class VacuumProperties(BasicCalculation):
             Diffusivity
         """
         idx = self.specie_index(specie_name)
+        sp = self._gas.species(specie_name)
         d = self._uc.convert_to_meter(length, UnitDimensionHandler.from_human_to_code_ud(length_ud))
         kn = VacuumProperties.calculate_knudsen_number(self._gas.T,
                                                        self._gas.P,
-                                                       10.,
+                                                       sp.transport.diameter,
                                                        d)
 
         if kn < 1:
