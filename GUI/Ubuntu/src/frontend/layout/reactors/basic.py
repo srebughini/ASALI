@@ -62,6 +62,7 @@ class BasicReactorLayout(BasicLayout):
 
         self._coverage_row_idx = 0
         self._initial_species_row_idx = 0
+        self._reactor_type_row_idx = 0
 
         self.reactor_model_function = None
         self.reactor_model_class = None
@@ -87,8 +88,7 @@ class BasicReactorLayout(BasicLayout):
         elif self.reactorDropDown.currentIndex() == 4:
             self.main_window.update_to_ph1d_transient_reactor()
         elif self.reactorDropDown.currentIndex() == 5:
-            pass
-            # self.main_window.updateToSteadyHet1dReactor()
+            self.main_window.update_to_het1d_steady_state_reactor()
         elif self.reactorDropDown.currentIndex() == 6:
             pass
             # self.main_window.updateToTransientHet1dReactor()

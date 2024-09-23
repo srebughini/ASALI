@@ -16,6 +16,31 @@ class ReactorSelectionMenuLayout(BasicReactorLayout):
         """
         super().__init__(main_window)
 
+    def _check_all_inputs(self, variables_dict) -> bool:
+        """
+        Perform check on the user input
+        Parameters
+        ----------
+        variables_dict: dict
+            Dictionary of variables {ReactorVariablesName: QEditLine}
+
+        Returns
+        -------
+        check: bool
+            Results of the performed check
+        """
+        return True
+
+    def read_input(self) -> dict:
+        """
+        Function to read user input
+        Returns
+        -------
+        input_dict: dict
+            User input
+        """
+        return {}
+
     def _add_buttons(self, row_idx) -> None:
         """
         Add buttons
