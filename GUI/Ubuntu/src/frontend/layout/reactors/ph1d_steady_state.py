@@ -79,12 +79,26 @@ class SteadyStatePseudoHomogeneous1DReactorLayout(BasicSteadyStateReactorLayout)
 
         return input_dict
 
+    def _update_column_indexes(self) -> None:
+        """
+        Class to update the column indexes for the reactor window layout
+        Returns
+        -------
+
+        """
+        self._reactor_properties_col_idx = 0
+        self._solving_options_col_idx = self._reactor_properties_col_idx + self._sub_grid_width
+        self._coverage_col_idx = self._solving_options_col_idx + self._sub_grid_width
+
     def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
         -------
         """
+        # Update column indexes
+        self._update_column_indexes()
+
         # GUI labels
         self._create_options_labels()
         self._create_headline_label(self._select_reactor_list[3])

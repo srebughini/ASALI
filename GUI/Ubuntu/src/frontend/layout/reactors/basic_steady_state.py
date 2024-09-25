@@ -116,6 +116,16 @@ class BasicSteadyStateReactorLayout(BasicReactorLayout):
         return True
 
     @abstractmethod
+    def _update_column_indexes(self) -> None:
+        """
+        Class to update the column indexes for the reactor window layout
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
     def read_input(self) -> dict:
         """
         Function to read user input

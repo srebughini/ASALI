@@ -83,12 +83,27 @@ class SteadyStateHeterogeneous1DReactorLayout(BasicSteadyStateReactorLayout):
         """
         return {}
 
+    def _update_column_indexes(self) -> None:
+        """
+        Class to update the column indexes for the reactor window layout
+        Returns
+        -------
+
+        """
+        self._reactor_properties_col_idx = 0
+        self._solving_options_col_idx = self._reactor_properties_col_idx + self._sub_grid_width
+        self._coverage_col_idx = self._solving_options_col_idx + self._sub_grid_width
+        self._solid_properties_col_idx = self._coverage_col_idx + self._sub_grid_width
+
     def create_layout_components(self) -> None:
         """
         Initialize the widgets
         Returns
         -------
         """
+        # Update column indexes
+        self._update_column_indexes()
+
         # GUI labels
         self._create_options_labels()
         self._create_headline_label(self._select_reactor_list[5])
@@ -97,6 +112,12 @@ class SteadyStateHeterogeneous1DReactorLayout(BasicSteadyStateReactorLayout):
         self._create_reactor_length_input_line()
         self._create_catalytic_load_input_line()
         self._create_mass_flow_rate_input_line()
+        self._create_diameter_input_line()
+        self._create_particle_diameter_input_line()
+        self._create_wall_thickness_input_line()
+        self._create_void_fraction_input_line()
+        self._create_cpsi_input_line()
+        self._create_reactor_type_dropdown()
 
         # Solving options
         self._create_udk_label()
@@ -105,6 +126,8 @@ class SteadyStateHeterogeneous1DReactorLayout(BasicSteadyStateReactorLayout):
         self._create_diffusion_input_line()
         self._create_inert_coverage_input_line()
         self._create_inert_specie_input_line()
+
+        # Solid properties
 
     def generate_layout(self) -> None:
         """
@@ -141,17 +164,21 @@ class SteadyStateHeterogeneous1DReactorLayout(BasicSteadyStateReactorLayout):
 
         # 5 row
         self.row_idx = self.row_idx + 1
-        # TODO - Add drop down menù with reactor type options -> action is to add widget here
+        self._add_reactor_type_dropdown(self.row_idx, self._reactor_properties_col_idx)
         self._add_diffusion_input_line(self.row_idx, self._solving_options_col_idx)
 
         # 6 row
         self.row_idx = self.row_idx + 1
-        self._reactor_type_row_idx = self.row_idx
+        self._reactor_type_first_row_idx = self.row_idx
+        self._add_reactor_type_input_lines()
         self._add_inert_specie_input_line(self.row_idx, self._solving_options_col_idx)
 
         # 7 row
         self.row_idx = self.row_idx + 1
         self._add_inert_coverage_input_line(self.row_idx, self._solving_options_col_idx)
+
+        # Add reactor types
+        self.row_idx = max(self.row_idx, self._reactor_type_final_row_idx)
 
         # 8 row
         self.row_idx = self.row_idx + 1

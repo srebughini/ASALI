@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDoubleValidator
+from PyQt5.QtGui import QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import (
     QMainWindow, QLabel
 )
@@ -34,6 +34,12 @@ class BasicReactorLayout(BasicLayout):
             Utils.pad_string("Steady state 1D heterogeneous reactor"),  # 5
             Utils.pad_string("Transient 1D heterogeneous reactor")]  # 6
 
+        self._reactor_type_list = [
+            Utils.pad_string("...Select reactor type..."),
+            Utils.pad_string("Packed bed reactor"),  # 1
+            Utils.pad_string("Honeycomb reactor"),  # 2
+            Utils.pad_string("Tubular reactor")]  # 3
+
         self._on_off_list = [Utils.pad_string("ON"), Utils.pad_string("OFF")]
 
         self.runButtonText = Utils.pad_string_center("Run model")
@@ -55,15 +61,16 @@ class BasicReactorLayout(BasicLayout):
         self._specie_composition_idx = list()
 
         self._sub_grid_width = 3
-        self._reactor_properties_col_idx = 0
-        self._solving_options_col_idx = self._reactor_properties_col_idx + self._sub_grid_width
-        self._coverage_col_idx = self._solving_options_col_idx + self._sub_grid_width
-        self._initial_conditions_col_idx = self._coverage_col_idx + self._sub_grid_width
 
+        self._reactor_properties_col_idx = 0
+        self._solving_options_col_idx = 0
+        self._coverage_col_idx = 0
+        self._initial_conditions_col_idx = 0
+        self._solid_properties_col_idx = 0
         self._coverage_row_idx = 0
         self._initial_species_row_idx = 0
-        self._reactor_type_row_idx = 0
-
+        self._reactor_type_first_row_idx = 0
+        self._reactor_type_final_row_idx = 0
         self.reactor_model_function = None
         self.reactor_model_class = None
 
@@ -122,6 +129,27 @@ class BasicReactorLayout(BasicLayout):
             self._add_initial_species_input_line()
             self.row_idx = self.row_idx + 1
             self._add_buttons(self.row_idx)
+
+    def _update_layout_with_reactor_type_line(self) -> None:
+        """
+        Update the layout by adding reactor type layout
+        Returns
+        -------
+
+        """
+        self._remove_buttons(self.row_idx)
+
+        if self._reactor_type_first_row_idx < self._reactor_type_final_row_idx:
+            # TODO - Remove specif widget of the reactor type (known the previous option)
+            for row_idx in range(self._reactor_type_first_row_idx, self._reactor_type_final_row_idx + 1):
+                self._remove_widget(row_idx, self._reactor_properties_col_idx)
+
+        self._add_reactor_type_input_lines()
+        self.row_idx = max(self.row_idx, self._reactor_type_final_row_idx) + 1
+        self._add_buttons(self.row_idx)
+
+
+
 
     def _create_reactor_selection_dropdown(self) -> None:
         """
@@ -188,6 +216,28 @@ class BasicReactorLayout(BasicLayout):
             [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
         self.diameterEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
 
+    def _create_particle_diameter_input_line(self) -> None:
+        """
+        Create particle diameter widgets
+        Returns
+        -------
+
+        """
+        self.particleDiameterDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
+        self.particleDiameterEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
+
+    def _create_wall_thickness_input_line(self) -> None:
+        """
+        Create wall thickness widgets
+        Returns
+        -------
+
+        """
+        self.wallThicknessDropDown = self._create_dropdown(
+            [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
+        self.wallThicknessEditLine = self._create_line_edit("0.01", Qt.AlignRight, QDoubleValidator())
+
     def _create_reactor_length_input_line(self) -> None:
         """
         Create length widgets
@@ -198,6 +248,16 @@ class BasicReactorLayout(BasicLayout):
         self.lengthDropDown = self._create_dropdown(
             [Utils.pad_string(ud) for ud in self.main_window.ud_handler.length_ud])
         self.lengthEditLine = self._create_line_edit("2.5", Qt.AlignRight, QDoubleValidator())
+
+    def _create_reactor_type_dropdown(self) -> None:
+        """
+        Create reactor type drop down menu
+        Returns
+        -------
+
+        """
+        self.reactorTypeDropDown = self._create_dropdown(self._reactor_type_list,
+                                                         function=self._update_layout_with_reactor_type_line)
 
     def _create_catalytic_load_input_line(self) -> None:
         """
@@ -227,6 +287,24 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.diffusionDropDown = self._create_dropdown(self._on_off_list)
+
+    def _create_void_fraction_input_line(self) -> None:
+        """
+        Create void fraction widgets
+        Returns
+        -------
+
+        """
+        self.voidFractionEditLine = self._create_line_edit("0.42", Qt.AlignRight, QDoubleValidator())
+
+    def _create_cpsi_input_line(self) -> None:
+        """
+        Create cpsi widgets
+        Returns
+        -------
+
+        """
+        self.cpsiEditLine = self._create_line_edit("400", Qt.AlignRight, QIntValidator())
 
     def _create_inert_specie_input_line(self) -> None:
         """
@@ -377,6 +455,56 @@ class BasicReactorLayout(BasicLayout):
         self.addWidget(self.lengthEditLine, row_idx, col_idx + 1)
         self.addWidget(self.lengthDropDown, row_idx, col_idx + 2)
 
+    def _add_particle_diameter_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add particle diameter input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Particle diameter:")), row_idx, col_idx)
+        self.addWidget(self.particleDiameterEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.particleDiameterDropDown, row_idx, col_idx + 2)
+
+    def _add_wall_thickness_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add wall thickness input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Wall thickness:")), row_idx, col_idx)
+        self.addWidget(self.wallThicknessEditLine, row_idx, col_idx + 1)
+        self.addWidget(self.wallThicknessDropDown, row_idx, col_idx + 2)
+
+    def _add_reactor_type_dropdown(self, row_idx, col_idx) -> None:
+        """
+        Add reactor type drop down
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+        """
+        self.addWidget(QLabel(Utils.pad_string("Reactor type:")), row_idx, col_idx)
+        self.addWidget(self.reactorTypeDropDown, row_idx, col_idx + 1, 1, 2)
+
     def _add_udk_input_line(self, row_idx, col_idx) -> None:
         """
         Add user defined kinetic input line
@@ -464,6 +592,40 @@ class BasicReactorLayout(BasicLayout):
         """
         self.addWidget(QLabel(Utils.pad_string("Diffusion:")), row_idx, col_idx)
         self.addWidget(self.diffusionDropDown, row_idx, col_idx + 1, 1, 2)
+
+    def _add_void_fraction_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add void fraction input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+
+        """
+        self.addWidget(QLabel(Utils.pad_string("Void fraction:")), row_idx, col_idx)
+        self.addWidget(self.voidFractionEditLine, row_idx, col_idx + 1, 1, 2)
+
+    def _add_cpsi_input_line(self, row_idx, col_idx) -> None:
+        """
+        Add cpsi input line
+        Parameters
+        ----------
+        row_idx: int
+            Row index
+        col_idx: int
+            Col index
+
+        Returns
+        -------
+
+        """
+        self.addWidget(QLabel(Utils.pad_string("CPSI:")), row_idx, col_idx)
+        self.addWidget(self.cpsiEditLine, row_idx, col_idx + 1, 1, 2)
 
     def _add_integration_time_input_line(self, row_idx, col_idx) -> None:
         """
@@ -640,6 +802,29 @@ class BasicReactorLayout(BasicLayout):
 
         self._initial_species_row_idx = self._initial_species_row_idx + 1
 
+    def _add_reactor_type_input_lines(self) -> None:
+        """
+        Add reactor type input line
+        Returns
+        -------
+
+        """
+        self._reactor_type_final_row_idx = self._reactor_type_first_row_idx
+        if self.reactorTypeDropDown.currentIndex() == 1:  # Packed bed reactor
+            self._add_diameter_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+            self._reactor_type_final_row_idx = self._reactor_type_final_row_idx + 1
+            self._add_particle_diameter_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+            self._reactor_type_final_row_idx = self._reactor_type_final_row_idx + 1
+            self._add_void_fraction_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+        elif self.reactorTypeDropDown.currentIndex() == 2:  # Honeycomb reactor
+            self._add_cpsi_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+            self._reactor_type_final_row_idx = self._reactor_type_final_row_idx + 1
+            self._add_wall_thickness_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+        elif self.reactorTypeDropDown.currentIndex() == 3:  # Tubular reactor
+            self._add_diameter_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+            self._reactor_type_final_row_idx = self._reactor_type_final_row_idx + 1
+            self._add_wall_thickness_input_line(self._reactor_type_final_row_idx, self._reactor_properties_col_idx)
+
     def _load_udk_model(self) -> None:
         """
         Load ASALI user defined kinetic model
@@ -648,7 +833,7 @@ class BasicReactorLayout(BasicLayout):
 
         """
         self.main_window.backend_frontend_manager.udk_file_path = Utils.open_file(self.main_window,
-                                                                   file_type=FileType.ASALI.value)
+                                                                                  file_type=FileType.ASALI.value)
 
         self.udkLoadLabel.setText(Utils.pad_string("Not loaded"))
 
@@ -755,6 +940,16 @@ class BasicReactorLayout(BasicLayout):
     def run_backend(self) -> None:
         """
         Run backend to update frontend
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
+    def _update_column_indexes(self) -> None:
+        """
+        Class to update the column indexes for the reactor window layout
         Returns
         -------
 
