@@ -5,8 +5,10 @@ from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 from src.core.data_store import DataStore
 from src.gui.config import Config
 from src.gui.pages.base_layout import BaseLayout
+from src.gui.pages.calculation_input_page import CalculationInputPage
 from src.gui.pages.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
+from src.gui.pages.file_handler_pages import FileHandlerPages
 
 
 class MainWindow(QMainWindow):
@@ -18,6 +20,7 @@ class MainWindow(QMainWindow):
         self.data_store = DataStore()
 
         self.dialog_handler = DialogPagesHandler(self)
+        self.file_handler = FileHandlerPages(self, self.data_store)
 
         # Add title
         self.setWindowTitle(Config.TITLE.value)
@@ -50,8 +53,8 @@ class MainWindow(QMainWindow):
 
         # Define available pages
         self.pages = {
-            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage
-            # Additional pages can be added here
+            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage,
+            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage
         }
 
         # Show the Starting Page
@@ -105,7 +108,7 @@ class MainWindow(QMainWindow):
         """
         if page_name in self.pages.keys():
             # Instantiate the new page
-            new_page = self.pages[page_name]()
+            new_page = self.pages[page_name](self.data_store)
 
             # Check if the page has already been added to the QStackedWidget
             page_index = self.base_layout.content_area.indexOf(new_page)

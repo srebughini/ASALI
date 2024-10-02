@@ -7,6 +7,13 @@ from src.gui.config import Config
 
 class DialogPagesHandler:
     def __init__(self, main_window):
+        """
+        Class to generate dialog pages
+        Parameters
+        ----------
+        main_window: QMainWindow
+            Main window object
+        """
         self.main_window = main_window
 
     def dialog_message(self, msg) -> None:

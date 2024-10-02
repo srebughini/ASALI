@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>ChemistryInputPage</class>
+        <widget class="QWidget" name="ChemistryInputPage">
+            <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                    <widget class="QLabel" name="testLabel">
+                        <property name="text">
+                            <string>Select the chemistry option:</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0">
+                    <widget class="QPushButton" name="backButton">
+                        <property name="text">
+                            <string>&#x2B9C; Back</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+</ui>
