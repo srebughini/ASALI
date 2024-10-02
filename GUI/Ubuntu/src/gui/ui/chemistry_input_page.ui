@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>ChemistryInputPage</class>
+        <widget class="QWidget" name="ChemistryInputPage">
+            <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                    <widget class="QPushButton" name="loadCanteraButton">
+                        <property name="text">
+                            <string>Load Cantera input file</string>
+                        </property>
+                        <property name="toolTip">
+                            <string>Load kinetic or properties file in Cantera format</string>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="1">
+                    <widget class="QPushButton" name="loadDefaultButton">
+                        <property name="text">
+                            <string>Use default input file</string>
+                        </property>
+                        <property name="toolTip">
+                            <string>Load the default input file, which does not containt any kinetic scheme</string>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0">
+                    <widget class="QPushButton" name="converterButton">
+                        <property name="text">
+                            <string>Convert Chemkin to Cantera</string>
+                        </property>
+                        <property name="toolTip">
+                            <string>Convert kinetic files from Chemkin format to Cantera format</string>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="1">
+                    <widget class="QPushButton" name="checkUdkButton">
+                        <property name="text">
+                            <string>Check Asali user defined kinetic file</string>
+                        </property>
+                        <property name="toolTip">
+                            <string>Check the user defined kinetic file in the Asali format</string>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+</ui>

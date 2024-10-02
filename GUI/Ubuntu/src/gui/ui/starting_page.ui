@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>StartingPage</class>
+        <widget class="QWidget" name="StartingPage">
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QLabel" name="disclaimerLabel">
+                        <property name="text">
+                            <string>Disclaimer</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="nextButton">
+                        <property name="text">
+                            <string>Start</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+</ui>

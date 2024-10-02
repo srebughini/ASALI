@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>BaseLayout</class>
+    <widget class="QWidget" name="BaseLayout">
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <widget class="QLabel" name="logoLabel">
+                    <property name="pixmap">
+                        <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="beerQuoteLabel">
+                    <property name="text">
+                        <string>Inspiring Quote Here</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <!-- Use QStackedWidget for dynamic content switching -->
+                <widget class="QStackedWidget" name="contentArea">
+                    <!-- No size constraints -->
+                    <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                        </sizepolicy>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

@@ -1,0 +1,81 @@
+/* General Window Styling */
+QWidget {
+    background-color: #10253F;  /* BLUE */
+    color: #DCE6F2;  /* LIGHTBLUE */
+}
+
+/* Logo Label Styling */
+Qlabel.logo {
+    padding: 5px;
+}
+
+/* Italic Label Styling */
+QLabel.italic {
+    font-style: italic;
+}
+
+/* Highlight Label Styling */
+QLabel.highlight {
+    color: #DB901F;  /* ORANGE */
+    padding: 5px;
+    font-weight: bold;
+    border-bottom: 1px solid #DB901F;  /* ORANGE */
+}
+
+/* Button Styling */
+QPushButton {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+    border: none;
+    color: #10253F;  /* BLUE */
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+QPushButton:hover {
+    background-color: #f2e8dc;  /* LIGHTORANGE */
+}
+
+QPushButton:pressed {
+    background-color: #f2e8dc;  /* LIGHTORANGE */
+}
+
+/* Dropdown (ComboBox) Styling */
+QComboBox {
+    background-color: #DB901F;  /* ORANGE */
+    color: #10253F;  /* BLUE */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+}
+
+/* LineEdit Styling */
+QLineEdit {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+    color: #10253F;  /* BLUE */
+}
+
+/* CheckBox Styling */
+QCheckBox::indicator {
+    border-radius: 10px;
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+}
+
+QCheckBox::indicator:checked {
+    background-color: #DB901F;  /* ORANGE */
+}
+
+QCheckBox::indicator:pressed {
+    background-color: #DB901F;  /* ORANGE */
+}
+
+/* ProgressBar Styling */
+QProgressBar {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+}
+
+QProgressBar::chunk {
+    background-color: #DB901F;  /* ORANGE */
+    width: 20px;
+}
