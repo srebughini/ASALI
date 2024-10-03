@@ -1,14 +1,13 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QFileDialog
+from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QFileDialog, QGridLayout
 from PyQt5 import uic
 
 from src.core.data_keys import DataKeys
 from src.gui.config import Config
+from src.gui.pages.basic_page import BasicPage
 
 
-class ChemistryInputPage(QWidget):
-    page_switched = pyqtSignal(str)  # Signal to switch pages
-
+class ChemistryInputPage(BasicPage):
     def __init__(self, data_store):
         """
         Chemistry input page layout
@@ -17,12 +16,11 @@ class ChemistryInputPage(QWidget):
         data_store: DataStore
             Class to handle the user input
         """
-        super().__init__()
+        super().__init__(data_store)
         # Load the UI from the .ui file
         uic.loadUi(Config.CHEMISTRY_INPUT_PAGE_PATH.value, self)
-        self.data_store = data_store
-
         self.update_buttons()
+        self.update_grid_layout()
 
     def update_buttons(self):
         """

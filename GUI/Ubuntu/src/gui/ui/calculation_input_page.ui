@@ -1,19 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>ChemistryInputPage</class>
-        <widget class="QWidget" name="ChemistryInputPage">
+    <class>CalculationInputPage</class>
+        <widget class="QWidget" name="CalculationInputPage">
             <layout class="QGridLayout" name="gridLayout">
+                <!-- Row 0 -->
                 <item row="0" column="0">
-                    <widget class="QLabel" name="testLabel">
+                    <widget class="QLabel" name="calculationLabel">
                         <property name="text">
-                            <string>Select the chemistry option:</string>
+                            <string>Select calculation option:</string>
                         </property>
                     </widget>
                 </item>
+                <item row="0" column="1" colspan="2">
+                    <widget class="QComboBox" name="chemistryComboBox">
+                        <item>
+                            <property name="text">
+                                <string>Thermodynamic and transport properties</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Vacuum properties</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Chemical equilibrium</string>
+                            </property>
+                         </item>
+                        <item>
+                            <property name="text">
+                                <string>Chemical equilibrium</string>
+                            </property>
+                        </item>
+                    </widget>
+                </item>
+
+                <!-- Row 1 -->
                 <item row="1" column="0">
+                    <widget class="QLabel" name="temperatureLabel">
+                        <property name="text">
+                            <string>Temperature:</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="1">
+                    <widget class="QLineEdit" name="temperatureEditLine">
+                        <property name="text">
+                            <string>298.15</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="2">
+                    <widget class="QComboBox" name="temperatureComboBox">
+                    </widget>
+                </item>
+
+                <!-- Row 2 -->
+                <item row="2" column="0">
+                    <widget class="QLabel" name="pressureLabel">
+                        <property name="text">
+                            <string>Pressure:</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="1">
+                    <widget class="QLineEdit" name="pressureEditLine">
+                        <property name="text">
+                            <string>101325.0</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="2">
+                    <widget class="QComboBox" name="pressureComboBox">
+                    </widget>
+                </item>
+
+
+                <!-- Row 3 -->
+                <item row="3" column="0">
                     <widget class="QPushButton" name="backButton">
                         <property name="text">
                             <string>&#x2B9C; Back</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="2">
+                    <widget class="QPushButton" name="nextButton">
+                        <property name="text">
+                            <string>Next &#x2B9E;</string>
                         </property>
                     </widget>
                 </item>

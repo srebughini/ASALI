@@ -16,32 +16,20 @@
                             <property name="text">
                                 <string>Load Cantera input file</string>
                             </property>
-                            <property name="toolTip">
-                                <string>Load kinetic or properties file in Cantera format</string>
-                            </property>
                         </item>
                         <item>
                             <property name="text">
                                 <string>Use default input file</string>
-                            </property>
-                            <property name="toolTip">
-                                <string>Load the default input file, which does not containt any kinetic scheme</string>
                             </property>
                         </item>
                         <item>
                             <property name="text">
                                 <string>Convert Chemkin to Cantera</string>
                             </property>
-                            <property name="toolTip">
-                                <string>Convert kinetic files from Chemkin format to Cantera format</string>
-                            </property>
-                        </item>
+                         </item>
                         <item>
                             <property name="text">
                                 <string>Check Asali user defined kinetic file</string>
-                            </property>
-                            <property name="toolTip">
-                                <string>Check the user defined kinetic file in the Asali format</string>
                             </property>
                         </item>
                     </widget>

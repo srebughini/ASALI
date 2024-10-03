@@ -69,5 +69,5 @@ class ExceptionHandler:
         # Execute the dialog
         dialog.exec_()
 
-        if main_window.runBar.isVisible():
-            main_window.runBar.close_run_bar()
+        #if main_window.runBar.isVisible():
+        #    main_window.runBar.close_run_bar()

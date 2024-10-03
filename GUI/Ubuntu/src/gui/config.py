@@ -6,6 +6,7 @@ class Config(Enum):
     Class to handle the configuration within the folder structure
     """
     TITLE = "ASALI"
+    MINIMUM_COLUMN_WIDTH = 150
     ICON_PATH = ":/images/Icon.png"
     DEFAULT_CHEMISTRY_FILE_PATH = ":/database/data.yaml"
     BASE_LAYOUT_PATH = "gui/ui/base_layout.ui"
