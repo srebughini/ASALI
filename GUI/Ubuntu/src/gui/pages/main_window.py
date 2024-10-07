@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
+from PyQt5.QtCore import Qt, QSize, QTimer
+from PyQt5.QtGui import QIcon, QResizeEvent
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction, QMessageBox, QSizePolicy
 
 from src.core.data_store import DataStore
 from src.gui.config import Config
@@ -40,9 +40,9 @@ class MainWindow(QMainWindow):
         # Create tool bar
         self.create_tool_bar()
         self.create_actions()
-        self.optionToolBar.addAction(self.contactAction)
-        self.optionToolBar.addAction(self.disclaimerAction)
-        self.optionToolBar.addAction(self.exitAction)
+        self.toolbar.addAction(self.contact_action)
+        self.toolbar.addAction(self.disclaimer_action)
+        self.toolbar.addAction(self.exit_action)
         self.connect_actions()
 
         # Create the base layout widget
@@ -53,9 +53,12 @@ class MainWindow(QMainWindow):
 
         # Define available pages
         self.pages = {
-            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage,
-            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage
+            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store),
+            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store)
         }
+
+        for page in self.pages.values():
+            self.base_layout.add_page(page)
 
         # Show the Starting Page
         self.switch_page(Config.CHEMISTRY_INPUT_PAGE_NAME.value)
@@ -69,9 +72,9 @@ class MainWindow(QMainWindow):
         Returns
         -------
         """
-        self.optionToolBar = QToolBar("Options Toolbar", self)
-        self.optionToolBar.setMovable(False)
-        self.addToolBar(self.optionToolBar)
+        self.toolbar = QToolBar("Options Toolbar", self)
+        self.toolbar.setMovable(False)
+        self.addToolBar(self.toolbar)
 
     def create_actions(self) -> None:
         """
@@ -80,9 +83,9 @@ class MainWindow(QMainWindow):
         -------
 
         """
-        self.contactAction = QAction("&Contact us", self)
-        self.disclaimerAction = QAction("&Disclaimer", self)
-        self.exitAction = QAction("&Exit", self)
+        self.contact_action = QAction("&Contact us", self)
+        self.disclaimer_action = QAction("&Disclaimer", self)
+        self.exit_action = QAction("&Exit", self)
 
     def connect_actions(self) -> None:
         """
@@ -90,9 +93,9 @@ class MainWindow(QMainWindow):
         Returns
         -------
         """
-        self.contactAction.triggered.connect(self.dialog_handler.contact_message)
-        self.disclaimerAction.triggered.connect(self.dialog_handler.disclaimer_message)
-        self.exitAction.triggered.connect(self.close)
+        self.contact_action.triggered.connect(self.dialog_handler.contact_message)
+        self.disclaimer_action.triggered.connect(self.dialog_handler.disclaimer_message)
+        self.exit_action.triggered.connect(self.close)
 
     def switch_page(self, page_name) -> None:
         """
@@ -108,18 +111,45 @@ class MainWindow(QMainWindow):
         """
         if page_name in self.pages.keys():
             # Instantiate the new page
-            new_page = self.pages[page_name](self.data_store)
+            new_page = self.pages[page_name]
+
+            #print("BEFORE")
+            #print("base layout", self.base_layout.sizeHint())
+            #print("window", self.size())
+            #print("base layout", self.base_layout.content_area.currentWidget())
+            #print("content area", self.base_layout.content_area.sizeHint())
+
 
             # Check if the page has already been added to the QStackedWidget
-            page_index = self.base_layout.content_area.indexOf(new_page)
-
-            if page_index == -1:  # Page not in the stack yet
-                # Add the new page to the QStackedWidget
-                self.base_layout.add_content(new_page)
-                page_index = self.base_layout.content_area.indexOf(new_page)
+            #page_index = self.base_layout.content_area.indexOf(new_page)
 
             # Switch to the new page in the QStackedWidget
-            self.base_layout.switch_content(page_index)
+            self.base_layout.switch_page(page_name)
 
             # Connect the page's `page_switched` signal to the `switch_page` method
             new_page.page_switched.connect(self.switch_page)
+
+            self.adjustSize()
+
+            #print("AFTER")
+            #print("base layout", self.base_layout.sizeHint())
+            #print("window", self.size())
+            #print("base layout", self.base_layout.content_area.currentWidget())
+            #print("content area", self.base_layout.content_area.sizeHint())
+
+    def closeEvent(self, event):
+        """
+        Override the closeEvent method to prompt the user for confirmation
+        before closing the application.
+
+        Parameters
+        ----------
+        event : QCloseEvent
+            The event that triggered the close request.
+        """
+        exit_message = self.dialog_handler.question_message("Are you sure you want to quit?")
+
+        if exit_message:
+            event.accept()
+        else:
+            event.ignore()

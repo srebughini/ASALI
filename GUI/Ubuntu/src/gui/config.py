@@ -7,15 +7,14 @@ class Config(Enum):
     """
     TITLE = "ASALI"
     MINIMUM_COLUMN_WIDTH = 150
+    MINIMUM_WINDOW_SIZE = 300
     ICON_PATH = ":/images/Icon.png"
     DEFAULT_CHEMISTRY_FILE_PATH = ":/database/data.yaml"
     BASE_LAYOUT_PATH = "gui/ui/base_layout.ui"
-    STARTING_PAGE_PATH = "gui/ui/starting_page.ui"
-    STARTING_PAGE_NAME = "starting_page"
     CHEMISTRY_INPUT_PAGE_PATH = "gui/ui/chemistry_input_page.ui"
-    CHEMISTRY_INPUT_PAGE_NAME = "chemistry_input_page"
+    CHEMISTRY_INPUT_PAGE_NAME = "ChemistryInputPage"
     CALCULATION_INPUT_PAGE_PATH = "gui/ui/calculation_input_page.ui"
-    CALCULATION_INPUT_PAGE_NAME = "calculation_input_page"
+    CALCULATION_INPUT_PAGE_NAME = "CalculationInputPage"
     EMAIL = "ste.rebu@outlook.it"
     FACEBOOK = "https://www.facebook.com/ASALIcode/"
     LINKEDIN = "https://it.linkedin.com/company/asalicode"

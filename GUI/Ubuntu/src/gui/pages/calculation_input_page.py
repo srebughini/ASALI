@@ -1,8 +1,9 @@
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel
 from PyQt5 import uic, QtWidgets
 
+from src.core.data_keys import DataKeys
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
@@ -19,10 +20,14 @@ class CalculationInputPage(BasicPage):
         super().__init__(data_store)
         # Load the UI from the .ui file
         uic.loadUi(Config.CALCULATION_INPUT_PAGE_PATH.value, self)
+
+        self.data_store.update_data(DataKeys.INLET_NS.value, 1)
+
         self.update_temperature_line()
         self.update_pressure_line()
         self.update_buttons()
         self.update_grid_layout()
+        self.update_specie_line()
 
     def update_temperature_line(self):
         """
@@ -59,7 +64,72 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        backButton = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, 'backButton')
+        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
 
-        # Emit signal to switch pages
-        backButton.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
+        add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
+        add_specie_button.clicked.connect(self.add_specie_line)
+
+    def update_specie_line(self):
+        """
+        Update specie line
+        Returns
+        -------
+
+        """
+        ns = self.data_store.get_data(DataKeys.INLET_NS.value)
+        edit_line = self.findChild(QLineEdit, f"x{ns}")
+        edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
+
+    def move_buttons(self, grid_layout, new_row):
+        """
+        Move the buttons from their current row to a new row.
+        Parameters
+        ----------
+        grid_layout: QGridLayout
+            Grid Layout
+        new_row : int
+            The new row to place the buttons in.
+        """
+        # Find the buttons in the old row
+        back_button = self.findChild(QPushButton, 'backButton')
+        add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
+        next_button = self.findChild(QPushButton, 'nextButton')
+
+        # Remove buttons from the old row
+        grid_layout.removeWidget(back_button)
+        grid_layout.removeWidget(add_specie_button)
+        grid_layout.removeWidget(next_button)
+
+        # Add buttons to the new row
+        grid_layout.addWidget(back_button, new_row, 0)
+        grid_layout.addWidget(add_specie_button, new_row, 1)
+        grid_layout.addWidget(next_button, new_row, 2)
+
+    def add_specie_line(self):
+        """
+        Add specie line to the layout
+        Returns
+        -------
+
+        """
+        ns = self.data_store.get_data(DataKeys.INLET_NS.value) + 1
+        self.data_store.update_data(DataKeys.INLET_NS.value, ns)
+
+        label = QLabel(f'Specie #{ns}')
+        formula_edit_line = QLineEdit()
+        formula_edit_line.setPlaceholderText("H2")
+
+        composition_edit_line = QLineEdit()
+        composition_edit_line.setPlaceholderText("1.0")
+        composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
+
+        grid_layout = self.findChild(QGridLayout, "gridLayout")
+        specie_row = grid_layout.rowCount()
+
+        grid_layout.addWidget(label, specie_row, 0)
+        grid_layout.addWidget(formula_edit_line, specie_row, 1)
+        grid_layout.addWidget(composition_edit_line, specie_row, 2)
+
+        button_row = specie_row + 1
+        self.move_buttons(grid_layout, button_row)

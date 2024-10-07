@@ -30,7 +30,7 @@
                          </item>
                         <item>
                             <property name="text">
-                                <string>Chemical equilibrium</string>
+                                <string>Reactor modeling</string>
                             </property>
                         </item>
                     </widget>
@@ -79,13 +79,84 @@
 
                 <!-- Row 3 -->
                 <item row="3" column="0">
+                    <widget class="QLabel" name="pressureLabel">
+                        <property name="text">
+                            <string>Composition type:</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="1" colspan="2">
+                     <widget class="QComboBox" name="compositionComboBox">
+                        <item>
+                            <property name="text">
+                                <string>Mole fraction</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Mass fraction</string>
+                            </property>
+                        </item>
+                    </widget>
+                </item>
+
+                <!-- Row 4 -->
+                <item row="4" column="1">
+                    <widget class="QLabel" name="formulaLabel">
+                        <property name="text">
+                            <string>Chemical formula</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="4" column="2">
+                    <widget class="QLabel" name="compositionLabel">
+                        <property name="text">
+                            <string>Composition</string>
+                        </property>
+                    </widget>
+                </item>
+
+
+                <!-- Row 5 -->
+                <item row="5" column="0">
+                    <widget class="QLabel" name="formulaLabel">
+                        <property name="text">
+                            <string>Specie #1</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="1">
+                    <widget class="QLineEdit" name="n1">
+                        <property name="text">
+                            <string>H2</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="2">
+                    <widget class="QLineEdit" name="x1">
+                        <property name="text">
+                            <string>1.0</string>
+                        </property>
+                    </widget>
+                </item>
+
+
+                <!-- Row 6 -->
+                <item row="6" column="0">
                     <widget class="QPushButton" name="backButton">
                         <property name="text">
                             <string>&#x2B9C; Back</string>
                         </property>
                     </widget>
                 </item>
-                <item row="3" column="2">
+                <item row="6" column="1">
+                    <widget class="QPushButton" name="addSpecieButton">
+                        <property name="text">
+                            <string>Add specie</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="6" column="2">
                     <widget class="QPushButton" name="nextButton">
                         <property name="text">
                             <string>Next &#x2B9E;</string>

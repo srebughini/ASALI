@@ -17,18 +17,12 @@
                     </property>
                 </widget>
             </item>
+            <!-- Use QWidget for dynamic content switching 
             <item>
-                <!-- Use QStackedWidget for dynamic content switching -->
-                <widget class="QStackedWidget" name="contentArea">
-                    <!-- No size constraints -->
-                    <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                </widget>
-            </item>
+
+                <widget class="QWidget" name="contentArea">
+                </layout>
+            </item>-->
         </layout>
     </widget>
 </ui>

@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 
 from src.core.unit_dimension_handler import UnitDimensionHandler
 from src.gui.config import Config

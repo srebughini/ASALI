@@ -1,6 +1,6 @@
 import beerpy
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QStackedWidget
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QStackedWidget, QStackedLayout
 from PyQt5 import uic
 
 from src.gui.config import Config
@@ -18,9 +18,7 @@ class BaseLayout(QWidget):
         self.update_beer_label()
         self.update_logo()
 
-        # Initialize QStackedWidget for dynamic page switching
-        self.content_area = QStackedWidget(self)
-        self.findChild(QWidget, 'contentArea').layout().addWidget(self.content_area)
+        self.main_layout = self.findChild(QVBoxLayout, 'verticalLayout')
 
     def update_beer_label(self) -> None:
         """
@@ -47,7 +45,20 @@ class BaseLayout(QWidget):
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "logo")
 
-    def add_content(self, widget):
+    def hide_all_pages(self):
+        """
+        Hide all layouts
+        Returns
+        -------
+
+        """
+        for i in range(self.main_layout.count()):
+            widget_item = self.main_layout.itemAt(i)  # Get the QLayoutItem
+            widget = widget_item.widget()  # Extract the widget
+            if widget is not None:  # Check if the item is a valid widget
+                widget.hide()  # Hide the widget
+
+    def add_page(self, widget) -> None:
         """
         Add a new widget to the QStackedWidget and set it as the current widget.
         Parameters
@@ -59,19 +70,29 @@ class BaseLayout(QWidget):
         -------
 
         """
-        self.content_area.addWidget(widget)
-        self.content_area.setCurrentWidget(widget)
+        self.main_layout.addWidget(widget)
 
-    def switch_content(self, index):
+    def switch_page(self, page_name):
         """
         Switch to a different widget in the QStackedWidget.
         Parameters
         ----------
-        index: int
-            Index of the widget to be displayed.
+        page_name: str
+            Name of the page to be shown
 
         Returns
         -------
 
         """
-        self.content_area.setCurrentIndex(index)
+        self.hide_all_pages()
+
+        label = self.findChild(QLabel, 'logoLabel')
+        label.show()
+
+        label = self.findChild(QLabel, 'beerQuoteLabel')
+        label.show()
+
+        layout = self.findChild(QWidget, page_name)
+        layout.show()
+
+        self.update_beer_label()
