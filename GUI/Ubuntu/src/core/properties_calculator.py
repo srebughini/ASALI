@@ -78,4 +78,32 @@ def properties_calculator(data_store):
                       in diff_mix]))
     data_store.update_data(DataKeys.DIFF_MIX.value, (value, ud))
 
+    # Specific heat
+    ud = data_store.get_data(DataKeys.CP.value)[1]
+    if 'mol' in ud.lower():
+        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.cp_mole, UnitDimensionHandler.from_human_to_code_ud(ud))
+    else:
+        value = uc.convert_from_joule_per_kg_per_kelvin(gas.cp_mass, UnitDimensionHandler.from_human_to_code_ud(ud))
+    data_store.update_data(DataKeys.CP.value, (value, ud))
+
+    # Enthalpy
+    ud = data_store.get_data(DataKeys.H.value)[1]
+    if 'mol' in ud.lower():
+        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.enthalpy_mole,
+                                                          UnitDimensionHandler.from_human_to_code_ud(ud))
+    else:
+        value = uc.convert_from_joule_per_kg_per_kelvin(gas.enthalpy_mass,
+                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
+    data_store.update_data(DataKeys.H.value, (value, ud))
+
+    # Entropy
+    ud = data_store.get_data(DataKeys.S.value)[1]
+    if 'mol' in ud.lower():
+        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.entropy_mole,
+                                                          UnitDimensionHandler.from_human_to_code_ud(ud))
+    else:
+        value = uc.convert_from_joule_per_kg_per_kelvin(gas.entropy_mass,
+                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
+    data_store.update_data(DataKeys.S.value, (value, ud))
+
     return data_store

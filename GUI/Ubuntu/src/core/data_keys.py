@@ -18,4 +18,7 @@ class DataKeys(Enum):
     MW = "molecular_weight"
     COND = "thermal_conductivity"
     DIFF_MIX = "mixture_diffusivity"
+    CP = "specific_heat"
+    H = "enthalpy"
+    S = "entropy"
 
