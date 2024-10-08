@@ -28,7 +28,15 @@ class CalculationInputPage(BasicPage):
         self.update_pressure_line()
         self.update_buttons()
         self.update_specie_line()
+        self.update_grid_layout()
 
+    def update_page_after_switch(self) -> None:
+        """
+        Update the whole page
+        Returns
+        -------
+
+        """
         self.update_grid_layout()
 
     def update_data_store(self) -> None:
@@ -184,7 +192,7 @@ class CalculationInputPage(BasicPage):
 
         elif combo_box.currentIndex() == 1:
             # Vacuum properties
-            pass
+            return self.page_switched.emit(Config.VACUUM_OUTPUT_PAGE_NAME.value)
 
         elif combo_box.currentIndex() == 2:
             # Chemical equilibrium

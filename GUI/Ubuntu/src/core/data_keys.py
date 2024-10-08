@@ -21,4 +21,9 @@ class DataKeys(Enum):
     CP = "specific_heat"
     H = "enthalpy"
     S = "entropy"
+    GEOMETRY = "geometry"
+    V = "velocity"
+    L = "length"
+    KN = "knudsen_number"
+    VACUUM_SPECIE = "vacuum_specie"
 

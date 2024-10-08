@@ -19,6 +19,8 @@ class Config(Enum):
     CALCULATION_INPUT_PAGE_NAME = "CalculationInputPage"
     PROPERTIES_OUTPUT_PAGE_PATH = "gui/ui/properties_output_page.ui"
     PROPERTIES_OUTPUT_PAGE_NAME = "PropertiesOutputPage"
+    VACUUM_OUTPUT_PAGE_PATH = "gui/ui/vacuum_output_page.ui"
+    VACUUM_OUTPUT_PAGE_NAME = "VacuumOutputPage"
     EMAIL = "ste.rebu@outlook.it"
     FACEBOOK = "https://www.facebook.com/ASALIcode/"
     LINKEDIN = "https://it.linkedin.com/company/asalicode"

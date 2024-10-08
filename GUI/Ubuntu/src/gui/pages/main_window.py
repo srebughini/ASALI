@@ -10,6 +10,7 @@ from src.gui.pages.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.file_handler_pages import FileHandlerPages
 from src.gui.pages.properties_output_page import PropertiesOutputPage
+from src.gui.pages.vacuum_output_page import VacuumOutputPage
 
 
 class MainWindow(QMainWindow):
@@ -60,7 +61,8 @@ class MainWindow(QMainWindow):
         self.pages = {
             Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store),
             Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store),
-            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store)
+            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store),
+            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store)
         }
 
         for page in self.pages.values():

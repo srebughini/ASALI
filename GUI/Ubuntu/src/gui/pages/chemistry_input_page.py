@@ -23,6 +23,15 @@ class ChemistryInputPage(BasicPage):
         self.update_buttons()
         self.update_grid_layout()
 
+    def update_page_after_switch(self) -> None:
+        """
+        Update the whole page
+        Returns
+        -------
+
+        """
+        self.update_grid_layout()
+
     def update_data_store(self, file_path) -> None:
         """
         Update data store with file path, gas phase name and surface phase name

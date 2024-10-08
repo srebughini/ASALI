@@ -93,6 +93,7 @@ class BaseLayout(QWidget):
         label.show()
 
         layout = self.findChild(QWidget, page_name)
+        layout.update_page_after_switch()
         layout.show()
 
         self.update_beer_label()

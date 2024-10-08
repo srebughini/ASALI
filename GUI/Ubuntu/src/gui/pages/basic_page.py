@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
 
@@ -38,3 +40,13 @@ class BasicPage(QWidget):
 
         for row in range(grid.rowCount()):
             grid.setRowStretch(row, 1)  # or any desired stretch factor
+
+    @abstractmethod
+    def update_page_after_switch(self) -> None:
+        """
+        Update the whole page
+        Returns
+        -------
+
+        """
+        pass

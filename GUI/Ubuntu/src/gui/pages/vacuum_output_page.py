@@ -1,18 +1,19 @@
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton, QSizePolicy
+from PyQt5.QtGui import QDoubleValidator
+from PyQt5.QtWidgets import QPushButton, QSizePolicy, QLabel, QComboBox, QLineEdit
 
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
-from src.core.properties_calculator import properties_calculator
+from src.core.vacuum_calculator import vacuum_calculator
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
 
-class PropertiesOutputPage(BasicPage):
+class VacuumOutputPage(BasicPage):
     def __init__(self, data_store):
         """
-        Thermodynamic and transport properties output layout
+        Vacuum properties output layout
         Parameters
         ----------
         data_store: DataStore
@@ -20,17 +21,13 @@ class PropertiesOutputPage(BasicPage):
         """
         super().__init__(data_store)
         # Load the UI from the .ui file
-        uic.loadUi(Config.PROPERTIES_OUTPUT_PAGE_PATH.value, self)
-
+        uic.loadUi(Config.VACUUM_OUTPUT_PAGE_PATH.value, self)
         self.update_head_lines()
-        self.update_property_line("rhoValueLabel", "rhoComboBox", self.ud_handler.density_ud)
-        self.update_property_line("muValueLabel", "muComboBox", self.ud_handler.viscosity_ud)
-        self.update_property_line("condValueLabel", "condComboBox", self.ud_handler.thermal_conductivity_ud)
+        self.update_geometry_line()
+        self.update_property_line("vValueLabel", "vComboBox", self.ud_handler.velocity_ud)
+        self.update_property_line("lValueLabel", "lComboBox", self.ud_handler.length_ud)
         self.update_property_line("diffValueLabel", "diffComboBox", self.ud_handler.diffusivity_ud)
-        self.update_property_line("mwValueLabel", "mwComboBox", self.ud_handler.molecular_weight_ud)
-        self.update_property_line("hValueLabel", "hComboBox", self.ud_handler.enthalpy_ud)
-        self.update_property_line("sValueLabel", "sComboBox", self.ud_handler.entropy_ud)
-        self.update_property_line("cpValueLabel", "cpComboBox", self.ud_handler.specific_heat_ud)
+        self.update_property_line("knValueLabel", None, None)
         self.update_buttons()
 
     def update_page_after_switch(self) -> None:
@@ -40,6 +37,7 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
+        self.update_specie_line()
         self.update_grid_layout()
 
     def update_property_line(self, value_label_name, combo_box_name, ud_list) -> None:
@@ -49,9 +47,9 @@ class PropertiesOutputPage(BasicPage):
         ----------
         value_label_name: str
             Value label name
-        combo_box_name: str
+        combo_box_name: str | None
             Unit dimension combo box name
-        ud_list: list
+        ud_list: list | None
             Unit dimensions
 
         Returns
@@ -63,9 +61,10 @@ class PropertiesOutputPage(BasicPage):
         label.setAlignment(Qt.AlignVCenter)
         label.setTextInteractionFlags(Qt.TextSelectableByMouse)
 
-        dropdown = self.findChild(QComboBox, combo_box_name)
-        dropdown.addItems(ud_list)
-        dropdown.currentIndexChanged.connect(self.update_shown_data)
+        if combo_box_name is not None:
+            dropdown = self.findChild(QComboBox, combo_box_name)
+            dropdown.addItems(ud_list)
+            dropdown.currentIndexChanged.connect(self.update_shown_data)
 
     def update_property_value(self, value_label_name, value):
         """
@@ -102,6 +101,32 @@ class PropertiesOutputPage(BasicPage):
         calculate_button.clicked.connect(self.update_shown_data)
         calculate_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
+    def update_geometry_line(self) -> None:
+        """
+        Update geometry input line
+        Returns
+        -------
+
+        """
+        edit_line = self.findChild(QLineEdit, 'geometryEditLine')
+        edit_line.setValidator(QDoubleValidator(0.0, 1e09, 20))
+        edit_line.setAlignment(Qt.AlignRight)
+
+        dropdown = self.findChild(QComboBox, 'geometryComboBox')
+        dropdown.addItems(self.ud_handler.length_ud)
+
+    def update_specie_line(self) -> None:
+        """
+        Update specie input line
+        Returns
+        -------
+
+        """
+        dropdown = self.findChild(QComboBox, 'specieComboBox')
+        specie_list = list(self.data_store.get_data(DataKeys.INLET_COMPOSITION.value)[0].keys())
+        dropdown.clear()
+        dropdown.addItems(specie_list)
+
     def update_head_lines(self) -> None:
         """
         Update head lines
@@ -109,11 +134,11 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        label = self.findChild(QLabel, 'transportLabel')
+        label = self.findChild(QLabel, 'inputLabel')
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "highlight")
 
-        label = self.findChild(QLabel, 'thermodynamicLabel')
+        label = self.findChild(QLabel, 'outputLabel')
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "highlight")
 
@@ -124,22 +149,23 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.RHO.value,
-                                    (0.0, self.findChild(QComboBox, 'rhoComboBox').currentText()))
-        self.data_store.update_data(DataKeys.MU.value,
-                                    (0.0, self.findChild(QComboBox, 'muComboBox').currentText()))
-        self.data_store.update_data(DataKeys.MW.value,
-                                    (0.0, self.findChild(QComboBox, 'mwComboBox').currentText()))
-        self.data_store.update_data(DataKeys.COND.value,
-                                    (0.0, self.findChild(QComboBox, 'condComboBox').currentText()))
+        value = float(self.findChild(QLineEdit, 'geometryEditLine').text())
+        ud = self.findChild(QComboBox, 'geometryComboBox').currentText()
+        self.data_store.update_data(DataKeys.GEOMETRY.value, (value, ud))
+
+        self.data_store.update_data(DataKeys.VACUUM_SPECIE.value,
+                                    self.findChild(QComboBox, "specieComboBox").currentText())
+
+        self.data_store.update_data(DataKeys.L.value,
+                                    (0.0, self.findChild(QComboBox, 'lComboBox').currentText()))
+
+        self.data_store.update_data(DataKeys.V.value,
+                                    (0.0, self.findChild(QComboBox, 'vComboBox').currentText()))
+
         self.data_store.update_data(DataKeys.DIFF_MIX.value,
                                     (0.0, self.findChild(QComboBox, 'diffComboBox').currentText()))
-        self.data_store.update_data(DataKeys.H.value,
-                                    (0.0, self.findChild(QComboBox, 'hComboBox').currentText()))
-        self.data_store.update_data(DataKeys.S.value,
-                                    (0.0, self.findChild(QComboBox, 'sComboBox').currentText()))
-        self.data_store.update_data(DataKeys.CP.value,
-                                    (0.0, self.findChild(QComboBox, 'cpComboBox').currentText()))
+
+        self.data_store.update_data(DataKeys.KN.value, 0.0)
 
     def update_shown_data(self) -> None:
         """
@@ -149,15 +175,11 @@ class PropertiesOutputPage(BasicPage):
 
         """
         self.read_data()
-        self.data_store = properties_calculator(self.data_store)
+        self.data_store = vacuum_calculator(self.data_store)
 
-        self.update_property_value('rhoValueLabel', self.data_store.get_data(DataKeys.RHO.value)[0])
-        self.update_property_value('condValueLabel', self.data_store.get_data(DataKeys.COND.value)[0])
-        self.update_property_value('mwValueLabel', self.data_store.get_data(DataKeys.MW.value)[0])
-        self.update_property_value('muValueLabel', self.data_store.get_data(DataKeys.MU.value)[0])
+        self.update_property_value('lValueLabel', self.data_store.get_data(DataKeys.L.value)[0])
+        self.update_property_value('vValueLabel', self.data_store.get_data(DataKeys.V.value)[0])
         self.update_property_value('diffValueLabel', self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
-        self.update_property_value('hValueLabel', self.data_store.get_data(DataKeys.H.value)[0])
-        self.update_property_value('sValueLabel', self.data_store.get_data(DataKeys.S.value)[0])
-        self.update_property_value('cpValueLabel', self.data_store.get_data(DataKeys.CP.value)[0])
+        self.update_property_value('knValueLabel', self.data_store.get_data(DataKeys.KN.value))
 
         self.update_grid_layout()

@@ -5,7 +5,7 @@ class DataStore:
         """
         self.data = {}
 
-    def update_data(self, key, value):
+    def update_data(self, key, value) -> None:
         """
         Update data in the DataStore class
         Parameters
@@ -21,7 +21,7 @@ class DataStore:
         """
         self.data[key] = value
 
-    def get_data(self, key):
+    def get_data(self, key) -> object:
         """
         Returns the requested data from key
         Parameters
@@ -32,6 +32,21 @@ class DataStore:
         Returns
         -------
         value: object
-            Value fot the updated data
+            Value for the updated data
         """
         return self.data.get(key, None)
+
+    def check_data(self, key) -> bool:
+        """
+        Check if the request data exist from key
+        Parameters
+        ----------
+        key: str
+            Key for the updated data
+
+        Returns
+        -------
+        value: bool
+            If True the data exist
+        """
+        return key in self.data.keys()
