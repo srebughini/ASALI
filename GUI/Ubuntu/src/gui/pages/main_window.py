@@ -7,6 +7,7 @@ from src.gui.config import Config
 from src.gui.pages.base_layout import BaseLayout
 from src.gui.pages.calculation_input_page import CalculationInputPage
 from src.gui.pages.chemistry_input_page import ChemistryInputPage
+from src.gui.pages.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.file_handler_pages import FileHandlerPages
 from src.gui.pages.properties_output_page import PropertiesOutputPage
@@ -46,9 +47,6 @@ class MainWindow(QMainWindow):
         # Create tool bar
         self.create_tool_bar()
         self.create_actions()
-        self.toolbar.addAction(self.contact_action)
-        self.toolbar.addAction(self.disclaimer_action)
-        self.toolbar.addAction(self.exit_action)
         self.connect_actions()
 
         # Create the base layout widget
@@ -62,7 +60,8 @@ class MainWindow(QMainWindow):
             Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store),
             Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store),
             Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store),
-            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store)
+            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store),
+            Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value: ChemkinToCanteraPage(self.data_store)
         }
 
         for page in self.pages.values():
@@ -94,6 +93,9 @@ class MainWindow(QMainWindow):
         self.contact_action = QAction("&Contact us", self)
         self.disclaimer_action = QAction("&Disclaimer", self)
         self.exit_action = QAction("&Exit", self)
+        self.toolbar.addAction(self.contact_action)
+        self.toolbar.addAction(self.disclaimer_action)
+        self.toolbar.addAction(self.exit_action)
 
     def connect_actions(self) -> None:
         """

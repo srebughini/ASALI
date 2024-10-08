@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>ChemkinToCanteraPage</class>
+    <widget class="QWidget" name="ChemkinToCanteraPage">
+        <layout class="QGridLayout" name="gridLayout">
+            <!-- Row 0 -->
+            <item row="0" column="0">
+                <widget class="QPushButton" name="transportButton">
+                    <property name="text">
+                        <string>Load transport</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Load Chemkin transport file</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1" colspan="2">
+                <widget class="QLabel" name="transportLabel">
+                    <property name="text">
+                        <string>Not selected</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 1 -->
+            <item row="1" column="0">
+                <widget class="QPushButton" name="thermoButton">
+                    <property name="text">
+                        <string>Load thermodynamic</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Load Chemkin thermodynamic file</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="1" colspan="2">
+                <widget class="QLabel" name="thermoLabel">
+                    <property name="text">
+                        <string>Not selected</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 2 -->
+            <item row="2" column="0">
+                <widget class="QPushButton" name="kineticButton">
+                    <property name="text">
+                        <string>Load gas kinetic</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Load Chemkin gas kintic file</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1" colspan="2">
+                <widget class="QLabel" name="kineticLabel">
+                    <property name="text">
+                        <string>Not selected</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 3 -->
+            <item row="3" column="0">
+                <widget class="QPushButton" name="surfaceButton">
+                    <property name="text">
+                        <string>Load surface kinetic</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Load Chemkin surface kintic file</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1" colspan="2">
+                <widget class="QLabel" name="surfaceLabel">
+                    <property name="text">
+                        <string>Not selected</string>
+                    </property>
+                </widget>
+            </item>
+            
+
+
+            <!-- Row 4 -->
+            <item row="4" column="0">
+                <widget class="QPushButton" name="backButton">
+                    <property name="text">
+                        <string>&#x2B9C; Back</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Go back to chemistry input page</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="1">
+                <widget class="QPushButton" name="convertButton">
+                    <property name="text">
+                        <string>Convert</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Convert Chemkin into Cantera input file</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="2">
+                <widget class="QPushButton" name="cleanButton">
+                    <property name="text">
+                        <string>Clean</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Clean file paths</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

@@ -21,6 +21,8 @@ class Config(Enum):
     PROPERTIES_OUTPUT_PAGE_NAME = "PropertiesOutputPage"
     VACUUM_OUTPUT_PAGE_PATH = "gui/ui/vacuum_output_page.ui"
     VACUUM_OUTPUT_PAGE_NAME = "VacuumOutputPage"
+    CHEMKIN_TO_CANTERA_PAGE_PATH = "gui/ui/chemkin_to_cantera_page.ui"
+    CHEMKIN_TO_CANTERA_PAGE_NAME = "ChemkinToCanteraPage"
     EMAIL = "ste.rebu@outlook.it"
     FACEBOOK = "https://www.facebook.com/ASALIcode/"
     LINKEDIN = "https://it.linkedin.com/company/asalicode"
