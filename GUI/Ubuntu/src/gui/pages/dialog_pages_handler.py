@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget
+from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, QSizePolicy
 
 from src.controllers.label_formatter import LabelFormatter
 from src.gui.config import Config
@@ -118,6 +118,11 @@ class DialogPagesHandler:
         box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         button_yes = box.button(QMessageBox.Yes)
         button_no = box.button(QMessageBox.No)
+
+        # Access the buttons and set their size policy
+        for button in box.buttons():
+            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
         box.exec_()
 
         if box.clickedButton() == button_yes:
@@ -150,6 +155,7 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
+        button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()
@@ -183,6 +189,7 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
+        button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()

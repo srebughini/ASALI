@@ -21,7 +21,7 @@ class BasicPage(QWidget):
         self.data_store = data_store
         self.ud_handler = UnitDimensionHandler()
 
-    def update_grid_layout(self):
+    def update_grid_layout(self) -> None:
         """
         Update grid layout
         Returns
@@ -29,6 +29,12 @@ class BasicPage(QWidget):
 
         """
         grid = self.findChild(QGridLayout, 'gridLayout')
+        grid.setVerticalSpacing(Config.GRID_VERTICAL_SPACING.value)
+        grid.setHorizontalSpacing(Config.GRID_HORIZONTAL_SPACING.value)
 
         for j in range(grid.columnCount()):
             grid.setColumnMinimumWidth(j, Config.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
+            grid.setColumnStretch(j, 1)  # or any desired stretch factor
+
+        for row in range(grid.rowCount()):
+            grid.setRowStretch(row, 1)  # or any desired stretch factor

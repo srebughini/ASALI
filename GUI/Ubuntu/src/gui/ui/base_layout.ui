@@ -17,12 +17,6 @@
                     </property>
                 </widget>
             </item>
-            <!-- Use QWidget for dynamic content switching 
-            <item>
-
-                <widget class="QWidget" name="contentArea">
-                </layout>
-            </item>-->
         </layout>
     </widget>
 </ui>

@@ -39,6 +39,9 @@
                         <property name="text">
                             <string>Next &#x2B9E;</string>
                         </property>
+                        <property name="toolTip">
+                            <string>Go to next page</string>
+                        </property>
                     </widget>
                 </item>
             </layout>

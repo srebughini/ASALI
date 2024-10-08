@@ -1,9 +1,10 @@
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel
-from PyQt5 import uic, QtWidgets
+from PyQt5.QtWidgets import QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel, QSizePolicy
+from PyQt5 import uic
 
 from src.core.data_keys import DataKeys
+from src.core.properties_calculator import properties_calculator
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
@@ -21,15 +22,39 @@ class CalculationInputPage(BasicPage):
         # Load the UI from the .ui file
         uic.loadUi(Config.CALCULATION_INPUT_PAGE_PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INLET_NS.value, 1)
+        self.data_store.update_data(DataKeys.INLET_NS.value, 0)
 
         self.update_temperature_line()
         self.update_pressure_line()
         self.update_buttons()
-        self.update_grid_layout()
         self.update_specie_line()
 
-    def update_temperature_line(self):
+        self.update_grid_layout()
+
+    def update_data_store(self) -> None:
+        """
+        Update data store with temperature, composition, pressure
+        Returns
+        -------
+
+        """
+        # Temperature
+        value = float(self.findChild(QLineEdit, 'temperatureEditLine').text())
+        ud = self.findChild(QComboBox, 'temperatureComboBox').currentText()
+        self.data_store.update_data(DataKeys.INLET_T.value, (value, ud))
+
+        # Pressure
+        value = float(self.findChild(QLineEdit, 'pressureEditLine').text())
+        ud = self.findChild(QComboBox, 'pressureComboBox').currentText()
+        self.data_store.update_data(DataKeys.INLET_P.value, (value, ud))
+
+        # Composition
+        value = {self.findChild(QLineEdit, f"n{i}").text(): float(self.findChild(QLineEdit, f"x{i}").text()) for i in
+                 range(0, self.data_store.get_data(DataKeys.INLET_NS.value) + 1)}
+        ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
+        self.data_store.update_data(DataKeys.INLET_COMPOSITION.value, (value, ud))
+
+    def update_temperature_line(self) -> None:
         """
         Update temperature input line
         Returns
@@ -43,7 +68,7 @@ class CalculationInputPage(BasicPage):
         dropdown = self.findChild(QComboBox, 'temperatureComboBox')
         dropdown.addItems(self.ud_handler.temperature_ud)
 
-    def update_pressure_line(self):
+    def update_pressure_line(self) -> None:
         """
         Update pressure input line
         Returns
@@ -57,7 +82,7 @@ class CalculationInputPage(BasicPage):
         dropdown = self.findChild(QComboBox, 'pressureComboBox')
         dropdown.addItems(self.ud_handler.pressure_ud)
 
-    def update_buttons(self):
+    def update_buttons(self) -> None:
         """
         Update buttons
         Returns
@@ -66,11 +91,17 @@ class CalculationInputPage(BasicPage):
         """
         back_button = self.findChild(QPushButton, 'backButton')
         back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
+        back_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
         add_specie_button.clicked.connect(self.add_specie_line)
+        add_specie_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-    def update_specie_line(self):
+        next_button = self.findChild(QPushButton, 'nextButton')
+        next_button.clicked.connect(self.next_button_action)
+        next_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+    def update_specie_line(self) -> None:
         """
         Update specie line
         Returns
@@ -81,7 +112,7 @@ class CalculationInputPage(BasicPage):
         edit_line = self.findChild(QLineEdit, f"x{ns}")
         edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
 
-    def move_buttons(self, grid_layout, new_row):
+    def move_buttons(self, grid_layout, new_row) -> None:
         """
         Move the buttons from their current row to a new row.
         Parameters
@@ -106,7 +137,7 @@ class CalculationInputPage(BasicPage):
         grid_layout.addWidget(add_specie_button, new_row, 1)
         grid_layout.addWidget(next_button, new_row, 2)
 
-    def add_specie_line(self):
+    def add_specie_line(self) -> None:
         """
         Add specie line to the layout
         Returns
@@ -118,10 +149,10 @@ class CalculationInputPage(BasicPage):
 
         label = QLabel(f'Specie #{ns}')
         formula_edit_line = QLineEdit()
-        formula_edit_line.setPlaceholderText("H2")
+        formula_edit_line.setObjectName(f"n{ns}")
 
         composition_edit_line = QLineEdit()
-        composition_edit_line.setPlaceholderText("1.0")
+        composition_edit_line.setObjectName(f"x{ns}")
         composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
 
         grid_layout = self.findChild(QGridLayout, "gridLayout")
@@ -133,3 +164,31 @@ class CalculationInputPage(BasicPage):
 
         button_row = specie_row + 1
         self.move_buttons(grid_layout, button_row)
+
+        self.update_grid_layout()
+
+    def next_button_action(self) -> pyqtSignal:
+        """
+        Action related to the next button
+        Returns
+        -------
+        signal: pyqtSignal
+            Signal with the next page name
+        """
+        self.update_data_store()
+
+        combo_box = self.findChild(QComboBox, 'chemistryComboBox')
+        if combo_box.currentIndex() == 0:
+            # Thermodynamic and transport properties
+            return self.page_switched.emit(Config.PROPERTIES_OUTPUT_PAGE_NAME.value)
+
+        elif combo_box.currentIndex() == 1:
+            # Vacuum properties
+            pass
+
+        elif combo_box.currentIndex() == 2:
+            # Chemical equilibrium
+            pass
+        elif combo_box.currentIndex() == 3:
+            # Reactor modeling
+            pass

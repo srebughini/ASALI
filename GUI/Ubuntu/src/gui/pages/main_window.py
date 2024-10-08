@@ -9,6 +9,7 @@ from src.gui.pages.calculation_input_page import CalculationInputPage
 from src.gui.pages.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.file_handler_pages import FileHandlerPages
+from src.gui.pages.properties_output_page import PropertiesOutputPage
 
 
 class MainWindow(QMainWindow):
@@ -18,9 +19,13 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
         self.data_store = DataStore()
-
         self.dialog_handler = DialogPagesHandler(self)
         self.file_handler = FileHandlerPages(self, self.data_store)
+
+        self.exit_action = None
+        self.disclaimer_action = None
+        self.contact_action = None
+        self.toolbar = None
 
         # Add title
         self.setWindowTitle(Config.TITLE.value)
@@ -54,7 +59,8 @@ class MainWindow(QMainWindow):
         # Define available pages
         self.pages = {
             Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store),
-            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store)
+            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store),
+            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store)
         }
 
         for page in self.pages.values():
@@ -113,16 +119,6 @@ class MainWindow(QMainWindow):
             # Instantiate the new page
             new_page = self.pages[page_name]
 
-            #print("BEFORE")
-            #print("base layout", self.base_layout.sizeHint())
-            #print("window", self.size())
-            #print("base layout", self.base_layout.content_area.currentWidget())
-            #print("content area", self.base_layout.content_area.sizeHint())
-
-
-            # Check if the page has already been added to the QStackedWidget
-            #page_index = self.base_layout.content_area.indexOf(new_page)
-
             # Switch to the new page in the QStackedWidget
             self.base_layout.switch_page(page_name)
 
@@ -130,14 +126,10 @@ class MainWindow(QMainWindow):
             new_page.page_switched.connect(self.switch_page)
 
             self.adjustSize()
+        else:
+            raise Exception(f"{page_name} not found!")
 
-            #print("AFTER")
-            #print("base layout", self.base_layout.sizeHint())
-            #print("window", self.size())
-            #print("base layout", self.base_layout.content_area.currentWidget())
-            #print("content area", self.base_layout.content_area.sizeHint())
-
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         """
         Override the closeEvent method to prompt the user for confirmation
         before closing the application.

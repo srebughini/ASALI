@@ -45,7 +45,7 @@ class BaseLayout(QWidget):
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "logo")
 
-    def hide_all_pages(self):
+    def hide_all_pages(self) -> None:
         """
         Hide all layouts
         Returns
@@ -72,7 +72,7 @@ class BaseLayout(QWidget):
         """
         self.main_layout.addWidget(widget)
 
-    def switch_page(self, page_name):
+    def switch_page(self, page_name) -> None:
         """
         Switch to a different widget in the QStackedWidget.
         Parameters
