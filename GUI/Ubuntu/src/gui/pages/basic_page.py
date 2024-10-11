@@ -1,26 +1,30 @@
 from abc import abstractmethod
 
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QGridLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QGridLayout
 
 from src.core.unit_dimension_handler import UnitDimensionHandler
 from src.gui.config import Config
+from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 
 class BasicPage(QWidget):
     page_switched = pyqtSignal(str)  # Signal to switch pages
 
-    def __init__(self, data_store):
+    def __init__(self, data_store, dialog_handler):
         """
         Chemistry input page layout
         Parameters
         ----------
         data_store: DataStore
             Class to handle the user input
+        dialog_handler: DialogPagesHandler
+            Class to handle all dialog pages
         """
         super().__init__()
         # Load the UI from the .ui file
         self.data_store = data_store
+        self.dialog_handler = dialog_handler
         self.ud_handler = UnitDimensionHandler()
 
     def update_grid_layout(self) -> None:

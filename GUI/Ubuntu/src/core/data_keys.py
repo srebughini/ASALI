@@ -26,4 +26,8 @@ class DataKeys(Enum):
     L = "length"
     KN = "knudsen_number"
     VACUUM_SPECIE = "vacuum_specie"
+    THERMO_FILE_PATH = "chemkin_thermo_file_path"
+    TRANSPORT_FILE_PATH = "chemkin_transport_file_path"
+    KINETIC_FILE_PATH = "chemkin_gas_kinetic_file_path"
+    SURFACE_FILE_PATH = "chemkin_surface_file_path"
 

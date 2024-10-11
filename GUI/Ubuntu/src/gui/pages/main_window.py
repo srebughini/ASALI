@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt, QSize, QTimer
-from PyQt5.QtGui import QIcon, QResizeEvent
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction, QMessageBox, QSizePolicy
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 
 from src.core.data_store import DataStore
 from src.gui.config import Config
@@ -9,7 +9,6 @@ from src.gui.pages.calculation_input_page import CalculationInputPage
 from src.gui.pages.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
-from src.gui.pages.file_handler_pages import FileHandlerPages
 from src.gui.pages.properties_output_page import PropertiesOutputPage
 from src.gui.pages.vacuum_output_page import VacuumOutputPage
 
@@ -22,7 +21,6 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.data_store = DataStore()
         self.dialog_handler = DialogPagesHandler(self)
-        self.file_handler = FileHandlerPages(self, self.data_store)
 
         self.exit_action = None
         self.disclaimer_action = None
@@ -57,11 +55,16 @@ class MainWindow(QMainWindow):
 
         # Define available pages
         self.pages = {
-            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store),
-            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store),
-            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store),
-            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store),
-            Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value: ChemkinToCanteraPage(self.data_store)
+            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store,
+                                                                       self.dialog_handler),
+            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store,
+                                                                           self.dialog_handler),
+            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store,
+                                                                           self.dialog_handler),
+            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store,
+                                                                   self.dialog_handler),
+            Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value: ChemkinToCanteraPage(self.data_store,
+                                                                            self.dialog_handler)
         }
 
         for page in self.pages.values():

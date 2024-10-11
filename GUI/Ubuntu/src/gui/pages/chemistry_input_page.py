@@ -9,15 +9,17 @@ from src.gui.pages.basic_page import BasicPage
 
 
 class ChemistryInputPage(BasicPage):
-    def __init__(self, data_store):
+    def __init__(self, data_store, dialog_handler):
         """
         Chemistry input page layout
         Parameters
         ----------
         data_store: DataStore
             Class to handle the user input
+        dialog_handler: DialogPagesHandler
+            Class to handle all dialog pages
         """
-        super().__init__(data_store)
+        super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
         uic.loadUi(Config.CHEMISTRY_INPUT_PAGE_PATH.value, self)
         self.update_buttons()
@@ -77,10 +79,7 @@ class ChemistryInputPage(BasicPage):
 
         if combo_box.currentIndex() == 0:
             # Load Cantera
-            file_path, _ = QFileDialog.getOpenFileName(self,
-                                                       "Open Cantera Input File",
-                                                       "",
-                                                       "Cantera Files (*.yaml);;All Files (*)")
+            file_path = self.dialog_handler.load_file("Open Cantera Input File", Config.CANTERA_FILE_TYPE.value)
             if file_path:  # Check if a file was selected
                 if InputFileController.check_cantera_input_file(file_path):
                     # Save data in DataStore

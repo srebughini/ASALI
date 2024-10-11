@@ -1,5 +1,6 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, QSizePolicy, \
+    QFileDialog
 
 from src.controllers.label_formatter import LabelFormatter
 from src.gui.config import Config
@@ -205,3 +206,45 @@ class DialogPagesHandler:
 
         # Execute the dialog
         dialog.exec_()
+
+    def load_file(self, title, file_format) -> str | None:
+        """
+        Load a generic file
+        Parameters
+        ----------
+        title: str
+            Dialog window title
+        file_format: str
+            File format
+
+        Returns
+        -------
+        file_path: str | None
+            File path selected
+        """
+        file_path, _ = QFileDialog.getOpenFileName(self.main_window,
+                                                   title,
+                                                   "",
+                                                   file_format)
+        return file_path
+
+    def save_file(self, title, file_format) -> str | None:
+        """
+        Save a generic file
+        Parameters
+        ----------
+        title: str
+            Dialog window title
+        file_format: str
+            File format
+
+        Returns
+        -------
+        file_path: str | None
+            File path selected
+        """
+        file_path, _ = QFileDialog.getSaveFileName(self.main_window,
+                                                   title,
+                                                   "",
+                                                   file_format)
+        return file_path
