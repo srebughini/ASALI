@@ -30,4 +30,5 @@ class DataKeys(Enum):
     TRANSPORT_FILE_PATH = "chemkin_transport_file_path"
     KINETIC_FILE_PATH = "chemkin_gas_kinetic_file_path"
     SURFACE_FILE_PATH = "chemkin_surface_file_path"
+    USER_DEFINED_KINETIC_FILE_PATH = "asali_user_defined_kinetic_file_path"
 

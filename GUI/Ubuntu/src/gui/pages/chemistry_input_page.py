@@ -96,4 +96,4 @@ class ChemistryInputPage(BasicPage):
             return self.page_switched.emit(Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value)
         elif combo_box.currentIndex() == 3:
             # Asali user-defined kinetic model check
-            return self.page_switched.emit("TO DO")
+            return self.page_switched.emit(Config.USER_DEFINED_KINETIC_PAGE_NAME.value)

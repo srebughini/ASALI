@@ -23,6 +23,8 @@ class Config(Enum):
     VACUUM_OUTPUT_PAGE_NAME = "VacuumOutputPage"
     CHEMKIN_TO_CANTERA_PAGE_PATH = "gui/ui/chemkin_to_cantera_page.ui"
     CHEMKIN_TO_CANTERA_PAGE_NAME = "ChemkinToCanteraPage"
+    USER_DEFINED_KINETIC_PAGE_PATH = "gui/ui/user_defined_kinetic_page.ui"
+    USER_DEFINED_KINETIC_PAGE_NAME = "UserDefinedKineticPage"
     EMAIL = "ste.rebu@outlook.it"
     FACEBOOK = "https://www.facebook.com/ASALIcode/"
     LINKEDIN = "https://it.linkedin.com/company/asalicode"

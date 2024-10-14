@@ -10,6 +10,7 @@ from src.gui.pages.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.properties_output_page import PropertiesOutputPage
+from src.gui.pages.user_defined_kinetic_page import UserDefinedKineticPage
 from src.gui.pages.vacuum_output_page import VacuumOutputPage
 
 
@@ -64,7 +65,9 @@ class MainWindow(QMainWindow):
             Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store,
                                                                    self.dialog_handler),
             Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value: ChemkinToCanteraPage(self.data_store,
-                                                                            self.dialog_handler)
+                                                                            self.dialog_handler),
+            Config.USER_DEFINED_KINETIC_PAGE_NAME.value: UserDefinedKineticPage(self.data_store,
+                                                                                self.dialog_handler)
         }
 
         for page in self.pages.values():

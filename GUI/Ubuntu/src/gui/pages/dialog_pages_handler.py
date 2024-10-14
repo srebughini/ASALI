@@ -156,7 +156,7 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
-        button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        #button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()
@@ -190,7 +190,7 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
-        button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        #button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()
