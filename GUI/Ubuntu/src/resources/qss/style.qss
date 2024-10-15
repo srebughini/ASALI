@@ -14,6 +14,11 @@ QLabel.italic {
     font-style: italic;
 }
 
+/* Italic Label Styling */
+QLabel.orange {
+    color: #DB901F;  /* ORANGE */
+}
+
 /* Highlight Label Styling */
 QLabel.highlight {
     color: #DB901F;  /* ORANGE */
@@ -78,4 +83,15 @@ QProgressBar {
 QProgressBar::chunk {
     background-color: #DB901F;  /* ORANGE */
     width: 20px;
+}
+
+/* Table Styling */
+QHeaderView::section {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+    color: #10253F;  /* BLUE */
+}
+
+QTableWidget::item:selected {
+    background-color: #f2e8dc;  /* LIGHTORANGE */
+    color: #10253F;  /* BLUE */
 }

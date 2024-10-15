@@ -1,21 +1,27 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, QSizePolicy, \
-    QFileDialog
+    QFileDialog, QTableView, QHBoxLayout, QTableWidget, QScrollBar, QHeaderView, QTableWidgetItem
 
 from src.controllers.label_formatter import LabelFormatter
+from src.core.data_keys import DataKeys
+from src.core.species_names import gas_species_names, surface_species_names
 from src.gui.config import Config
 
 
 class DialogPagesHandler:
-    def __init__(self, main_window):
+    def __init__(self, main_window, data_store):
         """
         Class to generate dialog pages
         Parameters
         ----------
         main_window: QMainWindow
             Main window object
+        data_store: DataStore
+            Class to handle the user input
         """
         self.main_window = main_window
+        self.data_store = data_store
 
     def dialog_message(self, msg) -> None:
         """
@@ -99,6 +105,86 @@ class DialogPagesHandler:
         msg.setAlignment(Qt.AlignCenter)
         self.dialog_message(msg)
 
+    def info_message(self) -> None:
+        """
+        Show help message QDialog
+        Returns
+        -------
+        """
+        # Create the dialog
+        dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
+        dialog.setWindowTitle(Config.TITLE.value)
+
+        # Setup grid layout
+        grid_layout = QGridLayout()
+        grid_layout.setVerticalSpacing(Config.GRID_VERTICAL_SPACING.value)
+        grid_layout.setHorizontalSpacing(Config.GRID_HORIZONTAL_SPACING.value)
+
+        for i, label_as_str in enumerate(["Cantera file path:",
+                                          "Asali user defined kinetic file path:",
+                                          "Gas phase name:",
+                                          "Surface phase name:"]):
+            label = QLabel(label_as_str)
+            label.setProperty("class", "orange")
+            grid_layout.addWidget(label, i, 0)
+
+        for i, k in enumerate([DataKeys.CHEMISTRY_FILE_PATH,
+                               DataKeys.USER_DEFINED_KINETIC_FILE_PATH,
+                               DataKeys.GAS_PHASE_NAME,
+                               DataKeys.SURFACE_PHASE_NAME]):
+            file_path = self.data_store.get_data(k.value)
+            label = QLabel("Not selected") if file_path is None else QLabel(file_path)
+            label.setProperty("class", "italic")
+            label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            grid_layout.addWidget(label, i, 1)
+
+        self.data_store = gas_species_names(self.data_store)
+        self.data_store = surface_species_names(self.data_store)
+
+        gas_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
+        surf_names = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
+
+        # Create a QTableView and set the proxy model
+        table = QTableWidget()
+
+        # Set row and column count
+        n_row = max(len(gas_names), len(surf_names))
+        table.setRowCount(n_row)  # For testing, create 100 rows
+        table.setColumnCount(2)  # Set 5 columns
+
+        for i, n in enumerate(gas_names):
+            table.setItem(i, 0, QTableWidgetItem(f"{n}"))
+
+        for i, n in enumerate(surf_names):
+            table.setItem(i, 1, QTableWidgetItem(f"{n}"))
+
+        # Set column headers
+        table.setHorizontalHeaderLabels(["Gas phase", "Surface phase"])
+
+        # Disable index
+        table.verticalHeader().setVisible(False)
+
+        # Enable scrolling
+        table.setVerticalScrollBar(QScrollBar())  # Vertical scrollbar for scrolling through rows
+
+        # Resize columns to fit content
+        table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        # Create the headline label
+        headline_label = QLabel("Species names in your file")
+        headline_label.setAlignment(Qt.AlignCenter)
+        headline_label.setProperty("class", "highlight")
+
+        layout = QVBoxLayout()
+        layout.addLayout(grid_layout)
+        layout.addWidget(headline_label)
+        layout.addWidget(table)
+
+        dialog.setLayout(layout)
+
+        # Execute the dialog
+        dialog.exec_()
+
     def question_message(self, msg) -> bool:
         """
         Question message box
@@ -156,7 +242,6 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
-        #button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()
@@ -190,7 +275,6 @@ class DialogPagesHandler:
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
-        #button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Create the error icon
         icon_label = QLabel()

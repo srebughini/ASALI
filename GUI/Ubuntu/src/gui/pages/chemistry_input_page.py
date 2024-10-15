@@ -64,7 +64,6 @@ class ChemistryInputPage(BasicPage):
 
         """
         next_button = self.findChild(QPushButton, 'nextButton')
-        next_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         next_button.clicked.connect(self.next_button_action)
 
     def next_button_action(self) -> pyqtSignal:

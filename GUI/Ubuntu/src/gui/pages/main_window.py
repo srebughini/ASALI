@@ -21,11 +21,12 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
         self.data_store = DataStore()
-        self.dialog_handler = DialogPagesHandler(self)
+        self.dialog_handler = DialogPagesHandler(self, self.data_store)
 
         self.exit_action = None
         self.disclaimer_action = None
         self.contact_action = None
+        self.info_action = None
         self.toolbar = None
 
         # Add title
@@ -96,9 +97,11 @@ class MainWindow(QMainWindow):
         -------
 
         """
+        self.info_action = QAction("&Info", self)
         self.contact_action = QAction("&Contact us", self)
         self.disclaimer_action = QAction("&Disclaimer", self)
         self.exit_action = QAction("&Exit", self)
+        self.toolbar.addAction(self.info_action)
         self.toolbar.addAction(self.contact_action)
         self.toolbar.addAction(self.disclaimer_action)
         self.toolbar.addAction(self.exit_action)
@@ -109,6 +112,7 @@ class MainWindow(QMainWindow):
         Returns
         -------
         """
+        self.info_action.triggered.connect(self.dialog_handler.info_message)
         self.contact_action.triggered.connect(self.dialog_handler.contact_message)
         self.disclaimer_action.triggered.connect(self.dialog_handler.disclaimer_message)
         self.exit_action.triggered.connect(self.close)

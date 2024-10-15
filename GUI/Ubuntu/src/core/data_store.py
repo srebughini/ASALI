@@ -1,9 +1,12 @@
+from src.core.data_keys import DataKeys
+
+
 class DataStore:
     def __init__(self):
         """
         Class that handle the data sharing between the GUI and the CORE
         """
-        self.data = {}
+        self.data = {k.value: None for k in DataKeys}
 
     def update_data(self, key, value) -> None:
         """

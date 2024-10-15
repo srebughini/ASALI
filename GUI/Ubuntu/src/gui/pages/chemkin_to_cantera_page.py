@@ -62,31 +62,24 @@ class ChemkinToCanteraPage(BasicPage):
         """
         back_button = self.findChild(QPushButton, 'backButton')
         back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
-        back_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         clean_button = self.findChild(QPushButton, 'cleanButton')
         clean_button.clicked.connect(self.clean)
-        clean_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         convert_button = self.findChild(QPushButton, 'convertButton')
         convert_button.clicked.connect(self.convert)
-        convert_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         thermo_button = self.findChild(QPushButton, 'thermoButton')
         thermo_button.clicked.connect(self.load_thermo_file)
-        thermo_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         transport_button = self.findChild(QPushButton, 'transportButton')
         transport_button.clicked.connect(self.load_transport_file)
-        transport_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         kinetic_button = self.findChild(QPushButton, 'kineticButton')
         kinetic_button.clicked.connect(self.load_gas_kinetic_file)
-        kinetic_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         surface_button = self.findChild(QPushButton, 'surfaceButton')
         surface_button.clicked.connect(self.load_surface_kinetic_file)
-        surface_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def clean(self) -> None:
         """

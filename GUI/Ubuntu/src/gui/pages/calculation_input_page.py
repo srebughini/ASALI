@@ -101,15 +101,12 @@ class CalculationInputPage(BasicPage):
         """
         back_button = self.findChild(QPushButton, 'backButton')
         back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
-        back_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
         add_specie_button.clicked.connect(self.add_specie_line)
-        add_specie_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         next_button = self.findChild(QPushButton, 'nextButton')
         next_button.clicked.connect(self.next_button_action)
-        next_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def update_specie_line(self) -> None:
         """

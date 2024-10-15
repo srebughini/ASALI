@@ -97,11 +97,9 @@ class VacuumOutputPage(BasicPage):
         """
         back_button = self.findChild(QPushButton, 'backButton')
         back_button.clicked.connect(lambda: self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value))
-        back_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         calculate_button = self.findChild(QPushButton, 'calculateButton')
         calculate_button.clicked.connect(self.update_shown_data)
-        calculate_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def update_geometry_line(self) -> None:
         """

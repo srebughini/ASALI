@@ -60,19 +60,15 @@ class UserDefinedKineticPage(BasicPage):
         """
         back_button = self.findChild(QPushButton, 'backButton')
         back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
-        back_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         check_button = self.findChild(QPushButton, 'checkButton')
         check_button.clicked.connect(self.check)
-        check_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         udk_button = self.findChild(QPushButton, 'udkButton')
         udk_button.clicked.connect(self.load_udk_file)
-        udk_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         cantera_button = self.findChild(QPushButton, 'canteraButton')
         cantera_button.clicked.connect(self.load_cantera_file)
-        cantera_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
     def clean(self) -> None:
         """

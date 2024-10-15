@@ -13,6 +13,8 @@ class DataKeys(Enum):
     INLET_T = "inlet_temperature"
     INLET_P = "inlet_pressure"
     INLET_COMPOSITION = "inlet_composition"
+    GAS_SPECIES_NAMES = "gas_phase_specie_names"
+    SURFACE_SPECIES_NAMES = "surface_phase_specie_names"
     RHO = "density"
     MU = "viscosity"
     MW = "molecular_weight"
