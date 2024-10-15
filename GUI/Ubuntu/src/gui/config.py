@@ -25,6 +25,8 @@ class Config(Enum):
     CHEMKIN_TO_CANTERA_PAGE_NAME = "ChemkinToCanteraPage"
     USER_DEFINED_KINETIC_PAGE_PATH = "gui/ui/user_defined_kinetic_page.ui"
     USER_DEFINED_KINETIC_PAGE_NAME = "UserDefinedKineticPage"
+    EQUILIBRIUM_OUTPUT_PAGE_PATH = "gui/ui/equilibrium_output_page.ui"
+    EQUILIBRIUM_OUTPUT_PAGE_NAME = "EquilibriumOutputPage"
     EMAIL = "ste.rebu@outlook.it"
     FACEBOOK = "https://www.facebook.com/ASALIcode/"
     LINKEDIN = "https://it.linkedin.com/company/asalicode"

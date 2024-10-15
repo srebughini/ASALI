@@ -195,7 +195,7 @@ class CalculationInputPage(BasicPage):
 
         elif combo_box.currentIndex() == 2:
             # Chemical equilibrium
-            pass
+            return self.page_switched.emit(Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value)
         elif combo_box.currentIndex() == 3:
             # Reactor modeling
             pass

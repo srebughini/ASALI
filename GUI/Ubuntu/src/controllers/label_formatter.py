@@ -37,6 +37,22 @@ class LabelFormatter:
             [LabelFormatter.pad_string(f"{k}: \t{LabelFormatter.float_to_string(v)}") for k, v in d.items()])
 
     @staticmethod
+    def list_to_string(d) -> str:
+        """
+        Convert list to string
+        Parameters
+        ----------
+        d: list
+            Data as list
+
+        Returns
+        -------
+        d_str: str
+            Data as str
+        """
+        return "\n".join([LabelFormatter.float_to_string(v) if isinstance(v, float) else v for v in d])
+
+    @staticmethod
     def string_length() -> int:
         """
         Return maximum string length
