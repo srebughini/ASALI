@@ -5,14 +5,14 @@ from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 from src.core.data_store import DataStore
 from src.gui.config import Config
 from src.gui.pages.base_layout import BaseLayout
-from src.gui.pages.calculation_input_page import CalculationInputPage
-from src.gui.pages.chemistry_input_page import ChemistryInputPage
-from src.gui.pages.chemkin_to_cantera_page import ChemkinToCanteraPage
+from src.gui.pages.input.calculation_input_page import CalculationInputPage
+from src.gui.pages.input.chemistry_input_page import ChemistryInputPage
+from src.gui.pages.input.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
-from src.gui.pages.equilibrium_output_page import EquilibriumOutputPage
-from src.gui.pages.properties_output_page import PropertiesOutputPage
-from src.gui.pages.user_defined_kinetic_page import UserDefinedKineticPage
-from src.gui.pages.vacuum_output_page import VacuumOutputPage
+from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
+from src.gui.pages.output.properties_output_page import PropertiesOutputPage
+from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
+from src.gui.pages.output.vacuum_output_page import VacuumOutputPage
 
 
 class MainWindow(QMainWindow):
