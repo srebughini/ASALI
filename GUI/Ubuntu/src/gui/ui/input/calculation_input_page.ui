@@ -30,7 +30,32 @@
                          </item>
                         <item>
                             <property name="text">
-                                <string>Reactor modeling</string>
+                                <string>Batch reactor</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Continuous stirred tank reactor</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Steady state 1D pseudo-homogeneous reactor</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Transient 1D pseudo-homogeneous reactor</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Steady state 1D heterogeneous reactor</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>Transient 1D heterogeneous reactor</string>
                             </property>
                         </item>
                     </widget>

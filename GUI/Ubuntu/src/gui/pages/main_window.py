@@ -2,17 +2,21 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 
+from src.controllers.thread_handler import ThreadHandler
 from src.core.data_store import DataStore
 from src.gui.config import Config
 from src.gui.pages.base_layout import BaseLayout
+from src.gui.pages.input.batch_input_page import BatchInputPage
 from src.gui.pages.input.calculation_input_page import CalculationInputPage
 from src.gui.pages.input.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.input.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
+from src.gui.pages.output.plot_and_save_output_page import PlotAndSaveOutputPage
 from src.gui.pages.output.properties_output_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
 from src.gui.pages.output.vacuum_output_page import VacuumOutputPage
+from src.gui.pages.run_bar import RunBar
 
 
 class MainWindow(QMainWindow):
@@ -45,6 +49,9 @@ class MainWindow(QMainWindow):
             Qt.WindowCloseButtonHint
         )
 
+        # Create run bar
+        self.run_bar = RunBar()
+
         # Create tool bar
         self.create_tool_bar()
         self.create_actions()
@@ -71,7 +78,12 @@ class MainWindow(QMainWindow):
             Config.USER_DEFINED_KINETIC_PAGE_NAME.value: UserDefinedKineticPage(self.data_store,
                                                                                 self.dialog_handler),
             Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value: EquilibriumOutputPage(self.data_store,
-                                                                             self.dialog_handler)
+                                                                             self.dialog_handler),
+            Config.PLOT_AND_SAVE_OUTPUT_PAGE_NAME.value: PlotAndSaveOutputPage(self.data_store,
+                                                                               self.dialog_handler),
+            Config.BATCH_INPUT_PAGE_NAME.value: BatchInputPage(self.data_store,
+                                                               self.dialog_handler,
+                                                               self.run_bar)
         }
 
         for page in self.pages.values():

@@ -122,6 +122,7 @@ class DialogPagesHandler:
 
         for i, label_as_str in enumerate(["Cantera file path:",
                                           "Asali user defined kinetic file path:",
+                                          "Reactor model:",
                                           "Gas phase name:",
                                           "Surface phase name:"]):
             label = QLabel(label_as_str)
@@ -130,6 +131,7 @@ class DialogPagesHandler:
 
         for i, k in enumerate([DataKeys.CHEMISTRY_FILE_PATH,
                                DataKeys.USER_DEFINED_KINETIC_FILE_PATH,
+                               DataKeys.REACTOR_TYPE,
                                DataKeys.GAS_PHASE_NAME,
                                DataKeys.SURFACE_PHASE_NAME]):
             file_path = self.data_store.get_data(k.value)

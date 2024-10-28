@@ -1,7 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QPushButton, QSizePolicy, QLabel, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox, QLineEdit
 
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
@@ -123,7 +123,7 @@ class VacuumOutputPage(BasicPage):
 
         """
         dropdown = self.findChild(QComboBox, 'specieComboBox')
-        specie_list = list(self.data_store.get_data(DataKeys.INLET_COMPOSITION.value)[0].keys())
+        specie_list = list(self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)[0].keys())
         dropdown.clear()
         dropdown.addItems(specie_list)
 

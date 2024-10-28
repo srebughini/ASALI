@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>PlotAndSaveOutputPage</class>
+    <widget class="QWidget" name="PlotAndSaveOutputPage">
+        <layout class="QGridLayout" name="gridLayout">
+            <!-- Row 0 -->
+            <item row="0" column="0" colspan="3">
+                <widget class="QLabel" name="inputLabel">
+                    <property name="text">
+                        <string>Ready to be plotted</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

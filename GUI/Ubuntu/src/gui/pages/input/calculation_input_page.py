@@ -5,6 +5,7 @@ from PyQt5 import uic
 
 from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
+from src.core.species_names import get_random_specie_name
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
@@ -41,7 +42,7 @@ class CalculationInputPage(BasicPage):
         """
         self.update_grid_layout()
 
-    def update_data_store(self) -> None:
+    def read_data(self) -> None:
         """
         Update data store with temperature, composition, pressure
         Returns
@@ -62,7 +63,7 @@ class CalculationInputPage(BasicPage):
         value = {self.findChild(QLineEdit, f"n{i}").text(): float(self.findChild(QLineEdit, f"x{i}").text()) for i in
                  range(0, self.data_store.get_data(DataKeys.INLET_NS.value) + 1)}
         ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
-        self.data_store.update_data(DataKeys.INLET_COMPOSITION.value, (value, ud))
+        self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
 
     def update_temperature_line(self) -> None:
         """
@@ -157,10 +158,12 @@ class CalculationInputPage(BasicPage):
         label = QLabel(f'Specie #{ns}')
         formula_edit_line = QLineEdit()
         formula_edit_line.setObjectName(f"n{ns}")
+        formula_edit_line.setText(get_random_specie_name(self.data_store))
 
         composition_edit_line = QLineEdit()
         composition_edit_line.setObjectName(f"x{ns}")
         composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
+        composition_edit_line.setText("0.0")
 
         grid_layout = self.findChild(QGridLayout, "gridLayout")
         specie_row = grid_layout.rowCount()
@@ -182,7 +185,7 @@ class CalculationInputPage(BasicPage):
         signal: pyqtSignal
             Signal with the next page name
         """
-        self.update_data_store()
+        self.read_data()
 
         combo_box = self.findChild(QComboBox, 'chemistryComboBox')
         if combo_box.currentIndex() == 0:
@@ -197,5 +200,20 @@ class CalculationInputPage(BasicPage):
             # Chemical equilibrium
             return self.page_switched.emit(Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value)
         elif combo_box.currentIndex() == 3:
-            # Reactor modeling
+            # Batch
+            return self.page_switched.emit(Config.BATCH_INPUT_PAGE_NAME.value)
+        elif combo_box.currentIndex() == 4:
+            # CSTR
+            pass
+        elif combo_box.currentIndex() == 5:
+            # SS 1d ph
+            pass
+        elif combo_box.currentIndex() == 6:
+            # Transient 1d ph
+            pass
+        elif combo_box.currentIndex() == 7:
+            # SS 1d het
+            pass
+        elif combo_box.currentIndex() == 8:
+            # Transient 1d het
             pass

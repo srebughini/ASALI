@@ -4,10 +4,11 @@ import numpy as np
 from asali.utils.unit_converter import UnitConverter
 
 from src.core.data_keys import DataKeys
+from src.core.data_store import DataStore
 from src.core.unit_dimension_handler import UnitDimensionHandler
 
 
-def vacuum_calculator(data_store):
+def vacuum_calculator(data_store) -> DataStore:
     """
     Function to estimate vacuum properties
     Parameters
@@ -34,7 +35,7 @@ def vacuum_calculator(data_store):
     pressure = uc.convert_to_pascal(pressure_tuple[0],
                                     UnitDimensionHandler.from_human_to_code_ud(pressure_tuple[1]))
 
-    composition_tuple = data_store.get_data(DataKeys.INLET_COMPOSITION.value)
+    composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)
 
     if "mole" in composition_tuple[1].lower():
         gas.TPX = temperature, pressure, composition_tuple[0]

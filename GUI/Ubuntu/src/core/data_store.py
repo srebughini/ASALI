@@ -24,7 +24,7 @@ class DataStore:
         """
         self.data[key] = value
 
-    def get_data(self, key) -> object:
+    def get_data(self, key) -> tuple | str | float | dict:
         """
         Returns the requested data from key
         Parameters
@@ -34,7 +34,7 @@ class DataStore:
 
         Returns
         -------
-        value: object
+        value: tuple | str | float
             Value for the updated data
         """
         return self.data.get(key, None)

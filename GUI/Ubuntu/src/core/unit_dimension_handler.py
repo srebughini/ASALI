@@ -54,12 +54,6 @@ class UnitDimensionHandler:
         self._specificHeatUd = self._entropyUd
         self._oneOverLengthUd = [f"1/{ud}" for ud in self._lengthUd]
 
-        self._chemicalEquilibriumParser = {"Fixed temperature and pressure": "TP",
-                                           "Fixed specific enthalpy and pressure": "HP",
-                                           "Fixed specific internal energy and specific volume": "UV",
-                                           "Fixed specific entropy and specific volume": "SV",
-                                           "Fixed specific entropy and pressure": "SP"}
-
     @staticmethod
     def create_fractional_ud(numerator, denominator) -> list:
         """
@@ -307,29 +301,3 @@ class UnitDimensionHandler:
             Mass flow rate unit dimensions
         """
         return self._massFlowRateUd
-
-    @property
-    def human_chemical_equilibrium_options(self) -> list:
-        """
-        Access to the human chemical equilibrium options
-        Returns
-        -------
-        chemEqOptions: list
-            List of chemical equilibrium options
-        """
-        return list(self._chemicalEquilibriumParser.keys())
-
-    def from_human_eq_to_code_eq(self, heq) -> str:
-        """
-        Convert from human chemical equilibrium type to code
-        Parameters
-        ----------
-        heq: str
-            Human chemical equilibrium type
-
-        Returns
-        -------
-        ceq: str
-            Code chemical equilibrium type
-        """
-        return self._chemicalEquilibriumParser[heq]
