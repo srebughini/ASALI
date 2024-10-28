@@ -104,7 +104,7 @@
 
                 <!-- Row 3 -->
                 <item row="3" column="0">
-                    <widget class="QLabel" name="pressureLabel">
+                    <widget class="QLabel" name="compositionLabel">
                         <property name="text">
                             <string>Composition type:</string>
                         </property>

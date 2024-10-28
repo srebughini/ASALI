@@ -131,12 +131,7 @@ class BatchReactorInputPage(BasicPage):
         self.setEnabled(True)
 
         if results is not None:
-            self.data_store.update_data(DataKeys.REACTOR_TIME.value, results[0])
-            self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, results[1])
-            self.data_store.update_data(DataKeys.REACTOR_LENGTH.value, results[2])
-
-            print(self.data_store.get_data(DataKeys.REACTOR_TIME.value))
-            print(self.data_store.get_data(DataKeys.REACTOR_RESULTS.value))
+            self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, results)
 
             if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
                 return self.page_switched.emit(Config.PLOT_AND_SAVE_OUTPUT_PAGE_NAME.value)

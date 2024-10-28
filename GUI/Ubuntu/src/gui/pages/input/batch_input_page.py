@@ -2,6 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QLabel, QPushButton, QLineEdit, QGridLayout, QCheckBox
+from asali.reactors.batch import BatchReactor
 
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
@@ -29,6 +30,9 @@ class BatchInputPage(BatchReactorInputPage):
         uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
 
         self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ["Gas"])
+        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
+        self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
         self.task_function = batch_calculator
 
         self.update_head_lines()
@@ -46,7 +50,6 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.REACTOR_TYPE.value, "Batch reactor")
         self.update_grid_layout()
 
     def update_head_lines(self) -> None:
