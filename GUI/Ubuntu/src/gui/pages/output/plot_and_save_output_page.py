@@ -109,19 +109,25 @@ class PlotAndSaveOutputPage(BasicPage):
         self.data_store = surface_species_names(self.data_store)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)):
-            check_box = QCheckBox(n)
-            check_box.setObjectName(f"{n}")
-            grid_layout.addWidget(check_box, row_idx + i + 1, 0)
+            check_box = self.findChild(QCheckBox, f"{n}")
+            if check_box is None:
+                check_box = QCheckBox(n)
+                check_box.setObjectName(f"{n}")
+                grid_layout.addWidget(check_box, row_idx + i + 1, 0)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)):
-            check_box = QCheckBox(n)
-            check_box.setObjectName(f"{n}")
-            grid_layout.addWidget(check_box, row_idx + i + 1, 1)
+            check_box = self.findChild(QCheckBox, f"{n}")
+            if check_box is None:
+                check_box = QCheckBox(n)
+                check_box.setObjectName(f"{n}")
+                grid_layout.addWidget(check_box, row_idx + i + 1, 1)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value)):
-            check_box = QCheckBox(n)
-            check_box.setObjectName(f"{n}")
-            grid_layout.addWidget(check_box, row_idx + i + 1, 2)
+            check_box = self.findChild(QCheckBox, f"{n}")
+            if check_box is None:
+                check_box = QCheckBox(n)
+                check_box.setObjectName(f"{n}")
+                grid_layout.addWidget(check_box, row_idx + i + 1, 2)
 
         row_idx = row_idx + max([len(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)),
                                  len(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))])

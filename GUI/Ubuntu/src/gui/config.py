@@ -10,6 +10,7 @@ class Config(Enum):
     MINIMUM_WINDOW_SIZE = 300
     GRID_VERTICAL_SPACING = 12
     GRID_HORIZONTAL_SPACING = 12
+    MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
     ICON_PATH = ":/images/Icon.png"
     DEFAULT_CHEMISTRY_FILE_PATH = "resources/database/data.yaml"
     BASE_LAYOUT_PATH = "gui/ui/base_layout.ui"

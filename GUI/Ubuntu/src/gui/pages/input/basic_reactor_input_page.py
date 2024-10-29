@@ -23,7 +23,12 @@ class BatchReactorInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         self.run_bar = run_bar  # Run bar window instance passed from MainWindow
+
         self.thread_handler = ThreadHandler()
+        self.thread_handler.finished.connect(self.on_run_completed)
+        self.thread_handler.error.connect(self.on_run_error)
+        self.thread_handler.stopped.connect(self.on_run_stopped)
+
         self.task_function = None
 
     def update_page_after_switch(self) -> None:
@@ -103,10 +108,6 @@ class BatchReactorInputPage(BasicPage):
         self.thread_handler.task_function = self.task_function
         self.thread_handler.args = (self.data_store,)
 
-        # Connect signals for completion or error
-        self.thread_handler.finished.connect(self.on_run_completed)
-        self.thread_handler.error.connect(self.on_run_error)
-
         # Show run bar and disable page inputs
         self.run_bar.reset_run_bar()
         self.run_bar.thread_handler = self.thread_handler
@@ -151,3 +152,14 @@ class BatchReactorInputPage(BasicPage):
         self.run_bar.close_run_bar()
         self.setEnabled(True)
         self.dialog_handler.error_message(QLabel(error_message))
+
+    def on_run_stopped(self) -> None:
+        """
+        Function to handle run bar and window when the run is stopped
+        Returns
+        -------
+
+        """
+        self.run_bar.close_run_bar()
+        self.setEnabled(True)
+        self.dialog_handler.done_message(QLabel("Run stopped!"))

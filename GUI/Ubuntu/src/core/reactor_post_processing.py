@@ -3,6 +3,7 @@ from asali.savers.reactor import ReactorSaver
 
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
+from src.gui.config import Config
 
 
 def reactor_saver(data_store) -> None:
@@ -61,6 +62,8 @@ def reactor_plotter(data_store) -> None:
     color_map = data_store.get_data(DataKeys.COLORMAP.value)
 
     plotter = ReactorPlotter(reactor_class, colormap=color_map)
+
+    plotter.set_rc_params(Config.MATPLOTLIB_TOOLBAR.value)
 
     composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value)
     species_list = data_store.get_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED.value)

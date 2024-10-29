@@ -14,6 +14,7 @@ class ThreadHandler(QThread):
     """
     finished = pyqtSignal(object)
     error = pyqtSignal(str)
+    stopped = pyqtSignal()
 
     def __init__(self):
         """
@@ -123,3 +124,9 @@ class ThreadHandler(QThread):
             if self._process.is_alive():
                 self._process.terminate()
                 self._process.join()
+
+            # Emit stopped signal after process is terminated
+            if not self._process.is_alive():
+                self.stopped.emit()  # Confirm process has stopped
+            else:
+                self.error.emit("Failed to terminate the process.")
