@@ -54,4 +54,8 @@ class DataKeys(Enum):
     REACTOR_RESULTS = "reactor_results"
     TEMPERATURE_TYPES = "reactor_temperature_types"
     PLOT_AND_SAVE_COMPOSITION_TYPE = "plot_and_save_composition_type"
+    COLORMAP = "plotting_color_map"
+    GAS_SPECIES_NAMES_TO_BE_PLOTTED = "gas_species_names_to_be_plotted"
+    SURFACE_SPECIES_NAMES_TO_BE_PLOTTED = "surface_species_names_to_be_plotted"
+    TEMPERATURE_TO_BE_PLOTTED = "temperature_to_be_plotted"
 

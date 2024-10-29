@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
 from src.core.data_keys import DataKeys
-from src.core.reactor_saver import reactor_saver
+from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
@@ -148,6 +148,9 @@ class PlotAndSaveOutputPage(BasicPage):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
+        select_button = self.findChild(QPushButton, 'selectButton')
+        select_button.setText("Unselect all")
+
     def unselect_all(self) -> None:
         """
         Unselect all variables
@@ -166,6 +169,9 @@ class PlotAndSaveOutputPage(BasicPage):
         for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
+
+        select_button = self.findChild(QPushButton, 'selectButton')
+        select_button.setText("Select all")
 
     def on_select_button_click_data(self) -> None:
         """
@@ -201,7 +207,28 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        pass
+        self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value,
+                                    self.findChild(QComboBox, 'compositionComboBox').currentText())
+
+        self.data_store.update_data(DataKeys.COLORMAP.value,
+                                    self.findChild(QComboBox, 'plotColorComboBox').currentText())
+
+        species_list = [n for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value) if
+                        self.findChild(QCheckBox, n).isChecked()]
+
+        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED.value, species_list)
+
+        surface_species_list = [n for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value) if
+                                self.findChild(QCheckBox, n).isChecked()]
+
+        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_TO_BE_PLOTTED.value, surface_species_list)
+
+        temperature_list = [n for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value) if
+                            self.findChild(QCheckBox, n).isChecked()]
+
+        self.data_store.update_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED.value, temperature_list)
+
+        reactor_plotter(self.data_store)
 
     def save_reactor_data(self):
         """
@@ -220,7 +247,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         try:
             reactor_saver(self.data_store)
-        except:
-            self.dialog_handler.something_went_wrong_message()
+        except OSError as e:
+            self.dialog_handler.error_message(QLabel(str(e)))
         else:
             self.dialog_handler.done_message(QLabel("Successfully saved!"))
