@@ -131,7 +131,7 @@ class DialogPagesHandler:
 
         for i, k in enumerate([DataKeys.CHEMISTRY_FILE_PATH,
                                DataKeys.USER_DEFINED_KINETIC_FILE_PATH,
-                               DataKeys.REACTOR_TYPE,
+                               DataKeys.REACTOR_NAME,
                                DataKeys.GAS_PHASE_NAME,
                                DataKeys.SURFACE_PHASE_NAME]):
             file_path = self.data_store.get_data(k.value)

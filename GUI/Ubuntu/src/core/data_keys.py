@@ -45,6 +45,7 @@ class DataKeys(Enum):
     SURFACE_FILE_PATH = "chemkin_surface_file_path"
     USER_DEFINED_KINETIC_FILE_PATH = "asali_user_defined_kinetic_file_path"
     REACTOR_TYPE = "reactor_type"
+    REACTOR_NAME = "reactor_name"
     REACTOR_PAGE_NAME = "reactor_page_name"
     VOLUME = "reactor_volume"
     ALFA = "reactor_catalytic_load"

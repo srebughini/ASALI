@@ -10,6 +10,7 @@ from src.core.species_names import get_random_coverage_name
 from src.gui.config import Config
 
 from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
+from src.gui.reactor_config import ReactorConfig
 
 
 class BatchInputPage(BatchReactorInputPage):
@@ -29,12 +30,6 @@ class BatchInputPage(BatchReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
-        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ["Gas"])
-        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
-        self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
-        self.task_function = batch_calculator
-
         self.update_head_lines()
         self.update_property_line("volumeEditLine", "volumeComboBox", self.ud_handler.volume_ud)
         self.update_property_line("alfaEditLine", "alfaComboBox", self.ud_handler.one_over_length_ud)
@@ -50,6 +45,13 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
+        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ReactorConfig.BATCH_TEMPERATURES.value)
+        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
+        self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
+        self.data_store.update_data(DataKeys.REACTOR_NAME.value, ReactorConfig.BATCH_NAME.value)
+        self.task_function = batch_calculator
+
         self.update_grid_layout()
 
     def update_head_lines(self) -> None:
