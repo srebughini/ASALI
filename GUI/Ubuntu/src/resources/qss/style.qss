@@ -95,3 +95,29 @@ QTableWidget::item:selected {
     background-color: #f2e8dc;  /* LIGHTORANGE */
     color: #10253F;  /* BLUE */
 }
+
+/* Tab Widget Styling */
+QTabWidget::pane {
+    border: none; /* LIGHTBLUE border around the widget */
+}
+
+QTabBar::tab {
+    background-color: #10253F; /* BLUE */
+    color: #DCE6F2; /* LIGHTBLUE */
+    padding: 5px;
+    border: 1px solid #DCE6F2; /* LIGHTBLUE */
+    border-radius: 5px; /* Rounded corners for tabs */
+    margin-right: 4px; /* Space between tabs */
+}
+
+QTabBar::tab:selected {
+    background-color: #DB901F;  /* ORANGE */
+    color: #10253F; /* BLUE */
+    border: 1px solid #DB901F; /* LIGHTBLUE */
+}
+
+QTabBar::tab:hover {
+    background-color: #f2e8dc; /* LIGHTORANGE */
+    color: #10253F; /* BLUE */
+    border: 1px solid #f2e8dc; /* LIGHTORANGE */
+}

@@ -2,215 +2,205 @@
 <ui version="4.0">
     <class>BatchInputPage</class>
         <widget class="QWidget" name="BatchInputPage">
-            <layout class="QGridLayout" name="gridLayout">
-                <!-- Row 0 -->
-                <item row="0" column="0" colspan="3">
-                    <widget class="QLabel" name="optionsLabel">
-                        <property name="text">
-                            <string>Solving options</string>
-                        </property>
-                    </widget>
-                </item>
+            <layout class="QVBoxLayout" name="verticalLevel1Layout">
+                <item>
+                    <widget class="QTabWidget" name="tabWidget">
+                        <!-- Tab 1 -->
+                        <widget class="QWidget" name="optionsTab">
+                            <layout class="QGridLayout" name="optionsLayout">
+                                <!-- Row 0-->
+                                <item row="0" column="0">
+                                    <widget class="QLabel" name="volumeLabel">
+                                        <property name="text">
+                                            <string>Volume:</string>
+                                        </property>
+                                    </widget>
+                                </item>s
+                                <item row="0" column="1">
+                                    <widget class="QLineEdit" name="volumeEditLine">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="0" column="2">
+                                    <widget class="QComboBox" name="volumeComboBox">
+                                    </widget>
+                                </item>
 
-                <!-- Row 1-->
-                <item row="1" column="0">
-                    <widget class="QLabel" name="volumeLabel">
-                        <property name="text">
-                            <string>Volume:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="1" column="1">
-                    <widget class="QLineEdit" name="volumeEditLine">
-                        <property name="text">
-                            <string>1.0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="1" column="2">
-                    <widget class="QComboBox" name="volumeComboBox">
-                    </widget>
-                </item>
+                                <!-- Row 1-->
+                                <item row="1" column="0">
+                                    <widget class="QLabel" name="alfaLabel">
+                                        <property name="text">
+                                            <string>Catalytic load:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="1">
+                                    <widget class="QLineEdit" name="alfaEditLine">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="2">
+                                    <widget class="QComboBox" name="alfaComboBox">
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                        <!-- Tab 2 -->
+                        <widget class="QWidget" name="propertiesTab">
+                            <layout class="QGridLayout" name="propertiesLayout">
+                                <!-- Row 0 -->
+                                <item row="0" column="0" colspan="3">
+                                    <widget class="QPushButton" name="udkButton">
+                                        <property name="text">
+                                            <string>Load ASALI udk</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Load ASALI user defined kinetic model</string>
+                                        </property>
+                                    </widget>
+                                </item>
 
-                <!-- Row 2-->
-                <item row="2" column="0">
-                    <widget class="QLabel" name="alfaLabel">
-                        <property name="text">
-                            <string>Catalytic load:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="1">
-                    <widget class="QLineEdit" name="alfaEditLine">
-                        <property name="text">
-                            <string>1.0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="2">
-                    <widget class="QComboBox" name="alfaComboBox">
-                    </widget>
-                </item>
+                                <!-- Row 1-->
+                                <item row="1" column="0">
+                                    <widget class="QLabel" name="energyLabel">
+                                        <property name="text">
+                                            <string>Energy balance</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="1" colspan="2">
+                                    <widget class="QCheckBox" name="energyCheckBox">
+                                        <property name="toolTip">
+                                            <string>Enable/Disable energy balance</string>
+                                        </property>
+                                    </widget>
+                                </item>
 
-                <!-- Row 3-->
-                <item row="3" column="0" colspan="3">
-                    <widget class="QLabel" name="propertiesLabel">
-                        <property name="text">
-                            <string>Reactor properties</string>
-                        </property>
-                    </widget>
-                </item>
+                                <!-- Row 2-->
+                                <item row="2" column="0">
+                                    <widget class="QLabel" name="tmaxLabel">
+                                        <property name="text">
+                                            <string>Integration time:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="2" column="1">
+                                    <widget class="QLineEdit" name="tmaxEditLine">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="2" column="2">
+                                    <widget class="QComboBox" name="tmaxComboBox">
+                                    </widget>
+                                </item>
 
+                                <!-- Row 3-->
+                                <item row="3" column="0">
+                                    <widget class="QLabel" name="tstepLabel">
+                                        <property name="text">
+                                            <string>Integration time step:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="3" column="1">
+                                    <widget class="QLineEdit" name="tstepEditLine">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="3" column="2">
+                                    <widget class="QComboBox" name="tstepComboBox">
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                        <!-- Tab 3 -->
+                        <widget class="QWidget" name="coverageTab">
+                            <layout class="QGridLayout" name="coverageLayout">
+                                <!-- Row 0 -->
+                                <item row="0" column="1">
+                                    <widget class="QLabel" name="formulaLabel">
+                                        <property name="text">
+                                            <string>Chemical formula</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="0" column="2">
+                                    <widget class="QLabel" name="compositionLabel">
+                                        <property name="text">
+                                            <string>Composition</string>
+                                        </property>
+                                    </widget>
+                                </item>
 
-                <!-- Row 4 -->
-                <item row="4" column="0" colspan="3">
-                    <widget class="QPushButton" name="udkButton">
-                        <property name="text">
-                            <string>Load ASALI udk</string>
-                        </property>
-                        <property name="toolTip">
-                            <string>Load ASALI user defined kinetic model</string>
-                        </property>
-                    </widget>
-                </item>
+                                <!-- Row 1-->
+                                <item row="1" column="0">
+                                    <widget class="QLabel" name="formulaLabel">
+                                        <property name="text">
+                                            <string>Coverage #0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="1">
+                                    <widget class="QLineEdit" name="n0">
+                                        <property name="text">
+                                            <string>Rh(s)</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="1" column="2">
+                                    <widget class="QLineEdit" name="x0">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
 
-                <!-- Row 5-->
-                <item row="5" column="0">
-                    <widget class="QLabel" name="energyLabel">
-                        <property name="text">
-                            <string>Energy balance</string>
-                        </property>
+                                <!-- Row 3-->
+                                <item row="3" column="0" colspan="3">
+                                    <widget class="QPushButton" name="addCoverageButton">
+                                        <property name="text">
+                                            <string>Add coverage</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Add coverage for input</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </widget>
                     </widget>
                 </item>
-                <item row="5" column="1" colspan="2">
-                    <widget class="QCheckBox" name="energyCheckBox">
-                        <property name="toolTip">
-                            <string>Enable/Disable energy balance</string>
-                        </property>
-                    </widget>
-                </item>
-
-                <!-- Row 6-->
-                <item row="6" column="0">
-                    <widget class="QLabel" name="tmaxLabel">
-                        <property name="text">
-                            <string>Integration time:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="6" column="1">
-                    <widget class="QLineEdit" name="tmaxEditLine">
-                        <property name="text">
-                            <string>1.0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="6" column="2">
-                    <widget class="QComboBox" name="tmaxComboBox">
-                    </widget>
-                </item>
-
-                <!-- Row 7-->
-                <item row="7" column="0">
-                    <widget class="QLabel" name="tstepLabel">
-                        <property name="text">
-                            <string>Integration time step:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="7" column="1">
-                    <widget class="QLineEdit" name="tstepEditLine">
-                        <property name="text">
-                            <string>1.0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="7" column="2">
-                    <widget class="QComboBox" name="tstepComboBox">
-                    </widget>
-                </item>
-
-
-                <!-- Row 8-->
-                <item row="8" column="0" colspan="3">
-                    <widget class="QLabel" name="coverageLabel">
-                        <property name="text">
-                            <string>Coverage composition</string>
-                        </property>
-                    </widget>
-                </item>
-
-
-                <!-- Row 9 -->
-                <item row="9" column="1">
-                    <widget class="QLabel" name="formulaLabel">
-                        <property name="text">
-                            <string>Chemical formula</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="9" column="2">
-                    <widget class="QLabel" name="compositionLabel">
-                        <property name="text">
-                            <string>Composition</string>
-                        </property>
-                    </widget>
-                </item>
-
-                <!-- Row 9-->
-                <item row="9" column="0">
-                    <widget class="QLabel" name="formulaLabel">
-                        <property name="text">
-                            <string>Coverage #0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="9" column="1">
-                    <widget class="QLineEdit" name="n0">
-                        <property name="text">
-                            <string>Rh(s)</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="9" column="2">
-                    <widget class="QLineEdit" name="x0">
-                        <property name="text">
-                            <string>1.0</string>
-                        </property>
-                    </widget>
-                </item>
-
-
-                <!-- Row 10 -->
-                <item row="10" column="0">
-                    <widget class="QPushButton" name="backButton">
-                        <property name="text">
-                            <string>&#x2B9C; Back</string>
-                        </property>
-                        <property name="toolTip">
-                            <string>Go back to calculation input page</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="10" column="1">
-                    <widget class="QPushButton" name="addCoverageButton">
-                        <property name="text">
-                            <string>Add coverage</string>
-                        </property>
-                        <property name="toolTip">
-                            <string>Add coverage for input</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="10" column="2">
-                    <widget class="QPushButton" name="runButton">
-                        <property name="text">
-                            <string>Run</string>
-                        </property>
-                        <property name="toolTip">
-                            <string>Run the reactor model</string>
-                        </property>
-                    </widget>
+                <item>
+                    <layout class="QHBoxLayout" name="buttonsLayout">
+                        <item>
+                            <widget class="QPushButton" name="backButton">
+                                <property name="text">
+                                    <string>&#x2B9C; Back</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Go back to calculation input page</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="runButton">
+                                <property name="text">
+                                    <string>Run</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Run the reactor model</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
                 </item>
             </layout>
         </widget>

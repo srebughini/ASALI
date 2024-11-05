@@ -25,7 +25,6 @@ class PlotAndSaveOutputPage(BasicPage):
         uic.loadUi(Config.PLOT_AND_SAVE_OUTPUT_PAGE_PATH.value, self)
 
         self.update_head_lines()
-        self.update_buttons()
         self.update_grid_layout()
 
     def update_page_after_switch(self) -> None:
@@ -36,6 +35,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         self.update_check_box()
+        self.update_buttons()
         self.update_grid_layout()
 
     def update_buttons(self) -> None:

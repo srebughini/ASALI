@@ -1,7 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QLabel, QPushButton, QLineEdit, QGridLayout, QCheckBox
+from PyQt5.QtWidgets import QLabel, QPushButton, QLineEdit, QGridLayout, QCheckBox, QComboBox, QWidget, QTabWidget
 from asali.reactors.batch import BatchReactor
 
 from src.core.batch_calculator import batch_calculator
@@ -30,13 +30,19 @@ class BatchInputPage(BatchReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
 
+        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
+        self.task_function = batch_calculator
+
         self.update_head_lines()
         self.update_property_line("volumeEditLine", "volumeComboBox", self.ud_handler.volume_ud)
         self.update_property_line("alfaEditLine", "alfaComboBox", self.ud_handler.one_over_length_ud)
         self.update_property_line("tmaxEditLine", "tmaxComboBox", self.ud_handler.time_ud)
         self.update_property_line("tstepEditLine", "tstepComboBox", self.ud_handler.time_ud)
         self.update_buttons()
-        self.update_grid_layout()
+
+        self.update_grid_layout(grid_layout_name='optionsLayout')
+        self.update_grid_layout(grid_layout_name='propertiesLayout')
+        self.update_grid_layout(grid_layout_name='coverageLayout')
 
     def update_page_after_switch(self) -> None:
         """
@@ -45,14 +51,13 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
+        self.data_store.update_data(DataKeys.REACTOR_NAME.value, ReactorConfig.BATCH_NAME.value)
         self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ReactorConfig.BATCH_TEMPERATURES.value)
         self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
         self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
-        self.data_store.update_data(DataKeys.REACTOR_NAME.value, ReactorConfig.BATCH_NAME.value)
-        self.task_function = batch_calculator
-
-        self.update_grid_layout()
+        self.update_grid_layout(grid_layout_name='optionsLayout')
+        self.update_grid_layout(grid_layout_name='propertiesLayout')
+        self.update_grid_layout(grid_layout_name='coverageLayout')
 
     def update_head_lines(self) -> None:
         """
@@ -61,10 +66,10 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        for n in ['optionsLabel', 'propertiesLabel', 'coverageLabel']:
-            label = self.findChild(QLabel, n)
-            label.setAlignment(Qt.AlignCenter)
-            label.setProperty("class", "highlight")
+        tab_widget = self.findChild(QTabWidget, 'tabWidget')
+
+        for i, n in enumerate(['Solving options', 'Reactor properties', 'Coverage composition']):
+            tab_widget.setTabText(i, n)
 
     def update_buttons(self) -> None:
         """
@@ -96,19 +101,13 @@ class BatchInputPage(BatchReactorInputPage):
             The new row to place the buttons in.
         """
         # Find the buttons in the old row
-        back_button = self.findChild(QPushButton, 'backButton')
         add_coverage_button = self.findChild(QPushButton, 'addCoverageButton')
-        run_button = self.findChild(QPushButton, 'runButton')
 
         # Remove buttons from the old row
-        grid_layout.removeWidget(back_button)
         grid_layout.removeWidget(add_coverage_button)
-        grid_layout.removeWidget(run_button)
 
         # Add buttons to the new row
-        grid_layout.addWidget(back_button, new_row, 0)
-        grid_layout.addWidget(add_coverage_button, new_row, 1)
-        grid_layout.addWidget(run_button, new_row, 2)
+        grid_layout.addWidget(add_coverage_button, new_row, 0, 1, -1)
 
     def add_coverage_line(self) -> None:
         """
@@ -130,7 +129,7 @@ class BatchInputPage(BatchReactorInputPage):
         composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
         composition_edit_line.setText("0.0")
 
-        grid_layout = self.findChild(QGridLayout, "gridLayout")
+        grid_layout = self.findChild(QGridLayout, "coverageLayout")
         specie_row = grid_layout.rowCount()
 
         grid_layout.addWidget(label, specie_row, 0)
@@ -140,7 +139,7 @@ class BatchInputPage(BatchReactorInputPage):
         button_row = specie_row + 1
         self.move_buttons(grid_layout, button_row)
 
-        self.update_grid_layout()
+        self.update_grid_layout("coverageLayout")
 
     def read_data(self) -> None:
         """

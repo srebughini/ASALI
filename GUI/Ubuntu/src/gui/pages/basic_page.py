@@ -27,20 +27,26 @@ class BasicPage(QWidget):
         self.dialog_handler = dialog_handler
         self.ud_handler = UnitDimensionHandler()
 
-    def update_grid_layout(self) -> None:
+    def update_grid_layout(self, grid_layout_name='gridLayout') -> None:
         """
         Update grid layout
+        Parameters
+        ----------
+        grid_layout_name: str (optional)
+            Grid layout widget name
+
+
         Returns
         -------
 
         """
-        grid = self.findChild(QGridLayout, 'gridLayout')
+        grid = self.findChild(QGridLayout, grid_layout_name)
         grid.setVerticalSpacing(Config.GRID_VERTICAL_SPACING.value)
         grid.setHorizontalSpacing(Config.GRID_HORIZONTAL_SPACING.value)
 
-        for j in range(grid.columnCount()):
-            grid.setColumnMinimumWidth(j, Config.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
-            grid.setColumnStretch(j, 1)  # or any desired stretch factor
+        for col in range(grid.columnCount()):
+            grid.setColumnMinimumWidth(col, Config.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
+            grid.setColumnStretch(col, 1)  # or any desired stretch factor
 
         for row in range(grid.rowCount()):
             grid.setRowStretch(row, 1)  # or any desired stretch factor
