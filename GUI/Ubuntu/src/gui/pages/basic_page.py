@@ -10,6 +10,7 @@ from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 class BasicPage(QWidget):
     page_switched = pyqtSignal(str)  # Signal to switch pages
+    size_adjustment_requested = pyqtSignal()  # Signal to request size adjustment
 
     def __init__(self, data_store, dialog_handler):
         """
@@ -50,6 +51,8 @@ class BasicPage(QWidget):
 
         for row in range(grid.rowCount()):
             grid.setRowStretch(row, 1)  # or any desired stretch factor
+
+        self.size_adjustment_requested.emit()
 
     @abstractmethod
     def update_page_after_switch(self) -> None:

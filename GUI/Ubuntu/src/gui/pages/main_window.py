@@ -153,6 +153,7 @@ class MainWindow(QMainWindow):
 
             # Connect the page's `page_switched` signal to the `switch_page` method
             new_page.page_switched.connect(self.switch_page)
+            new_page.size_adjustment_requested.connect(self.adjustSize)
 
             self.adjustSize()
         else:

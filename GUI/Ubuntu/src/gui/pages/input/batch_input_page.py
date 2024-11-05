@@ -27,10 +27,13 @@ class BatchInputPage(BatchReactorInputPage):
             Class to handle the run bar
         """
         super().__init__(data_store, dialog_handler, run_bar)
+
+        # TODO - Check how coverage are added and removed and the number of rows
+
         # Load the UI from the .ui file
         uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
+        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ReactorConfig.BATCH_INITIAL_SURF_NS.value)
         self.task_function = batch_calculator
 
         self.update_head_lines()
@@ -43,6 +46,8 @@ class BatchInputPage(BatchReactorInputPage):
         self.update_grid_layout(grid_layout_name='optionsLayout')
         self.update_grid_layout(grid_layout_name='propertiesLayout')
         self.update_grid_layout(grid_layout_name='coverageLayout')
+
+        self._n_rows = ReactorConfig.BATCH_N_ROWS.value
 
     def update_page_after_switch(self) -> None:
         """
@@ -87,6 +92,9 @@ class BatchInputPage(BatchReactorInputPage):
         add_specie_button = self.findChild(QPushButton, 'addCoverageButton')
         add_specie_button.clicked.connect(self.add_coverage_line)
 
+        remove_specie_button = self.findChild(QPushButton, 'removeCoverageButton')
+        remove_specie_button.clicked.connect(self.remove_coverage_line)
+
         run_button = self.findChild(QPushButton, 'runButton')
         run_button.clicked.connect(self.run_button_action)
 
@@ -102,12 +110,15 @@ class BatchInputPage(BatchReactorInputPage):
         """
         # Find the buttons in the old row
         add_coverage_button = self.findChild(QPushButton, 'addCoverageButton')
+        remove_coverage_button = self.findChild(QPushButton, 'removeCoverageButton')
 
         # Remove buttons from the old row
         grid_layout.removeWidget(add_coverage_button)
+        grid_layout.removeWidget(remove_coverage_button)
 
         # Add buttons to the new row
-        grid_layout.addWidget(add_coverage_button, new_row, 0, 1, -1)
+        grid_layout.addWidget(add_coverage_button, new_row, 0)
+        grid_layout.addWidget(remove_coverage_button, new_row, 2)
 
     def add_coverage_line(self) -> None:
         """
@@ -120,6 +131,8 @@ class BatchInputPage(BatchReactorInputPage):
         self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ns)
 
         label = QLabel(f'Coverage #{ns}')
+        label.setObjectName(f"l{ns}")
+
         formula_edit_line = QLineEdit()
         formula_edit_line.setObjectName(f"n{ns}")
         formula_edit_line.setText(get_random_coverage_name(self.data_store))
@@ -130,7 +143,7 @@ class BatchInputPage(BatchReactorInputPage):
         composition_edit_line.setText("0.0")
 
         grid_layout = self.findChild(QGridLayout, "coverageLayout")
-        specie_row = grid_layout.rowCount()
+        specie_row = grid_layout.rowCount() - 1
 
         grid_layout.addWidget(label, specie_row, 0)
         grid_layout.addWidget(formula_edit_line, specie_row, 1)
@@ -138,6 +151,44 @@ class BatchInputPage(BatchReactorInputPage):
 
         button_row = specie_row + 1
         self.move_buttons(grid_layout, button_row)
+        self.update_grid_layout("coverageLayout")
+
+        self._n_rows = self._n_rows + 1
+        self.add_dummy_row_to_grid_layout("optionsLayout", self._n_rows)
+        self.add_dummy_row_to_grid_layout("propertiesLayout", self._n_rows)
+
+    def remove_coverage_line(self) -> None:
+        """
+        Remove coverage line to the layout
+        Returns
+        -------
+
+        """
+        ns = self.data_store.get_data(DataKeys.INLET_SURF_NS.value)
+        if ns > ReactorConfig.BATCH_INITIAL_SURF_NS.value:
+            label = self.findChild(QLabel, f'l{ns}')
+            formula_edit_line = self.findChild(QLineEdit, f'n{ns}')
+            composition_edit_line = self.findChild(QLineEdit, f'x{ns}')
+
+            grid_layout = self.findChild(QGridLayout, "coverageLayout")
+
+            grid_layout.removeWidget(label)
+            grid_layout.removeWidget(formula_edit_line)
+            grid_layout.removeWidget(composition_edit_line)
+
+            label.deleteLater()  # Properly clean up the widget
+            formula_edit_line.deleteLater()  # Properly clean up the widget
+            composition_edit_line.deleteLater()  # Properly clean up the widget
+
+            button_row = ns + 1 + 1
+            self.move_buttons(grid_layout, button_row)
+
+            self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ns - 1)
+
+            self.remove_row_from_grid_layout("optionsLayout", self._n_rows)
+            self.remove_row_from_grid_layout("propertiesLayout", self._n_rows)
+
+            self._n_rows = self._n_rows - 1
 
         self.update_grid_layout("coverageLayout")
 
