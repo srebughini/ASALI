@@ -126,6 +126,30 @@
                 </item>
 
                 <!-- Row 4 -->
+                <item row="4" column="0">
+                    <layout class="QHBoxLayout" name="horizontalSpecieLayout">
+                        <item>
+                            <widget class="QPushButton" name="addSpecieButton">
+                                <property name="text">
+                                    <string>&#x2B;</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Add specie for input</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="removeSpecieButton">
+                                <property name="text">
+                                    <string>&#x2D;</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Remove specie for input</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
                 <item row="4" column="1">
                     <widget class="QLabel" name="formulaLabel">
                         <property name="text">
@@ -151,10 +175,7 @@
                     </widget>
                 </item>
                 <item row="5" column="1">
-                    <widget class="QLineEdit" name="n0">
-                        <property name="text">
-                            <string>H2</string>
-                        </property>
+                    <widget class="QComboBox" name="n0">
                     </widget>
                 </item>
                 <item row="5" column="2">
@@ -174,16 +195,6 @@
                         </property>
                         <property name="toolTip">
                             <string>Go back to chemistry input page</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="6" column="1">
-                    <widget class="QPushButton" name="addSpecieButton">
-                        <property name="text">
-                            <string>Add specie</string>
-                        </property>
-                        <property name="toolTip">
-                            <string>Add specie for input</string>
                         </property>
                     </widget>
                 </item>

@@ -6,6 +6,7 @@ class DataKeys(Enum):
     Class to handle the keys of the data stored in DataStore
     """
     CHEMISTRY_FILE_PATH = "chemistry_file_path"
+    IS_DEFAULT_FILE_PATH = "is_default_file_path"
     UDK_FILE_PATH = "udk_file_path"
     GAS_PHASE_NAME = "gas_phase_name"
     SURFACE_PHASE_NAME = "surface_phase_name"

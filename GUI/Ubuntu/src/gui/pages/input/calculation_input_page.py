@@ -1,11 +1,9 @@
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel, QSizePolicy
+from PyQt5.QtWidgets import QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel
 from PyQt5 import uic
 
 from src.core.data_keys import DataKeys
-from src.core.properties_calculator import properties_calculator
-from src.core.species_names import get_random_specie_name
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
@@ -33,6 +31,9 @@ class CalculationInputPage(BasicPage):
         self.update_specie_line()
         self.update_grid_layout()
 
+        self._specie_row_idx = Config.CALCULATION_INPUT_PAGE_INITIAL_SPECIE_ROW_IDX.value
+        self._button_row_idx = self._specie_row_idx + 1
+
     def update_page_after_switch(self) -> None:
         """
         Update the whole page
@@ -40,6 +41,7 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
+        self.update_specie_composition([0])
         self.update_grid_layout()
 
     def read_data(self) -> None:
@@ -60,7 +62,8 @@ class CalculationInputPage(BasicPage):
         self.data_store.update_data(DataKeys.INLET_P.value, (value, ud))
 
         # Composition
-        value = {self.findChild(QLineEdit, f"n{i}").text(): float(self.findChild(QLineEdit, f"x{i}").text()) for i in
+        value = {self.findChild(QComboBox, f"n{i}").currentText(): float(self.findChild(QLineEdit, f"x{i}").text()) for
+                 i in
                  range(0, self.data_store.get_data(DataKeys.INLET_NS.value) + 1)}
         ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
         self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
@@ -106,6 +109,9 @@ class CalculationInputPage(BasicPage):
         add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
         add_specie_button.clicked.connect(self.add_specie_line)
 
+        remove_specie_button = self.findChild(QPushButton, 'removeSpecieButton')
+        remove_specie_button.clicked.connect(self.remove_specie_line)
+
         next_button = self.findChild(QPushButton, 'nextButton')
         next_button.clicked.connect(self.next_button_action)
 
@@ -132,17 +138,14 @@ class CalculationInputPage(BasicPage):
         """
         # Find the buttons in the old row
         back_button = self.findChild(QPushButton, 'backButton')
-        add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
         next_button = self.findChild(QPushButton, 'nextButton')
 
         # Remove buttons from the old row
         grid_layout.removeWidget(back_button)
-        grid_layout.removeWidget(add_specie_button)
         grid_layout.removeWidget(next_button)
 
         # Add buttons to the new row
         grid_layout.addWidget(back_button, new_row, 0)
-        grid_layout.addWidget(add_specie_button, new_row, 1)
         grid_layout.addWidget(next_button, new_row, 2)
 
     def add_specie_line(self) -> None:
@@ -155,29 +158,44 @@ class CalculationInputPage(BasicPage):
         ns = self.data_store.get_data(DataKeys.INLET_NS.value) + 1
         self.data_store.update_data(DataKeys.INLET_NS.value, ns)
 
-        label = QLabel(f'Specie #{ns}')
-        formula_edit_line = QLineEdit()
-        formula_edit_line.setObjectName(f"n{ns}")
-        formula_edit_line.setText(get_random_specie_name(self.data_store))
-
-        composition_edit_line = QLineEdit()
-        composition_edit_line.setObjectName(f"x{ns}")
-        composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
-        composition_edit_line.setText("0.0")
+        self._specie_row_idx = self._specie_row_idx + 1
 
         grid_layout = self.findChild(QGridLayout, "gridLayout")
-        specie_row = grid_layout.rowCount()
 
-        grid_layout.addWidget(label, specie_row, 0)
-        grid_layout.addWidget(formula_edit_line, specie_row, 1)
-        grid_layout.addWidget(composition_edit_line, specie_row, 2)
+        label = QLabel(f'Specie #{ns}')
+        combo_box = QComboBox()
+        combo_box.setObjectName(f"n{ns}")
 
-        button_row = specie_row + 1
-        self.move_buttons(grid_layout, button_row)
+        edit_line = QLineEdit()
+        edit_line.setObjectName(f"x{ns}")
+        edit_line.setText("0.0")
 
-        self.update_grid_layout()
+        grid_layout.addWidget(label, self._specie_row_idx, 0)
+        grid_layout.addWidget(combo_box, self._specie_row_idx, 1)
+        grid_layout.addWidget(edit_line, self._specie_row_idx, 2)
 
-    def next_button_action(self) -> pyqtSignal:
+        self.update_specie_composition([ns])
+
+        if self._specie_row_idx + 1 > self._button_row_idx:
+            self._button_row_idx = self._specie_row_idx + 1
+            self.move_buttons(grid_layout, self._button_row_idx)
+            self.update_grid_layout()
+
+    def remove_specie_line(self):
+        """
+        Remove specie line from the layout
+        Returns
+        -------
+
+        """
+        if self._specie_row_idx > Config.CALCULATION_INPUT_PAGE_INITIAL_SPECIE_ROW_IDX.value:
+            ns = self.data_store.get_data(DataKeys.INLET_NS.value)
+            self.data_store.update_data(DataKeys.INLET_NS.value, ns - 1)
+
+            self.remove_row_from_grid_layout("gridLayout", self._specie_row_idx)
+            self._specie_row_idx = self._specie_row_idx - 1
+
+    def next_button_action(self) -> pyqtSignal | None:
         """
         Action related to the next button
         Returns
@@ -201,7 +219,13 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value)
         elif combo_box.currentIndex() == 3:
             # Batch
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+                self.dialog_handler.error_message(
+                    QLabel('Default Cantera input file cannot be used for reactor modeling!'))
+                return None
+
             return self.page_switched.emit(Config.BATCH_INPUT_PAGE_NAME.value)
+
         elif combo_box.currentIndex() == 4:
             # CSTR
             pass

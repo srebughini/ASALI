@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
 from src.core.data_keys import DataKeys
@@ -25,7 +25,10 @@ class PlotAndSaveOutputPage(BasicPage):
         uic.loadUi(Config.PLOT_AND_SAVE_OUTPUT_PAGE_PATH.value, self)
 
         self.update_head_lines()
+        self.update_buttons()
         self.update_grid_layout()
+
+        self._button_row_idx = Config.PLOT_AND_SAVE_OUTPUT_PAGE_BUTTON_ROW_IDX.value
 
     def update_page_after_switch(self) -> None:
         """
@@ -35,8 +38,8 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         self.update_check_box()
-        self.update_buttons()
         self.update_grid_layout()
+        self.unselect_all()
 
     def update_buttons(self) -> None:
         """
@@ -52,8 +55,7 @@ class PlotAndSaveOutputPage(BasicPage):
         save_button.clicked.connect(self.save_reactor_data)
 
         back_button = self.findChild(QPushButton, 'backButton')
-        reactor_page_name = self.data_store.get_data(DataKeys.REACTOR_PAGE_NAME.value)
-        back_button.clicked.connect(lambda: self.page_switched.emit(reactor_page_name))
+        back_button.clicked.connect(self.back_button_action)
 
         select_button = self.findChild(QPushButton, 'selectButton')
         select_button.clicked.connect(self.on_select_button_click_data)
@@ -103,37 +105,36 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         grid_layout = self.findChild(QGridLayout, "gridLayout")
-        row_idx = grid_layout.rowCount()
 
+        if self._button_row_idx > Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value:
+            for row_idx in range(Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value,
+                                 self._button_row_idx):
+                self.remove_row_from_grid_layout("gridLayout", row_idx)
+
+        row_idx = Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value
         self.data_store = gas_species_names(self.data_store)
         self.data_store = surface_species_names(self.data_store)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)):
-            check_box = self.findChild(QCheckBox, f"{n}")
-            if check_box is None:
-                check_box = QCheckBox(n)
-                check_box.setObjectName(f"{n}")
-                grid_layout.addWidget(check_box, row_idx + i + 1, 0)
+            check_box = QCheckBox(n)
+            check_box.setObjectName(f"{n}")
+            grid_layout.addWidget(check_box, row_idx + i + 1, 0)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)):
-            check_box = self.findChild(QCheckBox, f"{n}")
-            if check_box is None:
-                check_box = QCheckBox(n)
-                check_box.setObjectName(f"{n}")
-                grid_layout.addWidget(check_box, row_idx + i + 1, 1)
+            check_box = QCheckBox(n)
+            check_box.setObjectName(f"{n}")
+            grid_layout.addWidget(check_box, row_idx + i + 1, 1)
 
         for i, n in enumerate(self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value)):
-            check_box = self.findChild(QCheckBox, f"{n}")
-            if check_box is None:
-                check_box = QCheckBox(n)
-                check_box.setObjectName(f"{n}")
-                grid_layout.addWidget(check_box, row_idx + i + 1, 2)
+            check_box = QCheckBox(n)
+            check_box.setObjectName(f"{n}")
+            grid_layout.addWidget(check_box, row_idx + i + 1, 2)
 
         row_idx = row_idx + max([len(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)),
                                  len(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))])
 
-        button_row = row_idx + 1
-        self.move_buttons(grid_layout, button_row)
+        self._button_row_idx = row_idx + 1
+        self.move_buttons(grid_layout, self._button_row_idx)
 
     def select_all(self) -> None:
         """
@@ -179,6 +180,17 @@ class PlotAndSaveOutputPage(BasicPage):
         select_button = self.findChild(QPushButton, 'selectButton')
         select_button.setText("Select all")
 
+    def back_button_action(self) -> pyqtSignal:
+        """
+        Action related to the next button
+        Returns
+        -------
+        signal: pyqtSignal
+            Signal with the next page name
+        """
+        reactor_page_name = self.data_store.get_data(DataKeys.REACTOR_PAGE_NAME.value)
+        return self.page_switched.emit(reactor_page_name)
+
     def on_select_button_click_data(self) -> None:
         """
         Select or unselect all check box
@@ -206,7 +218,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         self.unselect_all()
 
-    def plot_reactor_data(self):
+    def plot_reactor_data(self) -> None:
         """
         Function to plot reactor data
         Returns
@@ -236,7 +248,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         reactor_plotter(self.data_store)
 
-    def save_reactor_data(self):
+    def save_reactor_data(self) -> None:
         """
         Function to save reactor data
         Returns
@@ -249,11 +261,12 @@ class PlotAndSaveOutputPage(BasicPage):
         output_file_path = self.dialog_handler.save_file('Save reactor data',
                                                          Config.EXCEL_FILE_TYPE.value)
 
-        self.data_store.update_data(DataKeys.OUTPUT_FILE_PATH.value, output_file_path)
+        if output_file_path is not None:
+            self.data_store.update_data(DataKeys.OUTPUT_FILE_PATH.value, output_file_path)
 
-        try:
-            reactor_saver(self.data_store)
-        except OSError as e:
-            self.dialog_handler.error_message(QLabel(str(e)))
-        else:
-            self.dialog_handler.done_message(QLabel("Successfully saved!"))
+            try:
+                reactor_saver(self.data_store)
+            except OSError as e:
+                self.dialog_handler.error_message(QLabel(str(e)))
+            else:
+                self.dialog_handler.done_message(QLabel("Successfully saved!"))

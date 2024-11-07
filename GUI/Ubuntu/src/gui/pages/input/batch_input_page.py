@@ -1,12 +1,10 @@
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QLabel, QPushButton, QLineEdit, QGridLayout, QCheckBox, QComboBox, QWidget, QTabWidget
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox
 from asali.reactors.batch import BatchReactor
 
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
-from src.core.species_names import get_random_coverage_name
 from src.gui.config import Config
 
 from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
@@ -29,11 +27,12 @@ class BatchInputPage(BatchReactorInputPage):
         super().__init__(data_store, dialog_handler, run_bar)
 
         # TODO - Check how coverage are added and removed and the number of rows
+        # TODO - Check resolution when udk is used
 
         # Load the UI from the .ui file
         uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ReactorConfig.BATCH_INITIAL_SURF_NS.value)
+        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, 0)
         self.task_function = batch_calculator
 
         self.update_head_lines()
@@ -47,7 +46,7 @@ class BatchInputPage(BatchReactorInputPage):
         self.update_grid_layout(grid_layout_name='propertiesLayout')
         self.update_grid_layout(grid_layout_name='coverageLayout')
 
-        self._n_rows = ReactorConfig.BATCH_N_ROWS.value
+        self._specie_row_idx = ReactorConfig.BATCH_INITIAL_SPECIE_ROW_IDX.value
 
     def update_page_after_switch(self) -> None:
         """
@@ -60,6 +59,9 @@ class BatchInputPage(BatchReactorInputPage):
         self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ReactorConfig.BATCH_TEMPERATURES.value)
         self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
         self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
+
+        self.update_coverage_composition([0])
+
         self.update_grid_layout(grid_layout_name='optionsLayout')
         self.update_grid_layout(grid_layout_name='propertiesLayout')
         self.update_grid_layout(grid_layout_name='coverageLayout')
@@ -118,7 +120,7 @@ class BatchInputPage(BatchReactorInputPage):
 
         # Add buttons to the new row
         grid_layout.addWidget(add_coverage_button, new_row, 0)
-        grid_layout.addWidget(remove_coverage_button, new_row, 2)
+        grid_layout.addWidget(remove_coverage_button, new_row, 1)
 
     def add_coverage_line(self) -> None:
         """
@@ -130,32 +132,40 @@ class BatchInputPage(BatchReactorInputPage):
         ns = self.data_store.get_data(DataKeys.INLET_SURF_NS.value) + 1
         self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ns)
 
-        label = QLabel(f'Coverage #{ns}')
-        label.setObjectName(f"l{ns}")
+        self._specie_row_idx = self._specie_row_idx + 1
 
-        formula_edit_line = QLineEdit()
-        formula_edit_line.setObjectName(f"n{ns}")
-        formula_edit_line.setText(get_random_coverage_name(self.data_store))
+        if self._specie_row_idx < ReactorConfig.BATCH_MINIMUM_ROW_IDX.value:
+            combo_box = QComboBox()
+            combo_box.setObjectName(f"n{ns}")
 
-        composition_edit_line = QLineEdit()
-        composition_edit_line.setObjectName(f"x{ns}")
-        composition_edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
-        composition_edit_line.setText("0.0")
+            edit_line = QLineEdit()
+            edit_line.setObjectName(f"x{ns}")
+            edit_line.setText("0.0")
 
-        grid_layout = self.findChild(QGridLayout, "coverageLayout")
-        specie_row = grid_layout.rowCount() - 1
+            grid_layout = self.findChild(QGridLayout, "coverageLayout")
+            grid_layout.addWidget(combo_box, self._specie_row_idx, 0)
+            grid_layout.addWidget(edit_line, self._specie_row_idx, 1)
 
-        grid_layout.addWidget(label, specie_row, 0)
-        grid_layout.addWidget(formula_edit_line, specie_row, 1)
-        grid_layout.addWidget(composition_edit_line, specie_row, 2)
+            self.update_coverage_composition([ns])
+            self.update_grid_layout("coverageLayout")
+        else:
+            grid_layout = self.findChild(QGridLayout, "coverageLayout")
+            self.move_buttons(grid_layout, self._specie_row_idx + 1)
 
-        button_row = specie_row + 1
-        self.move_buttons(grid_layout, button_row)
-        self.update_grid_layout("coverageLayout")
+            combo_box = QComboBox()
+            combo_box.setObjectName(f"n{ns}")
 
-        self._n_rows = self._n_rows + 1
-        self.add_dummy_row_to_grid_layout("optionsLayout", self._n_rows)
-        self.add_dummy_row_to_grid_layout("propertiesLayout", self._n_rows)
+            edit_line = QLineEdit()
+            edit_line.setObjectName(f"x{ns}")
+            edit_line.setText("0.0")
+
+            grid_layout.addWidget(combo_box, self._specie_row_idx, 0)
+            grid_layout.addWidget(edit_line, self._specie_row_idx, 1)
+            self.update_coverage_composition([ns])
+
+            self.update_grid_layout("coverageLayout")
+            self.add_dummy_row_to_grid_layout("optionsLayout", self._specie_row_idx + 1)
+            self.add_dummy_row_to_grid_layout("propertiesLayout", self._specie_row_idx + 1)
 
     def remove_coverage_line(self) -> None:
         """
@@ -165,32 +175,17 @@ class BatchInputPage(BatchReactorInputPage):
 
         """
         ns = self.data_store.get_data(DataKeys.INLET_SURF_NS.value)
-        if ns > ReactorConfig.BATCH_INITIAL_SURF_NS.value:
-            label = self.findChild(QLabel, f'l{ns}')
-            formula_edit_line = self.findChild(QLineEdit, f'n{ns}')
-            composition_edit_line = self.findChild(QLineEdit, f'x{ns}')
+        self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ns - 1)
 
-            grid_layout = self.findChild(QGridLayout, "coverageLayout")
-
-            grid_layout.removeWidget(label)
-            grid_layout.removeWidget(formula_edit_line)
-            grid_layout.removeWidget(composition_edit_line)
-
-            label.deleteLater()  # Properly clean up the widget
-            formula_edit_line.deleteLater()  # Properly clean up the widget
-            composition_edit_line.deleteLater()  # Properly clean up the widget
-
-            button_row = ns + 1 + 1
-            self.move_buttons(grid_layout, button_row)
-
-            self.data_store.update_data(DataKeys.INLET_SURF_NS.value, ns - 1)
-
-            self.remove_row_from_grid_layout("optionsLayout", self._n_rows)
-            self.remove_row_from_grid_layout("propertiesLayout", self._n_rows)
-
-            self._n_rows = self._n_rows - 1
-
-        self.update_grid_layout("coverageLayout")
+        if self._specie_row_idx > ReactorConfig.BATCH_INITIAL_SPECIE_ROW_IDX.value:
+            if self._specie_row_idx >= ReactorConfig.BATCH_MINIMUM_ROW_IDX.value:
+                self.remove_row_from_grid_layout("coverageLayout", self._specie_row_idx)
+                self.remove_row_from_grid_layout("optionsLayout", self._specie_row_idx + 1)
+                self.remove_row_from_grid_layout("propertiesLayout", self._specie_row_idx + 1)
+                self._specie_row_idx = self._specie_row_idx - 1
+            else:
+                self.remove_row_from_grid_layout("coverageLayout", self._specie_row_idx)
+                self._specie_row_idx = self._specie_row_idx - 1
 
     def read_data(self) -> None:
         """
@@ -206,8 +201,8 @@ class BatchInputPage(BatchReactorInputPage):
         self.read_data_from_property_line('alfaEditLine', 'alfaComboBox', DataKeys.ALFA)
 
         # Coverage
-        value = {self.findChild(QLineEdit, f"n{i}").text(): float(self.findChild(QLineEdit, f"x{i}").text()) for i in
-                 range(0, self.data_store.get_data(DataKeys.INLET_SURF_NS.value) + 1)}
+        value = {self.findChild(QComboBox, f"n{i}").currentText(): float(self.findChild(QLineEdit, f"x{i}").text()) for
+                 i in range(0, self.data_store.get_data(DataKeys.INLET_SURF_NS.value) + 1)}
         self.data_store.update_data(DataKeys.INITIAL_COVERAGE_COMPOSITION.value, value)
 
         # Energy balance

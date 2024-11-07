@@ -34,20 +34,27 @@ class ChemistryInputPage(BasicPage):
         """
         self.update_grid_layout()
 
-    def update_data_store(self, file_path) -> None:
+    def update_data_store(self, file_path, is_default) -> None:
         """
         Update data store with file path, gas phase name and surface phase name
         Parameters
         ----------
         file_path: str
             Cantera file path
+        is_default: bool
+            If True the file path is the default one, if False is a user one
 
         Returns
         -------
 
         """
+        # Save file path in the DataStore
         self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH.value,
                                     file_path)
+
+        # Save check in the DataStore
+        self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH.value, is_default)
+
         # Save the gas phase name in the DataStore
         self.data_store.update_data(DataKeys.GAS_PHASE_NAME.value,
                                     InputFileController.extract_gas_phase_name_from_cantera(file_path))
@@ -82,12 +89,12 @@ class ChemistryInputPage(BasicPage):
             if file_path:  # Check if a file was selected
                 if InputFileController.check_cantera_input_file(file_path):
                     # Save data in DataStore
-                    self.update_data_store(file_path)
+                    self.update_data_store(file_path, False)
                     return self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value)
 
         elif combo_box.currentIndex() == 1:
             # Save data in DataStore
-            self.update_data_store(Config.DEFAULT_CHEMISTRY_FILE_PATH.value)
+            self.update_data_store(Config.DEFAULT_CHEMISTRY_FILE_PATH.value, True)
             return self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value)
 
         elif combo_box.currentIndex() == 2:

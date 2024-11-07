@@ -63,47 +63,6 @@ class BatchReactorInputPage(BasicPage):
         dropdown = self.findChild(QComboBox, combo_box_name)
         dropdown.addItems(ud_list)
 
-    def remove_row_from_grid_layout(self, grid_layout_name, row_idx) -> None:
-        """
-        Remove a row from a grid layout
-        Parameters
-        ----------
-        grid_layout_name: str
-            Grid Layout name
-        row_idx: int
-            Row to be removed
-
-        Returns
-        -------
-
-        """
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-        for column in range(grid_layout.columnCount()):
-            item = grid_layout.itemAtPosition(row_idx, column)
-            if item:
-                widget = item.widget()
-                grid_layout.removeWidget(widget)
-        self.update_grid_layout(grid_layout_name)
-
-    def add_dummy_row_to_grid_layout(self, grid_layout_name, row_idx) -> None:
-        """
-        Add a dummy row to a grid layout
-        Parameters
-        ----------
-        grid_layout_name: str
-            Grid Layout name
-        row_idx: int
-            Row to be removed
-
-        Returns
-        -------
-
-        """
-        label = QLabel(" ")
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-        grid_layout.addWidget(label, row_idx, 0, 1, -1)
-        self.update_grid_layout(grid_layout_name)
-
     def read_data_from_property_line(self, edit_line_name, combo_box_name, data_key) -> None:
         """
         Read data from property line

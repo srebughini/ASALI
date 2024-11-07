@@ -333,4 +333,8 @@ class DialogPagesHandler:
                                                    title,
                                                    "",
                                                    file_format)
+
+        if len(file_path) == 0:
+            return None
+
         return file_path

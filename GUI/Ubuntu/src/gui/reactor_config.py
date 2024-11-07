@@ -7,8 +7,8 @@ class ReactorConfig(Enum):
     """
     BATCH_NAME = "Batch reactor"
     BATCH_TEMPERATURES = ["Gas"]
-    BATCH_INITIAL_SURF_NS = 1
-    BATCH_N_ROWS = 4
+    BATCH_INITIAL_SPECIE_ROW_IDX = 0
+    BATCH_MINIMUM_ROW_IDX = 3
     CSTR_NAME = "Continuous stirred tank reactor"
     STEADY_STATE_PH_1D_NAME = "Steady state pseudo-homogeneous 1D reactor"
     TRANSIENT_PH_1D_NAME = "Transient pseudo-homogeneous 1D reactor"

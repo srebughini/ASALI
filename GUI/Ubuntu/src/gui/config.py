@@ -7,7 +7,6 @@ class Config(Enum):
     """
     TITLE = "ASALI"
     MINIMUM_COLUMN_WIDTH = 150
-    MINIMUM_WINDOW_SIZE = 300
     GRID_VERTICAL_SPACING = 12
     GRID_HORIZONTAL_SPACING = 12
     MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
@@ -18,10 +17,13 @@ class Config(Enum):
     CHEMISTRY_INPUT_PAGE_NAME = "ChemistryInputPage"
     CALCULATION_INPUT_PAGE_PATH = "gui/ui/input/calculation_input_page.ui"
     CALCULATION_INPUT_PAGE_NAME = "CalculationInputPage"
+    CALCULATION_INPUT_PAGE_INITIAL_SPECIE_ROW_IDX = 5
     BATCH_INPUT_PAGE_PATH = "gui/ui/input/batch_input_page.ui"
     BATCH_INPUT_PAGE_NAME = "BatchInputPage"
     PLOT_AND_SAVE_OUTPUT_PAGE_PATH = "gui/ui/output/plot_and_save_output_page.ui"
     PLOT_AND_SAVE_OUTPUT_PAGE_NAME = "PlotAndSaveOutputPage"
+    PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX = 4
+    PLOT_AND_SAVE_OUTPUT_PAGE_BUTTON_ROW_IDX = 4
     PROPERTIES_OUTPUT_PAGE_PATH = "gui/ui/output/properties_output_page.ui"
     PROPERTIES_OUTPUT_PAGE_NAME = "PropertiesOutputPage"
     VACUUM_OUTPUT_PAGE_PATH = "gui/ui/output/vacuum_output_page.ui"
