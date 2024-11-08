@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>BatchInputPage</class>
-        <widget class="QWidget" name="BatchInputPage">
+    <class>CstrInputPage</class>
+        <widget class="QWidget" name="CstrInputPage">
             <layout class="QVBoxLayout" name="verticalLevel1Layout">
                 <item>
                     <widget class="QTabWidget" name="tabWidget">
@@ -48,12 +48,24 @@
                                     </widget>
                                 </item>
 
+
                                 <!-- Row 2-->
-                                <item row="2" column="0" colspan="3">
-                                    <widget class="QLabel" name="dummyLabel">
+                                <item row="2" column="0">
+                                    <widget class="QLabel" name="qLabel">
                                         <property name="text">
-                                            <string> </string>
+                                            <string>Mass flow rate:</string>
                                         </property>
+                                    </widget>
+                                </item>
+                                <item row="2" column="1">
+                                    <widget class="QLineEdit" name="qEditLine">
+                                        <property name="text">
+                                            <string>1.0</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item row="2" column="2">
+                                    <widget class="QComboBox" name="qComboBox">
                                     </widget>
                                 </item>
 
@@ -65,7 +77,6 @@
                                         </property>
                                     </widget>
                                 </item>
-
                             </layout>
                         </widget>
                         <!-- Tab 2 -->
@@ -176,6 +187,95 @@
                                             <string>Remove coverage for input</string>
                                         </property>
                                     </widget>
+                                </item>
+                            </layout>
+                        </widget>
+                        <!-- Tab 4 -->
+                        <widget class="QWidget" name="initialTab">
+                            <layout class="QVBoxLayout" name="VinitialLayout">
+                                <item>
+                                    <layout class="QGridLayout" name="initialLayout">
+                                        <!-- Row 0 -->
+                                        <item row="0" column="0">
+                                            <widget class="QLabel" name="temperatureLabel">
+                                                <property name="text">
+                                                    <string>Temperature:</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item row="0" column="1">
+                                            <widget class="QLineEdit" name="temperatureEditLine">
+                                                <property name="text">
+                                                    <string>298.15</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item row="0" column="2">
+                                            <widget class="QComboBox" name="temperatureComboBox">
+                                            </widget>
+                                        </item>
+
+                                        <!-- Row 1 -->
+                                        <item row="1" column="0">
+                                            <widget class="QLabel" name="compositionLabel">
+                                                <property name="text">
+                                                    <string>Composition type:</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item row="1" column="1" colspan="2">
+                                            <widget class="QComboBox" name="compositionComboBox">
+                                                <item>
+                                                    <property name="text">
+                                                        <string>Mole fraction</string>
+                                                    </property>
+                                                </item>
+                                                <item>
+                                                    <property name="text">
+                                                        <string>Mass fraction</string>
+                                                    </property>
+                                                </item>
+                                            </widget>
+                                        </item>
+                                    </layout>
+                                </item>
+                                <item>
+                                    <layout class="QGridLayout" name="initialCompositionLayout">
+                                        <!-- Row 0-->
+                                        <item row="0" column="0">
+                                            <widget class="QComboBox" name="n0">
+                                            </widget>
+                                        </item>
+                                        <item row="0" column="1">
+                                            <widget class="QLineEdit" name="x0">
+                                                <property name="text">
+                                                    <string>0.0</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                                
+                                        <!-- Row 1-->
+                                        <item row="1" column="0">
+                                            <widget class="QPushButton" name="addSpecieButton">
+                                                <property name="text">
+                                                    <string>Add specie (&#x2B;)</string>
+                                                </property>
+                                                <property name="toolTip">
+                                                    <string>Add specie for input</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                        <item row="1" column="1">
+                                            <widget class="QPushButton" name="removeSpecieButton">
+                                                <property name="text">
+                                                    <string>Remove specie (&#x2D;)</string>
+                                                </property>
+                                                <property name="toolTip">
+                                                    <string>Remove specie for input</string>
+                                                </property>
+                                            </widget>
+                                        </item>
+                                    </layout>
                                 </item>
                             </layout>
                         </widget>

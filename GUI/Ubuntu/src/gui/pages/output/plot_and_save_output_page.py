@@ -72,7 +72,7 @@ class PlotAndSaveOutputPage(BasicPage):
             label.setAlignment(Qt.AlignCenter)
             label.setProperty("class", "italic")
 
-    def move_buttons(self, grid_layout, new_row) -> None:
+    def move_buttons_in_grid_layout(self, grid_layout, new_row) -> None:
         """
         Move the buttons from their current row to a new row.
         Parameters
@@ -134,7 +134,7 @@ class PlotAndSaveOutputPage(BasicPage):
                                  len(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))])
 
         self._button_row_idx = row_idx + 1
-        self.move_buttons(grid_layout, self._button_row_idx)
+        self.move_buttons_in_grid_layout(grid_layout, self._button_row_idx)
 
     def select_all(self) -> None:
         """

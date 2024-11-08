@@ -63,6 +63,10 @@ class ChemistryInputPage(BasicPage):
         self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME.value,
                                     InputFileController.extract_surface_phase_name_from_cantera(file_path))
 
+        # Set bools for properties evaluation
+        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_UPDATE.value, True)
+        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_UPDATE.value, True)
+
     def update_buttons(self) -> None:
         """
         Update buttons

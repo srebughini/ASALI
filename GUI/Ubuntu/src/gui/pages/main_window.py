@@ -11,6 +11,7 @@ from src.gui.pages.input.calculation_input_page import CalculationInputPage
 from src.gui.pages.input.chemistry_input_page import ChemistryInputPage
 from src.gui.pages.input.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
+from src.gui.pages.input.cstr_input_page import CstrInputPage
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
 from src.gui.pages.output.plot_and_save_output_page import PlotAndSaveOutputPage
 from src.gui.pages.output.properties_output_page import PropertiesOutputPage
@@ -83,7 +84,10 @@ class MainWindow(QMainWindow):
                                                                                self.dialog_handler),
             Config.BATCH_INPUT_PAGE_NAME.value: BatchInputPage(self.data_store,
                                                                self.dialog_handler,
-                                                               self.run_bar)
+                                                               self.run_bar),
+            Config.CSTR_INPUT_PAGE_NAME.value: CstrInputPage(self.data_store,
+                                                             self.dialog_handler,
+                                                             self.run_bar)
         }
 
         for page in self.pages.values():

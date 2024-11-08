@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QPushButton, QGridLayout, QLineEdit, QComboBox, QLab
 from PyQt5 import uic
 
 from src.core.data_keys import DataKeys
+from src.core.species_names import gas_species_names
 from src.gui.config import Config
 from src.gui.pages.basic_page import BasicPage
 
@@ -41,7 +42,11 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        self.update_specie_composition([0])
+        self.data_store = gas_species_names(self.data_store)
+        self.update_composition_names(0,
+                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
+                                      Config.GAS_SPECIE_COMBO_BOX_NAME.value,
+                                      Config.GAS_SPECIE_EDIT_LINE_NAME.value)
         self.update_grid_layout()
 
     def read_data(self) -> None:
@@ -62,9 +67,11 @@ class CalculationInputPage(BasicPage):
         self.data_store.update_data(DataKeys.INLET_P.value, (value, ud))
 
         # Composition
-        value = {self.findChild(QComboBox, f"n{i}").currentText(): float(self.findChild(QLineEdit, f"x{i}").text()) for
-                 i in
-                 range(0, self.data_store.get_data(DataKeys.INLET_NS.value) + 1)}
+        value = {}
+        for i in range(0, int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)):
+            specie_name = self.findChild(QComboBox, Config.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, Config.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            value[specie_name] = float(specie_value)
         ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
         self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
 
@@ -126,28 +133,6 @@ class CalculationInputPage(BasicPage):
         edit_line = self.findChild(QLineEdit, f"x{ns}")
         edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
 
-    def move_buttons(self, grid_layout, new_row) -> None:
-        """
-        Move the buttons from their current row to a new row.
-        Parameters
-        ----------
-        grid_layout: QGridLayout
-            Grid Layout
-        new_row : int
-            The new row to place the buttons in.
-        """
-        # Find the buttons in the old row
-        back_button = self.findChild(QPushButton, 'backButton')
-        next_button = self.findChild(QPushButton, 'nextButton')
-
-        # Remove buttons from the old row
-        grid_layout.removeWidget(back_button)
-        grid_layout.removeWidget(next_button)
-
-        # Add buttons to the new row
-        grid_layout.addWidget(back_button, new_row, 0)
-        grid_layout.addWidget(next_button, new_row, 2)
-
     def add_specie_line(self) -> None:
         """
         Add specie line to the layout
@@ -155,30 +140,20 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        ns = self.data_store.get_data(DataKeys.INLET_NS.value) + 1
+        ns = int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)
         self.data_store.update_data(DataKeys.INLET_NS.value, ns)
 
         self._specie_row_idx = self._specie_row_idx + 1
-
-        grid_layout = self.findChild(QGridLayout, "gridLayout")
-
-        label = QLabel(f'Specie #{ns}')
-        combo_box = QComboBox()
-        combo_box.setObjectName(f"n{ns}")
-
-        edit_line = QLineEdit()
-        edit_line.setObjectName(f"x{ns}")
-        edit_line.setText("0.0")
-
-        grid_layout.addWidget(label, self._specie_row_idx, 0)
-        grid_layout.addWidget(combo_box, self._specie_row_idx, 1)
-        grid_layout.addWidget(edit_line, self._specie_row_idx, 2)
-
-        self.update_specie_composition([ns])
+        self.add_gas_specie_input_row_to_grid_layout("gridLayout",
+                                                     ns,
+                                                     self._specie_row_idx,
+                                                     with_label=True)
 
         if self._specie_row_idx + 1 > self._button_row_idx:
             self._button_row_idx = self._specie_row_idx + 1
-            self.move_buttons(grid_layout, self._button_row_idx)
+            self.move_buttons_in_grid_layout("gridLayout",
+                                             self._button_row_idx,
+                                             Config.CALCULATION_INPUT_PAGE_BUTTON_DICT.value)
             self.update_grid_layout()
 
     def remove_specie_line(self):
@@ -228,7 +203,12 @@ class CalculationInputPage(BasicPage):
 
         elif combo_box.currentIndex() == 4:
             # CSTR
-            pass
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+                self.dialog_handler.error_message(
+                    QLabel('Default Cantera input file cannot be used for reactor modeling!'))
+                return None
+
+            return self.page_switched.emit(Config.CSTR_INPUT_PAGE_NAME.value)
         elif combo_box.currentIndex() == 5:
             # SS 1d ph
             pass
