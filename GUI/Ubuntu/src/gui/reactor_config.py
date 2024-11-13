@@ -5,18 +5,25 @@ class ReactorConfig(Enum):
     """
     Class to handle the configuration of the reactors
     """
+    SOLVING_OPTION_TAB_NAME = 'Solving options'
+    REACTOR_PROPERTIES_TAB_NAME = 'Reactor properties'
+    COVERAGE_COMPOSITION_TAB_NAME = 'Coverage compositions'
+    INITIAL_CONDITIONS_TAB_NAME = 'Initial conditions'
+
     BATCH_NAME = "Batch reactor"
     BATCH_TEMPERATURES = ["Gas"]
-    BATCH_INITIAL_SURFACE_SPECIE_ROW_IDX = 0
-    BATCH_MINIMUM_ROW_IDX = 3
-    BATCH_SURFACE_BUTTON_DICT = {'addCoverageButton': 0, 'removeCoverageButton': 1}
+    BATCH_TABS_NAMES = [REACTOR_PROPERTIES_TAB_NAME,
+                        SOLVING_OPTION_TAB_NAME,
+                        COVERAGE_COMPOSITION_TAB_NAME]
+    BATCH_COVERAGE_DYNAMIC_ROW_IDX = 1
+
     CSTR_NAME = "Continuous stirred tank reactor"
     CSTR_TEMPERATURES = ["Gas"]
-    CSTR_INITIAL_GAS_SPECIE_ROW_IDX = 0
-    CSTR_INITIAL_SURFACE_SPECIE_ROW_IDX = 0
-    CSTR_MINIMUM_ROW_IDX = 3
-    CSTR_GAS_BUTTON_DICT = {'addSpecieButton': 0, 'removeSpecieButton': 1}
-    CSTR_SURFACE_BUTTON_DICT = {'addCoverageButton': 0, 'removeCoverageButton': 1}
+    CSTR_TABS_NAMES = [REACTOR_PROPERTIES_TAB_NAME,
+                       SOLVING_OPTION_TAB_NAME,
+                       COVERAGE_COMPOSITION_TAB_NAME,
+                       INITIAL_CONDITIONS_TAB_NAME]
+
     STEADY_STATE_PH_1D_NAME = "Steady state pseudo-homogeneous 1D reactor"
     TRANSIENT_PH_1D_NAME = "Transient pseudo-homogeneous 1D reactor"
     STEADY_STATE_HET_1D_NAME = "Steady state heterogeneous 1D reactor"

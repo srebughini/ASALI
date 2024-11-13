@@ -168,7 +168,7 @@
 
                 <!-- Row 5 -->
                 <item row="5" column="0">
-                    <widget class="QLabel" name="formulaLabel">
+                    <widget class="QLabel">
                         <property name="text">
                             <string>Specie #0</string>
                         </property>

@@ -31,7 +31,7 @@ def batch_calculator(data_store, results) -> None:
     uc = UnitConverter()
 
     # Coverage
-    initial_coverage = data_store.get_data(DataKeys.INITIAL_COVERAGE_COMPOSITION.value)
+    initial_coverage = data_store.get_data(DataKeys.INITIAL_SURF_COMPOSITION.value)
 
     if udk_file_path is not None:
         reactor_class.set_user_defined_kinetic_model(udk_file_path)
@@ -62,7 +62,7 @@ def batch_calculator(data_store, results) -> None:
         reactor_class.set_initial_mass_fraction(composition_tuple[0])
 
     # Temperature
-    temperature_tuple = data_store.get_data(DataKeys.INITIAL_T.value)
+    temperature_tuple = data_store.get_data(DataKeys.INITIAL_GAS_T.value)
     reactor_class.set_initial_temperature(temperature_tuple[0],
                                           UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
 

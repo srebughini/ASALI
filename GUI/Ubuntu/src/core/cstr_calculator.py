@@ -1,4 +1,4 @@
-from asali.reactors.batch import BatchReactor
+from asali.reactors.cstr import CstrReactor
 from asali.utils.unit_converter import UnitConverter
 
 from src.core.data_keys import DataKeys
@@ -21,19 +21,17 @@ def cstr_calculator(data_store, results) -> None:
     Returns
     -------
     """
-    pass
-    """
     # Input files
     cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH.value)
     gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME.value)
     surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME.value)
     udk_file_path = data_store.get_data(DataKeys.UDK_FILE_PATH.value)
 
-    reactor_class = BatchReactor(cantera_input_file_path, gas_phase_name, surface_phase_name)
+    reactor_class = CstrReactor(cantera_input_file_path, gas_phase_name, surface_phase_name)
     uc = UnitConverter()
 
     # Coverage
-    initial_coverage = data_store.get_data(DataKeys.INITIAL_COVERAGE_COMPOSITION.value)
+    initial_coverage = data_store.get_data(DataKeys.INITIAL_SURF_COMPOSITION.value)
 
     if udk_file_path is not None:
         reactor_class.set_user_defined_kinetic_model(udk_file_path)
@@ -55,6 +53,11 @@ def cstr_calculator(data_store, results) -> None:
     reactor_class.set_catalytic_load(alfa_tuple[0],
                                      UnitDimensionHandler.from_human_to_code_ud(alfa_tuple[1]))
 
+    # Mass flow rate
+    q_tuple = data_store.get_data(DataKeys.MASS_FLOW_RATE.value)
+    reactor_class.set_mass_flow_rate(q_tuple[0],
+                                     UnitDimensionHandler.from_human_to_code_ud(q_tuple[1]))
+
     # Initial composition
     composition_tuple = data_store.get_data(DataKeys.INITIAL_GAS_COMPOSITION.value)
 
@@ -63,10 +66,23 @@ def cstr_calculator(data_store, results) -> None:
     else:
         reactor_class.set_initial_mass_fraction(composition_tuple[0])
 
-    # Temperature
-    temperature_tuple = data_store.get_data(DataKeys.INITIAL_T.value)
+    # Initial temperature
+    temperature_tuple = data_store.get_data(DataKeys.INITIAL_GAS_T.value)
     reactor_class.set_initial_temperature(temperature_tuple[0],
                                           UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
+
+    # Inlet composition
+    composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)
+
+    if "mole" in composition_tuple[1].lower():
+        reactor_class.set_inlet_mole_fraction(composition_tuple[0])
+    else:
+        reactor_class.set_inlet_mass_fraction(composition_tuple[0])
+
+    # Inlet temperature
+    temperature_tuple = data_store.get_data(DataKeys.INLET_T.value)
+    reactor_class.set_inlet_temperature(temperature_tuple[0],
+                                        UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
 
     # Energy balance
     energy_bool = data_store.get_data(DataKeys.ENERGY_BALANCE.value)
@@ -90,4 +106,3 @@ def cstr_calculator(data_store, results) -> None:
     results.put((reactor_class.get_time("s"),
                  reactor_class.get_results(),
                  None))
-    """

@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QLineEdit, QComboBox, QLabel, QTabWidget, QGridLayout
@@ -31,9 +33,31 @@ class BatchReactorInputPage(BasicPage):
 
         self.task_function = None
 
+    @abstractmethod
     def update_page_after_switch(self) -> None:
         """
         Update the whole page
+        Returns
+        -------
+
+        """
+        pass
+
+    @abstractmethod
+    def get_initial_layout_info(self) -> tuple:
+        """
+        Extract info of the layout before applying any change
+        Returns
+        -------
+        output_tuple: tuple
+            Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
+        """
+        pass
+
+    @abstractmethod
+    def read_data(self) -> None:
+        """
+        Update data store with temperature, composition, pressure
         Returns
         -------
 
