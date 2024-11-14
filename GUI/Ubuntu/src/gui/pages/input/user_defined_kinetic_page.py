@@ -10,6 +10,7 @@ from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.input.user_defined_kinetic_page import UserDefinedKineticPageWidgets
 
 
 class UserDefinedKineticPage(BasicPage):
@@ -48,7 +49,7 @@ class UserDefinedKineticPage(BasicPage):
         -------
 
         """
-        for n in ["udkLabel", "canteraLabel"]:
+        for n in UserDefinedKineticPageWidgets.FILES_LABELS.value:
             label = self.findChild(QLabel, n)
             label.setAlignment(Qt.AlignCenter)
             label.setProperty("class", "italic")
@@ -60,16 +61,16 @@ class UserDefinedKineticPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(ChemistryInputPageConfig.NAME.value))
 
-        check_button = self.findChild(QPushButton, 'checkButton')
+        check_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.CHECK_BUTTON.value)
         check_button.clicked.connect(self.check)
 
-        udk_button = self.findChild(QPushButton, 'udkButton')
+        udk_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.UDK_BUTTON.value)
         udk_button.clicked.connect(self.load_udk_file)
 
-        cantera_button = self.findChild(QPushButton, 'canteraButton')
+        cantera_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.CANTERA_BUTTON.value)
         cantera_button.clicked.connect(self.load_cantera_file)
 
     def clean(self) -> None:
@@ -80,7 +81,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
 
-        for n in ["udkLabel", "canteraLabel"]:
+        for n in UserDefinedKineticPageWidgets.FILES_LABELS.value:
             label = self.findChild(QLabel, n)
             label.setText("Not selected")
 
@@ -95,11 +96,11 @@ class UserDefinedKineticPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Asali User Defined Kinetic file",
+        file_path = self.dialog_handler.load_file(AppConfig.ASALI_FILE_OPEN.value,
                                                   AppConfig.ASALI_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "udkLabel")
+            label = self.findChild(QLabel, UserDefinedKineticPageWidgets.UDK_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH.value, file_path)
 
@@ -110,11 +111,11 @@ class UserDefinedKineticPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Cantera chemistry file",
+        file_path = self.dialog_handler.load_file(AppConfig.CANTERA_FILE_OPEN.value,
                                                   AppConfig.CANTERA_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "canteraLabel")
+            label = self.findChild(QLabel, UserDefinedKineticPageWidgets.CANTERA_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH.value, file_path)
 

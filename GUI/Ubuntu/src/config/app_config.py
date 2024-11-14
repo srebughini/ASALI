@@ -22,6 +22,10 @@ class AppConfig(Enum):
     SURFACE_SPECIE_EDIT_LINE_NAME = "z{:d}"
 
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
+    CANTERA_FILE_OPEN = "Open Cantera Input File"
+    CANTERA_FILE_SAVE = "Save Cantera Input File"
     ASALI_FILE_TYPE = "Asali file type (*.json);;All Files (*)"
+    ASALI_FILE_OPEN = "Open Asali User Defined Kinetic Input File"
     CHEMKIN_FILE_TYPE = "Chemkin file type (*.kin;*.sur; *.tdc;*.tra;*.ckin);;All Files (*)"
+    CHEMKIN_FILE_OPEN = "Open Chemkin File"
     EXCEL_FILE_TYPE = "Excel file type (*.xlsx;*.xls);;All Files (*)"

@@ -10,6 +10,7 @@ from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
 from src.core.data_keys import DataKeys
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.input.chemkin_to_cantera_page import ChemkinToCanteraPageWidgets
 
 
 class ChemkinToCanteraPage(BasicPage):
@@ -50,7 +51,7 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        for n in ["thermoLabel", "transportLabel", "kineticLabel", "surfaceLabel"]:
+        for n in ChemkinToCanteraPageWidgets.FILES_LABELS.value:
             label = self.findChild(QLabel, n)
             label.setAlignment(Qt.AlignCenter)
             label.setProperty("class", "italic")
@@ -62,25 +63,25 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(ChemistryInputPageConfig.NAME.value))
 
-        clean_button = self.findChild(QPushButton, 'cleanButton')
+        clean_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.CLEAN_BUTTON.value)
         clean_button.clicked.connect(self.clean)
 
-        convert_button = self.findChild(QPushButton, 'convertButton')
+        convert_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.CONVERT_BUTTON.value)
         convert_button.clicked.connect(self.convert)
 
-        thermo_button = self.findChild(QPushButton, 'thermoButton')
+        thermo_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.THERMO_BUTTON.value)
         thermo_button.clicked.connect(self.load_thermo_file)
 
-        transport_button = self.findChild(QPushButton, 'transportButton')
+        transport_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.TRANSPORT_BUTTON.value)
         transport_button.clicked.connect(self.load_transport_file)
 
-        kinetic_button = self.findChild(QPushButton, 'kineticButton')
+        kinetic_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.KINETIC_BUTTON.value)
         kinetic_button.clicked.connect(self.load_gas_kinetic_file)
 
-        surface_button = self.findChild(QPushButton, 'surfaceButton')
+        surface_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.SURFACE_BUTTON.value)
         surface_button.clicked.connect(self.load_surface_kinetic_file)
 
     def clean(self) -> None:
@@ -90,7 +91,7 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        for n in ["thermoLabel", "transportLabel", "kineticLabel", "surfaceLabel"]:
+        for n in ChemkinToCanteraPageWidgets.FILES_LABELS.value:
             label = self.findChild(QLabel, n)
             label.setText("Not selected")
 
@@ -124,7 +125,7 @@ class ChemkinToCanteraPage(BasicPage):
             self.dialog_handler.error_message(QLabel("Missing Chemkin kinetic file"))
             return None
 
-        output_file_path = self.dialog_handler.save_file("Save Cantera file",
+        output_file_path = self.dialog_handler.save_file(AppConfig.CANTERA_FILE_SAVE.value,
                                                          AppConfig.CANTERA_FILE_TYPE.value)
 
         if output_file_path:
@@ -147,11 +148,11 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Chemkin Thermo file",
+        file_path = self.dialog_handler.load_file(f"{AppConfig.CHEMKIN_FILE_OPEN.value}: Thermo",
                                                   AppConfig.CHEMKIN_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "thermoLabel")
+            label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.THERMO_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.THERMO_FILE_PATH.value, file_path)
 
@@ -162,11 +163,11 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Chemkin Transport file",
+        file_path = self.dialog_handler.load_file(f"{AppConfig.CHEMKIN_FILE_OPEN.value}: Transport",
                                                   AppConfig.CHEMKIN_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "transportLabel")
+            label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.TRANSPORT_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.TRANSPORT_FILE_PATH.value, file_path)
 
@@ -177,11 +178,11 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Chemkin Gas Kinetic file",
+        file_path = self.dialog_handler.load_file(f"{AppConfig.CHEMKIN_FILE_OPEN.value}: Gas Kinetic",
                                                   AppConfig.CHEMKIN_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "kineticLabel")
+            label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.KINETIC_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.KINETIC_FILE_PATH.value, file_path)
 
@@ -192,10 +193,10 @@ class ChemkinToCanteraPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Chemkin Surface Kinetic file",
+        file_path = self.dialog_handler.load_file(f"{AppConfig.CHEMKIN_FILE_OPEN.value}: Surface Kinetic",
                                                   AppConfig.CHEMKIN_FILE_TYPE.value)
 
         if file_path:
-            label = self.findChild(QLabel, "surfaceLabel")
+            label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.SURFACE_LABEL.value)
             label.setText(os.path.basename(file_path))
             self.data_store.update_data(DataKeys.SURFACE_FILE_PATH.value, file_path)

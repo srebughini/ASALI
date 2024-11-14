@@ -10,6 +10,7 @@ from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.input.chemistry_input_page import ChemistryInputPageWidgets
 
 
 class ChemistryInputPage(BasicPage):
@@ -78,7 +79,7 @@ class ChemistryInputPage(BasicPage):
         -------
 
         """
-        next_button = self.findChild(QPushButton, 'nextButton')
+        next_button = self.findChild(QPushButton, ChemistryInputPageWidgets.NEXT_BUTTON.value)
         next_button.clicked.connect(self.next_button_action)
 
     def next_button_action(self) -> pyqtSignal:
@@ -89,11 +90,12 @@ class ChemistryInputPage(BasicPage):
         signal: pyqtSignal
             Signal with the next page name
         """
-        combo_box = self.findChild(QComboBox, 'chemistryComboBox')
+        combo_box = self.findChild(QComboBox, ChemistryInputPageWidgets.CHEMISTRY_COMBO_BOX.value)
 
         if combo_box.currentIndex() == 0:
             # Load Cantera
-            file_path = self.dialog_handler.load_file("Open Cantera Input File", AppConfig.CANTERA_FILE_TYPE.value)
+            file_path = self.dialog_handler.load_file(AppConfig.CANTERA_FILE_OPEN.value,
+                                                      AppConfig.CANTERA_FILE_TYPE.value)
             if file_path:  # Check if a file was selected
                 if InputFileController.check_cantera_input_file(file_path):
                     # Save data in DataStore
