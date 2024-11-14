@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QProgressBar, QLabel, QVBoxLayout, QPushButton
 
 from src.controllers.thread_handler import ThreadHandler
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 
 
 class RunBar(QWidget):
@@ -15,10 +15,10 @@ class RunBar(QWidget):
         self._thread_handler = None
 
         # Add title
-        self.setWindowTitle(Config.TITLE.value)
+        self.setWindowTitle(AppConfig.TITLE.value)
 
         # Add icons
-        self.setWindowIcon(QIcon(Config.ICON_PATH.value))
+        self.setWindowIcon(QIcon(AppConfig.ICON_PATH.value))
 
         self.setWindowFlags(
             Qt.Window |

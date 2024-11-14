@@ -1,9 +1,9 @@
 import beerpy
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QStackedWidget, QStackedLayout
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt5 import uic
 
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 
 
 class BaseLayout(QWidget):
@@ -13,7 +13,7 @@ class BaseLayout(QWidget):
         """
         super().__init__()
         # Load the UI from the .ui file
-        uic.loadUi(Config.BASE_LAYOUT_PATH.value, self)
+        uic.loadUi(AppConfig.BASE_LAYOUT_PATH.value, self)
 
         self.update_beer_label()
         self.update_logo()

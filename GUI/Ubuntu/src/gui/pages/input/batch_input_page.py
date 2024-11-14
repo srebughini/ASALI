@@ -2,13 +2,15 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox
 from asali.reactors.batch import BatchReactor
 
+from src.config.batch_input_page_config import BatchInputPageConfig
+from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 
 from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
-from src.gui.reactor_config import ReactorConfig
+from src.config.reactor_config import ReactorConfig
 
 
 class BatchInputPage(BatchReactorInputPage):
@@ -26,7 +28,7 @@ class BatchInputPage(BatchReactorInputPage):
         """
         super().__init__(data_store, dialog_handler, run_bar)
         # Load the UI from the .ui file
-        uic.loadUi(Config.BATCH_INPUT_PAGE_PATH.value, self)
+        uic.loadUi(BatchInputPageConfig.PATH.value, self)
 
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
         self.task_function = batch_calculator
@@ -81,16 +83,16 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.REACTOR_NAME.value, ReactorConfig.BATCH_NAME.value)
-        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, ReactorConfig.BATCH_TEMPERATURES.value)
-        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Config.BATCH_INPUT_PAGE_NAME.value)
+        self.data_store.update_data(DataKeys.REACTOR_NAME.value, BatchInputPageConfig.REACTOR_NAME.value)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, BatchInputPageConfig.TEMPERATURES.value)
+        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, BatchInputPageConfig.NAME.value)
         self.data_store.update_data(DataKeys.REACTOR_TYPE.value, BatchReactor)
 
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
-                                      Config.SURFACE_SPECIE_COMBO_BOX_NAME.value,
-                                      Config.SURFACE_SPECIE_EDIT_LINE_NAME.value)
+                                      AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
+                                      AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
         for tab_name in ReactorConfig.BATCH_TABS_NAMES.value:
             layout_name = self._tab_name_to_grid_layout_dict[tab_name]
@@ -105,7 +107,7 @@ class BatchInputPage(BatchReactorInputPage):
         """
         tab_widget = self.findChild(QTabWidget, 'tabWidget')
 
-        for i, n in enumerate(ReactorConfig.BATCH_TABS_NAMES.value):
+        for i, n in enumerate(BatchInputPageConfig.TABS_NAMES.value):
             tab_widget.setTabText(i, n)
 
     def update_buttons(self) -> None:
@@ -119,7 +121,7 @@ class BatchInputPage(BatchReactorInputPage):
         udk_button.clicked.connect(self.load_udk_file)
 
         back_button = self.findChild(QPushButton, 'backButton')
-        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
         add_specie_button = self.findChild(QPushButton, 'addCoverageButton')
         add_specie_button.clicked.connect(self.add_coverage_line)
@@ -215,8 +217,8 @@ class BatchInputPage(BatchReactorInputPage):
         # Coverage
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, Config.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, Config.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
 
         self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)

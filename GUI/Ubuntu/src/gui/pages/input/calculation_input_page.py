@@ -1,11 +1,16 @@
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QPushButton, QGridLayout, QLineEdit, QComboBox, QLabel
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QComboBox, QLabel
 from PyQt5 import uic
 
+from src.config.batch_input_page_config import BatchInputPageConfig
+from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.cstr_input_page_config import CstrInputPageConfig
+from src.config.properties_output_page_config import PropertiesOutputPageConfig
+from src.config.vacuum_output_page_config import VacuumOutputPageConfig
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -22,7 +27,7 @@ class CalculationInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.CALCULATION_INPUT_PAGE_PATH.value, self)
+        uic.loadUi(CalculationInputPageConfig.PATH.value, self)
 
         self.data_store.update_data(DataKeys.INLET_NS.value, 0)
 
@@ -32,7 +37,7 @@ class CalculationInputPage(BasicPage):
         self.update_specie_line()
         self.update_grid_layout()
 
-        self._specie_row_idx = Config.CALCULATION_INPUT_PAGE_INITIAL_SPECIE_ROW_IDX.value
+        self._specie_row_idx = CalculationInputPageConfig.INITIAL_SPECIE_ROW_IDX.value
         self._button_row_idx = self._specie_row_idx + 1
 
     def update_page_after_switch(self) -> None:
@@ -45,8 +50,8 @@ class CalculationInputPage(BasicPage):
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
-                                      Config.GAS_SPECIE_COMBO_BOX_NAME.value,
-                                      Config.GAS_SPECIE_EDIT_LINE_NAME.value)
+                                      AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
+                                      AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
         self.update_grid_layout()
 
     def read_data(self) -> None:
@@ -69,8 +74,8 @@ class CalculationInputPage(BasicPage):
         # Composition
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, Config.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, Config.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
         ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
         self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
@@ -153,7 +158,7 @@ class CalculationInputPage(BasicPage):
             self._button_row_idx = self._specie_row_idx + 1
             self.move_buttons_in_grid_layout("gridLayout",
                                              self._button_row_idx,
-                                             Config.CALCULATION_INPUT_PAGE_BUTTON_DICT.value)
+                                             CalculationInputPageConfig.BUTTON_DICT.value)
             self.update_grid_layout()
 
     def remove_specie_line(self):
@@ -163,7 +168,7 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        if self._specie_row_idx > Config.CALCULATION_INPUT_PAGE_INITIAL_SPECIE_ROW_IDX.value:
+        if self._specie_row_idx > CalculationInputPageConfig.INITIAL_SPECIE_ROW_IDX.value:
             ns = self.data_store.get_data(DataKeys.INLET_NS.value)
             self.data_store.update_data(DataKeys.INLET_NS.value, ns - 1)
 
@@ -183,15 +188,15 @@ class CalculationInputPage(BasicPage):
         combo_box = self.findChild(QComboBox, 'chemistryComboBox')
         if combo_box.currentIndex() == 0:
             # Thermodynamic and transport properties
-            return self.page_switched.emit(Config.PROPERTIES_OUTPUT_PAGE_NAME.value)
+            return self.page_switched.emit(PropertiesOutputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 1:
             # Vacuum properties
-            return self.page_switched.emit(Config.VACUUM_OUTPUT_PAGE_NAME.value)
+            return self.page_switched.emit(VacuumOutputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 2:
             # Chemical equilibrium
-            return self.page_switched.emit(Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value)
+            return self.page_switched.emit(EquilibriumOutputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 3:
             # Batch
             if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
@@ -199,7 +204,7 @@ class CalculationInputPage(BasicPage):
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None
 
-            return self.page_switched.emit(Config.BATCH_INPUT_PAGE_NAME.value)
+            return self.page_switched.emit(BatchInputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 4:
             # CSTR
@@ -208,7 +213,7 @@ class CalculationInputPage(BasicPage):
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None
 
-            return self.page_switched.emit(Config.CSTR_INPUT_PAGE_NAME.value)
+            return self.page_switched.emit(CstrInputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 5:
             # SS 1d ph
             pass

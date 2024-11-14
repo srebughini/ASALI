@@ -1,12 +1,12 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel
-from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QWidget, QSizePolicy, \
-    QFileDialog, QTableView, QHBoxLayout, QTableWidget, QScrollBar, QHeaderView, QTableWidgetItem
+from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QSizePolicy, \
+    QFileDialog, QTableWidget, QScrollBar, QHeaderView, QTableWidgetItem
 
+from src.config.contact_config import ContactConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names, surface_species_names
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 
 
 class DialogPagesHandler:
@@ -36,7 +36,7 @@ class DialogPagesHandler:
         """
         # Create a QDialog instance
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
-        dialog.setWindowTitle(Config.TITLE.value)
+        dialog.setWindowTitle(AppConfig.TITLE.value)
 
         # Create a layout for the dialog
         dialog_layout = QVBoxLayout()
@@ -80,24 +80,24 @@ class DialogPagesHandler:
 
         msg = QLabel(f"""
         <p style="display: flex; align-items: center;">
-            <a href="mailto:{Config.EMAIL.value}" style="text-decoration: none;">
-                <img src='data:image/svg+xml;utf8,{Config.EMAIL_ICON.value}'>
+            <a href="mailto:{ContactConfig.EMAIL.value}" style="text-decoration: none;">
+                <img src='data:image/svg+xml;utf8,{ContactConfig.EMAIL_ICON.value}'>
             </a>
             &nbsp;&nbsp;
-            <a href="{Config.SITE.value}" style="text-decoration: none;">
-                <img src='data:image/svg+xml;utf8,{Config.SITE_ICON.value}'>
+            <a href="{ContactConfig.SITE.value}" style="text-decoration: none;">
+                <img src='data:image/svg+xml;utf8,{ContactConfig.SITE_ICON.value}'>
             </a>
             &nbsp;&nbsp;
-            <a href="{Config.LINKEDIN.value}" style="text-decoration: none;">
-                <img src='data:image/svg+xml;utf8,{Config.LINKEDIN_ICON.value}'>
+            <a href="{ContactConfig.LINKEDIN.value}" style="text-decoration: none;">
+                <img src='data:image/svg+xml;utf8,{ContactConfig.LINKEDIN_ICON.value}'>
             </a>
             &nbsp;&nbsp;
-            <a href="{Config.GITHUB.value}" style="text-decoration: none;">
-                <img src='data:image/svg+xml;utf8,{Config.GITHUB_ICON.value}'>
+            <a href="{ContactConfig.GITHUB.value}" style="text-decoration: none;">
+                <img src='data:image/svg+xml;utf8,{ContactConfig.GITHUB_ICON.value}'>
             </a>
             &nbsp;&nbsp;
-            <a href="{Config.FACEBOOK.value}" style="text-decoration: none;">
-                <img src='data:image/svg+xml;utf8,{Config.FACEBOOK_ICON.value}'>
+            <a href="{ContactConfig.FACEBOOK.value}" style="text-decoration: none;">
+                <img src='data:image/svg+xml;utf8,{ContactConfig.FACEBOOK_ICON.value}'>
             </a>
         </p>
                     """)
@@ -113,12 +113,12 @@ class DialogPagesHandler:
         """
         # Create the dialog
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
-        dialog.setWindowTitle(Config.TITLE.value)
+        dialog.setWindowTitle(AppConfig.TITLE.value)
 
         # Setup grid layout
         grid_layout = QGridLayout()
-        grid_layout.setVerticalSpacing(Config.GRID_VERTICAL_SPACING.value)
-        grid_layout.setHorizontalSpacing(Config.GRID_HORIZONTAL_SPACING.value)
+        grid_layout.setVerticalSpacing(AppConfig.GRID_VERTICAL_SPACING.value)
+        grid_layout.setHorizontalSpacing(AppConfig.GRID_HORIZONTAL_SPACING.value)
 
         for i, label_as_str in enumerate(["Cantera file path:",
                                           "Asali user defined kinetic file path:",
@@ -146,11 +146,18 @@ class DialogPagesHandler:
         gas_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
         surf_names = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
 
+        if gas_names is None:
+            gas_names = list()
+
+        if surf_names is None:
+            surf_names = list()
+
         # Create a QTableView and set the proxy model
         table = QTableWidget()
 
         # Set row and column count
         n_row = max(len(gas_names), len(surf_names))
+
         table.setRowCount(n_row)  # For testing, create 100 rows
         table.setColumnCount(2)  # Set 5 columns
 
@@ -202,7 +209,7 @@ class DialogPagesHandler:
         """
         box = QMessageBox(self.main_window)
         box.setIcon(QMessageBox.Question)
-        box.setWindowTitle(Config.TITLE.value)
+        box.setWindowTitle(AppConfig.TITLE.value)
         box.setText(msg)
         box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         button_yes = box.button(QMessageBox.Yes)
@@ -240,7 +247,7 @@ class DialogPagesHandler:
         """
         # Create the dialog
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
-        dialog.setWindowTitle(Config.TITLE.value)
+        dialog.setWindowTitle(AppConfig.TITLE.value)
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)
@@ -273,7 +280,7 @@ class DialogPagesHandler:
         """
         # Create the dialog
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
-        dialog.setWindowTitle(Config.TITLE.value)
+        dialog.setWindowTitle(AppConfig.TITLE.value)
 
         # Add a button
         button = QPushButton(LabelFormatter.pad_string_center("Close"), clicked=dialog.close)

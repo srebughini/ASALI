@@ -2,10 +2,11 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
+from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
 from src.core.data_keys import DataKeys
 from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -22,13 +23,13 @@ class PlotAndSaveOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.PLOT_AND_SAVE_OUTPUT_PAGE_PATH.value, self)
+        uic.loadUi(PlotAndSaveOutputPageConfig.PATH.value, self)
 
         self.update_head_lines()
         self.update_buttons()
         self.update_grid_layout()
 
-        self._button_row_idx = Config.PLOT_AND_SAVE_OUTPUT_PAGE_BUTTON_ROW_IDX.value
+        self._button_row_idx = PlotAndSaveOutputPageConfig.BUTTON_ROW_IDX.value
 
     def update_page_after_switch(self) -> None:
         """
@@ -106,12 +107,12 @@ class PlotAndSaveOutputPage(BasicPage):
         """
         grid_layout = self.findChild(QGridLayout, "gridLayout")
 
-        if self._button_row_idx > Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value:
-            for row_idx in range(Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value,
+        if self._button_row_idx > PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value:
+            for row_idx in range(PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value,
                                  self._button_row_idx):
                 self.remove_row_from_grid_layout("gridLayout", row_idx)
 
-        row_idx = Config.PLOT_AND_SAVE_OUTPUT_PAGE_INITIAL_CHECK_BOX_ROW_IDX.value
+        row_idx = PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value
         self.data_store = gas_species_names(self.data_store)
         self.data_store = surface_species_names(self.data_store)
 
@@ -259,7 +260,7 @@ class PlotAndSaveOutputPage(BasicPage):
                                     self.findChild(QComboBox, 'compositionComboBox').currentText())
 
         output_file_path = self.dialog_handler.save_file('Save reactor data',
-                                                         Config.EXCEL_FILE_TYPE.value)
+                                                         AppConfig.EXCEL_FILE_TYPE.value)
 
         if output_file_path is not None:
             self.data_store.update_data(DataKeys.OUTPUT_FILE_PATH.value, output_file_path)

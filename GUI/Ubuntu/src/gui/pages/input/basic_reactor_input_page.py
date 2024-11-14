@@ -2,11 +2,12 @@ from abc import abstractmethod
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QLineEdit, QComboBox, QLabel, QTabWidget, QGridLayout
+from PyQt5.QtWidgets import QLineEdit, QComboBox, QLabel
 
+from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
 from src.controllers.thread_handler import ThreadHandler
 from src.core.data_keys import DataKeys
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -115,7 +116,7 @@ class BatchReactorInputPage(BasicPage):
 
         """
         file_path = self.dialog_handler.load_file("Open Asali User Defined Kinetic file",
-                                                  Config.ASALI_FILE_TYPE.value)
+                                                  AppConfig.ASALI_FILE_TYPE.value)
 
         if file_path:
             self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH.value, file_path)
@@ -159,7 +160,7 @@ class BatchReactorInputPage(BasicPage):
             self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, results)
 
             if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
-                return self.page_switched.emit(Config.PLOT_AND_SAVE_OUTPUT_PAGE_NAME.value)
+                return self.page_switched.emit(PlotAndSaveOutputPageConfig.NAME.value)
 
     def on_run_error(self, error_message) -> None:
         """

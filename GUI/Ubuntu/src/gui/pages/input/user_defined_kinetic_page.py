@@ -2,11 +2,13 @@ import os
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QPushButton, QSizePolicy
+from PyQt5.QtWidgets import QLabel, QPushButton
 
+from src.config.chemistry_input_page_config import ChemistryInputPageConfig
+from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
 from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -23,7 +25,7 @@ class UserDefinedKineticPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.USER_DEFINED_KINETIC_PAGE_PATH.value, self)
+        uic.loadUi(UserDefinedKineticPageConfig.PATH.value, self)
 
         self.update_buttons()
         self.update_labels()
@@ -59,7 +61,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
         back_button = self.findChild(QPushButton, 'backButton')
-        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(ChemistryInputPageConfig.NAME.value))
 
         check_button = self.findChild(QPushButton, 'checkButton')
         check_button.clicked.connect(self.check)
@@ -94,7 +96,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
         file_path = self.dialog_handler.load_file("Open Asali User Defined Kinetic file",
-                                                  Config.ASALI_FILE_TYPE.value)
+                                                  AppConfig.ASALI_FILE_TYPE.value)
 
         if file_path:
             label = self.findChild(QLabel, "udkLabel")
@@ -109,7 +111,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
         file_path = self.dialog_handler.load_file("Open Cantera chemistry file",
-                                                  Config.CANTERA_FILE_TYPE.value)
+                                                  AppConfig.CANTERA_FILE_TYPE.value)
 
         if file_path:
             label = self.findChild(QLabel, "canteraLabel")

@@ -2,9 +2,18 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 
-from src.controllers.thread_handler import ThreadHandler
+from src.config.batch_input_page_config import BatchInputPageConfig
+from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.chemistry_input_page_config import ChemistryInputPageConfig
+from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
+from src.config.cstr_input_page_config import CstrInputPageConfig
+from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
+from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
+from src.config.properties_output_page_config import PropertiesOutputPageConfig
+from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
+from src.config.vacuum_output_page_config import VacuumOutputPageConfig
 from src.core.data_store import DataStore
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.base_layout import BaseLayout
 from src.gui.pages.input.batch_input_page import BatchInputPage
 from src.gui.pages.input.calculation_input_page import CalculationInputPage
@@ -35,10 +44,10 @@ class MainWindow(QMainWindow):
         self.toolbar = None
 
         # Add title
-        self.setWindowTitle(Config.TITLE.value)
+        self.setWindowTitle(AppConfig.TITLE.value)
 
         # Add icons
-        self.setWindowIcon(QIcon(Config.ICON_PATH.value))
+        self.setWindowIcon(QIcon(AppConfig.ICON_PATH.value))
 
         # Set flags
         self.setWindowFlags(
@@ -65,35 +74,35 @@ class MainWindow(QMainWindow):
 
         # Define available pages
         self.pages = {
-            Config.CHEMISTRY_INPUT_PAGE_NAME.value: ChemistryInputPage(self.data_store,
-                                                                       self.dialog_handler),
-            Config.CALCULATION_INPUT_PAGE_NAME.value: CalculationInputPage(self.data_store,
-                                                                           self.dialog_handler),
-            Config.PROPERTIES_OUTPUT_PAGE_NAME.value: PropertiesOutputPage(self.data_store,
-                                                                           self.dialog_handler),
-            Config.VACUUM_OUTPUT_PAGE_NAME.value: VacuumOutputPage(self.data_store,
-                                                                   self.dialog_handler),
-            Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value: ChemkinToCanteraPage(self.data_store,
+            ChemistryInputPageConfig.NAME.value: ChemistryInputPage(self.data_store,
+                                                                    self.dialog_handler),
+            CalculationInputPageConfig.NAME.value: CalculationInputPage(self.data_store,
+                                                                        self.dialog_handler),
+            PropertiesOutputPageConfig.NAME.value: PropertiesOutputPage(self.data_store,
+                                                                        self.dialog_handler),
+            VacuumOutputPageConfig.NAME.value: VacuumOutputPage(self.data_store,
+                                                                self.dialog_handler),
+            ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
+                                                                        self.dialog_handler),
+            UserDefinedKineticPageConfig.NAME.value: UserDefinedKineticPage(self.data_store,
                                                                             self.dialog_handler),
-            Config.USER_DEFINED_KINETIC_PAGE_NAME.value: UserDefinedKineticPage(self.data_store,
-                                                                                self.dialog_handler),
-            Config.EQUILIBRIUM_OUTPUT_PAGE_NAME.value: EquilibriumOutputPage(self.data_store,
-                                                                             self.dialog_handler),
-            Config.PLOT_AND_SAVE_OUTPUT_PAGE_NAME.value: PlotAndSaveOutputPage(self.data_store,
-                                                                               self.dialog_handler),
-            Config.BATCH_INPUT_PAGE_NAME.value: BatchInputPage(self.data_store,
-                                                               self.dialog_handler,
-                                                               self.run_bar),
-            Config.CSTR_INPUT_PAGE_NAME.value: CstrInputPage(self.data_store,
-                                                             self.dialog_handler,
-                                                             self.run_bar)
+            EquilibriumOutputPageConfig.NAME.value: EquilibriumOutputPage(self.data_store,
+                                                                          self.dialog_handler),
+            PlotAndSaveOutputPageConfig.NAME.value: PlotAndSaveOutputPage(self.data_store,
+                                                                          self.dialog_handler),
+            BatchInputPageConfig.NAME.value: BatchInputPage(self.data_store,
+                                                            self.dialog_handler,
+                                                            self.run_bar),
+            CstrInputPageConfig.NAME.value: CstrInputPage(self.data_store,
+                                                          self.dialog_handler,
+                                                          self.run_bar)
         }
 
         for page in self.pages.values():
             self.base_layout.add_page(page)
 
         # Show the Starting Page
-        self.switch_page(Config.CHEMISTRY_INPUT_PAGE_NAME.value)
+        self.switch_page(ChemistryInputPageConfig.NAME.value)
 
         # Show the window
         self.show()

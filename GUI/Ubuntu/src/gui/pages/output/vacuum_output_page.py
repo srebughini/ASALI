@@ -3,10 +3,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox, QLineEdit
 
+from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.vacuum_output_page_config import VacuumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.vacuum_calculator import vacuum_calculator
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -23,7 +25,7 @@ class VacuumOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.VACUUM_OUTPUT_PAGE_PATH.value, self)
+        uic.loadUi(VacuumOutputPageConfig.PATH.value, self)
         self.update_head_lines()
         self.update_geometry_line()
         self.update_property_line("vValueLabel", "vComboBox", self.ud_handler.velocity_ud)
@@ -96,7 +98,7 @@ class VacuumOutputPage(BasicPage):
 
         """
         back_button = self.findChild(QPushButton, 'backButton')
-        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
         calculate_button = self.findChild(QPushButton, 'calculateButton')
         calculate_button.clicked.connect(self.update_shown_data)

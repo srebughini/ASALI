@@ -1,10 +1,14 @@
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QPushButton, QComboBox, QFileDialog, QSizePolicy
+from PyQt5.QtWidgets import QPushButton, QComboBox
 from PyQt5 import uic
 
+from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.chemistry_input_page_config import ChemistryInputPageConfig
+from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
+from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
 from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -21,7 +25,7 @@ class ChemistryInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.CHEMISTRY_INPUT_PAGE_PATH.value, self)
+        uic.loadUi(ChemistryInputPageConfig.PATH.value, self)
         self.update_buttons()
         self.update_grid_layout()
 
@@ -89,21 +93,21 @@ class ChemistryInputPage(BasicPage):
 
         if combo_box.currentIndex() == 0:
             # Load Cantera
-            file_path = self.dialog_handler.load_file("Open Cantera Input File", Config.CANTERA_FILE_TYPE.value)
+            file_path = self.dialog_handler.load_file("Open Cantera Input File", AppConfig.CANTERA_FILE_TYPE.value)
             if file_path:  # Check if a file was selected
                 if InputFileController.check_cantera_input_file(file_path):
                     # Save data in DataStore
                     self.update_data_store(file_path, False)
-                    return self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value)
+                    return self.page_switched.emit(CalculationInputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 1:
             # Save data in DataStore
-            self.update_data_store(Config.DEFAULT_CHEMISTRY_FILE_PATH.value, True)
-            return self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value)
+            self.update_data_store(AppConfig.DEFAULT_CHEMISTRY_FILE_PATH.value, True)
+            return self.page_switched.emit(CalculationInputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 2:
             # Chemikin to Cantera
-            return self.page_switched.emit(Config.CHEMKIN_TO_CANTERA_PAGE_NAME.value)
+            return self.page_switched.emit(ChemkinToCanteraPageConfig.NAME.value)
         elif combo_box.currentIndex() == 3:
             # Asali user-defined kinetic model check
-            return self.page_switched.emit(Config.USER_DEFINED_KINETIC_PAGE_NAME.value)
+            return self.page_switched.emit(UserDefinedKineticPageConfig.NAME.value)

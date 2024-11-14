@@ -1,12 +1,13 @@
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox
 
+from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.equilibrium_calculator import equilibrium_calculator
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
@@ -23,7 +24,7 @@ class EquilibriumOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(Config.EQUILIBRIUM_OUTPUT_PAGE_PATH.value, self)
+        uic.loadUi(EquilibriumOutputPageConfig.PATH.value, self)
         self.update_head_lines()
         self.update_property_line("temperatureValueLabel", "temperatureOutputComboBox", self.ud_handler.temperature_ud)
         self.update_property_line("pressureValueLabel", "pressureOutputComboBox", self.ud_handler.pressure_ud)
@@ -94,7 +95,7 @@ class EquilibriumOutputPage(BasicPage):
 
         """
         back_button = self.findChild(QPushButton, 'backButton')
-        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CALCULATION_INPUT_PAGE_NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
         calculate_button = self.findChild(QPushButton, 'calculateButton')
         calculate_button.clicked.connect(self.update_shown_data)

@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, 
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 from src.core.unit_dimension_handler import UnitDimensionHandler
-from src.gui.config import Config
+from src.config.app_config import AppConfig
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 
@@ -74,11 +74,11 @@ class BasicPage(QWidget):
 
         """
         grid = self.findChild(QGridLayout, grid_layout_name)
-        grid.setVerticalSpacing(Config.GRID_VERTICAL_SPACING.value)
-        grid.setHorizontalSpacing(Config.GRID_HORIZONTAL_SPACING.value)
+        grid.setVerticalSpacing(AppConfig.GRID_VERTICAL_SPACING.value)
+        grid.setHorizontalSpacing(AppConfig.GRID_HORIZONTAL_SPACING.value)
 
         for col in range(grid.columnCount()):
-            grid.setColumnMinimumWidth(col, Config.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
+            grid.setColumnMinimumWidth(col, AppConfig.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
             grid.setColumnStretch(col, 1)  # or any desired stretch factor
 
         for row in range(grid.rowCount()):
@@ -204,14 +204,14 @@ class BasicPage(QWidget):
 
         """
         label_name = None
-        combo_box_name = Config.GAS_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = Config.GAS_SPECIE_EDIT_LINE_NAME.value
+        combo_box_name = AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value
+        edit_line_name = AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = gas_species_names(self.data_store)
         specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
 
         if with_label:
-            label_name = Config.GAS_SPECIE_LABEL_NAME.value
+            label_name = AppConfig.GAS_SPECIE_LABEL_NAME.value
 
         self.add_specie_input_row_to_grid_layout(grid_layout_name,
                                                  specie_idx,
@@ -244,14 +244,14 @@ class BasicPage(QWidget):
 
         """
         label_name = None
-        combo_box_name = Config.SURFACE_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = Config.SURFACE_SPECIE_EDIT_LINE_NAME.value
+        combo_box_name = AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value
+        edit_line_name = AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = surface_species_names(self.data_store)
         specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
 
         if with_label:
-            label_name = Config.SURFACE_SPECIE_LABEL_NAME.value
+            label_name = AppConfig.SURFACE_SPECIE_LABEL_NAME.value
 
         self.add_specie_input_row_to_grid_layout(grid_layout_name,
                                                  specie_idx,
