@@ -4,6 +4,7 @@ from asali.reactors.batch import BatchReactor
 
 from src.config.batch_input_page_config import BatchInputPageConfig
 from src.config.calculation_input_page_config import CalculationInputPageConfig
+from src.config.input_composition_config import InputCompositionConfig
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names
@@ -91,10 +92,10 @@ class BatchInputPage(BatchReactorInputPage):
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
-                                      AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
-                                      AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
+                                      InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
+                                      InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
-        for tab_name in ReactorConfig.BATCH_TABS_NAMES.value:
+        for tab_name in BatchInputPageConfig.TABS_NAMES.value:
             layout_name = self._tab_name_to_grid_layout_dict[tab_name]
             self.update_grid_layout(grid_layout_name=layout_name)
 
@@ -217,8 +218,8 @@ class BatchInputPage(BatchReactorInputPage):
         # Coverage
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
 
         self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)

@@ -4,6 +4,7 @@ from asali.reactors.cstr import CstrReactor
 
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.cstr_input_page_config import CstrInputPageConfig
+from src.config.input_composition_config import InputCompositionConfig
 from src.core.cstr_calculator import cstr_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
@@ -111,14 +112,14 @@ class CstrInputPage(BatchReactorInputPage):
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
-                                      AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
-                                      AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
+                                      InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
+                                      InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
-                                      AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
-                                      AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
+                                      InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
+                                      InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
 
         for tab_name in CstrInputPageConfig.TABS_NAMES.value:
             layout_name = self._tab_name_to_grid_layout_dict[tab_name]
@@ -339,16 +340,16 @@ class CstrInputPage(BatchReactorInputPage):
         # Coverage
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
         self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)
 
         # Initial composition
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
         ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
         self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, ud))

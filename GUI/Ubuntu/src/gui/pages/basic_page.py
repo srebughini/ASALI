@@ -4,6 +4,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QPushButton
 
+from src.config.input_composition_config import InputCompositionConfig
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 from src.core.unit_dimension_handler import UnitDimensionHandler
@@ -204,14 +205,14 @@ class BasicPage(QWidget):
 
         """
         label_name = None
-        combo_box_name = AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value
+        combo_box_name = InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value
+        edit_line_name = InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = gas_species_names(self.data_store)
         specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
 
         if with_label:
-            label_name = AppConfig.GAS_SPECIE_LABEL_NAME.value
+            label_name = InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value
 
         self.add_specie_input_row_to_grid_layout(grid_layout_name,
                                                  specie_idx,
@@ -244,14 +245,14 @@ class BasicPage(QWidget):
 
         """
         label_name = None
-        combo_box_name = AppConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = AppConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
+        combo_box_name = InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value
+        edit_line_name = InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = surface_species_names(self.data_store)
         specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
 
         if with_label:
-            label_name = AppConfig.SURFACE_SPECIE_LABEL_NAME.value
+            label_name = InputCompositionConfig.SURFACE_SPECIE_LABEL_NAME.value
 
         self.add_specie_input_row_to_grid_layout(grid_layout_name,
                                                  specie_idx,
@@ -260,24 +261,6 @@ class BasicPage(QWidget):
                                                  combo_box_name,
                                                  edit_line_name,
                                                  specie_list)
-
-    def move_buttons_in_grid_layout(self, grid_layout_name, new_row, buttons_dict) -> None:
-        """
-        Move the buttons from their current row to a new row.
-        Parameters
-        ----------
-        grid_layout_name: str
-            Grid layout name
-        new_row : int
-            The new row to place the buttons in.
-        buttons_dict: dict
-            Dictionary with button name as key (str) and button column as value (int)
-        """
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-        for n, col_idx in buttons_dict.items():
-            button = self.findChild(QPushButton, n)
-            grid_layout.removeWidget(button)
-            grid_layout.addWidget(button, new_row, col_idx)
 
     @abstractmethod
     def update_page_after_switch(self) -> None:

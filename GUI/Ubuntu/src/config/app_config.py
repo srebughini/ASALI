@@ -13,14 +13,6 @@ class AppConfig(Enum):
     ICON_PATH = ":/images/Icon.png"
     DEFAULT_CHEMISTRY_FILE_PATH = "resources/database/data.yaml"
     BASE_LAYOUT_PATH = "gui/ui/base_layout.ui"
-
-    GAS_SPECIE_LABEL_NAME = "Specie #{:d}"
-    GAS_SPECIE_COMBO_BOX_NAME = "n{:d}"
-    GAS_SPECIE_EDIT_LINE_NAME = "x{:d}"
-    SURFACE_SPECIE_LABEL_NAME = "Coverage #{:d}"
-    SURFACE_SPECIE_COMBO_BOX_NAME = "nc{:d}"
-    SURFACE_SPECIE_EDIT_LINE_NAME = "z{:d}"
-
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

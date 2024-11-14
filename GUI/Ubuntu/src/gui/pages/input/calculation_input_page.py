@@ -1,17 +1,19 @@
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QPushButton, QLineEdit, QComboBox, QLabel
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QComboBox, QLabel, QGridLayout
 from PyQt5 import uic
 
 from src.config.batch_input_page_config import BatchInputPageConfig
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.cstr_input_page_config import CstrInputPageConfig
+from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
+from src.config.input_composition_config import InputCompositionConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
 from src.config.vacuum_output_page_config import VacuumOutputPageConfig
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names
-from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.input.calculation_input_page import CalculationInputPageWidgets
 
 
 class CalculationInputPage(BasicPage):
@@ -50,8 +52,8 @@ class CalculationInputPage(BasicPage):
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
                                       self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
-                                      AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
-                                      AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
+                                      InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
+                                      InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
         self.update_grid_layout()
 
     def read_data(self) -> None:
@@ -62,22 +64,24 @@ class CalculationInputPage(BasicPage):
 
         """
         # Temperature
-        value = float(self.findChild(QLineEdit, 'temperatureEditLine').text())
-        ud = self.findChild(QComboBox, 'temperatureComboBox').currentText()
+        value = float(self.findChild(QLineEdit, CalculationInputPageWidgets.TEMPERATURE_EDIT_LINE.value).text())
+        ud = self.findChild(QComboBox, CalculationInputPageWidgets.TEMPERATURE_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.INLET_T.value, (value, ud))
 
         # Pressure
-        value = float(self.findChild(QLineEdit, 'pressureEditLine').text())
-        ud = self.findChild(QComboBox, 'pressureComboBox').currentText()
+        value = float(self.findChild(QLineEdit, CalculationInputPageWidgets.PRESSURE_EDIT_LINE.value).text())
+        ud = self.findChild(QComboBox, CalculationInputPageWidgets.PRESSURE_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.INLET_P.value, (value, ud))
 
         # Composition
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, AppConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, AppConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox,
+                                         InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+            specie_value = self.findChild(QLineEdit,
+                                          InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        ud = self.findChild(QComboBox, 'compositionComboBox').currentText()
+        ud = self.findChild(QComboBox, CalculationInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
 
     def update_temperature_line(self) -> None:
@@ -87,11 +91,11 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        edit_line = self.findChild(QLineEdit, 'temperatureEditLine')
+        edit_line = self.findChild(QLineEdit, CalculationInputPageWidgets.TEMPERATURE_EDIT_LINE.value)
         edit_line.setValidator(QDoubleValidator(0.0, 3000.0, 2))
         edit_line.setAlignment(Qt.AlignRight)
 
-        dropdown = self.findChild(QComboBox, 'temperatureComboBox')
+        dropdown = self.findChild(QComboBox, CalculationInputPageWidgets.TEMPERATURE_COMBO_BOX.value)
         dropdown.addItems(self.ud_handler.temperature_ud)
 
     def update_pressure_line(self) -> None:
@@ -101,11 +105,11 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        edit_line = self.findChild(QLineEdit, 'pressureEditLine')
+        edit_line = self.findChild(QLineEdit, CalculationInputPageWidgets.PRESSURE_EDIT_LINE.value)
         edit_line.setValidator(QDoubleValidator(0.0, 1e09, 2))
         edit_line.setAlignment(Qt.AlignRight)
 
-        dropdown = self.findChild(QComboBox, 'pressureComboBox')
+        dropdown = self.findChild(QComboBox, CalculationInputPageWidgets.PRESSURE_COMBO_BOX.value)
         dropdown.addItems(self.ud_handler.pressure_ud)
 
     def update_buttons(self) -> None:
@@ -115,16 +119,14 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        #back_button = self.findChild(QPushButton, 'backButton')
-        #back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
 
-        add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
+        add_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.ADD_SPECIE_BUTTON.value)
         add_specie_button.clicked.connect(self.add_specie_line)
 
-        remove_specie_button = self.findChild(QPushButton, 'removeSpecieButton')
+        remove_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.REMOVE_SPECIE_BUTTON.value)
         remove_specie_button.clicked.connect(self.remove_specie_line)
 
-        next_button = self.findChild(QPushButton, 'nextButton')
+        next_button = self.findChild(QPushButton, CalculationInputPageWidgets.NEXT_BUTTON.value)
         next_button.clicked.connect(self.next_button_action)
 
     def update_specie_line(self) -> None:
@@ -135,7 +137,7 @@ class CalculationInputPage(BasicPage):
 
         """
         ns = self.data_store.get_data(DataKeys.INLET_NS.value)
-        edit_line = self.findChild(QLineEdit, f"x{ns}")
+        edit_line = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(ns))
         edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
 
     def add_specie_line(self) -> None:
@@ -149,16 +151,17 @@ class CalculationInputPage(BasicPage):
         self.data_store.update_data(DataKeys.INLET_NS.value, ns)
 
         self._specie_row_idx = self._specie_row_idx + 1
-        self.add_gas_specie_input_row_to_grid_layout("gridLayout",
+        self.add_gas_specie_input_row_to_grid_layout(CalculationInputPageWidgets.GRID_LAYOUT.value,
                                                      ns,
                                                      self._specie_row_idx,
                                                      with_label=True)
 
         if self._specie_row_idx + 1 > self._button_row_idx:
             self._button_row_idx = self._specie_row_idx + 1
-            self.move_buttons_in_grid_layout("gridLayout",
-                                             self._button_row_idx,
-                                             CalculationInputPageConfig.BUTTON_DICT.value)
+            grid_layout = self.findChild(QGridLayout, CalculationInputPageWidgets.GRID_LAYOUT.value)
+            button = self.findChild(QPushButton, CalculationInputPageWidgets.NEXT_BUTTON.value)
+            grid_layout.removeWidget(button)
+            grid_layout.addWidget(button, self._button_row_idx, 0, 1, -1)
             self.update_grid_layout()
 
     def remove_specie_line(self):
@@ -172,7 +175,7 @@ class CalculationInputPage(BasicPage):
             ns = self.data_store.get_data(DataKeys.INLET_NS.value)
             self.data_store.update_data(DataKeys.INLET_NS.value, ns - 1)
 
-            self.remove_row_from_grid_layout("gridLayout", self._specie_row_idx)
+            self.remove_row_from_grid_layout(CalculationInputPageWidgets.GRID_LAYOUT.value, self._specie_row_idx)
             self._specie_row_idx = self._specie_row_idx - 1
 
     def next_button_action(self) -> pyqtSignal | None:
@@ -185,7 +188,7 @@ class CalculationInputPage(BasicPage):
         """
         self.read_data()
 
-        combo_box = self.findChild(QComboBox, 'chemistryComboBox')
+        combo_box = self.findChild(QComboBox, CalculationInputPageWidgets.CALCULATION_COMBO_BOX.value)
         if combo_box.currentIndex() == 0:
             # Thermodynamic and transport properties
             return self.page_switched.emit(PropertiesOutputPageConfig.NAME.value)
