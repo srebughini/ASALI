@@ -110,8 +110,8 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
-        back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
+        #back_button = self.findChild(QPushButton, 'backButton')
+        #back_button.clicked.connect(lambda: self.page_switched.emit(Config.CHEMISTRY_INPUT_PAGE_NAME.value))
 
         add_specie_button = self.findChild(QPushButton, 'addSpecieButton')
         add_specie_button.clicked.connect(self.add_specie_line)

@@ -28,7 +28,6 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.data_store = DataStore()
         self.dialog_handler = DialogPagesHandler(self, self.data_store)
-
         self.exit_action = None
         self.disclaimer_action = None
         self.contact_action = None
@@ -148,6 +147,7 @@ class MainWindow(QMainWindow):
         -------
 
         """
+
         if page_name in self.pages.keys():
             # Instantiate the new page
             new_page = self.pages[page_name]

@@ -188,6 +188,7 @@
 
 
                 <!-- Row 6 -->
+                <!--
                 <item row="6" column="0">
                     <widget class="QPushButton" name="backButton">
                         <property name="text">
@@ -197,14 +198,14 @@
                             <string>Go back to chemistry input page</string>
                         </property>
                     </widget>
-                </item>
-                <item row="6" column="2">
+                </item> -->
+                <item row="6" column="0" colspan="3">
                     <widget class="QPushButton" name="nextButton">
                         <property name="text">
                             <string>Next &#x2B9E;</string>
                         </property>
                         <property name="toolTip">
-                            <string>Go to thermodynamic and transport properties output page</string>
+                            <string>Go to thermodynamic and transport properties output page or reactors input page</string>
                         </property>
                     </widget>
                 </item>
