@@ -8,8 +8,8 @@ from src.config.vacuum_output_page_config import VacuumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.vacuum_calculator import vacuum_calculator
-from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.output.vacuum_output_page import VacuumOutputPageWidgets
 
 
 class VacuumOutputPage(BasicPage):
@@ -28,10 +28,18 @@ class VacuumOutputPage(BasicPage):
         uic.loadUi(VacuumOutputPageConfig.PATH.value, self)
         self.update_head_lines()
         self.update_geometry_line()
-        self.update_property_line("vValueLabel", "vComboBox", self.ud_handler.velocity_ud)
-        self.update_property_line("lValueLabel", "lComboBox", self.ud_handler.length_ud)
-        self.update_property_line("diffValueLabel", "diffComboBox", self.ud_handler.diffusivity_ud)
-        self.update_property_line("knValueLabel", None, None)
+        self.update_property_line(VacuumOutputPageWidgets.VELOCITY_LABEL.value,
+                                  VacuumOutputPageWidgets.VELOCITY_COMBO_BOX.value,
+                                  self.ud_handler.velocity_ud)
+        self.update_property_line(VacuumOutputPageWidgets.LENGTH_LABEL.value,
+                                  VacuumOutputPageWidgets.LENGTH_COMBO_BOX.value,
+                                  self.ud_handler.length_ud)
+        self.update_property_line(VacuumOutputPageWidgets.DIFF_LABEL.value,
+                                  VacuumOutputPageWidgets.DIFF_COMBO_BOX.value,
+                                  self.ud_handler.diffusivity_ud)
+        self.update_property_line(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
+                                  None,
+                                  None)
         self.update_buttons()
 
     def update_page_after_switch(self) -> None:
@@ -97,10 +105,10 @@ class VacuumOutputPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, VacuumOutputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
-        calculate_button = self.findChild(QPushButton, 'calculateButton')
+        calculate_button = self.findChild(QPushButton, VacuumOutputPageWidgets.CALCULATE_BUTTON.value)
         calculate_button.clicked.connect(self.update_shown_data)
 
     def update_geometry_line(self) -> None:
@@ -110,11 +118,11 @@ class VacuumOutputPage(BasicPage):
         -------
 
         """
-        edit_line = self.findChild(QLineEdit, 'geometryEditLine')
+        edit_line = self.findChild(QLineEdit, VacuumOutputPageWidgets.GEOMETRY_EDIT_LINE.value)
         edit_line.setValidator(QDoubleValidator(0.0, 1e09, 20))
         edit_line.setAlignment(Qt.AlignRight)
 
-        dropdown = self.findChild(QComboBox, 'geometryComboBox')
+        dropdown = self.findChild(QComboBox, VacuumOutputPageWidgets.GEOMETRY_COMBO_BOX.value)
         dropdown.addItems(self.ud_handler.length_ud)
 
     def update_specie_line(self) -> None:
@@ -124,7 +132,7 @@ class VacuumOutputPage(BasicPage):
         -------
 
         """
-        dropdown = self.findChild(QComboBox, 'specieComboBox')
+        dropdown = self.findChild(QComboBox, VacuumOutputPageWidgets.SPECIE_COMBO_BOX.value)
         specie_list = list(self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)[0].keys())
         dropdown.clear()
         dropdown.addItems(specie_list)
@@ -136,13 +144,10 @@ class VacuumOutputPage(BasicPage):
         -------
 
         """
-        label = self.findChild(QLabel, 'inputLabel')
-        label.setAlignment(Qt.AlignCenter)
-        label.setProperty("class", "highlight")
-
-        label = self.findChild(QLabel, 'outputLabel')
-        label.setAlignment(Qt.AlignCenter)
-        label.setProperty("class", "highlight")
+        for n in [VacuumOutputPageWidgets.INPUT_LABEL, VacuumOutputPageWidgets.OUTPUT_LABEL]:
+            label = self.findChild(QLabel, n.value)
+            label.setAlignment(Qt.AlignCenter)
+            label.setProperty("class", "highlight")
 
     def read_data(self) -> None:
         """
@@ -151,21 +156,27 @@ class VacuumOutputPage(BasicPage):
         -------
 
         """
-        value = float(self.findChild(QLineEdit, 'geometryEditLine').text())
-        ud = self.findChild(QComboBox, 'geometryComboBox').currentText()
+        value = float(self.findChild(QLineEdit, VacuumOutputPageWidgets.GEOMETRY_EDIT_LINE.value).text())
+        ud = self.findChild(QComboBox, VacuumOutputPageWidgets.GEOMETRY_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.GEOMETRY.value, (value, ud))
 
         self.data_store.update_data(DataKeys.VACUUM_SPECIE.value,
-                                    self.findChild(QComboBox, "specieComboBox").currentText())
+                                    self.findChild(QComboBox,
+                                                   VacuumOutputPageWidgets.SPECIE_COMBO_BOX.value).currentText())
 
         self.data_store.update_data(DataKeys.L.value,
-                                    (0.0, self.findChild(QComboBox, 'lComboBox').currentText()))
+                                    (0.0, self.findChild(QComboBox,
+                                                         VacuumOutputPageWidgets.LENGTH_COMBO_BOX.value).currentText()))
 
         self.data_store.update_data(DataKeys.V.value,
-                                    (0.0, self.findChild(QComboBox, 'vComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    VacuumOutputPageWidgets.VELOCITY_COMBO_BOX.value).currentText()))
 
         self.data_store.update_data(DataKeys.DIFF_MIX.value,
-                                    (0.0, self.findChild(QComboBox, 'diffComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    VacuumOutputPageWidgets.DIFF_COMBO_BOX.value).currentText()))
 
         self.data_store.update_data(DataKeys.KN.value, 0.0)
 
@@ -179,9 +190,13 @@ class VacuumOutputPage(BasicPage):
         self.read_data()
         self.data_store = vacuum_calculator(self.data_store)
 
-        self.update_property_value('lValueLabel', self.data_store.get_data(DataKeys.L.value)[0])
-        self.update_property_value('vValueLabel', self.data_store.get_data(DataKeys.V.value)[0])
-        self.update_property_value('diffValueLabel', self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
-        self.update_property_value('knValueLabel', self.data_store.get_data(DataKeys.KN.value))
+        self.update_property_value(VacuumOutputPageWidgets.LENGTH_LABEL.value,
+                                   self.data_store.get_data(DataKeys.L.value)[0])
+        self.update_property_value(VacuumOutputPageWidgets.VELOCITY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.V.value)[0])
+        self.update_property_value(VacuumOutputPageWidgets.DIFF_LABEL.value,
+                                   self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
+        self.update_property_value(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
+                                   self.data_store.get_data(DataKeys.KN.value))
 
         self.update_grid_layout()
