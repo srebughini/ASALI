@@ -34,8 +34,8 @@ class VacuumOutputPage(BasicPage):
         self.update_property_line(VacuumOutputPageWidgets.LENGTH_LABEL.value,
                                   VacuumOutputPageWidgets.LENGTH_COMBO_BOX.value,
                                   self.ud_handler.length_ud)
-        self.update_property_line(VacuumOutputPageWidgets.DIFF_LABEL.value,
-                                  VacuumOutputPageWidgets.DIFF_COMBO_BOX.value,
+        self.update_property_line(VacuumOutputPageWidgets.DIFFUSIVITY_LABEL.value,
+                                  VacuumOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value,
                                   self.ud_handler.diffusivity_ud)
         self.update_property_line(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
                                   None,
@@ -176,7 +176,7 @@ class VacuumOutputPage(BasicPage):
         self.data_store.update_data(DataKeys.DIFF_MIX.value,
                                     (0.0,
                                      self.findChild(QComboBox,
-                                                    VacuumOutputPageWidgets.DIFF_COMBO_BOX.value).currentText()))
+                                                    VacuumOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value).currentText()))
 
         self.data_store.update_data(DataKeys.KN.value, 0.0)
 
@@ -194,7 +194,7 @@ class VacuumOutputPage(BasicPage):
                                    self.data_store.get_data(DataKeys.L.value)[0])
         self.update_property_value(VacuumOutputPageWidgets.VELOCITY_LABEL.value,
                                    self.data_store.get_data(DataKeys.V.value)[0])
-        self.update_property_value(VacuumOutputPageWidgets.DIFF_LABEL.value,
+        self.update_property_value(VacuumOutputPageWidgets.DIFFUSIVITY_LABEL.value,
                                    self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
         self.update_property_value(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
                                    self.data_store.get_data(DataKeys.KN.value))

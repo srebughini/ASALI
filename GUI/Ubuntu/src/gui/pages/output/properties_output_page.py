@@ -9,6 +9,7 @@ from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.output.properties_output_page import PropertiesOutputPageWidgets
 
 
 class PropertiesOutputPage(BasicPage):
@@ -27,14 +28,30 @@ class PropertiesOutputPage(BasicPage):
         uic.loadUi(PropertiesOutputPageConfig.PATH.value, self)
 
         self.update_head_lines()
-        self.update_property_line("rhoValueLabel", "rhoComboBox", self.ud_handler.density_ud)
-        self.update_property_line("muValueLabel", "muComboBox", self.ud_handler.viscosity_ud)
-        self.update_property_line("condValueLabel", "condComboBox", self.ud_handler.thermal_conductivity_ud)
-        self.update_property_line("diffValueLabel", "diffComboBox", self.ud_handler.diffusivity_ud)
-        self.update_property_line("mwValueLabel", "mwComboBox", self.ud_handler.molecular_weight_ud)
-        self.update_property_line("hValueLabel", "hComboBox", self.ud_handler.enthalpy_ud)
-        self.update_property_line("sValueLabel", "sComboBox", self.ud_handler.entropy_ud)
-        self.update_property_line("cpValueLabel", "cpComboBox", self.ud_handler.specific_heat_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.DENSITY_LABEL.value,
+                                  PropertiesOutputPageWidgets.DENSITY_COMBO_BOX.value,
+                                  self.ud_handler.density_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.VISCOSITY_LABEL.value,
+                                  PropertiesOutputPageWidgets.VISCOSITY_COMBO_BOX.value,
+                                  self.ud_handler.viscosity_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_LABEL.value,
+                                  PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value,
+                                  self.ud_handler.thermal_conductivity_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.DIFFUSIVITY_LABEL.value,
+                                  PropertiesOutputPageWidgets.DENSITY_COMBO_BOX.value,
+                                  self.ud_handler.diffusivity_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_LABEL.value,
+                                  PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_COMBO_BOX.value,
+                                  self.ud_handler.molecular_weight_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.ENTHALPY_LABEL.value,
+                                  PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value,
+                                  self.ud_handler.enthalpy_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.ENTROPY_LABEL.value,
+                                  PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value,
+                                  self.ud_handler.entropy_ud)
+        self.update_property_line(PropertiesOutputPageWidgets.SPECIFIC_HEAT_LABEL.value,
+                                  PropertiesOutputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value,
+                                  self.ud_handler.specific_heat_ud)
         self.update_buttons()
 
     def update_page_after_switch(self) -> None:
@@ -98,10 +115,10 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, PropertiesOutputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
-        calculate_button = self.findChild(QPushButton, 'calculateButton')
+        calculate_button = self.findChild(QPushButton, PropertiesOutputPageWidgets.CALCULATE_BUTTON.value)
         calculate_button.clicked.connect(self.update_shown_data)
 
     def update_head_lines(self) -> None:
@@ -111,13 +128,11 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        label = self.findChild(QLabel, 'transportLabel')
-        label.setAlignment(Qt.AlignCenter)
-        label.setProperty("class", "highlight")
-
-        label = self.findChild(QLabel, 'thermodynamicLabel')
-        label.setAlignment(Qt.AlignCenter)
-        label.setProperty("class", "highlight")
+        for n in [PropertiesOutputPageWidgets.TRANSPORT_LABEL,
+                  PropertiesOutputPageWidgets.THERMODYNAMIC_LABEL]:
+            label = self.findChild(QLabel, n.value)
+            label.setAlignment(Qt.AlignCenter)
+            label.setProperty("class", "highlight")
 
     def read_data(self) -> None:
         """
@@ -127,21 +142,37 @@ class PropertiesOutputPage(BasicPage):
 
         """
         self.data_store.update_data(DataKeys.RHO.value,
-                                    (0.0, self.findChild(QComboBox, 'rhoComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.DENSITY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.MU.value,
-                                    (0.0, self.findChild(QComboBox, 'muComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.VISCOSITY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.MW.value,
-                                    (0.0, self.findChild(QComboBox, 'mwComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.COND.value,
-                                    (0.0, self.findChild(QComboBox, 'condComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.DIFF_MIX.value,
-                                    (0.0, self.findChild(QComboBox, 'diffComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.H.value,
-                                    (0.0, self.findChild(QComboBox, 'hComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.ENTHALPY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.S.value,
-                                    (0.0, self.findChild(QComboBox, 'sComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value).currentText()))
         self.data_store.update_data(DataKeys.CP.value,
-                                    (0.0, self.findChild(QComboBox, 'cpComboBox').currentText()))
+                                    (0.0,
+                                     self.findChild(QComboBox,
+                                                    PropertiesOutputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value).currentText()))
 
     def update_shown_data(self) -> None:
         """
@@ -153,13 +184,21 @@ class PropertiesOutputPage(BasicPage):
         self.read_data()
         self.data_store = properties_calculator(self.data_store)
 
-        self.update_property_value('rhoValueLabel', self.data_store.get_data(DataKeys.RHO.value)[0])
-        self.update_property_value('condValueLabel', self.data_store.get_data(DataKeys.COND.value)[0])
-        self.update_property_value('mwValueLabel', self.data_store.get_data(DataKeys.MW.value)[0])
-        self.update_property_value('muValueLabel', self.data_store.get_data(DataKeys.MU.value)[0])
-        self.update_property_value('diffValueLabel', self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
-        self.update_property_value('hValueLabel', self.data_store.get_data(DataKeys.H.value)[0])
-        self.update_property_value('sValueLabel', self.data_store.get_data(DataKeys.S.value)[0])
-        self.update_property_value('cpValueLabel', self.data_store.get_data(DataKeys.CP.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.DENSITY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.RHO.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.COND.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_LABEL.value,
+                                   self.data_store.get_data(DataKeys.MW.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.VISCOSITY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.MU.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.DIFFUSIVITY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.ENTHALPY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.H.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.ENTROPY_LABEL.value,
+                                   self.data_store.get_data(DataKeys.S.value)[0])
+        self.update_property_value(PropertiesOutputPageWidgets.SPECIFIC_HEAT_LABEL.value,
+                                   self.data_store.get_data(DataKeys.CP.value)[0])
 
         self.update_grid_layout()
