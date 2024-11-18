@@ -7,8 +7,8 @@ from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfi
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.equilibrium_calculator import equilibrium_calculator
-from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.output.equilibrium_output_page import EquilibriumOutputPageWidgets
 
 
 class EquilibriumOutputPage(BasicPage):
@@ -26,11 +26,15 @@ class EquilibriumOutputPage(BasicPage):
         # Load the UI from the .ui file
         uic.loadUi(EquilibriumOutputPageConfig.PATH.value, self)
         self.update_head_lines()
-        self.update_property_line("temperatureValueLabel", "temperatureOutputComboBox", self.ud_handler.temperature_ud)
-        self.update_property_line("pressureValueLabel", "pressureOutputComboBox", self.ud_handler.pressure_ud)
-        self.update_property_line("nLabel", None, None)
-        self.update_property_line("xLabel", None, None)
-        self.update_property_line("yLabel", None, None)
+        self.update_property_line(EquilibriumOutputPageWidgets.TEMPERATURE_LABEL.value, 
+                                  EquilibriumOutputPageWidgets.TEMPERATURE_COMBO_BOX.value, 
+                                  self.ud_handler.temperature_ud)
+        self.update_property_line(EquilibriumOutputPageWidgets.PRESSURE_LABEL.value,
+                                  EquilibriumOutputPageWidgets.PRESSURE_COMBO_BOX.value,
+                                  self.ud_handler.pressure_ud)
+        self.update_property_line(EquilibriumOutputPageWidgets.NAMES_LABEL.value, None, None)
+        self.update_property_line(EquilibriumOutputPageWidgets.MOLE_FRACTION_LABEL.value, None, None)
+        self.update_property_line(EquilibriumOutputPageWidgets.MASS_FRACTION_LABEL.value, None, None)
         self.update_buttons()
 
     def update_page_after_switch(self) -> None:
@@ -94,10 +98,10 @@ class EquilibriumOutputPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, EquilibriumOutputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
-        calculate_button = self.findChild(QPushButton, 'calculateButton')
+        calculate_button = self.findChild(QPushButton, EquilibriumOutputPageWidgets.CALCULATE_BUTTON.value)
         calculate_button.clicked.connect(self.update_shown_data)
 
     def update_head_lines(self) -> None:
@@ -107,7 +111,7 @@ class EquilibriumOutputPage(BasicPage):
         -------
 
         """
-        label = self.findChild(QLabel, 'outputLabel')
+        label = self.findChild(QLabel, EquilibriumOutputPageWidgets.OUTPUT_LABEL.value)
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "highlight")
 
@@ -118,13 +122,14 @@ class EquilibriumOutputPage(BasicPage):
         -------
 
         """
-        ud = self.findChild(QComboBox, 'temperatureOutputComboBox').currentText()
+        ud = self.findChild(QComboBox, EquilibriumOutputPageWidgets.TEMPERATURE_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.EQUILIBRIUM_T.value, (0.0, ud))
 
-        ud = self.findChild(QComboBox, 'pressureOutputComboBox').currentText()
+        ud = self.findChild(QComboBox, EquilibriumOutputPageWidgets.PRESSURE_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.EQUILIBRIUM_P.value, (0.0, ud))
 
-        equilibrium_type = self.findChild(QComboBox, 'typeComboBox').currentText()
+        equilibrium_type = self.findChild(QComboBox,
+                                          EquilibriumOutputPageWidgets.EQUILIBRIUM_TYPE_COMBO_BOX.value).currentText()
         self.data_store.update_data(DataKeys.EQUILIBRIUM_TYPE.value, equilibrium_type)
 
     def update_shown_data(self) -> None:
@@ -137,10 +142,15 @@ class EquilibriumOutputPage(BasicPage):
         self.read_data()
         self.data_store = equilibrium_calculator(self.data_store)
 
-        self.update_property_value('temperatureValueLabel', self.data_store.get_data(DataKeys.EQUILIBRIUM_T.value)[0])
-        self.update_property_value('pressureValueLabel', self.data_store.get_data(DataKeys.EQUILIBRIUM_P.value)[0])
-        self.update_property_value('nLabel', self.data_store.get_data(DataKeys.EQUILIBRIUM_N.value))
-        self.update_property_value('xLabel', self.data_store.get_data(DataKeys.EQUILIBRIUM_X.value))
-        self.update_property_value('yLabel', self.data_store.get_data(DataKeys.EQUILIBRIUM_Y.value))
+        self.update_property_value(EquilibriumOutputPageWidgets.TEMPERATURE_LABEL.value, 
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_T.value)[0])
+        self.update_property_value(EquilibriumOutputPageWidgets.PRESSURE_LABEL.value,
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_P.value)[0])
+        self.update_property_value(EquilibriumOutputPageWidgets.NAMES_LABEL.value,
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_N.value))
+        self.update_property_value(EquilibriumOutputPageWidgets.MOLE_FRACTION_LABEL.value,
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_X.value))
+        self.update_property_value(EquilibriumOutputPageWidgets.MASS_FRACTION_LABEL.value,
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_Y.value))
 
         self.update_grid_layout()
