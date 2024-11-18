@@ -8,10 +8,10 @@ from src.config.input_composition_config import InputCompositionConfig
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names
-from src.config.app_config import AppConfig
 
 from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
 from src.config.reactor_config import ReactorConfig
+from src.gui.widgets.input.batch_input_page import BatchInputPageWidgets
 
 
 class BatchInputPage(BatchReactorInputPage):
@@ -35,10 +35,18 @@ class BatchInputPage(BatchReactorInputPage):
         self.task_function = batch_calculator
 
         self.update_head_lines()
-        self.update_property_line("volumeEditLine", "volumeComboBox", self.ud_handler.volume_ud)
-        self.update_property_line("alfaEditLine", "alfaComboBox", self.ud_handler.one_over_length_ud)
-        self.update_property_line("tmaxEditLine", "tmaxComboBox", self.ud_handler.time_ud)
-        self.update_property_line("tstepEditLine", "tstepComboBox", self.ud_handler.time_ud)
+        self.update_property_line(BatchInputPageWidgets.VOLUME_EDIT_LINE.value,
+                                  BatchInputPageWidgets.VOLUME_COMBO_BOX.value,
+                                  self.ud_handler.volume_ud)
+        self.update_property_line(BatchInputPageWidgets.ALFA_EDIT_LINE.value,
+                                  BatchInputPageWidgets.ALFA_COMBO_BOX.value,
+                                  self.ud_handler.one_over_length_ud)
+        self.update_property_line(BatchInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
+                                  BatchInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
+                                  self.ud_handler.time_ud)
+        self.update_property_line(BatchInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
+                                  BatchInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
+                                  self.ud_handler.time_ud)
         self.update_buttons()
 
         self._minimum_row_idx_dict, self._tab_name_to_grid_layout_dict = self.get_initial_layout_info()
@@ -68,9 +76,12 @@ class BatchInputPage(BatchReactorInputPage):
         output_tuple: tuple
             Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
         """
-        tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value: 'optionsLayout',
-                                        ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value: 'propertiesLayout',
-                                        ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value: 'coverageLayout'}
+        tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                                        BatchInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
+                                        ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                                        BatchInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
+                                        ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                                        BatchInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value}
 
         minimum_row_idx_dict = {k: self.findChild(QGridLayout, n).rowCount() - 1 for k, n in
                                 tab_name_to_grid_layout_dict.items()}
@@ -106,7 +117,7 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        tab_widget = self.findChild(QTabWidget, 'tabWidget')
+        tab_widget = self.findChild(QTabWidget, BatchInputPageWidgets.TAB_WIDGET.value)
 
         for i, n in enumerate(BatchInputPageConfig.TABS_NAMES.value):
             tab_widget.setTabText(i, n)
@@ -118,19 +129,19 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        udk_button = self.findChild(QPushButton, 'udkButton')
+        udk_button = self.findChild(QPushButton, BatchInputPageWidgets.UDK_BUTTON.value)
         udk_button.clicked.connect(self.load_udk_file)
 
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, BatchInputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
-        add_specie_button = self.findChild(QPushButton, 'addCoverageButton')
+        add_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.ADD_COVERAGE_BUTTON.value)
         add_specie_button.clicked.connect(self.add_coverage_line)
 
-        remove_specie_button = self.findChild(QPushButton, 'removeCoverageButton')
+        remove_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.REMOVE_COVERAGE_BUTTON.value)
         remove_specie_button.clicked.connect(self.remove_coverage_line)
 
-        run_button = self.findChild(QPushButton, 'runButton')
+        run_button = self.findChild(QPushButton, BatchInputPageWidgets.RUN_BUTTON.value)
         run_button.clicked.connect(self.run_button_action)
 
     def add_coverage_line(self) -> None:
@@ -188,7 +199,7 @@ class BatchInputPage(BatchReactorInputPage):
             self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, ns - 1)
 
             # All tabs
-            for tab_name in ReactorConfig.BATCH_TABS_NAMES.value:
+            for tab_name in BatchInputPageConfig.TABS_NAMES.value:
                 row_idx = self._dynamic_row_idx_dict[tab_name]
                 if row_idx > self._minimum_row_idx_dict[tab_name]:
                     layout_name = self._tab_name_to_grid_layout_dict[tab_name]
@@ -210,10 +221,14 @@ class BatchInputPage(BatchReactorInputPage):
 
         """
         # Volume
-        self.read_data_from_property_line('volumeEditLine', 'volumeComboBox', DataKeys.VOLUME)
+        self.read_data_from_property_line(BatchInputPageWidgets.VOLUME_EDIT_LINE.value,
+                                          BatchInputPageWidgets.VOLUME_COMBO_BOX.value,
+                                          DataKeys.VOLUME)
 
         # Catalytic load
-        self.read_data_from_property_line('alfaEditLine', 'alfaComboBox', DataKeys.ALFA)
+        self.read_data_from_property_line(BatchInputPageWidgets.ALFA_EDIT_LINE.value,
+                                          BatchInputPageWidgets.ALFA_COMBO_BOX.value,
+                                          DataKeys.ALFA)
 
         # Coverage
         value = {}
@@ -225,14 +240,18 @@ class BatchInputPage(BatchReactorInputPage):
         self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)
 
         # Energy balance
-        checkbox = self.findChild(QCheckBox, "energyCheckBox")
+        checkbox = self.findChild(QCheckBox, BatchInputPageWidgets.ENERGY_CHECK_BOX.value)
         self.data_store.update_data(DataKeys.ENERGY_BALANCE.value, checkbox.isChecked())
 
         # Integration time
-        self.read_data_from_property_line('tmaxEditLine', 'tmaxComboBox', DataKeys.TMAX)
+        self.read_data_from_property_line(BatchInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
+                                          BatchInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
+                                          DataKeys.TMAX)
 
         # Integration time step
-        self.read_data_from_property_line('tstepEditLine', 'tstepComboBox', DataKeys.TSTEP)
+        self.read_data_from_property_line(BatchInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
+                                          BatchInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
+                                          DataKeys.TSTEP)
 
         # Temperature
         self.data_store.update_data(DataKeys.INITIAL_GAS_T.value,

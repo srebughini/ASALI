@@ -115,7 +115,7 @@ class BatchReactorInputPage(BasicPage):
         -------
 
         """
-        file_path = self.dialog_handler.load_file("Open Asali User Defined Kinetic file",
+        file_path = self.dialog_handler.load_file(AppConfig.ASALI_FILE_OPEN.value,
                                                   AppConfig.ASALI_FILE_TYPE.value)
 
         if file_path:
