@@ -67,7 +67,7 @@ class UserDefinedKineticPage(BasicPage):
         check_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.CHECK_BUTTON.value)
         check_button.clicked.connect(self.check)
 
-        udk_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.UDK_BUTTON.value)
+        udk_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.USER_DEFINED_KINETIC_BUTTON.value)
         udk_button.clicked.connect(self.load_udk_file)
 
         cantera_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.CANTERA_BUTTON.value)

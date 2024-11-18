@@ -10,5 +10,5 @@ class UserDefinedKineticPageWidgets(Enum):
     FILES_LABELS = [UDK_LABEL, CANTERA_LABEL]
     BACK_BUTTON = "backButton"
     CHECK_BUTTON = "checkButton"
-    UDK_BUTTON = "udkButton"
+    USER_DEFINED_KINETIC_BUTTON = "udkButton"
     CANTERA_BUTTON = "canteraButton"

@@ -120,10 +120,10 @@ class CalculationInputPage(BasicPage):
 
         """
 
-        add_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.ADD_SPECIE_BUTTON.value)
+        add_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.ADD_GAS_SPECIE_BUTTON.value)
         add_specie_button.clicked.connect(self.add_specie_line)
 
-        remove_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.REMOVE_SPECIE_BUTTON.value)
+        remove_specie_button = self.findChild(QPushButton, CalculationInputPageWidgets.REMOVE_GAS_SPECIE_BUTTON.value)
         remove_specie_button.clicked.connect(self.remove_specie_line)
 
         next_button = self.findChild(QPushButton, CalculationInputPageWidgets.NEXT_BUTTON.value)

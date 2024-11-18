@@ -38,8 +38,8 @@ class BatchInputPage(BatchReactorInputPage):
         self.update_property_line(BatchInputPageWidgets.VOLUME_EDIT_LINE.value,
                                   BatchInputPageWidgets.VOLUME_COMBO_BOX.value,
                                   self.ud_handler.volume_ud)
-        self.update_property_line(BatchInputPageWidgets.ALFA_EDIT_LINE.value,
-                                  BatchInputPageWidgets.ALFA_COMBO_BOX.value,
+        self.update_property_line(BatchInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
+                                  BatchInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
                                   self.ud_handler.one_over_length_ud)
         self.update_property_line(BatchInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
                                   BatchInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
@@ -129,16 +129,16 @@ class BatchInputPage(BatchReactorInputPage):
         -------
 
         """
-        udk_button = self.findChild(QPushButton, BatchInputPageWidgets.UDK_BUTTON.value)
+        udk_button = self.findChild(QPushButton, BatchInputPageWidgets.USER_DEFINED_KINETIC_BUTTON.value)
         udk_button.clicked.connect(self.load_udk_file)
 
         back_button = self.findChild(QPushButton, BatchInputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
 
-        add_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.ADD_COVERAGE_BUTTON.value)
+        add_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.ADD_SURF_SPECIE_BUTTON.value)
         add_specie_button.clicked.connect(self.add_coverage_line)
 
-        remove_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.REMOVE_COVERAGE_BUTTON.value)
+        remove_specie_button = self.findChild(QPushButton, BatchInputPageWidgets.REMOVE_SURF_SPECIE_BUTTON.value)
         remove_specie_button.clicked.connect(self.remove_coverage_line)
 
         run_button = self.findChild(QPushButton, BatchInputPageWidgets.RUN_BUTTON.value)
@@ -226,8 +226,8 @@ class BatchInputPage(BatchReactorInputPage):
                                           DataKeys.VOLUME)
 
         # Catalytic load
-        self.read_data_from_property_line(BatchInputPageWidgets.ALFA_EDIT_LINE.value,
-                                          BatchInputPageWidgets.ALFA_COMBO_BOX.value,
+        self.read_data_from_property_line(BatchInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
+                                          BatchInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
                                           DataKeys.ALFA)
 
         # Coverage
