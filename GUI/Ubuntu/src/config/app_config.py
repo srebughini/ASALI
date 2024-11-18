@@ -21,3 +21,4 @@ class AppConfig(Enum):
     CHEMKIN_FILE_TYPE = "Chemkin file type (*.kin;*.sur; *.tdc;*.tra;*.ckin);;All Files (*)"
     CHEMKIN_FILE_OPEN = "Open Chemkin File"
     EXCEL_FILE_TYPE = "Excel file type (*.xlsx;*.xls);;All Files (*)"
+    EXCEL_FILE_SAVE = "Save Excel Output File"

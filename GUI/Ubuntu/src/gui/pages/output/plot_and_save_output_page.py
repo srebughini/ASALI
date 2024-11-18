@@ -8,6 +8,7 @@ from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
+from src.gui.widgets.output.plot_and_save_output_page import PlotAndSaveOutputPageWidgets
 
 
 class PlotAndSaveOutputPage(BasicPage):
@@ -49,16 +50,16 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        plot_button = self.findChild(QPushButton, 'plotButton')
+        plot_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
         plot_button.clicked.connect(self.plot_reactor_data)
 
-        save_button = self.findChild(QPushButton, 'saveButton')
+        save_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
         save_button.clicked.connect(self.save_reactor_data)
 
-        back_button = self.findChild(QPushButton, 'backButton')
+        back_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(self.back_button_action)
 
-        select_button = self.findChild(QPushButton, 'selectButton')
+        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.clicked.connect(self.on_select_button_click_data)
 
     def update_head_lines(self) -> None:
@@ -68,8 +69,10 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        for n in ['gasLabel', 'surfaceLabel', 'temperatureLabel']:
-            label = self.findChild(QLabel, n)
+        for n in [PlotAndSaveOutputPageWidgets.GAS_LABEL,
+                  PlotAndSaveOutputPageWidgets.SURFACE_LABEL,
+                  PlotAndSaveOutputPageWidgets.TEMPERATURE_LABEL]:
+            label = self.findChild(QLabel, n.value)
             label.setAlignment(Qt.AlignCenter)
             label.setProperty("class", "italic")
 
@@ -84,9 +87,9 @@ class PlotAndSaveOutputPage(BasicPage):
             The new row to place the buttons in.
         """
         # Find the buttons in the old row
-        back_button = self.findChild(QPushButton, 'backButton')
-        plot_button = self.findChild(QPushButton, 'plotButton')
-        save_button = self.findChild(QPushButton, 'saveButton')
+        back_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
+        plot_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
+        save_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
 
         # Remove buttons from the old row
         grid_layout.removeWidget(back_button)
@@ -105,12 +108,12 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        grid_layout = self.findChild(QGridLayout, "gridLayout")
+        grid_layout = self.findChild(QGridLayout, PlotAndSaveOutputPageWidgets.GRID_LAYOUT.value)
 
         if self._button_row_idx > PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value:
             for row_idx in range(PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value,
                                  self._button_row_idx):
-                self.remove_row_from_grid_layout("gridLayout", row_idx)
+                self.remove_row_from_grid_layout(PlotAndSaveOutputPageWidgets.GRID_LAYOUT.value, row_idx)
 
         row_idx = PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value
         self.data_store = gas_species_names(self.data_store)
@@ -156,7 +159,7 @@ class PlotAndSaveOutputPage(BasicPage):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
-        select_button = self.findChild(QPushButton, 'selectButton')
+        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.setText("Unselect all")
 
     def unselect_all(self) -> None:
@@ -178,7 +181,7 @@ class PlotAndSaveOutputPage(BasicPage):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
 
-        select_button = self.findChild(QPushButton, 'selectButton')
+        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.setText("Select all")
 
     def back_button_action(self) -> pyqtSignal:
@@ -227,10 +230,12 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value,
-                                    self.findChild(QComboBox, 'compositionComboBox').currentText())
+                                    self.findChild(QComboBox,
+                                                   PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText())
 
         self.data_store.update_data(DataKeys.COLORMAP.value,
-                                    self.findChild(QComboBox, 'plotColorComboBox').currentText())
+                                    self.findChild(QComboBox,
+                                                   PlotAndSaveOutputPageWidgets.COLOR_COMBO_BOX.value).currentText())
 
         species_list = [n for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value) if
                         self.findChild(QCheckBox, n).isChecked()]
@@ -257,9 +262,10 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value,
-                                    self.findChild(QComboBox, 'compositionComboBox').currentText())
+                                    self.findChild(QComboBox,
+                                                   PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText())
 
-        output_file_path = self.dialog_handler.save_file('Save reactor data',
+        output_file_path = self.dialog_handler.save_file(AppConfig.EXCEL_FILE_SAVE.value,
                                                          AppConfig.EXCEL_FILE_TYPE.value)
 
         if output_file_path is not None:
