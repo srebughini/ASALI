@@ -9,12 +9,12 @@ from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names
 
-from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
+from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.config.reactor_config import ReactorConfig
 from src.gui.widgets.input.batch_input_page import BatchInputPageWidgets
 
 
-class BatchInputPage(BatchReactorInputPage):
+class BatchInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Batch reactor input page layout

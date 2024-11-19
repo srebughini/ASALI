@@ -9,12 +9,12 @@ from src.core.cstr_calculator import cstr_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 
-from src.gui.pages.input.basic_reactor_input_page import BatchReactorInputPage
+from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.config.reactor_config import ReactorConfig
 from src.gui.widgets.input.cstr_input_page import CstrInputPageWidgets
 
 
-class CstrInputPage(BatchReactorInputPage):
+class CstrInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Continuous stirred tank reactor input page layout

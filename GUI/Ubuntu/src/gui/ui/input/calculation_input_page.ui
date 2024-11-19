@@ -40,22 +40,12 @@
                         </item>
                         <item>
                             <property name="text">
-                                <string>Steady state 1D pseudo-homogeneous reactor</string>
+                                <string>Pseudo-homogeneous 1D reactor</string>
                             </property>
                         </item>
                         <item>
                             <property name="text">
-                                <string>Transient 1D pseudo-homogeneous reactor</string>
-                            </property>
-                        </item>
-                        <item>
-                            <property name="text">
-                                <string>Steady state 1D heterogeneous reactor</string>
-                            </property>
-                        </item>
-                        <item>
-                            <property name="text">
-                                <string>Transient 1D heterogeneous reactor</string>
+                                <string>Heterogeneous 1D heterogeneous reactor</string>
                             </property>
                         </item>
                     </widget>

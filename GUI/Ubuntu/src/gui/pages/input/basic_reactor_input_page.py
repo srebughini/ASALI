@@ -11,7 +11,7 @@ from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 
-class BatchReactorInputPage(BasicPage):
+class BasicReactorInputPage(BasicPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Basic reactor input page layout
