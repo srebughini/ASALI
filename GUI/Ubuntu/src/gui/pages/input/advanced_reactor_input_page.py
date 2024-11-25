@@ -5,7 +5,7 @@ from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.config.reactor_config import ReactorConfig
 
 
-class AdvancedInputPage(BasicReactorInputPage):
+class AdvancedReactorInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Advanced reactor input page layout (Cstr, Ph1D, Het1D)
@@ -19,6 +19,8 @@ class AdvancedInputPage(BasicReactorInputPage):
             Class to handle the run bar
         """
         super().__init__(data_store, dialog_handler, run_bar)
+
+        # TODO - Make add_specie, remove_specie, add_coverage, remove_coverage generic for batch and also het which has the solid tab
 
     @abstractmethod
     def update_page_after_switch(self) -> None:

@@ -25,14 +25,17 @@ class DataKeys(Enum):
     INITIAL_GAS_COMPOSITION = "initial_gas_composition"
     INITIAL_GAS_T = "initial_temperature"
 
+    INERT_GAS_SPECIE = "inert_gas_specie"
+    INERT_SURFACE_SPECIE = "inert_surface_specie"
+
     EQUILIBRIUM_T = "equilibrium_temperature"
     EQUILIBRIUM_P = "equilibrium_pressure"
     EQUILIBRIUM_X = "equilibrium_mole_fraction"
     EQUILIBRIUM_Y = "equilibrium_mass_fraction"
     EQUILIBRIUM_TYPE = "equilibrium_type"
     EQUILIBRIUM_N = "equilibrium_specie_names"
-    GAS_SPECIES_NAMES = "gas_phase_specie_names"
 
+    GAS_SPECIES_NAMES = "gas_phase_specie_names"
     GAS_SPECIES_NAMES_UPDATE = "gas_phase_specie_names_to_be_updated"
     SURFACE_SPECIES_NAMES = "surface_phase_specie_names"
     SURFACE_SPECIES_NAMES_UPDATE = "surface_phase_specie_names_to_be_updated"
@@ -62,11 +65,17 @@ class DataKeys(Enum):
     REACTOR_PAGE_NAME = "reactor_page_name"
 
     VOLUME = "reactor_volume"
+    DIAMETER = "reactor_diameter"
+    LENGTH = "reactor_length"
     ALFA = "reactor_catalytic_load"
     MASS_FLOW_RATE = "reactor_mass_flow_rate"
+
     ENERGY_BALANCE = "energy_balance"
+    DIFFUSION = "diffusion"
+
     TMAX = "integration_time"
     TSTEP = "integration_time_step"
+
     REACTOR_RESULTS = "reactor_results"
     TEMPERATURE_TYPES = "reactor_temperature_types"
     PLOT_AND_SAVE_COMPOSITION_TYPE = "plot_and_save_composition_type"

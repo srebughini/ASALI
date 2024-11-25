@@ -29,6 +29,9 @@ class Ph1dInputPageWidgets(Enum):
     TEMPERATURE_COMBO_BOX = "temperatureComboBox"
 
     ENERGY_CHECK_BOX = "energyCheckBox"
+    DIFFUSION_CHECK_BOX = "diffusionCheckBox"
+
+
     COMPOSITION_COMBO_BOX = "compositionComboBox"
     INERT_GAS_SPECIE_COMBO_BOX = "inertSpecie"
     INERT_SURFACE_SPECIE_COMBO_BOX = "inertCoverageSpecie"

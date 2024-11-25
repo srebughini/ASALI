@@ -10,11 +10,11 @@ from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 
 from src.config.reactor_config import ReactorConfig
-from src.gui.pages.input.advanced_reactor_input_page import AdvancedInputPage
+from src.gui.pages.input.advanced_reactor_input_page import AdvancedReactorInputPage
 from src.gui.widgets.input.cstr_input_page import CstrInputPageWidgets
 
 
-class CstrInputPage(AdvancedInputPage):
+class CstrInputPage(AdvancedReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Continuous stirred tank reactor input page layout

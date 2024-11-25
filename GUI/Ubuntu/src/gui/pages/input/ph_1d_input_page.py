@@ -8,13 +8,13 @@ from src.config.input_composition_config import InputCompositionConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
-from src.gui.pages.input.advanced_reactor_input_page import AdvancedInputPage
+from src.gui.pages.input.advanced_reactor_input_page import AdvancedReactorInputPage
 
 from src.config.reactor_config import ReactorConfig
 from src.gui.widgets.input.ph_1d_input_page import Ph1dInputPageWidgets
 
 
-class Ph1dInputPage(AdvancedInputPage):
+class Ph1dInputPage(AdvancedReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Pseudo-homogenous 1D reactor input page layout
@@ -235,18 +235,20 @@ class Ph1dInputPage(AdvancedInputPage):
         -------
 
         """
-        pass
-        # TODO - Set class of reactor based on selection
+        # Diameter
+        self.read_data_from_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
+                                          DataKeys.DIAMETER)
 
-        """
-        # Volume
-        self.read_data_from_property_line(Ph1dInputPageWidgets.VOLUME_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.VOLUME_COMBO_BOX.value,
-                                          DataKeys.VOLUME)
+        # Length
+        self.read_data_from_property_line(Ph1dInputPageWidgets.LENGTH_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.LENGTH_COMBO_BOX.value,
+                                          DataKeys.LENGTH)
 
         # Catalytic load
         self.read_data_from_property_line(Ph1dInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value, DataKeys.ALFA)
+                                          Ph1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
+                                          DataKeys.ALFA)
 
         # Mass flow rate
         self.read_data_from_property_line(Ph1dInputPageWidgets.MASS_FLOW_RATE_EDIT_LINE.value,
@@ -257,7 +259,8 @@ class Ph1dInputPage(AdvancedInputPage):
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
             specie_name = self.findChild(QComboBox,
-                                         InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+                                         InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
+                                             i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
@@ -283,6 +286,18 @@ class Ph1dInputPage(AdvancedInputPage):
         checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.ENERGY_CHECK_BOX.value)
         self.data_store.update_data(DataKeys.ENERGY_BALANCE.value, checkbox.isChecked())
 
+        # Diffusion
+        checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
+        self.data_store.update_data(DataKeys.DIFFUSION.value, checkbox.isChecked())
+
+        # Inert gas specie
+        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
+        self.data_store.update_data(DataKeys.INERT_GAS_SPECIE.value, combo_box.currentText())
+
+        # Inert surface specie
+        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
+        self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE.value, combo_box.currentText())
+
         # Integration time
         self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
                                           Ph1dInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
@@ -292,4 +307,3 @@ class Ph1dInputPage(AdvancedInputPage):
         self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
                                           Ph1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
                                           DataKeys.TSTEP)
-        """
