@@ -12,16 +12,19 @@ class DataKeys(Enum):
     GAS_PHASE_NAME = "gas_phase_name"
     SURFACE_PHASE_NAME = "surface_phase_name"
     OUTPUT_FILE_PATH = "output_file_path"
+
     INLET_NS = "inlet_number_of_species"
     INLET_SURF_NS = "inlet_numer_of_coverage_species"
     INLET_T = "inlet_temperature"
     INLET_P = "inlet_pressure"
     INLET_GAS_COMPOSITION = "inlet_gas_composition"
+
     INITIAL_NS = "initial_number_of_species"
     INITIAL_SURF_NS = "initial_number_of_coverage_species"
     INITIAL_SURF_COMPOSITION = "initial_coverage_composition"
     INITIAL_GAS_COMPOSITION = "initial_gas_composition"
     INITIAL_GAS_T = "initial_temperature"
+
     EQUILIBRIUM_T = "equilibrium_temperature"
     EQUILIBRIUM_P = "equilibrium_pressure"
     EQUILIBRIUM_X = "equilibrium_mole_fraction"
@@ -29,9 +32,11 @@ class DataKeys(Enum):
     EQUILIBRIUM_TYPE = "equilibrium_type"
     EQUILIBRIUM_N = "equilibrium_specie_names"
     GAS_SPECIES_NAMES = "gas_phase_specie_names"
+
     GAS_SPECIES_NAMES_UPDATE = "gas_phase_specie_names_to_be_updated"
     SURFACE_SPECIES_NAMES = "surface_phase_specie_names"
     SURFACE_SPECIES_NAMES_UPDATE = "surface_phase_specie_names_to_be_updated"
+
     RHO = "density"
     MU = "viscosity"
     MW = "molecular_weight"
@@ -45,14 +50,17 @@ class DataKeys(Enum):
     L = "length"
     KN = "knudsen_number"
     VACUUM_SPECIE = "vacuum_specie"
+
     THERMO_FILE_PATH = "chemkin_thermo_file_path"
     TRANSPORT_FILE_PATH = "chemkin_transport_file_path"
     KINETIC_FILE_PATH = "chemkin_gas_kinetic_file_path"
     SURFACE_FILE_PATH = "chemkin_surface_file_path"
     USER_DEFINED_KINETIC_FILE_PATH = "asali_user_defined_kinetic_file_path"
+
     REACTOR_TYPE = "reactor_type"
     REACTOR_NAME = "reactor_name"
     REACTOR_PAGE_NAME = "reactor_page_name"
+
     VOLUME = "reactor_volume"
     ALFA = "reactor_catalytic_load"
     MASS_FLOW_RATE = "reactor_mass_flow_rate"

@@ -15,3 +15,5 @@ class CstrInputPageConfig(Enum):
                   ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
                   ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value,
                   ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value]
+    GAS_SPECIE_TO_ROW_INDEX = 3
+    SURFACE_SPECIE_TO_ROW_INDEX = 1

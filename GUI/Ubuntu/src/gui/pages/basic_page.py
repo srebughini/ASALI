@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QPushButton
+from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel
 
 from src.config.input_composition_config import InputCompositionConfig
 from src.core.data_keys import DataKeys

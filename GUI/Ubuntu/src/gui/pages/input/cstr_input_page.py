@@ -9,12 +9,12 @@ from src.core.cstr_calculator import cstr_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 
-from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.config.reactor_config import ReactorConfig
+from src.gui.pages.input.advanced_reactor_input_page import AdvancedInputPage
 from src.gui.widgets.input.cstr_input_page import CstrInputPageWidgets
 
 
-class CstrInputPage(BasicReactorInputPage):
+class CstrInputPage(AdvancedInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Continuous stirred tank reactor input page layout
@@ -59,37 +59,25 @@ class CstrInputPage(BasicReactorInputPage):
         self._minimum_row_idx_dict, self._tab_name_to_grid_layout_dict = self.get_initial_layout_info()
         self._dynamic_row_idx_dict = self._minimum_row_idx_dict.copy()
 
-    @staticmethod
-    def from_ns_to_row_idx(ns) -> int:
+    @property
+    def number_of_gas_species_to_row_idx(self) -> int:
         """
-        Convert the number of species to row idx
-        Parameters
-        ----------
-        ns: int
-            Number of species
-
+        Property that returns the number of gas species to row index value
         Returns
         -------
-        row_idx: int
-            Row index corresponding to the number of species based on the layout
-        """
-        return ns + 3
 
-    @staticmethod
-    def from_surf_ns_to_row_idx(surf_ns) -> int:
         """
-        Convert the number of surface species to row idx
-        Parameters
-        ----------
-        surf_ns: int
-            Number of species
+        return CstrInputPageConfig.GAS_SPECIE_TO_ROW_INDEX.value
 
+    @property
+    def number_of_surface_species_to_row_idx(self) -> int:
+        """
+        Property that returns the number of surface species to row index value
         Returns
         -------
-        row_idx: int
-            Row index corresponding to the number of species based on the layout
+
         """
-        return surf_ns + 1
+        return CstrInputPageConfig.SURFACE_SPECIE_TO_ROW_INDEX.value
 
     def get_initial_layout_info(self) -> tuple:
         """
@@ -100,13 +88,13 @@ class CstrInputPage(BasicReactorInputPage):
             Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
         """
         tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
-                                        CstrInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
+                                            CstrInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
                                         ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
-                                        CstrInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
+                                            CstrInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
                                         ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
-                                        CstrInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
+                                            CstrInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
                                         ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
-                                        CstrInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
+                                            CstrInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
 
         minimum_row_idx_dict = {k: self.findChild(QGridLayout, n).rowCount() - 1 for k, n in
                                 tab_name_to_grid_layout_dict.items()}
@@ -181,162 +169,6 @@ class CstrInputPage(BasicReactorInputPage):
         run_button = self.findChild(QPushButton, CstrInputPageWidgets.RUN_BUTTON.value)
         run_button.clicked.connect(self.run_button_action)
 
-    def add_coverage_line(self) -> None:
-        """
-        Add coverage line to the layout
-        Returns
-        -------
-
-        """
-        surf_ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, surf_ns)
-        surf_ns_row_idx = self.from_surf_ns_to_row_idx(surf_ns)
-
-        # Coverage tab
-        tab_name = ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value
-        row_idx = self._dynamic_row_idx_dict[tab_name]
-        layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-
-        if surf_ns_row_idx > self._dynamic_row_idx_dict[tab_name]:
-            row_idx = row_idx + 1
-            self.add_surface_specie_input_row_to_grid_layout(layout_name,
-                                                             surf_ns,
-                                                             row_idx,
-                                                             with_label=True)
-            self.update_grid_layout(layout_name)
-            self._dynamic_row_idx_dict[tab_name] = row_idx
-        else:
-            self.remove_row_from_grid_layout(layout_name, surf_ns_row_idx)
-            self.add_surface_specie_input_row_to_grid_layout(layout_name,
-                                                             surf_ns,
-                                                             surf_ns_row_idx,
-                                                             with_label=True)
-            self.update_grid_layout(layout_name)
-
-        # Other tabs
-        for tab_name in [ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
-                         ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value,
-                         ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value]:
-            if surf_ns_row_idx > self._dynamic_row_idx_dict[tab_name]:
-                row_idx = self._dynamic_row_idx_dict[tab_name] + 1
-                layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                self.add_dummy_row_to_grid_layout(layout_name, row_idx)
-                self._dynamic_row_idx_dict[tab_name] = row_idx
-
-    def remove_coverage_line(self) -> None:
-        """
-        Remove coverage line to the layout
-        Returns
-        -------
-
-        """
-        surf_ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value))
-
-        if surf_ns > 0:
-            self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, surf_ns - 1)
-            ns = int(self.data_store.get_data(DataKeys.INITIAL_NS.value))
-            surf_ns_row_idx = self.from_surf_ns_to_row_idx(surf_ns)
-            ns_row_idx = self.from_ns_to_row_idx(ns)
-
-            if ns_row_idx >= surf_ns_row_idx:
-                tab_name = ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value
-                layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                self.remove_row_from_grid_layout(layout_name, surf_ns_row_idx)
-                self.add_dummy_row_to_grid_layout(layout_name, surf_ns_row_idx)
-            else:
-                for tab_name in [ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
-                                 ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value,
-                                 ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value]:
-                    row_idx = self._dynamic_row_idx_dict[tab_name]
-                    if row_idx > self._minimum_row_idx_dict[tab_name]:
-                        layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                        self.remove_row_from_grid_layout(layout_name, row_idx)
-                        self._dynamic_row_idx_dict[tab_name] = row_idx - 1
-
-                tab_name = ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value
-                if ns_row_idx < self._dynamic_row_idx_dict[tab_name]:
-                    layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                    self.remove_row_from_grid_layout(layout_name, row_idx)
-                    self._dynamic_row_idx_dict[tab_name] = row_idx - 1
-
-    def add_specie_line(self) -> None:
-        """
-        Add specie line to the layout
-        Returns
-        -------
-
-        """
-        ns = int(self.data_store.get_data(DataKeys.INITIAL_NS.value) + 1)
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, ns)
-        ns_row_idx = self.from_ns_to_row_idx(ns)
-
-        # Coverage tab
-        tab_name = ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value
-        row_idx = self._dynamic_row_idx_dict[tab_name]
-        layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-
-        if ns_row_idx > self._dynamic_row_idx_dict[tab_name]:
-            row_idx = row_idx + 1
-            self.add_gas_specie_input_row_to_grid_layout(layout_name,
-                                                         ns,
-                                                         row_idx,
-                                                         with_label=True)
-            self.update_grid_layout(layout_name)
-            self._dynamic_row_idx_dict[tab_name] = row_idx
-        else:
-            self.remove_row_from_grid_layout(layout_name, ns_row_idx)
-            self.add_gas_specie_input_row_to_grid_layout(layout_name,
-                                                         ns,
-                                                         ns_row_idx,
-                                                         with_label=True)
-            self.update_grid_layout(layout_name)
-
-        # Other tabs
-        for tab_name in [ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
-                         ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value,
-                         ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value]:
-            if ns_row_idx > self._dynamic_row_idx_dict[tab_name]:
-                row_idx = self._dynamic_row_idx_dict[tab_name] + 1
-                layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                self.add_dummy_row_to_grid_layout(layout_name, row_idx)
-                self._dynamic_row_idx_dict[tab_name] = row_idx
-
-    def remove_specie_line(self) -> None:
-        """
-        Remove specie line to the layout
-        Returns
-        -------
-
-        """
-        ns = int(self.data_store.get_data(DataKeys.INITIAL_NS.value))
-
-        if ns > 0:
-            self.data_store.update_data(DataKeys.INITIAL_NS.value, ns - 1)
-            surf_ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value))
-            surf_ns_row_idx = self.from_surf_ns_to_row_idx(surf_ns)
-            ns_row_idx = self.from_ns_to_row_idx(ns)
-
-            if surf_ns_row_idx >= ns_row_idx:
-                tab_name = ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value
-                layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                self.remove_row_from_grid_layout(layout_name, ns_row_idx)
-                self.add_dummy_row_to_grid_layout(layout_name, ns_row_idx)
-            else:
-                for tab_name in [ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
-                                 ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value,
-                                 ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value]:
-                    row_idx = self._dynamic_row_idx_dict[tab_name]
-                    if row_idx > self._minimum_row_idx_dict[tab_name]:
-                        layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                        self.remove_row_from_grid_layout(layout_name, row_idx)
-                        self._dynamic_row_idx_dict[tab_name] = row_idx - 1
-
-                tab_name = ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value
-                if surf_ns_row_idx < self._dynamic_row_idx_dict[tab_name]:
-                    layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                    self.remove_row_from_grid_layout(layout_name, row_idx)
-                    self._dynamic_row_idx_dict[tab_name] = row_idx - 1
-
     def read_data(self) -> None:
         """
         Update data store with temperature, composition, pressure
@@ -362,7 +194,8 @@ class CstrInputPage(BasicReactorInputPage):
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
             specie_name = self.findChild(QComboBox,
-                                         InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
+                                         InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
+                                             i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
