@@ -63,6 +63,7 @@ class DataKeys(Enum):
     REACTOR_TYPE = "reactor_type"
     REACTOR_NAME = "reactor_name"
     REACTOR_PAGE_NAME = "reactor_page_name"
+    REACTOR_RESOLUTION_METHOD = "reactor_resolution_method"
 
     VOLUME = "reactor_volume"
     DIAMETER = "reactor_diameter"

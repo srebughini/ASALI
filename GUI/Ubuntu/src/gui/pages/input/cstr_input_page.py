@@ -31,6 +31,8 @@ class CstrInputPage(AdvancedReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(CstrInputPageConfig.PATH.value, self)
 
+        # TODO - Fix composition when running using Enum for composition as done for Resolution method
+
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
         self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
         self.task_function = cstr_calculator

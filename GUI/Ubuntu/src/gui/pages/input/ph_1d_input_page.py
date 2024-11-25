@@ -7,6 +7,8 @@ from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.core.data_keys import DataKeys
+from src.core.ph_1d_calculator import pseudo_homogeneous_1d_reactor_calculator
+from src.core.reactor_resolution_method import ReactorResolutionMethod
 from src.core.species_names import surface_species_names, gas_species_names
 from src.gui.pages.input.advanced_reactor_input_page import AdvancedReactorInputPage
 
@@ -31,10 +33,13 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(Ph1dInputPageConfig.PATH.value, self)
 
+        # TODO - Fix composition when running using Enum for composition as done for Resolution method
+        # TODO - check if calculator is working both in steady state and transient
+
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
         self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
 
-        # self.task_function = cstr_calculator
+        self.task_function = pseudo_homogeneous_1d_reactor_calculator
 
         self.update_head_lines()
 
@@ -220,6 +225,8 @@ class Ph1dInputPage(AdvancedReactorInputPage):
                 w.hide()
             self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
                                         SteadyStatePseudoHomogeneous1DReactor)
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+                                        ReactorResolutionMethod.STEADY_STATE)
 
         else:
             for n, t in widget_dict.items():
@@ -227,6 +234,9 @@ class Ph1dInputPage(AdvancedReactorInputPage):
                 w.show()
             self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
                                         TransientPseudoHomogeneous1DReactor)
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+                                        ReactorResolutionMethod.TRANSIENT)
+
 
     def read_data(self) -> None:
         """
