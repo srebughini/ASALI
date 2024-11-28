@@ -197,10 +197,10 @@ class Ph1dInputPage(BasicReactorInputPage):
         remove_coverage_button.clicked.connect(self.remove_coverage_line)
 
         add_specie_button = self.findChild(QPushButton, Ph1dInputPageWidgets.ADD_GAS_SPECIE_BUTTON.value)
-        add_specie_button.clicked.connect(self.add_specie_line)
+        add_specie_button.clicked.connect(self.add_initial_specie_line)
 
         remove_specie_button = self.findChild(QPushButton, Ph1dInputPageWidgets.REMOVE_GAS_SPECIE_BUTTON.value)
-        remove_specie_button.clicked.connect(self.remove_specie_line)
+        remove_specie_button.clicked.connect(self.remove_initial_specie_line)
 
         run_button = self.findChild(QPushButton, Ph1dInputPageWidgets.RUN_BUTTON.value)
         run_button.clicked.connect(self.run_button_action)

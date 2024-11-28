@@ -303,7 +303,7 @@ class BasicReactorInputPage(BasicPage):
 
             self.surf_ns = self.surf_ns - 1
 
-    def add_specie_line(self) -> None:
+    def add_initial_specie_line(self) -> None:
         """
         Add specie line to the layout
         Returns
@@ -343,16 +343,14 @@ class BasicReactorInputPage(BasicPage):
                     self.add_dummy_row_to_grid_layout(layout_name, row_idx)
                     self.tab_name_to_row_idx_dict[tab_name] = row_idx
 
-    def remove_specie_line(self) -> None:
+    def remove_initial_specie_line(self) -> None:
         """
         Remove specie line to the layout
         Returns
         -------
 
         """
-
         if self.ns > 0:
-            surf_ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value))
             surf_ns_row_idx = self.from_surf_ns_to_row_idx(self.surf_ns)
             ns_row_idx = self.from_ns_to_row_idx(self.ns)
 
@@ -377,7 +375,7 @@ class BasicReactorInputPage(BasicPage):
                     self.remove_row_from_grid_layout(layout_name, row_idx)
                     self.tab_name_to_row_idx_dict[tab_name] = row_idx - 1
             
-            self.ns = self.ns -1
+            self.ns = self.ns - 1
 
     def run_button_action(self) -> None:
         """
