@@ -157,10 +157,13 @@ class BasicReactorInputPage(BasicPage):
         self.setEnabled(True)
 
         if results is not None:
-            self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, results)
+            if results[0] is None:
+                self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, (results[1], results[2], results[3]))
 
-            if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
-                return self.page_switched.emit(PlotAndSaveOutputPageConfig.NAME.value)
+                if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
+                    return self.page_switched.emit(PlotAndSaveOutputPageConfig.NAME.value)
+            else:
+                raise Exception(results[0])
 
     def on_run_error(self, error_message) -> None:
         """
