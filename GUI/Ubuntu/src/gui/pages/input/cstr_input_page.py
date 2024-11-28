@@ -11,11 +11,11 @@ from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 
 from src.config.reactor_config import ReactorConfig
-from src.gui.pages.input.advanced_reactor_input_page import AdvancedReactorInputPage
+from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.gui.widgets.input.cstr_input_page import CstrInputPageWidgets
 
 
-class CstrInputPage(AdvancedReactorInputPage):
+class CstrInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Continuous stirred tank reactor input page layout
@@ -32,11 +32,7 @@ class CstrInputPage(AdvancedReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(CstrInputPageConfig.PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
-        self.task_function = cstr_calculator
-
-        self.update_head_lines()
+        self.update_tab_names(CstrInputPageWidgets.TAB_WIDGET.value)
         self.update_property_line(CstrInputPageWidgets.VOLUME_EDIT_LINE.value,
                                   CstrInputPageWidgets.VOLUME_COMBO_BOX.value,
                                   self.ud_handler.volume_ud)
@@ -57,8 +53,10 @@ class CstrInputPage(AdvancedReactorInputPage):
                                   self.ud_handler.temperature_ud)
         self.update_buttons()
 
-        self._minimum_row_idx_dict, self._tab_name_to_grid_layout_dict = self.get_initial_layout_info()
-        self._dynamic_row_idx_dict = self._minimum_row_idx_dict.copy()
+        self.task_function = cstr_calculator
+        self.tab_name_to_row_idx_dict = self.tab_name_to_minimum_row_idx_dict.copy()
+        self.surf_ns = 0
+        self.ns = 0
 
     @property
     def number_of_gas_species_to_row_idx(self) -> int:
@@ -80,27 +78,52 @@ class CstrInputPage(AdvancedReactorInputPage):
         """
         return CstrInputPageConfig.SURFACE_SPECIE_TO_ROW_INDEX.value
 
-    def get_initial_layout_info(self) -> tuple:
+    @property
+    def tab_names(self) -> list:
         """
-        Extract info of the layout before applying any change
+        Property that return the tab name list
         Returns
         -------
-        output_tuple: tuple
-            Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
+        tab_names: list
+            List of tab names
         """
-        tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
-                                            CstrInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
-                                        ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
-                                            CstrInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
-                                        ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
-                                            CstrInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
-                                        ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
-                                            CstrInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
+        return CstrInputPageConfig.TABS_NAMES.value
 
-        minimum_row_idx_dict = {k: self.findChild(QGridLayout, n).rowCount() - 1 for k, n in
-                                tab_name_to_grid_layout_dict.items()}
+    @property
+    def tab_name_to_grid_layout_name_dict(self) -> dict:
+        """
+        Property that return the grid layout name for each tab name
+        Returns
+        -------
+        tab_name_to_grid_layout_name: dict
+            Tab name to grid layout name
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    CstrInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    CstrInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    CstrInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
+                ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
+                    CstrInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
 
-        return minimum_row_idx_dict, tab_name_to_grid_layout_dict
+    @property
+    def tab_name_to_minimum_row_idx_dict(self) -> dict:
+        """
+        Property that return the minimum row idx for each tab name
+        Returns
+        -------
+        tab_name_to_minimum_row_idx: dict
+            Tab name to minimum row idx
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    CstrInputPageConfig.SOLVING_OPTION_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    CstrInputPageConfig.REACTOR_PROPERTIES_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    CstrInputPageConfig.COVERAGE_COMPOSITION_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
+                    CstrInputPageConfig.INITIAL_CONDITION_LAYOUT_MINIMUM_ROW_IDX.value}
 
     def update_page_after_switch(self) -> None:
         """
@@ -126,21 +149,9 @@ class CstrInputPage(AdvancedReactorInputPage):
                                       InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
 
-        for tab_name in CstrInputPageConfig.TABS_NAMES.value:
-            layout_name = self._tab_name_to_grid_layout_dict[tab_name]
+        for tab_name in self.tab_names:
+            layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
             self.update_grid_layout(grid_layout_name=layout_name)
-
-    def update_head_lines(self) -> None:
-        """
-        Update head lines
-        Returns
-        -------
-
-        """
-        tab_widget = self.findChild(QTabWidget, CstrInputPageWidgets.TAB_WIDGET.value)
-
-        for i, n in enumerate(CstrInputPageConfig.TABS_NAMES.value):
-            tab_widget.setTabText(i, n)
 
     def update_buttons(self) -> None:
         """
@@ -177,6 +188,12 @@ class CstrInputPage(AdvancedReactorInputPage):
         -------
 
         """
+        # Initial number of surface species
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+
+        # Initial number of gas species
+        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+
         # Volume
         self.read_data_from_property_line(CstrInputPageWidgets.VOLUME_EDIT_LINE.value,
                                           CstrInputPageWidgets.VOLUME_COMBO_BOX.value,

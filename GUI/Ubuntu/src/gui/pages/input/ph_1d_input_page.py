@@ -11,13 +11,13 @@ from src.core.data_keys import DataKeys
 from src.core.ph_1d_calculator import pseudo_homogeneous_1d_reactor_calculator
 from src.core.reactor_resolution_method import ReactorResolutionMethod
 from src.core.species_names import surface_species_names, gas_species_names
-from src.gui.pages.input.advanced_reactor_input_page import AdvancedReactorInputPage
 
 from src.config.reactor_config import ReactorConfig
+from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.gui.widgets.input.ph_1d_input_page import Ph1dInputPageWidgets
 
 
-class Ph1dInputPage(AdvancedReactorInputPage):
+class Ph1dInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
         """
         Pseudo-homogenous 1D reactor input page layout
@@ -34,15 +34,10 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(Ph1dInputPageConfig.PATH.value, self)
 
-        # TODO - Fix composition when running using Enum for composition as done for Resolution method
-        # TODO - check if calculator is working both in steady state and transient
-
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
         self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
 
-        self.task_function = pseudo_homogeneous_1d_reactor_calculator
-
-        self.update_head_lines()
+        self.update_tab_names(Ph1dInputPageWidgets.TAB_WIDGET.value)
 
         self.update_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
                                   Ph1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
@@ -69,8 +64,10 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         self.update_buttons()
         self.update_combo_box()
 
-        self._minimum_row_idx_dict, self._tab_name_to_grid_layout_dict = self.get_initial_layout_info()
-        self._dynamic_row_idx_dict = self._minimum_row_idx_dict.copy()
+        self.task_function = pseudo_homogeneous_1d_reactor_calculator
+        self.tab_name_to_row_idx_dict = self.tab_name_to_minimum_row_idx_dict.copy()
+        self.surf_ns = 0
+        self.ns = 0
 
     @property
     def number_of_gas_species_to_row_idx(self) -> int:
@@ -92,27 +89,52 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         """
         return Ph1dInputPageConfig.SURFACE_SPECIE_TO_ROW_INDEX.value
 
-    def get_initial_layout_info(self) -> tuple:
+    @property
+    def tab_names(self) -> list:
         """
-        Extract info of the layout before applying any change
+        Property that return the tab name list
         Returns
         -------
-        output_tuple: tuple
-            Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
+        tab_names: list
+            List of tab names
         """
-        tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
-                                            Ph1dInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
-                                        ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
-                                            Ph1dInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
-                                        ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
-                                            Ph1dInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
-                                        ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
-                                            Ph1dInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
+        return Ph1dInputPageConfig.TABS_NAMES.value
 
-        minimum_row_idx_dict = {k: self.findChild(QGridLayout, n).rowCount() - 1 for k, n in
-                                tab_name_to_grid_layout_dict.items()}
+    @property
+    def tab_name_to_grid_layout_name_dict(self) -> dict:
+        """
+        Property that return the grid layout name for each tab name
+        Returns
+        -------
+        tab_name_to_grid_layout_name: dict
+            Tab name to grid layout name
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    Ph1dInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    Ph1dInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    Ph1dInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value,
+                ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
+                    Ph1dInputPageWidgets.INITIAL_CONDITIONS_LAYOUT.value}
 
-        return minimum_row_idx_dict, tab_name_to_grid_layout_dict
+    @property
+    def tab_name_to_minimum_row_idx_dict(self) -> dict:
+        """
+        Property that return the minimum row idx for each tab name
+        Returns
+        -------
+        tab_name_to_minimum_row_idx: dict
+            Tab name to minimum row idx
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    Ph1dInputPageConfig.SOLVING_OPTION_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    Ph1dInputPageConfig.REACTOR_PROPERTIES_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    Ph1dInputPageConfig.COVERAGE_COMPOSITION_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.INITIAL_CONDITIONS_TAB_NAME.value:
+                    Ph1dInputPageConfig.INITIAL_CONDITION_LAYOUT_MINIMUM_ROW_IDX.value}
 
     def update_page_after_switch(self) -> None:
         """
@@ -151,21 +173,9 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         dropdown.clear()
         dropdown.addItems(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))
 
-        for tab_name in Ph1dInputPageConfig.TABS_NAMES.value:
-            layout_name = self._tab_name_to_grid_layout_dict[tab_name]
+        for tab_name in self.tab_names:
+            layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
             self.update_grid_layout(grid_layout_name=layout_name)
-
-    def update_head_lines(self) -> None:
-        """
-        Update head lines
-        Returns
-        -------
-
-        """
-        tab_widget = self.findChild(QTabWidget, Ph1dInputPageWidgets.TAB_WIDGET.value)
-
-        for i, n in enumerate(Ph1dInputPageConfig.TABS_NAMES.value):
-            tab_widget.setTabText(i, n)
 
     def update_buttons(self) -> None:
         """
@@ -245,6 +255,12 @@ class Ph1dInputPage(AdvancedReactorInputPage):
         -------
 
         """
+        # Initial number of surface species
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+
+        # Initial number of gas species
+        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+
         # Diameter
         self.read_data_from_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
                                           Ph1dInputPageWidgets.DIAMETER_COMBO_BOX.value,

@@ -13,6 +13,7 @@ from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.config.reactor_config import ReactorConfig
 from src.gui.widgets.input.batch_input_page import BatchInputPageWidgets
 
+import copy
 
 class BatchInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):
@@ -27,14 +28,11 @@ class BatchInputPage(BasicReactorInputPage):
         run_bar: RunBarWindow
             Class to handle the run bar
         """
-        super().__init__(data_store, dialog_handler, run_bar)
         # Load the UI from the .ui file
+        super().__init__(data_store, dialog_handler, run_bar)
         uic.loadUi(BatchInputPageConfig.PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
-        self.task_function = batch_calculator
-
-        self.update_head_lines()
+        self.update_tab_names(BatchInputPageWidgets.TAB_WIDGET.value)
         self.update_property_line(BatchInputPageWidgets.VOLUME_EDIT_LINE.value,
                                   BatchInputPageWidgets.VOLUME_COMBO_BOX.value,
                                   self.ud_handler.volume_ud)
@@ -49,44 +47,75 @@ class BatchInputPage(BasicReactorInputPage):
                                   self.ud_handler.time_ud)
         self.update_buttons()
 
-        self._minimum_row_idx_dict, self._tab_name_to_grid_layout_dict = self.get_initial_layout_info()
-        self._dynamic_row_idx_dict = self._minimum_row_idx_dict.copy()
+        self.task_function = batch_calculator
 
-    @staticmethod
-    def from_ns_to_row_idx(ns) -> int:
+        self.tab_name_to_row_idx_dict = self.tab_name_to_minimum_row_idx_dict.copy()
+        self.surf_ns = 0
+        self.ns = -1
+
+    @property
+    def number_of_gas_species_to_row_idx(self) -> int:
         """
-        Convert the number of species to row idx
-        Parameters
-        ----------
-        ns: int
-            Number of species
-
+        Property that returns the number of gas species to row index value
         Returns
         -------
         row_idx: int
-            Row index corresponding to the number of species based on the layout
+            Row index
         """
-        return ns + 1
+        return 0
 
-    def get_initial_layout_info(self) -> tuple:
+    @property
+    def number_of_surface_species_to_row_idx(self) -> int:
         """
-        Extract info of the layout before applying any change
+        Property that returns the number of surface species to row index value
         Returns
         -------
-        output_tuple: tuple
-            Tuple of dictionary describing the minimum row idx and tab name to grid layout dictionary
+
         """
-        tab_name_to_grid_layout_dict = {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
-                                        BatchInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
-                                        ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
-                                        BatchInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
-                                        ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
-                                        BatchInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value}
+        return BatchInputPageConfig.SURFACE_SPECIE_TO_ROW_INDEX.value
 
-        minimum_row_idx_dict = {k: self.findChild(QGridLayout, n).rowCount() - 1 for k, n in
-                                tab_name_to_grid_layout_dict.items()}
+    @property
+    def tab_names(self) -> list:
+        """
+        Property that return the tab name list
+        Returns
+        -------
+        tab_names: list
+            List of tab names
+        """
+        return BatchInputPageConfig.TABS_NAMES.value
 
-        return minimum_row_idx_dict, tab_name_to_grid_layout_dict
+    @property
+    def tab_name_to_grid_layout_name_dict(self) -> dict:
+        """
+        Property that return the grid layout name for each tab name
+        Returns
+        -------
+        tab_name_to_grid_layout_name: dict
+            Tab name to grid layout name
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    BatchInputPageWidgets.SOLVING_OPTION_LAYOUT.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    BatchInputPageWidgets.REACTOR_PROPERTIES_LAYOUT.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    BatchInputPageWidgets.COVERAGE_COMPOSITION_LAYOUT.value}
+
+    @property
+    def tab_name_to_minimum_row_idx_dict(self) -> dict:
+        """
+        Property that return the minimum row idx for each tab name
+        Returns
+        -------
+        tab_name_to_minimum_row_idx: dict
+            Tab name to minimum row idx
+        """
+        return {ReactorConfig.SOLVING_OPTION_TAB_NAME.value:
+                    BatchInputPageConfig.SOLVING_OPTION_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value:
+                    BatchInputPageConfig.REACTOR_PROPERTIES_LAYOUT_MINIMUM_ROW_IDX.value,
+                ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value:
+                    BatchInputPageConfig.COVERAGE_COMPOSITION_LAYOUT_MINIMUM_ROW_IDX.value}
 
     def update_page_after_switch(self) -> None:
         """
@@ -106,21 +135,9 @@ class BatchInputPage(BasicReactorInputPage):
                                       InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
-        for tab_name in BatchInputPageConfig.TABS_NAMES.value:
-            layout_name = self._tab_name_to_grid_layout_dict[tab_name]
+        for tab_name in self.tab_names:
+            layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
             self.update_grid_layout(grid_layout_name=layout_name)
-
-    def update_head_lines(self) -> None:
-        """
-        Update head lines
-        Returns
-        -------
-
-        """
-        tab_widget = self.findChild(QTabWidget, BatchInputPageWidgets.TAB_WIDGET.value)
-
-        for i, n in enumerate(BatchInputPageConfig.TABS_NAMES.value):
-            tab_widget.setTabText(i, n)
 
     def update_buttons(self) -> None:
         """
@@ -144,75 +161,6 @@ class BatchInputPage(BasicReactorInputPage):
         run_button = self.findChild(QPushButton, BatchInputPageWidgets.RUN_BUTTON.value)
         run_button.clicked.connect(self.run_button_action)
 
-    def add_coverage_line(self) -> None:
-        """
-        Add coverage line to the layout
-        Returns
-        -------
-
-        """
-        ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, ns)
-        ns_row_idx = self.from_ns_to_row_idx(ns)
-
-        # Coverage tab
-        tab_name = ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value
-        row_idx = self._dynamic_row_idx_dict[tab_name]
-        layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-
-        if ns_row_idx > row_idx:
-            row_idx = row_idx + 1
-            self.add_surface_specie_input_row_to_grid_layout(layout_name,
-                                                             ns,
-                                                             row_idx,
-                                                             with_label=True)
-            self.update_grid_layout(layout_name)
-            self._dynamic_row_idx_dict[tab_name] = row_idx
-        else:
-            self.remove_row_from_grid_layout(layout_name, ns_row_idx)
-            self.add_surface_specie_input_row_to_grid_layout(layout_name,
-                                                             ns,
-                                                             ns_row_idx,
-                                                             with_label=True)
-            self.update_grid_layout(layout_name)
-
-        # Other tabs
-        for tab_name in [ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
-                         ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value]:
-            row_idx = self._dynamic_row_idx_dict[tab_name]
-            if ns_row_idx > row_idx:
-                row_idx = row_idx + 1
-                layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                self.add_dummy_row_to_grid_layout(layout_name, row_idx)
-                self._dynamic_row_idx_dict[tab_name] = row_idx
-
-    def remove_coverage_line(self) -> None:
-        """
-        Remove coverage line to the layout
-        Returns
-        -------
-
-        """
-        ns = int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value))
-
-        if ns > 0:
-            self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, ns - 1)
-
-            # All tabs
-            for tab_name in BatchInputPageConfig.TABS_NAMES.value:
-                row_idx = self._dynamic_row_idx_dict[tab_name]
-                if row_idx > self._minimum_row_idx_dict[tab_name]:
-                    layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-                    self.remove_row_from_grid_layout(layout_name, row_idx)
-                    self._dynamic_row_idx_dict[tab_name] = row_idx - 1
-
-            # Coverage tab
-            tab_name = ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value
-            ns_row_idx = self.from_ns_to_row_idx(ns)
-            layout_name = self._tab_name_to_grid_layout_dict[tab_name]
-            if ns_row_idx <= self._minimum_row_idx_dict[tab_name]:
-                self.remove_row_from_grid_layout(layout_name, ns_row_idx)
-
     def read_data(self) -> None:
         """
         Update data store with temperature, composition, pressure
@@ -220,6 +168,12 @@ class BatchInputPage(BasicReactorInputPage):
         -------
 
         """
+        # Initial number of surface species
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+
+        # Initial number of gas species
+        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+
         # Volume
         self.read_data_from_property_line(BatchInputPageWidgets.VOLUME_EDIT_LINE.value,
                                           BatchInputPageWidgets.VOLUME_COMBO_BOX.value,
@@ -233,8 +187,10 @@ class BatchInputPage(BasicReactorInputPage):
         # Coverage
         value = {}
         for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
-            specie_name = self.findChild(QComboBox, InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
-            specie_value = self.findChild(QLineEdit, InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
+            specie_name = self.findChild(QComboBox, InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
+                i)).currentText()
+            specie_value = self.findChild(QLineEdit,
+                                          InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
 
         self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)

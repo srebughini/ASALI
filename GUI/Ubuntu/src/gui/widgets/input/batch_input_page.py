@@ -14,9 +14,11 @@ class BatchInputPageWidgets(Enum):
     INTEGRATION_TIME_COMBO_BOX = "tmaxComboBox"
     INTEGRATION_STEP_COMBO_BOX = "tstepComboBox"
     ENERGY_CHECK_BOX = "energyCheckBox"
+
     SOLVING_OPTION_LAYOUT = "optionsLayout"
     REACTOR_PROPERTIES_LAYOUT = "propertiesLayout"
     COVERAGE_COMPOSITION_LAYOUT = "coverageLayout"
+
     TAB_WIDGET = "tabWidget"
     USER_DEFINED_KINETIC_BUTTON = "udkButton"
     BACK_BUTTON = "backButton"
