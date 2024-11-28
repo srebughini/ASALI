@@ -1,6 +1,7 @@
 from asali.plotters.reactor import ReactorPlotter
 from asali.savers.reactor import ReactorSaver
 
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
 from src.config.app_config import AppConfig
@@ -32,7 +33,7 @@ def reactor_saver(data_store) -> None:
     composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value)
     output_file_path = data_store.get_data(DataKeys.OUTPUT_FILE_PATH.value)
 
-    if 'mol' in composition_type.lower():
+    if composition_type == CompositionType.MOLE:
         saver.save_using_mole_fraction(output_file_path)
     else:
         saver.save_using_mass_fraction(output_file_path)

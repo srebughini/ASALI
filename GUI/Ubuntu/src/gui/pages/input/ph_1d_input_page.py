@@ -6,6 +6,7 @@ from asali.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactor
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.ph_1d_calculator import pseudo_homogeneous_1d_reactor_calculator
 from src.core.reactor_resolution_method import ReactorResolutionMethod
@@ -237,7 +238,6 @@ class Ph1dInputPage(AdvancedReactorInputPage):
             self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
                                         ReactorResolutionMethod.TRANSIENT)
 
-
     def read_data(self) -> None:
         """
         Update data store with temperature, composition, pressure
@@ -285,7 +285,10 @@ class Ph1dInputPage(AdvancedReactorInputPage):
                                           InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
         ud = self.findChild(QComboBox, Ph1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, ud))
+        if "mol" in ud.lower():
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+        else:
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MASS))
 
         # Initial temperature
         self.read_data_from_property_line(Ph1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,

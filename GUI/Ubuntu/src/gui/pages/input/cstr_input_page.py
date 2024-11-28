@@ -5,6 +5,7 @@ from asali.reactors.cstr import CstrReactor
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.cstr_input_page_config import CstrInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
+from src.core.composition_type import CompositionType
 from src.core.cstr_calculator import cstr_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
@@ -30,8 +31,6 @@ class CstrInputPage(AdvancedReactorInputPage):
         super().__init__(data_store, dialog_handler, run_bar)
         # Load the UI from the .ui file
         uic.loadUi(CstrInputPageConfig.PATH.value, self)
-
-        # TODO - Fix composition when running using Enum for composition as done for Resolution method
 
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
         self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
@@ -211,8 +210,12 @@ class CstrInputPage(AdvancedReactorInputPage):
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
+
         ud = self.findChild(QComboBox, CstrInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, ud))
+        if "mol" in ud.lower():
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+        else:
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MASS))
 
         # Initial temperature
         self.read_data_from_property_line(CstrInputPageWidgets.TEMPERATURE_EDIT_LINE.value,

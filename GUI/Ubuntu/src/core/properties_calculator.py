@@ -3,6 +3,7 @@ import numpy as np
 
 from asali.utils.unit_converter import UnitConverter
 
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
 from src.core.unit_dimension_handler import UnitDimensionHandler
@@ -37,7 +38,7 @@ def properties_calculator(data_store) -> DataStore:
 
     composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)
 
-    if "mole" in composition_tuple[1].lower():
+    if composition_tuple[1] == CompositionType.MOLE:
         gas.TPX = temperature, pressure, composition_tuple[0]
     else:
         gas.TPY = temperature, pressure, composition_tuple[0]

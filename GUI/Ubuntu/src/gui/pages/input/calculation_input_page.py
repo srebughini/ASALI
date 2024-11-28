@@ -11,6 +11,7 @@ from src.config.input_composition_config import InputCompositionConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
 from src.config.vacuum_output_page_config import VacuumOutputPageConfig
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names
 from src.gui.pages.basic_page import BasicPage
@@ -82,8 +83,12 @@ class CalculationInputPage(BasicPage):
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
+
         ud = self.findChild(QComboBox, CalculationInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, ud))
+        if "mol" in ud.lower():
+            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+        else:
+            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, CompositionType.MASS))
 
     def update_temperature_line(self) -> None:
         """

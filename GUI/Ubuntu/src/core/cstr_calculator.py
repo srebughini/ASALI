@@ -1,6 +1,7 @@
 from asali.reactors.cstr import CstrReactor
 from asali.utils.unit_converter import UnitConverter
 
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
 from src.core.unit_dimension_handler import UnitDimensionHandler
@@ -61,7 +62,7 @@ def cstr_calculator(data_store, results) -> None:
     # Initial composition
     composition_tuple = data_store.get_data(DataKeys.INITIAL_GAS_COMPOSITION.value)
 
-    if "mole" in composition_tuple[1].lower():
+    if composition_tuple[1] == CompositionType.MOLE:
         reactor_class.set_initial_mole_fraction(composition_tuple[0])
     else:
         reactor_class.set_initial_mass_fraction(composition_tuple[0])
@@ -74,7 +75,7 @@ def cstr_calculator(data_store, results) -> None:
     # Inlet composition
     composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)
 
-    if "mole" in composition_tuple[1].lower():
+    if composition_tuple[1] == CompositionType.MOLE:
         reactor_class.set_inlet_mole_fraction(composition_tuple[0])
     else:
         reactor_class.set_inlet_mass_fraction(composition_tuple[0])

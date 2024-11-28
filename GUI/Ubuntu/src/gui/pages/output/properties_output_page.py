@@ -38,13 +38,13 @@ class PropertiesOutputPage(BasicPage):
                                   PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value,
                                   self.ud_handler.thermal_conductivity_ud)
         self.update_property_line(PropertiesOutputPageWidgets.DIFFUSIVITY_LABEL.value,
-                                  PropertiesOutputPageWidgets.DENSITY_COMBO_BOX.value,
+                                  PropertiesOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value,
                                   self.ud_handler.diffusivity_ud)
         self.update_property_line(PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_LABEL.value,
                                   PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_COMBO_BOX.value,
                                   self.ud_handler.molecular_weight_ud)
         self.update_property_line(PropertiesOutputPageWidgets.ENTHALPY_LABEL.value,
-                                  PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value,
+                                  PropertiesOutputPageWidgets.ENTHALPY_COMBO_BOX.value,
                                   self.ud_handler.enthalpy_ud)
         self.update_property_line(PropertiesOutputPageWidgets.ENTROPY_LABEL.value,
                                   PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value,
