@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
 from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
+from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
@@ -229,9 +230,13 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value,
-                                    self.findChild(QComboBox,
-                                                   PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText())
+        composition_type = self.findChild(QComboBox,
+                                          PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+
+        if 'mol' in composition_type.lower():
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MOLE)
+        else:
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MASS)
 
         self.data_store.update_data(DataKeys.COLORMAP.value,
                                     self.findChild(QComboBox,
@@ -261,9 +266,13 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value,
-                                    self.findChild(QComboBox,
-                                                   PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText())
+        composition_type = self.findChild(QComboBox,
+                                          PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+
+        if 'mol' in composition_type.lower():
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MOLE)
+        else:
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MASS)
 
         output_file_path = self.dialog_handler.save_file(AppConfig.EXCEL_FILE_SAVE.value,
                                                          AppConfig.EXCEL_FILE_TYPE.value)

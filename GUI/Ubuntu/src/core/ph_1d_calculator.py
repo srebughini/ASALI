@@ -100,7 +100,7 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
 
     # Diffusion
     diffusion = data_store.get_data(DataKeys.DIFFUSION.value)
-    reactor_class.gas_diffusion(diffusion)
+    reactor_class.set_gas_diffusion(diffusion)
 
     if resolution_method == ReactorResolutionMethod.TRANSIENT:
         # Initial composition
@@ -130,9 +130,13 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
         tspan = np.linspace(0., tmax, num=num, endpoint=True)
 
         reactor_class.solve(tspan, "s")
+
+        results.put((reactor_class.get_time("s"),
+                     reactor_class.get_results(),
+                     reactor_class.get_length("m")))
+
     else:
         reactor_class.solve()
-
         results.put((reactor_class.get_time("s"),
                      reactor_class.get_results(),
                      None))

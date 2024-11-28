@@ -72,7 +72,7 @@ def reactor_plotter(data_store) -> None:
     temperature_list = data_store.get_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED.value)
 
     if len(species_list) > 0:
-        if 'mol' in composition_type.lower():
+        if composition_type == CompositionType.MOLE:
             plotter.plot_species_mole_fraction(species_list)
         else:
             plotter.plot_species_mass_fraction(species_list)
