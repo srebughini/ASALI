@@ -1,6 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox, QLabel, \
-    QGraphicsBlurEffect
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QCheckBox, QComboBox, QLabel
 from asali.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactor
 from asali.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactor
 

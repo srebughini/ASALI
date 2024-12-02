@@ -25,8 +25,11 @@ class Het1dInputPageWidgets(Enum):
     MASS_FLOW_RATE_EDIT_LINE = "qEditLine"
     MASS_FLOW_RATE_COMBO_BOX = "qComboBox"
 
-    TEMPERATURE_EDIT_LINE = "temperatureEditLine"
-    TEMPERATURE_COMBO_BOX = "temperatureComboBox"
+    GAS_TEMPERATURE_EDIT_LINE = "temperatureEditLine"
+    GAS_TEMPERATURE_COMBO_BOX = "temperatureComboBox"
+
+    SOLID_TEMPERATURE_EDIT_LINE = "solidTemperatureEditLine"
+    SOLID_TEMPERATURE_COMBO_BOX = "solidTemperatureComboBox"
 
     SPECIFIC_HEAT_EDIT_LINE = "cpEditLine"
     SPECIFIC_HEAT_COMBO_BOX = "cpComboBox"

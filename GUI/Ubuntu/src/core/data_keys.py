@@ -23,7 +23,8 @@ class DataKeys(Enum):
     INITIAL_SURF_NS = "initial_number_of_coverage_species"
     INITIAL_SURF_COMPOSITION = "initial_coverage_composition"
     INITIAL_GAS_COMPOSITION = "initial_gas_composition"
-    INITIAL_GAS_T = "initial_temperature"
+    INITIAL_GAS_T = "initial_gas_temperature"
+    INITIAL_SOLID_T = "initial_solid_temperature"
 
     INERT_GAS_SPECIE = "inert_gas_specie"
     INERT_SURFACE_SPECIE = "inert_surface_specie"
@@ -71,12 +72,21 @@ class DataKeys(Enum):
     LENGTH = "reactor_length"
     ALFA = "reactor_catalytic_load"
     MASS_FLOW_RATE = "reactor_mass_flow_rate"
+    PARTICLE_DIAMETER = "particle_diameter"
+    WALL_THICKNESS = "wall_thickness"
+
+    EPSI = "void_fraction"
+    CPSI = "cpsi"
 
     ENERGY_BALANCE = "energy_balance"
     DIFFUSION = "diffusion"
 
     TMAX = "integration_time"
     TSTEP = "integration_time_step"
+
+    SOLID_RHO = "solid_density"
+    SOLID_CP = "solid_specific_heat"
+    SOLID_COND = "solid_thermal_conductivity"
 
     REACTOR_RESULTS = "reactor_results"
     TEMPERATURE_TYPES = "reactor_temperature_types"

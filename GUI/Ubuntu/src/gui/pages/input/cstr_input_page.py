@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QCheckBox, QComboBox
 from asali.reactors.cstr import CstrReactor
 
 from src.config.calculation_input_page_config import CalculationInputPageConfig

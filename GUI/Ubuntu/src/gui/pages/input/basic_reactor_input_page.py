@@ -165,7 +165,7 @@ class BasicReactorInputPage(BasicPage):
         for i, n in enumerate(self.tab_names):
             tab_widget.setTabText(i, n)
 
-    def update_property_line(self, edit_line_name, combo_box_name, ud_list) -> None:
+    def update_property_line(self, edit_line_name, combo_box_name=None, ud_list=None) -> None:
         """
         Update properties input line
         Parameters
@@ -185,8 +185,10 @@ class BasicReactorInputPage(BasicPage):
         edit_line.setValidator(QDoubleValidator(0.0, 1.0e64, 4))
         edit_line.setAlignment(Qt.AlignRight)
 
-        dropdown = self.findChild(QComboBox, combo_box_name)
-        dropdown.addItems(ud_list)
+        if combo_box_name is not None:
+            dropdown = self.findChild(QComboBox, combo_box_name)
+            if ud_list is not None:
+                dropdown.addItems(ud_list)
 
     def read_data_from_property_line(self, edit_line_name, combo_box_name, data_key) -> None:
         """

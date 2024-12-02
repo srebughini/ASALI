@@ -50,9 +50,6 @@ def reactor_plotter(data_store) -> None:
     Returns
     -------
     """
-
-    # TODO - Add solid properties plotting
-
     cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH)
     gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME)
     surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME)
@@ -67,7 +64,7 @@ def reactor_plotter(data_store) -> None:
 
     plotter = ReactorPlotter(reactor_class, colormap=color_map)
 
-    plotter.set_rc_params(AppConfig.MATPLOTLIB_TOOLBAR)
+    plotter.set_rc_params(AppConfig.MATPLOTLIB_TOOLBAR.value)
 
     composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE)
     species_list = data_store.get_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED)
@@ -83,8 +80,7 @@ def reactor_plotter(data_store) -> None:
     if len(surface_species_list) > 0:
         plotter.plot_coverage(surface_species_list)
 
-    for t in temperature_list:
-        if 'gas' == t.lower():
-            plotter.plot_temperature()
+    if len(temperature_list) > 0:
+        plotter.plot_temperature()
 
     plotter.show()

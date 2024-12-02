@@ -10,7 +10,7 @@ class Het1dInputPageConfig(Enum):
     PATH = "gui/ui/input/het_1d_input_page.ui"
     NAME = "Het1dInputPage"
     REACTOR_NAME = "Heterogeneous 1D reactor"
-    TEMPERATURES = ["Gas", "Solid"]
+    TEMPERATURES = ["Gas/Solid"]
     TABS_NAMES = [ReactorConfig.REACTOR_PROPERTIES_TAB_NAME.value,
                   ReactorConfig.SOLVING_OPTION_TAB_NAME.value,
                   ReactorConfig.COVERAGE_COMPOSITION_TAB_NAME.value,

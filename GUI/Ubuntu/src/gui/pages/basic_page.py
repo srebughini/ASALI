@@ -68,7 +68,7 @@ class BasicPage(QWidget):
             Widget disabled
         """
         widget.setGraphicsEffect(None)
-        widget.setEnabled(False)
+        widget.setEnabled(True)
         return widget
 
     def update_composition_names(self,

@@ -8,6 +8,7 @@ from src.config.het_1d_input_page_config import Het1dInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
 from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
+from src.core.het_1d_calculator import heterogeneous_1d_reactor_calculator
 from src.core.reactor_geometry import ReactorGeometry
 
 from src.core.reactor_resolution_method import ReactorResolutionMethod
@@ -58,34 +59,38 @@ class Het1dInputPage(BasicReactorInputPage):
         self.update_property_line(Het1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
                                   Het1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
                                   self.ud_handler.time_ud)
-        self.update_property_line(Het1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
-                                  Het1dInputPageWidgets.TEMPERATURE_COMBO_BOX.value,
+        self.update_property_line(Het1dInputPageWidgets.GAS_TEMPERATURE_EDIT_LINE.value,
+                                  Het1dInputPageWidgets.GAS_TEMPERATURE_COMBO_BOX.value,
                                   self.ud_handler.temperature_ud)
-
+        self.update_property_line(Het1dInputPageWidgets.SOLID_TEMPERATURE_EDIT_LINE.value,
+                                  Het1dInputPageWidgets.SOLID_TEMPERATURE_COMBO_BOX.value,
+                                  self.ud_handler.temperature_ud)
         self.update_property_line(Het1dInputPageWidgets.SPECIFIC_HEAT_EDIT_LINE.value,
                                   Het1dInputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value,
                                   self.ud_handler.specific_heat_ud)
-
         self.update_property_line(Het1dInputPageWidgets.DENSITY_EDIT_LINE.value,
                                   Het1dInputPageWidgets.DENSITY_COMBO_BOX.value,
                                   self.ud_handler.density_ud)
-
         self.update_property_line(Het1dInputPageWidgets.THERMAL_CONDUCTIVITY_EDIT_LINE.value,
                                   Het1dInputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value,
                                   self.ud_handler.thermal_conductivity_ud)
-
         self.update_property_line(Het1dInputPageWidgets.PARTICLE_DIAMETER_EDIT_LINE.value,
                                   Het1dInputPageWidgets.PARTICLE_DIAMETER_COMBO_BOX.value,
                                   self.ud_handler.length_ud)
-
         self.update_property_line(Het1dInputPageWidgets.WALL_THICKNESS_EDIT_LINE.value,
                                   Het1dInputPageWidgets.WALL_THICKNESS_COMBO_BOX.value,
                                   self.ud_handler.length_ud)
+        self.update_property_line(Het1dInputPageWidgets.VOID_FRACTION_EDIT_LINE.value,
+                                  None,
+                                  None)
+        self.update_property_line(Het1dInputPageWidgets.CPSI_EDIT_LINE.value,
+                                  None,
+                                  None)
 
         self.update_buttons()
         self.update_combo_box()
 
-        # self.task_function = pseudo_homogeneous_1d_reactor_calculator
+        self.task_function = heterogeneous_1d_reactor_calculator
         self.tab_name_to_row_idx_dict = self.tab_name_to_minimum_row_idx_dict.copy()
         self.surf_ns = 0
         self.ns = 0
@@ -361,32 +366,30 @@ class Het1dInputPage(BasicReactorInputPage):
         -------
 
         """
-        pass
-        """
-       # Initial number of surface species
+        # Initial number of surface species
         self.data_store.update_data(DataKeys.INITIAL_SURF_NS, self.surf_ns)
 
         # Initial number of gas species
         self.data_store.update_data(DataKeys.INITIAL_NS, self.ns)
 
         # Diameter
-        self.read_data_from_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
                                           DataKeys.DIAMETER)
 
         # Length
-        self.read_data_from_property_line(Ph1dInputPageWidgets.LENGTH_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.LENGTH_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.LENGTH_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.LENGTH_COMBO_BOX.value,
                                           DataKeys.LENGTH)
 
         # Catalytic load
-        self.read_data_from_property_line(Ph1dInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
                                           DataKeys.ALFA)
 
         # Mass flow rate
-        self.read_data_from_property_line(Ph1dInputPageWidgets.MASS_FLOW_RATE_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.MASS_FLOW_RATE_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.MASS_FLOW_RATE_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.MASS_FLOW_RATE_COMBO_BOX.value,
                                           DataKeys.MASS_FLOW_RATE)
 
         # Coverage
@@ -408,40 +411,77 @@ class Het1dInputPage(BasicReactorInputPage):
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        ud = self.findChild(QComboBox, Ph1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+        ud = self.findChild(QComboBox, Het1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         if "mol" in ud.lower():
             self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MOLE))
         else:
             self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MASS))
 
-        # Initial temperature
-        self.read_data_from_property_line(Ph1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.TEMPERATURE_COMBO_BOX.value,
+        # Initial gas temperature
+        self.read_data_from_property_line(Het1dInputPageWidgets.GAS_TEMPERATURE_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.GAS_TEMPERATURE_COMBO_BOX.value,
                                           DataKeys.INITIAL_GAS_T)
 
         # Energy balance
-        checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.ENERGY_CHECK_BOX.value)
+        checkbox = self.findChild(QCheckBox, Het1dInputPageWidgets.ENERGY_CHECK_BOX.value)
         self.data_store.update_data(DataKeys.ENERGY_BALANCE, checkbox.isChecked())
 
         # Diffusion
-        checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
+        checkbox = self.findChild(QCheckBox, Het1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
         self.data_store.update_data(DataKeys.DIFFUSION, checkbox.isChecked())
 
         # Inert gas specie
-        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
+        combo_box = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
         self.data_store.update_data(DataKeys.INERT_GAS_SPECIE, combo_box.currentText())
 
         # Inert surface specie
-        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
+        combo_box = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
         self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE, combo_box.currentText())
 
         # Integration time
-        self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
                                           DataKeys.TMAX)
 
         # Integration time step
-        self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
-                                          Ph1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
+        self.read_data_from_property_line(Het1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
                                           DataKeys.TSTEP)
-        """
+
+        # Initial solid temperature
+        self.read_data_from_property_line(Het1dInputPageWidgets.SOLID_TEMPERATURE_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.SOLID_TEMPERATURE_COMBO_BOX.value,
+                                          DataKeys.INITIAL_SOLID_T)
+
+        # Solid specific heat
+        self.read_data_from_property_line(Het1dInputPageWidgets.SPECIFIC_HEAT_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value,
+                                          DataKeys.SOLID_CP)
+
+        # Solid density
+        self.read_data_from_property_line(Het1dInputPageWidgets.DENSITY_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.DENSITY_COMBO_BOX.value,
+                                          DataKeys.SOLID_RHO)
+
+        # Solid thermal conductivity
+        self.read_data_from_property_line(Het1dInputPageWidgets.THERMAL_CONDUCTIVITY_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value,
+                                          DataKeys.SOLID_COND)
+
+        # Particle diameter
+        self.read_data_from_property_line(Het1dInputPageWidgets.PARTICLE_DIAMETER_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.PARTICLE_DIAMETER_COMBO_BOX.value,
+                                          DataKeys.PARTICLE_DIAMETER)
+
+        # Wall thickness
+        self.read_data_from_property_line(Het1dInputPageWidgets.WALL_THICKNESS_EDIT_LINE.value,
+                                          Het1dInputPageWidgets.WALL_THICKNESS_COMBO_BOX.value,
+                                          DataKeys.WALL_THICKNESS)
+
+        # Void fraction
+        value = float(self.findChild(QLineEdit, Het1dInputPageWidgets.VOID_FRACTION_EDIT_LINE.value).text())
+        self.data_store.update_data(DataKeys.EPSI, value)
+
+        # CPSI
+        value = float(self.findChild(QLineEdit, Het1dInputPageWidgets.CPSI_EDIT_LINE.value).text())
+        self.data_store.update_data(DataKeys.CPSI, value)
