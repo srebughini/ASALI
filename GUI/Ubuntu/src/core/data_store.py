@@ -6,14 +6,14 @@ class DataStore:
         """
         Class that handle the data sharing between the GUI and the CORE
         """
-        self.data = {k.value: None for k in DataKeys}
+        self.data = {k: None for k in DataKeys}
 
     def update_data(self, key, value) -> None:
         """
         Update data in the DataStore class
         Parameters
         ----------
-        key: str
+        key: Enum
             Key for the updated data
         value: object
             Value fot the updated data
@@ -29,7 +29,7 @@ class DataStore:
         Returns the requested data from key
         Parameters
         ----------
-        key: str
+        key: Enum
             Key for the updated data
 
         Returns

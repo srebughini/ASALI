@@ -87,7 +87,7 @@ class UserDefinedKineticPage(BasicPage):
 
         for k in [DataKeys.USER_DEFINED_KINETIC_FILE_PATH,
                   DataKeys.CHEMISTRY_FILE_PATH]:
-            self.data_store.update_data(k.value, None)
+            self.data_store.update_data(k, None)
 
     def load_udk_file(self) -> None:
         """
@@ -102,7 +102,7 @@ class UserDefinedKineticPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, UserDefinedKineticPageWidgets.UDK_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH, file_path)
 
     def load_cantera_file(self) -> None:
         """
@@ -117,7 +117,7 @@ class UserDefinedKineticPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, UserDefinedKineticPageWidgets.CANTERA_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH, file_path)
 
     def check(self) -> None:
         """

@@ -34,7 +34,7 @@ class CalculationInputPage(BasicPage):
         # Load the UI from the .ui file
         uic.loadUi(CalculationInputPageConfig.PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INLET_NS.value, 0)
+        self.ns = 0
 
         self.update_temperature_line()
         self.update_pressure_line()
@@ -54,7 +54,7 @@ class CalculationInputPage(BasicPage):
         """
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES),
                                       InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
         self.update_grid_layout()
@@ -66,19 +66,22 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
+        # Number of species
+        self.data_store.update_data(DataKeys.INLET_NS, self.ns)
+
         # Temperature
         value = float(self.findChild(QLineEdit, CalculationInputPageWidgets.TEMPERATURE_EDIT_LINE.value).text())
         ud = self.findChild(QComboBox, CalculationInputPageWidgets.TEMPERATURE_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.INLET_T.value, (value, ud))
+        self.data_store.update_data(DataKeys.INLET_T, (value, ud))
 
         # Pressure
         value = float(self.findChild(QLineEdit, CalculationInputPageWidgets.PRESSURE_EDIT_LINE.value).text())
         ud = self.findChild(QComboBox, CalculationInputPageWidgets.PRESSURE_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.INLET_P.value, (value, ud))
+        self.data_store.update_data(DataKeys.INLET_P, (value, ud))
 
         # Composition
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INLET_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
             specie_value = self.findChild(QLineEdit,
@@ -87,9 +90,9 @@ class CalculationInputPage(BasicPage):
 
         ud = self.findChild(QComboBox, CalculationInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         if "mol" in ud.lower():
-            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION, (value, CompositionType.MOLE))
         else:
-            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION.value, (value, CompositionType.MASS))
+            self.data_store.update_data(DataKeys.INLET_GAS_COMPOSITION, (value, CompositionType.MASS))
 
     def update_temperature_line(self) -> None:
         """
@@ -143,8 +146,7 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        ns = self.data_store.get_data(DataKeys.INLET_NS.value)
-        edit_line = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(ns))
+        edit_line = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(self.ns))
         edit_line.setValidator(QDoubleValidator(0.0, 1.0, 4))
 
     def add_specie_line(self) -> None:
@@ -154,12 +156,11 @@ class CalculationInputPage(BasicPage):
         -------
 
         """
-        ns = int(self.data_store.get_data(DataKeys.INLET_NS.value) + 1)
-        self.data_store.update_data(DataKeys.INLET_NS.value, ns)
+        self.ns = self.ns + 1
 
         self._specie_row_idx = self._specie_row_idx + 1
         self.add_gas_specie_input_row_to_grid_layout(CalculationInputPageWidgets.GRID_LAYOUT.value,
-                                                     ns,
+                                                     self.ns,
                                                      self._specie_row_idx,
                                                      with_label=True)
 
@@ -179,9 +180,7 @@ class CalculationInputPage(BasicPage):
 
         """
         if self._specie_row_idx > CalculationInputPageConfig.INITIAL_SPECIE_ROW_IDX.value:
-            ns = self.data_store.get_data(DataKeys.INLET_NS.value)
-            self.data_store.update_data(DataKeys.INLET_NS.value, ns - 1)
-
+            self.ns = self.ns - 1
             self.remove_row_from_grid_layout(CalculationInputPageWidgets.GRID_LAYOUT.value, self._specie_row_idx)
             self._specie_row_idx = self._specie_row_idx - 1
 
@@ -209,7 +208,7 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(EquilibriumOutputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 3:
             # Batch
-            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None
@@ -218,7 +217,7 @@ class CalculationInputPage(BasicPage):
 
         elif combo_box.currentIndex() == 4:
             # CSTR
-            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None
@@ -226,7 +225,7 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(CstrInputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 5:
             # 1d ph
-            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None
@@ -234,7 +233,7 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(Ph1dInputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 6:
             #1d het
-            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
                     QLabel('Default Cantera input file cannot be used for reactor modeling!'))
                 return None

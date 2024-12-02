@@ -249,7 +249,7 @@ class BasicPage(QWidget):
         edit_line_name = InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = gas_species_names(self.data_store)
-        specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
+        specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
 
         if with_label:
             label_name = InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value
@@ -289,7 +289,7 @@ class BasicPage(QWidget):
         edit_line_name = InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
 
         self.data_store = surface_species_names(self.data_store)
-        specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
+        specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES)
 
         if with_label:
             label_name = InputCompositionConfig.SURFACE_SPECIE_LABEL_NAME.value

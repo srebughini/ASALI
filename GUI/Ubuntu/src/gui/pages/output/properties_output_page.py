@@ -141,35 +141,35 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.RHO.value,
+        self.data_store.update_data(DataKeys.RHO,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.DENSITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.MU.value,
+        self.data_store.update_data(DataKeys.MU,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.VISCOSITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.MW.value,
+        self.data_store.update_data(DataKeys.MW,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.COND.value,
+        self.data_store.update_data(DataKeys.COND,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.DIFF_MIX.value,
+        self.data_store.update_data(DataKeys.DIFF_MIX,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.H.value,
+        self.data_store.update_data(DataKeys.H,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.ENTHALPY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.S.value,
+        self.data_store.update_data(DataKeys.S,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.ENTROPY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.CP.value,
+        self.data_store.update_data(DataKeys.CP,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     PropertiesOutputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value).currentText()))
@@ -185,20 +185,20 @@ class PropertiesOutputPage(BasicPage):
         self.data_store = properties_calculator(self.data_store)
 
         self.update_property_value(PropertiesOutputPageWidgets.DENSITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.RHO.value)[0])
+                                   self.data_store.get_data(DataKeys.RHO)[0])
         self.update_property_value(PropertiesOutputPageWidgets.THERMAL_CONDUCTIVITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.COND.value)[0])
+                                   self.data_store.get_data(DataKeys.COND)[0])
         self.update_property_value(PropertiesOutputPageWidgets.MOLECULAR_WEIGHT_LABEL.value,
-                                   self.data_store.get_data(DataKeys.MW.value)[0])
+                                   self.data_store.get_data(DataKeys.MW)[0])
         self.update_property_value(PropertiesOutputPageWidgets.VISCOSITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.MU.value)[0])
+                                   self.data_store.get_data(DataKeys.MU)[0])
         self.update_property_value(PropertiesOutputPageWidgets.DIFFUSIVITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
+                                   self.data_store.get_data(DataKeys.DIFF_MIX)[0])
         self.update_property_value(PropertiesOutputPageWidgets.ENTHALPY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.H.value)[0])
+                                   self.data_store.get_data(DataKeys.H)[0])
         self.update_property_value(PropertiesOutputPageWidgets.ENTROPY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.S.value)[0])
+                                   self.data_store.get_data(DataKeys.S)[0])
         self.update_property_value(PropertiesOutputPageWidgets.SPECIFIC_HEAT_LABEL.value,
-                                   self.data_store.get_data(DataKeys.CP.value)[0])
+                                   self.data_store.get_data(DataKeys.CP)[0])
 
         self.update_grid_layout()

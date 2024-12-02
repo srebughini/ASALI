@@ -123,14 +123,14 @@ class EquilibriumOutputPage(BasicPage):
 
         """
         ud = self.findChild(QComboBox, EquilibriumOutputPageWidgets.TEMPERATURE_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.EQUILIBRIUM_T.value, (0.0, ud))
+        self.data_store.update_data(DataKeys.EQUILIBRIUM_T, (0.0, ud))
 
         ud = self.findChild(QComboBox, EquilibriumOutputPageWidgets.PRESSURE_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.EQUILIBRIUM_P.value, (0.0, ud))
+        self.data_store.update_data(DataKeys.EQUILIBRIUM_P, (0.0, ud))
 
         equilibrium_type = self.findChild(QComboBox,
                                           EquilibriumOutputPageWidgets.EQUILIBRIUM_TYPE_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.EQUILIBRIUM_TYPE.value, equilibrium_type)
+        self.data_store.update_data(DataKeys.EQUILIBRIUM_TYPE, equilibrium_type)
 
     def update_shown_data(self) -> None:
         """
@@ -143,14 +143,14 @@ class EquilibriumOutputPage(BasicPage):
         self.data_store = equilibrium_calculator(self.data_store)
 
         self.update_property_value(EquilibriumOutputPageWidgets.TEMPERATURE_LABEL.value, 
-                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_T.value)[0])
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_T)[0])
         self.update_property_value(EquilibriumOutputPageWidgets.PRESSURE_LABEL.value,
-                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_P.value)[0])
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_P)[0])
         self.update_property_value(EquilibriumOutputPageWidgets.NAMES_LABEL.value,
-                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_N.value))
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_N))
         self.update_property_value(EquilibriumOutputPageWidgets.MOLE_FRACTION_LABEL.value,
-                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_X.value))
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_X))
         self.update_property_value(EquilibriumOutputPageWidgets.MASS_FRACTION_LABEL.value,
-                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_Y.value))
+                                   self.data_store.get_data(DataKeys.EQUILIBRIUM_Y))
 
         self.update_grid_layout()

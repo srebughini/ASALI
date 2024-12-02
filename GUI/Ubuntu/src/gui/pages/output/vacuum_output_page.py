@@ -133,7 +133,7 @@ class VacuumOutputPage(BasicPage):
 
         """
         dropdown = self.findChild(QComboBox, VacuumOutputPageWidgets.SPECIE_COMBO_BOX.value)
-        specie_list = list(self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)[0].keys())
+        specie_list = list(self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION)[0].keys())
         dropdown.clear()
         dropdown.addItems(specie_list)
 
@@ -158,27 +158,27 @@ class VacuumOutputPage(BasicPage):
         """
         value = float(self.findChild(QLineEdit, VacuumOutputPageWidgets.GEOMETRY_EDIT_LINE.value).text())
         ud = self.findChild(QComboBox, VacuumOutputPageWidgets.GEOMETRY_COMBO_BOX.value).currentText()
-        self.data_store.update_data(DataKeys.GEOMETRY.value, (value, ud))
+        self.data_store.update_data(DataKeys.GEOMETRY, (value, ud))
 
-        self.data_store.update_data(DataKeys.VACUUM_SPECIE.value,
+        self.data_store.update_data(DataKeys.VACUUM_SPECIE,
                                     self.findChild(QComboBox,
                                                    VacuumOutputPageWidgets.SPECIE_COMBO_BOX.value).currentText())
 
-        self.data_store.update_data(DataKeys.L.value,
+        self.data_store.update_data(DataKeys.L,
                                     (0.0, self.findChild(QComboBox,
                                                          VacuumOutputPageWidgets.LENGTH_COMBO_BOX.value).currentText()))
 
-        self.data_store.update_data(DataKeys.V.value,
+        self.data_store.update_data(DataKeys.V,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     VacuumOutputPageWidgets.VELOCITY_COMBO_BOX.value).currentText()))
 
-        self.data_store.update_data(DataKeys.DIFF_MIX.value,
+        self.data_store.update_data(DataKeys.DIFF_MIX,
                                     (0.0,
                                      self.findChild(QComboBox,
                                                     VacuumOutputPageWidgets.DIFFUSIVITY_COMBO_BOX.value).currentText()))
 
-        self.data_store.update_data(DataKeys.KN.value, 0.0)
+        self.data_store.update_data(DataKeys.KN, 0.0)
 
     def update_shown_data(self) -> None:
         """
@@ -191,12 +191,12 @@ class VacuumOutputPage(BasicPage):
         self.data_store = vacuum_calculator(self.data_store)
 
         self.update_property_value(VacuumOutputPageWidgets.LENGTH_LABEL.value,
-                                   self.data_store.get_data(DataKeys.L.value)[0])
+                                   self.data_store.get_data(DataKeys.L)[0])
         self.update_property_value(VacuumOutputPageWidgets.VELOCITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.V.value)[0])
+                                   self.data_store.get_data(DataKeys.V)[0])
         self.update_property_value(VacuumOutputPageWidgets.DIFFUSIVITY_LABEL.value,
-                                   self.data_store.get_data(DataKeys.DIFF_MIX.value)[0])
+                                   self.data_store.get_data(DataKeys.DIFF_MIX)[0])
         self.update_property_value(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
-                                   self.data_store.get_data(DataKeys.KN.value))
+                                   self.data_store.get_data(DataKeys.KN))
 
         self.update_grid_layout()

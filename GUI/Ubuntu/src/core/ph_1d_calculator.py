@@ -27,15 +27,16 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
     """
     try:
         # Input files
-        cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH.value)
-        gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME.value)
-        surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME.value)
-        udk_file_path = data_store.get_data(DataKeys.UDK_FILE_PATH.value)
+        cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH)
+        gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME)
+        surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME)
+        udk_file_path = data_store.get_data(DataKeys.UDK_FILE_PATH)
 
-        resolution_method = data_store.get_data(DataKeys.REACTOR_RESOLUTION_METHOD.value)
+        resolution_method = data_store.get_data(DataKeys.REACTOR_RESOLUTION_METHOD)
 
         if resolution_method == ReactorResolutionMethod.TRANSIENT:
-            reactor_class = TransientPseudoHomogeneous1DReactor(cantera_input_file_path, gas_phase_name, surface_phase_name)
+            reactor_class = TransientPseudoHomogeneous1DReactor(cantera_input_file_path, gas_phase_name,
+                                                                surface_phase_name)
         else:
             reactor_class = SteadyStatePseudoHomogeneous1DReactor(cantera_input_file_path, gas_phase_name,
                                                                   surface_phase_name)
@@ -43,7 +44,7 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
         uc = UnitConverter()
 
         # Coverage
-        initial_coverage = data_store.get_data(DataKeys.INITIAL_SURF_COMPOSITION.value)
+        initial_coverage = data_store.get_data(DataKeys.INITIAL_SURF_COMPOSITION)
 
         if udk_file_path is not None:
             reactor_class.set_user_defined_kinetic_model(udk_file_path)
@@ -51,32 +52,32 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
             reactor_class.set_initial_coverage(initial_coverage)
 
         # Length
-        length_tuple = data_store.get_data(DataKeys.LENGTH.value)
+        length_tuple = data_store.get_data(DataKeys.LENGTH)
         reactor_class.set_length(length_tuple[0],
                                  UnitDimensionHandler.from_human_to_code_ud(length_tuple[1]))
 
         # Diameter
-        diameter_tuple = data_store.get_data(DataKeys.DIAMETER.value)
+        diameter_tuple = data_store.get_data(DataKeys.DIAMETER)
         reactor_class.set_diameter(diameter_tuple[0],
                                    UnitDimensionHandler.from_human_to_code_ud(diameter_tuple[1]))
 
         # Pressure
-        pressure_tuple = data_store.get_data(DataKeys.INLET_P.value)
+        pressure_tuple = data_store.get_data(DataKeys.INLET_P)
         reactor_class.set_pressure(pressure_tuple[0],
                                    UnitDimensionHandler.from_human_to_code_ud(pressure_tuple[1]))
 
         # Catalytic load
-        alfa_tuple = data_store.get_data(DataKeys.ALFA.value)
+        alfa_tuple = data_store.get_data(DataKeys.ALFA)
         reactor_class.set_catalytic_load(alfa_tuple[0],
                                          UnitDimensionHandler.from_human_to_code_ud(alfa_tuple[1]))
 
         # Mass flow rate
-        q_tuple = data_store.get_data(DataKeys.MASS_FLOW_RATE.value)
+        q_tuple = data_store.get_data(DataKeys.MASS_FLOW_RATE)
         reactor_class.set_mass_flow_rate(q_tuple[0],
                                          UnitDimensionHandler.from_human_to_code_ud(q_tuple[1]))
 
         # Inlet composition
-        composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value)
+        composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION)
 
         if composition_tuple[1] == CompositionType.MOLE:
             reactor_class.set_inlet_mole_fraction(composition_tuple[0])
@@ -84,29 +85,29 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
             reactor_class.set_inlet_mass_fraction(composition_tuple[0])
 
         # Inlet temperature
-        temperature_tuple = data_store.get_data(DataKeys.INLET_T.value)
+        temperature_tuple = data_store.get_data(DataKeys.INLET_T)
         reactor_class.set_inlet_temperature(temperature_tuple[0],
                                             UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
 
         # Energy balance
-        energy_bool = data_store.get_data(DataKeys.ENERGY_BALANCE.value)
+        energy_bool = data_store.get_data(DataKeys.ENERGY_BALANCE)
         reactor_class.set_energy(energy_bool)
 
         # Inert gas specie
-        inert_specie_name = data_store.get_data(DataKeys.INERT_GAS_SPECIE.value)
+        inert_specie_name = data_store.get_data(DataKeys.INERT_GAS_SPECIE)
         reactor_class.set_inert_specie(inert_specie_name)
 
         # Inert coverage specie
-        inert_coverage_name = data_store.get_data(DataKeys.INERT_SURFACE_SPECIE.value)
+        inert_coverage_name = data_store.get_data(DataKeys.INERT_SURFACE_SPECIE)
         reactor_class.set_inert_coverage(inert_coverage_name)
 
         # Diffusion
-        diffusion = data_store.get_data(DataKeys.DIFFUSION.value)
+        diffusion = data_store.get_data(DataKeys.DIFFUSION)
         reactor_class.set_gas_diffusion(diffusion)
 
         if resolution_method == ReactorResolutionMethod.TRANSIENT:
             # Initial composition
-            composition_tuple = data_store.get_data(DataKeys.INITIAL_GAS_COMPOSITION.value)
+            composition_tuple = data_store.get_data(DataKeys.INITIAL_GAS_COMPOSITION)
 
             if composition_tuple[1] == CompositionType.MOLE:
                 reactor_class.set_initial_mole_fraction(composition_tuple[0])
@@ -114,16 +115,16 @@ def pseudo_homogeneous_1d_reactor_calculator(data_store, results) -> None:
                 reactor_class.set_initial_mass_fraction(composition_tuple[0])
 
             # Initial temperature
-            temperature_tuple = data_store.get_data(DataKeys.INITIAL_GAS_T.value)
+            temperature_tuple = data_store.get_data(DataKeys.INITIAL_GAS_T)
             reactor_class.set_initial_temperature(temperature_tuple[0],
                                                   UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
 
             # Integration time
-            tmax_tuple = data_store.get_data(DataKeys.TMAX.value)
+            tmax_tuple = data_store.get_data(DataKeys.TMAX)
             tmax = uc.convert_to_seconds(tmax_tuple[0],
                                          UnitDimensionHandler.from_human_to_code_ud(tmax_tuple[1]))
 
-            tstep_tuple = data_store.get_data(DataKeys.TSTEP.value)
+            tstep_tuple = data_store.get_data(DataKeys.TSTEP)
             tstep = uc.convert_to_seconds(tstep_tuple[0],
                                           UnitDimensionHandler.from_human_to_code_ud(tstep_tuple[1]))
 

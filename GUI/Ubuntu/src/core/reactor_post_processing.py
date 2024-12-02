@@ -18,20 +18,20 @@ def reactor_saver(data_store) -> None:
     Returns
     -------
     """
-    cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH.value)
-    gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME.value)
-    surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME.value)
-    reactor_model = data_store.get_data(DataKeys.REACTOR_TYPE.value)
+    cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH)
+    gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME)
+    surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME)
+    reactor_model = data_store.get_data(DataKeys.REACTOR_TYPE)
 
     reactor_class = reactor_model(cantera_input_file_path, gas_phase_name, surface_phase_name)
 
-    results = data_store.get_data(DataKeys.REACTOR_RESULTS.value)
+    results = data_store.get_data(DataKeys.REACTOR_RESULTS)
     reactor_class.set_results(*results)
 
     saver = ReactorSaver(reactor_class)
 
-    composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value)
-    output_file_path = data_store.get_data(DataKeys.OUTPUT_FILE_PATH.value)
+    composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE)
+    output_file_path = data_store.get_data(DataKeys.OUTPUT_FILE_PATH)
 
     if composition_type == CompositionType.MOLE:
         saver.save_using_mole_fraction(output_file_path)
@@ -50,26 +50,29 @@ def reactor_plotter(data_store) -> None:
     Returns
     -------
     """
-    cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH.value)
-    gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME.value)
-    surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME.value)
-    reactor_model = data_store.get_data(DataKeys.REACTOR_TYPE.value)
+
+    # TODO - Add solid properties plotting
+
+    cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH)
+    gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME)
+    surface_phase_name = data_store.get_data(DataKeys.SURFACE_PHASE_NAME)
+    reactor_model = data_store.get_data(DataKeys.REACTOR_TYPE)
 
     reactor_class = reactor_model(cantera_input_file_path, gas_phase_name, surface_phase_name)
 
-    results = data_store.get_data(DataKeys.REACTOR_RESULTS.value)
+    results = data_store.get_data(DataKeys.REACTOR_RESULTS)
     reactor_class.set_results(*results)
 
-    color_map = data_store.get_data(DataKeys.COLORMAP.value)
+    color_map = data_store.get_data(DataKeys.COLORMAP)
 
     plotter = ReactorPlotter(reactor_class, colormap=color_map)
 
-    plotter.set_rc_params(AppConfig.MATPLOTLIB_TOOLBAR.value)
+    plotter.set_rc_params(AppConfig.MATPLOTLIB_TOOLBAR)
 
-    composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value)
-    species_list = data_store.get_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED.value)
-    surface_species_list = data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES_TO_BE_PLOTTED.value)
-    temperature_list = data_store.get_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED.value)
+    composition_type = data_store.get_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE)
+    species_list = data_store.get_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED)
+    surface_species_list = data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES_TO_BE_PLOTTED)
+    temperature_list = data_store.get_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED)
 
     if len(species_list) > 0:
         if composition_type == CompositionType.MOLE:

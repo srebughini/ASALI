@@ -134,7 +134,7 @@ class DialogPagesHandler:
                                DataKeys.REACTOR_NAME,
                                DataKeys.GAS_PHASE_NAME,
                                DataKeys.SURFACE_PHASE_NAME]):
-            file_path = self.data_store.get_data(k.value)
+            file_path = self.data_store.get_data(k)
             label = QLabel("Not selected") if file_path is None else QLabel(file_path)
             label.setProperty("class", "italic")
             label.setTextInteractionFlags(Qt.TextSelectableByMouse)
@@ -143,8 +143,8 @@ class DialogPagesHandler:
         self.data_store = gas_species_names(self.data_store)
         self.data_store = surface_species_names(self.data_store)
 
-        gas_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)
-        surf_names = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)
+        gas_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
+        surf_names = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES)
 
         if gas_names is None:
             gas_names = list()

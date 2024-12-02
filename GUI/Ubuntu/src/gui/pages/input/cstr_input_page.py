@@ -132,20 +132,20 @@ class CstrInputPage(BasicReactorInputPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.REACTOR_NAME.value, CstrInputPageConfig.REACTOR_NAME.value)
-        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, CstrInputPageConfig.TEMPERATURES.value)
-        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, CstrInputPageConfig.NAME.value)
-        self.data_store.update_data(DataKeys.REACTOR_TYPE.value, CstrReactor)
+        self.data_store.update_data(DataKeys.REACTOR_NAME, CstrInputPageConfig.REACTOR_NAME.value)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES, CstrInputPageConfig.TEMPERATURES.value)
+        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME, CstrInputPageConfig.NAME.value)
+        self.data_store.update_data(DataKeys.REACTOR_TYPE, CstrReactor)
 
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES),
                                       InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES),
                                       InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
 
@@ -189,10 +189,10 @@ class CstrInputPage(BasicReactorInputPage):
 
         """
         # Initial number of surface species
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS, self.surf_ns)
 
         # Initial number of gas species
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+        self.data_store.update_data(DataKeys.INITIAL_NS, self.ns)
 
         # Volume
         self.read_data_from_property_line(CstrInputPageWidgets.VOLUME_EDIT_LINE.value,
@@ -210,18 +210,18 @@ class CstrInputPage(BasicReactorInputPage):
 
         # Coverage
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
                                              i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)
+        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION, value)
 
         # Initial composition
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
             specie_value = self.findChild(QLineEdit,
@@ -230,9 +230,9 @@ class CstrInputPage(BasicReactorInputPage):
 
         ud = self.findChild(QComboBox, CstrInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         if "mol" in ud.lower():
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MOLE))
         else:
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MASS))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MASS))
 
         # Initial temperature
         self.read_data_from_property_line(CstrInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
@@ -241,7 +241,7 @@ class CstrInputPage(BasicReactorInputPage):
 
         # Energy balance
         checkbox = self.findChild(QCheckBox, CstrInputPageWidgets.ENERGY_CHECK_BOX.value)
-        self.data_store.update_data(DataKeys.ENERGY_BALANCE.value, checkbox.isChecked())
+        self.data_store.update_data(DataKeys.ENERGY_BALANCE, checkbox.isChecked())
 
         # Integration time
         self.read_data_from_property_line(CstrInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,

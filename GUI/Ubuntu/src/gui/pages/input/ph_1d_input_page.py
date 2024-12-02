@@ -35,9 +35,6 @@ class Ph1dInputPage(BasicReactorInputPage):
         # Load the UI from the .ui file
         uic.loadUi(Ph1dInputPageConfig.PATH.value, self)
 
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, 0)
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, 0)
-
         self.update_tab_names(Ph1dInputPageWidgets.TAB_WIDGET.value)
 
         self.update_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
@@ -153,26 +150,26 @@ class Ph1dInputPage(BasicReactorInputPage):
         # Update coverage
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES),
                                       InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
         # Update initial composition
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES),
                                       InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
 
         # Update inert gas specie
         dropdown = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
         dropdown.clear()
-        dropdown.addItems(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value))
+        dropdown.addItems(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES))
 
         # Update inert surface specie
         dropdown = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
         dropdown.clear()
-        dropdown.addItems(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))
+        dropdown.addItems(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES))
 
         for tab_name in self.tab_names:
             layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
@@ -239,7 +236,7 @@ class Ph1dInputPage(BasicReactorInputPage):
 
             self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
                                         SteadyStatePseudoHomogeneous1DReactor)
-            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD,
                                         ReactorResolutionMethod.STEADY_STATE)
 
         else:
@@ -247,9 +244,9 @@ class Ph1dInputPage(BasicReactorInputPage):
                 w = self.findChild(t, n)
                 #w.show()
                 self.enable_widget(w)
-            self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
+            self.data_store.update_data(DataKeys.REACTOR_TYPE,
                                         TransientPseudoHomogeneous1DReactor)
-            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD,
                                         ReactorResolutionMethod.TRANSIENT)
 
     def read_data(self) -> None:
@@ -260,10 +257,10 @@ class Ph1dInputPage(BasicReactorInputPage):
 
         """
         # Initial number of surface species
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS, self.surf_ns)
 
         # Initial number of gas species
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+        self.data_store.update_data(DataKeys.INITIAL_NS, self.ns)
 
         # Diameter
         self.read_data_from_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
@@ -287,18 +284,18 @@ class Ph1dInputPage(BasicReactorInputPage):
 
         # Coverage
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
                                              i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)
+        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION, value)
 
         # Initial composition
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
             specie_value = self.findChild(QLineEdit,
@@ -306,9 +303,9 @@ class Ph1dInputPage(BasicReactorInputPage):
             value[specie_name] = float(specie_value)
         ud = self.findChild(QComboBox, Ph1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         if "mol" in ud.lower():
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MOLE))
         else:
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MASS))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MASS))
 
         # Initial temperature
         self.read_data_from_property_line(Ph1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
@@ -317,19 +314,19 @@ class Ph1dInputPage(BasicReactorInputPage):
 
         # Energy balance
         checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.ENERGY_CHECK_BOX.value)
-        self.data_store.update_data(DataKeys.ENERGY_BALANCE.value, checkbox.isChecked())
+        self.data_store.update_data(DataKeys.ENERGY_BALANCE, checkbox.isChecked())
 
         # Diffusion
         checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
-        self.data_store.update_data(DataKeys.DIFFUSION.value, checkbox.isChecked())
+        self.data_store.update_data(DataKeys.DIFFUSION, checkbox.isChecked())
 
         # Inert gas specie
         combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
-        self.data_store.update_data(DataKeys.INERT_GAS_SPECIE.value, combo_box.currentText())
+        self.data_store.update_data(DataKeys.INERT_GAS_SPECIE, combo_box.currentText())
 
         # Inert surface specie
         combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
-        self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE.value, combo_box.currentText())
+        self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE, combo_box.currentText())
 
         # Integration time
         self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,

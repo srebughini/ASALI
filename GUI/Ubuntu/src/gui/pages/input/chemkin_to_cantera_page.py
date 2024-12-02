@@ -28,7 +28,7 @@ class ChemkinToCanteraPage(BasicPage):
         # Load the UI from the .ui file
         uic.loadUi(ChemkinToCanteraPageConfig.PATH.value, self)
 
-        self.data_store.update_data(DataKeys.SURFACE_FILE_PATH.value, None)
+        self.data_store.update_data(DataKeys.SURFACE_FILE_PATH, None)
 
         self.update_buttons()
         self.update_labels()
@@ -99,7 +99,7 @@ class ChemkinToCanteraPage(BasicPage):
                   DataKeys.THERMO_FILE_PATH,
                   DataKeys.KINETIC_FILE_PATH,
                   DataKeys.SURFACE_FILE_PATH]:
-            self.data_store.update_data(k.value, None)
+            self.data_store.update_data(k, None)
 
     def convert(self) -> None:
         """
@@ -154,7 +154,7 @@ class ChemkinToCanteraPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.THERMO_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.THERMO_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.THERMO_FILE_PATH, file_path)
 
     def load_transport_file(self) -> None:
         """
@@ -169,7 +169,7 @@ class ChemkinToCanteraPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.TRANSPORT_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.TRANSPORT_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.TRANSPORT_FILE_PATH, file_path)
 
     def load_gas_kinetic_file(self) -> None:
         """
@@ -184,7 +184,7 @@ class ChemkinToCanteraPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.KINETIC_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.KINETIC_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.KINETIC_FILE_PATH, file_path)
 
     def load_surface_kinetic_file(self) -> None:
         """
@@ -199,4 +199,4 @@ class ChemkinToCanteraPage(BasicPage):
         if file_path:
             label = self.findChild(QLabel, ChemkinToCanteraPageWidgets.SURFACE_LABEL.value)
             label.setText(os.path.basename(file_path))
-            self.data_store.update_data(DataKeys.SURFACE_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.SURFACE_FILE_PATH, file_path)

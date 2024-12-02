@@ -54,23 +54,23 @@ class ChemistryInputPage(BasicPage):
 
         """
         # Save file path in the DataStore
-        self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH.value,
+        self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH,
                                     file_path)
 
         # Save check in the DataStore
-        self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH.value, is_default)
+        self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH, is_default)
 
         # Save the gas phase name in the DataStore
-        self.data_store.update_data(DataKeys.GAS_PHASE_NAME.value,
+        self.data_store.update_data(DataKeys.GAS_PHASE_NAME,
                                     InputFileController.extract_gas_phase_name_from_cantera(file_path))
 
         # Save the gas phase name in the DataStore
-        self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME.value,
+        self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME,
                                     InputFileController.extract_surface_phase_name_from_cantera(file_path))
 
         # Set bools for properties evaluation
-        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_UPDATE.value, True)
-        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_UPDATE.value, True)
+        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_UPDATE, True)
+        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_UPDATE, True)
 
     def update_buttons(self) -> None:
         """

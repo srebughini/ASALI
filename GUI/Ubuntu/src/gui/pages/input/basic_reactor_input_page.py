@@ -206,7 +206,7 @@ class BasicReactorInputPage(BasicPage):
         """
         value = float(self.findChild(QLineEdit, edit_line_name).text())
         ud = self.findChild(QComboBox, combo_box_name).currentText()
-        self.data_store.update_data(data_key.value, (value, ud))
+        self.data_store.update_data(data_key, (value, ud))
 
     def load_udk_file(self) -> None:
         """
@@ -219,7 +219,7 @@ class BasicReactorInputPage(BasicPage):
                                                   AppConfig.ASALI_FILE_TYPE.value)
 
         if file_path:
-            self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH.value, file_path)
+            self.data_store.update_data(DataKeys.USER_DEFINED_KINETIC_FILE_PATH, file_path)
 
     def add_coverage_line(self) -> None:
         """
@@ -413,7 +413,7 @@ class BasicReactorInputPage(BasicPage):
 
         if results is not None:
             if results[0] is None:
-                self.data_store.update_data(DataKeys.REACTOR_RESULTS.value, (results[1], results[2], results[3]))
+                self.data_store.update_data(DataKeys.REACTOR_RESULTS, (results[1], results[2], results[3]))
 
                 if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
                     return self.page_switched.emit(PlotAndSaveOutputPageConfig.NAME.value)

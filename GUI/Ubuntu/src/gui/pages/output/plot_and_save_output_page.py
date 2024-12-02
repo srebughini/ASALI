@@ -120,23 +120,23 @@ class PlotAndSaveOutputPage(BasicPage):
         self.data_store = gas_species_names(self.data_store)
         self.data_store = surface_species_names(self.data_store)
 
-        for i, n in enumerate(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)):
+        for i, n in enumerate(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)):
             check_box = QCheckBox(n)
             check_box.setObjectName(f"{n}")
             grid_layout.addWidget(check_box, row_idx + i + 1, 0)
 
-        for i, n in enumerate(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value)):
+        for i, n in enumerate(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES)):
             check_box = QCheckBox(n)
             check_box.setObjectName(f"{n}")
             grid_layout.addWidget(check_box, row_idx + i + 1, 1)
 
-        for i, n in enumerate(self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value)):
+        for i, n in enumerate(self.data_store.get_data(DataKeys.TEMPERATURE_TYPES)):
             check_box = QCheckBox(n)
             check_box.setObjectName(f"{n}")
             grid_layout.addWidget(check_box, row_idx + i + 1, 2)
 
-        row_idx = row_idx + max([len(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value)),
-                                 len(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))])
+        row_idx = row_idx + max([len(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)),
+                                 len(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES))])
 
         self._button_row_idx = row_idx + 1
         self.move_buttons_in_grid_layout(grid_layout, self._button_row_idx)
@@ -148,15 +148,15 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
-        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
-        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value):
+        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
@@ -170,15 +170,15 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
 
-        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
 
-        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value):
+        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
 
@@ -193,7 +193,7 @@ class PlotAndSaveOutputPage(BasicPage):
         signal: pyqtSignal
             Signal with the next page name
         """
-        reactor_page_name = self.data_store.get_data(DataKeys.REACTOR_PAGE_NAME.value)
+        reactor_page_name = self.data_store.get_data(DataKeys.REACTOR_PAGE_NAME)
         return self.page_switched.emit(reactor_page_name)
 
     def on_select_button_click_data(self) -> None:
@@ -203,19 +203,19 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             if not check_box.isChecked():
                 self.select_all()
                 return None
 
-        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value):
+        for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES):
             check_box = self.findChild(QCheckBox, n)
             if not check_box.isChecked():
                 self.select_all()
                 return None
 
-        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value):
+        for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES):
             check_box = self.findChild(QCheckBox, n)
             if not check_box.isChecked():
                 self.select_all()
@@ -234,28 +234,28 @@ class PlotAndSaveOutputPage(BasicPage):
                                           PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
 
         if 'mol' in composition_type.lower():
-            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MOLE)
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MOLE)
         else:
-            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MASS)
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MASS)
 
-        self.data_store.update_data(DataKeys.COLORMAP.value,
+        self.data_store.update_data(DataKeys.COLORMAP,
                                     self.findChild(QComboBox,
                                                    PlotAndSaveOutputPageWidgets.COLOR_COMBO_BOX.value).currentText())
 
-        species_list = [n for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value) if
+        species_list = [n for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES) if
                         self.findChild(QCheckBox, n).isChecked()]
 
-        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED.value, species_list)
+        self.data_store.update_data(DataKeys.GAS_SPECIES_NAMES_TO_BE_PLOTTED, species_list)
 
-        surface_species_list = [n for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value) if
+        surface_species_list = [n for n in self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES) if
                                 self.findChild(QCheckBox, n).isChecked()]
 
-        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_TO_BE_PLOTTED.value, surface_species_list)
+        self.data_store.update_data(DataKeys.SURFACE_SPECIES_NAMES_TO_BE_PLOTTED, surface_species_list)
 
-        temperature_list = [n for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES.value) if
+        temperature_list = [n for n in self.data_store.get_data(DataKeys.TEMPERATURE_TYPES) if
                             self.findChild(QCheckBox, n).isChecked()]
 
-        self.data_store.update_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED.value, temperature_list)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TO_BE_PLOTTED, temperature_list)
 
         reactor_plotter(self.data_store)
 
@@ -270,15 +270,15 @@ class PlotAndSaveOutputPage(BasicPage):
                                           PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
 
         if 'mol' in composition_type.lower():
-            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MOLE)
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MOLE)
         else:
-            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE.value, CompositionType.MASS)
+            self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MASS)
 
         output_file_path = self.dialog_handler.save_file(AppConfig.EXCEL_FILE_SAVE.value,
                                                          AppConfig.EXCEL_FILE_TYPE.value)
 
         if output_file_path is not None:
-            self.data_store.update_data(DataKeys.OUTPUT_FILE_PATH.value, output_file_path)
+            self.data_store.update_data(DataKeys.OUTPUT_FILE_PATH, output_file_path)
 
             try:
                 reactor_saver(self.data_store)

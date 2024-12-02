@@ -169,9 +169,9 @@ class Het1dInputPage(BasicReactorInputPage):
         -------
 
         """
-        self.data_store.update_data(DataKeys.REACTOR_NAME.value, Het1dInputPageConfig.REACTOR_NAME.value)
-        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES.value, Het1dInputPageConfig.TEMPERATURES.value)
-        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME.value, Het1dInputPageConfig.NAME.value)
+        self.data_store.update_data(DataKeys.REACTOR_NAME, Het1dInputPageConfig.REACTOR_NAME.value)
+        self.data_store.update_data(DataKeys.TEMPERATURE_TYPES, Het1dInputPageConfig.TEMPERATURES.value)
+        self.data_store.update_data(DataKeys.REACTOR_PAGE_NAME, Het1dInputPageConfig.NAME.value)
 
         self.set_resolution_method()
         self.set_reactor_geometry()
@@ -179,26 +179,26 @@ class Het1dInputPage(BasicReactorInputPage):
         # Update coverage
         self.data_store = surface_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES),
                                       InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value)
 
         # Update initial composition
         self.data_store = gas_species_names(self.data_store)
         self.update_composition_names(0,
-                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value),
+                                      self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES),
                                       InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value,
                                       InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value)
 
         # Update inert gas specie
         dropdown = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
         dropdown.clear()
-        dropdown.addItems(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES.value))
+        dropdown.addItems(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES))
 
         # Update inert surface specie
         dropdown = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
         dropdown.clear()
-        dropdown.addItems(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES.value))
+        dropdown.addItems(self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES))
 
         for tab_name in self.tab_names:
             layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
@@ -273,7 +273,7 @@ class Het1dInputPage(BasicReactorInputPage):
                 w = self.findChild(t, n)
                 self.enable_widget(w)
 
-            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY.value,
+            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY,
                                         ReactorGeometry.PACKED_BED)
         elif geometry_method_combo_box.currentIndex() == 1:  # Honeycomb
             widget_dict = {Het1dInputPageWidgets.PARTICLE_DIAMETER_EDIT_LINE.value: QLineEdit,
@@ -295,7 +295,7 @@ class Het1dInputPage(BasicReactorInputPage):
                 w = self.findChild(t, n)
                 self.enable_widget(w)
 
-            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY.value,
+            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY,
                                         ReactorGeometry.HONEYCOMB)
         else:  # Tubular
             widget_dict = {Het1dInputPageWidgets.PARTICLE_DIAMETER_EDIT_LINE.value: QLineEdit,
@@ -317,7 +317,7 @@ class Het1dInputPage(BasicReactorInputPage):
                 w = self.findChild(t, n)
                 self.enable_widget(w)
 
-            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY.value,
+            self.data_store.update_data(DataKeys.REACTOR_GEOMETRY,
                                         ReactorGeometry.TUBULAR)
 
     def set_resolution_method(self) -> None:
@@ -340,18 +340,18 @@ class Het1dInputPage(BasicReactorInputPage):
                 w = self.findChild(t, n)
                 self.disable_widget(w)
 
-            self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
+            self.data_store.update_data(DataKeys.REACTOR_TYPE,
                                         SteadyStateHeterogeneous1DReactor)
-            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD,
                                         ReactorResolutionMethod.STEADY_STATE)
 
         else:
             for n, t in widget_dict.items():
                 w = self.findChild(t, n)
                 self.enable_widget(w)
-            self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
+            self.data_store.update_data(DataKeys.REACTOR_TYPE,
                                         TransientHeterogeneous1DReactor)
-            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
+            self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD,
                                         ReactorResolutionMethod.TRANSIENT)
 
     def read_data(self) -> None:
@@ -363,85 +363,85 @@ class Het1dInputPage(BasicReactorInputPage):
         """
         pass
         """
-        # Initial number of surface species
-        self.data_store.update_data(DataKeys.INITIAL_SURF_NS.value, self.surf_ns)
+       # Initial number of surface species
+        self.data_store.update_data(DataKeys.INITIAL_SURF_NS, self.surf_ns)
 
         # Initial number of gas species
-        self.data_store.update_data(DataKeys.INITIAL_NS.value, self.ns)
+        self.data_store.update_data(DataKeys.INITIAL_NS, self.ns)
 
         # Diameter
-        self.read_data_from_property_line(Het1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.DIAMETER_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.DIAMETER_COMBO_BOX.value,
                                           DataKeys.DIAMETER)
 
         # Length
-        self.read_data_from_property_line(Het1dInputPageWidgets.LENGTH_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.LENGTH_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.LENGTH_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.LENGTH_COMBO_BOX.value,
                                           DataKeys.LENGTH)
 
         # Catalytic load
-        self.read_data_from_property_line(Het1dInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.CATALYTIC_LOAD_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.CATALYTIC_LOAD_COMBO_BOX.value,
                                           DataKeys.ALFA)
 
         # Mass flow rate
-        self.read_data_from_property_line(Het1dInputPageWidgets.MASS_FLOW_RATE_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.MASS_FLOW_RATE_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.MASS_FLOW_RATE_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.MASS_FLOW_RATE_COMBO_BOX.value,
                                           DataKeys.MASS_FLOW_RATE)
 
         # Coverage
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_SURF_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value.format(
                                              i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION.value, value)
+        self.data_store.update_data(DataKeys.INITIAL_SURF_COMPOSITION, value)
 
         # Initial composition
         value = {}
-        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS.value) + 1)):
+        for i in range(0, int(self.data_store.get_data(DataKeys.INITIAL_NS) + 1)):
             specie_name = self.findChild(QComboBox,
                                          InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(i)).currentText()
             specie_value = self.findChild(QLineEdit,
                                           InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(i)).text()
             value[specie_name] = float(specie_value)
-        ud = self.findChild(QComboBox, Het1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+        ud = self.findChild(QComboBox, Ph1dInputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
         if "mol" in ud.lower():
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MOLE))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MOLE))
         else:
-            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION.value, (value, CompositionType.MASS))
+            self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION, (value, CompositionType.MASS))
 
         # Initial temperature
-        self.read_data_from_property_line(Het1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.TEMPERATURE_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.TEMPERATURE_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.TEMPERATURE_COMBO_BOX.value,
                                           DataKeys.INITIAL_GAS_T)
 
         # Energy balance
-        checkbox = self.findChild(QCheckBox, Het1dInputPageWidgets.ENERGY_CHECK_BOX.value)
-        self.data_store.update_data(DataKeys.ENERGY_BALANCE.value, checkbox.isChecked())
+        checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.ENERGY_CHECK_BOX.value)
+        self.data_store.update_data(DataKeys.ENERGY_BALANCE, checkbox.isChecked())
 
         # Diffusion
-        checkbox = self.findChild(QCheckBox, Het1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
-        self.data_store.update_data(DataKeys.DIFFUSION.value, checkbox.isChecked())
+        checkbox = self.findChild(QCheckBox, Ph1dInputPageWidgets.DIFFUSION_CHECK_BOX.value)
+        self.data_store.update_data(DataKeys.DIFFUSION, checkbox.isChecked())
 
         # Inert gas specie
-        combo_box = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
-        self.data_store.update_data(DataKeys.INERT_GAS_SPECIE.value, combo_box.currentText())
+        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_GAS_SPECIE_COMBO_BOX.value)
+        self.data_store.update_data(DataKeys.INERT_GAS_SPECIE, combo_box.currentText())
 
         # Inert surface specie
-        combo_box = self.findChild(QComboBox, Het1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
-        self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE.value, combo_box.currentText())
+        combo_box = self.findChild(QComboBox, Ph1dInputPageWidgets.INERT_SURFACE_SPECIE_COMBO_BOX.value)
+        self.data_store.update_data(DataKeys.INERT_SURFACE_SPECIE, combo_box.currentText())
 
         # Integration time
-        self.read_data_from_property_line(Het1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_TIME_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.INTEGRATION_TIME_COMBO_BOX.value,
                                           DataKeys.TMAX)
 
         # Integration time step
-        self.read_data_from_property_line(Het1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
-                                          Het1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
+        self.read_data_from_property_line(Ph1dInputPageWidgets.INTEGRATION_STEP_EDIT_LINE.value,
+                                          Ph1dInputPageWidgets.INTEGRATION_STEP_COMBO_BOX.value,
                                           DataKeys.TSTEP)
         """
