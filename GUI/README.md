@@ -8,8 +8,6 @@ Let's go straight to the point! Asali main features are:
 * Evaluation of thermodynamic equilibrium of ideal gas mixture
 * Estimation of vacuum properties based of gas kinetic theory
 * Modeling catalytic reactors
-* Modeling catalytic pellets
-* Matlab and Octave interface for thermodynamic and transport properties
 
 If you are interested in  more details regarding models implemented in Asali have a look at the following paragraph; if not, jump to section number 2 for the installation instructions.
 ### 1.1 Thermodynamic and transport properties
@@ -42,27 +40,17 @@ Different catalytic reactor models are implemented in Asali:
 * Continuous stirred tank reactor model (CSTR)
 * 1D Pseudo-homogeneous plug flow reactor model (PFR)
 * 1D Heterogeneous plug flow reactor model
-* Pressure drops
 
 First of all, the transport and thermodynamic properties used by Asali in the reactor models are based on [Cantera](https://cantera.org/). Therefore the user can select either the `Default transport/thermodynamic properties` or `Load CANTERA kinetic/properties file` to performe a detailed simulations of catalytic reactors. However, since in most of the engineering problems, the transport and thermodynamic properties are considered constant, Asali allows users implement their own constant transport and thermodynamic properties. To enable this feature choose `User defined constant properties` option in the kinetic scheme window selection.
 Secondly, from a kinetic point of view, all reactor models implemented in Asali handle micro-kinetic, user defined kinetic schemes and homogeneous reactions. In particular, the micro-kinetic or homogeneous schemes must be written in [Cantera](https://cantera.org/) format. Moreover, for those users who want to implement their own reaction rates, Asali has a user-friendly interface allowing them write their own kinetic scheme.
 Finally, the 1D Pseudo-homogeneous plug flow reactor model can be solved in transient and steady state mode, allowing a deep understading and analysis of the reactor behaviour.
-The `Pressure drops` option is a calculator of pressure drops for different reactor geometries (e.g. honeycomb, packed bed) based on state-of-the-art correlations.
-### 1.6 Catalytic pellets
-Different catalytic pellet geometries are implemented in ASALI:
-* Slab
-* Sphere
-* Cylinder
-
-These models handle transport and thermodynamic properties from [Cantera](https://cantera.org/) or by using `User defined constant properties`. The diffusion coefficient inside the pellets is described by using a *reduction coefficient* or an *epsi-tau model*. From a kinetic point of view, all pellet models implemented in Asali handle micro-kinetic, user defined kinetic schemes and homogeneous reactions.
 
 # **2. Installation instructions**
 Asali is based on different open-source codes:
-* [Cantera](https://cantera.org/): estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database
-* [Eigen libraries](http://eigen.tuxfamily.org/index.php?title=Main_Page): linear system solver and handling of numerical issues
-* [Sundials libraries](https://computation.llnl.gov/projects/sundials): IDA and CVODE solvers for Ordinay Differentional Equation (ODE) and Differential and Algebraic Equation (DAE) systems
-* [Gtkmm](https://www.gtkmm.org/en/): gnome based graphical interface
-* [PLplot](http://plplot.org/): a cross-platform software package for creating scientific plots
+* [Cantera](https://cantera.org/): to estimate thermodynamic and transport properties based on the kinetic gas theory and NASA database.
+* [Asalipy](https://srebughini.github.io/ASALI/docs/api-python/): to model of chemical reactors.
+* [Matplotlib](https://matplotlib.org/): to plot results.
+* [Pandas](https://pandas.pydata.org/): to save results.
 
 Asali has been tested on different Operating System (OS). If yours is not in the list below, please send us an [email](ste.rebu@outlook.it).
 
@@ -72,6 +60,7 @@ Asali has been tested on:
 * *Ubuntu 18.04 LTS*
 * *Ubuntu 20.04 LTS*
 * *Ubuntu 22.04 LTS*
+* *Ubuntu 24.04 LTS*
 * *Debian Wheezy* 
 
 Installation instructions can be found [here](LINUX.md).
@@ -82,11 +71,7 @@ Asali has been tested on:
 
 To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
 
-### 2.3 Mingw-w64 on Windows
-[Mingw-w64](https://www.msys2.org/) is a collection of tools and libraries providing you with an easy-to-use environment for building, installing and running native Windows software. This tools are those used to compile the Windows version of Asali.
-Installation instructions can be found [here](MINGW64.md).
-
-### 2.4 Docker
+### 2.3 Docker
 Asali can be installed using [docker](https://docs.docker.com/). Installation instructions can be found [here](DOCKER.md).
 
 
