@@ -20,6 +20,11 @@
                         </item>
                         <item>
                             <property name="text">
+                                <string>Linear regression of thermodynamic and transport properties</string>
+                            </property>
+                         </item>
+                        <item>
+                            <property name="text">
                                 <string>Vacuum properties</string>
                             </property>
                         </item>

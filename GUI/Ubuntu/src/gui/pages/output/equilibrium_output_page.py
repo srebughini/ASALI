@@ -14,7 +14,7 @@ from src.gui.widgets.output.equilibrium_output_page import EquilibriumOutputPage
 class EquilibriumOutputPage(BasicPage):
     def __init__(self, data_store, dialog_handler):
         """
-        Vacuum properties output layout
+        Equilibrium output layout
         Parameters
         ----------
         data_store: DataStore

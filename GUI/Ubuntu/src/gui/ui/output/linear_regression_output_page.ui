@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>LinearRegressionOutputPage</class>
+    <widget class="QWidget" name="LinearRegressionOutputPage">
+        <layout class="QGridLayout" name="gridLayout">
+            <!-- Row 0 -->
+            <item row="0" column="0">
+                <widget class="QLabel" name="temperatureLabel">
+                    <property name="text">
+                        <string>Temperature range:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1">
+                <widget class="QLineEdit" name="minTemperatureEditLine">
+                    <property name="text">
+                        <string>298.15</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="2">
+                <widget class="QLineEdit" name="maxTemperatureEditLine">
+                    <property name="text">
+                        <string>773.15</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="3">
+                <widget class="QComboBox" name="temperatureComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 1 -->
+            <item row="1" column="0" colspan="4">
+                <widget class="QLabel" name="regressionLabel">
+                    <property name="text">
+                        <string>Linear regression</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 2 -->
+            <item row="2" column="0" colspan="2">
+                <widget class="QLabel" name="mathLabel">
+                    <property name="text">
+                        <string>y=aT + b</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="2">
+                <widget class="QLabel" name="aLabel">
+                    <property name="text">
+                        <string>Linear coefficient (a):</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="3">
+                <widget class="QLabel" name="bLabel">
+                    <property name="text">
+                        <string>Intercept (b):</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 3 -->
+            <item row="3" column="0">
+                <widget class="QLabel" name="rhoNameLabel">
+                    <property name="text">
+                        <string>Density:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QLabel" name="rhoALabel">
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="2">
+                <widget class="QLabel" name="rhoBLabel">
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="3">
+                <widget class="QComboBox" name="rhoComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 5 -->
+            <item row="5" column="0">
+                <widget class="QPushButton" name="backButton">
+                    <property name="text">
+                        <string>&#x2B9C; Back</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Go back to calculation input page</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="5" column="1" colspan="2">
+                <widget class="QPushButton" name="calculateButton">
+                    <property name="text">
+                        <string>Calculate</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Calculate linear regression</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

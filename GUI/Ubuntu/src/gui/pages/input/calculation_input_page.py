@@ -9,6 +9,7 @@ from src.config.cstr_input_page_config import CstrInputPageConfig
 from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
 from src.config.het_1d_input_page_config import Het1dInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
+from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
 from src.config.vacuum_output_page_config import VacuumOutputPageConfig
@@ -198,15 +199,18 @@ class CalculationInputPage(BasicPage):
         if combo_box.currentIndex() == 0:
             # Thermodynamic and transport properties
             return self.page_switched.emit(PropertiesOutputPageConfig.NAME.value)
-
         elif combo_box.currentIndex() == 1:
+            # Linear regression of thermodynamic and transport properties
+            return self.page_switched.emit(LinearRegressionOutputPageConfig.NAME.value)
+
+        elif combo_box.currentIndex() == 2:
             # Vacuum properties
             return self.page_switched.emit(VacuumOutputPageConfig.NAME.value)
 
-        elif combo_box.currentIndex() == 2:
+        elif combo_box.currentIndex() == 3:
             # Chemical equilibrium
             return self.page_switched.emit(EquilibriumOutputPageConfig.NAME.value)
-        elif combo_box.currentIndex() == 3:
+        elif combo_box.currentIndex() == 4:
             # Batch
             if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
@@ -215,7 +219,7 @@ class CalculationInputPage(BasicPage):
 
             return self.page_switched.emit(BatchInputPageConfig.NAME.value)
 
-        elif combo_box.currentIndex() == 4:
+        elif combo_box.currentIndex() == 5:
             # CSTR
             if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
@@ -223,7 +227,7 @@ class CalculationInputPage(BasicPage):
                 return None
 
             return self.page_switched.emit(CstrInputPageConfig.NAME.value)
-        elif combo_box.currentIndex() == 5:
+        elif combo_box.currentIndex() == 6:
             # 1d ph
             if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(
@@ -231,7 +235,7 @@ class CalculationInputPage(BasicPage):
                 return None
 
             return self.page_switched.emit(Ph1dInputPageConfig.NAME.value)
-        elif combo_box.currentIndex() == 6:
+        elif combo_box.currentIndex() == 7:
             #1d het
             if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH):
                 self.dialog_handler.error_message(

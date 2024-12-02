@@ -9,6 +9,7 @@ from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
 from src.config.cstr_input_page_config import CstrInputPageConfig
 from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
 from src.config.het_1d_input_page_config import Het1dInputPageConfig
+from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
@@ -26,6 +27,7 @@ from src.gui.pages.input.cstr_input_page import CstrInputPage
 from src.gui.pages.input.het_1d_input_page import Het1dInputPage
 from src.gui.pages.input.ph_1d_input_page import Ph1dInputPage
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
+from src.gui.pages.output.linear_regression_output_page import LinearRegressionOutputPage
 from src.gui.pages.output.plot_and_save_output_page import PlotAndSaveOutputPage
 from src.gui.pages.output.properties_output_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
@@ -105,7 +107,9 @@ class MainWindow(QMainWindow):
                                                           self.run_bar),
             Het1dInputPageConfig.NAME.value: Het1dInputPage(self.data_store,
                                                             self.dialog_handler,
-                                                            self.run_bar)
+                                                            self.run_bar),
+            LinearRegressionOutputPageConfig.NAME.value: LinearRegressionOutputPage(self.data_store,
+                                                                                    self.dialog_handler)
         }
 
         for page in self.pages.values():
