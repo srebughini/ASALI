@@ -10,7 +10,6 @@ from src.controllers.thread_handler import ThreadHandler
 from src.core.data_keys import DataKeys
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.input.batch_input_page import BatchInputPageWidgets
 
 
 class BasicReactorInputPage(BasicPage):

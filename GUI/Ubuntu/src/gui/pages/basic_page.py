@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel
+from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect
 
 from src.config.input_composition_config import InputCompositionConfig
 from src.core.data_keys import DataKeys
@@ -30,6 +30,46 @@ class BasicPage(QWidget):
         self.data_store = data_store
         self.dialog_handler = dialog_handler
         self.ud_handler = UnitDimensionHandler()
+
+    @staticmethod
+    def disable_widget(widget, blur_level=2) -> QWidget:
+        """
+        Disable a QWidget by adding also blur effect
+        Parameters
+        ----------
+        widget: QWidget
+            Widget to be disabled
+        blur_level: int
+            Level of blur (0 weal, 5 strong)
+
+        Returns
+        -------
+        widget: QWidget
+            Widget disabled
+        """
+        blur_effect = QGraphicsBlurEffect()
+        blur_effect.setBlurRadius(blur_level)  # Adjust radius as needed
+        widget.setGraphicsEffect(blur_effect)
+        widget.setEnabled(False)
+        return widget
+
+    @staticmethod
+    def enable_widget(widget) -> QWidget:
+        """
+        Enable a QWidget by removing also blur effect
+        Parameters
+        ----------
+        widget: QWidget
+            Widget to be disabled
+
+        Returns
+        -------
+        widget: QWidget
+            Widget disabled
+        """
+        widget.setGraphicsEffect(None)
+        widget.setEnabled(False)
+        return widget
 
     def update_composition_names(self,
                                  specie_idx,

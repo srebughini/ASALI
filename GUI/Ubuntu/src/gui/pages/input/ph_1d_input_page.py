@@ -1,5 +1,6 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox, QLabel
+from PyQt5.QtWidgets import QPushButton, QLineEdit, QGridLayout, QCheckBox, QTabWidget, QComboBox, QLabel, \
+    QGraphicsBlurEffect
 from asali.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReactor
 from asali.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactor
 
@@ -233,7 +234,9 @@ class Ph1dInputPage(BasicReactorInputPage):
         if resolution_method_combo_box.currentIndex() == 0:
             for n, t in widget_dict.items():
                 w = self.findChild(t, n)
-                w.hide()
+                # w.hide()
+                self.disable_widget(w)
+
             self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
                                         SteadyStatePseudoHomogeneous1DReactor)
             self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,
@@ -242,7 +245,8 @@ class Ph1dInputPage(BasicReactorInputPage):
         else:
             for n, t in widget_dict.items():
                 w = self.findChild(t, n)
-                w.show()
+                #w.show()
+                self.enable_widget(w)
             self.data_store.update_data(DataKeys.REACTOR_TYPE.value,
                                         TransientPseudoHomogeneous1DReactor)
             self.data_store.update_data(DataKeys.REACTOR_RESOLUTION_METHOD.value,

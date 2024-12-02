@@ -7,6 +7,7 @@ from src.config.batch_input_page_config import BatchInputPageConfig
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.cstr_input_page_config import CstrInputPageConfig
 from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
+from src.config.het_1d_input_page_config import Het1dInputPageConfig
 from src.config.input_composition_config import InputCompositionConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
@@ -233,4 +234,9 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(Ph1dInputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 6:
             #1d het
-            pass
+            if self.data_store.get_data(DataKeys.IS_DEFAULT_FILE_PATH.value):
+                self.dialog_handler.error_message(
+                    QLabel('Default Cantera input file cannot be used for reactor modeling!'))
+                return None
+
+            return self.page_switched.emit(Het1dInputPageConfig.NAME.value)
