@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QLineEdit, QComboBox, QLabel, QTabWidget
 
-from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
+from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
 from src.config.reactor_config import ReactorConfig
 from src.controllers.thread_handler import ThreadHandler
 from src.core.data_keys import DataKeys
@@ -418,7 +418,7 @@ class BasicReactorInputPage(BasicPage):
                 self.data_store.update_data(DataKeys.REACTOR_RESULTS, (results[1], results[2], results[3]))
 
                 if self.dialog_handler.question_message("Run completed!\nDo you want to plot the results?"):
-                    return self.page_switched.emit(PlotAndSaveOutputPageConfig.NAME.value)
+                    return self.page_switched.emit(ReactorPlotAndSaveOutputPageConfig.NAME.value)
             else:
                 raise Exception(results[0])
 

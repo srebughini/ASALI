@@ -41,6 +41,11 @@ class DataKeys(Enum):
     SURFACE_SPECIES_NAMES = "surface_phase_specie_names"
     SURFACE_SPECIES_NAMES_UPDATE = "surface_phase_specie_names_to_be_updated"
 
+    MIN_TEMPERATURE = "minimum_temperature"
+    MAX_TEMPERATURE = "maximum_temperature"
+    TEMPERATURE_VECTOR = "temperature_vector"
+    RHO_VECTOR = "density_vector"
+
     RHO = "density"
     MU = "viscosity"
     MW = "molecular_weight"

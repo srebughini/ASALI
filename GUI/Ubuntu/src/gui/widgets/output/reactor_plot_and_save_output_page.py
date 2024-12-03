@@ -1,9 +1,9 @@
 from enum import Enum
 
 
-class PlotAndSaveOutputPageWidgets(Enum):
+class ReactorPlotAndSaveOutputPageWidgets(Enum):
     """
-    Class to handle plot and save output page widgets names
+    Class to handle reactor plot and save output page widgets names
     """
     PLOT_BUTTON = "plotButton"
     SAVE_BUTTON = "saveButton"

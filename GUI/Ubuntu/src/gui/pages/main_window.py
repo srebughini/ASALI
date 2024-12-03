@@ -11,7 +11,7 @@ from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfi
 from src.config.het_1d_input_page_config import Het1dInputPageConfig
 from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
 from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
-from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
+from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
 from src.config.properties_output_page_config import PropertiesOutputPageConfig
 from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
 from src.config.vacuum_output_page_config import VacuumOutputPageConfig
@@ -28,7 +28,7 @@ from src.gui.pages.input.het_1d_input_page import Het1dInputPage
 from src.gui.pages.input.ph_1d_input_page import Ph1dInputPage
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
 from src.gui.pages.output.linear_regression_output_page import LinearRegressionOutputPage
-from src.gui.pages.output.plot_and_save_output_page import PlotAndSaveOutputPage
+from src.gui.pages.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPage
 from src.gui.pages.output.properties_output_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
 from src.gui.pages.output.vacuum_output_page import VacuumOutputPage
@@ -94,8 +94,8 @@ class MainWindow(QMainWindow):
                                                                             self.dialog_handler),
             EquilibriumOutputPageConfig.NAME.value: EquilibriumOutputPage(self.data_store,
                                                                           self.dialog_handler),
-            PlotAndSaveOutputPageConfig.NAME.value: PlotAndSaveOutputPage(self.data_store,
-                                                                          self.dialog_handler),
+            ReactorPlotAndSaveOutputPageConfig.NAME.value: ReactorPlotAndSaveOutputPage(self.data_store,
+                                                                                        self.dialog_handler),
             BatchInputPageConfig.NAME.value: BatchInputPage(self.data_store,
                                                             self.dialog_handler,
                                                             self.run_bar),

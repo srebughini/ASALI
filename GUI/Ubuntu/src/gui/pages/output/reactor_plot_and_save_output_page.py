@@ -2,17 +2,17 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
-from src.config.plot_and_save_output_page_config import PlotAndSaveOutputPageConfig
+from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
 from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
 from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.plot_and_save_output_page import PlotAndSaveOutputPageWidgets
+from src.gui.widgets.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageWidgets
 
 
-class PlotAndSaveOutputPage(BasicPage):
+class ReactorPlotAndSaveOutputPage(BasicPage):
     def __init__(self, data_store, dialog_handler):
         """
         Plot and save output layout
@@ -25,13 +25,13 @@ class PlotAndSaveOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(PlotAndSaveOutputPageConfig.PATH.value, self)
+        uic.loadUi(ReactorPlotAndSaveOutputPageConfig.PATH.value, self)
 
         self.update_head_lines()
         self.update_buttons()
         self.update_grid_layout()
 
-        self._button_row_idx = PlotAndSaveOutputPageConfig.BUTTON_ROW_IDX.value
+        self._button_row_idx = ReactorPlotAndSaveOutputPageConfig.BUTTON_ROW_IDX.value
 
     def update_page_after_switch(self) -> None:
         """
@@ -51,16 +51,16 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        plot_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
+        plot_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
         plot_button.clicked.connect(self.plot_reactor_data)
 
-        save_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
+        save_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
         save_button.clicked.connect(self.save_reactor_data)
 
-        back_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
+        back_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
         back_button.clicked.connect(self.back_button_action)
 
-        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
+        select_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.clicked.connect(self.on_select_button_click_data)
 
     def update_head_lines(self) -> None:
@@ -70,9 +70,9 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        for n in [PlotAndSaveOutputPageWidgets.GAS_LABEL,
-                  PlotAndSaveOutputPageWidgets.SURFACE_LABEL,
-                  PlotAndSaveOutputPageWidgets.TEMPERATURE_LABEL]:
+        for n in [ReactorPlotAndSaveOutputPageWidgets.GAS_LABEL,
+                  ReactorPlotAndSaveOutputPageWidgets.SURFACE_LABEL,
+                  ReactorPlotAndSaveOutputPageWidgets.TEMPERATURE_LABEL]:
             label = self.findChild(QLabel, n.value)
             label.setAlignment(Qt.AlignCenter)
             label.setProperty("class", "italic")
@@ -88,9 +88,9 @@ class PlotAndSaveOutputPage(BasicPage):
             The new row to place the buttons in.
         """
         # Find the buttons in the old row
-        back_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
-        plot_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
-        save_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
+        back_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.BACK_BUTTON.value)
+        plot_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.PLOT_BUTTON.value)
+        save_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.SAVE_BUTTON.value)
 
         # Remove buttons from the old row
         grid_layout.removeWidget(back_button)
@@ -109,14 +109,14 @@ class PlotAndSaveOutputPage(BasicPage):
         -------
 
         """
-        grid_layout = self.findChild(QGridLayout, PlotAndSaveOutputPageWidgets.GRID_LAYOUT.value)
+        grid_layout = self.findChild(QGridLayout, ReactorPlotAndSaveOutputPageWidgets.GRID_LAYOUT.value)
 
-        if self._button_row_idx > PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value:
-            for row_idx in range(PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value,
+        if self._button_row_idx > ReactorPlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value:
+            for row_idx in range(ReactorPlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value,
                                  self._button_row_idx):
-                self.remove_row_from_grid_layout(PlotAndSaveOutputPageWidgets.GRID_LAYOUT.value, row_idx)
+                self.remove_row_from_grid_layout(ReactorPlotAndSaveOutputPageWidgets.GRID_LAYOUT.value, row_idx)
 
-        row_idx = PlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value
+        row_idx = ReactorPlotAndSaveOutputPageConfig.INITIAL_CHECK_BOX_ROW_IDX.value
         self.data_store = gas_species_names(self.data_store)
         self.data_store = surface_species_names(self.data_store)
 
@@ -160,7 +160,7 @@ class PlotAndSaveOutputPage(BasicPage):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(True)
 
-        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
+        select_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.setText("Unselect all")
 
     def unselect_all(self) -> None:
@@ -182,7 +182,7 @@ class PlotAndSaveOutputPage(BasicPage):
             check_box = self.findChild(QCheckBox, n)
             check_box.setChecked(False)
 
-        select_button = self.findChild(QPushButton, PlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
+        select_button = self.findChild(QPushButton, ReactorPlotAndSaveOutputPageWidgets.SELECT_BUTTON.value)
         select_button.setText("Select all")
 
     def back_button_action(self) -> pyqtSignal:
@@ -231,7 +231,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         composition_type = self.findChild(QComboBox,
-                                          PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+                                          ReactorPlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
 
         if 'mol' in composition_type.lower():
             self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MOLE)
@@ -240,7 +240,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         self.data_store.update_data(DataKeys.COLORMAP,
                                     self.findChild(QComboBox,
-                                                   PlotAndSaveOutputPageWidgets.COLOR_COMBO_BOX.value).currentText())
+                                                   ReactorPlotAndSaveOutputPageWidgets.COLOR_COMBO_BOX.value).currentText())
 
         species_list = [n for n in self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES) if
                         self.findChild(QCheckBox, n).isChecked()]
@@ -267,7 +267,7 @@ class PlotAndSaveOutputPage(BasicPage):
 
         """
         composition_type = self.findChild(QComboBox,
-                                          PlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
+                                          ReactorPlotAndSaveOutputPageWidgets.COMPOSITION_COMBO_BOX.value).currentText()
 
         if 'mol' in composition_type.lower():
             self.data_store.update_data(DataKeys.PLOT_AND_SAVE_COMPOSITION_TYPE, CompositionType.MOLE)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>PlotAndSaveOutputPage</class>
-    <widget class="QWidget" name="PlotAndSaveOutputPage">
+    <class>ReactorPlotAndSaveOutputPage</class>
+    <widget class="QWidget" name="ReactorPlotAndSaveOutputPage">
         <layout class="QGridLayout" name="gridLayout">
             <!-- Row 0 -->
             <item row="0" column="0">

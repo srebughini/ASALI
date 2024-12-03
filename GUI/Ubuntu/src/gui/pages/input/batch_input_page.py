@@ -211,8 +211,8 @@ class BatchInputPage(BasicReactorInputPage):
 
         # Temperature
         self.data_store.update_data(DataKeys.INITIAL_GAS_T,
-                                    self.data_store.get_data(DataKeys.INLET_T.value))
+                                    self.data_store.get_data(DataKeys.INLET_T))
 
         # Composition
         self.data_store.update_data(DataKeys.INITIAL_GAS_COMPOSITION,
-                                    self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION.value))
+                                    self.data_store.get_data(DataKeys.INLET_GAS_COMPOSITION))
