@@ -20,6 +20,22 @@ class LabelFormatter:
         return LabelFormatter.pad_string("{:.2e}".format(n))
 
     @staticmethod
+    def float_to_string_no_pad(n) -> str:
+        """
+        Convert float to string
+        Parameters
+        ----------
+        n: float
+            Number as float
+
+        Returns
+        -------
+        n_str: str
+            Number as str
+        """
+        return "{:.2e}".format(n)
+
+    @staticmethod
     def dict_to_string(d) -> str:
         """
         Convert dict to string

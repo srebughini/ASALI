@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>LinearRegressionPlotOutputPage</class>
+    <widget class="QWidget" name="LinearRegressionPlotOutputPage">
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <widget class="QComboBox" name="propertyComboBox">
+                    <item>
+                        <property name="text">
+                            <string>Density</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Viscosity</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Thermal conductivity</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Specific heat</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Enthalpy</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Entropy</string>
+                        </property>
+                    </item>
+                </widget>
+            </item>
+            <item>
+                <widget class="QWidget" name="plotWidget">
+                    <layout class="QVBoxLayout" name="plotLayout">
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <widget class="QPushButton" name="backButton">
+                    <property name="text">
+                        <string>&#x2B9C; Back</string>
+                    </property>
+                    <property name="toolTip">
+                        <string>Go back to linear regression page</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</ui>

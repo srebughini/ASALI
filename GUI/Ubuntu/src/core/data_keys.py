@@ -45,6 +45,11 @@ class DataKeys(Enum):
     MAX_TEMPERATURE = "maximum_temperature"
     TEMPERATURE_VECTOR = "temperature_vector"
     RHO_VECTOR = "density_vector"
+    MU_VECTOR = "viscosity_vector"
+    COND_VECTOR = "thermal_conductivity_vector"
+    CP_VECTOR = "specific_heat_vector"
+    H_VECTOR = "enthalpy_vector"
+    S_VECTOR = "entropy_vector"
 
     RHO = "density"
     MU = "viscosity"
@@ -100,4 +105,3 @@ class DataKeys(Enum):
     GAS_SPECIES_NAMES_TO_BE_PLOTTED = "gas_species_names_to_be_plotted"
     SURFACE_SPECIES_NAMES_TO_BE_PLOTTED = "surface_species_names_to_be_plotted"
     TEMPERATURE_TO_BE_PLOTTED = "temperature_to_be_plotted"
-

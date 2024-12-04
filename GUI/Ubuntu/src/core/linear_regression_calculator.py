@@ -42,7 +42,7 @@ def linear_regression_calculator(data_store) -> DataStore:
                                            UnitDimensionHandler.from_human_to_code_ud(max_temperature_tuple[1]))
 
     temperature_vector = np.linspace(min_temperature, max_temperature, num=50, endpoint=True)
-    data_store.update_data(DataKeys.RHO_VECTOR, temperature_vector)
+    data_store.update_data(DataKeys.TEMPERATURE_VECTOR, temperature_vector)
 
     rho = np.zeros_like(temperature_vector, dtype=np.float64)
     mu = np.zeros_like(temperature_vector, dtype=np.float64)
@@ -81,64 +81,57 @@ def linear_regression_calculator(data_store) -> DataStore:
     data_store.update_data(DataKeys.RHO_VECTOR, rho)
     data_store.update_data(DataKeys.RHO, (a, b, ud))
 
-    """
     # Viscosity
     ud = data_store.get_data(DataKeys.MU)[1]
-    value = uc.convert_from_pascal_seconds(gas.viscosity,
-                                           UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.MU, (value, ud))
+    mu = uc.convert_from_pascal_seconds(mu, UnitDimensionHandler.from_human_to_code_ud(ud))
 
-    # Molecular weight
-    ud = data_store.get_data(DataKeys.MW)[1]
-    value = uc.convert_from_kg_per_kmol(gas.mean_molecular_weight,
-                                        UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.MW, (value, ud))
+    a, b, _, _, _ = stats.linregress(temperature_vector, mu)
+
+    data_store.update_data(DataKeys.MU_VECTOR, mu)
+    data_store.update_data(DataKeys.MU, (a, b, ud))
 
     # Thermal conductivity
     ud = data_store.get_data(DataKeys.COND)[1]
-    value = uc.convert_from_watt_per_meter_per_kelvin(gas.thermal_conductivity,
-                                                      UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.COND, (value, ud))
+    cond = uc.convert_from_watt_per_meter_per_kelvin(cond, UnitDimensionHandler.from_human_to_code_ud(ud))
 
-    # Mixture diffusivity
-    ud = data_store.get_data(DataKeys.DIFF_MIX)[1]
-    total_diff_mix = gas.mix_diff_coeffs_mass
-    diff_mix_zero = total_diff_mix == 0
-    total_diff_mix[diff_mix_zero] = gas.binary_diff_coeffs[diff_mix_zero, diff_mix_zero]
-    species_names = list(composition_tuple[0].keys())
-    species_mask = np.asarray([True if s in species_names else False for s in gas.species_names])
-    diff_mix = total_diff_mix[species_mask]
-    value = dict(zip(species_names,
-                     [uc.convert_from_square_meter_per_seconds(d, UnitDimensionHandler.from_human_to_code_ud(ud)) for d
-                      in diff_mix]))
-    data_store.update_data(DataKeys.DIFF_MIX, (value, ud))
+    a, b, _, _, _ = stats.linregress(temperature_vector, cond)
+
+    data_store.update_data(DataKeys.COND_VECTOR, cond)
+    data_store.update_data(DataKeys.COND, (a, b, ud))
 
     # Specific heat
     ud = data_store.get_data(DataKeys.CP)[1]
     if 'mol' in ud.lower():
-        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.cp_mole, UnitDimensionHandler.from_human_to_code_ud(ud))
+        cp = uc.convert_from_joule_per_kmol_per_kelvin(cp_mole, UnitDimensionHandler.from_human_to_code_ud(ud))
     else:
-        value = uc.convert_from_joule_per_kg_per_kelvin(gas.cp_mass, UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.CP, (value, ud))
+        cp = uc.convert_from_joule_per_kg_per_kelvin(cp_mass, UnitDimensionHandler.from_human_to_code_ud(ud))
+
+    a, b, _, _, _ = stats.linregress(temperature_vector, cp)
+
+    data_store.update_data(DataKeys.CP_VECTOR, cp)
+    data_store.update_data(DataKeys.CP, (a, b, ud))
 
     # Enthalpy
     ud = data_store.get_data(DataKeys.H)[1]
     if 'mol' in ud.lower():
-        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.enthalpy_mole,
-                                                          UnitDimensionHandler.from_human_to_code_ud(ud))
+        h = uc.convert_from_joule_per_kmol_per_kelvin(h_mole, UnitDimensionHandler.from_human_to_code_ud(ud))
     else:
-        value = uc.convert_from_joule_per_kg_per_kelvin(gas.enthalpy_mass,
-                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.H, (value, ud))
+        h = uc.convert_from_joule_per_kg_per_kelvin(h_mass, UnitDimensionHandler.from_human_to_code_ud(ud))
+
+    a, b, _, _, _ = stats.linregress(temperature_vector, h)
+
+    data_store.update_data(DataKeys.H_VECTOR, h)
+    data_store.update_data(DataKeys.H, (a, b, ud))
 
     # Entropy
     ud = data_store.get_data(DataKeys.S)[1]
     if 'mol' in ud.lower():
-        value = uc.convert_from_joule_per_kmol_per_kelvin(gas.entropy_mole,
-                                                          UnitDimensionHandler.from_human_to_code_ud(ud))
+        s = uc.convert_from_joule_per_kmol_per_kelvin(s_mole, UnitDimensionHandler.from_human_to_code_ud(ud))
     else:
-        value = uc.convert_from_joule_per_kg_per_kelvin(gas.entropy_mass,
-                                                        UnitDimensionHandler.from_human_to_code_ud(ud))
-    data_store.update_data(DataKeys.S, (value, ud))
-    """
+        s = uc.convert_from_joule_per_kg_per_kelvin(s_mass, UnitDimensionHandler.from_human_to_code_ud(ud))
+
+    a, b, _, _, _ = stats.linregress(temperature_vector, s)
+
+    data_store.update_data(DataKeys.S_VECTOR, s)
+    data_store.update_data(DataKeys.S, (a, b, ud))
     return data_store

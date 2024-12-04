@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QLabel, QPushButton, QComboBox, QLineEdit
 
 from src.config.calculation_input_page_config import CalculationInputPageConfig
 from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
+from src.config.linear_regression_plot_output_page_config import LinearRegressionPlotOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.linear_regression_calculator import linear_regression_calculator
@@ -81,6 +82,10 @@ class LinearRegressionOutputPage(BasicPage):
 
         calculate_button = self.findChild(QPushButton, LinearRegressionOutputPageWidgets.CALCULATE_BUTTON.value)
         calculate_button.clicked.connect(self.update_shown_data)
+
+        plot_button = self.findChild(QPushButton, LinearRegressionOutputPageWidgets.PLOT_BUTTON.value)
+        plot_button.clicked.connect(lambda: self.page_switched.emit(LinearRegressionPlotOutputPageConfig.NAME.value))
+        self.disable_widget(plot_button)
 
     def update_unit_dimensions(self, combo_box_name, item_list) -> None:
         """
@@ -188,10 +193,42 @@ class LinearRegressionOutputPage(BasicPage):
 
         """
         self.read_data()
-        self.data_store = linear_regression_calculator(self.data_store)
 
-        values = self.data_store.get_data(DataKeys.RHO)
+        self.data_store = linear_regression_calculator(self.data_store)
+        self.enable_widget(self.findChild(QPushButton, LinearRegressionOutputPageWidgets.PLOT_BUTTON.value))
+
+        a, b, _ = self.data_store.get_data(DataKeys.RHO)
         self.update_property_values(LinearRegressionOutputPageWidgets.DENSITY_A_LABEL.value,
                                     LinearRegressionOutputPageWidgets.DENSITY_B_LABEL.value,
-                                    values[0],
-                                    values[1])
+                                    a,
+                                    b)
+
+        a, b, _ = self.data_store.get_data(DataKeys.MU)
+        self.update_property_values(LinearRegressionOutputPageWidgets.VISCOSITY_A_LABEL.value,
+                                    LinearRegressionOutputPageWidgets.VISCOSITY_B_LABEL.value,
+                                    a,
+                                    b)
+
+        a, b, _ = self.data_store.get_data(DataKeys.COND)
+        self.update_property_values(LinearRegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_A_LABEL.value,
+                                    LinearRegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_B_LABEL.value,
+                                    a,
+                                    b)
+
+        a, b, _ = self.data_store.get_data(DataKeys.CP)
+        self.update_property_values(LinearRegressionOutputPageWidgets.SPECIFIC_HEAT_A_LABEL.value,
+                                    LinearRegressionOutputPageWidgets.SPECIFIC_HEAT_B_LABEL.value,
+                                    a,
+                                    b)
+
+        a, b, _ = self.data_store.get_data(DataKeys.H)
+        self.update_property_values(LinearRegressionOutputPageWidgets.ENTHALPY_A_LABEL.value,
+                                    LinearRegressionOutputPageWidgets.ENTHALPY_B_LABEL.value,
+                                    a,
+                                    b)
+
+        a, b, _ = self.data_store.get_data(DataKeys.S)
+        self.update_property_values(LinearRegressionOutputPageWidgets.ENTROPY_A_LABEL.value,
+                                    LinearRegressionOutputPageWidgets.ENTROPY_B_LABEL.value,
+                                    a,
+                                    b)
