@@ -43,7 +43,7 @@ Different catalytic reactor models are implemented in Asali:
 
 First of all, the transport and thermodynamic properties used by Asali in the reactor models are based on [Cantera](https://cantera.org/). Therefore the user can select either the `Use default input file` or `Load Cantera input file` option to performe a detailed simulations of catalytic reactors. 
 Secondly, from a kinetic point of view, all reactor models implemented in Asali handle micro-kinetic, user defined kinetic schemes and homogeneous reactions. In particular, the micro-kinetic or homogeneous schemes must be written in [Cantera](https://cantera.org/) format. 
-Finally, due to its deeper interaction with [asalipy]https://srebughini.github.io/ASALI/docs/api-python/), Asali can handle user defined kinetic schemes and modeling all those reactors in transient and steady-state conditions.
+Finally, due to its deeper interaction with [asalipy](https://srebughini.github.io/ASALI/docs/api-python/), Asali can handle user defined kinetic schemes and modeling all those reactors in transient and steady-state conditions.
 
 
 # **2. Installation instructions**
