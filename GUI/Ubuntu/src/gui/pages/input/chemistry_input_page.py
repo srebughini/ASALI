@@ -2,13 +2,13 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QComboBox
 from PyQt5 import uic
 
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.chemistry_input_page_config import ChemistryInputPageConfig
-from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
-from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.input.chemistry_input_page import ChemistryInputPageConfig
+from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
+from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
 from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
 from src.gui.widgets.input.chemistry_input_page import ChemistryInputPageWidgets
 

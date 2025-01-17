@@ -3,8 +3,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox, QLineEdit
 
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.vacuum_output_page_config import VacuumOutputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.output.vacuum_output_page import VacuumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.vacuum_calculator import vacuum_calculator

@@ -2,8 +2,8 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel, QComboBox
 
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.equilibrium_calculator import equilibrium_calculator

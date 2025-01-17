@@ -4,11 +4,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QLineEdit, QComboBox, QLabel, QTabWidget
 
-from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
-from src.config.reactor_config import ReactorConfig
+from src.config.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageConfig
+from src.config.reactor import ReactorConfig
 from src.controllers.thread_handler import ThreadHandler
 from src.core.data_keys import DataKeys
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
 
 

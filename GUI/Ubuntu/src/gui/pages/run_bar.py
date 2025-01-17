@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QProgressBar, QLabel, QVBoxLayout, QPushButton
 
 from src.controllers.thread_handler import ThreadHandler
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 
 
 class RunBar(QWidget):

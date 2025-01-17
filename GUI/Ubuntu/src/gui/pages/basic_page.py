@@ -4,11 +4,11 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect
 
-from src.config.input_composition_config import InputCompositionConfig
+from src.config.input_composition import InputCompositionConfig
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 from src.core.unit_dimension_handler import UnitDimensionHandler
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 

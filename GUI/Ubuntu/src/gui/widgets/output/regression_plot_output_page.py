@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class LinearRegressionPlotOutputPageWidgets(Enum):
+class RegressionPlotOutputPageWidgets(Enum):
     """
     Class to handle linear regression plotting output page widgets names
     """

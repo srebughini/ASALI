@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt5 import uic
 
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 
 
 class BaseLayout(QWidget):

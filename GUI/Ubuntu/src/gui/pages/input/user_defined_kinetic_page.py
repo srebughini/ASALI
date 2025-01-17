@@ -4,11 +4,11 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QPushButton
 
-from src.config.chemistry_input_page_config import ChemistryInputPageConfig
-from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
+from src.config.input.chemistry_input_page import ChemistryInputPageConfig
+from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
 from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
 from src.gui.widgets.input.user_defined_kinetic_page import UserDefinedKineticPageWidgets
 

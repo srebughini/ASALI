@@ -1,13 +1,14 @@
+import os
 from enum import Enum
 
-from src.config.reactor_config import ReactorConfig
+from src.config.reactor import ReactorConfig
 
 
 class CstrInputPageConfig(Enum):
     """
     Class to handle cstr input page configurations
     """
-    PATH = "gui/ui/input/cstr_input_page.ui"
+    PATH = os.path.join("gui", "ui", "input", "cstr_input_page.ui")
     NAME = "CstrInputPage"
     REACTOR_NAME = "Continuous stirred tank reactor"
     TEMPERATURES = ["Gas"]

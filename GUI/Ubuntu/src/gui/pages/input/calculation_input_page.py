@@ -3,16 +3,16 @@ from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QComboBox, QLabel, QGridLayout
 from PyQt5 import uic
 
-from src.config.batch_input_page_config import BatchInputPageConfig
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.cstr_input_page_config import CstrInputPageConfig
-from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
-from src.config.het_1d_input_page_config import Het1dInputPageConfig
-from src.config.input_composition_config import InputCompositionConfig
-from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
-from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
-from src.config.properties_output_page_config import PropertiesOutputPageConfig
-from src.config.vacuum_output_page_config import VacuumOutputPageConfig
+from src.config.input.batch_input_page import BatchInputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.input.cstr_input_page import CstrInputPageConfig
+from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
+from src.config.input.het_1d_input_page import Het1dInputPageConfig
+from src.config.input_composition import InputCompositionConfig
+from src.config.output.regression_output_page_config import RegressionOutputPageConfig
+from src.config.input.ph_1d_input_page import Ph1dInputPageConfig
+from src.config.output.properties_output_page import PropertiesOutputPageConfig
+from src.config.output.vacuum_output_page import VacuumOutputPageConfig
 from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names
@@ -201,7 +201,7 @@ class CalculationInputPage(BasicPage):
             return self.page_switched.emit(PropertiesOutputPageConfig.NAME.value)
         elif combo_box.currentIndex() == 1:
             # Linear regression of thermodynamic and transport properties
-            return self.page_switched.emit(LinearRegressionOutputPageConfig.NAME.value)
+            return self.page_switched.emit(RegressionOutputPageConfig.NAME.value)
 
         elif combo_box.currentIndex() == 2:
             # Vacuum properties

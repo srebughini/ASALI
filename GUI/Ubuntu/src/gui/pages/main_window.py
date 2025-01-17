@@ -2,22 +2,22 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 
-from src.config.batch_input_page_config import BatchInputPageConfig
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.chemistry_input_page_config import ChemistryInputPageConfig
-from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
-from src.config.cstr_input_page_config import CstrInputPageConfig
-from src.config.equilibrium_output_page_config import EquilibriumOutputPageConfig
-from src.config.het_1d_input_page_config import Het1dInputPageConfig
-from src.config.linear_regression_output_page_config import LinearRegressionOutputPageConfig
-from src.config.linear_regression_plot_output_page_config import LinearRegressionPlotOutputPageConfig
-from src.config.ph_1d_input_page_config import Ph1dInputPageConfig
-from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
-from src.config.properties_output_page_config import PropertiesOutputPageConfig
-from src.config.user_defined_kinetic_page_config import UserDefinedKineticPageConfig
-from src.config.vacuum_output_page_config import VacuumOutputPageConfig
+from src.config.input.batch_input_page import BatchInputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.input.chemistry_input_page import ChemistryInputPageConfig
+from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
+from src.config.input.cstr_input_page import CstrInputPageConfig
+from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
+from src.config.input.het_1d_input_page import Het1dInputPageConfig
+from src.config.output.regression_output_page_config import RegressionOutputPageConfig
+from src.config.output.regression_plot_output_page_config import RegressionPlotOutputPageConfig
+from src.config.input.ph_1d_input_page import Ph1dInputPageConfig
+from src.config.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageConfig
+from src.config.output.properties_output_page import PropertiesOutputPageConfig
+from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
+from src.config.output.vacuum_output_page import VacuumOutputPageConfig
 from src.core.data_store import DataStore
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.base_layout import BaseLayout
 from src.gui.pages.input.batch_input_page import BatchInputPage
 from src.gui.pages.input.calculation_input_page import CalculationInputPage
@@ -28,8 +28,8 @@ from src.gui.pages.input.cstr_input_page import CstrInputPage
 from src.gui.pages.input.het_1d_input_page import Het1dInputPage
 from src.gui.pages.input.ph_1d_input_page import Ph1dInputPage
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
-from src.gui.pages.output.linear_regression_output_page import LinearRegressionOutputPage
-from src.gui.pages.output.linear_regression_plot_output_page import LinearRegressionPlotOutputPage
+from src.gui.pages.output.regression_output_page import RegressionOutputPage
+from src.gui.pages.output.regression_plot_output_page import RegressionPlotOutputPage
 from src.gui.pages.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPage
 from src.gui.pages.output.properties_output_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
@@ -110,10 +110,10 @@ class MainWindow(QMainWindow):
             Het1dInputPageConfig.NAME.value: Het1dInputPage(self.data_store,
                                                             self.dialog_handler,
                                                             self.run_bar),
-            LinearRegressionOutputPageConfig.NAME.value: LinearRegressionOutputPage(self.data_store,
-                                                                                    self.dialog_handler),
-            LinearRegressionPlotOutputPageConfig.NAME.value: LinearRegressionPlotOutputPage(self.data_store,
-                                                                                            self.dialog_handler)
+            RegressionOutputPageConfig.NAME.value: RegressionOutputPage(self.data_store,
+                                                                        self.dialog_handler),
+            RegressionPlotOutputPageConfig.NAME.value: RegressionPlotOutputPage(self.data_store,
+                                                                                self.dialog_handler)
         }
 
         for page in self.pages.values():

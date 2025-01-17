@@ -3,9 +3,9 @@ from PyQt5.QtWidgets import QPushButton, QLineEdit, QCheckBox, QComboBox, QLabel
 from asali.reactors.het1d_steady_state import SteadyStateHeterogeneous1DReactor
 from asali.reactors.het1d_transient import TransientHeterogeneous1DReactor
 
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.het_1d_input_page_config import Het1dInputPageConfig
-from src.config.input_composition_config import InputCompositionConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.input.het_1d_input_page import Het1dInputPageConfig
+from src.config.input_composition import InputCompositionConfig
 from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.het_1d_calculator import heterogeneous_1d_reactor_calculator
@@ -14,7 +14,7 @@ from src.core.reactor_geometry import ReactorGeometry
 from src.core.reactor_resolution_method import ReactorResolutionMethod
 from src.core.species_names import surface_species_names, gas_species_names
 
-from src.config.reactor_config import ReactorConfig
+from src.config.reactor import ReactorConfig
 from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
 from src.gui.widgets.input.het_1d_input_page import Het1dInputPageWidgets
 

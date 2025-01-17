@@ -1,13 +1,14 @@
 from enum import Enum
 
 
-class LinearRegressionOutputPageWidgets(Enum):
+class RegressionOutputPageWidgets(Enum):
     """
     Class to handle linear regression output page widgets names
     """
-    HEADLINE_LABEL = "regressionLabel"
     MATH_LABEL = "mathLabel"
+
     TEMPERATURE_COMBO_BOX = "temperatureComboBox"
+    REGRESSION_COMBO_BOX = "regressionComboBox"
 
     DENSITY_A_LABEL = "rhoALabel"
     DENSITY_B_LABEL = "rhoBLabel"

@@ -2,12 +2,11 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton
 
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.properties_output_page_config import PropertiesOutputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.output.properties_output_page import PropertiesOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
-from src.config.app_config import AppConfig
 from src.gui.pages.basic_page import BasicPage
 from src.gui.widgets.output.properties_output_page import PropertiesOutputPageWidgets
 

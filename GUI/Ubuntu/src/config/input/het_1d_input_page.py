@@ -1,13 +1,14 @@
+import os
 from enum import Enum
 
-from src.config.reactor_config import ReactorConfig
+from src.config.reactor import ReactorConfig
 
 
 class Het1dInputPageConfig(Enum):
     """
     Class to handle heterogeneous 1d input page configurations
     """
-    PATH = "gui/ui/input/het_1d_input_page.ui"
+    PATH = os.path.join("gui", "ui", "input", "het_1d_input_page.ui")
     NAME = "Het1dInputPage"
     REACTOR_NAME = "Heterogeneous 1D reactor"
     TEMPERATURES = ["Gas/Solid"]

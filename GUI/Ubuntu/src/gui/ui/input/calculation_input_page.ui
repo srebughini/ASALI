@@ -20,7 +20,7 @@
                         </item>
                         <item>
                             <property name="text">
-                                <string>Linear regression of thermodynamic and transport properties</string>
+                                <string>Regression of thermodynamic and transport properties</string>
                             </property>
                          </item>
                         <item>

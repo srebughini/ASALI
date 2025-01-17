@@ -1,31 +1,39 @@
+import os
 from enum import Enum
 
 
-class LinearRegressionPlotOutputPageConfig(Enum):
+class RegressionPlotOutputPageConfig(Enum):
     """
     Class to handle linear regression plotting output page configurations
     """
-    PATH = "gui/ui/output/linear_regression_plot_output_page.ui"
-    NAME = "LinearRegressionPlotOutputPage"
+    PATH = os.path.join("gui", "ui", "output", "regression_plot_output_page.ui")
+
+    NAME = "RegressionPlotOutputPage"
     PLOT_TEMPERATURE_LABEL = "Temperature [{}]"
 
     PLOT_RHO_LABEL = "Density [{}]"
-    PLOT_RHO_TITLE = r"$\rho$ = {} T + {}"
+    PLOT_RHO_LINEAR = r"$\rho$ = {} T + {}"
+    PLOT_RHO_POWER_LAW = r"$\rho$ = {} T ^{}"
 
     PLOT_MU_LABEL = "Viscosity [{}]"
-    PLOT_MU_TITLE = r"$\mu$ = {} T + {}"
+    PLOT_MU_LINEAR = r"$\mu$ = {} T + {}"
+    PLOT_MU_POWER_LAW = r"$\mu$ = {} T ^{}"
 
     PLOT_COND_LABEL = "Thermal conductivity [{}]"
-    PLOT_COND_TITLE = r"$\lambda$ = {} T + {}"
+    PLOT_COND_LINEAR = r"$\lambda$ = {} T + {}"
+    PLOT_COND_POWER_LAW = r"$\lambda$ = {} T ^{}"
 
     PLOT_CP_LABEL = "Specific heat [{}]"
-    PLOT_CP_TITLE = "cp = {} T + {}"
+    PLOT_CP_LINEAR = "cp = {} T + {}"
+    PLOT_CP_POWER_LAW = "cp = {} T ^{}"
 
     PLOT_H_LABEL = "Enthalpy [{}]"
-    PLOT_H_TITLE = "h = {} T + {}"
+    PLOT_H_LINEAR = "h = {} T + {}"
+    PLOT_H_POWER_LAW = "h = {} T ^{}"
 
     PLOT_S_LABEL = "Entropy [{}]"
-    PLOT_S_TITLE = "s = {} T + {}"
+    PLOT_S_LINEAR = "s = {} T + {}"
+    PLOT_S_POWER_LAW = "s = {} T ^{}"
 
     PLOT_AXES_COLOR = "white"
     PLOT_BACKGROUND_COLOR = "none"

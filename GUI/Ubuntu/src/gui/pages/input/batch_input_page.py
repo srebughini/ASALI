@@ -2,18 +2,17 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QCheckBox, QComboBox
 from asali.reactors.batch import BatchReactor
 
-from src.config.batch_input_page_config import BatchInputPageConfig
-from src.config.calculation_input_page_config import CalculationInputPageConfig
-from src.config.input_composition_config import InputCompositionConfig
+from src.config.input.batch_input_page import BatchInputPageConfig
+from src.config.input.calculation_input_page import CalculationInputPageConfig
+from src.config.input_composition import InputCompositionConfig
 from src.core.batch_calculator import batch_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names
 
 from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
-from src.config.reactor_config import ReactorConfig
+from src.config.reactor import ReactorConfig
 from src.gui.widgets.input.batch_input_page import BatchInputPageWidgets
 
-import copy
 
 class BatchInputPage(BasicReactorInputPage):
     def __init__(self, data_store, dialog_handler, run_bar):

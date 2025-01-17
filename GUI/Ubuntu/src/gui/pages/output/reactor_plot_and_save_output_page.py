@@ -2,12 +2,12 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QPushButton, QLabel, QGridLayout, QCheckBox, QComboBox
 
-from src.config.reactor_plot_and_save_output_page_config import ReactorPlotAndSaveOutputPageConfig
+from src.config.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageConfig
 from src.core.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
 from src.gui.widgets.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageWidgets
 

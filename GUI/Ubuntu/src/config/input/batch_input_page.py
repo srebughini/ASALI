@@ -1,13 +1,14 @@
 from enum import Enum
 
-from src.config.reactor_config import ReactorConfig
+from src.config.reactor import ReactorConfig
 
+import os
 
 class BatchInputPageConfig(Enum):
     """
     Class to handle batch input page configurations
     """
-    PATH = "gui/ui/input/batch_input_page.ui"
+    PATH = os.path.join("gui", "ui", "input", "batch_input_page.ui")
     NAME = "BatchInputPage"
     REACTOR_NAME = "Batch reactor"
     TEMPERATURES = ["Gas"]

@@ -105,3 +105,5 @@ class DataKeys(Enum):
     GAS_SPECIES_NAMES_TO_BE_PLOTTED = "gas_species_names_to_be_plotted"
     SURFACE_SPECIES_NAMES_TO_BE_PLOTTED = "surface_species_names_to_be_plotted"
     TEMPERATURE_TO_BE_PLOTTED = "temperature_to_be_plotted"
+
+    REGRESSION_METHOD = "regression_method"

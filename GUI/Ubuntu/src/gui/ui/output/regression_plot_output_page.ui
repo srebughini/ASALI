@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>LinearRegressionPlotOutputPage</class>
-    <widget class="QWidget" name="LinearRegressionPlotOutputPage">
+    <class>RegressionPlotOutputPage</class>
+    <widget class="QWidget" name="RegressionPlotOutputPage">
         <layout class="QVBoxLayout" name="verticalLayout">
             <item>
                 <widget class="QComboBox" name="propertyComboBox">

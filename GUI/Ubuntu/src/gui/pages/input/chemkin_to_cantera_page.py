@@ -5,10 +5,10 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel
 from asali.utils.cantera_file_converter import CanteraFileConverter
 
-from src.config.chemistry_input_page_config import ChemistryInputPageConfig
-from src.config.chemkin_to_cantera_page_config import ChemkinToCanteraPageConfig
+from src.config.input.chemistry_input_page import ChemistryInputPageConfig
+from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
 from src.core.data_keys import DataKeys
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
 from src.gui.widgets.input.chemkin_to_cantera_page import ChemkinToCanteraPageWidgets
 

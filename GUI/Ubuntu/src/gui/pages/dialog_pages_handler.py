@@ -2,11 +2,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QSizePolicy, \
     QFileDialog, QTableWidget, QScrollBar, QHeaderView, QTableWidgetItem
 
-from src.config.contact_config import ContactConfig
+from src.config.contact import ContactConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names, surface_species_names
-from src.config.app_config import AppConfig
+from src.config.app import AppConfig
 
 
 class DialogPagesHandler:

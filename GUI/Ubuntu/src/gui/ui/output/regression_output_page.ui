@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>LinearRegressionOutputPage</class>
-    <widget class="QWidget" name="LinearRegressionOutputPage">
+    <class>RegressionOutputPage</class>
+    <widget class="QWidget" name="RegressionOutputPage">
         <layout class="QGridLayout" name="gridLayout">
             <!-- Row 0 -->
             <item row="0" column="0">
@@ -31,33 +31,44 @@
             </item>
 
             <!-- Row 1 -->
-            <item row="1" column="0" colspan="4">
-                <widget class="QLabel" name="regressionLabel">
+            <item row="1" column="0">
+                <widget class="QLabel" name="regressionMethodLabel">
                     <property name="text">
-                        <string>Linear regression</string>
+                        <string>Regression method:</string>
                     </property>
+                </widget>
+            </item>
+            <item row="1" column="1" colspan="3">
+                <widget class="QComboBox" name="regressionComboBox">
+                    <item>
+                        <property name="text">
+                            <string>Linear</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Power Law</string>
+                        </property>
+                    </item>
                 </widget>
             </item>
 
             <!-- Row 2 -->
             <item row="2" column="0">
                 <widget class="QLabel" name="mathLabel">
-                    <property name="text">
-                        <string>aT + b</string>
-                    </property>
                 </widget>
             </item>
             <item row="2" column="1">
                 <widget class="QLabel" name="aLabel">
                     <property name="text">
-                        <string>Slope (a):</string>
+                        <string>Parameter (a):</string>
                     </property>
                 </widget>
             </item>
             <item row="2" column="2">
                 <widget class="QLabel" name="bLabel">
                     <property name="text">
-                        <string>Intercept (b):</string>
+                        <string>Parameter (b):</string>
                     </property>
                 </widget>
             </item>
@@ -244,7 +255,7 @@
                         <string>Calculate</string>
                     </property>
                     <property name="toolTip">
-                        <string>Calculate linear regression</string>
+                        <string>Calculate regression</string>
                     </property>
                 </widget>
             </item>
