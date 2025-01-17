@@ -1,7 +1,7 @@
 from asali.plotters.reactor import ReactorPlotter
 from asali.savers.reactor import ReactorSaver
 
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
 from src.config.app import AppConfig

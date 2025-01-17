@@ -13,7 +13,7 @@ from src.config.output.regression_output_page_config import RegressionOutputPage
 from src.config.input.ph_1d_input_page import Ph1dInputPageConfig
 from src.config.output.properties_output_page import PropertiesOutputPageConfig
 from src.config.output.vacuum_output_page import VacuumOutputPageConfig
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.species_names import gas_species_names
 from src.gui.pages.basic_page import BasicPage

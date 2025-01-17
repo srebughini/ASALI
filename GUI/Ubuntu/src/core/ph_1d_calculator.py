@@ -2,10 +2,10 @@ from asali.reactors.ph1d_steady_state import SteadyStatePseudoHomogeneous1DReact
 from asali.reactors.ph1d_transient import TransientPseudoHomogeneous1DReactor
 from asali.utils.unit_converter import UnitConverter
 
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
-from src.core.reactor_resolution_method import ReactorResolutionMethod
+from src.gui.enums.reactor_resolution_method import ReactorResolutionMethod
 from src.core.unit_dimension_handler import UnitDimensionHandler
 
 import numpy as np

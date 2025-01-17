@@ -6,12 +6,12 @@ from asali.reactors.het1d_transient import TransientHeterogeneous1DReactor
 from src.config.input.calculation_input_page import CalculationInputPageConfig
 from src.config.input.het_1d_input_page import Het1dInputPageConfig
 from src.config.input_composition import InputCompositionConfig
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.het_1d_calculator import heterogeneous_1d_reactor_calculator
-from src.core.reactor_geometry import ReactorGeometry
+from src.gui.enums.reactor_geometry import ReactorGeometry
 
-from src.core.reactor_resolution_method import ReactorResolutionMethod
+from src.gui.enums.reactor_resolution_method import ReactorResolutionMethod
 from src.core.species_names import surface_species_names, gas_species_names
 
 from src.config.reactor import ReactorConfig

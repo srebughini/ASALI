@@ -5,7 +5,7 @@ from asali.reactors.cstr import CstrReactor
 from src.config.input.calculation_input_page import CalculationInputPageConfig
 from src.config.input.cstr_input_page import CstrInputPageConfig
 from src.config.input_composition import InputCompositionConfig
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.cstr_calculator import cstr_calculator
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names

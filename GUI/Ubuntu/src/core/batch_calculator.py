@@ -1,7 +1,7 @@
 from asali.reactors.batch import BatchReactor
 from asali.utils.unit_converter import UnitConverter
 
-from src.core.composition_type import CompositionType
+from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.core.data_store import DataStore
 from src.core.unit_dimension_handler import UnitDimensionHandler

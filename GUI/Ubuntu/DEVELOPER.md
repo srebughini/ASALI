@@ -8,3 +8,14 @@ To convert from qrc to resources_rc.py:
 cd resources
 pyrcc5 -o resources_rc.py resources.qrc
 ```
+
+#### TODO for future
+This is a list of possibile updates
+* Create conda package for the gui
+* Create linux installation instructions
+* Create docker distribution
+* Create windows distribution
+* Find a better way to save the .exe file on github
+* Find a way to create a file for installation on linux
+* Improve the handling of the options using Enum in a smarter way
+* Move to pyqt6
