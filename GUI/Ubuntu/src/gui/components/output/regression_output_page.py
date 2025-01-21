@@ -3,7 +3,7 @@ from enum import Enum
 
 class RegressionOutputPageWidgets(Enum):
     """
-    Class to handle linear regression output page widgets names
+    Class to handle linear regression output page components names
     """
     MATH_LABEL = "mathLabel"
 

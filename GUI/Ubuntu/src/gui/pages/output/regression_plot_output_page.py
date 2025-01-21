@@ -7,7 +7,7 @@ from src.config.output.regression_plot_output_page_config import RegressionPlotO
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.regression_plot_output_page import RegressionPlotOutputPageWidgets
+from src.gui.components.output.regression_plot_output_page import RegressionPlotOutputPageWidgets
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 

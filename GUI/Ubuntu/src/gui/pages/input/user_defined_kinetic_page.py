@@ -4,13 +4,12 @@ from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QPushButton
 
-from src.config.input.chemistry_input_page import ChemistryInputPageConfig
 from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
 from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
 from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.input.user_defined_kinetic_page import UserDefinedKineticPageWidgets
+from src.gui.components.input.user_defined_kinetic_page import UserDefinedKineticPageWidgets
 
 
 class UserDefinedKineticPage(BasicPage):
@@ -30,7 +29,7 @@ class UserDefinedKineticPage(BasicPage):
 
         self.update_buttons()
         self.update_labels()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_page_after_switch(self) -> None:
         """
@@ -40,7 +39,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
         self.clean()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_labels(self) -> None:
         """
@@ -62,7 +61,7 @@ class UserDefinedKineticPage(BasicPage):
 
         """
         back_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.BACK_BUTTON.value)
-        back_button.clicked.connect(lambda: self.page_switched.emit(ChemistryInputPageConfig.NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
 
         check_button = self.findChild(QPushButton, UserDefinedKineticPageWidgets.CHECK_BUTTON.value)
         check_button.clicked.connect(self.check)

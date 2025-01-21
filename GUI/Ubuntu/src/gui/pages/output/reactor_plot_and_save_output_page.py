@@ -9,7 +9,7 @@ from src.core.reactor_post_processing import reactor_saver, reactor_plotter
 from src.core.species_names import gas_species_names, surface_species_names
 from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageWidgets
+from src.gui.components.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageWidgets
 
 
 class ReactorPlotAndSaveOutputPage(BasicPage):
@@ -29,7 +29,7 @@ class ReactorPlotAndSaveOutputPage(BasicPage):
 
         self.update_head_lines()
         self.update_buttons()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
         self._button_row_idx = ReactorPlotAndSaveOutputPageConfig.BUTTON_ROW_IDX.value
 
@@ -41,7 +41,7 @@ class ReactorPlotAndSaveOutputPage(BasicPage):
 
         """
         self.update_check_box()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
         self.unselect_all()
 
     def update_buttons(self) -> None:

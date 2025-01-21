@@ -8,7 +8,7 @@ from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.properties_output_page import PropertiesOutputPageWidgets
+from src.gui.components.output.properties_output_page import PropertiesOutputPageWidgets
 
 
 class PropertiesOutputPage(BasicPage):
@@ -60,7 +60,7 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_property_line(self, value_label_name, combo_box_name, ud_list) -> None:
         """
@@ -200,4 +200,4 @@ class PropertiesOutputPage(BasicPage):
         self.update_property_value(PropertiesOutputPageWidgets.SPECIFIC_HEAT_LABEL.value,
                                    self.data_store.get_data(DataKeys.CP)[0])
 
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()

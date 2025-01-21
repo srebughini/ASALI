@@ -3,7 +3,7 @@ from enum import Enum
 
 class ReactorPlotAndSaveOutputPageWidgets(Enum):
     """
-    Class to handle reactor plot and save output page widgets names
+    Class to handle reactor plot and save output page components names
     """
     PLOT_BUTTON = "plotButton"
     SAVE_BUTTON = "saveButton"

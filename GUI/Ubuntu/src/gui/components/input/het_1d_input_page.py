@@ -3,7 +3,7 @@ from enum import Enum
 
 class Het1dInputPageWidgets(Enum):
     """
-    Class to handle heterogeneous 1D reactor input page widgets names
+    Class to handle heterogeneous 1D reactor input page components names
     """
     DIAMETER_EDIT_LINE = "diameterEditLine"
     DIAMETER_COMBO_BOX = "diameterComboBox"

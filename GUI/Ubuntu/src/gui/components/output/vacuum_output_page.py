@@ -3,7 +3,7 @@ from enum import Enum
 
 class VacuumOutputPageWidgets(Enum):
     """
-    Class to handle vacuum output page widgets names
+    Class to handle vacuum output page components names
     """
     VELOCITY_LABEL = "vValueLabel"
     VELOCITY_COMBO_BOX = "vComboBox"

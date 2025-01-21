@@ -3,7 +3,7 @@ from enum import Enum
 
 class BatchInputPageWidgets(Enum):
     """
-    Class to handle batch reactor input page widgets names
+    Class to handle batch reactor input page components names
     """
     VOLUME_EDIT_LINE = "volumeEditLine"
     CATALYTIC_LOAD_EDIT_LINE = "alfaEditLine"

@@ -6,7 +6,18 @@ class DataStore:
         """
         Class that handle the data sharing between the GUI and the CORE
         """
-        self.data = {k: None for k in DataKeys}
+        self.data = {}
+
+    def reset_all_data(self) -> None:
+        """
+        Reset all data
+        Returns
+        -------
+
+        """
+        for k in DataKeys:
+            default_value = k.value[0]
+            self.data[k] = default_value
 
     def update_data(self, key, value) -> None:
         """
@@ -22,7 +33,10 @@ class DataStore:
         -------
 
         """
-        self.data[key] = value
+        if type(key.value[0]) == type(value):
+            self.data[key] = value
+        else:
+            raise Exception(f"Wrong type for {key.value[1]} data key")
 
     def get_data(self, key) -> tuple | str | float | dict | object:
         """
@@ -34,22 +48,22 @@ class DataStore:
 
         Returns
         -------
-        value: tuple | str | float
+        value: tuple | str | float | dict | object:
             Value for the updated data
         """
-        return self.data.get(key, None)
+        return self.data[key]
 
-    def check_data(self, key) -> bool:
+    def reset_data(self, key) -> None:
         """
-        Check if the request data exist from key
+        Reset data to its default value
         Parameters
         ----------
-        key: str
+        key: Enum
             Key for the updated data
 
         Returns
         -------
-        value: bool
-            If True the data exist
+
         """
-        return key in self.data.keys()
+        default_value = key.value[0]
+        self.update_data(key, default_value)

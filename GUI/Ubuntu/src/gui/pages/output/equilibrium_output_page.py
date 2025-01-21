@@ -8,7 +8,7 @@ from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.equilibrium_calculator import equilibrium_calculator
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.equilibrium_output_page import EquilibriumOutputPageWidgets
+from src.gui.components.output.equilibrium_output_page import EquilibriumOutputPageWidgets
 
 
 class EquilibriumOutputPage(BasicPage):
@@ -44,7 +44,7 @@ class EquilibriumOutputPage(BasicPage):
         -------
 
         """
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_property_line(self, value_label_name, combo_box_name, ud_list) -> None:
         """
@@ -153,4 +153,4 @@ class EquilibriumOutputPage(BasicPage):
         self.update_property_value(EquilibriumOutputPageWidgets.MASS_FRACTION_LABEL.value,
                                    self.data_store.get_data(DataKeys.EQUILIBRIUM_Y))
 
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()

@@ -3,7 +3,7 @@ from enum import Enum
 
 class EquilibriumOutputPageWidgets(Enum):
     """
-    Class to handle equilibrium output page widgets names
+    Class to handle equilibrium output page components names
     """
     TEMPERATURE_LABEL = "temperatureValueLabel"
     TEMPERATURE_COMBO_BOX = "temperatureOutputComboBox"

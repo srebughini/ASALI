@@ -11,7 +11,7 @@ from src.core.data_keys import DataKeys
 from src.core.power_law_regression_calculator import power_law_regression_calculator
 from src.core.linear_regression_calculator import linear_regression_calculator
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.regression_output_page import RegressionOutputPageWidgets
+from src.gui.components.output.regression_output_page import RegressionOutputPageWidgets
 
 
 class RegressionOutputPage(BasicPage):
@@ -55,7 +55,7 @@ class RegressionOutputPage(BasicPage):
         -------
 
         """
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_head_lines(self) -> None:
         """

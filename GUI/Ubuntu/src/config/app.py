@@ -1,5 +1,6 @@
 import os
 from enum import Enum
+from types import SimpleNamespace
 
 
 class AppConfig(Enum):
@@ -7,13 +8,23 @@ class AppConfig(Enum):
     Class to handle the software configuration
     """
     TITLE = "ASALI"
+
     MINIMUM_COLUMN_WIDTH = 150
     GRID_VERTICAL_SPACING = 12
     GRID_HORIZONTAL_SPACING = 12
+
     MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
+
     ICON_PATH = ":/images/Icon.png"
-    DEFAULT_CHEMISTRY_FILE_PATH = os.path.join("resources", "database", "data.yaml")
+    DEFAULT_DATABASE_FILE_PATH = os.path.join("resources", "database", "data.yaml")
+
     BASE_LAYOUT_PATH = os.path.join("gui", "ui", "base_layout.ui")
+    MAIN_INPUT_PAGE = SimpleNamespace(layout_name="MainInputPage",
+                                      path=os.path.join("gui", "ui", "input", "main_page.ui"))
+
+    PROPERTIES_INPUT_PAGE = SimpleNamespace(layout_name="PropertiesInputPage",
+                                            path=os.path.join("gui", "ui", "input", "properties_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

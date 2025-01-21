@@ -9,7 +9,7 @@ from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.vacuum_calculator import vacuum_calculator
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.output.vacuum_output_page import VacuumOutputPageWidgets
+from src.gui.components.output.vacuum_output_page import VacuumOutputPageWidgets
 
 
 class VacuumOutputPage(BasicPage):
@@ -50,7 +50,7 @@ class VacuumOutputPage(BasicPage):
 
         """
         self.update_specie_line()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_property_line(self, value_label_name, combo_box_name, ud_list) -> None:
         """
@@ -199,4 +199,4 @@ class VacuumOutputPage(BasicPage):
         self.update_property_value(VacuumOutputPageWidgets.KNUDSEN_LABEL.value,
                                    self.data_store.get_data(DataKeys.KN))
 
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()

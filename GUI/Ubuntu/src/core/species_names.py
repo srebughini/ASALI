@@ -16,13 +16,13 @@ def gas_species_names(data_store) -> DataStore:
     data_store: DataStore
         Class to handle the user input & output
     """
-    if data_store.get_data(DataKeys.GAS_SPECIES_NAMES_UPDATE):
+    if not data_store.get_data(DataKeys.IS_GAS_SPECIES_NAMES_UPDATED):
         cantera_input_file_path = data_store.get_data(DataKeys.CHEMISTRY_FILE_PATH)
         gas_phase_name = data_store.get_data(DataKeys.GAS_PHASE_NAME)
         gas = ct.Solution(cantera_input_file_path, gas_phase_name)
 
         data_store.update_data(DataKeys.GAS_SPECIES_NAMES, gas.species_names)
-        data_store.update_data(DataKeys.GAS_SPECIES_NAMES_UPDATE, False)
+        data_store.update_data(DataKeys.IS_GAS_SPECIES_NAMES_UPDATED, True)
 
     return data_store
 

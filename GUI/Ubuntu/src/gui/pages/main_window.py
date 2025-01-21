@@ -1,10 +1,9 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction, QSizePolicy
 
 from src.config.input.batch_input_page import BatchInputPageConfig
 from src.config.input.calculation_input_page import CalculationInputPageConfig
-from src.config.input.chemistry_input_page import ChemistryInputPageConfig
 from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
 from src.config.input.cstr_input_page import CstrInputPageConfig
 from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
@@ -20,8 +19,8 @@ from src.core.data_store import DataStore
 from src.config.app import AppConfig
 from src.gui.pages.base_layout import BaseLayout
 from src.gui.pages.input.batch_input_page import BatchInputPage
-from src.gui.pages.input.calculation_input_page import CalculationInputPage
-from src.gui.pages.input.chemistry_input_page import ChemistryInputPage
+from src.gui.pages.input.properties_page import PropertiesInputPage
+from src.gui.pages.input.main_page import MainInputPage
 from src.gui.pages.input.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.input.cstr_input_page import CstrInputPage
@@ -57,6 +56,9 @@ class MainWindow(QMainWindow):
         # Add icons
         self.setWindowIcon(QIcon(AppConfig.ICON_PATH.value))
 
+        # Disable user resize
+        self.setFixedSize(self.sizeHint())
+
         # Set flags
         self.setWindowFlags(
             Qt.Window |
@@ -82,45 +84,48 @@ class MainWindow(QMainWindow):
 
         # Define available pages
         self.pages = {
-            ChemistryInputPageConfig.NAME.value: ChemistryInputPage(self.data_store,
-                                                                    self.dialog_handler),
-            CalculationInputPageConfig.NAME.value: CalculationInputPage(self.data_store,
-                                                                        self.dialog_handler),
-            PropertiesOutputPageConfig.NAME.value: PropertiesOutputPage(self.data_store,
-                                                                        self.dialog_handler),
-            VacuumOutputPageConfig.NAME.value: VacuumOutputPage(self.data_store,
-                                                                self.dialog_handler),
-            ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
-                                                                        self.dialog_handler),
-            UserDefinedKineticPageConfig.NAME.value: UserDefinedKineticPage(self.data_store,
-                                                                            self.dialog_handler),
-            EquilibriumOutputPageConfig.NAME.value: EquilibriumOutputPage(self.data_store,
-                                                                          self.dialog_handler),
-            ReactorPlotAndSaveOutputPageConfig.NAME.value: ReactorPlotAndSaveOutputPage(self.data_store,
-                                                                                        self.dialog_handler),
-            BatchInputPageConfig.NAME.value: BatchInputPage(self.data_store,
-                                                            self.dialog_handler,
-                                                            self.run_bar),
-            CstrInputPageConfig.NAME.value: CstrInputPage(self.data_store,
-                                                          self.dialog_handler,
-                                                          self.run_bar),
-            Ph1dInputPageConfig.NAME.value: Ph1dInputPage(self.data_store,
-                                                          self.dialog_handler,
-                                                          self.run_bar),
-            Het1dInputPageConfig.NAME.value: Het1dInputPage(self.data_store,
-                                                            self.dialog_handler,
-                                                            self.run_bar),
-            RegressionOutputPageConfig.NAME.value: RegressionOutputPage(self.data_store,
-                                                                        self.dialog_handler),
-            RegressionPlotOutputPageConfig.NAME.value: RegressionPlotOutputPage(self.data_store,
-                                                                                self.dialog_handler)
-        }
+            AppConfig.MAIN_INPUT_PAGE: MainInputPage(self.data_store,
+                                                     self.dialog_handler),
+            AppConfig.PROPERTIES_INPUT_PAGE: PropertiesInputPage(self.data_store,
+                                                                 self.dialog_handler)}
+
+        #     CalculationInputPageConfig.NAME.value: CalculationInputPage(self.data_store,
+        #                                                                 self.dialog_handler),
+        #     PropertiesOutputPageConfig.NAME.value: PropertiesOutputPage(self.data_store,
+        #                                                                 self.dialog_handler),
+        #     VacuumOutputPageConfig.NAME.value: VacuumOutputPage(self.data_store,
+        #                                                         self.dialog_handler),
+        #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
+        #                                                                 self.dialog_handler),
+        #     UserDefinedKineticPageConfig.NAME.value: UserDefinedKineticPage(self.data_store,
+        #                                                                     self.dialog_handler),
+        #     EquilibriumOutputPageConfig.NAME.value: EquilibriumOutputPage(self.data_store,
+        #                                                                   self.dialog_handler),
+        #     ReactorPlotAndSaveOutputPageConfig.NAME.value: ReactorPlotAndSaveOutputPage(self.data_store,
+        #                                                                                 self.dialog_handler),
+        #     BatchInputPageConfig.NAME.value: BatchInputPage(self.data_store,
+        #                                                     self.dialog_handler,
+        #                                                     self.run_bar),
+        #     CstrInputPageConfig.NAME.value: CstrInputPage(self.data_store,
+        #                                                   self.dialog_handler,
+        #                                                   self.run_bar),
+        #     Ph1dInputPageConfig.NAME.value: Ph1dInputPage(self.data_store,
+        #                                                   self.dialog_handler,
+        #                                                   self.run_bar),
+        #     Het1dInputPageConfig.NAME.value: Het1dInputPage(self.data_store,
+        #                                                     self.dialog_handler,
+        #                                                     self.run_bar),
+        #     RegressionOutputPageConfig.NAME.value: RegressionOutputPage(self.data_store,
+        #                                                                 self.dialog_handler),
+        #     RegressionPlotOutputPageConfig.NAME.value: RegressionPlotOutputPage(self.data_store,
+        #                                                                         self.dialog_handler)
+        # }
 
         for page in self.pages.values():
             self.base_layout.add_page(page)
 
         # Show the Starting Page
-        self.switch_page(ChemistryInputPageConfig.NAME.value)
+        self.switch_page(AppConfig.MAIN_INPUT_PAGE)
 
         # Show the window
         self.show()
@@ -162,12 +167,12 @@ class MainWindow(QMainWindow):
         self.disclaimer_action.triggered.connect(self.dialog_handler.disclaimer_message)
         self.exit_action.triggered.connect(self.close)
 
-    def switch_page(self, page_name) -> None:
+    def switch_page(self, page_config) -> None:
         """
         Switches the content of the base layout to the specified page.
         Parameters
         ----------
-        page_name: str
+        page_config: Enum
             Page name
 
         Returns
@@ -175,19 +180,19 @@ class MainWindow(QMainWindow):
 
         """
 
-        if page_name in self.pages.keys():
+        if page_config in self.pages.keys():
             # Instantiate the new page
-            new_page = self.pages[page_name]
+            new_page = self.pages[page_config]
 
             # Switch to the new page in the QStackedWidget
-            self.base_layout.switch_page(page_name)
+            self.base_layout.switch_page(page_config.value.layout_name)
 
             # Connect the page's `page_switched` signal to the `switch_page` method
             new_page.page_switched.connect(self.switch_page)
 
             self.adjustSize()
         else:
-            raise Exception(f"{page_name} not found!")
+            raise Exception(f"{page_config.value.layout_name} not found!")
 
     def closeEvent(self, event) -> None:
         """

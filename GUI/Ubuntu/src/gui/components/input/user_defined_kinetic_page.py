@@ -3,7 +3,7 @@ from enum import Enum
 
 class UserDefinedKineticPageWidgets(Enum):
     """
-    Class to handle user defined kinetic page widgets names
+    Class to handle user defined kinetic page components names
     """
     UDK_LABEL = "udkLabel"
     CANTERA_LABEL = "canteraLabel"

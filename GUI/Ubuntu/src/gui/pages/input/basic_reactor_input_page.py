@@ -243,7 +243,7 @@ class BasicReactorInputPage(BasicPage):
                                                              self.surf_ns,
                                                              row_idx,
                                                              with_label=True)
-            self.update_grid_layout(layout_name)
+            self.set_custom_dimensions_to_grid_layout(layout_name)
             self.tab_name_to_row_idx_dict[tab_name] = row_idx
         else:
             self.remove_row_from_grid_layout(layout_name, surf_ns_row_idx)
@@ -251,7 +251,7 @@ class BasicReactorInputPage(BasicPage):
                                                              self.surf_ns,
                                                              surf_ns_row_idx,
                                                              with_label=True)
-            self.update_grid_layout(layout_name)
+            self.set_custom_dimensions_to_grid_layout(layout_name)
 
         # Other tabs
         for tab_name in self.tab_names:
@@ -325,7 +325,7 @@ class BasicReactorInputPage(BasicPage):
                                                          self.ns,
                                                          row_idx,
                                                          with_label=True)
-            self.update_grid_layout(layout_name)
+            self.set_custom_dimensions_to_grid_layout(layout_name)
             self.tab_name_to_row_idx_dict[tab_name] = row_idx
         else:
             self.remove_row_from_grid_layout(layout_name, ns_row_idx)
@@ -333,7 +333,7 @@ class BasicReactorInputPage(BasicPage):
                                                          self.ns,
                                                          ns_row_idx,
                                                          with_label=True)
-            self.update_grid_layout(layout_name)
+            self.set_custom_dimensions_to_grid_layout(layout_name)
 
         # Other tabs
         for tab_name in self.tab_names:

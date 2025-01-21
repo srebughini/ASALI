@@ -1,19 +1,22 @@
 from abc import abstractmethod
+from enum import Enum
 
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect
 
 from src.config.input_composition import InputCompositionConfig
+from src.controllers.input_file_controller import InputFileController
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 from src.core.unit_dimension_handler import UnitDimensionHandler
 from src.config.app import AppConfig
+from src.gui.enums.database_type import DatabaseType
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 
 class BasicPage(QWidget):
-    page_switched = pyqtSignal(str)  # Signal to switch pages
+    page_switched = pyqtSignal(Enum)  # Signal to switch pages
 
     def __init__(self, data_store, dialog_handler):
         """
@@ -30,6 +33,16 @@ class BasicPage(QWidget):
         self.data_store = data_store
         self.dialog_handler = dialog_handler
         self.ud_handler = UnitDimensionHandler()
+
+    @abstractmethod
+    def update_page_after_switch(self) -> None:
+        """
+        Update the whole page
+        Returns
+        -------
+
+        """
+        pass
 
     @staticmethod
     def disable_widget(widget, blur_level=2) -> QWidget:
@@ -71,50 +84,20 @@ class BasicPage(QWidget):
         widget.setEnabled(True)
         return widget
 
-    def update_composition_names(self,
-                                 specie_idx,
-                                 specie_list,
-                                 combo_box_name,
-                                 edit_line_name) -> None:
+    @staticmethod
+    def set_custom_dimensions_to_grid_layout(grid) -> None:
         """
-        Update specie composition in all combo boxes
+        Set custom dimensions to grid layout
         Parameters
         ----------
-        specie_idx: int
-            List of index to be update
-        specie_list: list
-            Gas or coverage species names
-        combo_box_name: str
-            Combo box name
-        edit_line_name: str
-            Edit line name
-
-        Returns
-        -------
-
-        """
-        dropdown = self.findChild(QComboBox, combo_box_name.format(specie_idx))
-        dropdown.clear()
-        dropdown.addItems(specie_list)
-
-        edit_line = self.findChild(QLineEdit, edit_line_name.format(specie_idx))
-        edit_line.setValidator(QDoubleValidator(0.0, 1.0, 5))
-        edit_line.setAlignment(Qt.AlignLeft)
-
-    def update_grid_layout(self, grid_layout_name='gridLayout') -> None:
-        """
-        Update grid layout
-        Parameters
-        ----------
-        grid_layout_name: str (optional)
-            Grid layout widget name
+        grid: QGridLayout
+            Grid layout to be resize
 
 
         Returns
         -------
 
         """
-        grid = self.findChild(QGridLayout, grid_layout_name)
         grid.setVerticalSpacing(AppConfig.GRID_VERTICAL_SPACING.value)
         grid.setHorizontalSpacing(AppConfig.GRID_HORIZONTAL_SPACING.value)
 
@@ -127,187 +110,370 @@ class BasicPage(QWidget):
 
         grid.update()
 
-    def remove_row_from_grid_layout(self, grid_layout_name, row_idx) -> None:
+    @staticmethod
+    def clear_grid_layout(grid) -> None:
         """
-        Remove a row from a grid layout
+        Clear a grid layout from widgets.
+
         Parameters
         ----------
-        grid_layout_name: str
-            Grid Layout name
-        row_idx: int
-            Row to be removed
+        grid: QGridLayout
+            Grid layout
 
         Returns
         -------
-
         """
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-        for column in range(grid_layout.columnCount()):
-            item = grid_layout.itemAtPosition(row_idx, column)
+        # Iterate over all items in the grid layout
+        for row in range(grid.rowCount()):
+            for col in range(grid.columnCount()):
+                item = grid.itemAtPosition(row, col)
+                if item:
+                    widget = item.widget()
+                    if widget:
+                        # Remove the widget from the layout
+                        grid.removeWidget(widget)
+                        widget.deleteLater()  # Ensure widget cleanup
+
+        # Remove all items and reset the layout
+        while grid.count():
+            item = grid.takeAt(0)
             if item:
                 widget = item.widget()
-                grid_layout.removeWidget(widget)
-        self.update_grid_layout(grid_layout_name)
+                if widget:
+                    widget.deleteLater()
 
-    def add_dummy_row_to_grid_layout(self, grid_layout_name, row_idx) -> None:
+    def find_widget(self, widget_as_enum) -> QWidget:
         """
-        Add a dummy row to a grid layout
+        Find and select the widget from a layout
         Parameters
         ----------
-        grid_layout_name: str
-            Grid Layout name
-        row_idx: int
-            Row to be removed
+        widget_as_enum: Enum
+            Widget as enum with name and type
 
         Returns
         -------
-
+        widget: QWidget
+            Desired widget
         """
-        label = QLabel(" ")
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-        grid_layout.addWidget(label, row_idx, 0, 1, -1)
-        self.update_grid_layout(grid_layout_name)
+        widget_name = widget_as_enum.value.name
+        widget_type = widget_as_enum.value.type
 
-    def add_specie_input_row_to_grid_layout(self,
-                                            grid_layout_name,
-                                            specie_idx,
-                                            row_idx,
-                                            label_name,
-                                            combo_box_name,
-                                            edit_line_name,
-                                            specie_list):
+        return self.findChild(widget_type, widget_name)
+
+    def add_gas_specie(self, grid_enum) -> None:
         """
-        Add a gas or surface specie row to a grid layout
+        Add gas species widgets to the grid layout
         Parameters
         ----------
-        grid_layout_name: str
-            Grid layout name
-        specie_idx: int
-            Specie index to be added
-        row_idx: int
-            Row to be added
-        label_name: str | None
-            Label name
-        combo_box_name: str
-            Combo box name
-        edit_line_name: str
-            Edit line name
-        specie_list: list
-            Gas or coverage species names to be added
-
+        grid_enum: Enum
+            Enum describing the layout where to add the gas specie row
         Returns
         -------
-
         """
-        grid_layout = self.findChild(QGridLayout, grid_layout_name)
-
-        combo_box = QComboBox()
-        combo_box.setObjectName(combo_box_name.format(specie_idx))
-
-        edit_line = QLineEdit()
-        edit_line.setObjectName(edit_line_name.format(specie_idx))
-        edit_line.setText("0.0")
-
-        if label_name is None:
-            grid_layout.addWidget(combo_box, row_idx, 0)
-            grid_layout.addWidget(edit_line, row_idx, 1)
-        else:
-            label = QLabel(label_name.format(specie_idx))
-            grid_layout.addWidget(label, row_idx, 0)
-            grid_layout.addWidget(combo_box, row_idx, 1)
-            grid_layout.addWidget(edit_line, row_idx, 2)
-
-        self.update_composition_names(specie_idx,
-                                      specie_list,
-                                      combo_box_name,
-                                      edit_line_name)
-
-    def add_gas_specie_input_row_to_grid_layout(self,
-                                                grid_layout_name,
-                                                specie_idx,
-                                                row_idx,
-                                                with_label) -> None:
-        """
-        Add a specie row to a grid layout
-        Parameters
-        ----------
-        grid_layout_name: str
-            Grid layout name
-        specie_idx: int
-            Specie index to be added
-        row_idx: int
-            Row to be added
-        with_label: bool
-            Enable/Disable the label
-
-        Returns
-        -------
-
-        """
-        label_name = None
-        combo_box_name = InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value
+        grid = self.find_widget(grid_enum)
+        idx = self.data_store.get_data(DataKeys.GAS_NS) + 1
+        self.data_store.update_data(DataKeys.GAS_NS, idx)
 
         self.data_store = gas_species_names(self.data_store)
-        specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
+        species_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
 
-        if with_label:
-            label_name = InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value
+        label = QLabel(InputCompositionConfig.GAS_SPECIE_LABEL_TEXT.value.format(idx))
+        label.setObjectName(InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value.format(idx))
 
-        self.add_specie_input_row_to_grid_layout(grid_layout_name,
-                                                 specie_idx,
-                                                 row_idx,
-                                                 label_name,
-                                                 combo_box_name,
-                                                 edit_line_name,
-                                                 specie_list)
+        combo_box = QComboBox()
+        combo_box.setObjectName(InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(idx))
+        combo_box.addItems(species_names)
 
-    def add_surface_specie_input_row_to_grid_layout(self,
-                                                    grid_layout_name,
-                                                    specie_idx,
-                                                    row_idx,
-                                                    with_label) -> None:
+        edit_line = QLineEdit()
+        edit_line.setObjectName(InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
+        edit_line.setValidator(InputCompositionConfig.EDIT_LINE_VALIDATOR.value)
+        edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
+        edit_line.setPlaceholderText(InputCompositionConfig.EDIT_LINE_TEXT.value)
+
+        grid.addWidget(label, idx, 0)
+        grid.addWidget(combo_box, idx, 1)
+        grid.addWidget(edit_line, idx, 2)
+
+        self.set_custom_dimensions_to_grid_layout(grid)
+
+    def remove_gas_species(self, grid_enum) -> None:
         """
-        Add a specie row to a grid layout
+        Remove gas species widgets to the grid layout
         Parameters
         ----------
-        grid_layout_name: str
-            Grid layout name
-        specie_idx: int
-            Specie index to be added
-        row_idx: int
-            Row to be added
-        with_label: bool
-            Enable/Disable the label
+        grid_enum: Enum
+            Enum describing the layout where to add the gas specie row
+        Returns
+        -------
+        """
+        grid = self.find_widget(grid_enum)
+        idx = self.data_store.get_data(DataKeys.GAS_NS)
+        if idx > 0:
+            for column in range(grid.columnCount()):
+                item = grid.itemAtPosition(idx, column)
+                if item:
+                    widget = item.widget()
+                    grid.removeWidget(widget)
+            self.set_custom_dimensions_to_grid_layout(grid)
+            self.data_store.update_data(DataKeys.GAS_NS, idx - 1)
+
+    def select_database(self, database_enum) -> None:
+        """
+        Select database to be used
+        Parameters
+        ----------
+        database_enum: Enum
+            Database combo box enum
 
         Returns
         -------
 
         """
-        label_name = None
-        combo_box_name = InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value
-        edit_line_name = InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
+        database_box = self.find_widget(database_enum)
+        database_type = DatabaseType(database_box.currentText())
 
-        self.data_store = surface_species_names(self.data_store)
-        specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES)
+        self.data_store.update_data(DataKeys.IS_GAS_SPECIES_NAMES_UPDATED, False)
 
-        if with_label:
-            label_name = InputCompositionConfig.SURFACE_SPECIE_LABEL_NAME.value
+        if DatabaseType.NONE == database_type:
+            self.data_store.reset_data(DataKeys.IS_DEFAULT_FILE_PATH)
+            self.data_store.reset_data(DataKeys.CHEMISTRY_FILE_PATH)
+            self.data_store.reset_data(DataKeys.GAS_PHASE_NAME)
+            self.data_store.reset_data(DataKeys.SURFACE_PHASE_NAME)
+            return None
 
-        self.add_specie_input_row_to_grid_layout(grid_layout_name,
-                                                 specie_idx,
-                                                 row_idx,
-                                                 label_name,
-                                                 combo_box_name,
-                                                 edit_line_name,
-                                                 specie_list)
+        if DatabaseType.DEFAULT == database_type:
+            self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH, True)
+            file_path = AppConfig.DEFAULT_DATABASE_FILE_PATH.value
+            self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH,
+                                        file_path)
+            self.data_store.update_data(DataKeys.GAS_PHASE_NAME,
+                                        InputFileController.extract_gas_phase_name_from_cantera(file_path))
+            self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME,
+                                        InputFileController.extract_gas_phase_name_from_cantera(file_path))
+            return None
 
-    @abstractmethod
-    def update_page_after_switch(self) -> None:
-        """
-        Update the whole page
-        Returns
-        -------
+        if DatabaseType.CUSTOM == database_type:
+            file_path = self.dialog_handler.load_file(AppConfig.CANTERA_FILE_OPEN.value,
+                                                      AppConfig.CANTERA_FILE_TYPE.value)
+            if file_path:  # Check if a file was selected
+                if InputFileController.check_cantera_input_file(file_path):
+                    self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH, False)
+                    self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH,
+                                                file_path)
+                    self.data_store.update_data(DataKeys.GAS_PHASE_NAME,
+                                                InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                    self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME,
+                                                InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                    self.dialog_handler.done_message(QLabel("Cantera file loaded!"))
+                else:
+                    database_box.setCurrentTexT(DatabaseType.NONE.value)
+            else:
+                database_box.setCurrentTexT(DatabaseType.NONE.value)
+            return None
 
-        """
-        pass
+        return None
+
+    # def update_composition_names(self,
+    #                              specie_idx,
+    #                              specie_list,
+    #                              combo_box_name,
+    #                              edit_line_name) -> None:
+    #     """
+    #     Update specie composition in all combo boxes
+    #     Parameters
+    #     ----------
+    #     specie_idx: int
+    #         List of index to be update
+    #     specie_list: list
+    #         Gas or coverage species names
+    #     combo_box_name: str
+    #         Combo box name
+    #     edit_line_name: str
+    #         Edit line name
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     dropdown = self.findChild(QComboBox, combo_box_name.format(specie_idx))
+    #     dropdown.clear()
+    #     dropdown.addItems(specie_list)
+    #
+    #     edit_line = self.findChild(QLineEdit, edit_line_name.format(specie_idx))
+    #     edit_line.setValidator(QDoubleValidator(0.0, 1.0, 5))
+    #     edit_line.setAlignment(Qt.AlignLeft)
+    #
+    # def remove_row_from_grid_layout(self, grid_layout_name, row_idx) -> None:
+    #     """
+    #     Remove a row from a grid layout
+    #     Parameters
+    #     ----------
+    #     grid_layout_name: str
+    #         Grid Layout name
+    #     row_idx: int
+    #         Row to be removed
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     grid_layout = self.findChild(QGridLayout, grid_layout_name)
+    #     for column in range(grid_layout.columnCount()):
+    #         item = grid_layout.itemAtPosition(row_idx, column)
+    #         if item:
+    #             widget = item.widget()
+    #             grid_layout.removeWidget(widget)
+    #     self.set_custom_dimensions_to_grid_layout(grid_layout_name)
+    #
+    # def add_dummy_row_to_grid_layout(self, grid_layout_name, row_idx) -> None:
+    #     """
+    #     Add a dummy row to a grid layout
+    #     Parameters
+    #     ----------
+    #     grid_layout_name: str
+    #         Grid Layout name
+    #     row_idx: int
+    #         Row to be removed
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     label = QLabel(" ")
+    #     grid_layout = self.findChild(QGridLayout, grid_layout_name)
+    #     grid_layout.addWidget(label, row_idx, 0, 1, -1)
+    #     self.set_custom_dimensions_to_grid_layout(grid_layout_name)
+    #
+    # def add_specie_input_row_to_grid_layout(self,
+    #                                         grid_layout_name,
+    #                                         specie_idx,
+    #                                         row_idx,
+    #                                         label_name,
+    #                                         combo_box_name,
+    #                                         edit_line_name,
+    #                                         specie_list):
+    #     """
+    #     Add a gas or surface specie row to a grid layout
+    #     Parameters
+    #     ----------
+    #     grid_layout_name: str
+    #         Grid layout name
+    #     specie_idx: int
+    #         Specie index to be added
+    #     row_idx: int
+    #         Row to be added
+    #     label_name: str | None
+    #         Label name
+    #     combo_box_name: str
+    #         Combo box name
+    #     edit_line_name: str
+    #         Edit line name
+    #     specie_list: list
+    #         Gas or coverage species names to be added
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     grid_layout = self.findChild(QGridLayout, grid_layout_name)
+    #
+    #     combo_box = QComboBox()
+    #     combo_box.setObjectName(combo_box_name.format(specie_idx))
+    #
+    #     edit_line = QLineEdit()
+    #     edit_line.setObjectName(edit_line_name.format(specie_idx))
+    #     edit_line.setText("0.0")
+    #
+    #     if label_name is None:
+    #         grid_layout.addWidget(combo_box, row_idx, 0)
+    #         grid_layout.addWidget(edit_line, row_idx, 1)
+    #     else:
+    #         label = QLabel(label_name.format(specie_idx))
+    #         grid_layout.addWidget(label, row_idx, 0)
+    #         grid_layout.addWidget(combo_box, row_idx, 1)
+    #         grid_layout.addWidget(edit_line, row_idx, 2)
+    #
+    #     self.update_composition_names(specie_idx,
+    #                                   specie_list,
+    #                                   combo_box_name,
+    #                                   edit_line_name)
+    #
+    # def add_gas_specie_input_row_to_grid_layout(self,
+    #                                             grid_layout_name,
+    #                                             specie_idx,
+    #                                             row_idx,
+    #                                             with_label) -> None:
+    #     """
+    #     Add a specie row to a grid layout
+    #     Parameters
+    #     ----------
+    #     grid_layout_name: str
+    #         Grid layout name
+    #     specie_idx: int
+    #         Specie index to be added
+    #     row_idx: int
+    #         Row to be added
+    #     with_label: bool
+    #         Enable/Disable the label
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     label_name = None
+    #     combo_box_name = InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value
+    #     edit_line_name = InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value
+    #
+    #     self.data_store = gas_species_names(self.data_store)
+    #     specie_list = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
+    #
+    #     if with_label:
+    #         label_name = InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value
+    #
+    #     self.add_specie_input_row_to_grid_layout(grid_layout_name,
+    #                                              specie_idx,
+    #                                              row_idx,
+    #                                              label_name,
+    #                                              combo_box_name,
+    #                                              edit_line_name,
+    #                                              specie_list)
+    #
+    # def add_surface_specie_input_row_to_grid_layout(self,
+    #                                                 grid_layout_name,
+    #                                                 specie_idx,
+    #                                                 row_idx,
+    #                                                 with_label) -> None:
+    #     """
+    #     Add a specie row to a grid layout
+    #     Parameters
+    #     ----------
+    #     grid_layout_name: str
+    #         Grid layout name
+    #     specie_idx: int
+    #         Specie index to be added
+    #     row_idx: int
+    #         Row to be added
+    #     with_label: bool
+    #         Enable/Disable the label
+    #
+    #     Returns
+    #     -------
+    #
+    #     """
+    #     label_name = None
+    #     combo_box_name = InputCompositionConfig.SURFACE_SPECIE_COMBO_BOX_NAME.value
+    #     edit_line_name = InputCompositionConfig.SURFACE_SPECIE_EDIT_LINE_NAME.value
+    #
+    #     self.data_store = surface_species_names(self.data_store)
+    #     specie_list = self.data_store.get_data(DataKeys.SURFACE_SPECIES_NAMES)
+    #
+    #     if with_label:
+    #         label_name = InputCompositionConfig.SURFACE_SPECIE_LABEL_NAME.value
+    #
+    #     self.add_specie_input_row_to_grid_layout(grid_layout_name,
+    #                                              specie_idx,
+    #                                              row_idx,
+    #                                              label_name,
+    #                                              combo_box_name,
+    #                                              edit_line_name,
+    #                                              specie_list)

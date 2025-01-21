@@ -45,6 +45,28 @@ QPushButton:pressed {
     background-color: #f2e8dc;  /* LIGHTORANGE */
 }
 
+/* Icon Button Styling */
+QPushButton.icon {
+    background-color: #DCE6F2;  /* LIGHTBLUE */
+    border: none;
+    color: #10253F;  /* BLUE */
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    border-radius: 2.5px;
+    height: 40px;
+}
+
+QPushButton.icon:hover {
+    background-color: #f2e8dc;  /* LIGHTORANGE */
+}
+
+QPushButton.icon:pressed {
+    background-color: #f2e8dc;  /* LIGHTORANGE */
+}
+
 /* Dropdown (ComboBox) Styling */
 QComboBox {
     background-color: #DB901F;  /* ORANGE */

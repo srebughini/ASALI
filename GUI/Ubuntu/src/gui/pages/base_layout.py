@@ -72,12 +72,12 @@ class BaseLayout(QWidget):
         """
         self.main_layout.addWidget(widget)
 
-    def switch_page(self, page_name) -> None:
+    def switch_page(self, main_layout_name) -> None:
         """
         Switch to a different widget in the QStackedWidget.
         Parameters
         ----------
-        page_name: str
+        main_layout_name: str
             Name of the page to be shown
 
         Returns
@@ -92,7 +92,7 @@ class BaseLayout(QWidget):
         label = self.findChild(QLabel, 'beerQuoteLabel')
         label.show()
 
-        layout = self.findChild(QWidget, page_name)
+        layout = self.findChild(QWidget, main_layout_name)
 
         layout.update_page_after_switch()
         layout.show()

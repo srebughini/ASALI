@@ -5,12 +5,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QPushButton, QLabel
 from asali.utils.cantera_file_converter import CanteraFileConverter
 
-from src.config.input.chemistry_input_page import ChemistryInputPageConfig
 from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
 from src.core.data_keys import DataKeys
 from src.config.app import AppConfig
 from src.gui.pages.basic_page import BasicPage
-from src.gui.widgets.input.chemkin_to_cantera_page import ChemkinToCanteraPageWidgets
+from src.gui.components.input.chemkin_to_cantera_page import ChemkinToCanteraPageWidgets
 
 
 class ChemkinToCanteraPage(BasicPage):
@@ -32,7 +31,7 @@ class ChemkinToCanteraPage(BasicPage):
 
         self.update_buttons()
         self.update_labels()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_page_after_switch(self) -> None:
         """
@@ -42,7 +41,7 @@ class ChemkinToCanteraPage(BasicPage):
 
         """
         self.clean()
-        self.update_grid_layout()
+        self.set_custom_dimensions_to_grid_layout()
 
     def update_labels(self) -> None:
         """
@@ -64,7 +63,7 @@ class ChemkinToCanteraPage(BasicPage):
 
         """
         back_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.BACK_BUTTON.value)
-        back_button.clicked.connect(lambda: self.page_switched.emit(ChemistryInputPageConfig.NAME.value))
+        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
 
         clean_button = self.findChild(QPushButton, ChemkinToCanteraPageWidgets.CLEAN_BUTTON.value)
         clean_button.clicked.connect(self.clean)

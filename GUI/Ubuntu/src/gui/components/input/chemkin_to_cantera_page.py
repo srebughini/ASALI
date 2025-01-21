@@ -3,7 +3,7 @@ from enum import Enum
 
 class ChemkinToCanteraPageWidgets(Enum):
     """
-    Class to handle chemkin to cantera page widgets names
+    Class to handle chemkin to cantera page components names
     """
     THERMO_LABEL = "thermoLabel"
     TRANSPORT_LABEL = "transportLabel"

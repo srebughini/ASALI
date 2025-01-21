@@ -31,7 +31,7 @@ class InputFileController:
         raise Exception("Cannot find the gas phase name")
 
     @staticmethod
-    def extract_surface_phase_name_from_cantera(file_path) -> str | None:
+    def extract_surface_phase_name_from_cantera(file_path) -> str:
         """
         Extract surface phase name from .yaml file
         Parameters
@@ -40,7 +40,8 @@ class InputFileController:
             Cantera input file path
         Returns
         -------
-
+        surface_phase_name: str
+            Surface phase name
         """
         with open(file_path) as stream:
             yaml_as_dict = yaml.safe_load(stream)
@@ -48,7 +49,7 @@ class InputFileController:
                 if p["thermo"] == 'ideal-surface':
                     return p["name"]
 
-        return None
+        return ""
 
     @staticmethod
     def check_cantera_input_file(file_path) -> bool:

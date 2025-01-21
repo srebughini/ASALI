@@ -3,7 +3,7 @@ from enum import Enum
 
 class PropertiesOutputPageWidgets(Enum):
     """
-    Class to handle properties output page widgets names
+    Class to handle properties output page components names
     """
     BACK_BUTTON = "backButton"
     CALCULATE_BUTTON = "calculateButton"

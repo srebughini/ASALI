@@ -5,5 +5,5 @@ class ReactorResolutionMethod(Enum):
     """
     Enum describing the reactor resolution method
     """
-    TRANSIENT = "transient"
-    STEADY_STATE = "steady_state"
+    TRANSIENT = "Transient"
+    STEADY_STATE = "Steady state"

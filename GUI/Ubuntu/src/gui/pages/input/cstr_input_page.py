@@ -12,7 +12,7 @@ from src.core.species_names import surface_species_names, gas_species_names
 
 from src.config.reactor import ReactorConfig
 from src.gui.pages.input.basic_reactor_input_page import BasicReactorInputPage
-from src.gui.widgets.input.cstr_input_page import CstrInputPageWidgets
+from src.gui.components.input.cstr_input_page import CstrInputPageWidgets
 
 
 class CstrInputPage(BasicReactorInputPage):
@@ -151,7 +151,7 @@ class CstrInputPage(BasicReactorInputPage):
 
         for tab_name in self.tab_names:
             layout_name = self.tab_name_to_grid_layout_name_dict[tab_name]
-            self.update_grid_layout(grid_layout_name=layout_name)
+            self.set_custom_dimensions_to_grid_layout(grid_layout_name=layout_name)
 
     def update_buttons(self) -> None:
         """

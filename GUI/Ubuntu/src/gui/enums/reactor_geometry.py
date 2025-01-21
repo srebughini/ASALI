@@ -5,6 +5,6 @@ class ReactorGeometry(Enum):
     """
     Enum describing the heterogeneous reactor geometry
     """
-    PACKED_BED = "packed_bed"
-    TUBULAR = "tubular"
-    HONEYCOMB = "honeycomb"
+    PACKED_BED = "Packed bed"
+    TUBULAR = "Tubular"
+    HONEYCOMB = "Honeycomb"
