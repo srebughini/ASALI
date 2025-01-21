@@ -177,22 +177,34 @@ class BasicPage(QWidget):
         self.data_store = gas_species_names(self.data_store)
         species_names = self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES)
 
-        label = QLabel(InputCompositionConfig.GAS_SPECIE_LABEL_TEXT.value.format(idx))
-        label.setObjectName(InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value.format(idx))
+        label = self.findChild(QLabel, InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value.format(idx))
+        if label is None:
+            label = QLabel(InputCompositionConfig.GAS_SPECIE_LABEL_TEXT.value.format(idx))
+            label.setObjectName(InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value.format(idx))
+            grid.addWidget(label, idx, 0)
+        else:
+            label.setVisible(True)
 
-        combo_box = QComboBox()
-        combo_box.setObjectName(InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(idx))
-        combo_box.addItems(species_names)
+        combo_box = self.findChild(QComboBox, InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(idx))
+        if combo_box is None:
+            combo_box = QComboBox()
+            combo_box.setObjectName(InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(idx))
+            combo_box.addItems(species_names)
+            grid.addWidget(combo_box, idx, 1)
+        else:
+            combo_box.addItems(species_names)
+            combo_box.setVisible(True)
 
-        edit_line = QLineEdit()
-        edit_line.setObjectName(InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
-        edit_line.setValidator(InputCompositionConfig.EDIT_LINE_VALIDATOR.value)
-        edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
-        edit_line.setPlaceholderText(InputCompositionConfig.EDIT_LINE_TEXT.value)
-
-        grid.addWidget(label, idx, 0)
-        grid.addWidget(combo_box, idx, 1)
-        grid.addWidget(edit_line, idx, 2)
+        edit_line = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
+        if edit_line is None:
+            edit_line = QLineEdit()
+            edit_line.setObjectName(InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
+            edit_line.setValidator(InputCompositionConfig.EDIT_LINE_VALIDATOR.value)
+            edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
+            edit_line.setPlaceholderText(InputCompositionConfig.EDIT_LINE_TEXT.value)
+            grid.addWidget(edit_line, idx, 2)
+        else:
+            edit_line.setVisible(True)
 
         self.set_custom_dimensions_to_grid_layout(grid)
 
@@ -209,11 +221,17 @@ class BasicPage(QWidget):
         grid = self.find_widget(grid_enum)
         idx = self.data_store.get_data(DataKeys.GAS_NS)
         if idx > 0:
-            for column in range(grid.columnCount()):
-                item = grid.itemAtPosition(idx, column)
-                if item:
-                    widget = item.widget()
-                    grid.removeWidget(widget)
+            label = self.findChild(QLabel, InputCompositionConfig.GAS_SPECIE_LABEL_NAME.value.format(idx))
+            combo_box = self.findChild(QComboBox, InputCompositionConfig.GAS_SPECIE_COMBO_BOX_NAME.value.format(idx))
+            edit_line = self.findChild(QLineEdit, InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
+
+            label.setVisible(False)
+            combo_box.clear()
+            combo_box.setVisible(False)
+
+            edit_line.clear()
+            edit_line.setVisible(False)
+
             self.set_custom_dimensions_to_grid_layout(grid)
             self.data_store.update_data(DataKeys.GAS_NS, idx - 1)
 
