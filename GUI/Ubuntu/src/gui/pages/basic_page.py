@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, 
 
 from src.config.input_composition import InputCompositionConfig
 from src.controllers.input_file_controller import InputFileController
+from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
 from src.core.unit_dimension_handler import UnitDimensionHandler
@@ -142,6 +143,33 @@ class BasicPage(QWidget):
                 if widget:
                     widget.deleteLater()
 
+    def set_formatted_text_to_label(self, label_as_enum, text) -> None:
+        """
+        Set formatted text to label
+        Parameters
+        ----------
+        label_as_enum: Enum
+            Enum describing the QLabel
+        text: float | dict | str | list
+            Value to be formatted and converted to thext
+
+        Returns
+        -------
+
+        """
+        label = self.find_widget(label_as_enum)
+
+        if isinstance(text, float):
+            label.setText(LabelFormatter.float_to_string(text))
+        elif isinstance(text, dict):
+            label.setText(LabelFormatter.dict_to_string(text))
+        elif isinstance(text, list):
+            label.setText(LabelFormatter.list_to_string(text))
+        elif isinstance(text, str):
+            label.setText(LabelFormatter.pad_string(text))
+        else:
+            raise Exception(f"Unknown type to be formatted: {type(text)}")
+
     def find_widget(self, widget_as_enum) -> QWidget:
         """
         Find and select the widget from a layout
@@ -201,7 +229,7 @@ class BasicPage(QWidget):
             edit_line.setObjectName(InputCompositionConfig.GAS_SPECIE_EDIT_LINE_NAME.value.format(idx))
             edit_line.setValidator(InputCompositionConfig.EDIT_LINE_VALIDATOR.value)
             edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
-            edit_line.setPlaceholderText(InputCompositionConfig.EDIT_LINE_TEXT.value)
+            edit_line.setText(InputCompositionConfig.EDIT_LINE_TEXT.value)
             grid.addWidget(edit_line, idx, 2)
         else:
             edit_line.setVisible(True)

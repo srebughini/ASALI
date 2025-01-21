@@ -28,17 +28,17 @@ def properties_calculator(data_store) -> DataStore:
 
     uc = UnitConverter()
 
-    temperature_tuple = data_store.get_data(DataKeys.INLET_T)
+    temperature_tuple = data_store.get_data(DataKeys.TEMPERATURE)
     temperature = uc.convert_to_kelvin(temperature_tuple[0],
                                        UnitDimensionHandler.from_human_to_code_ud(temperature_tuple[1]))
 
-    pressure_tuple = data_store.get_data(DataKeys.INLET_P)
+    pressure_tuple = data_store.get_data(DataKeys.PRESSURE)
     pressure = uc.convert_to_pascal(pressure_tuple[0],
                                     UnitDimensionHandler.from_human_to_code_ud(pressure_tuple[1]))
 
-    composition_tuple = data_store.get_data(DataKeys.INLET_GAS_COMPOSITION)
+    composition_tuple = data_store.get_data(DataKeys.GAS_COMPOSITION)
 
-    if composition_tuple[1] == CompositionType.MOLE:
+    if CompositionType.MOLE == composition_tuple[1]:
         gas.TPX = temperature, pressure, composition_tuple[0]
     else:
         gas.TPY = temperature, pressure, composition_tuple[0]

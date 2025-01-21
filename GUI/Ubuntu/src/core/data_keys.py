@@ -1,10 +1,15 @@
 from enum import Enum
 
+from src.config.app import AppConfig
+from src.gui.enums.composition_type import CompositionType
+
 
 class DataKeys(Enum):
     """
     Class to handle the keys of the data stored in DataStore
     """
+    LAST_ACTIVE_WINDOW = (AppConfig.MAIN_INPUT_PAGE, "last_active_window")
+
     IS_DEFAULT_FILE_PATH = (False, "is_default_file_path")
     CHEMISTRY_FILE_PATH = ("", "chemistry_file_path")
 
@@ -15,6 +20,19 @@ class DataKeys(Enum):
     IS_GAS_SPECIES_NAMES_UPDATED = (False, "is_gas_phase_specie_names_updated")
 
     GAS_NS = (-1, "number_of_gas_species")
+    TEMPERATURE = ((298.15, "K"), "gas_mixture_temperature")
+    PRESSURE = ((101325.0, "Pa"), "gas_mixture_pressure")
+    GAS_COMPOSITION = (({}, CompositionType.MASS), "gas_mixture_composition")
+
+    RHO = ((1.0, "kg/m3"), "density")
+    MU = ((1.0e-05, "Pas"), "viscosity")
+    MW = ((18.0, "g/mol"), "molecular_weight")
+    COND = ((2.5, "W/m/K"), "thermal_conductivity")
+    DIFF_MIX = ((1.0e-05, "m2/s"), "mixture_diffusivity")
+    CP = ((1000.0, "J/kg/K"), "specific_heat")
+    H = ((1.0, "J/kg"), "enthalpy")
+    S = ((1.0, "J/kg/K"), "entropy")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

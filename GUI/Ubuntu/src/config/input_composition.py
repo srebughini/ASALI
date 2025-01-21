@@ -18,5 +18,5 @@ class InputCompositionConfig(Enum):
     SURFACE_SPECIE_EDIT_LINE_NAME = "z{:d}"
 
     EDIT_LINE_VALIDATOR = QDoubleValidator(0.0, 1.0, 5)
-    EDIT_LINE_ALIGN = Qt.AlignLeft
+    EDIT_LINE_ALIGN = Qt.AlignRight
     EDIT_LINE_TEXT = "0.0"

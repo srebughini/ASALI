@@ -24,6 +24,8 @@ class AppConfig(Enum):
 
     PROPERTIES_INPUT_PAGE = SimpleNamespace(layout_name="PropertiesInputPage",
                                             path=os.path.join("gui", "ui", "input", "properties_page.ui"))
+    PROPERTIES_OUTPUT_PAGE = SimpleNamespace(layout_name="PropertiesOutputPage",
+                                             path=os.path.join("gui", "ui", "output", "properties_page.ui"))
 
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"

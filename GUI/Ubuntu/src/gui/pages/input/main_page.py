@@ -3,6 +3,7 @@ from PyQt5 import uic
 
 from src.config.icon import IconConfig
 from src.config.app import AppConfig
+from src.core.data_keys import DataKeys
 from src.gui.pages.basic_page import BasicPage
 from src.gui.components.input.main_page import MainInputPageComponents
 import qtawesome as qta
@@ -34,6 +35,7 @@ class MainInputPage(BasicPage):
         """
         self.data_store.reset_all_data()
         self.set_custom_dimensions_to_grid_layout(self.find_widget(MainInputPageComponents.GRID))
+        self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.MAIN_INPUT_PAGE)
 
     def update_buttons(self) -> None:
         """

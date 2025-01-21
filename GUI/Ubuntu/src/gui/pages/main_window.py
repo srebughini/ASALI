@@ -30,7 +30,7 @@ from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_output_page import RegressionOutputPage
 from src.gui.pages.output.regression_plot_output_page import RegressionPlotOutputPage
 from src.gui.pages.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPage
-from src.gui.pages.output.properties_output_page import PropertiesOutputPage
+from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
 from src.gui.pages.output.vacuum_output_page import VacuumOutputPage
 from src.gui.pages.run_bar import RunBar
@@ -87,7 +87,9 @@ class MainWindow(QMainWindow):
             AppConfig.MAIN_INPUT_PAGE: MainInputPage(self.data_store,
                                                      self.dialog_handler),
             AppConfig.PROPERTIES_INPUT_PAGE: PropertiesInputPage(self.data_store,
-                                                                 self.dialog_handler)}
+                                                                 self.dialog_handler),
+            AppConfig.PROPERTIES_OUTPUT_PAGE: PropertiesOutputPage(self.data_store,
+                                                                  self.dialog_handler)}
 
         #     CalculationInputPageConfig.NAME.value: CalculationInputPage(self.data_store,
         #                                                                 self.dialog_handler),
