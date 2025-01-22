@@ -13,11 +13,6 @@ class IconConfig(Enum):
     BALANCE = "fa5s.balance-scale"
     ATOM = "fa5s.atom"
     TASKS = "fa5s.tasks"
-    EMAIL = "fa5s.envelope"
-    FACEBOOK = "fa5s.facebook"
-    LINKEDIN = "fa5s.linkedin"
-    SITE = "fa5s.globe"
-    GITHUB = "fa5s.github"
 
     SIZE = QtCore.QSize(26, 26)
 
