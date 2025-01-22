@@ -1,11 +1,6 @@
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QComboBox, QPushButton
 
 from src.config.app import AppConfig
-from src.config.input.calculation_input_page import CalculationInputPageConfig
-from src.config.output.properties_output_page import PropertiesOutputPageConfig
-from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
 from src.gui.pages.basic_page import BasicPage
@@ -25,7 +20,7 @@ class PropertiesOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(PropertiesOutputPageConfig.PATH.value, self)
+        uic.loadUi(AppConfig.PROPERTIES_OUTPUT_PAGE.value.path, self)
 
         self.update_buttons()
         self.update_head_lines()
@@ -76,17 +71,17 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        for widget_enum, ud in {PropertiesOutputPageComponents.DENSITY_UD: self.ud_handler.density_ud,
-                                PropertiesOutputPageComponents.VISCOSITY_UD: self.ud_handler.viscosity_ud,
-                                PropertiesOutputPageComponents.SPECIFIC_HEAT_UD: self.ud_handler.specific_heat_ud,
-                                PropertiesOutputPageComponents.ENTHALPY_UD: self.ud_handler.enthalpy_ud,
-                                PropertiesOutputPageComponents.ENTROPY_UD: self.ud_handler.entropy_ud,
-                                PropertiesOutputPageComponents.MOLECULAR_WEIGHT_UD: self.ud_handler.molecular_weight_ud,
-                                PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_UD: self.ud_handler.thermal_conductivity_ud,
-                                PropertiesOutputPageComponents.DIFFUSIVITY_UD: self.ud_handler.diffusivity_ud}.items():
+        for widget_enum in [PropertiesOutputPageComponents.DENSITY_UD,
+                            PropertiesOutputPageComponents.VISCOSITY_UD,
+                            PropertiesOutputPageComponents.SPECIFIC_HEAT_UD,
+                            PropertiesOutputPageComponents.ENTHALPY_UD,
+                            PropertiesOutputPageComponents.ENTROPY_UD,
+                            PropertiesOutputPageComponents.MOLECULAR_WEIGHT_UD,
+                            PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_UD,
+                            PropertiesOutputPageComponents.DIFFUSIVITY_UD]:
             widget = self.find_widget(widget_enum)
             widget.clear()
-            widget.addItems(ud)
+            widget.addItems(widget_enum.value.items)
 
     def update_edit_lines(self) -> None:
         """
@@ -115,17 +110,17 @@ class PropertiesOutputPage(BasicPage):
         -------
 
         """
-        for data_key, widget_enum in {DataKeys.RHO: PropertiesOutputPageComponents.DENSITY_UD,
-                                      DataKeys.COND: PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_UD,
-                                      DataKeys.MW: PropertiesOutputPageComponents.MOLECULAR_WEIGHT_UD,
-                                      DataKeys.DIFF_MIX: PropertiesOutputPageComponents.DIFFUSIVITY_UD,
-                                      DataKeys.MU: PropertiesOutputPageComponents.VISCOSITY_UD,
-                                      DataKeys.H: PropertiesOutputPageComponents.ENTHALPY_UD,
-                                      DataKeys.S: PropertiesOutputPageComponents.ENTROPY_UD,
-                                      DataKeys.CP: PropertiesOutputPageComponents.SPECIFIC_HEAT_UD}.items():
+        for widget_enum in [PropertiesOutputPageComponents.DENSITY_UD,
+                            PropertiesOutputPageComponents.VISCOSITY_UD,
+                            PropertiesOutputPageComponents.SPECIFIC_HEAT_UD,
+                            PropertiesOutputPageComponents.ENTHALPY_UD,
+                            PropertiesOutputPageComponents.ENTROPY_UD,
+                            PropertiesOutputPageComponents.MOLECULAR_WEIGHT_UD,
+                            PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_UD,
+                            PropertiesOutputPageComponents.DIFFUSIVITY_UD]:
             widget = self.find_widget(widget_enum)
             ud = widget.currentText()
-            self.data_store.update_data(data_key, (0.0, ud))
+            self.data_store.update_data(widget_enum.value.data_key, (0.0, ud))
 
     def show_data(self) -> None:
         """
@@ -137,15 +132,15 @@ class PropertiesOutputPage(BasicPage):
         self.read_data()
         self.data_store = properties_calculator(self.data_store)
 
-        for data_key, widget_enum in {DataKeys.RHO: PropertiesOutputPageComponents.DENSITY_VALUE,
-                                      DataKeys.COND: PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_VALUE,
-                                      DataKeys.MW: PropertiesOutputPageComponents.MOLECULAR_WEIGHT_VALUE,
-                                      DataKeys.DIFF_MIX: PropertiesOutputPageComponents.DIFFUSIVITY_VALUE,
-                                      DataKeys.MU: PropertiesOutputPageComponents.VISCOSITY_VALUE,
-                                      DataKeys.H: PropertiesOutputPageComponents.ENTHALPY_VALUE,
-                                      DataKeys.S: PropertiesOutputPageComponents.ENTROPY_VALUE,
-                                      DataKeys.CP: PropertiesOutputPageComponents.SPECIFIC_HEAT_VALUE}.items():
-            text = self.data_store.get_data(data_key)[0]
+        for widget_enum in [PropertiesOutputPageComponents.DENSITY_VALUE,
+                            PropertiesOutputPageComponents.VISCOSITY_VALUE,
+                            PropertiesOutputPageComponents.SPECIFIC_HEAT_VALUE,
+                            PropertiesOutputPageComponents.ENTHALPY_VALUE,
+                            PropertiesOutputPageComponents.ENTROPY_VALUE,
+                            PropertiesOutputPageComponents.MOLECULAR_WEIGHT_VALUE,
+                            PropertiesOutputPageComponents.THERMAL_CONDUCTIVITY_VALUE,
+                            PropertiesOutputPageComponents.DIFFUSIVITY_VALUE]:
+            text = self.data_store.get_data(widget_enum.value.data_key)[0]
             self.set_formatted_text_to_label(widget_enum, text)
 
         self.set_custom_dimensions_to_grid_layout(self.find_widget(PropertiesOutputPageComponents.GRID))

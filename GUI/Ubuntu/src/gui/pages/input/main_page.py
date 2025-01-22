@@ -74,3 +74,6 @@ class MainInputPage(BasicPage):
         """
         if MainInputPageComponents.PROPERTIES_BUTTON == button_enum:
             return self.page_switched.emit(AppConfig.PROPERTIES_INPUT_PAGE)
+
+        if MainInputPageComponents.VACUUM_BUTTON == button_enum:
+            return self.page_switched.emit(AppConfig.VACUUM_INPUT_PAGE)

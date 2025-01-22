@@ -6,13 +6,12 @@ from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QComboBox, QPushButton, QGridLayout, QLineEdit
 
 from src.core.unit_dimension_handler import UnitDimensionHandler
-from src.gui.enums.composition_type import CompositionType
 from src.gui.enums.database_type import DatabaseType
 
 ud_handler = UnitDimensionHandler()
 
 
-class PropertiesInputPageComponents(Enum):
+class VacuumInputPageComponents(Enum):
     """
     Class to handle calculation input page components names
     """
@@ -23,9 +22,8 @@ class PropertiesInputPageComponents(Enum):
                                          name="databaseComboBox",
                                          items=[c.value for c in DatabaseType])
 
-    COMPOSITION_SELECTION = SimpleNamespace(type=QComboBox,
-                                            name="compositionComboBox",
-                                            items=[c.value for c in CompositionType])
+    SPECIE_SELECTION = SimpleNamespace(type=QComboBox,
+                                       name="specieComboBox")
 
     PRESSURE_UD = SimpleNamespace(type=QComboBox,
                                   name="pressureComboBox",
@@ -35,17 +33,15 @@ class PropertiesInputPageComponents(Enum):
                                      name="temperatureComboBox",
                                      items=ud_handler.temperature_ud)
 
+    GEOMETRY_UD = SimpleNamespace(type=QComboBox,
+                                  name="geometryComboBox",
+                                  items=ud_handler.length_ud)
+
     NEXT_BUTTON = SimpleNamespace(type=QPushButton,
                                   name="nextButton")
 
     BACK_BUTTON = SimpleNamespace(type=QPushButton,
                                   name="backButton")
-
-    ADD_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                     name="addSpecieButton")
-
-    REMOVE_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                        name="removeSpecieButton")
 
     TEMPERATURE_INPUT = SimpleNamespace(type=QLineEdit,
                                         name="temperatureEditLine",
@@ -57,5 +53,7 @@ class PropertiesInputPageComponents(Enum):
                                      validator=QDoubleValidator(0.0, 1e09, 2),
                                      align=Qt.AlignRight)
 
-    GAS_SPECIES_LAYOUT = SimpleNamespace(type=QGridLayout,
-                                         name="speciesLayout")
+    GEOMETRY_INPUT = SimpleNamespace(type=QLineEdit,
+                                     name="geometryEditLine",
+                                     validator=QDoubleValidator(0.0, 1e09, 4),
+                                     align=Qt.AlignRight)

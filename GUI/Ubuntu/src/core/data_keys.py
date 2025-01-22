@@ -33,6 +33,13 @@ class DataKeys(Enum):
     H = ((1.0, "J/kg"), "enthalpy")
     S = ((1.0, "J/kg/K"), "entropy")
 
+    VACUUM_LENGTH = ((0.0, "m"), "vacuum_characteristic_length")
+    VACUUM_SPECIE = ("", "vacuum_specie")
+    VACUUM_MEAN_FREE_PATH = ((0.0, "m"), "mean_free_path")
+    VACUUM_VELOCITY = ((0.0, "m/s"), "vacuum_velocity")
+    VACUUM_KNUDSEN_NUMBER = (0.0, "knudsen_number")
+    VACUUM_DIFF_MIX = ((0.0, "m2/s"), "vacuum_diffusivity")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

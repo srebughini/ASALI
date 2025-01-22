@@ -27,6 +27,11 @@ class AppConfig(Enum):
     PROPERTIES_OUTPUT_PAGE = SimpleNamespace(layout_name="PropertiesOutputPage",
                                              path=os.path.join("gui", "ui", "output", "properties_page.ui"))
 
+    VACUUM_INPUT_PAGE = SimpleNamespace(layout_name="VacuumInputPage",
+                                        path=os.path.join("gui", "ui", "input", "vacuum_page.ui"))
+    VACUUM_OUTPUT_PAGE = SimpleNamespace(layout_name="VacuumOutputPage",
+                                         path=os.path.join("gui", "ui", "output", "vacuum_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

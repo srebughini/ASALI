@@ -1,5 +1,6 @@
 from src.core.data_keys import DataKeys
 
+import numpy as np
 
 class DataStore:
     def __init__(self):
@@ -26,17 +27,20 @@ class DataStore:
         ----------
         key: Enum
             Key for the updated data
-        value: object
+        value: object | np.generic
             Value fot the updated data
 
         Returns
         -------
 
         """
+        if isinstance(value, np.generic):
+            value = value.item()
+
         if type(key.value[0]) == type(value):
             self.data[key] = value
         else:
-            raise Exception(f"Wrong type for {key.value[1]} data key")
+            raise Exception(f"Wrong type for {key.value[1]} data key: Expected {type(key.value[0])} instead of {type(value)}")
 
     def get_data(self, key) -> tuple | str | float | dict | object:
         """

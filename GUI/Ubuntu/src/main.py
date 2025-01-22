@@ -26,7 +26,6 @@ def handle_exception(exc_type, exc_value, exc_traceback):
     """
     ExceptionHandler.show_dialog(mainWindow, exc_type, exc_value, exc_traceback)
 
-
 # Override the default exception handler
 sys.excepthook = handle_exception
 

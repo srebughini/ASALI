@@ -12,9 +12,7 @@ from src.config.output.regression_output_page_config import RegressionOutputPage
 from src.config.output.regression_plot_output_page_config import RegressionPlotOutputPageConfig
 from src.config.input.ph_1d_input_page import Ph1dInputPageConfig
 from src.config.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageConfig
-from src.config.output.properties_output_page import PropertiesOutputPageConfig
 from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
-from src.config.output.vacuum_output_page import VacuumOutputPageConfig
 from src.core.data_store import DataStore
 from src.config.app import AppConfig
 from src.gui.pages.base_layout import BaseLayout
@@ -26,13 +24,14 @@ from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.input.cstr_input_page import CstrInputPage
 from src.gui.pages.input.het_1d_input_page import Het1dInputPage
 from src.gui.pages.input.ph_1d_input_page import Ph1dInputPage
+from src.gui.pages.input.vacuum_page import VacuumInputPage
 from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_output_page import RegressionOutputPage
 from src.gui.pages.output.regression_plot_output_page import RegressionPlotOutputPage
 from src.gui.pages.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
-from src.gui.pages.output.vacuum_output_page import VacuumOutputPage
+from src.gui.pages.output.vacuum_page import VacuumOutputPage
 from src.gui.pages.run_bar import RunBar
 
 
@@ -89,14 +88,12 @@ class MainWindow(QMainWindow):
             AppConfig.PROPERTIES_INPUT_PAGE: PropertiesInputPage(self.data_store,
                                                                  self.dialog_handler),
             AppConfig.PROPERTIES_OUTPUT_PAGE: PropertiesOutputPage(self.data_store,
-                                                                  self.dialog_handler)}
+                                                                   self.dialog_handler),
+            AppConfig.VACUUM_INPUT_PAGE: VacuumInputPage(self.data_store,
+                                                         self.dialog_handler),
+            AppConfig.VACUUM_OUTPUT_PAGE: VacuumOutputPage(self.data_store,
+                                                           self.dialog_handler)}
 
-        #     CalculationInputPageConfig.NAME.value: CalculationInputPage(self.data_store,
-        #                                                                 self.dialog_handler),
-        #     PropertiesOutputPageConfig.NAME.value: PropertiesOutputPage(self.data_store,
-        #                                                                 self.dialog_handler),
-        #     VacuumOutputPageConfig.NAME.value: VacuumOutputPage(self.data_store,
-        #                                                         self.dialog_handler),
         #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
         #                                                                 self.dialog_handler),
         #     UserDefinedKineticPageConfig.NAME.value: UserDefinedKineticPage(self.data_store,

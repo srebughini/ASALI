@@ -78,18 +78,15 @@ class PropertiesInputPage(BasicPage):
         -------
 
         """
-        composition_box = self.find_widget(PropertiesInputPageComponents.COMPOSITION_SELECTION)
-        composition_box.addItems([c.value for c in CompositionType])
-
         database_box = self.find_widget(PropertiesInputPageComponents.DATABASE_SELECTION)
-        database_box.addItems([c.value for c in DatabaseType])
+        database_box.addItems(PropertiesInputPageComponents.DATABASE_SELECTION.value.items)
         database_box.currentIndexChanged.connect(self.select_database_and_clean_input)
 
-        pressure_box = self.find_widget(PropertiesInputPageComponents.PRESSURE_UD)
-        pressure_box.addItems(self.ud_handler.pressure_ud)
-
-        temperature_box = self.find_widget(PropertiesInputPageComponents.TEMPERATURE_UD)
-        temperature_box.addItems(self.ud_handler.temperature_ud)
+        for widget_enum in [PropertiesInputPageComponents.PRESSURE_UD,
+                            PropertiesInputPageComponents.TEMPERATURE_UD,
+                            PropertiesInputPageComponents.COMPOSITION_SELECTION]:
+            widget = self.find_widget(widget_enum)
+            widget.addItems(widget_enum.value.items)
 
     def update_edit_lines(self) -> None:
         """
