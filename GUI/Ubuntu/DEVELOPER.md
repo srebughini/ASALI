@@ -9,6 +9,12 @@ cd resources
 pyrcc5 -o resources_rc.py resources.qrc
 ```
 
+### Color Palette
+* #272C26;  /* DARK BLUE */
+* #FAEDCE;  /* LIGHT BEIGE */
+* #E9963D; /* ORANGE */
+* #67908B; /* DARK GREEN */
+
 #### TODO for future
 This is a list of possibile updates
 * Create conda package for the gui
