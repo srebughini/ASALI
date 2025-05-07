@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://srebughini.github.io/ASALI/"><img src="https://i.imgur.com/T5W1buFm.png" title="source: imgur.com" /></a>
+  <a href="https://srebughini.github.io/ASALI/"><img src="GUI/Ubuntu/src/resources/images/BigLogo.png"/></a>
 </p>
 <p align="center">
   <a href="https://github.com/srebughini/ASALI/blob/master/CONTRIBUTING.md"><img alt="Contributions welcome" src="https://img.shields.io/static/v1.svg?label=contributions&message=welcome&style=flat-square&color=red"></a>
