@@ -32,6 +32,11 @@ class AppConfig(Enum):
     VACUUM_OUTPUT_PAGE = SimpleNamespace(layout_name="VacuumOutputPage",
                                          path=os.path.join("gui", "ui", "output", "vacuum_page.ui"))
 
+    REGRESSION_INPUT_PAGE = SimpleNamespace(layout_name="RegressionInputPage",
+                                            path=os.path.join("gui", "ui", "input", "regression_page.ui"))
+    REGRESSION_OUTPUT_PAGE = SimpleNamespace(layout_name="RegressionOutputPage",
+                                             path=os.path.join("gui", "ui", "output", "regression_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

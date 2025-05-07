@@ -16,6 +16,6 @@ class IconConfig(Enum):
 
     SIZE = QtCore.QSize(26, 26)
 
-    BLUE_COLOR = "#10253F"
+    COLOR = "#E9963D" # ORANGE
 
     SCALE_FACTOR = 0.9

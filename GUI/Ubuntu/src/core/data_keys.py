@@ -40,6 +40,21 @@ class DataKeys(Enum):
     VACUUM_KNUDSEN_NUMBER = (0.0, "knudsen_number")
     VACUUM_DIFF_MIX = ((0.0, "m2/s"), "vacuum_diffusivity")
 
+    MIN_TEMPERATURE = ((298.15, "K"), "minimum_temperature")
+    MAX_TEMPERATURE = ((773.15, "K"), "minimum_temperature")
+
+    # MIN_TEMPERATURE = "minimum_temperature"
+    # MAX_TEMPERATURE = "maximum_temperature"
+    # TEMPERATURE_VECTOR = "temperature_vector"
+    # RHO_VECTOR = "density_vector"
+    # MU_VECTOR = "viscosity_vector"
+    # COND_VECTOR = "thermal_conductivity_vector"
+    # CP_VECTOR = "specific_heat_vector"
+    # H_VECTOR = "enthalpy_vector"
+    # S_VECTOR = "entropy_vector"
+
+
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

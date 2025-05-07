@@ -52,7 +52,7 @@ class MainInputPage(BasicPage):
                                   MainInputPageComponents.REACTORS_BUTTON: IconConfig.ATOM}.items():
             widget = self.find_widget(widget_enum)
             widget.setIcon(qta.icon(icon.value,
-                                    color=IconConfig.BLUE_COLOR.value,
+                                    color=IconConfig.COLOR.value,
                                     scale_factor=IconConfig.SCALE_FACTOR.value))  # Set the icon with blue color
             widget.setIconSize(IconConfig.SIZE.value)  # Set the icon size
             widget.setProperty("class", "icon")
@@ -77,3 +77,6 @@ class MainInputPage(BasicPage):
 
         if MainInputPageComponents.VACUUM_BUTTON == button_enum:
             return self.page_switched.emit(AppConfig.VACUUM_INPUT_PAGE)
+
+        if MainInputPageComponents.REGRESSION_BUTTON == button_enum:
+            return self.page_switched.emit(AppConfig.REGRESSION_INPUT_PAGE)

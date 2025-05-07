@@ -4,7 +4,6 @@ from PyQt5 import uic
 
 from src.config.app import AppConfig
 from src.config.input_composition import InputCompositionConfig
-from src.core.properties_calculator import properties_calculator
 from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.gui.enums.database_type import DatabaseType
