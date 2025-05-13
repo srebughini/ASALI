@@ -33,4 +33,10 @@ For any question/issue contact us:
 |Email|Facebook|LinkedIn|
 |:-:|:-:|:-:|
 |ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
-
+# Color Palette
+|Hex|Description|
+|:-:|:-:|
+|#272C26|DARK BLUE|
+|#FAEDCE|LIGHT BEIGE|
+|#E9963D|ORANGE|
+|#67908B|DARK GREEN|
