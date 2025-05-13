@@ -38,6 +38,11 @@ class AppConfig(Enum):
     REGRESSION_OUTPUT_PAGE = SimpleNamespace(layout_name="RegressionOutputPage",
                                              path=os.path.join("gui", "ui", "output", "regression_page.ui"))
 
+    EQUILIBRIUM_INPUT_PAGE = SimpleNamespace(layout_name="EquilibriumInputPage",
+                                             path=os.path.join("gui", "ui", "input", "equilibrium_page.ui"))
+    EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(layout_name="EquilibriumOutputPage",
+                                              path=os.path.join("gui", "ui", "output", "equilibrium_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

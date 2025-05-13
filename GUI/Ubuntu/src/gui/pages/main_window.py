@@ -1,36 +1,18 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction, QSizePolicy
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 
-from src.config.input.batch_input_page import BatchInputPageConfig
-from src.config.input.calculation_input_page import CalculationInputPageConfig
-from src.config.input.chemkin_to_cantera_page import ChemkinToCanteraPageConfig
-from src.config.input.cstr_input_page import CstrInputPageConfig
-from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
-from src.config.input.het_1d_input_page import Het1dInputPageConfig
-from src.config.output._regression_output_page_config import RegressionOutputPageConfig
-from src.config.output.regression_plot_config import RegressionPlotConfig
-from src.config.input.ph_1d_input_page import Ph1dInputPageConfig
-from src.config.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPageConfig
-from src.config.input.user_defined_kinetic_page import UserDefinedKineticPageConfig
 from src.core.data_store import DataStore
 from src.config.app import AppConfig
 from src.gui.pages.base_layout import BaseLayout
-from src.gui.pages.input.batch_input_page import BatchInputPage
+from src.gui.pages.input.equilibrium_page import EquilibriumInputPage
 from src.gui.pages.input.properties_page import PropertiesInputPage
 from src.gui.pages.input.main_page import MainInputPage
-from src.gui.pages.input.chemkin_to_cantera_page import ChemkinToCanteraPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
-from src.gui.pages.input.cstr_input_page import CstrInputPage
-from src.gui.pages.input.het_1d_input_page import Het1dInputPage
-from src.gui.pages.input.ph_1d_input_page import Ph1dInputPage
 from src.gui.pages.input.regression_page import RegressionInputPage
 from src.gui.pages.input.vacuum_page import VacuumInputPage
-from src.gui.pages.output.equilibrium_output_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_page import RegressionOutputPage
-from src.gui.pages.output.reactor_plot_and_save_output_page import ReactorPlotAndSaveOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
-from src.gui.pages.input.user_defined_kinetic_page import UserDefinedKineticPage
 from src.gui.pages.output.vacuum_page import VacuumOutputPage
 from src.gui.pages.run_bar import RunBar
 
@@ -95,6 +77,8 @@ class MainWindow(QMainWindow):
             AppConfig.REGRESSION_INPUT_PAGE: RegressionInputPage(self.data_store,
                                                                  self.dialog_handler),
             AppConfig.REGRESSION_OUTPUT_PAGE: RegressionOutputPage(self.data_store,
+                                                                   self.dialog_handler),
+            AppConfig.EQUILIBRIUM_INPUT_PAGE: EquilibriumInputPage(self.data_store,
                                                                    self.dialog_handler)
         }
 

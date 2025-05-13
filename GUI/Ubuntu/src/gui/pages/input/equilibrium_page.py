@@ -4,17 +4,17 @@ from PyQt5 import uic
 
 from src.config.app import AppConfig
 from src.config.input_composition import InputCompositionConfig
-from src.gui.components.input.regression_page import RegressionInputPageComponents
+from src.gui.components.input.equilibrium_page import EquilibriumInputPageComponents
 from src.gui.enums.composition_type import CompositionType
 from src.core.data_keys import DataKeys
 from src.gui.enums.database_type import DatabaseType
 from src.gui.pages.basic_page import BasicPage
 
 
-class RegressionInputPage(BasicPage):
+class EquilibriumInputPage(BasicPage):
     def __init__(self, data_store, dialog_handler):
         """
-        Regression input page layout
+        Equilibrium input page layout
         Parameters
         ----------
         data_store: DataStore
@@ -24,12 +24,12 @@ class RegressionInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.REGRESSION_INPUT_PAGE.value.path, self)
+        uic.loadUi(AppConfig.EQUILIBRIUM_INPUT_PAGE.value.path, self)
 
         self.update_buttons()
         self.update_combo_boxes()
         self.update_edit_lines()
-        self.set_custom_dimensions_to_grid_layout(self.find_widget(RegressionInputPageComponents.GRID))
+        self.set_custom_dimensions_to_grid_layout(self.find_widget(EquilibriumInputPageComponents.GRID))
 
     def update_page_after_switch(self) -> None:
         """
@@ -40,13 +40,13 @@ class RegressionInputPage(BasicPage):
         """
         last_active_window = self.data_store.get_data(DataKeys.LAST_ACTIVE_WINDOW)
 
-        if AppConfig.REGRESSION_OUTPUT_PAGE == last_active_window:
-            self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.REGRESSION_OUTPUT_PAGE)
+        if AppConfig.EQUILIBRIUM_OUTPUT_PAGE == last_active_window:
+            self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.EQUILIBRIUM_INPUT_PAGE)
         else:
-            database_box = self.find_widget(RegressionInputPageComponents.DATABASE_SELECTION)
+            database_box = self.find_widget(EquilibriumInputPageComponents.DATABASE_SELECTION)
             database_box.setCurrentText(DatabaseType.NONE.value)
             self.select_database_and_clean_input()
-            self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.REGRESSION_INPUT_PAGE)
+            self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.EQUILIBRIUM_INPUT_PAGE)
 
     def update_buttons(self) -> None:
         """
@@ -55,19 +55,19 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
-        next_button = self.find_widget(RegressionInputPageComponents.NEXT_BUTTON)
+        next_button = self.find_widget(EquilibriumInputPageComponents.NEXT_BUTTON)
         next_button.clicked.connect(self.calculate)
 
-        back_button = self.find_widget(RegressionInputPageComponents.BACK_BUTTON)
+        back_button = self.find_widget(EquilibriumInputPageComponents.BACK_BUTTON)
         back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
 
-        add_button = self.find_widget(RegressionInputPageComponents.ADD_GAS_BUTTON)
+        add_button = self.find_widget(EquilibriumInputPageComponents.ADD_GAS_BUTTON)
         add_button.clicked.connect(
-            lambda checked, grid_enum=RegressionInputPageComponents.GAS_SPECIES_LAYOUT: self.add_gas_specie(grid_enum))
+            lambda checked, grid_enum=EquilibriumInputPageComponents.GAS_SPECIES_LAYOUT: self.add_gas_specie(grid_enum))
 
-        remove_button = self.find_widget(RegressionInputPageComponents.REMOVE_GAS_BUTTON)
+        remove_button = self.find_widget(EquilibriumInputPageComponents.REMOVE_GAS_BUTTON)
         remove_button.clicked.connect(
-            lambda checked, grid_enum=RegressionInputPageComponents.GAS_SPECIES_LAYOUT: self.remove_gas_species(
+            lambda checked, grid_enum=EquilibriumInputPageComponents.GAS_SPECIES_LAYOUT: self.remove_gas_species(
                 grid_enum))
 
     def update_combo_boxes(self) -> None:
@@ -77,12 +77,13 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
-        database_box = self.find_widget(RegressionInputPageComponents.DATABASE_SELECTION)
-        database_box.addItems(RegressionInputPageComponents.DATABASE_SELECTION.value.items)
+        database_box = self.find_widget(EquilibriumInputPageComponents.DATABASE_SELECTION)
+        database_box.addItems(EquilibriumInputPageComponents.DATABASE_SELECTION.value.items)
         database_box.currentIndexChanged.connect(self.select_database_and_clean_input)
 
-        for widget_enum in [RegressionInputPageComponents.PRESSURE_UD,
-                            RegressionInputPageComponents.COMPOSITION_SELECTION]:
+        for widget_enum in [EquilibriumInputPageComponents.PRESSURE_UD,
+                            EquilibriumInputPageComponents.TEMPERATURE_UD,
+                            EquilibriumInputPageComponents.COMPOSITION_SELECTION]:
             widget = self.find_widget(widget_enum)
             widget.addItems(widget_enum.value.items)
 
@@ -93,7 +94,8 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
-        for widget_enum in [RegressionInputPageComponents.PRESSURE_INPUT]:
+        for widget_enum in [EquilibriumInputPageComponents.TEMPERATURE_INPUT,
+                            EquilibriumInputPageComponents.PRESSURE_INPUT]:
             widget = self.find_widget(widget_enum)
             widget.setValidator(widget_enum.value.validator)
             widget.setAlignment(widget_enum.value.align)
@@ -105,21 +107,21 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
-        self.select_database(RegressionInputPageComponents.DATABASE_SELECTION)
+        self.select_database(EquilibriumInputPageComponents.DATABASE_SELECTION)
 
-        database_box = self.find_widget(RegressionInputPageComponents.DATABASE_SELECTION)
+        database_box = self.find_widget(EquilibriumInputPageComponents.DATABASE_SELECTION)
         database_type = DatabaseType(database_box.currentText())
 
         if DatabaseType.NONE == database_type:
-            self.disable_widget(self.find_widget(RegressionInputPageComponents.ADD_GAS_BUTTON))
-            self.disable_widget(self.find_widget(RegressionInputPageComponents.REMOVE_GAS_BUTTON))
-            self.disable_widget(self.find_widget(RegressionInputPageComponents.NEXT_BUTTON))
+            self.disable_widget(self.find_widget(EquilibriumInputPageComponents.ADD_GAS_BUTTON))
+            self.disable_widget(self.find_widget(EquilibriumInputPageComponents.REMOVE_GAS_BUTTON))
+            self.disable_widget(self.find_widget(EquilibriumInputPageComponents.NEXT_BUTTON))
         else:
-            self.enable_widget(self.find_widget(RegressionInputPageComponents.ADD_GAS_BUTTON))
-            self.enable_widget(self.find_widget(RegressionInputPageComponents.REMOVE_GAS_BUTTON))
-            self.enable_widget(self.find_widget(RegressionInputPageComponents.NEXT_BUTTON))
+            self.enable_widget(self.find_widget(EquilibriumInputPageComponents.ADD_GAS_BUTTON))
+            self.enable_widget(self.find_widget(EquilibriumInputPageComponents.REMOVE_GAS_BUTTON))
+            self.enable_widget(self.find_widget(EquilibriumInputPageComponents.NEXT_BUTTON))
 
-        self.clear_grid_layout(self.find_widget(RegressionInputPageComponents.GAS_SPECIES_LAYOUT))
+        self.clear_grid_layout(self.find_widget(EquilibriumInputPageComponents.GAS_SPECIES_LAYOUT))
         self.data_store.reset_data(DataKeys.GAS_NS)
 
     def read_data(self) -> None:
@@ -129,9 +131,14 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
+        # Temperature
+        value = float(self.find_widget(EquilibriumInputPageComponents.TEMPERATURE_INPUT).text())
+        ud = self.find_widget(EquilibriumInputPageComponents.TEMPERATURE_UD).currentText()
+        self.data_store.update_data(DataKeys.TEMPERATURE, (value, ud))
+
         # Pressure
-        value = float(self.find_widget(RegressionInputPageComponents.PRESSURE_INPUT).text())
-        ud = self.find_widget(RegressionInputPageComponents.PRESSURE_UD).currentText()
+        value = float(self.find_widget(EquilibriumInputPageComponents.PRESSURE_INPUT).text())
+        ud = self.find_widget(EquilibriumInputPageComponents.PRESSURE_UD).currentText()
         self.data_store.update_data(DataKeys.PRESSURE, (value, ud))
 
         # Composition
@@ -144,7 +151,7 @@ class RegressionInputPage(BasicPage):
             value[specie_name] = float(specie_value)
 
         composition_type = CompositionType(
-            self.find_widget(RegressionInputPageComponents.COMPOSITION_SELECTION).currentText())
+            self.find_widget(EquilibriumInputPageComponents.COMPOSITION_SELECTION).currentText())
         self.data_store.update_data(DataKeys.GAS_COMPOSITION, (value, composition_type))
 
     def calculate(self) -> pyqtSignal:
@@ -155,4 +162,4 @@ class RegressionInputPage(BasicPage):
 
         """
         self.read_data()
-        return self.page_switched.emit(AppConfig.REGRESSION_OUTPUT_PAGE)
+        return self.page_switched.emit(AppConfig.EQUILIBRIUM_OUTPUT_PAGE)

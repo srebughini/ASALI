@@ -80,3 +80,6 @@ class MainInputPage(BasicPage):
 
         if MainInputPageComponents.REGRESSION_BUTTON == button_enum:
             return self.page_switched.emit(AppConfig.REGRESSION_INPUT_PAGE)
+
+        if MainInputPageComponents.EQUILIBRIUM_BUTTON == button_enum:
+            return self.page_switched.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE)
