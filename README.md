@@ -33,12 +33,4 @@ For any question/issue contact us:
 |Email|Facebook|LinkedIn|
 |:-:|:-:|:-:|
 |ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
-# Color Palette
-
-| Color | Hex Code |
-|-------|----------|
-| ![color](https://via.placeholder.com/16/272C26/000000?text=+) | `#272C26` |
-| ![color](https://via.placeholder.com/16/FAEDCE/000000?text=+) | `#FAEDCE` |
-| ![color](https://via.placeholder.com/16/E9963D/000000?text=+) | `#E9963D` |
-| ![color](https://via.placeholder.com/16/67908B/000000?text=+) | `#67908B` |
 
