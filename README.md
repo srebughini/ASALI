@@ -34,9 +34,11 @@ For any question/issue contact us:
 |:-:|:-:|:-:|
 |ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
 # Color Palette
-<div style="line-height: 1.8;">
-  <div><span style="display:inline-block;width:16px;height:16px;background:#272C26;border:1px solid #ccc;margin-right:8px;"></span>#272C26</div>
-  <div><span style="display:inline-block;width:16px;height:16px;background:#FAEDCE;border:1px solid #ccc;margin-right:8px;"></span>#FAEDCE</div>
-  <div><span style="display:inline-block;width:16px;height:16px;background:#E9963D;border:1px solid #ccc;margin-right:8px;"></span>#E9963D</div>
-  <div><span style="display:inline-block;width:16px;height:16px;background:#67908B;border:1px solid #ccc;margin-right:8px;"></span>#67908B</div>
-</div>
+
+| Color | Hex Code |
+|-------|----------|
+| ![color](https://via.placeholder.com/16/272C26/000000?text=+) | `#272C26` |
+| ![color](https://via.placeholder.com/16/FAEDCE/000000?text=+) | `#FAEDCE` |
+| ![color](https://via.placeholder.com/16/E9963D/000000?text=+) | `#E9963D` |
+| ![color](https://via.placeholder.com/16/67908B/000000?text=+) | `#67908B` |
+
