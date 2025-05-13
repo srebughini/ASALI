@@ -33,3 +33,10 @@ For any question/issue contact us:
 |Email|Facebook|LinkedIn|
 |:-:|:-:|:-:|
 |ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
+# Color Palette
+<div style="line-height: 1.8;">
+  <div><span style="display:inline-block;width:16px;height:16px;background:#272C26;border:1px solid #ccc;margin-right:8px;"></span>#272C26</div>
+  <div><span style="display:inline-block;width:16px;height:16px;background:#FAEDCE;border:1px solid #ccc;margin-right:8px;"></span>#FAEDCE</div>
+  <div><span style="display:inline-block;width:16px;height:16px;background:#E9963D;border:1px solid #ccc;margin-right:8px;"></span>#E9963D</div>
+  <div><span style="display:inline-block;width:16px;height:16px;background:#67908B;border:1px solid #ccc;margin-right:8px;"></span>#67908B</div>
+</div>
