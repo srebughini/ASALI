@@ -2,6 +2,8 @@ from enum import Enum
 
 from src.config.app import AppConfig
 from src.gui.enums.composition_type import CompositionType
+from src.gui.enums.properties import Properties
+from src.gui.enums.regression_method import RegressionMethod
 
 
 class DataKeys(Enum):
@@ -42,19 +44,10 @@ class DataKeys(Enum):
 
     MIN_TEMPERATURE = ((298.15, "K"), "minimum_temperature")
     MAX_TEMPERATURE = ((773.15, "K"), "minimum_temperature")
-
-    # MIN_TEMPERATURE = "minimum_temperature"
-    # MAX_TEMPERATURE = "maximum_temperature"
-    # TEMPERATURE_VECTOR = "temperature_vector"
-    # RHO_VECTOR = "density_vector"
-    # MU_VECTOR = "viscosity_vector"
-    # COND_VECTOR = "thermal_conductivity_vector"
-    # CP_VECTOR = "specific_heat_vector"
-    # H_VECTOR = "enthalpy_vector"
-    # S_VECTOR = "entropy_vector"
-
-
-
+    REGRESSION_METHOD = (RegressionMethod.LINEAR, "regression_method")
+    REGRESSION_PROPERTY_TYPE = (Properties.DENSITY, "property_type_to_be_fitted")
+    REGRESSION_PROPERTY = (([1.0], 1., 1., "kg/m3"), "property_fitted")
+    TEMPERATURE_VECTOR = (([298.15], "K"), "temperature_vector")
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"
@@ -155,4 +148,4 @@ class DataKeys(Enum):
     # SURFACE_SPECIES_NAMES_TO_BE_PLOTTED = "surface_species_names_to_be_plotted"
     # TEMPERATURE_TO_BE_PLOTTED = "temperature_to_be_plotted"
     #
-    # REGRESSION_METHOD = "regression_method"
+    #

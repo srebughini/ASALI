@@ -1,17 +1,18 @@
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QLabel, QPushButton, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QSizePolicy
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
-from src.config.input.calculation_input_page import CalculationInputPageConfig
-from src.config.output.regression_output_page_config import RegressionOutputPageConfig
-from src.config.output.regression_plot_output_page_config import RegressionPlotOutputPageConfig
-from src.controllers.label_formatter import LabelFormatter
+from src.config.app import AppConfig
+from src.config.output.regression_plot_config import RegressionPlotConfig
 from src.core.data_keys import DataKeys
-from src.core.power_law_regression_calculator import power_law_regression_calculator
-from src.core.linear_regression_calculator import linear_regression_calculator
+from src.core.regression_calculator import regression_calculator
+from src.gui.enums.properties import Properties
+from src.gui.enums.regression_method import RegressionMethod
 from src.gui.pages.basic_page import BasicPage
-from src.gui.components.output.regression_output_page import RegressionOutputPageWidgets
+from src.gui.components.output.regression_page import RegressionOutputPageComponents
+
+import numpy as np
 
 
 class RegressionOutputPage(BasicPage):
@@ -27,26 +28,23 @@ class RegressionOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(RegressionOutputPageConfig.PATH.value, self)
+        uic.loadUi(AppConfig.REGRESSION_OUTPUT_PAGE.value.path, self)
 
-        self.update_head_lines()
-        self.update_unit_dimensions(RegressionOutputPageWidgets.TEMPERATURE_COMBO_BOX.value,
-                                    self.ud_handler.temperature_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.DENSITY_COMBO_BOX.value,
-                                    self.ud_handler.density_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.VISCOSITY_COMBO_BOX.value,
-                                    self.ud_handler.viscosity_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value,
-                                    self.ud_handler.thermal_conductivity_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.ENTHALPY_COMBO_BOX.value,
-                                    self.ud_handler.enthalpy_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.ENTROPY_COMBO_BOX.value,
-                                    self.ud_handler.entropy_ud)
-        self.update_unit_dimensions(RegressionOutputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value,
-                                    self.ud_handler.specific_heat_ud)
-        self.update_temperature()
+        # Initialize Matplotlib figure
+        self.figure = Figure(
+            facecolor=RegressionPlotConfig.BACKGROUND_COLOR.value)  # Set figure background to transparent
+        self.canvas = FigureCanvas(self.figure)
+
+        # Ensure the canvas resizes correctly within the layout
+        self.canvas.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+
+        self.plotLayout = self.find_widget(RegressionOutputPageComponents.PLOT_LAYOUT)
+        self.plotLayout.addWidget(self.canvas)
+        self.plotLayout.setContentsMargins(*RegressionPlotConfig.MARGIN.value)
+
+        self.update_combo_boxes()
         self.update_buttons()
-        self.update_regression_method()
+        self.updateGeometry()
 
     def update_page_after_switch(self) -> None:
         """
@@ -55,18 +53,28 @@ class RegressionOutputPage(BasicPage):
         -------
 
         """
-        self.set_custom_dimensions_to_grid_layout()
+        self.set_custom_dimensions_to_grid_layout(self.find_widget(RegressionOutputPageComponents.GRID))
+        self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.PROPERTIES_OUTPUT_PAGE)
+        self.run_regression()
 
-    def update_head_lines(self) -> None:
+    def update_combo_boxes(self) -> None:
         """
-        Update head lines
+        Update combo boxes
         Returns
         -------
 
         """
-        label = self.findChild(QLabel, RegressionOutputPageWidgets.MATH_LABEL.value)
-        label.setAlignment(Qt.AlignCenter)
-        label.setProperty("class", "italic")
+        for widget_enum in [RegressionOutputPageComponents.TEMPERATURE_UD,
+                            RegressionOutputPageComponents.REGRESSION_METHOD]:
+            widget = self.find_widget(widget_enum)
+            widget.addItems(widget_enum.value.items)
+
+        widget_enum = RegressionOutputPageComponents.PROPERTY
+        widget = self.find_widget(widget_enum)
+        widget.addItems(widget_enum.value.items)
+        widget.currentIndexChanged.connect(self.update_unit_dimensions)
+
+        self.update_unit_dimensions()
 
     def update_buttons(self) -> None:
         """
@@ -75,140 +83,132 @@ class RegressionOutputPage(BasicPage):
         -------
 
         """
-        back_button = self.findChild(QPushButton, RegressionOutputPageWidgets.BACK_BUTTON.value)
-        back_button.clicked.connect(lambda: self.page_switched.emit(CalculationInputPageConfig.NAME.value))
+        back_button = self.find_widget(RegressionOutputPageComponents.BACK_BUTTON)
+        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.REGRESSION_INPUT_PAGE))
 
-        calculate_button = self.findChild(QPushButton, RegressionOutputPageWidgets.CALCULATE_BUTTON.value)
-        calculate_button.clicked.connect(self.run_regression)
+        update_button = self.find_widget(RegressionOutputPageComponents.UPDATE_BUTTON)
+        update_button.clicked.connect(self.run_regression)
 
-        plot_button = self.findChild(QPushButton, RegressionOutputPageWidgets.PLOT_BUTTON.value)
-        plot_button.clicked.connect(lambda: self.page_switched.emit(RegressionPlotOutputPageConfig.NAME.value))
-        self.disable_widget(plot_button)
-
-    def update_unit_dimensions(self, combo_box_name, item_list) -> None:
+    def update_unit_dimensions(self) -> None:
         """
-        Update combo box with unit dimensions
-        Parameters
-        ----------
-        combo_box_name: str
-            QComboBox widget name
-        item_list: list
-            Unit dimensions
-
+        Update unit dimensions
         Returns
         -------
 
         """
-        dropdown = self.findChild(QComboBox, combo_box_name)
-        dropdown.addItems(item_list)
-        dropdown.currentIndexChanged.connect(self.run_regression)
+        property_combo_box = self.find_widget(RegressionOutputPageComponents.PROPERTY)
+        current_property = Properties(property_combo_box.currentText())
 
-    def update_temperature(self) -> None:
+        property_ud_combo_box = self.find_widget(RegressionOutputPageComponents.PROPERTY_UD)
+        property_ud_combo_box.clear()
+        property_ud_combo_box.addItems(RegressionOutputPageComponents.PROPERTY_UD.value.items[current_property])
+
+    def extract_data(self) -> tuple:
         """
-        Update specie line
+        Update data store with properties unit dimensions
+        Returns
+        -------
+        data_to_plot: tuple
+            Data to be plotted in the following format: independent variable,
+                                                        independent variable unit dimensions,
+                                                        dependent variable,
+                                                        fitted dependent variable,
+                                                        dependent variable unit dimensions,
+                                                        dependent variable name
+                                                        regression formula as title
+
+        """
+        current_property = self.data_store.get_data(DataKeys.REGRESSION_PROPERTY_TYPE)
+
+        property_config_map = {
+            Properties.DENSITY: (RegressionPlotConfig.RHO_SYMBOL.value, RegressionPlotConfig.RHO_LABEL.value),
+            Properties.VISCOSITY: (RegressionPlotConfig.MU_SYMBOL.value, RegressionPlotConfig.MU_LABEL.value),
+            Properties.SPECIFIC_HEAT: (RegressionPlotConfig.CP_SYMBOL.value, RegressionPlotConfig.CP_LABEL.value),
+            Properties.ENTHALPY: (RegressionPlotConfig.H_SYMBOL.value, RegressionPlotConfig.H_LABEL.value),
+            Properties.ENTROPY: (RegressionPlotConfig.S_SYMBOL.value, RegressionPlotConfig.S_LABEL.value),
+            Properties.THERMAL_CONDUCTIVITY: (
+                RegressionPlotConfig.COND_SYMBOL.value, RegressionPlotConfig.COND_LABEL.value),
+        }
+
+        symbol, y_label = property_config_map[current_property]
+
+        regression_method = self.data_store.get_data(DataKeys.REGRESSION_METHOD)
+
+        x, x_ud = self.data_store.get_data(DataKeys.TEMPERATURE_VECTOR)
+        y, a, b, y_ud = self.data_store.get_data(DataKeys.REGRESSION_PROPERTY)
+
+        if RegressionMethod.LINEAR == regression_method:
+            title = RegressionPlotConfig.GENERIC_LINEAR.value.format(symbol, a, b)
+            y_fitted = a * x + b
+        elif RegressionMethod.POWER_LAW == regression_method:
+            # Ignore when the power law is not working
+            if a is None:
+                y_fitted = None
+                title = RegressionPlotConfig.GENERIC_ERROR.value
+            else:
+                title = RegressionPlotConfig.GENERIC_POWER_LAW.value.format(symbol, a, b)
+                y_fitted = a * np.power(x, b)
+        elif RegressionMethod.LOGARITHMIC == regression_method:
+            title = RegressionPlotConfig.GENERIC_LOGARITHMIC.value.format(symbol, a, b)
+            y_fitted = a*np.log(x) + b
+        else:
+            title = ""
+            y_fitted = np.zeros_like(y)
+
+        return x, x_ud, y, y_fitted, y_label.format(y_ud), title
+
+    def show_data(self) -> None:
+        """
+        Update shown data
         Returns
         -------
 
         """
-        edit_line = self.findChild(QLineEdit, RegressionOutputPageWidgets.MIN_TEMPERATURE_EDIT_LINE.value)
-        edit_line.setValidator(QDoubleValidator(0.0, 3000.0, 2))
-        edit_line.setAlignment(Qt.AlignRight)
+        x, x_ud, y, y_fitted, y_label, title = self.extract_data()
 
-        edit_line = self.findChild(QLineEdit, RegressionOutputPageWidgets.MAX_TEMPERATURE_EDIT_LINE.value)
-        edit_line.setValidator(QDoubleValidator(0.0, 3000.0, 2))
-        edit_line.setAlignment(Qt.AlignRight)
+        self.figure.clear()
 
-    def update_regression_method(self) -> None:
-        """
-        Update regression method
-        Returns
-        -------
+        # Add centered axes
+        ax = self.figure.add_axes(RegressionPlotConfig.ADD_AXES_ARG.value)
 
-        """
-        combo_box = self.findChild(QComboBox, RegressionOutputPageWidgets.REGRESSION_COMBO_BOX.value)
-        combo_box.currentTextChanged.connect(self.update_shown_data)
+        # Set up background colors
+        ax.set_facecolor(RegressionPlotConfig.BACKGROUND_COLOR.value)
+        ax.tick_params(colors=RegressionPlotConfig.AXES_COLOR.value, which='both')
+        ax.xaxis.label.set_color(RegressionPlotConfig.AXES_COLOR.value)
+        ax.yaxis.label.set_color(RegressionPlotConfig.AXES_COLOR.value)
+        ax.title.set_color(RegressionPlotConfig.AXES_COLOR.value)
 
-    def update_property_values(self, a_label_name, b_label_name, a_value, b_value) -> None:
-        """
-        Update property linear coefficient values
-        Parameters
-        ----------
-        a_label_name: str
-            Slope label name
-        b_label_name: str
-            Intercept label name
-        a_value: float
-            Slope
-        b_value: float
-            Intercept
+        # Set tick counter (numbers) to white
+        ax.spines['bottom'].set_color(RegressionPlotConfig.AXES_COLOR.value)
+        ax.spines['left'].set_color(RegressionPlotConfig.AXES_COLOR.value)
+        ax.spines['top'].set_color(RegressionPlotConfig.AXES_COLOR.value)
+        ax.spines['right'].set_color(RegressionPlotConfig.AXES_COLOR.value)
 
-        Returns
-        -------
+        ax.plot(x,
+                y,
+                RegressionPlotConfig.DOT_SHAPE.value,
+                color=RegressionPlotConfig.DOT_LINE_COLOR.value)
 
-        """
-        label = self.findChild(QLabel, a_label_name)
-        label.setText(LabelFormatter.float_to_string(a_value))
+        if y_fitted is not None:
+            ax.plot(x,
+                    y_fitted,
+                    RegressionPlotConfig.DOT_SHAPE.value,
+                    color=RegressionPlotConfig.SOLID_LINE_COLOR.value)
 
-        label = self.findChild(QLabel, b_label_name)
-        label.setText(LabelFormatter.float_to_string(b_value))
+        ax.legend(RegressionPlotConfig.LEGEND.value,
+                  loc=RegressionPlotConfig.LEGEND_POSITION.value,
+                  frameon=RegressionPlotConfig.LEGEND_FRAME.value,
+                  labelcolor=RegressionPlotConfig.LEGEND_COLOR.value)
 
-    def read_data(self) -> None:
-        """
-        Update data store with temperature, composition, pressure
-        Returns
-        -------
+        ax.set_title(title)
+        ax.set_xlabel(RegressionPlotConfig.TEMPERATURE_LABEL.value.format(x_ud))
+        ax.set_ylabel(y_label)
 
-        """
-        min_value = float(
-            self.findChild(QLineEdit, RegressionOutputPageWidgets.MIN_TEMPERATURE_EDIT_LINE.value).text())
-        max_value = float(
-            self.findChild(QLineEdit, RegressionOutputPageWidgets.MAX_TEMPERATURE_EDIT_LINE.value).text())
-        ud = self.findChild(QComboBox, RegressionOutputPageWidgets.TEMPERATURE_COMBO_BOX.value).currentText()
+        # Set properties for centering
+        ax.set_position(RegressionPlotConfig.SET_POSITION_ARG.value)
 
-        self.data_store.update_data(DataKeys.MIN_TEMPERATURE, (min_value, ud))
-        self.data_store.update_data(DataKeys.MAX_TEMPERATURE, (max_value, ud))
-
-        self.data_store.update_data(DataKeys.RHO,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.DENSITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.MU,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.VISCOSITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.COND,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.H,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.ENTHALPY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.S,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.ENTROPY_COMBO_BOX.value).currentText()))
-        self.data_store.update_data(DataKeys.CP,
-                                    ((0.0, 0.0),
-                                     self.findChild(QComboBox,
-                                                    RegressionOutputPageWidgets.SPECIFIC_HEAT_COMBO_BOX.value).currentText()))
-
-    def update_shown_data(self) -> None:
-        """
-        Update data based on selected regression method
-        Returns
-        -------
-
-        """
-        regression_method = self.findChild(QComboBox,
-                                           RegressionOutputPageWidgets.REGRESSION_COMBO_BOX.value).currentIndex()
-
-        math_label = self.findChild(QLabel, RegressionOutputPageWidgets.MATH_LABEL.value)
-
-        if regression_method == 0:
-            math_label.setText("a*T + b")
-        elif regression_method == 1:
-            math_label.setText("a*T^b")
+        self.canvas.draw()
+        self.canvas.updateGeometry()
 
     def run_regression(self) -> None:
         """
@@ -217,52 +217,24 @@ class RegressionOutputPage(BasicPage):
         -------
 
         """
-        self.read_data()
+        property_combo_box = self.find_widget(RegressionOutputPageComponents.PROPERTY)
+        current_property = Properties(property_combo_box.currentText())
+        property_ud_combo_box = self.find_widget(RegressionOutputPageComponents.PROPERTY_UD)
+        self.data_store.update_data(DataKeys.REGRESSION_PROPERTY_TYPE, current_property)
+        self.data_store.update_data(DataKeys.REGRESSION_PROPERTY, ([], property_ud_combo_box.currentText()))
 
-        regression_method = self.findChild(QComboBox,
-                                           RegressionOutputPageWidgets.REGRESSION_COMBO_BOX.value)
+        min_value = float(self.find_widget(RegressionOutputPageComponents.MIN_TEMPERATURE_INPUT).text())
+        max_value = float(self.find_widget(RegressionOutputPageComponents.MAX_TEMPERATURE_INPUT).text())
+        ud = self.find_widget(RegressionOutputPageComponents.TEMPERATURE_UD).currentText()
 
-        self.data_store.update_data(DataKeys.REGRESSION_METHOD, regression_method.currentText())
+        self.data_store.update_data(DataKeys.MIN_TEMPERATURE, (min_value, ud))
+        self.data_store.update_data(DataKeys.MAX_TEMPERATURE, (max_value, ud))
 
-        if regression_method.currentIndex() == 0:
-            self.data_store = linear_regression_calculator(self.data_store)
-        elif regression_method.currentIndex() == 1:
-            self.data_store = power_law_regression_calculator(self.data_store)
+        regression_method = RegressionMethod(
+            self.find_widget(RegressionOutputPageComponents.REGRESSION_METHOD).currentText())
 
-        self.enable_widget(self.findChild(QPushButton, RegressionOutputPageWidgets.PLOT_BUTTON.value))
+        self.data_store.update_data(DataKeys.REGRESSION_METHOD, regression_method)
+        self.data_store = regression_calculator(self.data_store)
+        self.show_data()
 
-        a, b, _ = self.data_store.get_data(DataKeys.RHO)
-        self.update_property_values(RegressionOutputPageWidgets.DENSITY_A_LABEL.value,
-                                    RegressionOutputPageWidgets.DENSITY_B_LABEL.value,
-                                    a,
-                                    b)
-
-        a, b, _ = self.data_store.get_data(DataKeys.MU)
-        self.update_property_values(RegressionOutputPageWidgets.VISCOSITY_A_LABEL.value,
-                                    RegressionOutputPageWidgets.VISCOSITY_B_LABEL.value,
-                                    a,
-                                    b)
-
-        a, b, _ = self.data_store.get_data(DataKeys.COND)
-        self.update_property_values(RegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_A_LABEL.value,
-                                    RegressionOutputPageWidgets.THERMAL_CONDUCTIVITY_B_LABEL.value,
-                                    a,
-                                    b)
-
-        a, b, _ = self.data_store.get_data(DataKeys.CP)
-        self.update_property_values(RegressionOutputPageWidgets.SPECIFIC_HEAT_A_LABEL.value,
-                                    RegressionOutputPageWidgets.SPECIFIC_HEAT_B_LABEL.value,
-                                    a,
-                                    b)
-
-        a, b, _ = self.data_store.get_data(DataKeys.H)
-        self.update_property_values(RegressionOutputPageWidgets.ENTHALPY_A_LABEL.value,
-                                    RegressionOutputPageWidgets.ENTHALPY_B_LABEL.value,
-                                    a,
-                                    b)
-
-        a, b, _ = self.data_store.get_data(DataKeys.S)
-        self.update_property_values(RegressionOutputPageWidgets.ENTROPY_A_LABEL.value,
-                                    RegressionOutputPageWidgets.ENTROPY_B_LABEL.value,
-                                    a,
-                                    b)
+        return None

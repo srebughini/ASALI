@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtCore import QFile
 from PyQt5.QtWidgets import QApplication
 
+from src.config.app import AppConfig
 from src.resources import resources_rc
 
 from src.controllers.exception_handler import ExceptionHandler
@@ -24,7 +25,7 @@ def handle_exception(exc_type, exc_value, exc_traceback):
     -------
 
     """
-    ExceptionHandler.show_dialog(mainWindow, exc_type, exc_value, exc_traceback)
+    ExceptionHandler.show_dialog(main_window, exc_type, exc_value, exc_traceback)
 
 
 # Override the default exception handler
@@ -44,7 +45,8 @@ if __name__ == "__main__":
         raise Exception("Unable to find style.qss file")
 
     # Initialize and show the main window
-    mainWindow = MainWindow()
-    mainWindow.show()
+    main_window = MainWindow()
+    main_window.move(*AppConfig.SCREEN_LOCATION.value)
+    main_window.show()
 
     app.exec_()

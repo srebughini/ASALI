@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>PropertiesInputPage</class>
-        <widget class="QWidget" name="PropertiesInputPage">
+    <class>RegressionInputPage</class>
+        <widget class="QWidget" name="RegressionInputPage">
             <layout class="QGridLayout" name="gridLayout">
                 <!-- Row 0 -->
                 <item row="0" column="0">
@@ -24,17 +24,27 @@
                     </widget>
                 </item>
                 <item row="1" column="1">
-                    <widget class="QLineEdit" name="temperatureEditLine">
-                        <property name="text">
-                            <string>298.15</string>
-                        </property>
-                    </widget>
+                    <layout class="QGridLayout" name="temperatureLayout">
+                        <item row="0" column="0">
+                            <widget class="QLineEdit" name="minTemperatureEditLine">
+                                <property name="text">
+                                    <string>298.15</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item row="0" column="1">
+                            <widget class="QLineEdit" name="maxTemperatureEditLine">
+                                <property name="text">
+                                    <string>773.15</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
                 </item>
                 <item row="1" column="2">
                     <widget class="QComboBox" name="temperatureComboBox">
                     </widget>
                 </item>
-
                 <!-- Row 2 -->
                 <item row="2" column="0">
                     <widget class="QLabel" name="pressureLabel">

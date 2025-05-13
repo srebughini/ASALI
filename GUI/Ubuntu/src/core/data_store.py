@@ -1,6 +1,12 @@
+from enum import Enum
+
 from src.core.data_keys import DataKeys
 
 import numpy as np
+
+from src.gui.enums.properties import Properties
+from src.gui.enums.regression_method import RegressionMethod
+
 
 class DataStore:
     def __init__(self):
@@ -36,13 +42,16 @@ class DataStore:
         """
         if isinstance(value, np.generic):
             value = value.item()
+        elif isinstance(value, np.ndarray):
+            value = value.tolist()
 
         if type(key.value[0]) == type(value):
             self.data[key] = value
         else:
-            raise Exception(f"Wrong type for {key.value[1]} data key: Expected {type(key.value[0])} instead of {type(value)}")
+            raise Exception(
+                f"Wrong type for {key.value[1]} data key: Expected {type(key.value[0])} instead of {type(value)}")
 
-    def get_data(self, key) -> tuple | str | float | dict | object:
+    def get_data(self, key) -> tuple | str | float | dict | object | Enum | Properties | RegressionMethod:
         """
         Returns the requested data from key
         Parameters
@@ -52,7 +61,7 @@ class DataStore:
 
         Returns
         -------
-        value: tuple | str | float | dict | object:
+        value: tuple | str | float | dict | object | Enum | Properties | RegressionMethod
             Value for the updated data
         """
         return self.data[key]

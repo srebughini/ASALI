@@ -12,6 +12,7 @@ class AppConfig(Enum):
     MINIMUM_COLUMN_WIDTH = 150
     GRID_VERTICAL_SPACING = 12
     GRID_HORIZONTAL_SPACING = 12
+    SCREEN_LOCATION = (50, 20)
 
     MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
 

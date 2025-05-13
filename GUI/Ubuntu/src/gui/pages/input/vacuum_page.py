@@ -107,10 +107,12 @@ class VacuumInputPage(BasicPage):
 
         if DatabaseType.NONE == database_type:
             self.disable_widget(self.find_widget(VacuumInputPageComponents.SPECIE_SELECTION))
+            self.disable_widget(self.find_widget(VacuumInputPageComponents.NEXT_BUTTON))
         else:
             self.data_store = gas_species_names(self.data_store)
             species_box.addItems(self.data_store.get_data(DataKeys.GAS_SPECIES_NAMES))
             self.enable_widget(self.find_widget(VacuumInputPageComponents.SPECIE_SELECTION))
+            self.enable_widget(self.find_widget(VacuumInputPageComponents.NEXT_BUTTON))
 
     def read_data(self) -> None:
         """

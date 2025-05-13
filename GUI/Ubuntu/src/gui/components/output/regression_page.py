@@ -1,42 +1,60 @@
 from enum import Enum
+from types import SimpleNamespace
+
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QDoubleValidator
+from PyQt5.QtWidgets import QLineEdit, QComboBox, QPushButton, QGridLayout, QVBoxLayout
+
+from src.core.unit_dimension_handler import UnitDimensionHandler
+from src.gui.enums.properties import Properties
+from src.gui.enums.regression_method import RegressionMethod
+
+ud_handler = UnitDimensionHandler()
 
 
-class RegressionOutputPageWidgets(Enum):
+class RegressionOutputPageComponents(Enum):
     """
     Class to handle linear regression output page components names
     """
-    MATH_LABEL = "mathLabel"
+    GRID = SimpleNamespace(type=QGridLayout,
+                           name="gridLayout")
 
-    TEMPERATURE_COMBO_BOX = "temperatureComboBox"
-    REGRESSION_COMBO_BOX = "regressionComboBox"
+    PLOT_LAYOUT = SimpleNamespace(type=QVBoxLayout,
+                                  name="plotLayout")
 
-    DENSITY_A_LABEL = "rhoALabel"
-    DENSITY_B_LABEL = "rhoBLabel"
-    DENSITY_COMBO_BOX = "rhoComboBox"
+    BACK_BUTTON = SimpleNamespace(type=QPushButton,
+                                  name="backButton")
 
-    VISCOSITY_A_LABEL = "muALabel"
-    VISCOSITY_B_LABEL = "muBLabel"
-    VISCOSITY_COMBO_BOX = "muComboBox"
+    UPDATE_BUTTON = SimpleNamespace(type=QPushButton,
+                                    name="updateButton")
 
-    THERMAL_CONDUCTIVITY_A_LABEL = "condALabel"
-    THERMAL_CONDUCTIVITY_B_LABEL = "condBLabel"
-    THERMAL_CONDUCTIVITY_COMBO_BOX = "condComboBox"
+    TEMPERATURE_UD = SimpleNamespace(type=QComboBox,
+                                     name="temperatureUdComboBox",
+                                     items=ud_handler.temperature_ud)
 
-    ENTHALPY_A_LABEL = "hALabel"
-    ENTHALPY_B_LABEL = "hBLabel"
-    ENTHALPY_COMBO_BOX = "hComboBox"
+    PROPERTY_UD = SimpleNamespace(type=QComboBox,
+                                  name="propertyUdComboBox",
+                                  items={Properties.DENSITY: ud_handler.density_ud,
+                                         Properties.VISCOSITY: ud_handler.viscosity_ud,
+                                         Properties.SPECIFIC_HEAT: ud_handler.specific_heat_ud,
+                                         Properties.THERMAL_CONDUCTIVITY: ud_handler.thermal_conductivity_ud,
+                                         Properties.ENTROPY: ud_handler.entropy_ud,
+                                         Properties.ENTHALPY: ud_handler.enthalpy_ud})
 
-    ENTROPY_A_LABEL = "sALabel"
-    ENTROPY_B_LABEL = "sBLabel"
-    ENTROPY_COMBO_BOX = "sComboBox"
+    MAX_TEMPERATURE_INPUT = SimpleNamespace(type=QLineEdit,
+                                            name="maxTemperatureEditLine",
+                                            validator=QDoubleValidator(0.0, 3000.0, 2),
+                                            align=Qt.AlignRight)
 
-    SPECIFIC_HEAT_A_LABEL = "cpALabel"
-    SPECIFIC_HEAT_B_LABEL = "cpBLabel"
-    SPECIFIC_HEAT_COMBO_BOX = "cpComboBox"
+    MIN_TEMPERATURE_INPUT = SimpleNamespace(type=QLineEdit,
+                                            name="minTemperatureEditLine",
+                                            validator=QDoubleValidator(0.0, 3000.0, 2),
+                                            align=Qt.AlignRight)
 
-    MIN_TEMPERATURE_EDIT_LINE = "minTemperatureEditLine"
-    MAX_TEMPERATURE_EDIT_LINE = "maxTemperatureEditLine"
+    REGRESSION_METHOD = SimpleNamespace(type=QComboBox,
+                                        name="regressionComboBox",
+                                        items=[e.value for e in RegressionMethod])
 
-    BACK_BUTTON = "backButton"
-    CALCULATE_BUTTON = "calculateButton"
-    PLOT_BUTTON = "plotButton"
+    PROPERTY = SimpleNamespace(type=QComboBox,
+                               name="propertyComboBox",
+                               items=[e.value for e in Properties])
