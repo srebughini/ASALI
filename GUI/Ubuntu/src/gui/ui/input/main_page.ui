@@ -35,7 +35,9 @@
                     </widget>
                 </item>
 
+
                 <!-- Row 2 -->
+                <!--
                 <item row="2" column="0">
                     <widget class="QPushButton" name="reactorsButton">
                         <property name="text">
@@ -49,7 +51,7 @@
                             <string>Kinetic schemes</string>
                         </property>
                     </widget>
-                </item>
+                </item>-->
             </layout>
         </widget>
 </ui>
