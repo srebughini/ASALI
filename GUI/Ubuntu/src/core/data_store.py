@@ -4,6 +4,7 @@ from src.core.data_keys import DataKeys
 
 import numpy as np
 
+from src.gui.enums.equilibrium_type import EquilibriumType
 from src.gui.enums.properties import Properties
 from src.gui.enums.regression_method import RegressionMethod
 
@@ -51,7 +52,8 @@ class DataStore:
             raise Exception(
                 f"Wrong type for {key.value[1]} data key: Expected {type(key.value[0])} instead of {type(value)}")
 
-    def get_data(self, key) -> tuple | str | float | dict | object | Enum | Properties | RegressionMethod:
+    def get_data(self,
+                 key) -> tuple | str | float | dict | object | Enum | Properties | RegressionMethod | EquilibriumType:
         """
         Returns the requested data from key
         Parameters
@@ -61,7 +63,7 @@ class DataStore:
 
         Returns
         -------
-        value: tuple | str | float | dict | object | Enum | Properties | RegressionMethod
+        value: tuple | str | float | dict | object | Enum | Properties | RegressionMethod | EquilibriumType
             Value for the updated data
         """
         return self.data[key]

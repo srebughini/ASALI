@@ -11,6 +11,7 @@ from src.gui.pages.input.main_page import MainInputPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.input.regression_page import RegressionInputPage
 from src.gui.pages.input.vacuum_page import VacuumInputPage
+from src.gui.pages.output.equilibrium_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_page import RegressionOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.output.vacuum_page import VacuumOutputPage
@@ -79,7 +80,9 @@ class MainWindow(QMainWindow):
             AppConfig.REGRESSION_OUTPUT_PAGE: RegressionOutputPage(self.data_store,
                                                                    self.dialog_handler),
             AppConfig.EQUILIBRIUM_INPUT_PAGE: EquilibriumInputPage(self.data_store,
-                                                                   self.dialog_handler)
+                                                                   self.dialog_handler),
+            AppConfig.EQUILIBRIUM_OUTPUT_PAGE: EquilibriumOutputPage(self.data_store,
+                                                                     self.dialog_handler)
         }
 
         #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,

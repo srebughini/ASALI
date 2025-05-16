@@ -2,6 +2,7 @@ from enum import Enum
 
 from src.config.app import AppConfig
 from src.gui.enums.composition_type import CompositionType
+from src.gui.enums.equilibrium_type import EquilibriumType
 from src.gui.enums.properties import Properties
 from src.gui.enums.regression_method import RegressionMethod
 
@@ -48,6 +49,14 @@ class DataKeys(Enum):
     REGRESSION_PROPERTY_TYPE = (Properties.DENSITY, "property_type_to_be_fitted")
     REGRESSION_PROPERTY = (([1.0], 1., 1., "kg/m3"), "property_fitted")
     TEMPERATURE_VECTOR = (([298.15], "K"), "temperature_vector")
+
+    EQ_TEMPERATURE = ((298.15, "K"), "equilibrium_temperature")
+    EQ_PRESSURE = ((101325.0, "Pa"), "equilibrium_pressure")
+    EQ_MOLE_FRACTION = ([], "equilibrium_mole_fraction")
+    EQ_MASS_FRACTION = ([], "equilibrium_mass_fraction")
+    EQUILIBRIUM_TYPE = (EquilibriumType.TP, "equilibrium_type")
+    EQ_SPECIE_NAMES = ([], "equilibrium_specie_names")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

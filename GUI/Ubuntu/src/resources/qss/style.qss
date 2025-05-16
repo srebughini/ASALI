@@ -41,11 +41,13 @@ QPushButton {
 QPushButton:hover {
     background-color: #FAEDCE;  /* LIGHT BEIGE */
     color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
 }
 
 QPushButton:pressed {
     background-color: #FAEDCE;  /* LIGHT BEIGE */
     color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
 }
 
 /* Icon Button Styling */
@@ -65,11 +67,13 @@ QPushButton.icon {
 QPushButton.icon:hover {
     background-color: #FAEDCE;  /* LIGHT BEIGE */
     color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
 }
 
 QPushButton.icon:pressed {
     background-color: #FAEDCE;  /* LIGHT BEIGE */
     color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
 }
 
 /* Dropdown (ComboBox) Styling */
