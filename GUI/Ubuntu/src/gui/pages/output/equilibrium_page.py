@@ -1,9 +1,7 @@
-import select
 
 from PyQt5 import uic
 
 from src.config.app import AppConfig
-from src.config.output.equilibrium_output_page import EquilibriumOutputPageConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.equilibrium_calculator import equilibrium_calculator
@@ -25,7 +23,7 @@ class EquilibriumOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(EquilibriumOutputPageConfig.PATH.value, self)
+        uic.loadUi(AppConfig.EQUILIBRIUM_OUTPUT_PAGE.value.path, self)
         self.update_head_lines()
         self.update_combo_boxes()
         self.update_buttons()

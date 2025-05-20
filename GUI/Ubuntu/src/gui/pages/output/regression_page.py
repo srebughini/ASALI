@@ -4,7 +4,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 from src.config.app import AppConfig
-from src.config.output.regression_plot_config import RegressionPlotConfig
+from src.config.regression_plot import RegressionPlotConfig
 from src.core.data_keys import DataKeys
 from src.core.regression_calculator import regression_calculator
 from src.gui.enums.properties import Properties

@@ -9,9 +9,6 @@ cd resources
 pyrcc5 -o resources_rc.py resources.qrc
 ```
 
-#### Next step
-* Prepare the equilibrium output page
-
 #### TODO for future
 This is a list of possibile updates
 * Create conda package for the gui
@@ -22,4 +19,3 @@ This is a list of possibile updates
 * Find a way to create a file for installation on linux
 * Improve the handling of the options using Enum in a smarter way
 * Move to pyqt6
-* Create a better initial menu with options like button

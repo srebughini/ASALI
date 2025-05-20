@@ -15,8 +15,6 @@ from src.gui.pages.output.equilibrium_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_page import RegressionOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.output.vacuum_page import VacuumOutputPage
-from src.gui.pages.run_bar import RunBar
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -48,9 +46,6 @@ class MainWindow(QMainWindow):
             Qt.WindowMinimizeButtonHint |
             Qt.WindowCloseButtonHint
         )
-
-        # Create run bar
-        self.run_bar = RunBar()
 
         # Create tool bar
         self.create_tool_bar()
