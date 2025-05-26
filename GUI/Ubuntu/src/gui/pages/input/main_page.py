@@ -44,13 +44,12 @@ class MainInputPage(BasicPage):
         -------
 
         """
-        # MainInputPageComponents.REACTORS_BUTTON: IconConfig.ATOM
-        # MainInputPageComponents.KINETIC_BUTTON: IconConfig.TASKS,
-
         for widget_enum, icon in {MainInputPageComponents.PROPERTIES_BUTTON: IconConfig.FLASK,
-                                  MainInputPageComponents.VACUUM_BUTTON: IconConfig.WIND,
+                                  MainInputPageComponents.VACUUM_BUTTON: IconConfig.ATOM,
                                   MainInputPageComponents.EQUILIBRIUM_BUTTON: IconConfig.BALANCE,
-                                  MainInputPageComponents.REGRESSION_BUTTON: IconConfig.CHART}.items():
+                                  MainInputPageComponents.REGRESSION_BUTTON: IconConfig.CHART,
+                                  MainInputPageComponents.CHEMKIN_BUTTON: IconConfig.TASKS,
+                                  MainInputPageComponents.PRESSURE_DROPS_BUTTON: IconConfig.WIND}.items():
             widget = self.find_widget(widget_enum)
             widget.setIcon(qta.icon(icon.value,
                                     color=IconConfig.COLOR.value,

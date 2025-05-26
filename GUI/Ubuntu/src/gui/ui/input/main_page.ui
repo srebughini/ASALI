@@ -35,23 +35,21 @@
                     </widget>
                 </item>
 
-
                 <!-- Row 2 -->
-                <!--
                 <item row="2" column="0">
-                    <widget class="QPushButton" name="reactorsButton">
+                    <widget class="QPushButton" name="pressureDropsButton">
                         <property name="text">
-                            <string>Reactor models</string>
+                            <string>Pressure drops</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="1">
-                    <widget class="QPushButton" name="kineticButton">
+                    <widget class="QPushButton" name="chemkinButton">
                         <property name="text">
-                            <string>Kinetic schemes</string>
+                            <string>Chemkin editor</string>
                         </property>
                     </widget>
-                </item>-->
+                </item>
             </layout>
         </widget>
 </ui>

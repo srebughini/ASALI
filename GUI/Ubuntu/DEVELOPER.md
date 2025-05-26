@@ -9,6 +9,10 @@ cd resources
 pyrcc5 -o resources_rc.py resources.qrc
 ```
 
+### Function to be added
+* Pressure loss calculation
+* Chemkin to cantera conversion
+
 #### TODO for future
 This is a list of possibile updates
 * Create conda package for the gui

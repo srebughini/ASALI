@@ -23,8 +23,8 @@ class MainInputPageComponents(Enum):
     EQUILIBRIUM_BUTTON = SimpleNamespace(type=QPushButton,
                                          name="equilibriumButton")
 
-    REACTORS_BUTTON = SimpleNamespace(type=QPushButton,
-                                      name="reactorsButton")
+    PRESSURE_DROPS_BUTTON = SimpleNamespace(type=QPushButton,
+                                            name="pressureDropsButton")
 
-    KINETIC_BUTTON = SimpleNamespace(type=QPushButton,
-                                     name="kineticButton")
+    CHEMKIN_BUTTON = SimpleNamespace(type=QPushButton,
+                                     name="chemkinButton")
