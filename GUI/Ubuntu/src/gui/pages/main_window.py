@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
 from src.core.data_store import DataStore
 from src.config.app import AppConfig
 from src.gui.pages.base_layout import BaseLayout
+from src.gui.pages.input.chemkin_page import ChemkinInputPage
 from src.gui.pages.input.equilibrium_page import EquilibriumInputPage
 from src.gui.pages.input.properties_page import PropertiesInputPage
 from src.gui.pages.input.main_page import MainInputPage
@@ -15,6 +16,7 @@ from src.gui.pages.output.equilibrium_page import EquilibriumOutputPage
 from src.gui.pages.output.regression_page import RegressionOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.output.vacuum_page import VacuumOutputPage
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -77,7 +79,9 @@ class MainWindow(QMainWindow):
             AppConfig.EQUILIBRIUM_INPUT_PAGE: EquilibriumInputPage(self.data_store,
                                                                    self.dialog_handler),
             AppConfig.EQUILIBRIUM_OUTPUT_PAGE: EquilibriumOutputPage(self.data_store,
-                                                                     self.dialog_handler)
+                                                                     self.dialog_handler),
+            AppConfig.CHEMKIN_INPUT_PAGE: ChemkinInputPage(self.data_store,
+                                                           self.dialog_handler)
         }
 
         #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,

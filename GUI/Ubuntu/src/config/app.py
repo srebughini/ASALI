@@ -43,6 +43,9 @@ class AppConfig(Enum):
     EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(layout_name="EquilibriumOutputPage",
                                               path=os.path.join("gui", "ui", "output", "equilibrium_page.ui"))
 
+    CHEMKIN_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinInputPage",
+                                         path=os.path.join("gui", "ui", "input", "chemkin_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"
