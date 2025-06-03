@@ -57,6 +57,11 @@ class DataKeys(Enum):
     EQUILIBRIUM_TYPE = (EquilibriumType.TP, "equilibrium_type")
     EQ_SPECIE_NAMES = ([], "equilibrium_specie_names")
 
+    THERMO_FILE_PATH = ("", "chemkin_thermo_file_path")
+    TRANSPORT_FILE_PATH = ("", "chemkin_transport_file_path")
+    KINETIC_FILE_PATH = ("", "chemkin_gas_kinetic_file_path")
+    SURFACE_FILE_PATH = ("", "chemkin_surface_file_path")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

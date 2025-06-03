@@ -43,8 +43,14 @@ class AppConfig(Enum):
     EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(layout_name="EquilibriumOutputPage",
                                               path=os.path.join("gui", "ui", "output", "equilibrium_page.ui"))
 
-    CHEMKIN_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinInputPage",
-                                         path=os.path.join("gui", "ui", "input", "chemkin_page.ui"))
+    CHEMKIN_CONVERTER_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinConverterInputPage",
+                                                   path=os.path.join("gui", "ui", "input", "chemkin_converter_page.ui"))
+
+    CHEMKIN_TRANSPORT_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinTransportInputPage",
+                                                   path=os.path.join("gui", "ui", "input", "chemkin_transport_page.ui"))
+
+    CHEMKIN_THERMO_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinThermoInputPage",
+                                                path=os.path.join("gui", "ui", "input", "chemkin_thermo_page.ui"))
 
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"

@@ -85,4 +85,4 @@ class MainInputPage(BasicPage):
             return self.page_switched.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE)
 
         if MainInputPageComponents.CHEMKIN_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.CHEMKIN_INPUT_PAGE)
+            return self.page_switched.emit(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE)

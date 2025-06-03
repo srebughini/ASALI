@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>ChemkinTransportInputPage</class>
+        <widget class="QWidget" name="ChemkinTransportInputPage">
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <!-- Select action item -->
+                <item>
+                    <layout class="QHBoxLayout" name="selectLayout">
+                        <item>
+                            <widget class="QLabel" name="actionLabel">
+                                <property name="text">
+                                    <string>Select action:</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QComboBox" name="actionComboBox"/>
+                        </item>
+                    </layout>
+                </item>
+
+                <!-- Transport button -->
+                <item>
+                    <widget class="QPushButton" name="transportButton">
+                        <property name="text">
+                            <string>Load transport</string>
+                        </property>
+                        <property name="toolTip">
+                            <string>Load Chemkin transport file</string>
+                        </property>
+                    </widget>
+                </item>
+
+                <!-- Transport options -->
+                <item>
+                    <widget class="QWidget" name="transportWidget">
+                        <layout class="QGridLayout" name="transportLayout">
+                            <!-- Row 0 -->
+                            <item row="0" column="0">
+                                <widget class="QLabel" name="nameTransportLabel">
+                                    <property name="text">
+                                        <string>Specie name:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="0" column="1">
+                                <widget class="QLineEdit" name="nameTransportEditLine" />
+                            </item>
+
+                            <!-- Row 1 -->
+                            <item row="1" column="0">
+                                <widget class="QLabel" name="geometryLabel">
+                                    <property name="text">
+                                        <string>Geometry:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="1" column="1">
+                                <widget class="QLineEdit" name="geometryEditLine" />
+                            </item>
+
+                            <!-- Row 2 -->
+                            <item row="2" column="0">
+                                <widget class="QLabel" name="ljpotentialLabel">
+                                    <property name="text">
+                                        <string>Lennard-Jones potential [K]:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="2" column="1">
+                                <widget class="QLineEdit" name="ljpotentialEditLine" />
+                            </item>
+
+                            <!-- Row 3 -->
+                            <item row="3" column="0">
+                                <widget class="QLabel" name="ljdiameterLabel">
+                                    <property name="text">
+                                        <string>Lennard-Jones collision diameter [&#x212b;]:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="3" column="1">
+                                <widget class="QLineEdit" name="ljdiameterEditLine" />
+                            </item>
+
+                            <!-- Row 4 -->
+                            <item row="4" column="0">
+                                <widget class="QLabel" name="dipoleLabel">
+                                    <property name="text">
+                                        <string>Dipole moment [Debye]:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="4" column="1">
+                                <widget class="QLineEdit" name="dipoleEditLine" />
+                            </item>
+
+
+                            <!-- Row 5 -->
+                            <item row="5" column="0">
+                                <widget class="QLabel" name="polarLabel">
+                                    <property name="text">
+                                        <string>Polarizability [&#x212b;]:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="5" column="1">
+                                <widget class="QLineEdit" name="polarEditLine" />
+                            </item>
+
+                            <!-- Row 6 -->
+                            <item row="6" column="0">
+                                <widget class="QLabel" name="collisionLabel">
+                                    <property name="text">
+                                        <string>Rotational relaxation collision number:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item row="6" column="1">
+                                <widget class="QLineEdit" name="collisionEditLine" />
+                            </item>
+                        </layout>
+                    </widget>
+                </item>
+
+                <!-- Buttons -->
+                <item>
+                    <layout class="QHBoxLayout" name="buttonLayout">
+                        <item>
+                            <widget class="QPushButton" name="backButton">
+                                <property name="text">
+                                    <string>&#x2B9C; Back</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Go back to properties input page</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="runButton">
+                                <property name="text">
+                                    <string>Run</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Run CHEMKIN editor and Save results</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </item>
+            </layout>
+        </widget>
+</ui>

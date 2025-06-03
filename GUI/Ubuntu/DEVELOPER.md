@@ -15,6 +15,7 @@ pyrcc5 -o resources_rc.py resources.qrc
 
 #### TODO for future
 This is a list of possibile updates
+* Add action to thermo, transport, conveter of the chemkin editor
 * Create conda package for the gui
 * Create linux installation instructions
 * Create docker distribution
