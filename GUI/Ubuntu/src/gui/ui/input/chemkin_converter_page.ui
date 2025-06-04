@@ -85,7 +85,7 @@
                         <item>
                             <widget class="QPushButton" name="runButton">
                                 <property name="text">
-                                    <string>Run</string>
+                                    <string>Save</string>
                                 </property>
                                 <property name="toolTip">
                                     <string>Run CHEMKIN editor and Save results</string>
