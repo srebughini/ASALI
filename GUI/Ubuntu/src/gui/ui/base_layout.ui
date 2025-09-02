@@ -17,6 +17,9 @@
                     </property>
                 </widget>
             </item>
+            <item>
+                <layout class="QVBoxLayout" name="containerLayout"/>
+            </item>
         </layout>
     </widget>
 </ui>

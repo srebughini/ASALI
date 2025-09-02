@@ -20,36 +20,36 @@ class AppConfig(Enum):
     DEFAULT_DATABASE_FILE_PATH = os.path.join("resources", "database", "data.yaml")
 
     BASE_LAYOUT_PATH = os.path.join("gui", "ui", "base_layout.ui")
-    MAIN_INPUT_PAGE = SimpleNamespace(layout_name="MainInputPage",
+    MAIN_INPUT_PAGE = SimpleNamespace(page_name="MainInputPage",
                                       path=os.path.join("gui", "ui", "input", "main_page.ui"))
 
-    PROPERTIES_INPUT_PAGE = SimpleNamespace(layout_name="PropertiesInputPage",
+    PROPERTIES_INPUT_PAGE = SimpleNamespace(page_name="PropertiesInputPage",
                                             path=os.path.join("gui", "ui", "input", "properties_page.ui"))
-    PROPERTIES_OUTPUT_PAGE = SimpleNamespace(layout_name="PropertiesOutputPage",
+    PROPERTIES_OUTPUT_PAGE = SimpleNamespace(page_name="PropertiesOutputPage",
                                              path=os.path.join("gui", "ui", "output", "properties_page.ui"))
 
-    VACUUM_INPUT_PAGE = SimpleNamespace(layout_name="VacuumInputPage",
+    VACUUM_INPUT_PAGE = SimpleNamespace(page_name="VacuumInputPage",
                                         path=os.path.join("gui", "ui", "input", "vacuum_page.ui"))
-    VACUUM_OUTPUT_PAGE = SimpleNamespace(layout_name="VacuumOutputPage",
+    VACUUM_OUTPUT_PAGE = SimpleNamespace(page_name="VacuumOutputPage",
                                          path=os.path.join("gui", "ui", "output", "vacuum_page.ui"))
 
-    REGRESSION_INPUT_PAGE = SimpleNamespace(layout_name="RegressionInputPage",
+    REGRESSION_INPUT_PAGE = SimpleNamespace(page_name="RegressionInputPage",
                                             path=os.path.join("gui", "ui", "input", "regression_page.ui"))
-    REGRESSION_OUTPUT_PAGE = SimpleNamespace(layout_name="RegressionOutputPage",
+    REGRESSION_OUTPUT_PAGE = SimpleNamespace(page_name="RegressionOutputPage",
                                              path=os.path.join("gui", "ui", "output", "regression_page.ui"))
 
-    EQUILIBRIUM_INPUT_PAGE = SimpleNamespace(layout_name="EquilibriumInputPage",
+    EQUILIBRIUM_INPUT_PAGE = SimpleNamespace(page_name="EquilibriumInputPage",
                                              path=os.path.join("gui", "ui", "input", "equilibrium_page.ui"))
-    EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(layout_name="EquilibriumOutputPage",
+    EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(page_name="EquilibriumOutputPage",
                                               path=os.path.join("gui", "ui", "output", "equilibrium_page.ui"))
 
-    CHEMKIN_CONVERTER_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinConverterInputPage",
+    CHEMKIN_CONVERTER_INPUT_PAGE = SimpleNamespace(page_name="ChemkinConverterInputPage",
                                                    path=os.path.join("gui", "ui", "input", "chemkin_converter_page.ui"))
 
-    CHEMKIN_TRANSPORT_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinTransportInputPage",
+    CHEMKIN_TRANSPORT_INPUT_PAGE = SimpleNamespace(page_name="ChemkinTransportInputPage",
                                                    path=os.path.join("gui", "ui", "input", "chemkin_transport_page.ui"))
 
-    CHEMKIN_THERMO_INPUT_PAGE = SimpleNamespace(layout_name="ChemkinThermoInputPage",
+    CHEMKIN_THERMO_INPUT_PAGE = SimpleNamespace(page_name="ChemkinThermoInputPage",
                                                 path=os.path.join("gui", "ui", "input", "chemkin_thermo_page.ui"))
 
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"

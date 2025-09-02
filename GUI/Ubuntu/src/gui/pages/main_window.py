@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         self.disclaimer_action = None
         self.contact_action = None
         self.toolbar = None
+        self.current_page_name = None
 
         # Add title
         self.setWindowTitle(AppConfig.TITLE.value)
@@ -116,8 +117,8 @@ class MainWindow(QMainWindow):
         #                                                                         self.dialog_handler)
         # }
 
-        for page in self.pages.values():
-            self.base_layout.add_page(page)
+        for page_enum, page_as_widget in self.pages.items():
+            self.base_layout.add_page(page_as_widget, page_enum.value.page_name)
 
         # Show the Starting Page
         self.switch_page(AppConfig.MAIN_INPUT_PAGE)
@@ -162,29 +163,25 @@ class MainWindow(QMainWindow):
     def switch_page(self, page_config) -> None:
         """
         Switches the content of the base layout to the specified page.
+
         Parameters
         ----------
-        page_config: Enum
-            Page name
-
-        Returns
-        -------
-
+        page_config : Enum
+            Page name (from AppConfig)
         """
+        if page_config not in self.pages:
+            raise ValueError(f"{page_config.value.layout_name} not found!")
 
-        if page_config in self.pages.keys():
-            # Instantiate the new page
-            new_page = self.pages[page_config]
+        new_page = self.pages[page_config]
 
-            # Switch to the new page in the QStackedWidget
-            self.base_layout.switch_page(page_config.value.layout_name)
+        self.base_layout.switch_page(page_config.value.page_name, self.current_page_name)
 
-            # Connect the page's `page_switched` signal to the `switch_page` method
-            new_page.page_switched.connect(self.switch_page)
+        new_page.page_switched.connect(self.switch_page)
 
-            self.adjustSize()
-        else:
-            raise Exception(f"{page_config.value.layout_name} not found!")
+        # Update current tracker
+        self.current_page_name = page_config.value.page_name
+
+        self.adjustSize()
 
     def closeEvent(self, event) -> None:
         """

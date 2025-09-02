@@ -18,7 +18,9 @@ class BaseLayout(QWidget):
         self.update_beer_label()
         self.update_logo()
 
-        self.main_layout = self.findChild(QVBoxLayout, 'verticalLayout')
+        self.container_layout = self.findChild(QVBoxLayout, 'containerLayout')
+
+        self.pages = {}
 
     def update_beer_label(self) -> None:
         """
@@ -45,56 +47,73 @@ class BaseLayout(QWidget):
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "logo")
 
-    def hide_all_pages(self) -> None:
+    def update_beer_quote(self) -> None:
         """
-        Hide all layouts
+        Update beer quote
         Returns
         -------
 
         """
-        for i in range(self.main_layout.count()):
-            widget_item = self.main_layout.itemAt(i)  # Get the QLayoutItem
-            widget = widget_item.widget()  # Extract the widget
-            if widget is not None:  # Check if the item is a valid widget
-                widget.hide()  # Hide the widget
+        q = beerpy.get_random_quote(language="eng")
+        label = self.findChild(QLabel, 'beerQuoteLabel')
+        label.setText(f'{q["quote"]}\n[{q["author"]}]')
 
-    def add_page(self, widget) -> None:
+    def hide_page(self, page_name) -> None:
+        """
+        Hide a specific page by its object name.
+
+        Parameters
+        ----------
+        page_name : str
+            Name of the page to hide
+        """
+        page_as_widget = self.findChild(QWidget, page_name)
+        if page_as_widget is None:
+            raise ValueError(f"Page '{page_name}' not found in BaseLayout")
+
+        page_as_widget.setParent(None)
+        self.pages.update({page_name: page_as_widget})
+
+    def add_page(self, page_as_widget, page_name) -> None:
         """
         Add a new widget to the QStackedWidget and set it as the current widget.
         Parameters
         ----------
-        widget: QWidget
+        page_as_widget: QWidget
             Widget to be added to the content area
-
+        page_name : str
+            Name of the page to hide
         Returns
         -------
 
         """
-        self.main_layout.addWidget(widget)
+        self.pages.update({page_name: page_as_widget})
 
-    def switch_page(self, main_layout_name) -> None:
+    def switch_page(self, page_to_show_name, page_to_hide_name) -> None:
         """
-        Switch to a different widget in the QStackedWidget.
+        Switch to a different widget in the container layout.
+        Hides the specified page before showing the new page.
+
         Parameters
         ----------
-        main_layout_name: str
+        page_to_show_name : str
             Name of the page to be shown
-
-        Returns
-        -------
-
+        page_to_hide_name : str | None
+            Name of the page to hide
         """
-        self.hide_all_pages()
+        # If the new page is the same as the current page → no switch, no quote update
+        if page_to_show_name == page_to_hide_name:
+            return
 
-        label = self.findChild(QLabel, 'logoLabel')
-        label.show()
+        # Hide the previous page
+        if page_to_hide_name is not None:
+            self.hide_page(page_to_hide_name)
 
-        label = self.findChild(QLabel, 'beerQuoteLabel')
-        label.show()
+        page_as_widget = self.pages[page_to_show_name]
+        self.container_layout.addWidget(page_as_widget)
+        page_as_widget.show()
+        page_as_widget.update()
+        page_as_widget.update_page_after_switch()
 
-        layout = self.findChild(QWidget, main_layout_name)
+        self.update_beer_quote()
 
-        layout.update_page_after_switch()
-        layout.show()
-
-        self.update_beer_label()
