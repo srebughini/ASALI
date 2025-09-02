@@ -10,13 +10,11 @@ pyrcc5 -o resources_rc.py resources.qrc
 ```
 
 ### Function to be added
-* Solve the problem when changing layout - Right now is slow, maybe QStackedWidget is an option but you need to wrap layouts inside widgets
-* Pressure loss calculation - To be implemented
 * Chemkin to cantera conversion - Need the reading and the saving
+* Pressure loss calculation - To be implemented
 
 #### TODO for future
 This is a list of possibile updates
-* Add action to thermo, transport, converter of the chemkin editor
 * Create conda package for the gui
 * Create linux installation instructions
 * Create docker distribution

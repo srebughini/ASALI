@@ -1,6 +1,6 @@
 import beerpy
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
+from PyQt5.QtCore import Qt, QPropertyAnimation
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsOpacityEffect
 from PyQt5 import uic
 
 from src.config.app import AppConfig
@@ -112,8 +112,6 @@ class BaseLayout(QWidget):
         page_as_widget = self.pages[page_to_show_name]
         self.container_layout.addWidget(page_as_widget)
         page_as_widget.show()
-        page_as_widget.update()
         page_as_widget.update_page_after_switch()
 
         self.update_beer_quote()
-
