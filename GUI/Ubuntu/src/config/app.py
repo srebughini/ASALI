@@ -61,3 +61,7 @@ class AppConfig(Enum):
     CHEMKIN_FILE_OPEN = "Open Chemkin File"
     EXCEL_FILE_TYPE = "Excel file type (*.xlsx *.xls);;All Files (*)"
     EXCEL_FILE_SAVE = "Save Excel Output File"
+    CHEMKIN_TRANSPORT_FILE_TYPE = "Chemkin file type (*.tra);;All Files (*)"
+    CHEMKIN_TRANSPORT_FILE_HEADLINE = "Chemkin Transport File"
+    CHEMKIN_THERMO_FILE_TYPE = "Chemkin file type (*.tdc);;All Files (*)"
+    CHEMKIN_THERMO_FILE_HEADLINE = "Chemkin Thermo File"

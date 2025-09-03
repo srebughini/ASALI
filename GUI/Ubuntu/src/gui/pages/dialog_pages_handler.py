@@ -109,7 +109,7 @@ class DialogPagesHandler:
         Question message box
         Parameters
         ----------
-        msg: str
+        msg: str | QLabel
             QDialog message
 
         Returns
@@ -117,6 +117,9 @@ class DialogPagesHandler:
         answer: bool
             If yes the answer is true
         """
+        if isinstance(msg, QLabel):
+            msg = msg.text()
+
         box = QMessageBox(self.main_window)
         box.setIcon(QMessageBox.Question)
         box.setWindowTitle(AppConfig.TITLE.value)

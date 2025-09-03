@@ -1,6 +1,6 @@
 import beerpy
-from PyQt5.QtCore import Qt, QPropertyAnimation
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QGraphicsOpacityEffect
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PyQt5 import uic
 
 from src.config.app import AppConfig

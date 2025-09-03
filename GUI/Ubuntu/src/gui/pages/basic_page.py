@@ -6,7 +6,7 @@ from PyQt5.QtGui import QDoubleValidator
 from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect
 
 from src.config.input_composition import InputCompositionConfig
-from src.controllers.input_file_controller import InputFileController
+from src.controllers.cantera_file_controller import CanteraFileController
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
 from src.core.species_names import surface_species_names, gas_species_names
@@ -293,23 +293,23 @@ class BasicPage(QWidget):
             self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH,
                                         file_path)
             self.data_store.update_data(DataKeys.GAS_PHASE_NAME,
-                                        InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                                        CanteraFileController.extract_gas_phase_name_from_cantera(file_path))
             self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME,
-                                        InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                                        CanteraFileController.extract_gas_phase_name_from_cantera(file_path))
             return None
 
         if DatabaseType.CUSTOM == database_type:
             file_path = self.dialog_handler.load_file(AppConfig.CANTERA_FILE_OPEN.value,
                                                       AppConfig.CANTERA_FILE_TYPE.value)
             if file_path:  # Check if a file was selected
-                if InputFileController.check_cantera_input_file(file_path):
+                if CanteraFileController.check_cantera_input_file(file_path):
                     self.data_store.update_data(DataKeys.IS_DEFAULT_FILE_PATH, False)
                     self.data_store.update_data(DataKeys.CHEMISTRY_FILE_PATH,
                                                 file_path)
                     self.data_store.update_data(DataKeys.GAS_PHASE_NAME,
-                                                InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                                                CanteraFileController.extract_gas_phase_name_from_cantera(file_path))
                     self.data_store.update_data(DataKeys.SURFACE_PHASE_NAME,
-                                                InputFileController.extract_gas_phase_name_from_cantera(file_path))
+                                                CanteraFileController.extract_gas_phase_name_from_cantera(file_path))
                     self.dialog_handler.done_message(QLabel("Cantera file loaded!"))
                 else:
                     database_box.setCurrentTexT(DatabaseType.NONE.value)

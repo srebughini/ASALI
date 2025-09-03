@@ -3,7 +3,7 @@ from asali.utils.user_defind_kinetic import UserDefinedKinetic
 from cantera import Solution, Interface
 
 
-class InputFileController:
+class CanteraFileController:
     """
     Class to control input files
     """
@@ -67,8 +67,8 @@ class InputFileController:
         if file_path is None:
             return False
 
-        _ = InputFileController.extract_gas_phase_name_from_cantera(file_path)
-        surface_phase_name = InputFileController.extract_surface_phase_name_from_cantera(file_path)
+        _ = CanteraFileController.extract_gas_phase_name_from_cantera(file_path)
+        surface_phase_name = CanteraFileController.extract_surface_phase_name_from_cantera(file_path)
 
         gas = Solution(file_path)
         if surface_phase_name is not None:
@@ -95,7 +95,7 @@ class InputFileController:
         udk_model = UserDefinedKinetic()
         udk_model.file_path = udk_file_path
 
-        if not InputFileController.check_cantera_input_file(cantera_file_path):
+        if not CanteraFileController.check_cantera_input_file(cantera_file_path):
             return False
 
         gas = Solution(cantera_file_path)
