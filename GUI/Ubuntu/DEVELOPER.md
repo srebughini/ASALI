@@ -10,7 +10,7 @@ pyrcc5 -o resources_rc.py resources.qrc
 ```
 
 ### Function to be added
-* Chemkin to cantera conversion - Need the reading and the saving
+* Update thermo - Need the reading and the saving
 * Pressure loss calculation - To be implemented
 
 #### TODO for future
