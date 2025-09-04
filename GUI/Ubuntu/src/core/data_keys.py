@@ -62,6 +62,8 @@ class DataKeys(Enum):
     KINETIC_FILE_PATH = ("", "chemkin_gas_kinetic_file_path")
     SURFACE_FILE_PATH = ("", "chemkin_surface_file_path")
 
+    NE = (-1, "number_of_gas_elements")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

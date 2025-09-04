@@ -38,6 +38,9 @@ class ChemkinThermoInputPage(BasicPage):
         action_box = self.find_widget(ChemkinThermoInputPageComponents.ACTION)
         action_box.setCurrentText(ChemkinEditorAction.THERMO.value)
 
+        if self.data_store.get_data(DataKeys.NE) < 0:
+            self.add_element(ChemkinThermoInputPageComponents.ELEMENT_LAYOUT)
+
     def update_buttons(self) -> None:
         """
         Update buttons
@@ -53,6 +56,14 @@ class ChemkinThermoInputPage(BasicPage):
 
         thermo_button = self.find_widget(ChemkinThermoInputPageComponents.THERMO_BUTTON)
         thermo_button.clicked.connect(self.load_thermo_file)
+
+        add_button = self.find_widget(ChemkinThermoInputPageComponents.ADD_ELEMENT_BUTTON)
+        add_button.clicked.connect(
+            lambda checked, grid_enum=ChemkinThermoInputPageComponents.ELEMENT_LAYOUT: self.add_element(grid_enum))
+
+        remove_button = self.find_widget(ChemkinThermoInputPageComponents.REMOVE_ELEMENT_BUTTON)
+        remove_button.clicked.connect(
+            lambda checked, grid_enum=ChemkinThermoInputPageComponents.ELEMENT_LAYOUT: self.remove_element(grid_enum))
 
     def update_combo_boxes(self) -> None:
         """
@@ -149,21 +160,24 @@ class ChemkinThermoInputPage(BasicPage):
         phase = ThermoPhases(self.find_widget(ChemkinThermoInputPageComponents.PHASE_COMBO_BOX).currentText())
         low_temperature = float(self.find_widget(ChemkinThermoInputPageComponents.LOW_TEMPERATURE_EDIT_LINE).text())
         high_temperature = float(self.find_widget(ChemkinThermoInputPageComponents.HIGH_TEMPERATURE_EDIT_LINE).text())
-        common_temperature = float(self.find_widget(ChemkinThermoInputPageComponents.COMMON_TEMPERATURE_EDIT_LINE).text())
-        upper_coefficient_list = [float(self.find_widget(w).text()) for w in [ChemkinThermoInputPageComponents.A1_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A2_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A3_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A4_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A5_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A6_UPPER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A7_UPPER_EDIT_LINE]]
-        lower_coefficient_list = [float(self.find_widget(w).text()) for w in [ChemkinThermoInputPageComponents.A1_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A2_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A3_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A4_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A5_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A6_LOWER_EDIT_LINE,
-                                                                              ChemkinThermoInputPageComponents.A7_LOWER_EDIT_LINE]]
+        common_temperature = float(
+            self.find_widget(ChemkinThermoInputPageComponents.COMMON_TEMPERATURE_EDIT_LINE).text())
+        upper_coefficient_list = [float(self.find_widget(w).text()) for w in
+                                  [ChemkinThermoInputPageComponents.A1_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A2_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A3_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A4_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A5_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A6_UPPER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A7_UPPER_EDIT_LINE]]
+        lower_coefficient_list = [float(self.find_widget(w).text()) for w in
+                                  [ChemkinThermoInputPageComponents.A1_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A2_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A3_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A4_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A5_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A6_LOWER_EDIT_LINE,
+                                   ChemkinThermoInputPageComponents.A7_LOWER_EDIT_LINE]]
 
         atomic_symbols_and_formula = self.data_store.get_data_value(DataKeys.ATOM_DICT)
 

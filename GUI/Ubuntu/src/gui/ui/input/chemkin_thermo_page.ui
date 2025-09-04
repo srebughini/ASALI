@@ -122,7 +122,7 @@
                                     <property name="title">
                                         <string>Atomic composition:</string>
                                     </property>
-                                    <layout class="QGridLayout" name="elementLayout">
+                                    <layout class="QGridLayout" name="elementMainLayout">
                                         <!-- Row 0 -->
                                         <item row="0" column="0">
                                             <layout class="QHBoxLayout" name="horizontalElementLayout">
@@ -161,6 +161,11 @@
                                                     <string>Composition</string>
                                                 </property>
                                             </widget>
+                                        </item>
+
+                                        <!-- Row 1 -->
+                                        <item row="1" column="0" colspan="3">
+                                            <layout class="QGridLayout" name="elementLayout" />
                                         </item>
                                     </layout>
                                 </widget>

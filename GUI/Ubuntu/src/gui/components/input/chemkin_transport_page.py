@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QComboBox, QPushButton, QLineEdit
 
-from src.controllers.edit_lines_validators import EditLinesValidator
+from src.controllers.edit_lines_validator import EditLinesValidator
 from src.gui.enums.chemkin_editor_action import ChemkinEditorAction
 
 

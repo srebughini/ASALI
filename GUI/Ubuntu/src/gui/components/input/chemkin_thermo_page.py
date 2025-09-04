@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIntValidator
 from PyQt5.QtWidgets import QComboBox, QPushButton, QLineEdit, QGridLayout
 
 from src.controllers.chemkin_file_controller import ThermoPhases
-from src.controllers.edit_lines_validators import EditLinesValidator
+from src.controllers.edit_lines_validator import EditLinesValidator
 from src.gui.enums.chemkin_editor_action import ChemkinEditorAction
 
 
