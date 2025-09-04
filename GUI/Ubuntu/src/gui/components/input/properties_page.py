@@ -41,11 +41,11 @@ class PropertiesInputPageComponents(Enum):
     BACK_BUTTON = SimpleNamespace(type=QPushButton,
                                   name="backButton")
 
-    ADD_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                     name="addSpecieButton")
+    ADD_SPECIE_BUTTON = SimpleNamespace(type=QPushButton,
+                                        name="addSpecieButton")
 
-    REMOVE_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                        name="removeSpecieButton")
+    REMOVE_SPECIE_BUTTON = SimpleNamespace(type=QPushButton,
+                                           name="removeSpecieButton")
 
     TEMPERATURE_INPUT = SimpleNamespace(type=QLineEdit,
                                         name="temperatureEditLine",

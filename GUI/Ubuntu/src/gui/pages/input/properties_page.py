@@ -61,11 +61,11 @@ class PropertiesInputPage(BasicPage):
         back_button = self.find_widget(PropertiesInputPageComponents.BACK_BUTTON)
         back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
 
-        add_button = self.find_widget(PropertiesInputPageComponents.ADD_GAS_BUTTON)
+        add_button = self.find_widget(PropertiesInputPageComponents.ADD_SPECIE_BUTTON)
         add_button.clicked.connect(
             lambda checked, grid_enum=PropertiesInputPageComponents.GAS_SPECIES_LAYOUT: self.add_gas_specie(grid_enum))
 
-        remove_button = self.find_widget(PropertiesInputPageComponents.REMOVE_GAS_BUTTON)
+        remove_button = self.find_widget(PropertiesInputPageComponents.REMOVE_SPECIE_BUTTON)
         remove_button.clicked.connect(
             lambda checked, grid_enum=PropertiesInputPageComponents.GAS_SPECIES_LAYOUT: self.remove_gas_species(
                 grid_enum))
@@ -113,12 +113,12 @@ class PropertiesInputPage(BasicPage):
         database_type = DatabaseType(database_box.currentText())
 
         if DatabaseType.NONE == database_type:
-            self.disable_widget(self.find_widget(PropertiesInputPageComponents.ADD_GAS_BUTTON))
-            self.disable_widget(self.find_widget(PropertiesInputPageComponents.REMOVE_GAS_BUTTON))
+            self.disable_widget(self.find_widget(PropertiesInputPageComponents.ADD_SPECIE_BUTTON))
+            self.disable_widget(self.find_widget(PropertiesInputPageComponents.REMOVE_SPECIE_BUTTON))
             self.disable_widget(self.find_widget(PropertiesInputPageComponents.NEXT_BUTTON))
         else:
-            self.enable_widget(self.find_widget(PropertiesInputPageComponents.ADD_GAS_BUTTON))
-            self.enable_widget(self.find_widget(PropertiesInputPageComponents.REMOVE_GAS_BUTTON))
+            self.enable_widget(self.find_widget(PropertiesInputPageComponents.ADD_SPECIE_BUTTON))
+            self.enable_widget(self.find_widget(PropertiesInputPageComponents.REMOVE_SPECIE_BUTTON))
             self.enable_widget(self.find_widget(PropertiesInputPageComponents.NEXT_BUTTON))
 
         self.clear_grid_layout(self.find_widget(PropertiesInputPageComponents.GAS_SPECIES_LAYOUT))
