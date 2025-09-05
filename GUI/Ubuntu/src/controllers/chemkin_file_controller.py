@@ -122,7 +122,7 @@ class ChemkinFileController:
 
         # Concatenate all fields into one string
         data_s_str = (
-                             species_name + date + formula + phase_str + low_temp + high_temp + common_temp + additional_symbols).ljust(
+                                 species_name + date + formula + phase_str + low_temp + high_temp + common_temp + additional_symbols).ljust(
             79) + "1"
 
         return data_s_str
@@ -202,6 +202,42 @@ class ChemkinFileController:
             file_as_list = [line.rstrip() for line in file if line.rstrip()]
 
         formatted_string = ChemkinFileController.transport_data_list_to_str(data_list)
+
+        if "end" in file_as_list[-1].lower():
+            file_as_list = file_as_list[:-1]
+
+        file_as_list.append(formatted_string)
+        file_as_list.append("END")
+
+        with open(file_path, 'w') as file:
+            file.write("\n".join(file_as_list))
+
+    @staticmethod
+    def update_thermo_file(file_path, data_list) -> None:
+        """
+        Save thermo data in thermo CHEMKIN file
+        Parameters
+        ----------
+        file_path: str | os.path
+            File path
+        data_list: list
+            Data as list [name,
+                          atomic_symbols_and_formula,
+                          phase,
+                          low_temperature,
+                          high_temperature,
+                          common_temperature,
+                          upper_coefficient_list,
+                          lower_coefficient_list]
+
+        Returns
+        -------
+
+        """
+        with open(file_path, 'r') as file:
+            file_as_list = [line.rstrip() for line in file if line.rstrip()]
+
+        formatted_string = ChemkinFileController.thermo_data_list_to_str(data_list)
 
         if "end" in file_as_list[-1].lower():
             file_as_list = file_as_list[:-1]

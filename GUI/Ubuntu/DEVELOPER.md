@@ -10,7 +10,6 @@ pyrcc5 -o resources_rc.py resources.qrc
 ```
 
 ### Function to be added
-* Update thermo - Need the reading and the saving
 * Pressure loss calculation - To be implemented
 
 #### TODO for future

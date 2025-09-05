@@ -152,12 +152,15 @@ class DialogPagesHandler:
         Show message with QDialog
         Parameters
         ----------
-        msg: QLabel
+        msg: str | QLabel
             QDialog message
 
         Returns
         -------
         """
+        if isinstance(msg, str):
+            msg = QLabel(msg)
+
         # Create the dialog
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(AppConfig.TITLE.value)
@@ -185,12 +188,15 @@ class DialogPagesHandler:
         Show message with QDialog
         Parameters
         ----------
-        msg: QLabel
+        msg: str | QLabel
             QDialog message
 
         Returns
         -------
         """
+        if isinstance(msg, str):
+            msg = QLabel(msg)
+
         # Create the dialog
         dialog = QDialog(self.main_window, Qt.WindowCloseButtonHint)
         dialog.setWindowTitle(AppConfig.TITLE.value)

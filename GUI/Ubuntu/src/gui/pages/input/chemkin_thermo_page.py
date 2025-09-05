@@ -1,7 +1,9 @@
 from PyQt5 import uic
+from PyQt5.QtWidgets import QLabel, QLineEdit
 
 from src.config.app import AppConfig
-from src.controllers.chemkin_file_controller import ThermoPhases
+from src.config.input_composition import InputCompositionConfig
+from src.controllers.chemkin_file_controller import ThermoPhases, ChemkinFileController
 from src.core.data_keys import DataKeys
 from src.gui.components.input.chemkin_thermo_page import ChemkinThermoInputPageComponents
 from src.gui.enums.chemkin_editor_action import ChemkinEditorAction
@@ -141,6 +143,79 @@ class ChemkinThermoInputPage(BasicPage):
         if file_path:
             self.data_store.update_data(DataKeys.THERMO_FILE_PATH, file_path)
 
+    def add_element(self, grid_enum) -> None:
+        """
+        Add gas species widgets to the grid layout
+        Parameters
+        ----------
+        grid_enum: Enum
+            Enum describing the layout where to add the gas specie row
+        Returns
+        -------
+        """
+        grid = self.find_widget(grid_enum)
+        idx = self.data_store.get_data(DataKeys.NE) + 1
+        self.data_store.update_data(DataKeys.NE, idx)
+
+        label = self.findChild(QLabel, InputCompositionConfig.ELEMENT_LABEL_NAME.value.format(idx))
+        if label is None:
+            label = QLabel(InputCompositionConfig.ELEMENT_LABEL_TEXT.value.format(idx))
+            label.setObjectName(InputCompositionConfig.ELEMENT_LABEL_NAME.value.format(idx))
+            grid.addWidget(label, idx, 0)
+        else:
+            label.setVisible(True)
+
+        name_edit_line = self.findChild(QLineEdit, InputCompositionConfig.ELEMENT_EDIT_LINE_NAME.value.format(idx))
+        if name_edit_line is None:
+            name_edit_line = QLineEdit()
+            name_edit_line.setObjectName(InputCompositionConfig.ELEMENT_EDIT_LINE_NAME.value.format(idx))
+            name_edit_line.setValidator(InputCompositionConfig.ELEMENT_NAME_VALIDATOR.value)
+            name_edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
+            name_edit_line.setText(InputCompositionConfig.EDIT_LINE_LETTER_TEXT.value)
+            grid.addWidget(name_edit_line, idx, 1)
+        else:
+            name_edit_line.setVisible(True)
+
+        composition_edit_line = self.findChild(QLineEdit,
+                                               InputCompositionConfig.ELEMENT_EDIT_LINE_COMPOSITION.value.format(idx))
+        if composition_edit_line is None:
+            composition_edit_line = QLineEdit()
+            composition_edit_line.setObjectName(InputCompositionConfig.ELEMENT_EDIT_LINE_COMPOSITION.value.format(idx))
+            composition_edit_line.setValidator(InputCompositionConfig.ELEMENT_COMPOSITION_VALIDATOR.value)
+            composition_edit_line.setAlignment(InputCompositionConfig.EDIT_LINE_ALIGN.value)
+            composition_edit_line.setText(InputCompositionConfig.EDIT_LINE_INT_TEXT.value)
+            grid.addWidget(composition_edit_line, idx, 2)
+        else:
+            composition_edit_line.setVisible(True)
+
+        self.set_custom_dimensions_to_grid_layout(grid)
+
+    def remove_element(self, grid_enum) -> None:
+        """
+        Remove gas species widgets to the grid layout
+        Parameters
+        ----------
+        grid_enum: Enum
+            Enum describing the layout where to add the gas specie row
+        Returns
+        -------
+        """
+        grid = self.find_widget(grid_enum)
+        idx = self.data_store.get_data(DataKeys.NE)
+        if idx > 0:
+            label = self.findChild(QLabel, InputCompositionConfig.ELEMENT_LABEL_NAME.value.format(idx))
+            name_edit_line = self.findChild(QLineEdit, InputCompositionConfig.ELEMENT_EDIT_LINE_NAME.value.format(idx))
+            composition_edit_line = self.findChild(QLineEdit,
+                                                   InputCompositionConfig.ELEMENT_EDIT_LINE_COMPOSITION.value.format(
+                                                       idx))
+
+            label.setVisible(False)
+            name_edit_line.setVisible(False)
+            composition_edit_line.setVisible(False)
+
+            self.set_custom_dimensions_to_grid_layout(grid)
+            self.data_store.update_data(DataKeys.NE, idx - 1)
+
     def read_data(self) -> None | list:
         """
         Read transport data
@@ -179,7 +254,13 @@ class ChemkinThermoInputPage(BasicPage):
                                    ChemkinThermoInputPageComponents.A6_LOWER_EDIT_LINE,
                                    ChemkinThermoInputPageComponents.A7_LOWER_EDIT_LINE]]
 
-        atomic_symbols_and_formula = self.data_store.get_data_value(DataKeys.ATOM_DICT)
+        atomic_symbols_and_formula = {
+            self.findChild(QLineEdit, InputCompositionConfig.ELEMENT_EDIT_LINE_NAME.value.format(idx)).text():
+                int(self.findChild(QLineEdit,
+                                   InputCompositionConfig.ELEMENT_EDIT_LINE_COMPOSITION.value.format(idx)).text()) for
+            idx in range(0, self.data_store.get_data(DataKeys.NE)+1)}
+
+        print(atomic_symbols_and_formula)
 
         if len(atomic_symbols_and_formula) < 1:
             self.dialog_handler.error_message("Missing atomic composition!")
@@ -201,24 +282,24 @@ class ChemkinThermoInputPage(BasicPage):
         -------
 
         """
-        pass
-        """
-        self.read_data()
-        self.data_store = equilibrium_calculator(self.data_store)
+        data_list = self.read_data()
 
-        for widget_enum, key in {EquilibriumOutputPageComponents.TEMPERATURE: DataKeys.EQ_TEMPERATURE,
-                                 EquilibriumOutputPageComponents.PRESSURE: DataKeys.EQ_PRESSURE,
-                                 EquilibriumOutputPageComponents.MOLE_FRACTION: DataKeys.EQ_MOLE_FRACTION,
-                                 EquilibriumOutputPageComponents.MASS_FRACTION: DataKeys.EQ_MASS_FRACTION,
-                                 EquilibriumOutputPageComponents.NAMES: DataKeys.EQ_SPECIE_NAMES}.items():
-            widget = self.find_widget(widget_enum)
-            data = self.data_store.get_data(key)
-            if isinstance(data, list):
-                widget.setText(LabelFormatter.list_to_string(data))
-            elif isinstance(data, tuple):
-                widget.setText(LabelFormatter.float_to_string(data[0]))
+        output_file_path = self.data_store.get_data(DataKeys.THERMO_FILE_PATH)
+
+        if len(output_file_path) == 0:
+            answer = self.dialog_handler.question_message(QLabel("Thermo file is missing!\nDo you want to load it?"))
+            if answer:
+                self.load_transport_file()
+                output_file_path = self.data_store.get_data(DataKeys.THERMO_FILE_PATH)
             else:
-                widget.setText(LabelFormatter.float_to_string(data))
+                return None
 
-        self.set_custom_dimensions_to_grid_layout(self.find_widget(EquilibriumOutputPageComponents.GRID))
-        """
+        if output_file_path is not None:
+            try:
+                ChemkinFileController.update_thermo_file(output_file_path, data_list)
+            except Exception as e:
+                raise Exception(e)
+            else:
+                self.dialog_handler.done_message(QLabel("Thermo file updated!"))
+
+        return None

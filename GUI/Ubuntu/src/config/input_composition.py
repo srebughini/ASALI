@@ -29,3 +29,4 @@ class InputCompositionConfig(Enum):
     EDIT_LINE_ALIGN = Qt.AlignRight
     EDIT_LINE_DOUBLE_TEXT = "0.0"
     EDIT_LINE_INT_TEXT = "0"
+    EDIT_LINE_LETTER_TEXT = "A"
