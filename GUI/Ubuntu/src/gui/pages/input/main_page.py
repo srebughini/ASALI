@@ -86,3 +86,6 @@ class MainInputPage(BasicPage):
 
         if MainInputPageComponents.CHEMKIN_BUTTON == button_enum:
             return self.page_switched.emit(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE)
+
+        if MainInputPageComponents.PRESSURE_DROPS_BUTTON == button_enum:
+            return self.page_switched.emit(AppConfig.PRESSURE_DROPS_INPUT_PAGE)

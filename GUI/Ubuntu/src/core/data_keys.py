@@ -64,6 +64,8 @@ class DataKeys(Enum):
 
     NE = (-1, "number_of_gas_elements")
 
+    PRESSURE_DROPS = ((0.0, "Pa"), "pressure_drops")
+
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
     # UDK_FILE_PATH = "udk_file_path"

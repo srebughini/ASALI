@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>PressureDropsOutputPage</class>
+    <widget class="QWidget" name="PressureDropsOutputPage">
+        <layout class="QGridLayout" name="gridLayout">
+            <!-- Row 0 -->
+            <item row="0" column="0">
+                <widget class="QLabel" name="typeLabel">
+                    <property name="text">
+                        <string>Reactor type:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="0" column="1" colspan="2">
+                <widget class="QComboBox" name="typeComboBox" />
+            </item>
+
+            <!-- Row 1 -->
+            <item row="1" column="0">
+                <widget class="QLabel" name="lengthLabel">
+                    <property name="text">
+                        <string>Length:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="1">
+                <widget class="QLineEdit" name="lengthValue" >
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="1" column="2">
+                <widget class="QComboBox" name="lengthComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 2 -->
+            <item row="2" column="0">
+                <widget class="QLabel" name="velocityLabel">
+                    <property name="text">
+                        <string>Velocity:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="1">
+                <widget class="QLineEdit" name="velocityValue" >
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="2" column="2">
+                <widget class="QComboBox" name="velocityComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 3 -->
+            <item row="3" column="0">
+                <widget class="QLabel" name="dtLabel">
+                    <property name="text">
+                        <string>Tube diameter:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="1">
+                <widget class="QLineEdit" name="dtValue" >
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="3" column="2">
+                <widget class="QComboBox" name="dtComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 4 -->
+            <item row="4" column="0">
+                <widget class="QLabel" name="dpLabel">
+                    <property name="text">
+                        <string>Particle diameter:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="1">
+                <widget class="QLineEdit" name="dpValue" >
+                <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="4" column="2">
+                <widget class="QComboBox" name="dpComboBox">
+                </widget>
+            </item>
+
+
+            <!-- Row 5 -->
+            <item row="5" column="0">
+                <widget class="QLabel" name="wtLabel">
+                    <property name="text">
+                        <string>Wall thickness:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="5" column="1">
+                <widget class="QLineEdit" name="wtValue" >
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="5" column="2">
+                <widget class="QComboBox" name="wtComboBox">
+                </widget>
+            </item>
+
+            <!-- Row 6 -->
+            <item row="6" column="0">
+                <widget class="QLabel" name="cpsiLabel">
+                    <property name="text">
+                        <string>CPSI:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="6" column="1">
+                <widget class="QLineEdit" name="cpsiValue" >
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+
+            <!-- Row 7 -->
+            <item row="7" column="0" colspan="3">
+                <widget class="QLabel" name="outputLabel">
+                    <property name="text">
+                        <string>Pressure drops output</string>
+                    </property>
+                </widget>
+            </item>
+
+
+            <!-- Row 8 -->
+            <item row="8" column="0">
+                <widget class="QLabel" name="pressureDropsOutputLabel">
+                    <property name="text">
+                        <string>Pressure drops:</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="8" column="1">
+                <widget class="QLabel" name="pressureDropsValueLabel">
+                    <property name="text">
+                        <string>0.0</string>
+                    </property>
+                </widget>
+            </item>
+            <item row="8" column="2">
+                <widget class="QComboBox" name="pressureDropsOutputComboBox">
+                </widget>
+            </item>
+
+
+            <!-- Row 9 -->
+            <item row="9" column="0" colspan="3">
+                <layout class="QHBoxLayout" name="buttonLayout">
+                    <item>
+                        <widget class="QPushButton" name="backButton">
+                            <property name="text">
+                                <string>&#x2B9C; Back</string>
+                            </property>
+                            <property name="toolTip">
+                                <string>Go back to pressure drops input page</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="updateButton">
+                            <property name="text">
+                                <string>Update</string>
+                            </property>
+                            <property name="toolTip">
+                                <string>Update pressure drops</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+</ui>

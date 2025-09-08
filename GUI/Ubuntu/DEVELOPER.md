@@ -10,7 +10,7 @@ pyrcc5 -o resources_rc.py resources.qrc
 ```
 
 ### Function to be added
-* Pressure loss calculation - To be implemented
+* Pressure loss calculation - Backend to be implemented
 
 #### TODO for future
 This is a list of possibile updates
@@ -22,4 +22,4 @@ This is a list of possibile updates
 * Find a way to create a file for installation on linux
 * Improve the handling of the options using Enum in a smarter way
 * Move to pyqt6
-* Create chemkin to cantera page
+* Change logo of ASALIPY and JASALI with new color palette

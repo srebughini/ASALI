@@ -1,4 +1,3 @@
-
 from PyQt5 import uic
 
 from src.config.app import AppConfig
@@ -120,13 +119,13 @@ class EquilibriumOutputPage(BasicPage):
         self.read_data()
         self.data_store = equilibrium_calculator(self.data_store)
 
-        for widget_enum, key in {EquilibriumOutputPageComponents.TEMPERATURE: DataKeys.EQ_TEMPERATURE,
-                                 EquilibriumOutputPageComponents.PRESSURE: DataKeys.EQ_PRESSURE,
-                                 EquilibriumOutputPageComponents.MOLE_FRACTION: DataKeys.EQ_MOLE_FRACTION,
-                                 EquilibriumOutputPageComponents.MASS_FRACTION: DataKeys.EQ_MASS_FRACTION,
-                                 EquilibriumOutputPageComponents.NAMES: DataKeys.EQ_SPECIE_NAMES}.items():
+        for widget_enum in [EquilibriumOutputPageComponents.TEMPERATURE,
+                            EquilibriumOutputPageComponents.PRESSURE,
+                            EquilibriumOutputPageComponents.MOLE_FRACTION,
+                            EquilibriumOutputPageComponents.MASS_FRACTION,
+                            EquilibriumOutputPageComponents.NAMES]:
             widget = self.find_widget(widget_enum)
-            data = self.data_store.get_data(key)
+            data = self.data_store.get_data(widget.value.data_key)
             if isinstance(data, list):
                 widget.setText(LabelFormatter.list_to_string(data))
             elif isinstance(data, tuple):

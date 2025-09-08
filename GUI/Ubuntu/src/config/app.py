@@ -52,6 +52,12 @@ class AppConfig(Enum):
     CHEMKIN_THERMO_INPUT_PAGE = SimpleNamespace(page_name="ChemkinThermoInputPage",
                                                 path=os.path.join("gui", "ui", "input", "chemkin_thermo_page.ui"))
 
+    PRESSURE_DROPS_INPUT_PAGE = SimpleNamespace(page_name="PressureDropsInputPage",
+                                                path=os.path.join("gui", "ui", "input", "pressure_drops_page.ui"))
+
+    PRESSURE_DROPS_OUTPUT_PAGE = SimpleNamespace(page_name="PressureDropsOutputPage",
+                                                 path=os.path.join("gui", "ui", "output", "pressure_drops_page.ui"))
+
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
     CANTERA_FILE_SAVE = "Save Cantera Input File"

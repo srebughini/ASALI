@@ -13,9 +13,9 @@ from src.gui.enums.database_type import DatabaseType
 ud_handler = UnitDimensionHandler()
 
 
-class RegressionInputPageComponents(Enum):
+class PressureDropsInputPageComponents(Enum):
     """
-    Class to handle calculation input page components names
+    Class to handle pressure drops input page components names
     """
     GRID = SimpleNamespace(type=QGridLayout,
                            name="gridLayout")
@@ -32,19 +32,26 @@ class RegressionInputPageComponents(Enum):
                                   name="pressureComboBox",
                                   items=ud_handler.pressure_ud)
 
+    TEMPERATURE_UD = SimpleNamespace(type=QComboBox,
+                                     name="temperatureComboBox",
+                                     items=ud_handler.temperature_ud)
+
     NEXT_BUTTON = SimpleNamespace(type=QPushButton,
                                   name="nextButton")
 
     BACK_BUTTON = SimpleNamespace(type=QPushButton,
                                   name="backButton")
 
-    ADD_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                     name="addSpecieButton")
+    ADD_SPECIE_BUTTON = SimpleNamespace(type=QPushButton,
+                                        name="addSpecieButton")
 
-    REMOVE_GAS_BUTTON = SimpleNamespace(type=QPushButton,
-                                        name="removeSpecieButton")
+    REMOVE_SPECIE_BUTTON = SimpleNamespace(type=QPushButton,
+                                           name="removeSpecieButton")
 
-
+    TEMPERATURE_INPUT = SimpleNamespace(type=QLineEdit,
+                                        name="temperatureEditLine",
+                                        validator=EditLinesValidator.double_validator(0.0, 3000.0, 2),
+                                        align=Qt.AlignRight)
 
     PRESSURE_INPUT = SimpleNamespace(type=QLineEdit,
                                      name="pressureEditLine",

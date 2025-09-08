@@ -9,12 +9,14 @@ from src.gui.pages.input.chemkin_converter_page import ChemkinConverterInputPage
 from src.gui.pages.input.chemkin_thermo_page import ChemkinThermoInputPage
 from src.gui.pages.input.chemkin_transport_page import ChemkinTransportInputPage
 from src.gui.pages.input.equilibrium_page import EquilibriumInputPage
+from src.gui.pages.input.pressure_drops_page import PressureDropsInputPage
 from src.gui.pages.input.properties_page import PropertiesInputPage
 from src.gui.pages.input.main_page import MainInputPage
 from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 from src.gui.pages.input.regression_page import RegressionInputPage
 from src.gui.pages.input.vacuum_page import VacuumInputPage
 from src.gui.pages.output.equilibrium_page import EquilibriumOutputPage
+from src.gui.pages.output.pressure_drops_page import PressureDropsOutputPage
 from src.gui.pages.output.regression_page import RegressionOutputPage
 from src.gui.pages.output.properties_page import PropertiesOutputPage
 from src.gui.pages.output.vacuum_page import VacuumOutputPage
@@ -88,7 +90,11 @@ class MainWindow(QMainWindow):
             AppConfig.CHEMKIN_THERMO_INPUT_PAGE: ChemkinThermoInputPage(self.data_store,
                                                                         self.dialog_handler),
             AppConfig.CHEMKIN_TRANSPORT_INPUT_PAGE: ChemkinTransportInputPage(self.data_store,
-                                                                              self.dialog_handler)
+                                                                              self.dialog_handler),
+            AppConfig.PRESSURE_DROPS_INPUT_PAGE: PressureDropsInputPage(self.data_store,
+                                                                        self.dialog_handler),
+            AppConfig.PRESSURE_DROPS_OUTPUT_PAGE: PressureDropsOutputPage(self.data_store,
+                                                                          self.dialog_handler)
         }
 
         #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
