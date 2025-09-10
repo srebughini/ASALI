@@ -1,7 +1,9 @@
 from PyQt5 import uic
 
 from src.config.app import AppConfig
+from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
+from src.core.pressure_drops_calculator import pressure_drops_calculator
 from src.gui.components.output.pressure_drops_page import PressureDropsOutputPageComponents
 from src.gui.enums.reactor_type import ReactorType
 from src.gui.pages.basic_page import BasicPage
@@ -93,6 +95,7 @@ class PressureDropsOutputPage(BasicPage):
                             PressureDropsOutputPageComponents.TUBE_DIAMETER,
                             PressureDropsOutputPageComponents.PARTICLE_DIAMETER,
                             PressureDropsOutputPageComponents.CPSI,
+                            PressureDropsOutputPageComponents.VOID_FRACTION,
                             PressureDropsOutputPageComponents.WALL_THICKNESS]:
             widget = self.find_widget(widget_enum)
             widget.setValidator(widget_enum.value.validator)
@@ -127,6 +130,22 @@ class PressureDropsOutputPage(BasicPage):
         label = self.find_widget(PressureDropsOutputPageComponents.CPSI_LABEL)
         value = self.find_widget(PressureDropsOutputPageComponents.CPSI)
         if ReactorType.HONEYCOMB == reactor_type:
+            self.enable_widget(label)
+            self.enable_widget(value)
+        else:
+            self.disable_widget(label)
+            self.disable_widget(value)
+
+    def void_fraction_handler(self, reactor_type) -> None:
+        """
+        Disable/enable void fraction based on reactor selection
+        Returns
+        -------
+
+        """
+        label = self.find_widget(PressureDropsOutputPageComponents.VOID_FRACTION_LABEL)
+        value = self.find_widget(PressureDropsOutputPageComponents.VOID_FRACTION)
+        if ReactorType.PACKED_BED == reactor_type:
             self.enable_widget(label)
             self.enable_widget(value)
         else:
@@ -183,6 +202,7 @@ class PressureDropsOutputPage(BasicPage):
         self.tube_diameter_handler(reactor_type)
         self.particle_diameter_handler(reactor_type)
         self.cpsi_handler(reactor_type)
+        self.void_fraction_handler(reactor_type)
 
     def read_data(self) -> None:
         """
@@ -191,17 +211,33 @@ class PressureDropsOutputPage(BasicPage):
         -------
 
         """
-        pass
+        reactor_type = ReactorType(self.find_widget(PressureDropsOutputPageComponents.REACTOR_TYPE).currentText())
 
-    #     ud = self.find_widget(EquilibriumOutputPageComponents.TEMPERATURE_UD).currentText()
-    #     self.data_store.update_data(DataKeys.EQ_TEMPERATURE, (0.0, ud))
-    #
-    #     ud = self.find_widget(EquilibriumOutputPageComponents.PRESSURE_UD).currentText()
-    #     self.data_store.update_data(DataKeys.EQ_PRESSURE, (0.0, ud))
-    #
-    #     equilibrium_type = self.find_widget(EquilibriumOutputPageComponents.EQUILIBRIUM_TYPE).currentText()
-    #     self.data_store.update_data(DataKeys.EQUILIBRIUM_TYPE, EquilibriumType(equilibrium_type))
-    #
+        self.data_store.update_data(DataKeys.REACTOR_TYPE, reactor_type)
+
+        for key, (w_value, w_ud) in {DataKeys.DP_WALL_THICKNESS: (PressureDropsOutputPageComponents.WALL_THICKNESS,
+                                                                  PressureDropsOutputPageComponents.WALL_THICKNESS_UD),
+                                     DataKeys.DP_LENGTH: (PressureDropsOutputPageComponents.LENGTH,
+                                                          PressureDropsOutputPageComponents.LENGTH_UD),
+                                     DataKeys.DP_VELOCITY: (PressureDropsOutputPageComponents.VELOCITY,
+                                                            PressureDropsOutputPageComponents.VELOCITY_UD),
+                                     DataKeys.DP_TUBE_DIAMETER: (PressureDropsOutputPageComponents.TUBE_DIAMETER,
+                                                                 PressureDropsOutputPageComponents.TUBE_DIAMETER_UD),
+                                     DataKeys.DP_PARTICLE_DIAMETER: (
+                                             PressureDropsOutputPageComponents.PARTICLE_DIAMETER,
+                                             PressureDropsOutputPageComponents.PARTICLE_DIAMETER_UD)}.items():
+            value = self.find_widget(w_value).text()
+            ud = self.find_widget(w_ud).currentText()
+            self.data_store.update_data(key, (float(value), ud))
+
+        self.data_store.update_data(DataKeys.DP_CPSI,
+                                    int(self.find_widget(PressureDropsOutputPageComponents.CPSI).text()))
+        self.data_store.update_data(DataKeys.DP_VOID_FRACTION,
+                                    float(self.find_widget(PressureDropsOutputPageComponents.VOID_FRACTION).text()))
+
+        ud = self.find_widget(PressureDropsOutputPageComponents.PRESSURE_DROPS_UD).currentText()
+        self.data_store.update_data(DataKeys.PRESSURE_DROPS, (0.0, ud))
+
     def show_data(self) -> None:
         """
         Update shown data
@@ -209,22 +245,10 @@ class PressureDropsOutputPage(BasicPage):
         -------
 
         """
-        pass
-    #     self.read_data()
-    #     self.data_store = equilibrium_calculator(self.data_store)
-    #
-    #     for widget_enum, key in {EquilibriumOutputPageComponents.TEMPERATURE: DataKeys.EQ_TEMPERATURE,
-    #                              EquilibriumOutputPageComponents.PRESSURE: DataKeys.EQ_PRESSURE,
-    #                              EquilibriumOutputPageComponents.MOLE_FRACTION: DataKeys.EQ_MOLE_FRACTION,
-    #                              EquilibriumOutputPageComponents.MASS_FRACTION: DataKeys.EQ_MASS_FRACTION,
-    #                              EquilibriumOutputPageComponents.NAMES: DataKeys.EQ_SPECIE_NAMES}.items():
-    #         widget = self.find_widget(widget_enum)
-    #         data = self.data_store.get_data(key)
-    #         if isinstance(data, list):
-    #             widget.setText(LabelFormatter.list_to_string(data))
-    #         elif isinstance(data, tuple):
-    #             widget.setText(LabelFormatter.float_to_string(data[0]))
-    #         else:
-    #             widget.setText(LabelFormatter.float_to_string(data))
-    #
-    #     self.set_custom_dimensions_to_grid_layout(self.find_widget(EquilibriumOutputPageComponents.GRID))
+        self.read_data()
+        self.data_store = pressure_drops_calculator(self.data_store)
+
+        widget = self.find_widget(PressureDropsOutputPageComponents.PRESSURE_DROPS)
+        widget.setText(LabelFormatter.float_to_string(self.data_store.get_data(DataKeys.PRESSURE_DROPS)[0]))
+
+        self.set_custom_dimensions_to_grid_layout(self.find_widget(PressureDropsOutputPageComponents.GRID))

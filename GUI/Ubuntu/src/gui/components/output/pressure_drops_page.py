@@ -45,6 +45,9 @@ class PressureDropsOutputPageComponents(Enum):
     CPSI_LABEL = SimpleNamespace(type=QLabel,
                                  name="cpsiLabel")
 
+    VOID_FRACTION_LABEL = SimpleNamespace(type=QLabel,
+                                          name="epsiLabel")
+
     LENGTH_UD = SimpleNamespace(type=QComboBox,
                                 name="lengthComboBox",
                                 items=ud_handler.length_ud)
@@ -96,8 +99,13 @@ class PressureDropsOutputPageComponents(Enum):
 
     CPSI = SimpleNamespace(type=QLineEdit,
                            name="cpsiValue",
-                           validator=EditLinesValidator.double_validator(0.0, 1e09, 4),
+                           validator=EditLinesValidator.int_validator(0, 10000000),
                            align=Qt.AlignRight)
+
+    VOID_FRACTION = SimpleNamespace(type=QLineEdit,
+                                    name="epsiValue",
+                                    validator=EditLinesValidator.double_validator(0.0, 1.0, 5),
+                                    align=Qt.AlignRight)
 
     HEADLINE = SimpleNamespace(type=QLabel,
                                name="outputLabel",

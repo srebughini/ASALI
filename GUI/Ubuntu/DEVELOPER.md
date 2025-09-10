@@ -9,17 +9,14 @@ cd resources
 pyrcc5 -o resources_rc.py resources.qrc
 ```
 
-### Function to be added
-* Pressure loss calculation - Backend to be implemented
-
 #### TODO for future
 This is a list of possibile updates
+* Move to pyqt6
 * Create conda package for the gui
 * Create linux installation instructions
 * Create docker distribution
 * Create windows distribution
 * Find a better way to save the .exe file on github
 * Find a way to create a file for installation on linux
-* Improve the handling of the options using Enum in a smarter way
-* Move to pyqt6
 * Change logo of ASALIPY and JASALI with new color palette
+* Change website logo

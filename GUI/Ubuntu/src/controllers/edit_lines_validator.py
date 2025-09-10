@@ -1,5 +1,5 @@
 from PyQt5.QtCore import QLocale, QRegularExpression
-from PyQt5.QtGui import QDoubleValidator, QRegularExpressionValidator
+from PyQt5.QtGui import QDoubleValidator, QRegularExpressionValidator, QIntValidator
 
 
 class EditLinesValidator:
@@ -37,3 +37,20 @@ class EditLinesValidator:
 
         """
         return QRegularExpressionValidator(QRegularExpression("^[a-zA-Z]*$"))
+
+    @staticmethod
+    def int_validator(min_value, max_value):
+        """
+        Edit line int validator
+        Parameters
+        ----------
+        min_value: int
+            Min value
+        max_value: int
+            Max value
+
+        Returns
+        -------
+        validator: QDoubleValidator
+        """
+        return QIntValidator(min_value, max_value)

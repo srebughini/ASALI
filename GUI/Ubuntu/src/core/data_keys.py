@@ -4,6 +4,7 @@ from src.config.app import AppConfig
 from src.gui.enums.composition_type import CompositionType
 from src.gui.enums.equilibrium_type import EquilibriumType
 from src.gui.enums.properties import Properties
+from src.gui.enums.reactor_type import ReactorType
 from src.gui.enums.regression_method import RegressionMethod
 
 
@@ -65,6 +66,14 @@ class DataKeys(Enum):
     NE = (-1, "number_of_gas_elements")
 
     PRESSURE_DROPS = ((0.0, "Pa"), "pressure_drops")
+    REACTOR_TYPE = (ReactorType.TUBULAR, "reactor_type")
+    DP_LENGTH = ((0.0, "m"), "pressure_drops_length")
+    DP_VELOCITY = ((0.0, "m/s"), "pressure_drops_velocity")
+    DP_VOID_FRACTION = (0.42, "pressure_drops_void_fraction")
+    DP_CPSI = (400, "pressure_drops_cpsi")
+    DP_TUBE_DIAMETER = ((0.0, "m"), "pressure_drops_tube_diameter")
+    DP_WALL_THICKNESS = ((0.0, "m"), "pressure_drops_wall_thickness")
+    DP_PARTICLE_DIAMETER = ((0.0, "m"), "pressure_drops_particle_diameter")
 
 
     # IS_NEW_CHEMISTRY = "is_the_chemistry_file_new"
