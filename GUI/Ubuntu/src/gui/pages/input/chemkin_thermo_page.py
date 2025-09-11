@@ -1,4 +1,3 @@
-from PyQt5 import uic
 from PySide6.QtWidgets import QLabel, QLineEdit
 
 from src.config.app import AppConfig

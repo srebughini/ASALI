@@ -1,12 +1,11 @@
-name: asali
+name: asaligui
 channels:
   - conda-forge
   - asalicode
 dependencies:
-  - python >=3.7
+  - python >=3.7,<=3.12
   - asali
   - beerpy
   - sympy
-  - pyqt
-  - pandas
-  - xlsxwriter
+  - pyside6
+  - qtawesome

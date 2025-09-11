@@ -1,4 +1,3 @@
-from PyQt5 import uic
 from PySide6.QtCore import Signal
 
 from src.config.app import AppConfig

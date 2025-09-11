@@ -1,5 +1,3 @@
-from PyQt5 import uic
-
 from src.config.app import AppConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys

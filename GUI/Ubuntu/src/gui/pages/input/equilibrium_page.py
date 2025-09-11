@@ -1,6 +1,5 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QLineEdit, QComboBox
-from PyQt5 import uic
 
 from src.config.app import AppConfig
 from src.config.input_composition import InputCompositionConfig

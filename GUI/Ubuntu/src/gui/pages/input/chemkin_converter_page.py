@@ -1,4 +1,3 @@
-from PyQt5 import uic
 from PySide6.QtWidgets import QLabel
 from asali.utils.cantera_file_converter import CanteraFileConverter
 
