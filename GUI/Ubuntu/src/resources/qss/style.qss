@@ -13,6 +13,7 @@ Qlabel.logo {
 /* Italic Label Styling */
 QLabel.italic {
     font-style: italic;
+    margin: 5px;
 }
 
 /* Italic Label Styling */

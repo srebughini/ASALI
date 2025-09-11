@@ -1,6 +1,5 @@
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QLineEdit, QComboBox
-from PyQt5 import uic
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QLineEdit, QComboBox
 
 from src.config.app import AppConfig
 from src.config.input_composition import InputCompositionConfig
@@ -24,7 +23,7 @@ class RegressionInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.REGRESSION_INPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.REGRESSION_INPUT_PAGE.value.path)
 
         self.update_buttons()
         self.update_combo_boxes()
@@ -59,7 +58,7 @@ class RegressionInputPage(BasicPage):
         next_button.clicked.connect(self.calculate)
 
         back_button = self.find_widget(RegressionInputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.MAIN_INPUT_PAGE))
 
         add_button = self.find_widget(RegressionInputPageComponents.ADD_GAS_BUTTON)
         add_button.clicked.connect(
@@ -82,6 +81,7 @@ class RegressionInputPage(BasicPage):
         database_box.currentIndexChanged.connect(self.select_database_and_clean_input)
 
         for widget_enum in [RegressionInputPageComponents.PRESSURE_UD,
+                            RegressionInputPageComponents.TEMPERATURE_UD,
                             RegressionInputPageComponents.COMPOSITION_SELECTION]:
             widget = self.find_widget(widget_enum)
             widget.addItems(widget_enum.value.items)
@@ -93,7 +93,9 @@ class RegressionInputPage(BasicPage):
         -------
 
         """
-        for widget_enum in [RegressionInputPageComponents.PRESSURE_INPUT]:
+        for widget_enum in [RegressionInputPageComponents.PRESSURE_INPUT,
+                            RegressionInputPageComponents.MAX_TEMPERATURE_INPUT,
+                            RegressionInputPageComponents.MIN_TEMPERATURE_INPUT]:
             widget = self.find_widget(widget_enum)
             widget.setValidator(widget_enum.value.validator)
             widget.setAlignment(widget_enum.value.align)
@@ -147,7 +149,7 @@ class RegressionInputPage(BasicPage):
             self.find_widget(RegressionInputPageComponents.COMPOSITION_SELECTION).currentText())
         self.data_store.update_data(DataKeys.GAS_COMPOSITION, (value, composition_type))
 
-    def calculate(self) -> pyqtSignal:
+    def calculate(self) -> Signal:
         """
         Calculate thermodynamic and transport properties and open the output window
         Returns
@@ -155,4 +157,4 @@ class RegressionInputPage(BasicPage):
 
         """
         self.read_data()
-        return self.page_switched.emit(AppConfig.REGRESSION_OUTPUT_PAGE)
+        return self.switch_to_page.emit(AppConfig.REGRESSION_OUTPUT_PAGE)

@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QSizePolicy, \
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QDialog, QPushButton, QVBoxLayout, QMessageBox, QLabel, QGridLayout, QSizePolicy, \
     QFileDialog
 
 from src.config.contact import ContactConfig

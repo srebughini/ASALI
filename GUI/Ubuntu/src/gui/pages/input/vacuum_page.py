@@ -1,5 +1,5 @@
-from PyQt5.QtCore import pyqtSignal
 from PyQt5 import uic
+from PySide6.QtCore import Signal
 
 from src.config.app import AppConfig
 from src.core.species_names import gas_species_names
@@ -22,7 +22,7 @@ class VacuumInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.VACUUM_INPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.VACUUM_INPUT_PAGE.value.path)
 
         self.update_buttons()
         self.update_combo_boxes()
@@ -57,7 +57,7 @@ class VacuumInputPage(BasicPage):
         next_button.clicked.connect(self.calculate)
 
         back_button = self.find_widget(VacuumInputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.MAIN_INPUT_PAGE))
 
     def update_combo_boxes(self) -> None:
         """
@@ -140,7 +140,7 @@ class VacuumInputPage(BasicPage):
         ud = self.find_widget(VacuumInputPageComponents.GEOMETRY_UD).currentText()
         self.data_store.update_data(DataKeys.VACUUM_LENGTH, (value, ud))
 
-    def calculate(self) -> pyqtSignal:
+    def calculate(self) -> Signal:
         """
         Calculate vacuum properties and open the output window
         Returns
@@ -148,4 +148,4 @@ class VacuumInputPage(BasicPage):
 
         """
         self.read_data()
-        return self.page_switched.emit(AppConfig.VACUUM_OUTPUT_PAGE)
+        return self.switch_to_page.emit(AppConfig.VACUUM_OUTPUT_PAGE)

@@ -116,3 +116,37 @@ class LabelFormatter:
         if len(new_str) < len(original_str):
             print("Error in length str", original_str)
         return new_str
+
+    @staticmethod
+    def wrap_string(original_str, max_chars_per_line) -> str:
+        """
+        Wrap a string with a max length for each line
+        Parameters
+        ----------
+        original_str: str
+            Original string
+        max_chars_per_line: int
+            Max number of characters per line
+
+        Returns
+        -------
+        new_str: str
+            New string of fixed length
+        """
+        new_str_as_list = list()
+        original_str_as_list = original_str.split(" ")
+        current_line = ""
+        for word in original_str_as_list:
+            if len(word) > 0:
+                if len(current_line + " " + word) <= max_chars_per_line:
+                    if current_line:
+                        current_line += " "
+                    current_line += word
+                else:
+                    new_str_as_list.append(current_line)
+                    current_line = word
+
+        if current_line:
+            new_str_as_list.append(current_line)
+
+        return "\n".join(new_str_as_list)

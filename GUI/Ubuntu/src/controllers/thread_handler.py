@@ -1,6 +1,6 @@
 import multiprocessing
 
-from PyQt5.QtCore import QThread, pyqtSignal
+from PySide6.QtCore import QThread, pyqtSignal
 
 
 class ThreadHandler(QThread):

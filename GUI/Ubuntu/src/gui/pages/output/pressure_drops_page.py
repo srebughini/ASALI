@@ -1,5 +1,3 @@
-from PyQt5 import uic
-
 from src.config.app import AppConfig
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys
@@ -22,7 +20,7 @@ class PressureDropsOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.PRESSURE_DROPS_OUTPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.PRESSURE_DROPS_OUTPUT_PAGE.value.path)
         self.update_head_lines()
         self.update_combo_boxes()
         self.update_buttons()
@@ -66,7 +64,7 @@ class PressureDropsOutputPage(BasicPage):
 
         """
         back_button = self.find_widget(PressureDropsOutputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.PRESSURE_DROPS_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.PRESSURE_DROPS_INPUT_PAGE))
 
         calculate_button = self.find_widget(PressureDropsOutputPageComponents.UPDATE_BUTTON)
         calculate_button.clicked.connect(self.show_data)

@@ -1,9 +1,9 @@
 from enum import Enum
 from types import SimpleNamespace
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QLineEdit, QComboBox, QPushButton, QGridLayout, QVBoxLayout
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QDoubleValidator
+from PySide6.QtWidgets import QLineEdit, QComboBox, QPushButton, QGridLayout, QVBoxLayout
 
 from src.core.unit_dimension_handler import UnitDimensionHandler
 from src.gui.enums.properties import Properties

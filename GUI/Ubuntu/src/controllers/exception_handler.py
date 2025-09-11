@@ -1,7 +1,7 @@
 import traceback
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QLabel, QPushButton, QMessageBox, QGridLayout
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QDialog, QLabel, QPushButton, QMessageBox, QGridLayout
 
 from src.controllers.label_formatter import LabelFormatter
 

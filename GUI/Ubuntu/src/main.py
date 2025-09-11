@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtCore import QFile
-from PyQt5.QtWidgets import QApplication
+from PySide6.QtCore import QFile
+from PySide6.QtWidgets import QApplication
 
 from src.config.app import AppConfig
 from src.resources import resources_rc

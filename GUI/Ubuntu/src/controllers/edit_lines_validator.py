@@ -1,5 +1,5 @@
-from PyQt5.QtCore import QLocale, QRegularExpression
-from PyQt5.QtGui import QDoubleValidator, QRegularExpressionValidator, QIntValidator
+from PySide6.QtCore import QLocale, QRegularExpression
+from PySide6.QtGui import QDoubleValidator, QRegularExpressionValidator, QIntValidator
 
 
 class EditLinesValidator:

@@ -1,5 +1,4 @@
-from PyQt5 import uic
-from PyQt5.QtWidgets import QSizePolicy
+from PySide6.QtWidgets import QSizePolicy
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -28,7 +27,7 @@ class RegressionOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.REGRESSION_OUTPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.REGRESSION_OUTPUT_PAGE.value.path)
 
         # Initialize Matplotlib figure
         self.figure = Figure(
@@ -43,6 +42,7 @@ class RegressionOutputPage(BasicPage):
         self.plotLayout.setContentsMargins(*RegressionPlotConfig.MARGIN.value)
 
         self.update_combo_boxes()
+        self.update_edit_lines()
         self.update_buttons()
         self.updateGeometry()
 
@@ -56,6 +56,19 @@ class RegressionOutputPage(BasicPage):
         self.set_custom_dimensions_to_grid_layout(self.find_widget(RegressionOutputPageComponents.GRID))
         self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.PROPERTIES_OUTPUT_PAGE)
         self.run_regression()
+
+    def update_edit_lines(self) -> None:
+        """
+        Update edit lines
+        Returns
+        -------
+
+        """
+        for widget_enum in [RegressionOutputPageComponents.MAX_TEMPERATURE_INPUT,
+                            RegressionOutputPageComponents.MIN_TEMPERATURE_INPUT]:
+            widget = self.find_widget(widget_enum)
+            widget.setValidator(widget_enum.value.validator)
+            widget.setAlignment(widget_enum.value.align)
 
     def update_combo_boxes(self) -> None:
         """
@@ -84,7 +97,7 @@ class RegressionOutputPage(BasicPage):
 
         """
         back_button = self.find_widget(RegressionOutputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.REGRESSION_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.REGRESSION_INPUT_PAGE))
 
         update_button = self.find_widget(RegressionOutputPageComponents.UPDATE_BUTTON)
         update_button.clicked.connect(self.run_regression)

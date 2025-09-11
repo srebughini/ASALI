@@ -1,9 +1,9 @@
 from enum import Enum
 from types import SimpleNamespace
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIntValidator
-from PyQt5.QtWidgets import QComboBox, QPushButton, QLineEdit
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
+from PySide6.QtWidgets import QComboBox, QPushButton, QLineEdit, QVBoxLayout
 
 from src.controllers.edit_lines_validator import EditLinesValidator
 from src.gui.enums.chemkin_editor_action import ChemkinEditorAction
@@ -13,6 +13,8 @@ class ChemkinTransportInputPageComponents(Enum):
     """
     Class to handle chemistry input page components names
     """
+    VBOX = SimpleNamespace(type=QVBoxLayout,
+                           name="verticalLayout")
     ACTION = SimpleNamespace(type=QComboBox,
                              name="actionComboBox",
                              items=[e.value for e in ChemkinEditorAction])

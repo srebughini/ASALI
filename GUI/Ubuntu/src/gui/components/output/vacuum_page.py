@@ -1,8 +1,8 @@
 from enum import Enum
 from types import SimpleNamespace
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QGridLayout, QComboBox, QLabel, QPushButton
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QGridLayout, QComboBox, QLabel, QPushButton
 
 from src.controllers.label_formatter import LabelFormatter
 from src.core.data_keys import DataKeys

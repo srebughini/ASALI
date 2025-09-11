@@ -1,5 +1,4 @@
-from PyQt5.QtCore import pyqtSignal
-from PyQt5 import uic
+from PySide6.QtCore import Signal
 
 from src.config.icon import IconConfig
 from src.config.app import AppConfig
@@ -22,7 +21,7 @@ class MainInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.MAIN_INPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.MAIN_INPUT_PAGE.value.path)
         self.update_buttons()
         self.set_custom_dimensions_to_grid_layout(self.find_widget(MainInputPageComponents.GRID))
 
@@ -59,7 +58,7 @@ class MainInputPage(BasicPage):
             widget.clicked.connect(
                 lambda checked, button_enum=widget_enum: self.open_selected_page(button_enum))
 
-    def open_selected_page(self, button_enum) -> pyqtSignal:
+    def open_selected_page(self, button_enum) -> Signal:
         """
         Open the selected page
         Parameters
@@ -73,19 +72,19 @@ class MainInputPage(BasicPage):
             Signal with the next page name
         """
         if MainInputPageComponents.PROPERTIES_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.PROPERTIES_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.PROPERTIES_INPUT_PAGE)
 
         if MainInputPageComponents.VACUUM_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.VACUUM_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.VACUUM_INPUT_PAGE)
 
         if MainInputPageComponents.REGRESSION_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.REGRESSION_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.REGRESSION_INPUT_PAGE)
 
         if MainInputPageComponents.EQUILIBRIUM_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE)
 
         if MainInputPageComponents.CHEMKIN_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE)
 
         if MainInputPageComponents.PRESSURE_DROPS_BUTTON == button_enum:
-            return self.page_switched.emit(AppConfig.PRESSURE_DROPS_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.PRESSURE_DROPS_INPUT_PAGE)

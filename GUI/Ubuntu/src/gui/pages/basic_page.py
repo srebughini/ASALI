@@ -1,9 +1,10 @@
 from abc import abstractmethod
 from enum import Enum
 
-from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QDoubleValidator
-from PyQt5.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect
+import beerpy
+from PySide6.QtCore import Signal, QFile, Qt
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect, QSizePolicy
 
 from src.config.input_composition import InputCompositionConfig
 from src.controllers.cantera_file_controller import CanteraFileController
@@ -17,7 +18,7 @@ from src.gui.pages.dialog_pages_handler import DialogPagesHandler
 
 
 class BasicPage(QWidget):
-    page_switched = pyqtSignal(Enum)  # Signal to switch pages
+    switch_to_page = Signal(Enum)  # Signal to switch pages
 
     def __init__(self, data_store, dialog_handler):
         """
@@ -30,7 +31,6 @@ class BasicPage(QWidget):
             Class to handle all dialog pages
         """
         super().__init__()
-        # Load the UI from the .ui file
         self.data_store = data_store
         self.dialog_handler = dialog_handler
         self.ud_handler = UnitDimensionHandler()
@@ -61,10 +61,16 @@ class BasicPage(QWidget):
         widget: QWidget
             Widget disabled
         """
-        blur_effect = QGraphicsBlurEffect()
-        blur_effect.setBlurRadius(blur_level)  # Adjust radius as needed
+        # Create and configure blur effect
+        blur_effect = QGraphicsBlurEffect(widget)
+        blur_effect.setBlurRadius(blur_level)
+
+        # Apply effect
         widget.setGraphicsEffect(blur_effect)
         widget.setEnabled(False)
+
+        # Force repaint to ensure blur is visible
+        widget.update()
         return widget
 
     @staticmethod
@@ -81,8 +87,12 @@ class BasicPage(QWidget):
         widget: QWidget
             Widget disabled
         """
+        # Remove effect
         widget.setGraphicsEffect(None)
         widget.setEnabled(True)
+
+        # Force repaint
+        widget.update()
         return widget
 
     @staticmethod
@@ -102,6 +112,8 @@ class BasicPage(QWidget):
         grid.setVerticalSpacing(AppConfig.GRID_VERTICAL_SPACING.value)
         grid.setHorizontalSpacing(AppConfig.GRID_HORIZONTAL_SPACING.value)
 
+        grid.setContentsMargins(*AppConfig.GRID_MARGIN.value)
+
         for col in range(grid.columnCount()):
             grid.setColumnMinimumWidth(col, AppConfig.MINIMUM_COLUMN_WIDTH.value)  # Set minimum width for columns
             grid.setColumnStretch(col, 1)  # or any desired stretch factor
@@ -110,6 +122,26 @@ class BasicPage(QWidget):
             grid.setRowStretch(row, 1)  # or any desired stretch factor
 
         grid.update()
+
+    @staticmethod
+    def set_custom_dimensions_to_vertical_layout(vbox) -> None:
+        """
+        Set custom dimensions to a vertical layout.
+
+        Parameters
+        ----------
+        vbox: QVBoxLayout
+            Vertical layout to be resized
+        """
+        # Set margins (left, top, right, bottom)
+        vbox.setContentsMargins(*AppConfig.VBOX_MARGIN.value)
+
+        # Set stretch factor for each widget in the layout
+        for i in range(vbox.count()):
+            vbox.setStretch(i, 1)  # You can adjust the stretch factor if needed
+
+        # Force layout update
+        vbox.update()
 
     @staticmethod
     def clear_grid_layout(grid) -> None:
@@ -143,6 +175,55 @@ class BasicPage(QWidget):
                 if widget:
                     widget.deleteLater()
 
+    def load_ui(self, ui_file_path) -> None:
+        """
+        Load the .ui file and set it as the layout of this widget.
+        Parameters
+        ----------
+        ui_file_path: str | os.path
+            Path of the .ui file
+
+        Returns
+        -------
+
+        """
+        """Load the .ui file and set it as the layout of this widget."""
+        loader = QUiLoader()
+        ui_file = QFile(ui_file_path)
+        ui_file.open(QFile.ReadOnly)
+        loaded_widget = loader.load(ui_file, self)
+        ui_file.close()
+
+        # Set the layout or components from the loaded .ui
+        layout = loaded_widget.layout()
+        self.setLayout(layout)
+
+    def update_beer_label(self) -> None:
+        """
+        Update the beer quote label
+        Returns
+        -------
+
+        """
+        q = beerpy.get_random_quote(language="eng")
+        label = self.findChild(QLabel, 'beerQuoteLabel')
+        quote = LabelFormatter.wrap_string(q["quote"], AppConfig.BEER_QUOTE_MAX_CHARACTERS.value)
+        label.setText(f'{quote}\n[{q["author"]}]')
+        label.setAlignment(Qt.AlignCenter)
+        label.setWordWrap(True)
+        label.setProperty("class", "italic")
+
+    def update_logo(self) -> None:
+        """
+        Update the logo
+        Returns
+        -------
+
+        """
+        label = self.findChild(QLabel, 'logoLabel')
+        label.setAlignment(Qt.AlignCenter)
+        label.setProperty("class", "logo")
+
     def set_formatted_text_to_label(self, label_as_enum, text) -> None:
         """
         Set formatted text to label
@@ -170,7 +251,7 @@ class BasicPage(QWidget):
         else:
             raise Exception(f"Unknown type to be formatted: {type(text)}")
 
-    def find_widget(self, widget_as_enum) -> QWidget:
+    def find_widget(self, widget_as_enum) -> QWidget | QComboBox | QLabel | QLineEdit | QGridLayout:
         """
         Find and select the widget from a layout
         Parameters
@@ -180,7 +261,7 @@ class BasicPage(QWidget):
 
         Returns
         -------
-        widget: QWidget
+        widget: QWidget | QComboBox | QLabel | QLineEdit | QGridLayout
             Desired widget
         """
         widget_name = widget_as_enum.value.name
@@ -262,7 +343,6 @@ class BasicPage(QWidget):
 
             self.set_custom_dimensions_to_grid_layout(grid)
             self.data_store.update_data(DataKeys.GAS_NS, idx - 1)
-
 
     def select_database(self, database_enum) -> None:
         """

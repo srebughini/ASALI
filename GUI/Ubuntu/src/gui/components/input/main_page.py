@@ -1,7 +1,7 @@
 from enum import Enum
 from types import SimpleNamespace
 
-from PyQt5.QtWidgets import QPushButton, QGridLayout
+from PySide6.QtWidgets import QPushButton, QGridLayout
 
 
 class MainInputPageComponents(Enum):

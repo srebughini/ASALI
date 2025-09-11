@@ -22,7 +22,7 @@ class EquilibriumOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.EQUILIBRIUM_OUTPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.EQUILIBRIUM_OUTPUT_PAGE.value.path)
         self.update_head_lines()
         self.update_combo_boxes()
         self.update_buttons()
@@ -59,7 +59,7 @@ class EquilibriumOutputPage(BasicPage):
 
         """
         back_button = self.find_widget(EquilibriumOutputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.EQUILIBRIUM_INPUT_PAGE))
 
         calculate_button = self.find_widget(EquilibriumOutputPageComponents.UPDATE_BUTTON)
         calculate_button.clicked.connect(self.show_data)
@@ -125,7 +125,7 @@ class EquilibriumOutputPage(BasicPage):
                             EquilibriumOutputPageComponents.MASS_FRACTION,
                             EquilibriumOutputPageComponents.NAMES]:
             widget = self.find_widget(widget_enum)
-            data = self.data_store.get_data(widget.value.data_key)
+            data = self.data_store.get_data(widget_enum.value.data_key)
             if isinstance(data, list):
                 widget.setText(LabelFormatter.list_to_string(data))
             elif isinstance(data, tuple):

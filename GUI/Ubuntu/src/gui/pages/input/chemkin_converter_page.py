@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QLabel
+from PySide6.QtWidgets import QLabel
 from asali.utils.cantera_file_converter import CanteraFileConverter
 
 from src.config.app import AppConfig
@@ -22,7 +22,7 @@ class ChemkinConverterInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE.value.path)
         self.update_combo_boxes()
         self.update_buttons()
 
@@ -34,6 +34,8 @@ class ChemkinConverterInputPage(BasicPage):
 
         """
         self.data_store.update_data(DataKeys.LAST_ACTIVE_WINDOW, AppConfig.MAIN_INPUT_PAGE)
+        self.set_custom_dimensions_to_vertical_layout(self.find_widget(ChemkinConverterInputPageComponents.VBOX))
+
 
         action_box = self.find_widget(ChemkinConverterInputPageComponents.ACTION)
         action_box.setCurrentText(ChemkinEditorAction.CONVERTER.value)
@@ -87,7 +89,7 @@ class ChemkinConverterInputPage(BasicPage):
 
         """
         back_button = self.find_widget(ChemkinConverterInputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.MAIN_INPUT_PAGE))
 
         calculate_button = self.find_widget(ChemkinConverterInputPageComponents.RUN_BUTTON)
         calculate_button.clicked.connect(self.convert)
@@ -115,10 +117,10 @@ class ChemkinConverterInputPage(BasicPage):
         selected_action = ChemkinEditorAction(action_combo_box.currentText())
 
         if ChemkinEditorAction.TRANSPORT == selected_action:
-            return self.page_switched.emit(AppConfig.CHEMKIN_TRANSPORT_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.CHEMKIN_TRANSPORT_INPUT_PAGE)
 
         if ChemkinEditorAction.THERMO == selected_action:
-            return self.page_switched.emit(AppConfig.CHEMKIN_THERMO_INPUT_PAGE)
+            return self.switch_to_page.emit(AppConfig.CHEMKIN_THERMO_INPUT_PAGE)
 
     def load_thermo_file(self) -> None:
         """

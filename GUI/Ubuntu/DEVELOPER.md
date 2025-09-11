@@ -6,12 +6,11 @@ Here a list of important commands for Asali developers:
 To convert from qrc to resources_rc.py:
 ```bash
 cd resources
-pyrcc5 -o resources_rc.py resources.qrc
+pyside6-rcc -o resources_rc.py resources.qrc
 ```
 
 #### TODO for future
 This is a list of possibile updates
-* Move to pyqt6
 * Create conda package for the gui
 * Create linux installation instructions
 * Create docker distribution

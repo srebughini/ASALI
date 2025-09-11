@@ -1,5 +1,5 @@
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QLineEdit, QComboBox
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QLineEdit, QComboBox
 from PyQt5 import uic
 
 from src.config.app import AppConfig
@@ -24,7 +24,7 @@ class PressureDropsInputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.PRESSURE_DROPS_INPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.PRESSURE_DROPS_INPUT_PAGE.value.path)
 
         self.update_buttons()
         self.update_combo_boxes()
@@ -59,7 +59,7 @@ class PressureDropsInputPage(BasicPage):
         next_button.clicked.connect(self.calculate)
 
         back_button = self.find_widget(PressureDropsInputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.MAIN_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.MAIN_INPUT_PAGE))
 
         add_button = self.find_widget(PressureDropsInputPageComponents.ADD_SPECIE_BUTTON)
         add_button.clicked.connect(
@@ -154,7 +154,7 @@ class PressureDropsInputPage(BasicPage):
             self.find_widget(PressureDropsInputPageComponents.COMPOSITION_SELECTION).currentText())
         self.data_store.update_data(DataKeys.GAS_COMPOSITION, (value, composition_type))
 
-    def calculate(self) -> pyqtSignal:
+    def calculate(self) -> Signal:
         """
         Calculate thermodynamic and transport properties and open the output window
         Returns
@@ -162,4 +162,4 @@ class PressureDropsInputPage(BasicPage):
 
         """
         self.read_data()
-        return self.page_switched.emit(AppConfig.PRESSURE_DROPS_OUTPUT_PAGE)
+        return self.switch_to_page.emit(AppConfig.PRESSURE_DROPS_OUTPUT_PAGE)

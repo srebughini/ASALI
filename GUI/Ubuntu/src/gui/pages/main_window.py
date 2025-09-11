@@ -1,10 +1,9 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QIcon, QAction
+from PySide6.QtWidgets import QMainWindow, QToolBar
 
 from src.core.data_store import DataStore
 from src.config.app import AppConfig
-from src.gui.pages.base_layout import BaseLayout
 from src.gui.pages.input.chemkin_converter_page import ChemkinConverterInputPage
 from src.gui.pages.input.chemkin_thermo_page import ChemkinThermoInputPage
 from src.gui.pages.input.chemkin_transport_page import ChemkinTransportInputPage
@@ -59,12 +58,6 @@ class MainWindow(QMainWindow):
         self.create_actions()
         self.connect_actions()
 
-        # Create the base layout widget
-        self.base_layout = BaseLayout()
-
-        # Set the base layout widget as the central widget of the main window
-        self.setCentralWidget(self.base_layout)
-
         # Define available pages
         self.pages = {
             AppConfig.MAIN_INPUT_PAGE: MainInputPage(self.data_store,
@@ -97,34 +90,11 @@ class MainWindow(QMainWindow):
                                                                           self.dialog_handler)
         }
 
-        #     ChemkinToCanteraPageConfig.NAME.value: ChemkinToCanteraPage(self.data_store,
-        #                                                                 self.dialog_handler),
-        #     UserDefinedKineticPageConfig.NAME.value: UserDefinedKineticPage(self.data_store,
-        #                                                                     self.dialog_handler),
-        #     EquilibriumOutputPageConfig.NAME.value: EquilibriumOutputPage(self.data_store,
-        #                                                                   self.dialog_handler),
-        #     ReactorPlotAndSaveOutputPageConfig.NAME.value: ReactorPlotAndSaveOutputPage(self.data_store,
-        #                                                                                 self.dialog_handler),
-        #     BatchInputPageConfig.NAME.value: BatchInputPage(self.data_store,
-        #                                                     self.dialog_handler,
-        #                                                     self.run_bar),
-        #     CstrInputPageConfig.NAME.value: CstrInputPage(self.data_store,
-        #                                                   self.dialog_handler,
-        #                                                   self.run_bar),
-        #     Ph1dInputPageConfig.NAME.value: Ph1dInputPage(self.data_store,
-        #                                                   self.dialog_handler,
-        #                                                   self.run_bar),
-        #     Het1dInputPageConfig.NAME.value: Het1dInputPage(self.data_store,
-        #                                                     self.dialog_handler,
-        #                                                     self.run_bar),
-        #     RegressionOutputPageConfig.NAME.value: RegressionOutputPage(self.data_store,
-        #                                                                 self.dialog_handler),
-        #     RegressionPlotOutputPageConfig.NAME.value: RegressionPlotOutputPage(self.data_store,
-        #                                                                         self.dialog_handler)
-        # }
+        #for page_enum, page_as_widget in self.pages.items():
+        #    self.base_layout.add_page(page_as_widget, page_enum.value.page_name)
 
-        for page_enum, page_as_widget in self.pages.items():
-            self.base_layout.add_page(page_as_widget, page_enum.value.page_name)
+        for _, page_as_widget in self.pages.items():
+            page_as_widget.switch_to_page.connect(self.switch_page)
 
         # Show the Starting Page
         self.switch_page(AppConfig.MAIN_INPUT_PAGE)
@@ -168,26 +138,54 @@ class MainWindow(QMainWindow):
 
     def switch_page(self, page_config) -> None:
         """
-        Switches the content of the base layout to the specified page.
-
+        Update the central widget of the main window
         Parameters
         ----------
-        page_config : Enum
-            Page name (from AppConfig)
+        page_config: Enum
+            Page
+
+        Returns
+        -------
+
         """
-        if page_config not in self.pages:
-            raise ValueError(f"{page_config.value.layout_name} not found!")
+        if page_config in self.pages.keys():
+            # Remove the current central widget if it exists
+            current_widget = self.centralWidget()
+            if current_widget is not None:
+                current_widget.setParent(None)  # Safely delete the existing widget
 
-        new_page = self.pages[page_config]
+            # Set the new page as the central widget
+            new_page = self.pages[page_config]
+            new_page.update_page_after_switch()
+            new_page.update_beer_label()
+            new_page.update_logo()
+            QTimer.singleShot(0, new_page.adjustSize)
+            self.setCentralWidget(new_page)
+            self.adjustSize()
 
-        self.base_layout.switch_page(page_config.value.page_name, self.current_page_name)
 
-        new_page.page_switched.connect(self.switch_page)
-
-        # Update current tracker
-        self.current_page_name = page_config.value.page_name
-
-        self.adjustSize()
+    # def switch_page(self, page_config) -> None:
+    #     """
+    #     Switches the content of the base layout to the specified page.
+    #
+    #     Parameters
+    #     ----------
+    #     page_config : Enum
+    #         Page name (from AppConfig)
+    #     """
+    #     if page_config not in self.pages:
+    #         raise ValueError(f"{page_config.value.layout_name} not found!")
+    #
+    #     new_page = self.pages[page_config]
+    #
+    #     self.base_layout.switch_page(page_config.value.page_name, self.current_page_name)
+    #
+    #     new_page.page_switched.connect(self.switch_page)
+    #
+    #     # Update current tracker
+    #     self.current_page_name = page_config.value.page_name
+    #
+    #     self.adjustSize()
 
     def closeEvent(self, event) -> None:
         """

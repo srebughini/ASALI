@@ -1,7 +1,7 @@
 from enum import Enum
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIntValidator
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QIntValidator
 
 from src.controllers.edit_lines_validator import EditLinesValidator
 

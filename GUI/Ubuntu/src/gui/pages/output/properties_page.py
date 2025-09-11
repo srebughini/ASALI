@@ -1,5 +1,3 @@
-from PyQt5 import uic
-
 from src.config.app import AppConfig
 from src.core.data_keys import DataKeys
 from src.core.properties_calculator import properties_calculator
@@ -20,7 +18,7 @@ class PropertiesOutputPage(BasicPage):
         """
         super().__init__(data_store, dialog_handler)
         # Load the UI from the .ui file
-        uic.loadUi(AppConfig.PROPERTIES_OUTPUT_PAGE.value.path, self)
+        self.load_ui(AppConfig.PROPERTIES_OUTPUT_PAGE.value.path)
 
         self.update_buttons()
         self.update_head_lines()
@@ -46,7 +44,7 @@ class PropertiesOutputPage(BasicPage):
 
         """
         back_button = self.find_widget(PropertiesOutputPageComponents.BACK_BUTTON)
-        back_button.clicked.connect(lambda: self.page_switched.emit(AppConfig.PROPERTIES_INPUT_PAGE))
+        back_button.clicked.connect(lambda: self.switch_to_page.emit(AppConfig.PROPERTIES_INPUT_PAGE))
 
         calculate_button = self.find_widget(PropertiesOutputPageComponents.UPDATE_BUTTON)
         calculate_button.clicked.connect(self.show_data)

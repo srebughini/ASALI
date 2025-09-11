@@ -2,138 +2,156 @@
 <ui version="4.0">
     <class>PressureDropsInputPage</class>
         <widget class="QWidget" name="PressureDropsInputPage">
-            <layout class="QGridLayout" name="gridLayout">
-                <!-- Row 0 -->
-                <item row="0" column="0">
-                    <widget class="QLabel" name="databaseLabel">
-                        <property name="text">
-                            <string>Select database:</string>
+            <layout class="QVBoxLayout" name="beerLogoLayout">
+                <item>
+                    <widget class="QLabel" name="logoLabel">
+                        <property name="pixmap">
+                            <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
                         </property>
                     </widget>
                 </item>
-                <item row="0" column="1" colspan="2">
-                    <widget class="QComboBox" name="databaseComboBox"/>
-                </item>
-
-                <!-- Row 1 -->
-                <item row="1" column="0">
-                    <widget class="QLabel" name="temperatureLabel">
+                <item>
+                    <widget class="QLabel" name="beerQuoteLabel">
                         <property name="text">
-                            <string>Temperature:</string>
+                            <string>Inspiring Quote Here</string>
                         </property>
                     </widget>
                 </item>
-                <item row="1" column="1">
-                    <widget class="QLineEdit" name="temperatureEditLine">
-                        <property name="text">
-                            <string>298.15</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="1" column="2">
-                    <widget class="QComboBox" name="temperatureComboBox">
-                    </widget>
-                </item>
-
-                <!-- Row 2 -->
-                <item row="2" column="0">
-                    <widget class="QLabel" name="pressureLabel">
-                        <property name="text">
-                            <string>Average Estimated Pressure:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="1">
-                    <widget class="QLineEdit" name="pressureEditLine">
-                        <property name="text">
-                            <string>101325.0</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="2">
-                    <widget class="QComboBox" name="pressureComboBox">
-                    </widget>
-                </item>
-
-
-                <!-- Row 3 -->
-                <item row="3" column="0">
-                    <widget class="QLabel" name="compositionLabel">
-                        <property name="text">
-                            <string>Composition type:</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="3" column="1" colspan="2">
-                     <widget class="QComboBox" name="compositionComboBox" />
-                </item>
-
-                <!-- Row 4 -->
-                <item row="4" column="0">
-                    <layout class="QHBoxLayout" name="horizontalSpecieLayout">
-                        <item>
-                            <widget class="QPushButton" name="addSpecieButton">
+                <item>
+                    <layout class="QGridLayout" name="gridLayout">
+                        <!-- Row 0 -->
+                        <item row="0" column="0">
+                            <widget class="QLabel" name="databaseLabel">
                                 <property name="text">
-                                    <string>&#x2B;</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Add specie for input</string>
+                                    <string>Select database:</string>
                                 </property>
                             </widget>
                         </item>
-                        <item>
-                            <widget class="QPushButton" name="removeSpecieButton">
+                        <item row="0" column="1" colspan="2">
+                            <widget class="QComboBox" name="databaseComboBox"/>
+                        </item>
+
+                        <!-- Row 1 -->
+                        <item row="1" column="0">
+                            <widget class="QLabel" name="temperatureLabel">
                                 <property name="text">
-                                    <string>&#x2D;</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Remove specie for input</string>
+                                    <string>Temperature:</string>
                                 </property>
                             </widget>
                         </item>
-                    </layout>
-                </item>
-                <item row="4" column="1">
-                    <widget class="QLabel" name="formulaLabel">
-                        <property name="text">
-                            <string>Chemical formula</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="4" column="2">
-                    <widget class="QLabel" name="compositionLabel">
-                        <property name="text">
-                            <string>Composition</string>
-                        </property>
-                    </widget>
-                </item>
-
-                <item row="5" column="0" colspan="3">
-                    <layout class="QGridLayout" name="speciesLayout" />
-                </item>
-
-                <!-- Row 6 -->
-                <item row="6" column="0" colspan="3">
-                    <layout class="QHBoxLayout" name="buttonLayout">   
-                        <item>
-                            <widget class="QPushButton" name="backButton">
+                        <item row="1" column="1">
+                            <widget class="QLineEdit" name="temperatureEditLine">
                                 <property name="text">
-                                    <string>&#x2B9C; Back</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Go to back to the main page</string>
+                                    <string>298.15</string>
                                 </property>
                             </widget>
                         </item>
-                        <item>
-                            <widget class="QPushButton" name="nextButton">
+                        <item row="1" column="2">
+                            <widget class="QComboBox" name="temperatureComboBox">
+                            </widget>
+                        </item>
+
+                        <!-- Row 2 -->
+                        <item row="2" column="0">
+                            <widget class="QLabel" name="pressureLabel">
                                 <property name="text">
-                                    <string>Next &#x2b9e;</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Go to results page</string>
+                                    <string>Average Estimated Pressure:</string>
                                 </property>
                             </widget>
+                        </item>
+                        <item row="2" column="1">
+                            <widget class="QLineEdit" name="pressureEditLine">
+                                <property name="text">
+                                    <string>101325.0</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item row="2" column="2">
+                            <widget class="QComboBox" name="pressureComboBox">
+                            </widget>
+                        </item>
+
+
+                        <!-- Row 3 -->
+                        <item row="3" column="0">
+                            <widget class="QLabel" name="compositionLabel">
+                                <property name="text">
+                                    <string>Composition type:</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item row="3" column="1" colspan="2">
+                            <widget class="QComboBox" name="compositionComboBox" />
+                        </item>
+
+                        <!-- Row 4 -->
+                        <item row="4" column="0">
+                            <layout class="QHBoxLayout" name="horizontalSpecieLayout">
+                                <item>
+                                    <widget class="QPushButton" name="addSpecieButton">
+                                        <property name="text">
+                                            <string>&#x2B;</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Add specie for input</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="removeSpecieButton">
+                                        <property name="text">
+                                            <string>&#x2D;</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Remove specie for input</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                        <item row="4" column="1">
+                            <widget class="QLabel" name="formulaLabel">
+                                <property name="text">
+                                    <string>Chemical formula</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item row="4" column="2">
+                            <widget class="QLabel" name="compositionLabel">
+                                <property name="text">
+                                    <string>Composition</string>
+                                </property>
+                            </widget>
+                        </item>
+
+                        <item row="5" column="0" colspan="3">
+                            <layout class="QGridLayout" name="speciesLayout" />
+                        </item>
+
+                        <!-- Row 6 -->
+                        <item row="6" column="0" colspan="3">
+                            <layout class="QHBoxLayout" name="buttonLayout">   
+                                <item>
+                                    <widget class="QPushButton" name="backButton">
+                                        <property name="text">
+                                            <string>&#x2B9C; Back</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Go to back to the main page</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="nextButton">
+                                        <property name="text">
+                                            <string>Next &#x2b9e;</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Go to results page</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
                         </item>
                     </layout>
                 </item>

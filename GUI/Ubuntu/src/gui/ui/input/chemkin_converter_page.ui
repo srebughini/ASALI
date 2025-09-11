@@ -2,95 +2,113 @@
 <ui version="4.0">
     <class>ChemkinConverterInputPage</class>
         <widget class="QWidget" name="ChemkinConverterInputPage">
-            <layout class="QVBoxLayout" name="verticalLayout">
-                <!-- Select action item -->
+            <layout class="QVBoxLayout" name="beerLogoLayout">
                 <item>
-                    <layout class="QHBoxLayout" name="selectLayout">
-                        <item>
-                            <widget class="QLabel" name="actionLabel">
-                                <property name="text">
-                                    <string>Select action:</string>
-                                </property>
-                            </widget>
-                        </item>
-                        <item>
-                            <widget class="QComboBox" name="actionComboBox"/>
-                        </item>
-                    </layout>
-                </item>
-                <!-- Convert buttons -->
-                <item>
-                    <widget class="QWidget" name="convertWidget">
-                        <layout class="QGridLayout" name="gridLayout">
-                            <!-- Row 0 -->
-                            <item row="0" column="0">
-                                <widget class="QPushButton" name="transportButton">
-                                    <property name="text">
-                                        <string>Load transport</string>
-                                    </property>
-                                    <property name="toolTip">
-                                        <string>Load Chemkin transport file</string>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item row="0" column="1">
-                                <widget class="QPushButton" name="thermoButton">
-                                    <property name="text">
-                                        <string>Load thermodynamic</string>
-                                    </property>
-                                    <property name="toolTip">
-                                        <string>Load Chemkin thermodynamic file</string>
-                                    </property>
-                                </widget>
-                            </item>
-
-                            <!-- Row 1 -->
-                            <item row="1" column="0">
-                                <widget class="QPushButton" name="kineticButton">
-                                    <property name="text">
-                                        <string>Load gas kinetic</string>
-                                    </property>
-                                    <property name="toolTip">
-                                        <string>Load Chemkin gas kintic file</string>
-                                    </property>
-                                </widget>
-                            </item>
-                            <item row="1" column="1">
-                                <widget class="QPushButton" name="surfaceButton">
-                                    <property name="text">
-                                        <string>Load surface kinetic</string>
-                                    </property>
-                                    <property name="toolTip">
-                                        <string>Load Chemkin surface kintic file</string>
-                                    </property>
-                                </widget>
-                            </item>
-                        </layout>
+                    <widget class="QLabel" name="logoLabel">
+                        <property name="pixmap">
+                            <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
+                        </property>
                     </widget>
                 </item>
-
-                <!-- Buttons -->
                 <item>
-                    <layout class="QHBoxLayout" name="buttonLayout">
+                    <widget class="QLabel" name="beerQuoteLabel">
+                        <property name="text">
+                            <string>Inspiring Quote Here</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <layout class="QVBoxLayout" name="verticalLayout">
+                        <!-- Select action item -->
                         <item>
-                            <widget class="QPushButton" name="backButton">
-                                <property name="text">
-                                    <string>&#x2B9C; Back</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Go back to properties input page</string>
-                                </property>
+                            <layout class="QHBoxLayout" name="selectLayout">
+                                <item>
+                                    <widget class="QLabel" name="actionLabel">
+                                        <property name="text">
+                                            <string>Select action:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QComboBox" name="actionComboBox"/>
+                                </item>
+                            </layout>
+                        </item>
+                        <!-- Convert buttons -->
+                        <item>
+                            <widget class="QWidget" name="convertWidget">
+                                <layout class="QGridLayout" name="gridLayout">
+                                    <!-- Row 0 -->
+                                    <item row="0" column="0">
+                                        <widget class="QPushButton" name="transportButton">
+                                            <property name="text">
+                                                <string>Load transport</string>
+                                            </property>
+                                            <property name="toolTip">
+                                                <string>Load Chemkin transport file</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="0" column="1">
+                                        <widget class="QPushButton" name="thermoButton">
+                                            <property name="text">
+                                                <string>Load thermodynamic</string>
+                                            </property>
+                                            <property name="toolTip">
+                                                <string>Load Chemkin thermodynamic file</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+
+                                    <!-- Row 1 -->
+                                    <item row="1" column="0">
+                                        <widget class="QPushButton" name="kineticButton">
+                                            <property name="text">
+                                                <string>Load gas kinetic</string>
+                                            </property>
+                                            <property name="toolTip">
+                                                <string>Load Chemkin gas kintic file</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item row="1" column="1">
+                                        <widget class="QPushButton" name="surfaceButton">
+                                            <property name="text">
+                                                <string>Load surface kinetic</string>
+                                            </property>
+                                            <property name="toolTip">
+                                                <string>Load Chemkin surface kintic file</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                </layout>
                             </widget>
                         </item>
+
+                        <!-- Buttons -->
                         <item>
-                            <widget class="QPushButton" name="runButton">
-                                <property name="text">
-                                    <string>Save</string>
-                                </property>
-                                <property name="toolTip">
-                                    <string>Run CHEMKIN editor and Save results</string>
-                                </property>
-                            </widget>
+                            <layout class="QHBoxLayout" name="buttonLayout">
+                                <item>
+                                    <widget class="QPushButton" name="backButton">
+                                        <property name="text">
+                                            <string>&#x2B9C; Back</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Go back to properties input page</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="runButton">
+                                        <property name="text">
+                                            <string>Save</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Run CHEMKIN editor and Save results</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
                         </item>
                     </layout>
                 </item>

@@ -2,213 +2,231 @@
 <ui version="4.0">
     <class>PropertiesOutputPage</class>
     <widget class="QWidget" name="PropertiesOutputPage">
-        <layout class="QGridLayout" name="gridLayout">
-            <!-- Row 0 -->
-            <item row="0" column="0" colspan="3">
-                <widget class="QLabel" name="transportLabel">
-                    <property name="text">
-                        <string>Transport Properties</string>
+        <layout class="QVBoxLayout" name="beerLogoLayout">
+            <item>
+                <widget class="QLabel" name="logoLabel">
+                    <property name="pixmap">
+                        <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
                     </property>
                 </widget>
             </item>
-
-            <!-- Row 1 -->
-            <item row="1" column="0">
-                <widget class="QLabel" name="rhoNameLabel">
+            <item>
+                <widget class="QLabel" name="beerQuoteLabel">
                     <property name="text">
-                        <string>Density:</string>
+                        <string>Inspiring Quote Here</string>
                     </property>
                 </widget>
             </item>
-            <item row="1" column="1">
-                <widget class="QLabel" name="rhoValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="1" column="2">
-                <widget class="QComboBox" name="rhoComboBox">
-                </widget>
-            </item>
-
-
-            <!-- Row 2 -->
-            <item row="2" column="0">
-                <widget class="QLabel" name="muNameLabel">
-                    <property name="text">
-                        <string>Viscosity:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="2" column="1">
-                <widget class="QLabel" name="muValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="2" column="2">
-                <widget class="QComboBox" name="muComboBox">
-                </widget>
-            </item>
-
-
-            <!-- Row 3 -->
-            <item row="3" column="0">
-                <widget class="QLabel" name="mwNameLabel">
-                    <property name="text">
-                        <string>Molecular weight:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="3" column="1">
-                <widget class="QLabel" name="mwValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="3" column="2">
-                <widget class="QComboBox" name="mwComboBox">
-                </widget>
-            </item>
-
-            <!-- Row 4 -->
-            <item row="4" column="0">
-                <widget class="QLabel" name="condNameLabel">
-                    <property name="text">
-                        <string>Thermal conductivity:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="4" column="1">
-                <widget class="QLabel" name="condValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="4" column="2">
-                <widget class="QComboBox" name="condComboBox">
-                </widget>
-            </item>
-
-            <!-- Row 5 -->
-            <item row="5" column="0">
-                <widget class="QLabel" name="diffNameLabel">
-                    <property name="text">
-                        <string>Mixture diffusivity:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="5" column="1">
-                <widget class="QLabel" name="diffValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="5" column="2">
-                <widget class="QComboBox" name="diffComboBox">
-                </widget>
-            </item>
-
-            <!-- Row 6 -->
-            <item row="6" column="0" colspan="3">
-                <widget class="QLabel" name="thermodynamicLabel">
-                    <property name="text">
-                        <string>Thermodynamic Properties</string>
-                    </property>
-                </widget>
-            </item>
-
-
-            <!-- Row 7 -->
-            <item row="7" column="0">
-                <widget class="QLabel" name="hNameLabel">
-                    <property name="text">
-                        <string>Enthalpy:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="7" column="1">
-                <widget class="QLabel" name="hValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="7" column="2">
-                <widget class="QComboBox" name="hComboBox">
-                </widget>
-            </item>
-
-
-            <!-- Row 8 -->
-            <item row="8" column="0">
-                <widget class="QLabel" name="sNameLabel">
-                    <property name="text">
-                        <string>Entropy:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="8" column="1">
-                <widget class="QLabel" name="sValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="8" column="2">
-                <widget class="QComboBox" name="sComboBox">
-                </widget>
-            </item>
-
-
-            <!-- Row 9 -->
-            <item row="9" column="0">
-                <widget class="QLabel" name="cpNameLabel">
-                    <property name="text">
-                        <string>Specific heat:</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="9" column="1">
-                <widget class="QLabel" name="cpValueLabel">
-                    <property name="text">
-                        <string>0.0</string>
-                    </property>
-                </widget>
-            </item>
-            <item row="9" column="2">
-                <widget class="QComboBox" name="cpComboBox">
-                </widget>
-            </item>
-
-
-            <!-- Row 10 -->
-            <item row="10" column="0" colspan="3">
-                <layout class="QHBoxLayout" name="buttonLayout">
-                    <item>
-                        <widget class="QPushButton" name="backButton">
+            <item>
+                <layout class="QGridLayout" name="gridLayout">
+                    <!-- Row 0 -->
+                    <item row="0" column="0" colspan="3">
+                        <widget class="QLabel" name="transportLabel">
                             <property name="text">
-                                <string>&#x2B9C; Back</string>
-                            </property>
-                            <property name="toolTip">
-                                <string>Go back to properties input page</string>
+                                <string>Transport Properties</string>
                             </property>
                         </widget>
                     </item>
-                    <item>
-                        <widget class="QPushButton" name="updateButton">
+
+                    <!-- Row 1 -->
+                    <item row="1" column="0">
+                        <widget class="QLabel" name="rhoNameLabel">
                             <property name="text">
-                                <string>Update</string>
-                            </property>
-                            <property name="toolTip">
-                                <string>Update thermodynamic and transport properties</string>
+                                <string>Density:</string>
                             </property>
                         </widget>
+                    </item>
+                    <item row="1" column="1">
+                        <widget class="QLabel" name="rhoValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="1" column="2">
+                        <widget class="QComboBox" name="rhoComboBox">
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 2 -->
+                    <item row="2" column="0">
+                        <widget class="QLabel" name="muNameLabel">
+                            <property name="text">
+                                <string>Viscosity:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="2" column="1">
+                        <widget class="QLabel" name="muValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="2" column="2">
+                        <widget class="QComboBox" name="muComboBox">
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 3 -->
+                    <item row="3" column="0">
+                        <widget class="QLabel" name="mwNameLabel">
+                            <property name="text">
+                                <string>Molecular weight:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="3" column="1">
+                        <widget class="QLabel" name="mwValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="3" column="2">
+                        <widget class="QComboBox" name="mwComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 4 -->
+                    <item row="4" column="0">
+                        <widget class="QLabel" name="condNameLabel">
+                            <property name="text">
+                                <string>Thermal conductivity:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="4" column="1">
+                        <widget class="QLabel" name="condValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="4" column="2">
+                        <widget class="QComboBox" name="condComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 5 -->
+                    <item row="5" column="0">
+                        <widget class="QLabel" name="diffNameLabel">
+                            <property name="text">
+                                <string>Mixture diffusivity:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="5" column="1">
+                        <widget class="QLabel" name="diffValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="5" column="2">
+                        <widget class="QComboBox" name="diffComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 6 -->
+                    <item row="6" column="0" colspan="3">
+                        <widget class="QLabel" name="thermodynamicLabel">
+                            <property name="text">
+                                <string>Thermodynamic Properties</string>
+                            </property>
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 7 -->
+                    <item row="7" column="0">
+                        <widget class="QLabel" name="hNameLabel">
+                            <property name="text">
+                                <string>Enthalpy:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="7" column="1">
+                        <widget class="QLabel" name="hValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="7" column="2">
+                        <widget class="QComboBox" name="hComboBox">
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 8 -->
+                    <item row="8" column="0">
+                        <widget class="QLabel" name="sNameLabel">
+                            <property name="text">
+                                <string>Entropy:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="8" column="1">
+                        <widget class="QLabel" name="sValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="8" column="2">
+                        <widget class="QComboBox" name="sComboBox">
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 9 -->
+                    <item row="9" column="0">
+                        <widget class="QLabel" name="cpNameLabel">
+                            <property name="text">
+                                <string>Specific heat:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="9" column="1">
+                        <widget class="QLabel" name="cpValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="9" column="2">
+                        <widget class="QComboBox" name="cpComboBox">
+                        </widget>
+                    </item>
+
+
+                    <!-- Row 10 -->
+                    <item row="10" column="0" colspan="3">
+                        <layout class="QHBoxLayout" name="buttonLayout">
+                            <item>
+                                <widget class="QPushButton" name="backButton">
+                                    <property name="text">
+                                        <string>&#x2B9C; Back</string>
+                                    </property>
+                                    <property name="toolTip">
+                                        <string>Go back to properties input page</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="updateButton">
+                                    <property name="text">
+                                        <string>Update</string>
+                                    </property>
+                                    <property name="toolTip">
+                                        <string>Update thermodynamic and transport properties</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
                     </item>
                 </layout>
             </item>
