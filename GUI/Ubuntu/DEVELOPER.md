@@ -9,13 +9,29 @@ cd resources
 pyside6-rcc -o resources_rc.py resources.qrc
 ```
 
+### Create executable file
+```bash
+conda activate asaligui
+conda install pyinstaller -c conda-forge
+pyinstaller --clean one_file.spec
+cp src/gui/ui/output/*.ui dist/src/gui/ui/output
+cp src/resources/database/*.yaml dist/src/resources/database
+cp src/resources/database/*.yaml dist/src/resources/database
+cp src/resources/images/*.png dist/src/resources/images
+cp src/resources/qss/*.qss dist/src/resources/qss
+```
+
+### TODO next step
+* Try **upx** to improve dimensions of .exe file. 
+* Find a way to let the download of only .exe and .deb from github release
+
+
 #### TODO for future
 This is a list of possibile updates
-* Create conda package for the gui
 * Create linux installation instructions
 * Create docker distribution
 * Create windows distribution
+* Create linux .deb package
 * Find a better way to save the .exe file on github
-* Find a way to create a file for installation on linux
 * Change logo of ASALIPY and JASALI with new color palette
 * Change website logo

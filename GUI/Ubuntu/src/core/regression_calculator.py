@@ -1,6 +1,5 @@
 import cantera as ct
 import numpy as np
-from scipy import stats
 
 from asali.utils.unit_converter import UnitConverter
 from src.gui.enums.composition_type import CompositionType
@@ -173,18 +172,26 @@ def perform_regression(data_store, temps, values, prop_unit) -> DataStore:
     method = data_store.get_data(DataKeys.REGRESSION_METHOD)
 
     if method == RegressionMethod.LINEAR:
-        a, b, *_ = stats.linregress(temps, values)
+        # a, b, *_ = stats.linregress(temps, values)
+        z = np.polyfit(temps, values, 1)
+        a = z[0]
+        b = z[1]
 
     elif method == RegressionMethod.POWER_LAW:
         if np.max(values) < 0.:
             data_store.update_data(DataKeys.REGRESSION_PROPERTY, (values, None, None, prop_unit))
             return data_store
-        b, e, *_ = stats.linregress(np.log(temps), np.log(values))
+        # b, e, *_ = stats.linregress(np.log(temps), np.log(values))
+        z = np.polyfit(np.log(temps), np.log(values), 1)
+        b = z[0]
+        e = z[1]
         a = np.exp(e)
 
     elif method == RegressionMethod.LOGARITHMIC:
-        a, b, *_ = stats.linregress(np.log(temps), values)
-
+        # a, b, *_ = stats.linregress(np.log(temps), values)
+        z = np.polyfit(np.log(temps), values, 1)
+        a = z[0]
+        b = z[1]
     else:
         a = b = None
 
