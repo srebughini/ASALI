@@ -30,6 +30,9 @@ GUI/Ubuntu/ext/shared/omega22.H
 GUI/Ubuntu/ext/shared/transport.H
 GUI/Ubuntu/ext/shared/thermo.H
 GUI/Ubuntu/.vscode
+GUI/Ubuntu/asali.exe
 GUI/Ubuntu/Asali.exe
+GUI/Ubuntu/dist
+GUI/Ubuntu/build
 
 GUI/Windows/_*

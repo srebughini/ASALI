@@ -13,17 +13,15 @@ pyside6-rcc -o resources_rc.py resources.qrc
 ```bash
 conda activate asaligui
 conda install pyinstaller -c conda-forge
-pyinstaller --clean one_file.spec
-cp src/gui/ui/output/*.ui dist/src/gui/ui/output
-cp src/resources/database/*.yaml dist/src/resources/database
-cp src/resources/database/*.yaml dist/src/resources/database
-cp src/resources/images/*.png dist/src/resources/images
-cp src/resources/qss/*.qss dist/src/resources/qss
+pyinstaller --clean asali.spec
+cp -r src/gui/ui dist/src/gui/ui
+cp -r src/resources dist/src/resources
 ```
 
 ### TODO next step
 * Try **upx** to improve dimensions of .exe file. 
 * Find a way to let the download of only .exe and .deb from github release
+* Fix project folder to not having structure that is not nested and compatible with pyinstaller
 
 
 #### TODO for future
