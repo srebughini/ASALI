@@ -32,6 +32,7 @@ This feature of Asali applies a least square fit to derive *easy-to-handle* func
 
 ### 1.3 Thermodynamic equilibrium
 [Cantera](https://cantera.org/) calculates also the thermodynamic equilibrium of ideal gas mixtures. Therefore, Asali exploits this feature to evaluate the equilibrium at constant temperature or at constant pressure. For more information have a look at [Cantera](https://cantera.org/) user's guide.
+
 ### 1.4 Vacuum properties
 The vacuum properties estimated by Asali are:
 * Knudsen number
@@ -49,24 +50,43 @@ This feature of Asali allows to handle *CHEMKIN* input files to add new species 
 
 # **2. Installation instructions**
 Asali is based on different open-source codes:
-* [Cantera](https://cantera.org/): to estimate thermodynamic and transport properties based on the kinetic gas theory and NASA database.
-* [BEERQ](https://srebughini.github.io/BEERQ/): to add beer quotes.
-* [Matplotlib](https://matplotlib.org/): to plot results.
-* [PySide6](https://pypi.org/project/PySide6/): to handle the Graphical User Interface.
+* [BEERQ](https://srebughini.github.io/BEERQ/): Add beer quotes.
+* [Cantera](https://cantera.org/): Software for estimation of thermodynamic and transport properties based on the kinetic gas theory and NASA database.
+* [Numpy](https://numpy.org/): Python library for scientific computing.
+* [Matplotlib](https://matplotlib.org/): Python library for scientific plotting.
+* [Sympy](https://www.sympy.org/en/index.html): Python library for symbolic mathematics.
+* [PySide6](https://pypi.org/project/PySide6/): Qt-based package for graphical interface.
+* [Anaconda](https://www.anaconda.com/): Python package handler.
 
 Asali has been tested on different Operating System (OS). If it is not working on yours, please send us an [email](ste.rebu@outlook.it).
 
 ### 2.1 Linux OS
-Asali can be installed on Linux OS following the instructions reported [here](LINUX.md).
+Asali has been tested on:
+* *Ubuntu 24.04 LTS*
+
+To install Asali on Linux:
+* download `Asali-Setup.deb` for [here](TODO).
+* double click on `Asali-Setup.deb` and follow the instructions
 
 ### 2.2 Windows OS
 Asali has been tested on:
 * *Windows 11*
 * *Windows 10*    
 
-To install Asali on Windows just `double click` on `Asali-Setup.exe` and follow the instructions.
+To install Asali on Windows:
+* download `Asali-Setup.exe` for [here](TODO).
+* double click on `Asali-Setup.exe` and follow the instructions
 
-### 2.3 Docker
-Asali can be installed using [docker](https://docs.docker.com/). Installation instructions can be found [here](DOCKER.md).
+### 2.3 Developers (both on Windows OS and Linux OS)
+#### 2.3.1 Requirements installation
+Asali is based on [Anaconda](https://www.anaconda.com/), which can be downloaded and installed by following the instruction [here](https://www.anaconda.com/docs/getting-started/anaconda/install).
+#### 2.3.2 Installation
+To install Asali source code follow these instructions:
+```bash
+cd GUI/Ubuntu
+conda env create -f environment.yml
+conda activate asaligui
+python app.py
+```
 
 

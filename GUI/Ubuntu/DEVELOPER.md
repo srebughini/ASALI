@@ -1,8 +1,6 @@
 # **ASALI: Modeling and beyond**
-
 Here a list of important commands for Asali developers:
-
-### Create executable file
+### 1. Create executable file
 ```bash
 conda activate asaligui
 conda install pyinstaller -c conda-forge
@@ -15,10 +13,8 @@ pyinstaller --clean asali.spec
 
 #### TODO for future
 This is a list of possibile updates
-* Create linux installation instructions
-* Create docker distribution
-* Create windows distribution
+* Create windows .exe package
 * Create linux .deb package
-* Find a better way to save the .exe file on github
+* Find a better way to save the .exe and .deb file on github
 * Change logo of ASALIPY and JASALI with new color palette
 * Change website logo
