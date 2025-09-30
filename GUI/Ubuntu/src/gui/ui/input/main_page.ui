@@ -4,11 +4,7 @@
         <widget class="QWidget" name="MainInputPage">
             <layout class="QVBoxLayout" name="beerLogoLayout">
                 <item>
-                    <widget class="QLabel" name="logoLabel">
-                        <property name="pixmap">
-                            <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
-                        </property>
-                    </widget>
+                    <widget class="QLabel" name="logoLabel"/>
                 </item>
                 <item>
                     <widget class="QLabel" name="beerQuoteLabel">

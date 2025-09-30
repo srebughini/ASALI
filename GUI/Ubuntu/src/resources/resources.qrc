@@ -1,8 +1,0 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-    <qresource prefix="/">
-        <file>images/BigLogo.png</file>
-        <file>images/Icon.png</file>
-        <file>qss/style.qss</file>
-    </qresource>
-</RCC>

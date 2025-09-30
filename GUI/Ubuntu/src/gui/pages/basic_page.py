@@ -3,6 +3,7 @@ from enum import Enum
 
 import beerpy
 from PySide6.QtCore import Signal, QFile, Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QGraphicsBlurEffect, QSizePolicy
 
@@ -221,6 +222,8 @@ class BasicPage(QWidget):
 
         """
         label = self.findChild(QLabel, 'logoLabel')
+        pixmap = QPixmap(AppConfig.LOGO_PATH.value)
+        label.setPixmap(pixmap)
         label.setAlignment(Qt.AlignCenter)
         label.setProperty("class", "logo")
 

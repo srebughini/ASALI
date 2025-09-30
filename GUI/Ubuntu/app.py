@@ -4,7 +4,6 @@ from PySide6.QtCore import QFile
 from PySide6.QtWidgets import QApplication
 
 from src.config.app import AppConfig
-from src.resources import resources_rc
 
 from src.controllers.exception_handler import ExceptionHandler
 from src.gui.pages.main_window import MainWindow
@@ -37,7 +36,7 @@ if __name__ == "__main__":
     # Set Fusion style before loading the window
     app.setStyle('Fusion')
 
-    file = QFile(":/qss/style.qss")
+    file = QFile(AppConfig.QSS_PATH.value)
     if file.open(QFile.ReadOnly | QFile.Text):
         stylesheet = file.readAll().data().decode('utf-8')
         app.setStyleSheet(stylesheet)

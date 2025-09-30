@@ -2,6 +2,8 @@ import os
 from enum import Enum
 from types import SimpleNamespace
 
+from src.controllers.path_handler import PathHandler
+
 
 class AppConfig(Enum):
     """
@@ -19,52 +21,68 @@ class AppConfig(Enum):
 
     MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
 
-    ICON_PATH = ":/images/Icon.png"
-    DEFAULT_DATABASE_FILE_PATH = os.path.join("src", "resources", "database", "data.yaml")
+    ICON_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "images", "Icon.png"))
+    QSS_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "qss", "style.qss"))
+    LOGO_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "images", "BigLogo.png"))
+    DEFAULT_DATABASE_FILE_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "database", "data.yaml"))
 
     BASE_LAYOUT_PATH = os.path.join("src", "gui", "ui", "base_layout.ui")
     MAIN_INPUT_PAGE = SimpleNamespace(page_name="MainInputPage",
-                                      path=os.path.join("src", "gui", "ui", "input", "main_page.ui"))
+                                      path=PathHandler.to_resource_path(
+                                          os.path.join("src", "gui", "ui", "input", "main_page.ui")))
 
     PROPERTIES_INPUT_PAGE = SimpleNamespace(page_name="PropertiesInputPage",
-                                            path=os.path.join("src", "gui", "ui", "input", "properties_page.ui"))
+                                            path=PathHandler.to_resource_path(
+                                                os.path.join("src", "gui", "ui", "input", "properties_page.ui")))
     PROPERTIES_OUTPUT_PAGE = SimpleNamespace(page_name="PropertiesOutputPage",
-                                             path=os.path.join("src", "gui", "ui", "output", "properties_page.ui"))
+                                             path=PathHandler.to_resource_path(
+                                                 os.path.join("src", "gui", "ui", "output", "properties_page.ui")))
 
     VACUUM_INPUT_PAGE = SimpleNamespace(page_name="VacuumInputPage",
-                                        path=os.path.join("src", "gui", "ui", "input", "vacuum_page.ui"))
+                                        path=PathHandler.to_resource_path(
+                                            os.path.join("src", "gui", "ui", "input", "vacuum_page.ui")))
     VACUUM_OUTPUT_PAGE = SimpleNamespace(page_name="VacuumOutputPage",
-                                         path=os.path.join("src", "gui", "ui", "output", "vacuum_page.ui"))
+                                         path=PathHandler.to_resource_path(
+                                             os.path.join("src", "gui", "ui", "output", "vacuum_page.ui")))
 
     REGRESSION_INPUT_PAGE = SimpleNamespace(page_name="RegressionInputPage",
-                                            path=os.path.join("src", "gui", "ui", "input", "regression_page.ui"))
+                                            path=PathHandler.to_resource_path(
+                                                os.path.join("src", "gui", "ui", "input", "regression_page.ui")))
     REGRESSION_OUTPUT_PAGE = SimpleNamespace(page_name="RegressionOutputPage",
-                                             path=os.path.join("src", "gui", "ui", "output", "regression_page.ui"))
+                                             path=PathHandler.to_resource_path(
+                                                 os.path.join("src", "gui", "ui", "output", "regression_page.ui")))
 
     EQUILIBRIUM_INPUT_PAGE = SimpleNamespace(page_name="EquilibriumInputPage",
-                                             path=os.path.join("src", "gui", "ui", "input", "equilibrium_page.ui"))
+                                             path=PathHandler.to_resource_path(
+                                                 os.path.join("src", "gui", "ui", "input", "equilibrium_page.ui")))
     EQUILIBRIUM_OUTPUT_PAGE = SimpleNamespace(page_name="EquilibriumOutputPage",
-                                              path=os.path.join("src", "gui", "ui", "output", "equilibrium_page.ui"))
+                                              path=PathHandler.to_resource_path(
+                                                  os.path.join("src", "gui", "ui", "output", "equilibrium_page.ui")))
 
     CHEMKIN_CONVERTER_INPUT_PAGE = SimpleNamespace(page_name="ChemkinConverterInputPage",
-                                                   path=os.path.join("src", "gui", "ui", "input",
-                                                                     "chemkin_converter_page.ui"))
+                                                   path=PathHandler.to_resource_path(
+                                                       os.path.join("src", "gui", "ui", "input",
+                                                                    "chemkin_converter_page.ui")))
 
     CHEMKIN_TRANSPORT_INPUT_PAGE = SimpleNamespace(page_name="ChemkinTransportInputPage",
-                                                   path=os.path.join("src", "gui", "ui", "input",
-                                                                     "chemkin_transport_page.ui"))
+                                                   path=PathHandler.to_resource_path(
+                                                       os.path.join("src", "gui", "ui", "input",
+                                                                    "chemkin_transport_page.ui")))
 
     CHEMKIN_THERMO_INPUT_PAGE = SimpleNamespace(page_name="ChemkinThermoInputPage",
-                                                path=os.path.join("src", "gui", "ui", "input",
-                                                                  "chemkin_thermo_page.ui"))
+                                                path=PathHandler.to_resource_path(
+                                                    os.path.join("src", "gui", "ui", "input",
+                                                                 "chemkin_thermo_page.ui")))
 
     PRESSURE_DROPS_INPUT_PAGE = SimpleNamespace(page_name="PressureDropsInputPage",
-                                                path=os.path.join("src", "gui", "ui", "input",
-                                                                  "pressure_drops_page.ui"))
+                                                path=PathHandler.to_resource_path(
+                                                    os.path.join("src", "gui", "ui", "input",
+                                                                 "pressure_drops_page.ui")))
 
     PRESSURE_DROPS_OUTPUT_PAGE = SimpleNamespace(page_name="PressureDropsOutputPage",
-                                                 path=os.path.join("src", "gui", "ui", "output",
-                                                                   "pressure_drops_page.ui"))
+                                                 path=PathHandler.to_resource_path(
+                                                     os.path.join("src", "gui", "ui", "output",
+                                                                  "pressure_drops_page.ui")))
 
     CANTERA_FILE_TYPE = "Cantera file type (*.yaml);;All Files (*)"
     CANTERA_FILE_OPEN = "Open Cantera Input File"
