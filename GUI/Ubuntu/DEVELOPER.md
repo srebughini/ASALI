@@ -16,5 +16,4 @@ This is a list of possibile updates
 * Create windows .exe package
 * Create linux .deb package
 * Find a better way to save the .exe and .deb file on github
-* Change logo of ASALIPY and JASALI with new color palette
 * Change website logo
