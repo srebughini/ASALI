@@ -83,10 +83,15 @@ Asali is based on [Anaconda](https://www.anaconda.com/), which can be downloaded
 #### 2.3.2 Installation
 To install Asali source code follow these instructions:
 ```bash
-cd GUI/Ubuntu
 conda env create -f environment.yml
 conda activate asaligui
 python app.py
+```
+To create the executable file follow these instructions:
+```bash
+conda activate asaligui
+conda install pyinstaller -c conda-forge
+pyinstaller --clean asali.spec
 ```
 
 

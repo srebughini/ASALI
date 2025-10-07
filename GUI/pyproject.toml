@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Asali"
+version = "3.0.0"
+description = "Asali is an open-source GUI tool for engineers, chemists, and students to model gas-phase mixtures. It offers an intuitive interface for beginners and deep Cantera integration for advanced users."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "../LICENSE", content-type = "text/plain" }
+
+authors = [{ name = "Stefano Rebughini", email = "ste.rebu@outlook.it" }]
+maintainers = [{ name = "Stefano Rebughini", email = "ste.rebu@outlook.it" }]
+requires-python = ">=3.9"
+
+classifiers = [
+    "License :: OSI Approved :: GPL License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Chemical Reactors :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://srebughini.github.io/ASALI/"
+Repository = "https://github.com/srebughini/ASALI"
+Issues = "https://github.com/srebughini/ASALI/issues"
+
+[tool.pyinstaller]
+entry-point = "app.py"
+output-name = "asali"
+icon = "src/resources/images/Icon"
+include-data = [
+    "src/resources/images",
+    "src/resources/qss",
+    "src/resources/database",
+    "src/gui/ui/input",
+    "src/gui/ui/output"
+]
+
+[tool.conda]
+file = "environment.yml"
