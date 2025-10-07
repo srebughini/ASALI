@@ -75,7 +75,7 @@ pyz = PYZ(
 # ----------------------------
 exe_kwargs = {
     "exclude_binaries": True,
-    "name": f"{APP_NAME}_{APP_VERSION}",
+    "name": f"{APP_NAME}",
     "debug": False,
     "bootloader_ignore_signals": False,
     "strip": True,
