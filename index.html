@@ -42,6 +42,23 @@ layout: default
         .header-container .download-button i {
             margin-right: 8px;
         }
+
+        /* Responsive layout for mobile */
+        @media (max-width: 768px) {
+            .header-container .download-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px; /* Adds spacing between buttons */
+                align-items: stretch; /* Make buttons equal width */
+            }
+
+            .header-container .download-button {
+                width: 100%;
+                margin-right: 0; /* Remove side margin on mobile */
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
     </style>
 
     <div class="container">
