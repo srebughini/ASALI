@@ -33,5 +33,6 @@ GUI/.vscode
 GUI/*.exe
 GUI/dist
 GUI/build
+GUI/installer
 
 GUI/Windows/_*

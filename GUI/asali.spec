@@ -14,7 +14,6 @@ project = config.get("project", {})
 tool_config = config.get("tool", {}).get("pyinstaller", {})
 
 APP_NAME = project.get("name", "app")
-APP_VERSION = project.get("version", "0.0.0")
 
 # ----------------------------
 # Detect platform and icon
@@ -106,5 +105,5 @@ coll = COLLECT(
     strip=True,
     upx=True,
     upx_exclude=[],
-    name=f"{APP_NAME}_{APP_VERSION}",
+    name=f"{APP_NAME}",
 )
