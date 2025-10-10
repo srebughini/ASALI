@@ -18,7 +18,7 @@ Asali has been tested on:
 * *Ubuntu 24.04 LTS*
 
 To install Asali on Linux:
-* download `Asali-Setup.deb` for [here](TODO).
+* download `Asali-Setup.deb` for [here](https://sourceforge.net/projects/asali/files/latest/download?os=ubuntu).
 * double click on `Asali-Setup.deb` and follow the instructions
 
 <h2 class="text-left"><b>Windows OS</b></h2>
@@ -27,5 +27,5 @@ Asali has been tested on:
 * *Windows 10*    
 
 To install Asali on Windows:
-* download `Asali-Setup.exe` for [here](TODO).
+* download `Asali-Setup.exe` for [here](https://sourceforge.net/projects/asali/files/latest/download?os=windows).
 * double click on `Asali-Setup.exe` and follow the instructions
