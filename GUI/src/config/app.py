@@ -21,7 +21,7 @@ class AppConfig(Enum):
 
     MATPLOTLIB_TOOLBAR = {'toolbar': 'None'}
 
-    ICON_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "images", "Icon.png"))
+    ICON_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "images", "Icon.ico"))
     QSS_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "qss", "style.qss"))
     LOGO_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "images", "BigLogo.png"))
     DEFAULT_DATABASE_FILE_PATH = PathHandler.to_resource_path(os.path.join("src", "resources", "database", "data.yaml"))
