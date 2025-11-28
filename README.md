@@ -9,7 +9,7 @@
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://srebughini.github.io/ASALI/"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fsrebughini.github.io%2FASALI%2F&up_message=online&down_message=offline&style=flat-square"></a>
-  <a href="https://www.paypal.com/donate/?hosted_button_id=993TN2SAA9GXL" target="_blank"><img src="https://img.shields.io/badge/PayPal-Support_Us-003087?logo=paypal&logoColor=fff" alt="Donate with PayPal" ></a>
+  <a href=cd ><img src="https://img.shields.io/badge/PayPal-Support_Us-003087?logo=paypal&logoColor=fff" alt="Donate with PayPal" ></a>
 </p>
 
 # **ASALI: Modeling and beyond**
