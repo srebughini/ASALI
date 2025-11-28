@@ -4,8 +4,8 @@ permalink: /pages/partners/
 
 <div class="container">
     <div class="row">
-        <h3 class="text-center"><a href="http://www.catalyticfoam.polimi.it/">CatalyticFOAM</a><br></h3>
-        <p class="text-left"><b>CatalyticFOAM</b> is a new <a href="https://openfoam.org/">OpenFOAM</a> solver that allows for the solution of Navier-Stokes equations for complex and general geometries for reacting flows at surfaces, based on microkinetic descriptions of the surface reactivity. The CatalyticFOAM solver exploits state-of-the-art and new numerical technique in order to enable the simulation of multidimensional systems with complex kinetic mechanisms. CatalyticFOAM is an valuable tool for the first-principles based multiscale analysis of catalytic processes and paves the way towards the rational understanding and development of new reaction/reactor concepts.
+        <h3 class="text-center"><a href="https://www.multicat-solutions.it/">Multiscale Catalysis & Engineering Solutions</a><br></h3>
+        <p class="text-left"><b>Multiscale Catalysis & Engineering Solutions</b> is an innovative spin-off of Politecnico di Milano, founded in March 2025. With over 15 years of expertise in multiscale modeling of catalytic reactors, they bridge the gap between atomic-level insights and full reactor-scale simulations. Their know-how spans from kinetic and spectroscopic analysis, macroscopic reactor modeling to advanced Computational Fluid Dynamics (CFD), ensuring a comprehensive understanding of catalytic processes across all scales. They bring a solid track record of collaborations with industrial partners in diverse sectors, combining academic excellence with practical applications.
         </p>
     </div>
     <div class="row">
