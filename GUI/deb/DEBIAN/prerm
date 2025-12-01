@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+# to be done after removal
+rm -r $HOME/.mce
+exit 0

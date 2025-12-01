@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Copy Asali.cpp
+    - name: Copy asali.cpp
       uses: canastro/copy-file-action@master
       with:
-        source: "API/Cpp/Asali.cpp"
-        target: "GUI/src/Asali.cpp"
-    - name: Copy Asali.hpp
+        source: "API/Cpp/asali.cpp"
+        target: "GUI/src/asali.cpp"
+    - name: Copy asali.hpp
       uses: canastro/copy-file-action@master
       with:
-        source: "API/Cpp/Asali.hpp"
-        target: "GUI/include/Asali.cpp"
+        source: "API/Cpp/asali.hpp"
+        target: "GUI/include/asali.cpp"
     - name: Copy thermo.H
       uses: canastro/copy-file-action@master
       with:
