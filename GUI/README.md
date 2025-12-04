@@ -66,7 +66,7 @@ Asali has been tested on:
 
 To install Asali on Linux:
 * download `Asali-Setup.deb` for [here](https://sourceforge.net/projects/asali/files/latest/download?os=ubuntu).
-* double click on `Asali-Setup.deb` and follow the instructions
+* write on terminal the following instruction: `sudo dpkg -i Asali-setup.deb`
 
 ### 2.2 Windows OS
 Asali has been tested on:
@@ -98,9 +98,13 @@ To create the *.deb* file follow these instructions:
 conda activate asaligui
 conda install pyinstaller -c conda-forge
 pyinstaller --clean asali.spec
-cp -r dist Asali/* deb/bin/Asali*
-
-dpkg-deb --build deb
+mkdir Asali-setup
+mkdir Asali-setup/bin
+cp -r deb/* Asali-setup/.
+cp -r dist Asali/* Asali-setup/bin/Asali*
+chmod 0775 Asali-setup/DEBIAN/prerm
+chmod 0775 Asali-setup/DEBIAN/postinst
+dpkg-deb --build Asali-setup
 ```
 
 

@@ -28,7 +28,7 @@ else:
 # Module configuration
 # ----------------------------
 excluded_modules = [
-    'tkinter', 'unittest', 'pydoc', 'doctest', 'http', 'xmlrpc',
+    'tkinter', 'unittest', 'pydoc', 'doctest', 'xmlrpc',
     'distutils', 'setuptools', 'test', 'asyncio', 'concurrent',
     'multiprocessing', 'sqlite3', 'wsgiref'
 ]
@@ -36,7 +36,9 @@ excluded_modules = [
 hiddenimports = [
     'PySide6.QtWidgets',
     'PySide6.QtCore',
-    'PySide6.QtGui'
+    'PySide6.QtGui',
+    'numpy._core._exceptions',  # Add this line for NumPy C-extensions
+    'numpy.core._multiarray_tests',  # These can sometimes help
 ]
 
 # ----------------------------
@@ -59,8 +61,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=excluded_modules,
-    noarchive=False,
-    optimize=0,
+    noarchive=False
 )
 
 pyz = PYZ(
