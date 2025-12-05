@@ -1,0 +1,205 @@
+from PySide6.QtCore import Qt, QTimer
+from PySide6.QtGui import QIcon, QAction
+from PySide6.QtWidgets import QMainWindow, QToolBar
+
+from src.core.data_store import DataStore
+from src.config.app import AppConfig
+from src.gui.pages.input.chemkin_converter_page import ChemkinConverterInputPage
+from src.gui.pages.input.chemkin_thermo_page import ChemkinThermoInputPage
+from src.gui.pages.input.chemkin_transport_page import ChemkinTransportInputPage
+from src.gui.pages.input.equilibrium_page import EquilibriumInputPage
+from src.gui.pages.input.pressure_drops_page import PressureDropsInputPage
+from src.gui.pages.input.properties_page import PropertiesInputPage
+from src.gui.pages.input.main_page import MainInputPage
+from src.gui.pages.dialog_pages_handler import DialogPagesHandler
+from src.gui.pages.input.regression_page import RegressionInputPage
+from src.gui.pages.input.vacuum_page import VacuumInputPage
+from src.gui.pages.output.equilibrium_page import EquilibriumOutputPage
+from src.gui.pages.output.pressure_drops_page import PressureDropsOutputPage
+from src.gui.pages.output.regression_page import RegressionOutputPage
+from src.gui.pages.output.properties_page import PropertiesOutputPage
+from src.gui.pages.output.vacuum_page import VacuumOutputPage
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        """
+        Main class to orchestrate the switching between different pages
+        """
+        super().__init__()
+        self.data_store = DataStore()
+        self.dialog_handler = DialogPagesHandler(self, self.data_store)
+        self.exit_action = None
+        self.disclaimer_action = None
+        self.contact_action = None
+        self.toolbar = None
+        self.current_page_name = None
+
+        # Add title
+        self.setWindowTitle(AppConfig.TITLE.value)
+
+        # Add icons
+        self.setWindowIcon(QIcon(AppConfig.ICON_PATH.value))
+
+        # Disable user resize
+        # self.setFixedSize(self.sizeHint())
+
+        # Set flags
+        self.setWindowFlags(
+            Qt.Window |
+            Qt.CustomizeWindowHint |
+            Qt.WindowTitleHint |
+            Qt.WindowMinimizeButtonHint |
+            Qt.WindowCloseButtonHint
+        )
+
+        # Create tool bar
+        self.create_tool_bar()
+        self.create_actions()
+        self.connect_actions()
+
+        # Define available pages
+        self.pages = {
+            AppConfig.MAIN_INPUT_PAGE: MainInputPage(self.data_store,
+                                                     self.dialog_handler),
+            AppConfig.PROPERTIES_INPUT_PAGE: PropertiesInputPage(self.data_store,
+                                                                 self.dialog_handler),
+            AppConfig.PROPERTIES_OUTPUT_PAGE: PropertiesOutputPage(self.data_store,
+                                                                   self.dialog_handler),
+            AppConfig.VACUUM_INPUT_PAGE: VacuumInputPage(self.data_store,
+                                                         self.dialog_handler),
+            AppConfig.VACUUM_OUTPUT_PAGE: VacuumOutputPage(self.data_store,
+                                                           self.dialog_handler),
+            AppConfig.REGRESSION_INPUT_PAGE: RegressionInputPage(self.data_store,
+                                                                 self.dialog_handler),
+            AppConfig.REGRESSION_OUTPUT_PAGE: RegressionOutputPage(self.data_store,
+                                                                   self.dialog_handler),
+            AppConfig.EQUILIBRIUM_INPUT_PAGE: EquilibriumInputPage(self.data_store,
+                                                                   self.dialog_handler),
+            AppConfig.EQUILIBRIUM_OUTPUT_PAGE: EquilibriumOutputPage(self.data_store,
+                                                                     self.dialog_handler),
+            AppConfig.CHEMKIN_CONVERTER_INPUT_PAGE: ChemkinConverterInputPage(self.data_store,
+                                                                              self.dialog_handler),
+            AppConfig.CHEMKIN_THERMO_INPUT_PAGE: ChemkinThermoInputPage(self.data_store,
+                                                                        self.dialog_handler),
+            AppConfig.CHEMKIN_TRANSPORT_INPUT_PAGE: ChemkinTransportInputPage(self.data_store,
+                                                                              self.dialog_handler),
+            AppConfig.PRESSURE_DROPS_INPUT_PAGE: PressureDropsInputPage(self.data_store,
+                                                                        self.dialog_handler),
+            AppConfig.PRESSURE_DROPS_OUTPUT_PAGE: PressureDropsOutputPage(self.data_store,
+                                                                          self.dialog_handler)
+        }
+
+        #for page_enum, page_as_widget in self.pages.items():
+        #    self.base_layout.add_page(page_as_widget, page_enum.value.page_name)
+
+        for _, page_as_widget in self.pages.items():
+            page_as_widget.switch_to_page.connect(self.switch_page)
+
+        # Show the Starting Page
+        self.switch_page(AppConfig.MAIN_INPUT_PAGE)
+
+        # Show the window
+        self.show()
+
+    def create_tool_bar(self) -> None:
+        """
+        Create QToolBar
+        Returns
+        -------
+        """
+        self.toolbar = QToolBar("Options Toolbar", self)
+        self.toolbar.setMovable(False)
+        self.addToolBar(self.toolbar)
+
+    def create_actions(self) -> None:
+        """
+        Create QAction for QToolBar
+        Returns
+        -------
+
+        """
+        self.contact_action = QAction("&Contact us", self)
+        self.disclaimer_action = QAction("&Disclaimer", self)
+        self.exit_action = QAction("&Exit", self)
+        self.toolbar.addAction(self.contact_action)
+        self.toolbar.addAction(self.disclaimer_action)
+        self.toolbar.addAction(self.exit_action)
+
+    def connect_actions(self) -> None:
+        """
+        Connect QAction to class functions
+        Returns
+        -------
+        """
+        self.contact_action.triggered.connect(self.dialog_handler.contact_message)
+        self.disclaimer_action.triggered.connect(self.dialog_handler.disclaimer_message)
+        self.exit_action.triggered.connect(self.close)
+
+    def switch_page(self, page_config) -> None:
+        """
+        Update the central widget of the main window
+        Parameters
+        ----------
+        page_config: Enum
+            Page
+
+        Returns
+        -------
+
+        """
+        if page_config in self.pages.keys():
+            # Remove the current central widget if it exists
+            current_widget = self.centralWidget()
+            if current_widget is not None:
+                current_widget.setParent(None)  # Safely delete the existing widget
+
+            # Set the new page as the central widget
+            new_page = self.pages[page_config]
+            new_page.update_page_after_switch()
+            new_page.update_beer_label()
+            new_page.update_logo()
+            QTimer.singleShot(0, new_page.adjustSize)
+            self.setCentralWidget(new_page)
+            self.adjustSize()
+
+
+    # def switch_page(self, page_config) -> None:
+    #     """
+    #     Switches the content of the base layout to the specified page.
+    #
+    #     Parameters
+    #     ----------
+    #     page_config : Enum
+    #         Page name (from AppConfig)
+    #     """
+    #     if page_config not in self.pages:
+    #         raise ValueError(f"{page_config.value.layout_name} not found!")
+    #
+    #     new_page = self.pages[page_config]
+    #
+    #     self.base_layout.switch_page(page_config.value.page_name, self.current_page_name)
+    #
+    #     new_page.page_switched.connect(self.switch_page)
+    #
+    #     # Update current tracker
+    #     self.current_page_name = page_config.value.page_name
+    #
+    #     self.adjustSize()
+
+    def closeEvent(self, event) -> None:
+        """
+        Override the closeEvent method to prompt the user for confirmation
+        before closing the application.
+
+        Parameters
+        ----------
+        event : QCloseEvent
+            The event that triggered the close request.
+        """
+        exit_message = self.dialog_handler.question_message("Are you sure you want to quit?")
+
+        if exit_message:
+            event.accept()
+        else:
+            event.ignore()

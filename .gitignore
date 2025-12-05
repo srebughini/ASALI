@@ -1,7 +1,7 @@
 obj/*
 obj
-Asali
 __*
+_*
 .vscode
 .idea
 
@@ -21,14 +21,21 @@ API/Rust/target*
 API/elapsedTimeComparison/*.txt
 API/elapsedTimeComparison/test.md
 
-GUI/Ubuntu/ext/*
-GUI/Ubuntu/ext/Asali.cpp
-GUI/Ubuntu/ext/Asali.hpp
-GUI/Ubuntu/ext/shared/omega11.H
-GUI/Ubuntu/ext/shared/omega22.H
-GUI/Ubuntu/ext/shared/transport.H
-GUI/Ubuntu/ext/shared/thermo.H
-GUI/Ubuntu/.vscode
-GUI/Ubuntu/Asali.exe
+GUI/ext/*
+GUI/ext/Asali.cpp
+GUI/ext/Asali.hpp
+GUI/ext/shared/omega11.H
+GUI/ext/shared/omega22.H
+GUI/ext/shared/transport.H
+GUI/ext/shared/thermo.H
+GUI/.vscode
+GUI/*.exe
+GUI/dist
+GUI/build
+GUI/installer
 
 GUI/Windows/_*
+GUI/Asali-setup
+
+
+*.deb

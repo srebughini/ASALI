@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>ChemkinThermoInputPage</class>
+        <widget class="QWidget" name="ChemkinThermoInputPage">
+            <layout class="QVBoxLayout" name="beerLogoLayout">
+                <item>
+                    <widget class="QLabel" name="logoLabel">
+                        <property name="pixmap">
+                            <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QLabel" name="beerQuoteLabel">
+                        <property name="text">
+                            <string>Inspiring Quote Here</string>
+                        </property>
+                    </widget>
+                </item>
+                <item>
+                    <layout class="QVBoxLayout" name="verticalLayout">
+                        <!-- Select action item -->
+                        <item>
+                            <layout class="QHBoxLayout" name="selectLayout">
+                                <item>
+                                    <widget class="QLabel" name="actionLabel">
+                                        <property name="text">
+                                            <string>Select action:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QComboBox" name="actionComboBox"/>
+                                </item>
+                            </layout>
+                        </item>
+
+                        <!-- Thermo button -->
+                        <item>
+                            <widget class="QPushButton" name="thermoButton">
+                                <property name="text">
+                                    <string>Load thermodynamic</string>
+                                </property>
+                                <property name="toolTip">
+                                    <string>Load Chemkin thermodynamic file</string>
+                                </property>
+                            </widget>
+                        </item>
+
+                        <!-- Thermo options -->
+                        <item>
+                            <widget class="QWidget" name="thermoWidget">
+                                <layout class="QGridLayout" name="thermoLayout">
+                                    <!-- Specie -->
+                                    <item row="0" column="0">
+                                        <widget class="QGroupBox" name="specieBox">
+                                            <property name="title">
+                                                <string>Specie:</string>
+                                            </property>
+                                            <layout class="QGridLayout" name="specieLayout">
+                                                <!-- Row 0 -->
+                                                <item row="0" column="0">
+                                                    <widget class="QLabel" name="nameThermoLabel">
+                                                        <property name="text">
+                                                            <string>Name:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="0" column="1" colspan="2">
+                                                    <widget class="QLineEdit" name="nameThermoEditLine" />
+                                                </item>
+
+                                                <!-- Row 1 -->
+                                                <item row="1" column="0">
+                                                    <widget class="QLabel" name="phaseLabel">
+                                                        <property name="text">
+                                                            <string>Phase:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="1" column="1" colspan="2">
+                                                    <widget class="QComboBox" name="phaseComboBox">
+                                                    </widget>
+                                                </item>
+                                            </layout>
+                                        </widget>
+                                    </item>
+
+                                    <!-- Temperatures -->
+                                    <item row="0" column="1">
+                                        <widget class="QGroupBox" name="temperatureBox">
+                                            <property name="title">
+                                                <string>Temperatures:</string>
+                                            </property>
+                                            <layout class="QGridLayout" name="temperatureLayout">
+                                                <!-- Row 0 -->
+                                                <item row="0" column="0">
+                                                    <widget class="QLabel" name="highTemperatureLabel">
+                                                        <property name="text">
+                                                            <string>High [K]:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="0" column="1">
+                                                    <widget class="QLineEdit" name="highTemperatureEditLine" />
+                                                </item>
+
+                                                <!-- Row 1 -->
+                                                <item row="1" column="0">
+                                                    <widget class="QLabel" name="commonTemperatureLabel">
+                                                        <property name="text">
+                                                            <string>Common [K]:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="1" column="1">
+                                                    <widget class="QLineEdit" name="commonTemperatureEditLine" />
+                                                </item>
+
+                                                <!-- Row 2 -->
+                                                <item row="2" column="0">
+                                                    <widget class="QLabel" name="lowTemperatureLabel">
+                                                        <property name="text">
+                                                            <string>Low [K]:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="2" column="1">
+                                                    <widget class="QLineEdit" name="lowTemperatureEditLine" />
+                                                </item>
+                                            </layout>
+                                        </widget>
+                                    </item>
+
+                                    <!-- Atomic composition -->
+                                    <item row="1" column="0" colspan="2">
+                                        <widget class="QGroupBox" name="elementBox">
+                                            <property name="title">
+                                                <string>Atomic composition:</string>
+                                            </property>
+                                            <layout class="QGridLayout" name="elementMainLayout">
+                                                <!-- Row 0 -->
+                                                <item row="0" column="0">
+                                                    <layout class="QHBoxLayout" name="horizontalElementLayout">
+                                                        <item>
+                                                            <widget class="QPushButton" name="addElementButton">
+                                                                <property name="text">
+                                                                    <string>&#x2B;</string>
+                                                                </property>
+                                                                <property name="toolTip">
+                                                                    <string>Add element for input</string>
+                                                                </property>
+                                                            </widget>
+                                                        </item>
+                                                        <item>
+                                                            <widget class="QPushButton" name="removeElementButton">
+                                                                <property name="text">
+                                                                    <string>&#x2D;</string>
+                                                                </property>
+                                                                <property name="toolTip">
+                                                                    <string>Remove element for input</string>
+                                                                </property>
+                                                            </widget>
+                                                        </item>
+                                                    </layout>
+                                                </item>
+                                                <item row="0" column="1">
+                                                    <widget class="QLabel" name="elementNameLabel">
+                                                        <property name="text">
+                                                            <string>Name</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="0" column="2">
+                                                    <widget class="QLabel" name="elementCompositionLabel">
+                                                        <property name="text">
+                                                            <string>Composition</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+
+                                                <!-- Row 1 -->
+                                                <item row="1" column="0" colspan="3">
+                                                    <layout class="QGridLayout" name="elementLayout" />
+                                                </item>
+                                            </layout>
+                                        </widget>
+                                    </item>
+
+                                    <!-- Upper temperature coefficiets -->
+                                    <item row="2" column="0">
+                                        <widget class="QGroupBox" name="upperBox">
+                                            <property name="title">
+                                                <string>Upper temperature coefficients:</string>
+                                            </property>
+                                            <layout class="QGridLayout" name="upperLayout">
+                                                <!-- Row 0 -->
+                                                <item row="0" column="0">
+                                                    <widget class="QLabel" name="a1upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;1&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="0" column="1">
+                                                    <widget class="QLineEdit" name="a1upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 1 -->
+                                                <item row="1" column="0">
+                                                    <widget class="QLabel" name="a2upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;2&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="1" column="1">
+                                                    <widget class="QLineEdit" name="a2upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 2 -->
+                                                <item row="2" column="0">
+                                                    <widget class="QLabel" name="a3upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;3&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="2" column="1">
+                                                    <widget class="QLineEdit" name="a3upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 3 -->
+                                                <item row="3" column="0">
+                                                    <widget class="QLabel" name="a4upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;4&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="3" column="1">
+                                                    <widget class="QLineEdit" name="a4upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 4 -->
+                                                <item row="4" column="0">
+                                                    <widget class="QLabel" name="a5upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;5&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="4" column="1">
+                                                    <widget class="QLineEdit" name="a5upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 5 -->
+                                                <item row="5" column="0">
+                                                    <widget class="QLabel" name="a6upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;6&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="5" column="1">
+                                                    <widget class="QLineEdit" name="a6upperEditLine" />
+                                                </item>
+
+                                                <!-- Row 6 -->
+                                                <item row="6" column="0">
+                                                    <widget class="QLabel" name="a7upperLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;7&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="6" column="1">
+                                                    <widget class="QLineEdit" name="a7upperEditLine" />
+                                                </item>
+                                            </layout>
+                                        </widget>
+                                    </item>
+
+                                    <!-- Lower temperature coefficiets -->
+                                    <item row="2" column="1">
+                                        <widget class="QGroupBox" name="lowerBox">
+                                            <property name="title">
+                                                <string>Lower temperature coefficients:</string>
+                                            </property>
+                                            <layout class="QGridLayout" name="lowerLayout">
+                                                <!-- Row 0 -->
+                                                <item row="0" column="0">
+                                                    <widget class="QLabel" name="a1lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;1&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="0" column="1">
+                                                    <widget class="QLineEdit" name="a1lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 1 -->
+                                                <item row="1" column="0">
+                                                    <widget class="QLabel" name="a2lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;2&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="1" column="1">
+                                                    <widget class="QLineEdit" name="a2lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 2 -->
+                                                <item row="2" column="0">
+                                                    <widget class="QLabel" name="a3lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;3&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="2" column="1">
+                                                    <widget class="QLineEdit" name="a3lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 3 -->
+                                                <item row="3" column="0">
+                                                    <widget class="QLabel" name="a4lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;4&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="3" column="1">
+                                                    <widget class="QLineEdit" name="a4lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 4 -->
+                                                <item row="4" column="0">
+                                                    <widget class="QLabel" name="a5lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;5&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="4" column="1">
+                                                    <widget class="QLineEdit" name="a5lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 5 -->
+                                                <item row="5" column="0">
+                                                    <widget class="QLabel" name="a6lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;6&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="5" column="1">
+                                                    <widget class="QLineEdit" name="a6lowerEditLine" />
+                                                </item>
+
+                                                <!-- Row 6 -->
+                                                <item row="6" column="0">
+                                                    <widget class="QLabel" name="a7lowerLabel">
+                                                        <property name="text">
+                                                            <string>&lt;b&gt;a&lt;sub&gt;7&lt;/sub&gt;&lt;/b&gt;:</string>
+                                                        </property>
+                                                    </widget>
+                                                </item>
+                                                <item row="6" column="1">
+                                                    <widget class="QLineEdit" name="a7lowerEditLine" />
+                                                </item>
+                                            </layout>
+                                        </widget>
+                                    </item>
+                                </layout>
+                            </widget>
+                        </item>
+
+                        <!-- Buttons -->
+                        <item>
+                            <layout class="QHBoxLayout" name="buttonLayout">
+                                <item>
+                                    <widget class="QPushButton" name="backButton">
+                                        <property name="text">
+                                            <string>&#x2B9C; Back</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Go back to properties input page</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QPushButton" name="runButton">
+                                        <property name="text">
+                                            <string>Run</string>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Run CHEMKIN editor and Save results</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                    </layout>
+                </item>
+            </layout>
+        </widget>
+</ui>

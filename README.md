@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://srebughini.github.io/ASALI/"><img src="https://i.imgur.com/T5W1buFm.png" title="source: imgur.com" /></a>
+  <a href="https://srebughini.github.io/ASALI/"><img src="GUI/src/resources/images/BigLogo.png"/></a>
 </p>
 <p align="center">
   <a href="https://github.com/srebughini/ASALI/blob/master/CONTRIBUTING.md"><img alt="Contributions welcome" src="https://img.shields.io/static/v1.svg?label=contributions&message=welcome&style=flat-square&color=red"></a>
@@ -8,18 +8,21 @@
   <a href="https://github.com/srebughini/ASALI/blob/master/LICENSE"><img src="https://img.shields.io/github/license/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/issues"><img src="https://img.shields.io/github/issues/srebughini/ASALI.svg?style=popout-square"></a>
   <a href="https://github.com/srebughini/ASALI/releases"><img src="https://img.shields.io/github/release/srebughini/ASALI.svg?style=popout-square"></a>
-  <a href="https://srebughini.github.io/ASALI/"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fsrebughini.github.io%2FASALI%2F&up_message=online&down_message=offline&style=flat-square">
+  <a href="https://srebughini.github.io/ASALI/"><img alt="Website" src="https://img.shields.io/website?url=https%3A%2F%2Fsrebughini.github.io%2FASALI%2F&up_message=online&down_message=offline&style=flat-square"></a>
+  <a href="https://www.paypal.com/donate/?hosted_button_id=993TN2SAA9GXL" target="_blank"><img src="https://img.shields.io/badge/PayPal-Support_Us-003087?logo=paypal&logoColor=fff" alt="Donate with PayPal" ></a>
 </p>
 
-
 # **ASALI: Modeling and beyond**
-Asali is an open-source code developed for engineers, chemists and students working on the modeling of gas phase mixture.
+Asali is an open-source toolkit designed for engineers, chemists, and students working with gas-phase mixture modeling. 
 
-The GUI version of Asali, thanks to its user-friendly interface, is very helpful for those approaching the modeling of gas phase mixture for the first time. Moreover, its deep interaction with [Cantera](https://cantera.org/) allows more expert users in performing detailed simulations without losing time in coding their own models.
+The **GUI version** provides an accessible and intuitive interface, making it especially useful for users who are beginning to explore gas-phase systems. Its integration with [Cantera](https://cantera.org/) also enables more advanced users to perform equilibrium calculations efficiently without the need to implement mathematical models from scratch.
 
-Instead, the API version of Asali is designed for those approaching the modeling of gas phase mixture with the goal of becoming experts in the field. The API version can be easily integrated in different programming languages and it is the perfect starting point for everyone.
+For users seeking greater flexibility, the **API version** offers a robust foundation that can be easily integrated into various programming languages. It is well suited for those aiming to develop deeper expertise and build customized workflows.
 
-If you are looking for something more advanced and with higher performance, we suggest [OpenSMOKE++](https://www.opensmokepp.polimi.it/) and [Cantera](https://cantera.org/).
+Asali is part of a broader modeling ecosystem. Users may also find value in [MCE](https://www.multicat-solutions.it/), a comprehensive tool for chemical engineering simulations, including reactor modeling. For direct inquiries, please contact [info@multicat-solutions.it](mailto:info@multicat-solutions.it).
+
+
+
 
 # Infos
 |Branch|Code quality|Last commit|Number of commits|
@@ -34,3 +37,10 @@ For any question/issue contact us:
 |Email|Facebook|LinkedIn|
 |:-:|:-:|:-:|
 |ste.rebu@outlook.it|[Asali](https://www.facebook.com/ASALIcode/)|[Asali](https://www.linkedin.com/company/asalicode)|
+# Color Palette
+|Hex|Description|
+|:-:|:-:|
+|#272C26|DARK BLUE|
+|#FAEDCE|LIGHT BEIGE|
+|#E9963D|ORANGE|
+|#67908B|DARK GREEN|

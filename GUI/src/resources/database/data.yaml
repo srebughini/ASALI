@@ -1,0 +1,2223 @@
+generator: ck2yaml
+input-files: [kinetic.kin, thermo.tdc, transport.tra]
+cantera-version: 3.0.0
+date: Mon, 01 Jul 2024 14:51:54 +0200
+
+units: {length: cm, time: s, quantity: mol, activation-energy: cal/mol}
+
+phases:
+- name: gas
+  thermo: ideal-gas
+  elements: [C, H, O, N, Ar, He]
+  species: [AC3H4, CH3COOH, CH3COCH3, C2H3CHO, C2H5CHO, C4H9CHO, AR, C6H5CH2OH,
+    C6H4O2, C6H6, C6H5CHO, C6H5C2H4C6H5, NC4H8, C4H6, C12H8, C2H2, C2H4,
+    C2H6, C3H6, C3H8, C4H2, C4H4, CYC5H4O, C6H5O, CYC6H10-ONE, CYC5H8, CYC6H8,
+    CYC6H12, CYC6H10, CH2CO, CH2O, CH3OH, CH4, CO, CO2, CYC5H6, MCPTD, CRESOL,
+    NC10H20, C6H5CH2C6H5, DIPE, CH3OCH3, CH3CH3-C5H6, C6H5C2H5, NC7H14,
+    NC6H12, C5H9CHO, ETBE, C2H5OH, C2H5OOH, C2H4O, C6H5C2H, BIPHENYL, C14H10,
+    C6H5OH, FLUORENE, C10H8, H2, H2O, H2O2, HE, IC4H8, IC3H7CHO, IC4H10,
+    IC8H18, INDENE, IC3H7OH, IC5H10, IC3H5CHO, MCYC6, CH3CHO, C10H7CH3,
+    CH3OOH, MTBE, N2, C10H7OH, C10H7CHO, NC4H10, NC10H22, NC12H26, NC5H12,
+    NC7H16, NEOC5H12, O2, IC8H16, NC5H10, PC3H4, CH3CO3H, HCO3H, C3H6O,
+    C5H8, C16H10, C6H5C2H3, TAME, TETRALIN, DECALIN, C7H8, XYLENE, NC16H34,
+    N2H4, N2O, NH3, NO, NO2, C3H5OOH, NC3H7OH, N1C4H9OH, N2C4H9OH, MEK,
+    TC4H9OH, IC4H9OH, C4H7OH, C3H5OH, C10H10, BZFUR, TMBENZ, NPBENZ, C6H5OCH3,
+    MB, MCROT, MACRIL, DIBZFUR, DIFENET, C12H22, BENZYNE, C2H2O2, C4H6O2,
+    C5H4O2, C5H8O4, C6H10O5, C8H10O3, HCOOH, GLYCEROL, C4H4O]
+  transport: mixture-averaged
+  state: {T: 300.0, P: 1 atm}
+
+species:
+- name: AC3H4
+  composition: {C: 3, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [1.21562918, 0.0235625008, -1.47340944e-05, 4.68570404e-09, -5.99570704e-13,
+      2.26674413e+04, 15.8066578]
+    - [6.64430238, 0.0114987825, -4.68099585e-06, 9.62334222e-10, -8.24360065e-14,
+      2.07131189e+04, -13.5744541]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 252.0
+    diameter: 4.76
+- name: CH3COOH
+  composition: {C: 2, H: 4, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1410.0, 3500.0]
+    data:
+    - [0.313168541, 0.0325739975, -2.58358905e-05, 1.08925098e-08, -1.87287967e-12,
+      -5.36203653e+04, 23.4914872]
+    - [7.8349162, 0.0112357063, -3.1355807e-06, 1.59502818e-10, 3.0135756e-14,
+      -5.57414981e+04, -15.3809923]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    rotational-relaxation: 2.0
+- name: CH3COCH3
+  composition: {C: 3, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 700.0, 3500.0]
+    data:
+    - [1.03654018, 0.0306714184, -1.42073099e-05, 1.70696939e-09, 4.88764769e-13,
+      -2.75037407e+04, 20.8295464]
+    - [0.822157368, 0.0318964631, -1.68324056e-05, 4.20706053e-09, -4.04124926e-13,
+      -2.74737271e+04, 21.7873546]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 411.0
+    diameter: 4.82
+    rotational-relaxation: 1.0
+- name: C2H3CHO
+  composition: {C: 3, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1340.0, 3500.0]
+    data:
+    - [0.340917666, 0.035120036, -2.88391725e-05, 1.22832633e-08, -2.12384107e-12,
+      -1.16562372e+04, 22.6803642]
+    - [6.7051776, 0.0161222451, -7.57298869e-06, 1.70307233e-09, -1.49924851e-13,
+      -1.33618589e+04, -9.88613663]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 443.2
+    diameter: 4.12
+    rotational-relaxation: 1.0
+- name: C2H5CHO
+  composition: {C: 3, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1140.0, 3500.0]
+    data:
+    - [4.65967589, 0.014169477, 1.4061486e-05, -1.58387612e-08, 4.15675092e-12,
+      -2.49373071e+04, 5.40040975]
+    - [-3.19796156, 0.0417401347, -2.22156952e-05, 5.37596466e-09, -4.9560124e-13,
+      -2.31457657e+04, 44.3385409]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 411.0
+    diameter: 4.82
+    rotational-relaxation: 1.0
+- name: C4H9CHO
+  composition: {C: 5, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 760.0, 3500.0]
+    data:
+    - [5.53299014, 0.024608218, 3.99273421e-05, -5.71930632e-08, 2.09934651e-11,
+      -3.08235837e+04, 5.9541654]
+    - [-1.78433179, 0.0631204386, -3.60836198e-05, 9.4832192e-09, -9.39522544e-13,
+      -2.97113508e+04, 39.2478712]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 500.0
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: AR
+  composition: {Ar: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1490.0, 3500.0]
+    data:
+    - [2.5, -4.0745516e-15, 5.98527266e-18, -3.43074982e-21, 6.74775716e-25,
+      -745.375, 4.366]
+    - [2.5, 7.40336223e-15, -5.56967416e-18, 1.73924876e-21, -1.92673709e-25,
+      -745.375, 4.366]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 136.5
+    diameter: 3.33
+- name: C6H5CH2OH
+  composition: {C: 7, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1450.0, 3500.0]
+    data:
+    - [-6.02884975, 0.0777532977, -6.1048184e-05, 2.48568442e-08, -4.12367417e-12,
+      -1.3385795e+04, 58.5676633]
+    - [12.5818443, 0.0264134519, -7.93799879e-06, 4.38368241e-10, 8.64078959e-14,
+      -1.87828963e+04, -38.1332333]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 622.4
+    diameter: 5.53
+    rotational-relaxation: 1.0
+- name: C6H4O2
+  composition: {C: 6, H: 4, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1410.0, 3500.0]
+    data:
+    - [-5.23446578, 0.077377089, -7.06201498e-05, 3.20580235e-08, -5.66410367e-12,
+      -1.58009124e+04, 52.5540058]
+    - [17.4929577, 0.0129021286, -2.02976642e-06, -3.72417846e-10, 8.59745727e-14,
+      -2.22100459e+04, -64.9015838]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: C6H6
+  composition: {C: 6, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1550.0, 3500.0]
+    data:
+    - [-6.33361145, 0.0693997541, -5.72004958e-05, 2.35161421e-08, -3.76756698e-12,
+      9217.1486, 50.1102066]
+    - [15.7365829, 0.0124444139, -2.08242468e-06, -1.90555168e-10, 5.6093865e-14,
+      2375.38837, -66.0380946]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: C6H5CHO
+  composition: {C: 7, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1770.0, 3500.0]
+    data:
+    - [-6.5570598, 0.079103374, -5.95430351e-05, 2.18795937e-08, -3.13384602e-12,
+      -5636.72287, 59.3816475]
+    - [27.358848, 2.45725463e-03, 5.41130341e-06, -2.58531717e-09, 3.21649872e-13,
+      -1.76429542e+04, -123.608292]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 622.4
+    diameter: 5.53
+    rotational-relaxation: 1.0
+- name: C6H5C2H4C6H5
+  composition: {C: 14, H: 14}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-10.5589612, 0.145574466, -1.13305759e-04, 4.60187721e-08, -7.65599251e-12,
+      1.28662974e+04, 82.2691715]
+    - [22.9999925, 0.0523551496, -1.62023052e-05, 1.06346924e-09, 1.48747565e-13,
+      3201.31872, -91.8704227]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 783.8
+    diameter: 6.64
+    rotational-relaxation: 1.0
+- name: NC4H8
+  composition: {C: 4, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1170.0, 3500.0]
+    data:
+    - [-1.05707773, 0.0463544964, -3.23509995e-05, 1.30416212e-08, -2.37313546e-12,
+      -1554.78186, 30.5429525]
+    - [2.98709814, 0.0325282541, -1.46250479e-05, 2.94136385e-09, -2.14960813e-13,
+      -2501.11901, 10.3971909]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 355.0
+    diameter: 4.65
+    rotational-relaxation: 1.0
+- name: C4H6
+  composition: {C: 4, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1550.0, 3500.0]
+    data:
+    - [-1.04533857, 0.0424894928, -3.1255751e-05, 1.2000184e-08, -1.85870818e-12,
+      1.19186275e+04, 27.9839806]
+    - [9.55395345, 0.0151364811, -4.78509457e-06, 6.14955374e-10, -2.23809938e-14,
+      8632.84693, -27.7966685]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+- name: C12H8
+  composition: {C: 12, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [-9.28199067, 0.122843712, -1.08233982e-04, 4.7793305e-08, -8.28164096e-12,
+      2.91585594e+04, 64.399484]
+    - [25.9652189, 0.024250119, -4.81412894e-06, -4.21078741e-10, 1.47447105e-13,
+      1.90778575e+04, -118.254954]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 689.8
+    diameter: 6.5
+    rotational-relaxation: 1.0
+- name: C2H2
+  composition: {C: 2, H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 970.0, 3500.0]
+    data:
+    - [1.83812159, 0.0164533925, -1.93408005e-05, 1.24068047e-08, -3.14627391e-12,
+      2.61425043e+04, 9.54239252]
+    - [4.61193612, 5.01498204e-03, -1.65253694e-06, 2.49922532e-10, -1.30568636e-14,
+      2.56043843e+04, -3.75517096]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 209.0
+    diameter: 4.1
+    rotational-relaxation: 2.5
+- name: C2H4
+  composition: {C: 2, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.266161697, 0.0194272328, -1.14541158e-05, 3.49691054e-09, -4.39228267e-13,
+      5453.99123, 19.5264329]
+    - [4.49333672, 0.0100335105, -3.62601388e-06, 5.97613541e-10, -3.65481279e-14,
+      3932.20822, -3.3519202]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 280.8
+    diameter: 3.971
+    rotational-relaxation: 1.5
+- name: C2H6
+  composition: {C: 2, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-0.274461309, 0.025642243, -1.44720586e-05, 4.30555164e-09, -5.30740425e-13,
+      -1.1046436e+04, 22.0452775]
+    - [4.39373503, 0.0152684734, -5.82725051e-06, 1.10377088e-09, -8.60486537e-14,
+      -1.27269866e+04, -3.21997495]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 252.3
+    diameter: 4.302
+    rotational-relaxation: 1.5
+- name: C3H6
+  composition: {C: 3, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-0.261886761, 0.0320704567, -2.02723602e-05, 6.66956086e-09, -8.90307969e-13,
+      1261.57099, 23.7162283]
+    - [9.21549195, 0.0110096151, -2.72165887e-06, 1.6930112e-10, 1.25058839e-14,
+      -2150.28535, -27.5773224]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 307.8
+    diameter: 4.14
+    rotational-relaxation: 1.0
+- name: C3H8
+  composition: {C: 3, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.25512725, 0.0404983533, -2.56340099e-05, 8.45078153e-09, -1.13046094e-12,
+      -1.37271555e+04, 28.6189366]
+    - [10.8596364, 0.0135766563, -3.19926248e-06, 1.41615801e-10, 2.35898562e-14,
+      -1.80884704e+04, -36.9486914]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 303.4
+    diameter: 4.81
+    rotational-relaxation: 1.0
+- name: C4H2
+  composition: {C: 4, H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1050.0, 3500.0]
+    data:
+    - [2.90907865, 0.0282837048, -3.29747633e-05, 1.97614098e-08, -4.63129497e-12,
+      5.43474279e+04, 6.37839155]
+    - [8.50275797, 6.97445022e-03, -2.53297106e-06, 4.33287765e-10, -2.93611469e-14,
+      5.31727553e+04, -20.8807943]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+- name: C4H4
+  composition: {C: 4, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1190.0, 3500.0]
+    data:
+    - [0.403184847, 0.0366937767, -3.27936077e-05, 1.57416564e-08, -3.10035746e-12,
+      3.27321448e+04, 21.5965194]
+    - [6.36293592, 0.016661, -7.5422085e-06, 1.59521425e-09, -1.28415834e-13,
+      3.1313724e+04, -8.19255288]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+- name: CYC5H4O
+  composition: {C: 5, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1260.0, 3500.0]
+    data:
+    - [-5.14379339, 0.0604552342, -5.17455024e-05, 2.38195872e-08, -4.52940274e-12,
+      5981.66715, 48.3481227]
+    - [6.34459579, 0.0239841575, -8.32755388e-06, 8.47127653e-10, 2.86249484e-14,
+      3086.59308, -9.73181554]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: C6H5O
+  composition: {C: 6, H: 5, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1320.0, 3500.0]
+    data:
+    - [-4.80707078, 0.0732685627, -6.95172935e-05, 3.28617518e-08, -6.08232652e-12,
+      5225.65416, 45.8618544]
+    - [13.4428169, 0.0179658729, -6.67332779e-06, 1.12237517e-09, -7.10809502e-14,
+      407.68382, -47.250052]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: CYC6H10-ONE
+  composition: {C: 6, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-6.46490379, 0.0804253413, -5.21157073e-05, 1.65435078e-08, -2.08456175e-12,
+      -2.97200285e+04, 55.0054734]
+    - [11.5965428, 0.0402887933, -1.86685839e-05, 4.15568433e-09, -3.64030709e-13,
+      -3.62221493e+04, -42.7468434]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 568.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: CYC5H8
+  composition: {C: 5, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1460.0, 3500.0]
+    data:
+    - [-6.5686398, 0.0682031726, -5.30140751e-05, 2.12327757e-08, -3.43229252e-12,
+      3281.2692, 54.2801525]
+    - [8.43099915, 0.0271082714, -1.07932862e-05, 1.95387666e-09, -1.31111174e-13,
+      -1098.62538, -23.7608447]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: CYC6H8
+  composition: {C: 6, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1490.0, 3500.0]
+    data:
+    - [-6.91358136, 0.0763364895, -5.84944135e-05, 2.25336547e-08, -3.48567018e-12,
+      1.038345e+04, 54.027616]
+    - [8.6677226, 0.0345074855, -1.6384678e-05, 3.69260975e-09, -3.24421026e-13,
+      5740.22139, -27.3566208]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: CYC6H12
+  composition: {C: 6, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-9.43363126, 0.0894163897, -5.85630607e-05, 1.87341134e-08, -2.37225913e-12,
+      -1.55950776e+04, 67.2000574]
+    - [11.2578097, 0.0434354098, -2.02455774e-05, 4.54245292e-09, -4.0119517e-13,
+      -2.30439963e+04, -44.7863376]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: CYC6H10
+  composition: {C: 6, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-6.01517655, 0.0746974737, -4.97438791e-05, 1.64210093e-08, -2.15243611e-12,
+      -1675.89399, 52.1114707]
+    - [15.1624858, 0.0276360017, -1.05259858e-05, 1.89586361e-09, -1.35054773e-13,
+      -9299.85245, -62.5064559]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: CH2CO
+  composition: {C: 2, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1410.0, 3500.0]
+    data:
+    - [2.49197065, 0.0158706066, -1.26271528e-05, 5.33991909e-09, -9.11597189e-13,
+      -7584.86732, 10.6694385]
+    - [6.03578795, 5.81722422e-03, -1.93206512e-06, 2.83140054e-10, -1.50051612e-14,
+      -8584.2238, -7.6450506]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    rotational-relaxation: 2.0
+- name: CH2O
+  composition: {C: 1, H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 930.0, 3500.0]
+    data:
+    - [3.13463322, 1.80037482e-03, 8.80336316e-06, -8.92465077e-09, 2.63639286e-12,
+      -1.50171301e+04, 7.5792058]
+    - [1.06639253, 0.0106960337, -5.54447373e-06, 1.36053696e-09, -1.28442554e-13,
+      -1.46324373e+04, 17.4071779]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 498.0
+    diameter: 3.59
+    rotational-relaxation: 2.0
+- name: CH3OH
+  composition: {C: 1, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 700.0, 3500.0]
+    data:
+    - [2.88895785, 4.85657077e-03, 1.59348814e-05, -2.08247943e-08, 7.94986176e-12,
+      -2.5371646e+04, 10.3674509]
+    - [0.934193, 0.0160266556, -8.00101466e-06, 1.97129714e-09, -1.91599484e-13,
+      -2.50979789e+04, 19.1008457]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.8
+    diameter: 3.626
+    rotational-relaxation: 1.0
+- name: CH4
+  composition: {C: 1, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1070.0, 3500.0]
+    data:
+    - [2.85765313, 2.535711e-03, 9.67916346e-06, -8.6988087e-09, 2.2559977e-12,
+      -1.00357904e+04, 4.98969392]
+    - [-0.282321416, 0.0142739336, -6.77628877e-06, 1.55380951e-09, -1.39473841e-13,
+      -9363.83584, 20.3507024]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 141.4
+    diameter: 3.746
+    polarizability: 2.6
+    rotational-relaxation: 13.0
+- name: CO
+  composition: {C: 1, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 3500.0]
+    data:
+    - [3.81890943, -2.40697343e-03, 5.75226966e-06, -4.2862983e-09, 1.11070419e-12,
+      -1.43689533e+04, 2.4999206]
+    - [2.68595014, 2.12486373e-03, -1.04548608e-06, 2.45538864e-10, -2.22550981e-14,
+      -1.41423615e+04, 7.96579426]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 98.1
+    diameter: 3.65
+    polarizability: 1.95
+    rotational-relaxation: 1.8
+- name: CO2
+  composition: {C: 1, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1620.0, 3500.0]
+    data:
+    - [2.44892797, 8.54596135e-03, -6.60570102e-06, 2.52769046e-09, -3.80099332e-13,
+      -4.83922906e+04, 9.47557732]
+    - [5.07830985, 2.05366041e-03, -5.94311265e-07, 5.38675131e-11, 1.66346855e-15,
+      -4.92442103e+04, -4.4781529]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 244.0
+    diameter: 3.763
+    polarizability: 2.65
+    rotational-relaxation: 2.1
+- name: CYC5H6
+  composition: {C: 5, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1020.0, 3500.0]
+    data:
+    - [-6.32922867, 0.0693993183, -6.82623529e-05, 3.6396887e-08, -8.08274648e-12,
+      1.54866915e+04, 51.1475893]
+    - [1.70141558, 0.0379065957, -2.19495256e-05, 6.12706526e-09, -6.63672518e-13,
+      1.38484401e+04, 12.2453451]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: MCPTD
+  composition: {C: 6, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1540.0, 3500.0]
+    data:
+    - [-6.52219774, 0.0736742157, -5.67229776e-05, 2.19470452e-08, -3.37525585e-12,
+      1.17551907e+04, 53.2489849]
+    - [11.4154101, 0.0270830264, -1.13419491e-05, 2.30157826e-09, -1.86056675e-13,
+      6230.40748, -41.0347479]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: CRESOL
+  composition: {C: 7, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1310.0, 3500.0]
+    data:
+    - [-4.41843936, 0.0843645604, -7.22335735e-05, 3.22565297e-08, -5.83733025e-12,
+      -1.73470426e+04, 45.4334869]
+    - [12.2673687, 0.0334155283, -1.38949871e-05, 2.56768166e-09, -1.71519559e-13,
+      -2.17187243e+04, -39.5715124]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 621.1
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: NC10H20
+  composition: {C: 10, H: 20}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-2.3141771, 0.11697313, -7.49614029e-05, 2.42311952e-08, -3.14284562e-12,
+      -2.023337e+04, 48.8909878]
+    - [28.2971791, 0.0489478938, -1.82737062e-05, 3.23575201e-09, -2.26811843e-13,
+      -3.12534582e+04, -116.784058]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 540.98
+    diameter: 7.15
+    rotational-relaxation: 1.0
+- name: C6H5CH2C6H5
+  composition: {C: 13, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-11.8613481, 0.140766591, -1.14657429e-04, 4.79865153e-08, -8.0926049e-12,
+      1.47391331e+04, 86.6539117]
+    - [23.660026, 0.0420961068, -1.18756749e-05, 4.02369975e-10, 1.68531444e-13,
+      4508.9773, -97.6688099]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 712.6
+    diameter: 6.89
+    rotational-relaxation: 1.0
+- name: DIPE
+  composition: {C: 6, H: 14, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1380.0, 3500.0]
+    data:
+    - [-2.50745274, 0.0895258138, -6.5608582e-05, 2.51827303e-08, -4.07435404e-12,
+      -4.21642955e+04, 39.7144256]
+    - [11.1573928, 0.0499175659, -2.25561386e-05, 4.38444843e-09, -3.06549364e-13,
+      -4.59357929e+04, -30.6117763]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 432.0
+    diameter: 6.0
+    rotational-relaxation: 1.0
+- name: CH3OCH3
+  composition: {C: 2, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 700.0, 3500.0]
+    data:
+    - [1.74097325, 0.0219784899, -2.684464e-06, -7.35712603e-09, 3.52945045e-12,
+      -2.33041715e+04, 15.7886515]
+    - [0.815389478, 0.02726754, -1.40181429e-05, 3.43685384e-09, -3.25542356e-13,
+      -2.31745898e+04, 19.9239256]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 303.4
+    diameter: 4.81
+    rotational-relaxation: 1.0
+- name: CH3CH3-C5H6
+  composition: {C: 7, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1310.0, 3500.0]
+    data:
+    - [-1.29247813, 0.0836265847, -6.88720094e-05, 3.1178247e-08, -5.73671653e-12,
+      -1829.80473, 31.1918393]
+    - [15.3755546, 0.0327318283, -1.05955708e-05, 1.5210263e-09, -7.69415914e-14,
+      -6196.8293, -53.7226046]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: C6H5C2H5
+  composition: {C: 8, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-6.11786341, 0.0908981829, -7.15893461e-05, 2.93537965e-08, -4.90703025e-12,
+      1869.66902, 53.9044909]
+    - [15.399243, 0.0311284429, -9.32920034e-06, 5.29654938e-10, 9.71609974e-14,
+      -4327.25762, -57.749174]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 523.6
+    diameter: 5.96
+    rotational-relaxation: 1.0
+- name: NC7H14
+  composition: {C: 7, H: 14}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.22797309, 0.0792825302, -4.98360912e-05, 1.58931983e-08, -2.04231877e-12,
+      -1.17316124e+04, 36.2789089]
+    - [18.2668105, 0.035960789, -1.37346402e-05, 2.5222905e-09, -1.8524824e-13,
+      -1.87497345e+04, -69.2309265]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 459.98
+    diameter: 6.31
+    rotational-relaxation: 1.0
+- name: NC6H12
+  composition: {C: 6, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1780.0, 3500.0]
+    data:
+    - [-1.85358315, 0.0725469181, -5.02818725e-05, 1.80498673e-08, -2.58221827e-12,
+      -7315.03024, 37.2569567]
+    - [28.0951654, 5.24635942e-03, 6.43208138e-06, -3.19131389e-09, 4.01093698e-13,
+      -1.79767847e+04, -124.497292]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 412.3
+    diameter: 5.349
+    rotational-relaxation: 1.0
+- name: C5H9CHO
+  composition: {C: 6, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-6.51363638, 0.0805969136, -5.22136702e-05, 1.64827443e-08, -2.06177886e-12,
+      -2.97152777e+04, 55.9285088]
+    - [10.8416239, 0.0420296686, -2.00742994e-05, 4.57927363e-09, -4.08519043e-13,
+      -3.59631714e+04, -38.0017802]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 568.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: ETBE
+  composition: {C: 6, H: 14, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1280.0, 3500.0]
+    data:
+    - [-3.48005604, 0.0940933039, -7.47637778e-05, 3.24614225e-08, -5.88415307e-12,
+      -4.21574031e+04, 42.950277]
+    - [11.6559136, 0.0467933987, -1.93342014e-05, 3.5918514e-09, -2.45564975e-13,
+      -4.60322114e+04, -33.8084939]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 432.0
+    diameter: 6.0
+    rotational-relaxation: 1.0
+- name: C2H5OH
+  composition: {C: 2, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1380.0, 3500.0]
+    data:
+    - [0.248921589, 0.0310325255, -2.06429833e-05, 7.63017938e-09, -1.24701426e-12,
+      -2.96015836e+04, 24.1176395]
+    - [4.8295947, 0.0177552121, -6.211121e-06, 6.58265206e-10, 1.60136692e-14,
+      -3.08658494e+04, 0.543180378]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 362.6
+    diameter: 4.53
+    rotational-relaxation: 1.5
+- name: C2H5OOH
+  composition: {C: 2, H: 6, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1590.0, 3500.0]
+    data:
+    - [1.46294225, 0.0356361824, -2.58422768e-05, 9.79712822e-09, -1.50801099e-12,
+      -2.15202894e+04, 19.2111233]
+    - [11.5652199, 0.0102216474, -1.86630047e-06, -2.55692055e-10, 7.26211298e-14,
+      -2.47328137e+04, -34.2112965]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 362.6
+    diameter: 4.53
+    rotational-relaxation: 1.5
+- name: C2H4O
+  composition: {C: 2, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-1.76683146, 0.031124796, -2.31168173e-05, 9.09246001e-09, -1.49102113e-12,
+      -7027.31487, 30.9356489]
+    - [4.77217531, 0.0129608883, -4.19608017e-06, 3.3285947e-10, 2.97428516e-14,
+      -8910.54882, -2.99568268]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 362.6
+    diameter: 4.53
+    rotational-relaxation: 1.5
+- name: C6H5C2H
+  composition: {C: 8, H: 6}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1330.0, 3500.0]
+    data:
+    - [-3.73085925, 0.0789962135, -7.07152163e-05, 3.20856256e-08, -5.77002888e-12,
+      3.50561794e+04, 40.364406]
+    - [13.6301627, 0.0267826138, -1.18276978e-05, 2.5680725e-09, -2.21616638e-13,
+      3.04381476e+04, -48.3434869]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 534.3
+    diameter: 5.71
+    dipole: 0.77
+    rotational-relaxation: 1.0
+- name: BIPHENYL
+  composition: {C: 12, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1450.0, 3500.0]
+    data:
+    - [-10.5625108, 0.131145193, -1.12591903e-04, 4.86123345e-08, -8.27787353e-12,
+      2.00931231e+04, 72.6686556]
+    - [26.7692078, 0.0281611415, -6.05667723e-06, -3.69378426e-10, 1.67249382e-13,
+      9266.92468, -121.306413]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 676.5
+    diameter: 6.31
+    rotational-relaxation: 1.0
+- name: C14H10
+  composition: {C: 14, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [-12.1905872, 0.150644375, -1.33225141e-04, 5.8920095e-08, -1.02156009e-11,
+      2.30883669e+04, 77.3445897]
+    - [31.3141255, 0.0289528714, -5.5767099e-06, -5.89662906e-10, 1.88202945e-13,
+      1.06460191e+04, -148.101025]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 772.0
+    diameter: 6.96
+    polarizability: 38.8
+    rotational-relaxation: 1.0
+- name: C6H5OH
+  composition: {C: 6, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1330.0, 3500.0]
+    data:
+    - [-5.47325435, 0.0787541571, -7.33732049e-05, 3.42982836e-08, -6.29384372e-12,
+      -1.28778595e+04, 48.584383]
+    - [13.9867712, 0.0202277643, -7.365995e-06, 1.21196288e-09, -7.46105018e-14,
+      -1.80542263e+04, -50.8485811]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: FLUORENE
+  composition: {C: 13, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-14.346512, 0.149290089, -1.31447296e-04, 5.76669078e-08, -9.9189231e-12,
+      2.22709565e+04, 88.4167006]
+    - [29.1248872, 0.0285362024, -5.66199729e-06, -5.67026725e-10, 1.91134972e-13,
+      9751.19358, -137.159218]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 712.6
+    diameter: 6.89
+    rotational-relaxation: 1.0
+- name: C10H8
+  composition: {C: 10, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1370.0, 3500.0]
+    data:
+    - [-8.71832426, 0.108564074, -9.40254318e-05, 4.10014902e-08, -7.10574258e-12,
+      1.66434413e+04, 61.5987876]
+    - [15.1184828, 0.0389675576, -1.78248659e-05, 3.92092279e-09, -3.39215689e-13,
+      1.01121562e+04, -60.9041102]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 630.4
+    diameter: 6.18
+    polarizability: 16.5
+    rotational-relaxation: 1.0
+- name: H2
+  composition: {H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 750.0, 3500.0]
+    data:
+    - [3.08866003, 2.53968841e-03, -5.72992027e-06, 5.71701843e-09, -1.9886597e-12,
+      -992.148124, -2.43823459]
+    - [3.73110902, -8.86706214e-04, 1.12286897e-06, -3.74349782e-10, 4.17963674e-14,
+      -1088.51547, -5.35285855]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    polarizability: 0.79
+    rotational-relaxation: 280.0
+- name: H2O
+  composition: {H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1590.0, 3500.0]
+    data:
+    - [4.03530937, -6.87559833e-04, 2.86629214e-06, -1.5055236e-09, 2.5500679e-13,
+      -3.02783278e+04, -0.199201641]
+    - [2.30940463, 3.65433887e-03, -1.22983871e-06, 2.11931683e-10, -1.50333493e-14,
+      -2.97294901e+04, 8.92765177]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    rotational-relaxation: 4.0
+- name: H2O2
+  composition: {H: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1180.0, 3500.0]
+    data:
+    - [2.91896355, 9.92397296e-03, -8.56537418e-06, 4.23738723e-09, -8.61930485e-13,
+      -1.76139998e+04, 8.76340177]
+    - [4.56163072, 4.35560969e-03, -1.48694629e-06, 2.38275424e-10, -1.46610352e-14,
+      -1.80016693e+04, 0.566597119]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 107.4
+    diameter: 3.458
+    rotational-relaxation: 3.8
+- name: HE
+  composition: {He: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1490.0, 3500.0]
+    data:
+    - [2.5, -4.0745516e-15, 5.98527266e-18, -3.43074982e-21, 6.74775716e-25,
+      -745.375, 0.928723974]
+    - [2.5, 7.40336223e-15, -5.56967416e-18, 1.73924876e-21, -1.92673709e-25,
+      -745.375, 0.928723974]
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 10.2
+    diameter: 2.576
+- name: IC4H8
+  composition: {C: 4, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.717301598, 0.0401434653, -2.33509125e-05, 6.92571993e-09, -8.39035734e-13,
+      -3723.72397, 20.1415164]
+    - [7.63433967, 0.0247722696, -1.05415828e-05, 2.18152373e-09, -1.80119594e-13,
+      -6213.85768, -17.2949366]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 355.0
+    diameter: 4.65
+    rotational-relaxation: 1.0
+- name: IC3H7CHO
+  composition: {C: 4, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-0.344732114, 0.0493031741, -3.17620591e-05, 1.02831688e-08, -1.33293668e-12,
+      -2.75987585e+04, 28.6708279]
+    - [12.5375038, 0.0206759832, -7.90606663e-06, 1.44761601e-09, -1.05776578e-13,
+      -3.22363635e+04, -41.0505202]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 455.0
+    diameter: 4.65
+    rotational-relaxation: 1.0
+- name: IC4H10
+  composition: {C: 4, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1260.0, 3500.0]
+    data:
+    - [-1.85965328, 0.055800794, -3.9753719e-05, 1.61302002e-08, -2.91200067e-12,
+      -1.78430198e+04, 30.9610166]
+    - [5.51955794, 0.0323747266, -1.18655436e-05, 1.37455178e-09, 1.57073476e-14,
+      -1.9702581e+04, -6.34483422]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 352.0
+    diameter: 5.24
+    rotational-relaxation: 1.0
+- name: IC8H18
+  composition: {C: 8, H: 18}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1390.0, 3500.0]
+    data:
+    - [-5.96912081, 0.12087217, -9.61538217e-05, 4.13489289e-08, -7.18982936e-12,
+      -3.02675122e+04, 52.7954202]
+    - [20.6155885, 0.0443694094, -1.35968858e-05, 1.75327622e-09, -6.8309088e-14,
+      -3.76580614e+04, -84.2148793]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 494.0
+    diameter: 6.17
+    rotational-relaxation: 1.0
+- name: INDENE
+  composition: {C: 9, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1450.0, 3500.0]
+    data:
+    - [-7.32592199, 0.0939590155, -7.59193723e-05, 3.15408912e-08, -5.28251639e-12,
+      1.8247496e+04, 57.3325203]
+    - [16.5348693, 0.0281361431, -7.82674558e-06, 2.33936401e-10, 1.15234436e-13,
+      1.13278665e+04, -66.6478053]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 588.6
+    diameter: 5.96
+    dipole: 0.65
+    rotational-relaxation: 1.0
+- name: IC3H7OH
+  composition: {C: 3, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1310.0, 3500.0]
+    data:
+    - [-0.30057406, 0.0460324859, -3.35451681e-05, 1.36391848e-08, -2.36491132e-12,
+      -3.46525711e+04, 26.8645272]
+    - [6.28069615, 0.0259370043, -1.05350747e-05, 1.9292136e-09, -1.30183993e-13,
+      -3.63768639e+04, -6.66341882]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 482.146548
+    diameter: 5.008549665
+    dipole: 1.66
+    polarizability: 6.74
+    rotational-relaxation: 1.0
+- name: IC5H10
+  composition: {C: 5, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.59634535, 0.0598666259, -4.0889311e-05, 1.44173977e-08, -2.01088244e-12,
+      -4402.76906, 34.6986831]
+    - [21.3459841, 8.88367161e-03, 1.59648418e-06, -1.31808203e-09, 1.74600856e-13,
+      -1.26620076e+04, -89.4699897]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: IC3H5CHO
+  composition: {C: 4, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1370.0, 3500.0]
+    data:
+    - [0.692941977, 0.0462513206, -3.65372847e-05, 1.5091062e-08, -2.54027204e-12,
+      -1.57251765e+04, 21.3235423]
+    - [8.9660576, 0.0220962385, -1.00901145e-05, 2.22139279e-09, -1.91792264e-13,
+      -1.79920102e+04, -21.1939239]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 357.0
+    diameter: 5.18
+    rotational-relaxation: 1.0
+- name: MCYC6
+  composition: {C: 7, H: 14}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-10.1006358, 0.10321827, -6.84441744e-05, 2.23157154e-08, -2.88158149e-12,
+      -1.95313967e+04, 71.0947481]
+    - [16.7194568, 0.0436180644, -1.87773363e-05, 3.92059023e-09, -3.26702984e-13,
+      -2.918663e+04, -74.0611877]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 495.3
+    diameter: 5.68
+    dipole: 0.43
+    polarizability: 12.3
+    rotational-relaxation: 1.0
+- name: CH3CHO
+  composition: {C: 2, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.991751377, 0.0223500313, -1.35975169e-05, 4.27666307e-09, -5.48877497e-13,
+      -2.10792434e+04, 19.9667711]
+    - [6.27018126, 0.0106201871, -3.82264672e-06, 6.56340789e-10, -4.60549581e-14,
+      -2.29794782e+04, -8.60119259]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 436.0
+    diameter: 3.97
+    rotational-relaxation: 2.0
+- name: C10H7CH3
+  composition: {C: 11, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1400.0, 3500.0]
+    data:
+    - [-7.85505905, 0.11654253, -9.56518805e-05, 3.98274963e-08, -6.64977617e-12,
+      1.19956584e+04, 59.426498]
+    - [15.9718633, 0.048465609, -2.27123224e-05, 5.09437338e-09, -4.47432797e-13,
+      5324.12011, -63.5417268]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 660.0
+    diameter: 6.35
+    rotational-relaxation: 1.0
+- name: CH3OOH
+  composition: {C: 1, H: 4, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [5.93430876, 0.0104356674, -3.01974623e-06, 1.41830001e-10, 3.83264515e-14,
+      -1.81342471e+04, -2.80822136]
+    - [5.50146514, 0.0113975421, -3.82130848e-06, 4.3870491e-10, -2.90617476e-15,
+      -1.79784234e+04, -0.465581411]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.8
+    diameter: 3.626
+    rotational-relaxation: 1.0
+- name: MTBE
+  composition: {C: 5, H: 12, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1320.0, 3500.0]
+    data:
+    - [-1.85856423, 0.0756777188, -5.69978068e-05, 2.3468956e-08, -4.06899357e-12,
+      -3.78356985e+04, 33.556411]
+    - [9.85250854, 0.0401896195, -1.66704212e-05, 3.10158953e-09, -2.11537799e-13,
+      -4.09274217e+04, -26.1941109]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 392.0
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: N2
+  composition: {N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1050.0, 3500.0]
+    data:
+    - [3.85321336, -2.44053349e-03, 5.35160392e-06, -3.75608397e-09, 9.2268433e-13,
+      -1079.6955, 1.60217419]
+    - [2.71287897, 1.90359754e-03, -8.54297556e-07, 1.84170938e-10, -1.54715988e-14,
+      -840.225273, 7.15926558]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.53
+    diameter: 3.621
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+- name: C10H7OH
+  composition: {C: 10, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1730.0, 3500.0]
+    data:
+    - [-3.09194614, 0.0923929369, -6.74411581e-05, 2.40273261e-08, -3.35424965e-12,
+      -5705.14482, 37.9602738]
+    - [26.1818224, 0.0247079229, -8.75472975e-06, 1.41213209e-09, -8.61580367e-14,
+      -1.58338687e+04, -119.314317]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 663.45
+    diameter: 6.362
+    rotational-relaxation: 1.0
+- name: C10H7CHO
+  composition: {C: 11, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.80645208, 0.0920572182, -6.44705267e-05, 2.19638908e-08, -2.93127915e-12,
+      -274.844971, 33.9811053]
+    - [27.6873866, 0.0265153545, -9.8523069e-06, 1.73492056e-09, -1.21699947e-13,
+      -1.08926269e+04, -125.645702]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 663.45
+    diameter: 6.362
+    rotational-relaxation: 1.0
+- name: NC4H10
+  composition: {C: 4, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.20836758, 0.0526137081, -3.3970564e-05, 1.13561294e-08, -1.53219963e-12,
+      -1.68537208e+04, 29.8384958]
+    - [15.4355362, 0.0156272553, -3.14852e-06, -5.94424182e-11, 5.32964635e-14,
+      -2.28455262e+04, -60.2417835]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 352.0
+    diameter: 5.24
+    rotational-relaxation: 1.0
+- name: NC10H22
+  composition: {C: 10, H: 22}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-2.17870143, 0.122917862, -7.81119243e-05, 2.51381893e-08, -3.25178473e-12,
+      -3.42952643e+04, 47.55172]
+    - [29.2878918, 0.052992099, -1.98404553e-05, 3.5561637e-09, -2.54281184e-13,
+      -4.56232379e+04, -122.752047]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 540.98
+    diameter: 7.15
+    rotational-relaxation: 1.0
+- name: NC12H26
+  composition: {C: 12, H: 26}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-2.66627705, 0.147343892, -9.43301934e-05, 3.05488933e-08, -3.97016449e-12,
+      -4.00651514e+04, 53.203335]
+    - [36.1414095, 0.0611045883, -2.24641073e-05, 3.9318244e-09, -2.73349362e-13,
+      -5.40359186e+04, -156.83196]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 580.0
+    diameter: 7.6
+    rotational-relaxation: 1.0
+- name: NC5H12
+  composition: {C: 5, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-1.97000865, 0.0665997861, -4.45783403e-05, 1.54454657e-08, -2.12245414e-12,
+      -1.97055401e+04, 35.1537401]
+    - [21.2559082, 0.0149866375, -1.56738312e-06, -4.84518435e-10, 9.00436509e-14,
+      -2.80668702e+04, -90.5497671]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 392.0
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: NC7H16
+  composition: {C: 7, H: 16}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-2.76912812, 0.0925430866, -6.31219974e-05, 2.21462028e-08, -3.06437509e-12,
+      -2.54722127e+04, 42.221823]
+    - [31.069612, 0.0173458864, -4.57663884e-07, -1.06280964e-09, 1.59098857e-13,
+      -3.76541592e+04, -140.920497]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 459.98
+    diameter: 6.31
+    rotational-relaxation: 1.0
+- name: NEOC5H12
+  composition: {C: 5, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1700.0, 3500.0]
+    data:
+    - [-2.6246346, 0.0707864446, -4.84369376e-05, 1.6795768e-08, -2.33138901e-12,
+      -2.22478177e+04, 32.5342362]
+    - [15.8220811, 0.0273824077, -1.01392581e-05, 1.77707009e-09, -1.22756971e-13,
+      -2.8519701e+04, -66.2488521]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 392.0
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: O2
+  composition: {O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 760.0, 3500.0]
+    data:
+    - [3.4603508, -8.85011121e-04, 5.15281056e-06, -5.40712413e-09, 1.87809542e-12,
+      -1029.42573, 5.02236126]
+    - [2.81750648, 2.49838007e-03, -1.52493521e-06, 4.50547608e-10, -4.87702792e-14,
+      -931.713392, 7.94729337]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    polarizability: 1.6
+    rotational-relaxation: 3.8
+- name: IC8H16
+  composition: {C: 8, H: 16}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1400.0, 3500.0]
+    data:
+    - [-5.35586581, 0.110622059, -8.69521729e-05, 3.69705048e-08, -6.36990285e-12,
+      -1.56875145e+04, 51.1323811]
+    - [18.8616063, 0.0414292819, -1.28170544e-05, 1.66806736e-09, -6.58961711e-14,
+      -2.24684067e+04, -73.8514296]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 494.0
+    diameter: 6.17
+    rotational-relaxation: 1.0
+- name: NC5H10
+  composition: {C: 5, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-0.689551964, 0.0546638348, -3.33910611e-05, 1.03751453e-08, -1.30620882e-12,
+      -5970.63504, 30.3853541]
+    - [11.1929736, 0.0282582223, -1.13863841e-05, 2.22526491e-09, -1.74280993e-13,
+      -1.02483443e+04, -33.9253533]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: PC3H4
+  composition: {C: 3, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 920.0, 3500.0]
+    data:
+    - [1.35943188, 0.0253869187, -2.11228852e-05, 1.09324785e-08, -2.57374996e-12,
+      2.09309378e+04, 15.350004]
+    - [3.0415659, 0.0180732925, -9.19849468e-06, 2.29161583e-09, -2.25689445e-13,
+      2.06214251e+04, 7.37493873]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 252.0
+    diameter: 4.76
+    rotational-relaxation: 1.0
+- name: CH3CO3H
+  composition: {C: 2, H: 4, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1760.0, 3500.0]
+    data:
+    - [3.62388957, 0.0285698467, -2.07519902e-05, 7.73646324e-09, -1.13354234e-12,
+      -4.27865299e+04, 12.1478877]
+    - [15.4960865, 1.58758106e-03, 2.24425901e-06, -9.74237206e-10, 1.03773065e-13,
+      -4.69655432e+04, -51.8401164]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 443.2
+    diameter: 4.12
+    rotational-relaxation: 1.0
+- name: HCO3H
+  composition: {C: 1, H: 2, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1750.0, 3500.0]
+    data:
+    - [2.47434199, 0.0216898607, -1.63512235e-05, 5.87745807e-09, -8.18701091e-13,
+      -3.54892796e+04, 17.283547]
+    - [10.0230668, 4.43563253e-03, -1.56188514e-06, 2.43424395e-10, -1.38391379e-14,
+      -3.81313332e+04, -23.3590722]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 443.2
+    diameter: 4.12
+    rotational-relaxation: 1.0
+- name: C3H6O
+  composition: {C: 3, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1720.0, 3500.0]
+    data:
+    - [-0.0999780843, 0.0352621481, -1.97932767e-05, 5.61555868e-09, -6.88932126e-13,
+      -1.25581031e+04, 25.3116313]
+    - [6.42754902, 0.0200818525, -6.55464685e-06, 4.84306793e-10, 5.68893699e-14,
+      -1.48035725e+04, -9.71995026]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 411.0
+    diameter: 4.82
+    rotational-relaxation: 1.0
+- name: C5H8
+  composition: {C: 5, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [1.19183502, 0.0468276543, -3.12245763e-05, 1.14435811e-08, -1.82614328e-12,
+      6900.73958, 16.2025638]
+    - [8.95829159, 0.0251033002, -8.43679234e-06, 8.19905621e-10, 3.11426511e-14,
+      4679.533, -24.0439628]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 408.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: C16H10
+  composition: {C: 16, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [-14.3149515, 0.169106058, -1.51409692e-04, 6.73946823e-08, -1.17120082e-11,
+      2.56527702e+04, 85.6679628]
+    - [35.5205969, 0.0297059226, -5.18577408e-06, -7.74976601e-10, 2.05764301e-13,
+      1.13998034e+04, -172.584653]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 834.9
+    diameter: 7.24
+    polarizability: 45.0
+    rotational-relaxation: 1.0
+- name: C6H5C2H3
+  composition: {C: 8, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1420.0, 3500.0]
+    data:
+    - [-4.61890423, 0.0825432514, -6.77265654e-05, 2.87832834e-08, -4.93018867e-12,
+      1.59226425e+04, 45.8827137]
+    - [15.7612121, 0.025134473, -7.08348959e-06, 3.12355848e-10, 8.2298579e-14,
+      1.01346894e+04, -59.5859946]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 546.2
+    diameter: 6.0
+    dipole: 0.13
+    polarizability: 15.0
+    rotational-relaxation: 1.0
+- name: TAME
+  composition: {C: 6, H: 14, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1320.0, 3500.0]
+    data:
+    - [-2.12836721, 0.0882139832, -6.60433511e-05, 2.70764868e-08, -4.68399869e-12,
+      -4.07212548e+04, 36.8750527]
+    - [11.3309761, 0.0474280944, -1.96957502e-05, 3.6686075e-09, -2.50688228e-13,
+      -4.42745214e+04, -31.7952394]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 432.0
+    diameter: 6.0
+    rotational-relaxation: 1.0
+- name: TETRALIN
+  composition: {C: 10, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1650.0, 3500.0]
+    data:
+    - [-10.0807336, 0.1171839, -8.78208542e-05, 3.2575739e-08, -4.75336763e-12,
+      1401.77116, 70.4583499]
+    - [24.0250678, 0.034503169, -1.26565536e-05, 2.20632462e-09, -1.51941206e-13,
+      -9853.1433, -111.161769]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 630.4
+    diameter: 6.18
+    polarizability: 16.5
+    rotational-relaxation: 1.0
+- name: DECALIN
+  composition: {C: 10, H: 18}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1750.0, 3500.0]
+    data:
+    - [-14.5870783, 0.141956207, -9.78878828e-05, 3.36726212e-08, -4.59507321e-12,
+      -2.33632912e+04, 88.7980358]
+    - [27.0110296, 0.0468748172, -1.6389549e-05, 2.62563687e-09, -1.59789734e-13,
+      -3.79226289e+04, -135.167747]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 630.4
+    diameter: 6.18
+    polarizability: 16.5
+    rotational-relaxation: 1.0
+- name: C7H8
+  composition: {C: 7, H: 8}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1450.0, 3500.0]
+    data:
+    - [-6.02884975, 0.0777532977, -6.1048184e-05, 2.48568442e-08, -4.12367417e-12,
+      4832.63, 52.1761133]
+    - [12.5818443, 0.0264134519, -7.93799879e-06, 4.38368241e-10, 8.64078959e-14,
+      -564.471283, -44.5247833]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 495.3
+    diameter: 5.68
+    dipole: 0.43
+    polarizability: 12.3
+    rotational-relaxation: 1.0
+- name: XYLENE
+  composition: {C: 8, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1640.0, 3500.0]
+    data:
+    - [-5.12303971, 0.0828654966, -5.67626342e-05, 1.99094674e-08, -2.87999483e-12,
+      457.968429, 49.1410252]
+    - [17.2256243, 0.02835656, -6.90689954e-06, -3.57091403e-10, 2.09419626e-13,
+      -6872.39337, -69.7341599]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 523.6
+    diameter: 5.96
+    rotational-relaxation: 1.0
+- name: NC16H34
+  composition: {C: 16, H: 34}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-3.64057977, 0.196191732, -1.26758759e-04, 4.13645475e-08, -5.40570458e-12,
+      -5.16052891e+04, 64.5024955]
+    - [49.8210237, 0.0773881688, -2.77557896e-05, 4.69678103e-09, -3.12959243e-13,
+      -7.08514664e+04, -224.842855]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 650.0
+    diameter: 8.35
+    rotational-relaxation: 1.0
+- name: N2H4
+  composition: {H: 4, N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1160.0, 3500.0]
+    data:
+    - [0.360425651, 0.0254315974, -2.39564748e-05, 1.23188419e-08, -2.56059034e-12,
+      1.04206687e+04, 20.0258283]
+    - [4.91914378, 9.71187969e-03, -3.62925367e-06, 6.36530934e-10, -4.28508947e-14,
+      9363.04606, -2.64395648]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 205.0
+    diameter: 4.23
+    polarizability: 4.26
+    rotational-relaxation: 1.5
+- name: N2O
+  composition: {O: 1, N: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1650.0, 3500.0]
+    data:
+    - [2.68521969, 8.34178508e-03, -6.55498992e-06, 2.50666137e-09, -3.74128239e-13,
+      8749.02635, 8.9281248]
+    - [5.52129143, 1.46645965e-03, -3.04694075e-07, -1.87106858e-11, 8.50389041e-15,
+      7813.12268, -6.17451657]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 232.4
+    diameter: 3.828
+    rotational-relaxation: 1.0
+- name: NH3
+  composition: {H: 3, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1210.0, 3500.0]
+    data:
+    - [3.21689186, 3.1971567e-03, 1.81217371e-06, -1.87188573e-09, 4.41133513e-13,
+      -6633.47835, 3.82536772]
+    - [2.21117984, 6.52182453e-03, -2.30931532e-06, 3.98907128e-10, -2.80385645e-14,
+      -6390.09604, 8.86905603]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 481.0
+    diameter: 2.92
+    dipole: 1.47
+    rotational-relaxation: 10.0
+- name: NO
+  composition: {O: 1, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 970.0, 3500.0]
+    data:
+    - [3.91290193, -2.61206371e-03, 6.43242163e-06, -4.98744709e-09, 1.3396592e-12,
+      9762.80404, 3.57691592]
+    - [2.69775018, 2.39887133e-03, -1.316447e-06, 3.38235813e-10, -3.2939489e-14,
+      9998.54348, 9.40230813]
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 97.5
+    diameter: 3.621
+    polarizability: 1.76
+    rotational-relaxation: 4.0
+- name: NO2
+  composition: {O: 2, N: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [2.61409592, 7.51596848e-03, -5.51797745e-06, 1.91957608e-09, -2.58623476e-13,
+      2904.98637, 11.9442483]
+    - [5.25673685, 1.64343307e-03, -6.24197948e-07, 1.0706515e-10, -6.88584753e-15,
+      1953.63563, -2.35827568]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 200.0
+    diameter: 3.5
+    rotational-relaxation: 1.0
+- name: C3H5OOH
+  composition: {C: 3, H: 6, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [2.24651097, 0.0388390118, -2.52598044e-05, 8.15368275e-09, -1.0496627e-12,
+      -8965.75529, 17.8138141]
+    - [12.1377197, 0.0168585481, -6.94275126e-06, 1.369589e-09, -1.0742746e-13,
+      -1.25265904e+04, -35.7194708]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 407.8
+    diameter: 4.14
+    rotational-relaxation: 1.0
+- name: NC3H7OH
+  composition: {C: 3, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.234636347, 0.0412795171, -2.52882738e-05, 8.0111575e-09, -1.03224774e-12,
+      -3.23610829e+04, 25.8665808]
+    - [10.3578665, 0.01878345, -6.54155125e-06, 1.06792692e-09, -6.7910158e-14,
+      -3.60054458e+04, -28.9224528]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 482.146548
+    diameter: 5.008549665
+    dipole: 1.66
+    polarizability: 6.74
+    rotational-relaxation: 1.0
+- name: N1C4H9OH
+  composition: {C: 4, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.0773360084, 0.0530860597, -3.2702873e-05, 1.02152796e-08, -1.29051135e-12,
+      -3.52631271e+04, 28.2903098]
+    - [11.9078661, 0.0267959929, -1.07944841e-05, 2.10106148e-09, -1.63536607e-13,
+      -3.95221179e+04, -35.7389868]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 503.0722524
+    diameter: 5.339941638
+    dipole: 1.67
+    polarizability: 8.88
+    rotational-relaxation: 1.0
+- name: N2C4H9OH
+  composition: {C: 4, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.111912948, 0.0544059211, -3.4421977e-05, 1.10306157e-08, -1.42439663e-12,
+      -3.74110858e+04, 26.713797]
+    - [13.9850075, 0.023576822, -8.73106106e-06, 1.51546163e-09, -1.02847459e-13,
+      -4.24053999e+04, -48.370285]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 503.0722524
+    diameter: 5.339941638
+    dipole: 1.67
+    polarizability: 8.88
+    rotational-relaxation: 1.0
+- name: MEK
+  composition: {C: 4, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [1.67138626, 0.0410146063, -2.3849056e-05, 7.20831776e-09, -9.00642446e-13,
+      -3.09929132e+04, 20.115335]
+    - [10.0996674, 0.0222850926, -8.24112797e-06, 1.42760366e-09, -9.77654881e-14,
+      -3.40270944e+04, -25.5002808]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 454.0
+    diameter: 5.413
+    dipole: 3.3
+    rotational-relaxation: 1.0
+- name: TC4H9OH
+  composition: {C: 4, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1440.0, 3500.0]
+    data:
+    - [-0.699999563, 0.0593910266, -4.25008966e-05, 1.61357155e-08, -2.53152343e-12,
+      -3.95746501e+04, 27.1305359]
+    - [9.08150387, 0.0322201837, -1.41979352e-05, 3.03249263e-09, -2.56658356e-13,
+      -4.23917231e+04, -23.6263218]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 503.0722524
+    diameter: 5.339941638
+    dipole: 1.67
+    polarizability: 8.88
+    rotational-relaxation: 1.0
+- name: IC4H9OH
+  composition: {C: 4, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-0.545479447, 0.0554126942, -3.5355947e-05, 1.14828752e-08, -1.50044155e-12,
+      -3.61825578e+04, 29.8474183]
+    - [14.4537517, 0.0220810695, -7.5795931e-06, 1.1953367e-09, -7.16167606e-14,
+      -4.1582281e+04, -51.3315495]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 503.0722524
+    diameter: 5.339941638
+    dipole: 1.67
+    polarizability: 8.88
+    rotational-relaxation: 1.0
+- name: C4H7OH
+  composition: {C: 4, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1460.0, 3500.0]
+    data:
+    - [-0.255531336, 0.0499397889, -3.58835384e-05, 1.42243393e-08, -2.32030381e-12,
+      -2.07058111e+04, 29.2946643]
+    - [10.0981665, 0.0215734935, -6.74008418e-06, 9.16825971e-10, -4.16200161e-14,
+      -2.37290909e+04, -24.5741592]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 503.0722524
+    diameter: 5.339941638
+    dipole: 1.67
+    polarizability: 8.88
+    rotational-relaxation: 1.0
+- name: C3H5OH
+  composition: {C: 3, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 820.0, 3500.0]
+    data:
+    - [4.24999286, 0.0179062989, 3.49680492e-06, -1.00737688e-08, 3.69024828e-12,
+      -1.75177823e+04, 10.09625]
+    - [2.45863176, 0.0266446458, -1.24879759e-05, 2.92198798e-09, -2.71872686e-13,
+      -1.72239991e+04, 18.3830345]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 411.0
+    diameter: 4.82
+    rotational-relaxation: 1.0
+- name: C10H10
+  composition: {C: 10, H: 10}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-11.4588964, 0.107633791, -7.33968243e-05, 2.42677414e-08, -3.15836942e-12,
+      1.5095418e+04, 78.4485932]
+    - [18.2592698, 0.0415934216, -1.83631832e-05, 3.88491136e-09, -3.27420808e-13,
+      4396.87821, -82.3923218]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 630.4
+    diameter: 6.18
+    polarizability: 16.5
+    rotational-relaxation: 1.0
+- name: BZFUR
+  composition: {C: 8, H: 6, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1380.0, 3500.0]
+    data:
+    - [-8.70136947, 0.0966875823, -8.77887356e-05, 3.96542562e-08, -7.01685714e-12,
+      1037.97027, 63.5339364]
+    - [16.4578334, 0.0237623567, -8.52218599e-06, 1.3612371e-09, -7.97159891e-14,
+      -5905.96972, -65.9480381]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 630.4
+    diameter: 6.18
+    polarizability: 16.5
+    rotational-relaxation: 1.0
+- name: TMBENZ
+  composition: {C: 9, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [-2.75522789, 0.0839491691, -5.21867417e-05, 1.6223579e-08, -2.02559281e-12,
+      -4597.93488, 41.245704]
+    - [14.7576861, 0.0450315825, -1.97554195e-05, 4.21197817e-09, -3.57314917e-13,
+      -1.09025839e+04, -53.5378398]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 523.6
+    diameter: 5.96
+    rotational-relaxation: 1.0
+- name: NPBENZ
+  composition: {C: 9, H: 12}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1600.0, 3500.0]
+    data:
+    - [-5.58650157, 0.0992161261, -7.2660592e-05, 2.68653231e-08, -3.96348393e-12,
+      -1131.54446, 53.3514397]
+    - [18.8963371, 0.0380090295, -1.52789389e-05, 2.95630099e-09, -2.27699217e-13,
+      -8966.05283, -76.2711275]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 495.3
+    diameter: 5.68
+    dipole: 0.43
+    polarizability: 12.3
+    rotational-relaxation: 1.0
+- name: C6H5OCH3
+  composition: {C: 7, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1380.0, 3500.0]
+    data:
+    - [-5.29461551, 0.0865938851, -7.24001222e-05, 3.0745235e-08, -5.22884105e-12,
+      -1.02902159e+04, 49.5832512]
+    - [12.5085136, 0.0349906122, -1.63096082e-05, 3.64836832e-09, -3.19988393e-13,
+      -1.52038795e+04, -42.0406499]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 450.0
+    diameter: 5.5
+    rotational-relaxation: 1.0
+- name: MB
+  composition: {C: 5, H: 10, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [2.7783132, 0.0571580318, -3.40298609e-05, 1.01396717e-08, -1.22196165e-12,
+      -5.72961955e+04, 15.7063351]
+    - [12.4284224, 0.0357133446, -1.61592883e-05, 3.52094113e-09, -3.02693515e-13,
+      -6.07702348e+04, -36.522069]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.0
+    diameter: 5.85
+- name: MCROT
+  composition: {C: 5, H: 8, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1270.0, 3500.0]
+    data:
+    - [0.272064727, 0.0610981657, -5.00474047e-05, 2.3037503e-08, -4.34757418e-12,
+      -4.34863523e+04, 30.7332406]
+    - [11.3738847, 0.0261318034, -8.74855171e-06, 1.35831508e-09, -8.0017502e-14,
+      -4.63062146e+04, -25.4801461]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    rotational-relaxation: 1.0
+- name: MACRIL
+  composition: {C: 4, H: 6, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1110.0, 3500.0]
+    data:
+    - [-1.13135763, 0.0581021815, -5.74430417e-05, 3.12927553e-08, -6.84959289e-12,
+      -3.90024617e+04, 35.6001684]
+    - [9.14034166, 0.0210870489, -7.42259222e-06, 1.25044332e-09, -8.3306406e-14,
+      -4.12827789e+04, -15.0267978]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 430.1
+    diameter: 5.833
+    rotational-relaxation: 1.0
+- name: DIBZFUR
+  composition: {C: 12, H: 8, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1410.0, 3500.0]
+    data:
+    - [-11.6970901, 0.136443614, -1.22152896e-04, 5.40932248e-08, -9.37220078e-12,
+      5027.6551, 76.0497478]
+    - [24.9525256, 0.0324730728, -1.15459374e-05, 1.79679054e-09, -9.97833662e-14,
+      -5307.53651, -113.355893]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 676.5
+    diameter: 6.31
+    rotational-relaxation: 1.0
+- name: DIFENET
+  composition: {C: 12, H: 10, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [-8.57458099, 0.124507746, -1.00059071e-04, 4.07774824e-08, -6.65238798e-12,
+      4061.56207, 68.3336207]
+    - [17.1548107, 0.0525374196, -2.45657222e-05, 5.58244776e-09, -4.99409896e-13,
+      -3297.04394, -64.9985669]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 676.5
+    diameter: 6.31
+    rotational-relaxation: 1.0
+- name: C12H22
+  composition: {C: 12, H: 22}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1760.0, 3500.0]
+    data:
+    - [-2.71855262, 0.137506222, -9.20237107e-05, 3.11071661e-08, -4.19933494e-12,
+      -9275.97128, 50.3635315]
+    - [36.0687856, 0.0493531801, -1.68932777e-05, 2.64866878e-09, -1.56934744e-13,
+      -2.29291143e+04, -158.689972]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 580.0
+    diameter: 7.6
+    rotational-relaxation: 1.0
+- name: BENZYNE
+  composition: {C: 6, H: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1400.0, 3500.0]
+    data:
+    - [-3.73796173, 0.0569931634, -5.02311341e-05, 2.22206478e-08, -3.86741452e-12,
+      5.4441814e+04, 40.4070822]
+    - [10.9465819, 0.0150373246, -5.27844959e-06, 8.14607581e-10, -4.49073366e-14,
+      5.03301418e+04, -35.3782934]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 468.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: C2H2O2
+  composition: {C: 2, H: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1700.0, 3500.0]
+    data:
+    - [1.89947966, 0.0235363962, -1.81616014e-05, 6.72307419e-09, -9.65107677e-13,
+      -2.69305506e+04, 15.8338747]
+    - [9.83116579, 4.87360532e-03, -1.694433e-06, 2.65361078e-10, -1.54439841e-14,
+      -2.96273239e+04, -26.6407027]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 470.6
+    diameter: 4.41
+    rotational-relaxation: 1.5
+- name: C4H6O2
+  composition: {C: 4, H: 6, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [0.915158242, 0.0425565241, -2.52848896e-05, 7.41408744e-09, -8.72358628e-13,
+      -4.14081175e+04, 25.5578553]
+    - [7.01919581, 0.0289919962, -1.39811163e-05, 3.22750474e-09, -2.9088881e-13,
+      -4.3605571e+04, -7.4784694]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 496.0
+    diameter: 5.2
+    rotational-relaxation: 1.0
+- name: C5H4O2
+  composition: {C: 5, H: 4, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1430.0, 3500.0]
+    data:
+    - [-1.81996644, 0.0568283325, -4.71217197e-05, 1.94409629e-08, -3.18486782e-12,
+      -1.98022652e+04, 34.5255921]
+    - [10.5158962, 0.0223224229, -1.09267096e-05, 2.56683236e-09, -2.34844997e-13,
+      -2.33303219e+04, -29.4000374]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 524.69
+    diameter: 5.653
+    rotational-relaxation: 1.0
+- name: C5H8O4
+  composition: {C: 5, H: 8, O: 4}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1230.0, 3500.0]
+    data:
+    - [-6.95683231, 0.101463738, -9.46174851e-05, 4.52721371e-08, -8.68708602e-12,
+      -7.79850073e+04, 65.9920851]
+    - [11.9601536, 0.0399450843, -1.95947373e-05, 4.60940117e-09, -4.2230229e-13,
+      -8.26385858e+04, -29.1875208]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 568.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: C6H10O5
+  composition: {C: 6, H: 10, O: 5}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1220.0, 3500.0]
+    data:
+    - [-7.95116461, 0.126488345, -1.19085729e-04, 5.74579042e-08, -1.11165221e-11,
+      -1.03461116e+05, 69.5642163]
+    - [15.4889718, 0.0496354387, -2.45944509e-05, 5.82332585e-09, -5.35665863e-13,
+      -1.09180509e+05, -48.1819837]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 568.5
+    diameter: 5.23
+    polarizability: 10.3
+    rotational-relaxation: 1.0
+- name: C8H10O3
+  composition: {C: 8, H: 10, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1280.0, 3500.0]
+    data:
+    - [-3.09348688, 0.150478421, -1.41970521e-04, 6.75254832e-08, -1.26857982e-11,
+      -6.17667016e+04, 46.1370519]
+    - [29.8957517, 0.0473870505, -2.11603212e-05, 4.60350399e-09, -3.96349099e-13,
+      -7.02119467e+04, -121.160681]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 621.1
+    diameter: 5.64
+    rotational-relaxation: 1.0
+- name: HCOOH
+  composition: {C: 1, H: 2, O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1800.0, 3500.0]
+    data:
+    - [1.36256505, 0.0166938805, -1.11828949e-05, 3.66178037e-09, -4.73930912e-13,
+      -4.64539011e+04, 17.617418]
+    - [5.80573302, 6.82017393e-03, -2.95480608e-06, 6.1434006e-10, -5.06753135e-14,
+      -4.80534416e+04, -6.42993389]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 470.6
+    diameter: 3.855
+    rotational-relaxation: 1.0
+- name: GLYCEROL
+  composition: {C: 3, H: 8, O: 3}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1290.0, 3500.0]
+    data:
+    - [0.197850806, 0.0586115658, -4.96609601e-05, 2.27253167e-08, -4.20551279e-12,
+      -7.12674037e+04, 31.6302477]
+    - [11.4796489, 0.0236292461, -8.98384419e-06, 1.70355137e-09, -1.31527258e-13,
+      -7.41781076e+04, -25.6707288]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 748.365
+    diameter: 5.2
+    dipole: 1.93
+    polarizability: 9.43
+    rotational-relaxation: 1.0
+- name: C4H4O
+  composition: {C: 4, H: 4, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1250.0, 3500.0]
+    data:
+    - [-7.59507781, 0.070667261, -7.12262503e-05, 3.5083386e-08, -6.76180613e-12,
+      -5425.69018, 55.4039922]
+    - [8.37486466, 0.0195634451, -9.90167121e-06, 2.37694382e-09, -2.20517698e-13,
+      -9418.1758, -25.2053384]
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 429.63
+    diameter: 5.04
+    rotational-relaxation: 1.0

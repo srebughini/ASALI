@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+# to be done after removal
+exit 0

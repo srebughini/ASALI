@@ -1,0 +1,29 @@
+{
+  "species": [
+    "H2",
+    "O2",
+    "H2O",
+    "CO",
+    "CO2",
+    "CH4"
+  ],
+  "temperature": "T",
+  "reactions": [
+    {
+      "id": "r1",
+      "formula": "CH4 + 2 O2 -> CO2 + 2 H2O",
+      "rate": "2.5 * [CH4]^2 * [O2] * T ^ 0.5 / (1 + [O2])",
+      "specie_units": "mass_fraction",
+      "rate_units": "kmol/m3/s",
+      "type": "homogeneous"
+    },
+    {
+      "id": "r2",
+      "formula": "CH4 + H2O -> 3 H2 + CO",
+      "rate": "15.0 * [CH4] * [H2O]",
+      "specie_units": "mass_fraction",
+      "rate_units": "kmol/m2/s",
+      "type": "heterogeneous"
+    }
+  ]
+}

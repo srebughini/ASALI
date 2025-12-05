@@ -1,0 +1,177 @@
+description: |-
+  ***********************************************************************
+  ****                                                                  *
+  ****     H2/O2 OVER RH - SURFASE MECHANISM                            *
+  ****     thermodynamically constant (273 - 1273K)                     *
+  ****                                                                  *
+  ****     References:                                                  *
+  ****     C. Karakaya, O. Deutschmann, Chemical Engineering Science,   *
+  ****     89 (2012) 171-184                                            *
+  ****     www.detchem.com/mechanisms                                   *
+  ****     KIT (Karlsruhe Institute of Technology)                      *
+  ****     Contact: mail@detchem.com (O. Deutschmann)                   *
+  ****     www.detchem.com/mechanisms                                   *
+  ****                                                                  *
+  ****                                                                  *
+  ****     Kinetic data:                                                *
+  ****      k = A * T**b * exp (-Ea/RT)         A          b       Ea   *
+  ****                                       (cm,mol,s)    -     kJ/mol *
+  ****     (CHEMKIN format)                                             *
+  ****                                                                  *
+  ***********************************************************************
+
+generator: ck2yaml
+input-files: [kinetic.kin, thermo.tdc, transport.tra, surface.sur]
+cantera-version: 3.0.0
+date: Thu, 20 Jun 2024 13:15:53 +0200
+
+units: {length: cm, time: s, quantity: mol, activation-energy: kJ/mol}
+
+phases:
+- name: gas
+  thermo: ideal-gas
+  elements: [H, O, Rh, Ar]
+  species: [H2, O2, H2O, AR]
+  transport: mixture-averaged
+  state: {T: 300.0, P: 1 atm}
+- name: Rh_surface
+  thermo: ideal-surface
+  adjacent-phases: [gas]
+  elements: [H, O, Rh, Ar]
+  species: [Rh(s), H2O(s), H(s), OH(s), O(s)]
+  site-density: 2.72e-09
+  Motz-Wise: false
+  kinetics: surface
+  state: {T: 300.0, P: 1 atm}
+
+species:
+- name: H2
+  composition: {H: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [3.3553514, 5.0136144e-04, -2.3006908e-07, -4.7905324e-10, 4.8522585e-13,
+      -1019.1626, -3.5477228]
+    - [3.0667095, 5.7473755e-04, 1.3938319e-08, -2.5483518e-11, 2.9098574e-15,
+      -865.47412, -1.7798424]
+    note: (adjust)
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 38.0
+    diameter: 2.92
+    polarizability: 0.79
+    rotational-relaxation: 280.0
+- name: O2
+  composition: {O: 2}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [3.7837135, -3.0233634e-03, 9.9492751e-06, -9.8189101e-09, 3.3031825e-12,
+      -1063.8107, 3.6416345]
+    - [3.6122139, 7.4853166e-04, -1.9820647e-07, 3.3749008e-11, -2.3907374e-15,
+      -1197.8151, 3.6703307]
+    note: (adjust)
+  transport:
+    model: gas
+    geometry: linear
+    well-depth: 107.4
+    diameter: 3.458
+    polarizability: 1.6
+    rotational-relaxation: 3.8
+- name: H2O
+  composition: {H: 2, O: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [4.1677234, -1.811497e-03, 5.9471288e-06, -4.8692021e-09, 1.5291991e-12,
+      -3.0289969e+04, -0.73135474]
+    - [2.6110472, 3.156313e-03, -9.2985438e-07, 1.3331538e-10, -7.4689351e-15,
+      -2.9868167e+04, 7.2091268]
+    note: (adjust)
+  transport:
+    model: gas
+    geometry: nonlinear
+    well-depth: 572.4
+    diameter: 2.605
+    dipole: 1.844
+    rotational-relaxation: 4.0
+- name: AR
+  composition: {Ar: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 1000.0, 5000.0]
+    data:
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.37498, 4.3660006]
+    - [2.5, 0.0, 0.0, 0.0, 0.0, -745.37502, 4.3660006]
+    note: (adjust)
+  transport:
+    model: gas
+    geometry: atom
+    well-depth: 136.5
+    diameter: 3.33
+- name: Rh(s)
+  composition: {Rh: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: H2O(s)
+  composition: {O: 1, H: 2, Rh: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: H(s)
+  composition: {H: 1, Rh: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: OH(s)
+  composition: {O: 1, H: 1, Rh: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+- name: O(s)
+  composition: {O: 1, Rh: 1}
+  thermo:
+    model: NASA7
+    temperature-ranges: [300.0, 3000.0]
+    data:
+    - [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    note: all data are dummy data (they are not needed - all rxns irrev.)
+
+reactions:
+- equation: H2 + Rh(s) + Rh(s) => H(s) + H(s)  # Reaction 1
+  sticking-coefficient: {A: 0.03, b: 0.0, Ea: 0.0}
+- equation: O2 + Rh(s) + Rh(s) => O(s) + O(s)  # Reaction 2
+  sticking-coefficient: {A: 0.01, b: 0.0, Ea: 0.0}
+- equation: H2O + Rh(s) => H2O(s)  # Reaction 3
+  sticking-coefficient: {A: 0.1, b: 0.0, Ea: 0.0}
+- equation: H(s) + H(s) => Rh(s) + Rh(s) + H2  # Reaction 4
+  rate-constant: {A: 5.574e+19, b: 0.239, Ea: 59.691}
+- equation: O(s) + O(s) => Rh(s) + Rh(s) + O2  # Reaction 5
+  rate-constant: {A: 5.329e+22, b: -0.137, Ea: 386.995}
+- equation: H2O(s) => Rh(s) + H2O  # Reaction 6
+  rate-constant: {A: 6.858e+14, b: -0.28, Ea: 44.993}
+- equation: O(s) + H(s) => OH(s) + Rh(s)  # Reaction 7
+  rate-constant: {A: 8.826e+21, b: -0.048, Ea: 73.365}
+- equation: OH(s) + Rh(s) => O(s) + H(s)  # Reaction 8
+  rate-constant: {A: 1.0e+21, b: 0.045, Ea: 48.041}
+- equation: OH(s) + H(s) => H2O(s) + Rh(s)  # Reaction 9
+  rate-constant: {A: 1.743e+22, b: -0.127, Ea: 41.731}
+- equation: H2O(s) + Rh(s) => OH(s) + H(s)  # Reaction 10
+  rate-constant: {A: 5.408e+22, b: 0.129, Ea: 98.22}
+- equation: OH(s) + OH(s) => O(s) + H2O(s)  # Reaction 11
+  rate-constant: {A: 5.736e+20, b: -0.081, Ea: 121.594}
+- equation: O(s) + H2O(s) => OH(s) + OH(s)  # Reaction 12
+  rate-constant: {A: 1.57e+22, b: 0.081, Ea: 203.407}

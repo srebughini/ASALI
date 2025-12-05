@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=ASALI
+GenericName=ASALI
+Comment=ASALI Generator
+Exec=ASALI %U
+Icon=ASALI
+Terminal=false
+Categories=Utility;
+StartupNotify=true
+
