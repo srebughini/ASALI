@@ -98,13 +98,13 @@ To create the *.deb* file follow these instructions:
 conda activate asaligui
 conda install pyinstaller -c conda-forge
 pyinstaller --clean asali.spec
-mkdir Asali-setup
-mkdir Asali-setup/bin
-cp -r deb/* Asali-setup/.
-cp -r dist Asali/* Asali-setup/bin/Asali*
-chmod 0775 Asali-setup/DEBIAN/prerm
-chmod 0775 Asali-setup/DEBIAN/postinst
-dpkg-deb --build Asali-setup
+mkdir Asali-Setup
+mkdir Asali-Setup/bin
+cp -r deb/* Asali-Setup/.
+cp -r dist Asali/* Asali-Setup/bin/Asali*
+chmod 0775 Asali-Setup/DEBIAN/prerm
+chmod 0775 Asali-Setup/DEBIAN/postinst
+dpkg-deb --build Asali-Setup
 ```
 
 
