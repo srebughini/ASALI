@@ -35,3 +35,7 @@ GUI/build
 GUI/installer
 
 GUI/Windows/_*
+GUI/Asali-setup
+
+
+*.deb
