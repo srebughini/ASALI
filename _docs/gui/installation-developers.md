@@ -22,9 +22,22 @@ conda env create -f environment.yml
 conda activate asaligui
 python app.py
 ```
-To create the executable file follow these instructions:
+To create the *.exe* file follow these instructions:
 ```bash
 conda activate asaligui
 conda install pyinstaller -c conda-forge
 pyinstaller --clean asali.spec
+```
+To create the *.deb* file follow these instructions:
+```bash
+conda activate asaligui
+conda install pyinstaller -c conda-forge
+pyinstaller --clean asali.spec
+mkdir Asali-Setup
+mkdir Asali-Setup/bin
+cp -r deb/* Asali-Setup/.
+cp -r dist Asali/* Asali-Setup/bin/Asali*
+chmod 0775 Asali-Setup/DEBIAN/prerm
+chmod 0775 Asali-Setup/DEBIAN/postinst
+dpkg-deb --build Asali-Setup
 ```
