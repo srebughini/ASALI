@@ -82525,7 +82525,7 @@ function GasSpecie({
     if (_diff_update) {
       let MWmix = _molecularWeight / 2.;
       let tr = _temperature / _LJpotential;
-      let dr = 1e06 * 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * _utils.Parameters.k * Math.pow(_LJdiameter, 3.));
+      let dr = 0.5 * Math.pow(_dipole, 2.) / (_LJpotential * _utils.Parameters.k * Math.pow(_LJdiameter, 3.));
       let sigma = (0, _omega.CollisionIntegral11)(tr, dr);
       _diff = 3 / 16 * Math.sqrt(2. * _utils.Parameters.pi * Math.pow(_utils.Parameters.k * _temperature, 3.) / (MWmix * 1.66054)) / (_pressure * _utils.Parameters.pi * Math.pow(_LJdiameter, 2.) * sigma);
       _diff = _diff * 0.1;
@@ -82984,7 +82984,7 @@ function GasMixture({
             dipolemix = 0.;
           }
           let tr = _temperature / LJpotentialmix;
-          let dr = 1e06 * 0.5 * Math.pow(dipolemix, 2.) / (LJpotentialmix * _utils.Parameters.k * Math.pow(LJdiametermix, 3.));
+          let dr = 0.5 * Math.pow(dipolemix, 2.) / (LJpotentialmix * _utils.Parameters.k * Math.pow(LJdiametermix, 3.));
           let sigma = (0, _omega.CollisionIntegral11)(tr, dr);
           _diff[i][j] = 3 / 16 * Math.sqrt(2. * _utils.Parameters.pi * Math.pow(_utils.Parameters.k * _temperature, 3.) / (MWmix * 1.66054)) / (_pressure * _utils.Parameters.pi * Math.pow(LJdiametermix, 2.) * sigma);
           _diff[i][j] = _diff[i][j] * 0.1;
