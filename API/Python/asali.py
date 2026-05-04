@@ -212,7 +212,7 @@ class Asali:
             tp = [[transport[n].LJpotential, transport[n].LJdiameter, transport[n].dipole] for n in self._n]
             tp = np.asarray(tp)
             tr = self._T / tp[:, 0]
-            dr = 1.0e06 * 0.5 * np.square(tp[:, 2]) / (tp[:, 0] * 1.3806488 * np.power(tp[:, 1], 3.))
+            dr = 0.5 * np.square(tp[:, 2]) / (tp[:, 0] * 1.3806488 * np.power(tp[:, 1], 3.))
             sigma = np.asarray([Asali._collision_integral22(tr[i], dr[i]) for i in range(0, len(self._n))])
             self._mu = 1.0e-05 * (5. / 16.) * np.sqrt(np.pi * 1.3806488 * self._T * self._mw * 1.66054) / (
                     np.pi * sigma * np.square(tp[:, 1]))
@@ -348,7 +348,7 @@ class Asali:
             dipolemix[p_mask_4] = 0.0
 
             tr = self._T / LJpotentialmix
-            dr = 1e06 * 0.5 * np.square(dipolemix) / (LJpotentialmix * 1.3806488 * np.power(LJdiametermix, 3.))
+            dr = 0.5 * np.square(dipolemix) / (LJpotentialmix * 1.3806488 * np.power(LJdiametermix, 3.))
 
             vectorized_collision_integral11 = np.vectorize(Asali._collision_integral11)
 

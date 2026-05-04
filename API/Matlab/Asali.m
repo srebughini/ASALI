@@ -614,7 +614,6 @@ classdef Asali
                 for i=1:length(obj.index)
                     Tr    = obj.Temperature/obj.data.transport(obj.index(i),2);
                     dr    = 0.5*(obj.data.transport(obj.index(i),4)^2)/(obj.data.transport(obj.index(i),2)*1.3806488*(obj.data.transport(obj.index(i),3)^3));
-                    dr    = 1e06*dr;
                     sigma = obj.collisionIntegral22(Tr,dr,obj);
                     mu(i) = (5/16)*sqrt(obj.pi_*1.3806488*obj.Temperature*obj.MW(i)*1.66054)/(obj.pi_*sigma*(obj.data.transport(obj.index(i),3)^2));
                     mu(i) = mu(i)*1e-05;
@@ -656,7 +655,6 @@ classdef Asali
                         end
                         Tr        = obj.Temperature/LJpotentialmix;
                         dr        = 0.5*(dipolemix^2)/(LJpotentialmix*1.3806488*(LJdiametermix^3));
-                        dr        = 1e06*dr;
                         sigma     = obj.collisionIntegral11(Tr,dr,obj);
                         diff(i,j) = (3/16)*sqrt(2*obj.pi_*((1.3806488*obj.Temperature)^3)/(PMmix*1.66054))/(obj.Pressure*obj.pi_*(LJdiametermix^2)*sigma);
                         diff(i,j) = diff(i,j)*0.1;

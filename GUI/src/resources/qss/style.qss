@@ -1,0 +1,154 @@
+/* General Window Styling */
+QWidget {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #272C26;  /* DARK BLUE */
+}
+
+/* Logo Label Styling */
+Qlabel.logo {
+    padding: 5px;
+    max-width: 80px; /* Adjust based on your layout */
+}
+
+/* Italic Label Styling */
+QLabel.italic {
+    font-style: italic;
+    margin: 5px;
+}
+
+/* Italic Label Styling */
+QLabel.orange {
+    color: #67908B; /* DARK GREEN */
+}
+
+/* Highlight Label Styling */
+QLabel.highlight {
+    color: #67908B; /* DARK GREEN */
+    padding: 5px;
+    font-weight: bold;
+    border-bottom: 1px solid #67908B; /* DARK GREEN */
+}
+
+/* Button Styling */
+QPushButton {
+    background-color: #272C26;  /* DARK BLUE */
+    border: none;
+    color: #FAEDCE;  /* LIGHT BEIGE */
+    padding: 5px 10px;
+    text-align: center;
+    border-radius: 2.5px;
+}
+
+QPushButton:hover {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
+}
+
+QPushButton:pressed {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
+}
+
+/* Icon Button Styling */
+QPushButton.icon {
+    background-color: #272C26;  /* DARK BLUE */
+    border: none;
+    color: #FAEDCE;  /* LIGHT BEIGE */
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    border-radius: 2.5px;
+    height: 40px;
+}
+
+QPushButton.icon:hover {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
+}
+
+QPushButton.icon:pressed {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #272C26;  /* DARK BLUE */
+    border: 1px solid #272C26;  /* DARK BLUE */
+}
+
+/* Dropdown (ComboBox) Styling */
+QComboBox {
+    background-color: #E9963D; /* ORANGE */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #67908B; /* DARK GREEN */
+}
+
+/* LineEdit Styling */
+QLineEdit {
+    background-color: #272C26;  /* DARK BLUE */
+    color: #FAEDCE;  /* LIGHT BEIGE */
+}
+
+/* CheckBox Styling */
+QCheckBox::indicator {
+    border-radius: 10px;
+    background-color: #272C26;  /* DARK BLUE */
+}
+
+QCheckBox::indicator:checked {
+    background-color: #67908B; /* DARK GREEN */
+}
+
+QCheckBox::indicator:pressed {
+    background-color: #67908B; /* DARK GREEN */
+}
+
+/* ProgressBar Styling */
+QProgressBar {
+    background-color: #272C26;  /* DARK BLUE */
+}
+
+QProgressBar::chunk {
+    background-color: #67908B; /* DARK GREEN */
+    width: 20px;
+}
+
+/* Table Styling */
+QHeaderView::section {
+    background-color: #272C26;  /* DARK BLUE */
+    color: #FAEDCE;  /* LIGHT BEIGE */
+}
+
+QTableWidget::item:selected {
+    background-color: #FAEDCE;  /* LIGHT BEIGE */
+    color: #FAEDCE;  /* LIGHT BEIGE */
+}
+
+/* Tab Widget Styling */
+QTabWidget::pane {
+    border: none; /* LIGHTBLUE border around the widget */
+}
+
+QTabBar::tab {
+    background-color: #10253F; /* BLUE */
+    color: #DCE6F2; /* LIGHTBLUE */
+    padding: 5px;
+    border: 1px solid #DCE6F2; /* LIGHTBLUE */
+    border-radius: 5px; /* Rounded corners for tabs */
+    margin-right: 4px; /* Space between tabs */
+}
+
+QTabBar::tab:selected {
+    background-color: #67908B; /* DARK GREEN */
+    color: #10253F; /* BLUE */
+    border: 1px solid #DB901F; /* LIGHTBLUE */
+}
+
+QTabBar::tab:hover {
+    background-color: #f2e8dc; /* LIGHTORANGE */
+    color: #10253F; /* BLUE */
+    border: 1px solid #f2e8dc; /* LIGHTORANGE */
+}

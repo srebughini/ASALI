@@ -236,7 +236,6 @@ namespace ASALI
             {
                 Tr = T_ / transport_.LJpotential[index_[i]];
                 dr = 0.5 * std::pow(transport_.dipole[index_[i]], 2.) / (transport_.LJpotential[index_[i]] * 1.3806488 * std::pow(transport_.LJdiameter[index_[i]], 3.));
-                dr = 1e06 * dr;
                 sigma = collisionIntegrals22(Tr, dr);
                 mu_[i] = (5. / 16.) * std::sqrt(pi_ * 1.3806488 * T_ * MW_[i] * 1.66054) / (pi_ * sigma * std::pow(transport_.LJdiameter[index_[i]], 2.));
                 mu_[i] = mu_[i] * 1.e-05;
@@ -378,7 +377,6 @@ namespace ASALI
 
                     Tr = T_ / LJpotentialmix;
                     dr = 0.5 * std::pow(dipolemix, 2.) / (LJpotentialmix * 1.3806488 * std::pow(LJdiametermix, 3.));
-                    dr = 1e06 * dr;
                     sigma = collisionIntegrals11(Tr, dr);
                     diff_[i][j] = (3. / 16.) * std::sqrt(2. * pi_ * std::pow(1.3806488 * T_, 3.) / (MWmix * 1.66054)) / (p_ * pi_ * std::pow(LJdiametermix, 2.) * sigma);
                     diff_[i][j] = diff_[i][j] * 0.1;

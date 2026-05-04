@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>VacuumOutputPage</class>
+    <widget class="QWidget" name="VacuumOutputPage">
+        <layout class="QVBoxLayout" name="beerLogoLayout">
+            <item>
+                <widget class="QLabel" name="logoLabel">
+                    <property name="pixmap">
+                        <pixmap>:images/BigLogo.png</pixmap> <!-- Reference to logo -->
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="beerQuoteLabel">
+                    <property name="text">
+                        <string>Inspiring Quote Here</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <layout class="QGridLayout" name="gridLayout">
+                    <!-- Row 0 -->
+                    <item row="0" column="0" colspan="3">
+                        <widget class="QLabel" name="headlineLabel">
+                            <property name="text">
+                                <string>Vacuum properties</string>
+                            </property>
+                        </widget>
+                    </item>
+
+                    <!-- Row 1 -->
+                    <item row="1" column="0">
+                        <widget class="QLabel" name="vNameLabel">
+                            <property name="text">
+                                <string>Mean gas velocity:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="1" column="1">
+                        <widget class="QLabel" name="vValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="1" column="2">
+                        <widget class="QComboBox" name="vComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 2 -->
+                    <item row="2" column="0">
+                        <widget class="QLabel" name="lNameLabel">
+                            <property name="text">
+                                <string>Mean free path:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="2" column="1">
+                        <widget class="QLabel" name="lValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="2" column="2">
+                        <widget class="QComboBox" name="lComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 3 -->
+                    <item row="3" column="0">
+                        <widget class="QLabel" name="diffNameLabel">
+                            <property name="text">
+                                <string>Diffusivity:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="3" column="1">
+                        <widget class="QLabel" name="diffValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="3" column="2">
+                        <widget class="QComboBox" name="diffComboBox">
+                        </widget>
+                    </item>
+
+                    <!-- Row 4 -->
+                    <item row="4" column="0">
+                        <widget class="QLabel" name="knNameLabel">
+                            <property name="text">
+                                <string>Knudsen number:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item row="4" column="1" colspan="2">
+                        <widget class="QLabel" name="knValueLabel">
+                            <property name="text">
+                                <string>0.0</string>
+                            </property>
+                        </widget>
+                    </item>
+
+                    <!-- Row 5 -->
+                    <item row="5" column="0" colspan="3">
+                        <layout class="QHBoxLayout" name="buttonLayout">
+                            <item>
+                                <widget class="QPushButton" name="backButton">
+                                    <property name="text">
+                                        <string>&#x2B9C; Back</string>
+                                    </property>
+                                    <property name="toolTip">
+                                        <string>Go back to vacuum properties input page</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="updateButton">
+                                    <property name="text">
+                                        <string>Update</string>
+                                    </property>
+                                    <property name="toolTip">
+                                        <string>Update vacuum properties</string>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+</ui>

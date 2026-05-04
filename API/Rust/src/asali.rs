@@ -543,7 +543,6 @@ impl Asali{
                 tr = self.t_ / self.transport_[self.transport_index_[i]].ljpotential;
                 dr = 0.5 * self.transport_[self.transport_index_[i]].dipole.powi(2);
                 dr = dr / (self.transport_[self.transport_index_[i]].ljpotential * 1.3806488 * self.transport_[self.transport_index_[i]].ljdiameter.powi(3));
-                dr = 1e06 * dr;
                 sigma = self.collision_integrals_22(tr, dr);
                 self.mu_[i] = (5. / 16.) * (std::f64::consts::PI * 1.3806488 * self.t_ * self.mw_[i] * 1.66054).sqrt() / (std::f64::consts::PI * sigma * self.transport_[self.transport_index_[i]].ljdiameter.powi(2));
                 self.mu_[i] = self.mu_[i] * 1.0e-05;
@@ -662,7 +661,7 @@ impl Asali{
                     }
 
                     let tr: f64 = self.t_/ljpotentialmix;
-                    let dr: f64 = 1e06*0.5*dipolemix.powi(2)/(ljpotentialmix*1.3806488*ljpotentialmix.powi(3));
+                    let dr: f64 = 0.5*dipolemix.powi(2)/(ljpotentialmix*1.3806488*ljpotentialmix.powi(3));
                     let sigma: f64 = self.collision_integrals_11(tr,dr);
                     let diff: f64 = 0.1*(3./16.)*(2.*std::f64::consts::PI*(1.3806488*self.t_).powi(3)/(mw_mix*1.66054)).sqrt()/(self.p_*std::f64::consts::PI*ljdiametermix.powi(2)*sigma);
                     self.diff_[i][j] = diff;

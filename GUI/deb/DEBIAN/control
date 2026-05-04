@@ -1,0 +1,8 @@
+Package: Asali
+Version: 3.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Stefano Rebughini <ste.rebu@outlook.it>
+Depends: 
+Description:  Open-source code for gas mixture modeling

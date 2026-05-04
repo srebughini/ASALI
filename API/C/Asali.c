@@ -264,7 +264,6 @@ void species_viscosity_(Asali* asali_)  //[Pa*s]
             MW     = get_vector_element_as_double(&asali_->MW_,i);
             Tr     = asali_->T_/asali_->transport_[idx].LJpotential;
             dr     = 0.5*pow(asali_->transport_[idx].dipole,2.)/(asali_->transport_[idx].LJpotential*1.3806488*pow(asali_->transport_[idx].LJdiameter,3.));
-            dr     = 1e06*dr;
             sigma  = collisionIntegrals22(asali_,Tr,dr);
             mu     = (5./16.)*sqrt(asali_->pi_*1.3806488*asali_->T_*MW*1.66054)/(asali_->pi_*sigma*pow(asali_->transport_[idx].LJdiameter,2.));
             mu     = mu*1.e-05;
@@ -352,7 +351,6 @@ void binary_diffusion_(Asali* asali_)
 
                 Tr    = asali_->T_/LJpotentialmix;
                 dr    = 0.5*pow(dipolemix,2.)/(LJpotentialmix*1.3806488*pow(LJdiametermix,3.));
-                dr    = 1e06*dr;
                 sigma = collisionIntegrals11(asali_,Tr,dr);
                 diff  = (3./16.)*sqrt(2.*asali_->pi_*pow((1.3806488*asali_->T_),3.)/(MWmix*1.66054))/(asali_->P_*asali_->pi_*pow(LJdiametermix,2.)*sigma);
                 diff  = diff*0.1;
