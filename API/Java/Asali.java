@@ -592,7 +592,6 @@ public class Asali
                 Tr     = T_/transport_.LJpotential()[index_[i]];
                 dr     = 0.5*Math.pow(transport_.dipole()[index_[i]],2.);
                 dr     = dr/(transport_.LJpotential()[index_[i]]*1.3806488*Math.pow(transport_.LJdiameter()[index_[i]],3));
-                dr     = 1e06*dr;
                 sigma  = this.collision_integrals_22(Tr,dr);
                 mu_[i] = (5./16.)*Math.sqrt(pi_*1.3806488*T_*MW_[i]*1.66054)/(pi_*sigma*Math.pow(transport_.LJdiameter()[index_[i]],2.));
                 mu_[i] = mu_[i]*1.e-05;
@@ -661,7 +660,6 @@ public class Asali
                 
                     Tr          = T_/LJpotentialmix;
                     dr          = 0.5*Math.pow(dipolemix,2.)/(LJpotentialmix*1.3806488*Math.pow(LJdiametermix,3.));
-                    dr          = 1e06*dr;
                     sigma       = this.collision_integrals_11(Tr,dr);
                     diff_[i][j] = (3./16.)*Math.sqrt(2.*pi_*Math.pow(1.3806488*T_,3.)/(MWmix*1.66054))/(p_*pi_*Math.pow(LJdiametermix,2.)*sigma);
                     diff_[i][j] = diff_[i][j]*0.1;
