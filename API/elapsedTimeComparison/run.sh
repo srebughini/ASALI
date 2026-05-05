@@ -1,5 +1,21 @@
 #bin/bash
 
+# =========================
+# HELP
+# =========================
+function Help()
+{
+   echo "Syntax: ./run.sh -n 100 -f test.md --compile "
+   echo "   options:"
+   echo "          --compile                Compile source code."
+   echo "          -f                       Output file (README.md)."
+   echo "          -n                       Number of runs (e.g. 100)."
+   exit
+}
+
+# =========================
+# COMPILATION
+# =========================
 function compile()
 {
 	echo "Compiling/Preparing..."
@@ -52,9 +68,17 @@ function compile()
 	python3 database-generator.py
 	cd ../elapsedTimeComparison
 
+	echo "...Julia version..."
+	cd ../Julia
+	julia --quiet --startup-file=no database-generator.jl
+	cd ../elapsedTimeComparison
+
 	echo "...done!"
 }
 
+# =========================
+# RUN BENCHMARK
+# =========================
 function run()
 {
 	echo "Running..."
@@ -80,9 +104,19 @@ function run()
 	cd ../Python
 	python3 elapsed-time.py --number-of-runs $N > ../elapsedTimeComparison/Python.txt
 	cd ../elapsedTimeComparison 
+
+	cd ../Julia
+	# warm-up run (NOT timed)
+	julia --startup-file=no --quiet elapsed-time.jl 1 > /dev/null
+	julia --startup-file=no --quiet elapsed-time.jl $N > ../elapsedTimeComparison/Julia.txt
+	cd ../elapsedTimeComparison
+
 	echo "...done!"	
 }
 
+# =========================
+# SCREEN OUTPUT
+# =========================
 function printOnScreen()
 {
 	local N=$1
@@ -101,9 +135,13 @@ function printOnScreen()
 	sed 's/,/./g ; s/E/e/g' < Rust.txt
 	sed 's/,/./g ; s/E/e/g' < Octave.txt
 	sed 's/,/./g ; s/E/e/g' < Python.txt
+	sed 's/,/./g ; s/E/e/g' < Julia.txt
 }
 
 
+# =========================
+# PARSE OUTPUT
+# =========================
 function parseSingleFileOutput()
 {
 	local filename=$1
@@ -114,6 +152,9 @@ function parseSingleFileOutput()
 	echo "|$language|$initime|$estitime| "
 }
 
+# =========================
+# MARKDOWN HEADER
+# =========================
 function markdownFileHead()
 {
 	local N=$1
@@ -166,17 +207,14 @@ function printOnFile()
 	parseSingleFileOutput Rust.txt
 	parseSingleFileOutput Octave.txt
 	parseSingleFileOutput Python.txt
+	parseSingleFileOutput Julia.txt
 }
 
-function Help()
-{
-   echo "Syntax: ./run.sh -n 100 -f test.md --compile "
-   echo "   options:"
-   echo "          --compile                Compile source code."
-   echo "          -f                       Output file (README.md)."
-   echo "          -n                       Number of runs (e.g. 100)."
-   exit
-}
+
+
+# =========================
+# MAIN
+# =========================
 
 screen_output="true"
 processor_model=$(lscpu | grep 'Model name' | sed 's/Model name://g' | xargs | sed 's/ /_/g')
@@ -247,6 +285,7 @@ rm -rf Java.txt
 rm -rf Rust.txt
 rm -rf Octave.txt
 rm -rf Python.txt
+rm -rf Julia.txt
 
 
 

@@ -8,9 +8,14 @@ _*
 API/C/example
 API/C/database-generator
 API/C/elapsed-time.sh
+API/C/example
+API/C/*.exe
+API/C/*.obj
 API/Cpp/example
 API/Cpp/database-generator
 API/Cpp/elapsed-time.sh
+API/Cpp/*.exe
+API/Cpp/*.obj
 API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/elapsed-time.sh

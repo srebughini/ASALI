@@ -192,7 +192,6 @@ module asali
                 Tr = T_/transport_.LJpotential[id]
                 dr = 0.5*(transport_.dipole[id]^2.)
                 dr = dr/(transport_.LJpotential[id]*1.3806488*(transport_.LJdiameter[id]^3.))
-                dr = 1e06*dr
                 sigma = collision_integrals_22_(Tr,dr)
                 mu_[i] = (5/16)*sqrt(pi_*1.3806488*T_*MW_[i]*1.66054)/(pi_*sigma*(transport_.LJdiameter[id]^2.))
                 mu_[i] = mu_[i]*1e-05
@@ -255,7 +254,6 @@ module asali
                     end
                     Tr          = T_/LJpotentialmix
                     dr          = 0.5*(dipolemix^2.)/(LJpotentialmix*1.3806488*(LJdiametermix^3.))
-                    dr          = 1e06*dr
                     sigma       = collision_integrals_11_(Tr,dr)
                     diff_[i,j] = (3/16.)*sqrt(2*pi_*((1.3806488*T_)^3.)/(MWmix*1.66054))/(p_*pi_*(LJdiametermix^2)*sigma)
                     diff_[i,j] = diff_[i,j]*0.1
