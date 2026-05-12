@@ -20,6 +20,8 @@ API/Fortran/example
 API/Fortran/database-generator
 API/Fortran/elapsed-time.sh
 API/Fortran/*.mod
+API/Fortran/*.exe
+API/Fortran/*.obj
 API/Java/*.class
 API/Rust/Cargo.lock
 API/Rust/target*

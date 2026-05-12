@@ -777,6 +777,10 @@ void initialize(Asali* asali_)
     asali_->smole_mix_updated_  = false;
 
     asali_->pi_ = 3.14159265358979323846;
+
+    asali_->NC_ = 0;
+    asali_->T_  = 0.;
+    asali_->P_  = 0.;
     
     thermo_update(asali_);
     transport_update(asali_);

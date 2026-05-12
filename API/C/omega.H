@@ -41,7 +41,7 @@ void omega_update(Asali* asali_)
 	if ( !asali_->omega11_updated_ )
 	{
 		asali_->omega11_.size = 37;
-		asali_->omega11_.d = (float*) malloc(8 * sizeof(float));
+		asali_->omega11_.d = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.d[0] = 0.00;
 		asali_->omega11_.d[1] = 0.25;
 		asali_->omega11_.d[2] = 0.50;
@@ -51,7 +51,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.d[6] = 2.00;
 		asali_->omega11_.d[7] = 2.50;
 
-		asali_->omega11_.T = (float*) malloc(37 * sizeof(float));
+		asali_->omega11_.T = (float*) malloc(37 * sizeof(float*));
 		asali_->omega11_.T[0] = 0.10;
 		asali_->omega11_.T[1] = 0.20;
 		asali_->omega11_.T[2] = 0.30;
@@ -90,9 +90,9 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.T[35] = 75.00;
 		asali_->omega11_.T[36] = 100.00;
 
-		asali_->omega11_.sigma = (float**) malloc(37 * sizeof(int));
+		asali_->omega11_.sigma = (float**) malloc(37 * sizeof(float*));
 
-		asali_->omega11_.sigma[0] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[0] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[0][0] = 4.0079;
 		asali_->omega11_.sigma[0][1] = 4.0019;
 		asali_->omega11_.sigma[0][2] = 4.6561;
@@ -102,7 +102,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[0][6] = 9.8289;
 		asali_->omega11_.sigma[0][7] = 11.3130;
 
-		asali_->omega11_.sigma[1] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[1] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[1][0] = 3.1299;
 		asali_->omega11_.sigma[1][1] = 3.1627;
 		asali_->omega11_.sigma[1][2] = 3.3550;
@@ -112,7 +112,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[1][6] = 6.2261;
 		asali_->omega11_.sigma[1][7] = 7.1598;
 
-		asali_->omega11_.sigma[2] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[2] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[2][0] = 2.6494;
 		asali_->omega11_.sigma[2][1] = 2.6579;
 		asali_->omega11_.sigma[2][2] = 2.7698;
@@ -122,7 +122,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[2][6] = 4.7862;
 		asali_->omega11_.sigma[2][7] = 5.4846;
 
-		asali_->omega11_.sigma[3] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[3] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[3][0] = 2.3144;
 		asali_->omega11_.sigma[3][1] = 2.3201;
 		asali_->omega11_.sigma[3][2] = 2.4011;
@@ -132,7 +132,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[3][6] = 3.9722;
 		asali_->omega11_.sigma[3][7] = 4.5408;
 
-		asali_->omega11_.sigma[4] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[4] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[4][0] = 2.0661;
 		asali_->omega11_.sigma[4][1] = 2.0738;
 		asali_->omega11_.sigma[4][2] = 2.1406;
@@ -142,7 +142,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[4][6] = 3.4382;
 		asali_->omega11_.sigma[4][7] = 3.9197;
 
-		asali_->omega11_.sigma[5] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[5] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[5][0] = 1.8766;
 		asali_->omega11_.sigma[5][1] = 1.8850;
 		asali_->omega11_.sigma[5][2] = 1.9434;
@@ -152,7 +152,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[5][6] = 3.0541;
 		asali_->omega11_.sigma[5][7] = 3.4734;
 
-		asali_->omega11_.sigma[6] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[6] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[6][0] = 1.7294;
 		asali_->omega11_.sigma[6][1] = 1.7380;
 		asali_->omega11_.sigma[6][2] = 1.7909;
@@ -162,7 +162,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[6][6] = 2.7628;
 		asali_->omega11_.sigma[6][7] = 3.1370;
 
-		asali_->omega11_.sigma[7] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[7] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[7][0] = 1.6122;
 		asali_->omega11_.sigma[7][1] = 1.6215;
 		asali_->omega11_.sigma[7][2] = 1.6697;
@@ -172,7 +172,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[7][6] = 2.5345;
 		asali_->omega11_.sigma[7][7] = 2.8717;
 
-		asali_->omega11_.sigma[8] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[8] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[8][0] = 1.5175;
 		asali_->omega11_.sigma[8][1] = 1.5271;
 		asali_->omega11_.sigma[8][2] = 1.5726;
@@ -182,7 +182,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[8][6] = 2.3493;
 		asali_->omega11_.sigma[8][7] = 2.6567;
 
-		asali_->omega11_.sigma[9] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[9] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[9][0] = 1.4398;
 		asali_->omega11_.sigma[9][1] = 1.4502;
 		asali_->omega11_.sigma[9][2] = 1.4905;
@@ -192,7 +192,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[9][6] = 2.1957;
 		asali_->omega11_.sigma[9][7] = 2.4783;
 
-		asali_->omega11_.sigma[10] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[10] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[10][0] = 1.3204;
 		asali_->omega11_.sigma[10][1] = 1.3294;
 		asali_->omega11_.sigma[10][2] = 1.3636;
@@ -202,7 +202,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[10][6] = 1.9561;
 		asali_->omega11_.sigma[10][7] = 2.1982;
 
-		asali_->omega11_.sigma[11] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[11] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[11][0] = 1.2336;
 		asali_->omega11_.sigma[11][1] = 1.2420;
 		asali_->omega11_.sigma[11][2] = 1.2716;
@@ -212,7 +212,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[11][6] = 1.7775;
 		asali_->omega11_.sigma[11][7] = 1.9893;
 
-		asali_->omega11_.sigma[12] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[12] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[12][0] = 1.1679;
 		asali_->omega11_.sigma[12][1] = 1.1761;
 		asali_->omega11_.sigma[12][2] = 1.2020;
@@ -222,7 +222,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[12][6] = 1.6396;
 		asali_->omega11_.sigma[12][7] = 1.8265;
 
-		asali_->omega11_.sigma[13] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[13] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[13][0] = 1.1166;
 		asali_->omega11_.sigma[13][1] = 1.1242;
 		asali_->omega11_.sigma[13][2] = 1.1456;
@@ -232,7 +232,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[13][6] = 1.5298;
 		asali_->omega11_.sigma[13][7] = 1.6980;
 
-		asali_->omega11_.sigma[14] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[14] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[14][0] = 1.0753;
 		asali_->omega11_.sigma[14][1] = 1.0823;
 		asali_->omega11_.sigma[14][2] = 1.1021;
@@ -242,7 +242,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[14][6] = 1.4408;
 		asali_->omega11_.sigma[14][7] = 1.5913;
 
-		asali_->omega11_.sigma[15] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[15] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[15][0] = 1.0006;
 		asali_->omega11_.sigma[15][1] = 1.0055;
 		asali_->omega11_.sigma[15][2] = 1.0201;
@@ -252,7 +252,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[15][6] = 1.2778;
 		asali_->omega11_.sigma[15][7] = 1.3965;
 
-		asali_->omega11_.sigma[16] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[16] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[16][0] = 0.9501;
 		asali_->omega11_.sigma[16][1] = 0.9534;
 		asali_->omega11_.sigma[16][2] = 0.9654;
@@ -262,7 +262,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[16][6] = 1.1676;
 		asali_->omega11_.sigma[16][7] = 1.2648;
 
-		asali_->omega11_.sigma[17] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[17] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[17][0] = 0.9131;
 		asali_->omega11_.sigma[17][1] = 0.9161;
 		asali_->omega11_.sigma[17][2] = 0.9253;
@@ -272,7 +272,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[17][6] = 1.0903;
 		asali_->omega11_.sigma[17][7] = 1.1704;
 
-		asali_->omega11_.sigma[18] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[18] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[18][0] = 0.8845;
 		asali_->omega11_.sigma[18][1] = 0.8871;
 		asali_->omega11_.sigma[18][2] = 0.8944;
@@ -282,7 +282,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[18][6] = 1.0313;
 		asali_->omega11_.sigma[18][7] = 1.0977;
 
-		asali_->omega11_.sigma[19] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[19] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[19][0] = 0.8427;
 		asali_->omega11_.sigma[19][1] = 0.8446;
 		asali_->omega11_.sigma[19][2] = 0.8501;
@@ -292,7 +292,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[19][6] = 0.9480;
 		asali_->omega11_.sigma[19][7] = 0.9982;
 
-		asali_->omega11_.sigma[20] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[20] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[20][0] = 0.8128;
 		asali_->omega11_.sigma[20][1] = 0.8141;
 		asali_->omega11_.sigma[20][2] = 0.8179;
@@ -302,7 +302,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[20][6] = 0.8928;
 		asali_->omega11_.sigma[20][7] = 0.9313;
 
-		asali_->omega11_.sigma[21] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[21] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[21][0] = 0.7898;
 		asali_->omega11_.sigma[21][1] = 0.7910;
 		asali_->omega11_.sigma[21][2] = 0.7939;
@@ -312,7 +312,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[21][6] = 0.8525;
 		asali_->omega11_.sigma[21][7] = 0.8833;
 
-		asali_->omega11_.sigma[22] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[22] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[22][0] = 0.7711;
 		asali_->omega11_.sigma[22][1] = 0.7723;
 		asali_->omega11_.sigma[22][2] = 0.7744;
@@ -322,7 +322,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[22][6] = 0.8219;
 		asali_->omega11_.sigma[22][7] = 0.8474;
 
-		asali_->omega11_.sigma[23] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[23] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[23][0] = 0.7555;
 		asali_->omega11_.sigma[23][1] = 0.7564;
 		asali_->omega11_.sigma[23][2] = 0.7587;
@@ -332,7 +332,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[23][6] = 0.7978;
 		asali_->omega11_.sigma[23][7] = 0.8186;
 
-		asali_->omega11_.sigma[24] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[24] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[24][0] = 0.7422;
 		asali_->omega11_.sigma[24][1] = 0.7427;
 		asali_->omega11_.sigma[24][2] = 0.7446;
@@ -342,7 +342,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[24][6] = 0.7774;
 		asali_->omega11_.sigma[24][7] = 0.7954;
 
-		asali_->omega11_.sigma[25] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[25] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[25][0] = 0.7202;
 		asali_->omega11_.sigma[25][1] = 0.7203;
 		asali_->omega11_.sigma[25][2] = 0.7223;
@@ -352,7 +352,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[25][6] = 0.7464;
 		asali_->omega11_.sigma[25][7] = 0.7600;
 
-		asali_->omega11_.sigma[26] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[26] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[26][0] = 0.7026;
 		asali_->omega11_.sigma[26][1] = 0.7031;
 		asali_->omega11_.sigma[26][2] = 0.7036;
@@ -362,7 +362,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[26][6] = 0.7228;
 		asali_->omega11_.sigma[26][7] = 0.7332;
 
-		asali_->omega11_.sigma[27] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[27] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[27][0] = 0.6877;
 		asali_->omega11_.sigma[27][1] = 0.6882;
 		asali_->omega11_.sigma[27][2] = 0.6890;
@@ -372,7 +372,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[27][6] = 0.7040;
 		asali_->omega11_.sigma[27][7] = 0.7128;
 
-		asali_->omega11_.sigma[28] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[28] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[28][0] = 0.6751;
 		asali_->omega11_.sigma[28][1] = 0.6751;
 		asali_->omega11_.sigma[28][2] = 0.6758;
@@ -382,7 +382,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[28][6] = 0.6885;
 		asali_->omega11_.sigma[28][7] = 0.6955;
 
-		asali_->omega11_.sigma[29] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[29] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[29][0] = 0.6640;
 		asali_->omega11_.sigma[29][1] = 0.6641;
 		asali_->omega11_.sigma[29][2] = 0.6647;
@@ -392,7 +392,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[29][6] = 0.6752;
 		asali_->omega11_.sigma[29][7] = 0.6811;
 
-		asali_->omega11_.sigma[30] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[30] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[30][0] = 0.6414;
 		asali_->omega11_.sigma[30][1] = 0.6417;
 		asali_->omega11_.sigma[30][2] = 0.6421;
@@ -402,7 +402,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[30][6] = 0.6491;
 		asali_->omega11_.sigma[30][7] = 0.6529;
 
-		asali_->omega11_.sigma[31] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[31] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[31][0] = 0.6235;
 		asali_->omega11_.sigma[31][1] = 0.6238;
 		asali_->omega11_.sigma[31][2] = 0.6240;
@@ -412,7 +412,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[31][6] = 0.6290;
 		asali_->omega11_.sigma[31][7] = 0.6322;
 
-		asali_->omega11_.sigma[32] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[32] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[32][0] = 0.6088;
 		asali_->omega11_.sigma[32][1] = 0.6088;
 		asali_->omega11_.sigma[32][2] = 0.6091;
@@ -422,7 +422,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[32][6] = 0.6132;
 		asali_->omega11_.sigma[32][7] = 0.6156;
 
-		asali_->omega11_.sigma[33] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[33] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[33][0] = 0.5964;
 		asali_->omega11_.sigma[33][1] = 0.5966;
 		asali_->omega11_.sigma[33][2] = 0.5968;
@@ -432,7 +432,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[33][6] = 0.6000;
 		asali_->omega11_.sigma[33][7] = 0.6014;
 
-		asali_->omega11_.sigma[34] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[34] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[34][0] = 0.5763;
 		asali_->omega11_.sigma[34][1] = 0.5761;
 		asali_->omega11_.sigma[34][2] = 0.5763;
@@ -442,7 +442,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[34][6] = 0.5782;
 		asali_->omega11_.sigma[34][7] = 0.5798;
 
-		asali_->omega11_.sigma[35] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[35] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[35][0] = 0.5415;
 		asali_->omega11_.sigma[35][1] = 0.5415;
 		asali_->omega11_.sigma[35][2] = 0.5417;
@@ -452,7 +452,7 @@ void omega_update(Asali* asali_)
 		asali_->omega11_.sigma[35][6] = 0.5422;
 		asali_->omega11_.sigma[35][7] = 0.5430;
 
-		asali_->omega11_.sigma[36] = (float*) malloc(8 * sizeof(int));
+		asali_->omega11_.sigma[36] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega11_.sigma[36][0] = 0.5180;
 		asali_->omega11_.sigma[36][1] = 0.5179;
 		asali_->omega11_.sigma[36][2] = 0.5184;
@@ -466,7 +466,7 @@ void omega_update(Asali* asali_)
 	if ( !asali_->omega22_updated_ )
 	{
 		asali_->omega22_.size = 37;
-		asali_->omega22_.d = (float*) malloc(8 * sizeof(float));
+		asali_->omega22_.d = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.d[0] = 0.00;
 		asali_->omega22_.d[1] = 0.25;
 		asali_->omega22_.d[2] = 0.50;
@@ -476,7 +476,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.d[6] = 2.00;
 		asali_->omega22_.d[7] = 2.50;
 
-		asali_->omega22_.T = (float*) malloc(37 * sizeof(float));
+		asali_->omega22_.T = (float*) malloc(37 * sizeof(float*));
 		asali_->omega22_.T[0] = 0.10;
 		asali_->omega22_.T[1] = 0.20;
 		asali_->omega22_.T[2] = 0.30;
@@ -515,9 +515,9 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.T[35] = 75.00;
 		asali_->omega22_.T[36] = 100.00;
 
-		asali_->omega22_.sigma = (float**) malloc(37 * sizeof(float));
+		asali_->omega22_.sigma = (float**) malloc(37 * sizeof(float*));
 
-		asali_->omega22_.sigma[0] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[0] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[0][0] = 4.1005;
 		asali_->omega22_.sigma[0][1] = 4.2660;
 		asali_->omega22_.sigma[0][2] = 4.8330;
@@ -527,7 +527,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[0][6] = 10.3400;
 		asali_->omega22_.sigma[0][7] = 11.8900;
 
-		asali_->omega22_.sigma[1] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[1] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[1][0] = 3.2626;
 		asali_->omega22_.sigma[1][1] = 3.3050;
 		asali_->omega22_.sigma[1][2] = 3.5160;
@@ -537,7 +537,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[1][6] = 6.6370;
 		asali_->omega22_.sigma[1][7] = 7.6180;
 
-		asali_->omega22_.sigma[2] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[2] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[2][0] = 2.8399;
 		asali_->omega22_.sigma[2][1] = 2.8360;
 		asali_->omega22_.sigma[2][2] = 2.9360;
@@ -547,7 +547,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[2][6] = 5.1260;
 		asali_->omega22_.sigma[2][7] = 5.8740;
 
-		asali_->omega22_.sigma[3] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[3] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[3][0] = 2.5310;
 		asali_->omega22_.sigma[3][1] = 2.5220;
 		asali_->omega22_.sigma[3][2] = 2.5860;
@@ -557,7 +557,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[3][6] = 4.2820;
 		asali_->omega22_.sigma[3][7] = 4.8950;
 
-		asali_->omega22_.sigma[4] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[4] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[4][0] = 2.2837;
 		asali_->omega22_.sigma[4][1] = 2.2770;
 		asali_->omega22_.sigma[4][2] = 2.3290;
@@ -567,7 +567,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[4][6] = 3.7270;
 		asali_->omega22_.sigma[4][7] = 4.2490;
 
-		asali_->omega22_.sigma[5] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[5] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[5][0] = 2.0838;
 		asali_->omega22_.sigma[5][1] = 2.0810;
 		asali_->omega22_.sigma[5][2] = 2.1300;
@@ -577,7 +577,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[5][6] = 3.3290;
 		asali_->omega22_.sigma[5][7] = 3.7860;
 
-		asali_->omega22_.sigma[6] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[6] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[6][0] = 1.9220;
 		asali_->omega22_.sigma[6][1] = 1.9240;
 		asali_->omega22_.sigma[6][2] = 1.9700;
@@ -587,7 +587,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[6][6] = 3.0280;
 		asali_->omega22_.sigma[6][7] = 3.4350;
 
-		asali_->omega22_.sigma[7] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[7] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[7][0] = 1.7902;
 		asali_->omega22_.sigma[7][1] = 1.7950;
 		asali_->omega22_.sigma[7][2] = 1.8400;
@@ -597,7 +597,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[7][6] = 2.7880;
 		asali_->omega22_.sigma[7][7] = 3.1560;
 
-		asali_->omega22_.sigma[8] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[8] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[8][0] = 1.6823;
 		asali_->omega22_.sigma[8][1] = 1.6890;
 		asali_->omega22_.sigma[8][2] = 1.7330;
@@ -607,7 +607,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[8][6] = 2.5960;
 		asali_->omega22_.sigma[8][7] = 2.9330;
 
-		asali_->omega22_.sigma[9] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[9] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[9][0] = 1.5929;
 		asali_->omega22_.sigma[9][1] = 1.6010;
 		asali_->omega22_.sigma[9][2] = 1.6440;
@@ -617,7 +617,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[9][6] = 2.4350;
 		asali_->omega22_.sigma[9][7] = 2.7460;
 
-		asali_->omega22_.sigma[10] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[10] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[10][0] = 1.4551;
 		asali_->omega22_.sigma[10][1] = 1.4650;
 		asali_->omega22_.sigma[10][2] = 1.5040;
@@ -627,7 +627,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[10][6] = 2.1810;
 		asali_->omega22_.sigma[10][7] = 2.4510;
 
-		asali_->omega22_.sigma[11] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[11] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[11][0] = 1.3551;
 		asali_->omega22_.sigma[11][1] = 1.3650;
 		asali_->omega22_.sigma[11][2] = 1.4000;
@@ -637,7 +637,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[11][6] = 1.9890;
 		asali_->omega22_.sigma[11][7] = 2.2280;
 
-		asali_->omega22_.sigma[12] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[12] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[12][0] = 1.2800;
 		asali_->omega22_.sigma[12][1] = 1.2890;
 		asali_->omega22_.sigma[12][2] = 1.3210;
@@ -647,7 +647,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[12][6] = 1.8380;
 		asali_->omega22_.sigma[12][7] = 2.0530;
 
-		asali_->omega22_.sigma[13] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[13] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[13][0] = 1.2219;
 		asali_->omega22_.sigma[13][1] = 1.2310;
 		asali_->omega22_.sigma[13][2] = 1.2590;
@@ -657,7 +657,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[13][6] = 1.7180;
 		asali_->omega22_.sigma[13][7] = 1.9120;
 
-		asali_->omega22_.sigma[14] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[14] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[14][0] = 1.1757;
 		asali_->omega22_.sigma[14][1] = 1.1840;
 		asali_->omega22_.sigma[14][2] = 1.2090;
@@ -667,7 +667,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[14][6] = 1.6180;
 		asali_->omega22_.sigma[14][7] = 1.7950;
 
-		asali_->omega22_.sigma[15] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[15] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[15][0] = 1.0933;
 		asali_->omega22_.sigma[15][1] = 1.1000;
 		asali_->omega22_.sigma[15][2] = 1.1190;
@@ -677,7 +677,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[15][6] = 1.4350;
 		asali_->omega22_.sigma[15][7] = 1.5780;
 
-		asali_->omega22_.sigma[16] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[16] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[16][0] = 1.0388;
 		asali_->omega22_.sigma[16][1] = 1.0440;
 		asali_->omega22_.sigma[16][2] = 1.0590;
@@ -687,7 +687,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[16][6] = 1.3100;
 		asali_->omega22_.sigma[16][7] = 1.4280;
 
-		asali_->omega22_.sigma[17] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[17] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[17][0] = 0.9996;
 		asali_->omega22_.sigma[17][1] = 1.0040;
 		asali_->omega22_.sigma[17][2] = 1.0160;
@@ -697,7 +697,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[17][6] = 1.2200;
 		asali_->omega22_.sigma[17][7] = 1.3190;
 
-		asali_->omega22_.sigma[18] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[18] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[18][0] = 0.9699;
 		asali_->omega22_.sigma[18][1] = 0.9732;
 		asali_->omega22_.sigma[18][2] = 0.9830;
@@ -707,7 +707,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[18][6] = 1.1530;
 		asali_->omega22_.sigma[18][7] = 1.2360;
 
-		asali_->omega22_.sigma[19] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[19] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[19][0] = 0.9268;
 		asali_->omega22_.sigma[19][1] = 0.9291;
 		asali_->omega22_.sigma[19][2] = 0.9360;
@@ -717,7 +717,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[19][6] = 1.0580;
 		asali_->omega22_.sigma[19][7] = 1.1210;
 
-		asali_->omega22_.sigma[20] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[20] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[20][0] = 0.8962;
 		asali_->omega22_.sigma[20][1] = 0.8979;
 		asali_->omega22_.sigma[20][2] = 0.9030;
@@ -727,7 +727,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[20][6] = 0.9955;
 		asali_->omega22_.sigma[20][7] = 1.0440;
 
-		asali_->omega22_.sigma[21] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[21] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[21][0] = 0.8727;
 		asali_->omega22_.sigma[21][1] = 0.8741;
 		asali_->omega22_.sigma[21][2] = 0.8780;
@@ -737,7 +737,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[21][6] = 0.9505;
 		asali_->omega22_.sigma[21][7] = 0.9893;
 
-		asali_->omega22_.sigma[22] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[22] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[22][0] = 0.8538;
 		asali_->omega22_.sigma[22][1] = 0.8549;
 		asali_->omega22_.sigma[22][2] = 0.8580;
@@ -747,7 +747,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[22][6] = 0.9164;
 		asali_->omega22_.sigma[22][7] = 0.9482;
 
-		asali_->omega22_.sigma[23] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[23] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[23][0] = 0.8379;
 		asali_->omega22_.sigma[23][1] = 0.8388;
 		asali_->omega22_.sigma[23][2] = 0.8414;
@@ -757,7 +757,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[23][6] = 0.8895;
 		asali_->omega22_.sigma[23][7] = 0.9160;
 
-		asali_->omega22_.sigma[24] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[24] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[24][0] = 0.8243;
 		asali_->omega22_.sigma[24][1] = 0.8251;
 		asali_->omega22_.sigma[24][2] = 0.8273;
@@ -767,7 +767,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[24][6] = 0.8676;
 		asali_->omega22_.sigma[24][7] = 0.8901;
 
-		asali_->omega22_.sigma[25] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[25] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[25][0] = 0.8018;
 		asali_->omega22_.sigma[25][1] = 0.8024;
 		asali_->omega22_.sigma[25][2] = 0.8039;
@@ -777,7 +777,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[25][6] = 0.8337;
 		asali_->omega22_.sigma[25][7] = 0.8504;
 
-		asali_->omega22_.sigma[26] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[26] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[26][0] = 0.7836;
 		asali_->omega22_.sigma[26][1] = 0.7840;
 		asali_->omega22_.sigma[26][2] = 0.7852;
@@ -787,7 +787,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[26][6] = 0.8081;
 		asali_->omega22_.sigma[26][7] = 0.8212;
 
-		asali_->omega22_.sigma[27] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[27] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[27][0] = 0.7683;
 		asali_->omega22_.sigma[27][1] = 0.7687;
 		asali_->omega22_.sigma[27][2] = 0.7696;
@@ -797,7 +797,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[27][6] = 0.7878;
 		asali_->omega22_.sigma[27][7] = 0.7983;
 
-		asali_->omega22_.sigma[28] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[28] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[28][0] = 0.7552;
 		asali_->omega22_.sigma[28][1] = 0.7554;
 		asali_->omega22_.sigma[28][2] = 0.7562;
@@ -807,7 +807,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[28][6] = 0.7711;
 		asali_->omega22_.sigma[28][7] = 0.7797;
 
-		asali_->omega22_.sigma[29] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[29] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[29][0] = 0.7436;
 		asali_->omega22_.sigma[29][1] = 0.7438;
 		asali_->omega22_.sigma[29][2] = 0.7445;
@@ -817,7 +817,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[29][6] = 0.7569;
 		asali_->omega22_.sigma[29][7] = 0.7642;
 
-		asali_->omega22_.sigma[30] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[30] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[30][0] = 0.7198;
 		asali_->omega22_.sigma[30][1] = 0.7200;
 		asali_->omega22_.sigma[30][2] = 0.7204;
@@ -827,7 +827,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[30][6] = 0.7289;
 		asali_->omega22_.sigma[30][7] = 0.7339;
 
-		asali_->omega22_.sigma[31] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[31] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[31][0] = 0.7010;
 		asali_->omega22_.sigma[31][1] = 0.7011;
 		asali_->omega22_.sigma[31][2] = 0.7014;
@@ -837,7 +837,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[31][6] = 0.7076;
 		asali_->omega22_.sigma[31][7] = 0.7112;
 
-		asali_->omega22_.sigma[32] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[32] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[32][0] = 0.6855;
 		asali_->omega22_.sigma[32][1] = 0.6855;
 		asali_->omega22_.sigma[32][2] = 0.6858;
@@ -847,7 +847,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[32][6] = 0.6905;
 		asali_->omega22_.sigma[32][7] = 0.6932;
 
-		asali_->omega22_.sigma[33] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[33] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[33][0] = 0.6723;
 		asali_->omega22_.sigma[33][1] = 0.6724;
 		asali_->omega22_.sigma[33][2] = 0.6726;
@@ -857,7 +857,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[33][6] = 0.6762;
 		asali_->omega22_.sigma[33][7] = 0.6784;
 
-		asali_->omega22_.sigma[34] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[34] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[34][0] = 0.6510;
 		asali_->omega22_.sigma[34][1] = 0.6510;
 		asali_->omega22_.sigma[34][2] = 0.6512;
@@ -867,7 +867,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[34][6] = 0.6534;
 		asali_->omega22_.sigma[34][7] = 0.6546;
 
-		asali_->omega22_.sigma[35] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[35] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[35][0] = 0.6140;
 		asali_->omega22_.sigma[35][1] = 0.6141;
 		asali_->omega22_.sigma[35][2] = 0.6143;
@@ -877,7 +877,7 @@ void omega_update(Asali* asali_)
 		asali_->omega22_.sigma[35][6] = 0.6148;
 		asali_->omega22_.sigma[35][7] = 0.6147;
 
-		asali_->omega22_.sigma[36] = (float*) malloc(8 * sizeof(int));
+		asali_->omega22_.sigma[36] = (float*) malloc(8 * sizeof(float*));
 		asali_->omega22_.sigma[36][0] = 0.5887;
 		asali_->omega22_.sigma[36][1] = 0.5889;
 		asali_->omega22_.sigma[36][2] = 0.5894;

@@ -43,7 +43,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_ = (struct transportParameters*) malloc(134 * sizeof(struct transportParameters));
 		asali_->number_of_species = 134;
 		
-		asali_->transport_[0].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[0].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[0].name,"AC3H4");
 		asali_->transport_[0].geometry = 1;
 		asali_->transport_[0].LJpotential = 252.000;
@@ -53,7 +53,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[0].collision =  0.000;
 		asali_->transport_[0].MW = 40.065;
 		
-		asali_->transport_[1].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[1].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[1].name,"CH3COOH");
 		asali_->transport_[1].geometry = 2;
 		asali_->transport_[1].LJpotential = 436.000;
@@ -63,7 +63,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[1].collision =  2.000;
 		asali_->transport_[1].MW = 60.053;
 		
-		asali_->transport_[2].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[2].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[2].name,"CH3COCH3");
 		asali_->transport_[2].geometry = 2;
 		asali_->transport_[2].LJpotential = 411.000;
@@ -73,7 +73,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[2].collision =  1.000;
 		asali_->transport_[2].MW = 58.080;
 		
-		asali_->transport_[3].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[3].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[3].name,"C2H3CHO");
 		asali_->transport_[3].geometry = 2;
 		asali_->transport_[3].LJpotential = 443.200;
@@ -83,7 +83,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[3].collision =  1.000;
 		asali_->transport_[3].MW = 56.064;
 		
-		asali_->transport_[4].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[4].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[4].name,"C2H5CHO");
 		asali_->transport_[4].geometry = 2;
 		asali_->transport_[4].LJpotential = 411.000;
@@ -93,7 +93,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[4].collision =  1.000;
 		asali_->transport_[4].MW = 58.080;
 		
-		asali_->transport_[5].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[5].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[5].name,"C4H9CHO");
 		asali_->transport_[5].geometry = 2;
 		asali_->transport_[5].LJpotential = 500.000;
@@ -103,7 +103,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[5].collision =  1.000;
 		asali_->transport_[5].MW = 86.134;
 		
-		asali_->transport_[6].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[6].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[6].name,"AR");
 		asali_->transport_[6].geometry = 0;
 		asali_->transport_[6].LJpotential = 136.500;
@@ -113,7 +113,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[6].collision =  0.000;
 		asali_->transport_[6].MW = 39.948;
 		
-		asali_->transport_[7].name = (char*) malloc(9 * sizeof(char));
+		asali_->transport_[7].name = (char*) malloc(9 * sizeof(char*));
 		strcpy(asali_->transport_[7].name,"C6H5CH2OH");
 		asali_->transport_[7].geometry = 2;
 		asali_->transport_[7].LJpotential = 622.400;
@@ -123,7 +123,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[7].collision =  1.000;
 		asali_->transport_[7].MW = 108.140;
 		
-		asali_->transport_[8].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[8].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[8].name,"C6H4O2");
 		asali_->transport_[8].geometry = 2;
 		asali_->transport_[8].LJpotential = 450.000;
@@ -133,7 +133,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[8].collision =  1.000;
 		asali_->transport_[8].MW = 108.097;
 		
-		asali_->transport_[9].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[9].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[9].name,"C6H6");
 		asali_->transport_[9].geometry = 2;
 		asali_->transport_[9].LJpotential = 468.500;
@@ -143,7 +143,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[9].collision =  1.000;
 		asali_->transport_[9].MW = 78.114;
 		
-		asali_->transport_[10].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[10].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[10].name,"C6H5CHO");
 		asali_->transport_[10].geometry = 2;
 		asali_->transport_[10].LJpotential = 622.400;
@@ -153,7 +153,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[10].collision =  1.000;
 		asali_->transport_[10].MW = 106.124;
 		
-		asali_->transport_[11].name = (char*) malloc(12 * sizeof(char));
+		asali_->transport_[11].name = (char*) malloc(12 * sizeof(char*));
 		strcpy(asali_->transport_[11].name,"C6H5C2H4C6H5");
 		asali_->transport_[11].geometry = 2;
 		asali_->transport_[11].LJpotential = 783.800;
@@ -163,7 +163,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[11].collision =  1.000;
 		asali_->transport_[11].MW = 182.265;
 		
-		asali_->transport_[12].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[12].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[12].name,"NC4H8");
 		asali_->transport_[12].geometry = 2;
 		asali_->transport_[12].LJpotential = 355.000;
@@ -173,7 +173,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[12].collision =  1.000;
 		asali_->transport_[12].MW = 56.107;
 		
-		asali_->transport_[13].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[13].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[13].name,"C4H6");
 		asali_->transport_[13].geometry = 2;
 		asali_->transport_[13].LJpotential = 357.000;
@@ -183,7 +183,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[13].collision =  1.000;
 		asali_->transport_[13].MW = 54.092;
 		
-		asali_->transport_[14].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[14].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[14].name,"C12H8");
 		asali_->transport_[14].geometry = 2;
 		asali_->transport_[14].LJpotential = 689.800;
@@ -193,7 +193,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[14].collision =  1.000;
 		asali_->transport_[14].MW = 152.196;
 		
-		asali_->transport_[15].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[15].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[15].name,"C2H2");
 		asali_->transport_[15].geometry = 1;
 		asali_->transport_[15].LJpotential = 209.000;
@@ -203,7 +203,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[15].collision =  2.500;
 		asali_->transport_[15].MW = 26.038;
 		
-		asali_->transport_[16].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[16].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[16].name,"C2H4");
 		asali_->transport_[16].geometry = 2;
 		asali_->transport_[16].LJpotential = 280.800;
@@ -213,7 +213,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[16].collision =  1.500;
 		asali_->transport_[16].MW = 28.054;
 		
-		asali_->transport_[17].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[17].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[17].name,"C2H6");
 		asali_->transport_[17].geometry = 2;
 		asali_->transport_[17].LJpotential = 252.300;
@@ -223,7 +223,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[17].collision =  1.500;
 		asali_->transport_[17].MW = 30.070;
 		
-		asali_->transport_[18].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[18].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[18].name,"C3H6");
 		asali_->transport_[18].geometry = 2;
 		asali_->transport_[18].LJpotential = 307.800;
@@ -233,7 +233,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[18].collision =  1.000;
 		asali_->transport_[18].MW = 42.081;
 		
-		asali_->transport_[19].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[19].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[19].name,"C3H8");
 		asali_->transport_[19].geometry = 2;
 		asali_->transport_[19].LJpotential = 303.400;
@@ -243,7 +243,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[19].collision =  1.000;
 		asali_->transport_[19].MW = 44.097;
 		
-		asali_->transport_[20].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[20].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[20].name,"C4H2");
 		asali_->transport_[20].geometry = 1;
 		asali_->transport_[20].LJpotential = 357.000;
@@ -253,7 +253,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[20].collision =  1.000;
 		asali_->transport_[20].MW = 50.060;
 		
-		asali_->transport_[21].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[21].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[21].name,"C4H4");
 		asali_->transport_[21].geometry = 2;
 		asali_->transport_[21].LJpotential = 357.000;
@@ -263,7 +263,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[21].collision =  1.000;
 		asali_->transport_[21].MW = 52.076;
 		
-		asali_->transport_[22].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[22].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[22].name,"CYC5H4O");
 		asali_->transport_[22].geometry = 2;
 		asali_->transport_[22].LJpotential = 450.000;
@@ -273,7 +273,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[22].collision =  1.000;
 		asali_->transport_[22].MW = 80.086;
 		
-		asali_->transport_[23].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[23].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[23].name,"C6H5O");
 		asali_->transport_[23].geometry = 2;
 		asali_->transport_[23].LJpotential = 450.000;
@@ -283,7 +283,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[23].collision =  1.000;
 		asali_->transport_[23].MW = 93.105;
 		
-		asali_->transport_[24].name = (char*) malloc(11 * sizeof(char));
+		asali_->transport_[24].name = (char*) malloc(11 * sizeof(char*));
 		strcpy(asali_->transport_[24].name,"CYC6H10-ONE");
 		asali_->transport_[24].geometry = 2;
 		asali_->transport_[24].LJpotential = 568.500;
@@ -293,7 +293,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[24].collision =  1.000;
 		asali_->transport_[24].MW = 98.145;
 		
-		asali_->transport_[25].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[25].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[25].name,"CYC5H8");
 		asali_->transport_[25].geometry = 1;
 		asali_->transport_[25].LJpotential = 408.000;
@@ -303,7 +303,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[25].collision =  1.000;
 		asali_->transport_[25].MW = 68.118;
 		
-		asali_->transport_[26].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[26].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[26].name,"CYC6H8");
 		asali_->transport_[26].geometry = 2;
 		asali_->transport_[26].LJpotential = 468.500;
@@ -313,7 +313,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[26].collision =  1.000;
 		asali_->transport_[26].MW = 80.130;
 		
-		asali_->transport_[27].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[27].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[27].name,"CYC6H12");
 		asali_->transport_[27].geometry = 2;
 		asali_->transport_[27].LJpotential = 468.500;
@@ -323,7 +323,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[27].collision =  1.000;
 		asali_->transport_[27].MW = 84.161;
 		
-		asali_->transport_[28].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[28].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[28].name,"CYC6H10");
 		asali_->transport_[28].geometry = 2;
 		asali_->transport_[28].LJpotential = 468.500;
@@ -333,7 +333,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[28].collision =  1.000;
 		asali_->transport_[28].MW = 82.145;
 		
-		asali_->transport_[29].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[29].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[29].name,"CH2CO");
 		asali_->transport_[29].geometry = 2;
 		asali_->transport_[29].LJpotential = 436.000;
@@ -343,7 +343,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[29].collision =  2.000;
 		asali_->transport_[29].MW = 42.037;
 		
-		asali_->transport_[30].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[30].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[30].name,"CH2O");
 		asali_->transport_[30].geometry = 2;
 		asali_->transport_[30].LJpotential = 498.000;
@@ -353,7 +353,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[30].collision =  2.000;
 		asali_->transport_[30].MW = 30.026;
 		
-		asali_->transport_[31].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[31].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[31].name,"CH3OH");
 		asali_->transport_[31].geometry = 2;
 		asali_->transport_[31].LJpotential = 481.800;
@@ -363,7 +363,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[31].collision =  1.000;
 		asali_->transport_[31].MW = 32.042;
 		
-		asali_->transport_[32].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[32].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[32].name,"CH4");
 		asali_->transport_[32].geometry = 2;
 		asali_->transport_[32].LJpotential = 141.400;
@@ -373,7 +373,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[32].collision = 13.000;
 		asali_->transport_[32].MW = 16.043;
 		
-		asali_->transport_[33].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[33].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[33].name,"CO");
 		asali_->transport_[33].geometry = 1;
 		asali_->transport_[33].LJpotential = 98.100;
@@ -383,7 +383,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[33].collision =  1.800;
 		asali_->transport_[33].MW = 28.010;
 		
-		asali_->transport_[34].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[34].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[34].name,"CO2");
 		asali_->transport_[34].geometry = 1;
 		asali_->transport_[34].LJpotential = 244.000;
@@ -393,7 +393,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[34].collision =  2.100;
 		asali_->transport_[34].MW = 44.010;
 		
-		asali_->transport_[35].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[35].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[35].name,"CYC5H6");
 		asali_->transport_[35].geometry = 2;
 		asali_->transport_[35].LJpotential = 408.000;
@@ -403,7 +403,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[35].collision =  1.000;
 		asali_->transport_[35].MW = 66.103;
 		
-		asali_->transport_[36].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[36].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[36].name,"MCPTD");
 		asali_->transport_[36].geometry = 2;
 		asali_->transport_[36].LJpotential = 408.000;
@@ -413,7 +413,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[36].collision =  1.000;
 		asali_->transport_[36].MW = 80.130;
 		
-		asali_->transport_[37].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[37].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[37].name,"CRESOL");
 		asali_->transport_[37].geometry = 2;
 		asali_->transport_[37].LJpotential = 621.100;
@@ -423,7 +423,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[37].collision =  1.000;
 		asali_->transport_[37].MW = 108.140;
 		
-		asali_->transport_[38].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[38].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[38].name,"NC10H20");
 		asali_->transport_[38].geometry = 2;
 		asali_->transport_[38].LJpotential = 540.980;
@@ -433,7 +433,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[38].collision =  1.000;
 		asali_->transport_[38].MW = 140.269;
 		
-		asali_->transport_[39].name = (char*) malloc(11 * sizeof(char));
+		asali_->transport_[39].name = (char*) malloc(11 * sizeof(char*));
 		strcpy(asali_->transport_[39].name,"C6H5CH2C6H5");
 		asali_->transport_[39].geometry = 2;
 		asali_->transport_[39].LJpotential = 712.600;
@@ -443,7 +443,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[39].collision =  1.000;
 		asali_->transport_[39].MW = 168.238;
 		
-		asali_->transport_[40].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[40].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[40].name,"DIPE");
 		asali_->transport_[40].geometry = 2;
 		asali_->transport_[40].LJpotential = 432.000;
@@ -453,7 +453,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[40].collision =  1.000;
 		asali_->transport_[40].MW = 102.177;
 		
-		asali_->transport_[41].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[41].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[41].name,"CH3OCH3");
 		asali_->transport_[41].geometry = 2;
 		asali_->transport_[41].LJpotential = 303.400;
@@ -463,7 +463,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[41].collision =  1.000;
 		asali_->transport_[41].MW = 46.069;
 		
-		asali_->transport_[42].name = (char*) malloc(11 * sizeof(char));
+		asali_->transport_[42].name = (char*) malloc(11 * sizeof(char*));
 		strcpy(asali_->transport_[42].name,"CH3CH3-C5H6");
 		asali_->transport_[42].geometry = 2;
 		asali_->transport_[42].LJpotential = 450.000;
@@ -473,7 +473,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[42].collision =  1.000;
 		asali_->transport_[42].MW = 96.172;
 		
-		asali_->transport_[43].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[43].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[43].name,"C6H5C2H5");
 		asali_->transport_[43].geometry = 2;
 		asali_->transport_[43].LJpotential = 523.600;
@@ -483,7 +483,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[43].collision =  1.000;
 		asali_->transport_[43].MW = 106.167;
 		
-		asali_->transport_[44].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[44].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[44].name,"NC7H14");
 		asali_->transport_[44].geometry = 2;
 		asali_->transport_[44].LJpotential = 459.980;
@@ -493,7 +493,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[44].collision =  1.000;
 		asali_->transport_[44].MW = 98.188;
 		
-		asali_->transport_[45].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[45].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[45].name,"NC6H12");
 		asali_->transport_[45].geometry = 2;
 		asali_->transport_[45].LJpotential = 412.300;
@@ -503,7 +503,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[45].collision =  1.000;
 		asali_->transport_[45].MW = 84.161;
 		
-		asali_->transport_[46].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[46].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[46].name,"C5H9CHO");
 		asali_->transport_[46].geometry = 2;
 		asali_->transport_[46].LJpotential = 568.500;
@@ -513,7 +513,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[46].collision =  1.000;
 		asali_->transport_[46].MW = 98.145;
 		
-		asali_->transport_[47].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[47].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[47].name,"ETBE");
 		asali_->transport_[47].geometry = 2;
 		asali_->transport_[47].LJpotential = 432.000;
@@ -523,7 +523,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[47].collision =  1.000;
 		asali_->transport_[47].MW = 102.177;
 		
-		asali_->transport_[48].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[48].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[48].name,"C2H5OH");
 		asali_->transport_[48].geometry = 2;
 		asali_->transport_[48].LJpotential = 362.600;
@@ -533,7 +533,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[48].collision =  1.500;
 		asali_->transport_[48].MW = 46.069;
 		
-		asali_->transport_[49].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[49].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[49].name,"C2H5OOH");
 		asali_->transport_[49].geometry = 2;
 		asali_->transport_[49].LJpotential = 362.600;
@@ -543,7 +543,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[49].collision =  1.500;
 		asali_->transport_[49].MW = 62.068;
 		
-		asali_->transport_[50].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[50].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[50].name,"C2H4O");
 		asali_->transport_[50].geometry = 2;
 		asali_->transport_[50].LJpotential = 362.600;
@@ -553,7 +553,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[50].collision =  1.500;
 		asali_->transport_[50].MW = 44.053;
 		
-		asali_->transport_[51].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[51].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[51].name,"C6H5C2H");
 		asali_->transport_[51].geometry = 2;
 		asali_->transport_[51].LJpotential = 534.300;
@@ -563,7 +563,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[51].collision =  1.000;
 		asali_->transport_[51].MW = 102.136;
 		
-		asali_->transport_[52].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[52].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[52].name,"BIPHENYL");
 		asali_->transport_[52].geometry = 2;
 		asali_->transport_[52].LJpotential = 676.500;
@@ -573,7 +573,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[52].collision =  1.000;
 		asali_->transport_[52].MW = 154.211;
 		
-		asali_->transport_[53].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[53].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[53].name,"C14H10");
 		asali_->transport_[53].geometry = 2;
 		asali_->transport_[53].LJpotential = 772.000;
@@ -583,7 +583,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[53].collision =  1.000;
 		asali_->transport_[53].MW = 178.233;
 		
-		asali_->transport_[54].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[54].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[54].name,"C6H5OH");
 		asali_->transport_[54].geometry = 2;
 		asali_->transport_[54].LJpotential = 450.000;
@@ -593,7 +593,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[54].collision =  1.000;
 		asali_->transport_[54].MW = 94.113;
 		
-		asali_->transport_[55].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[55].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[55].name,"FLUORENE");
 		asali_->transport_[55].geometry = 2;
 		asali_->transport_[55].LJpotential = 712.600;
@@ -603,7 +603,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[55].collision =  1.000;
 		asali_->transport_[55].MW = 166.222;
 		
-		asali_->transport_[56].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[56].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[56].name,"C10H8");
 		asali_->transport_[56].geometry = 2;
 		asali_->transport_[56].LJpotential = 630.400;
@@ -613,7 +613,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[56].collision =  1.000;
 		asali_->transport_[56].MW = 128.174;
 		
-		asali_->transport_[57].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[57].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[57].name,"H2");
 		asali_->transport_[57].geometry = 1;
 		asali_->transport_[57].LJpotential = 38.000;
@@ -623,7 +623,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[57].collision = 280.000;
 		asali_->transport_[57].MW =  2.016;
 		
-		asali_->transport_[58].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[58].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[58].name,"H2O");
 		asali_->transport_[58].geometry = 2;
 		asali_->transport_[58].LJpotential = 572.400;
@@ -633,7 +633,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[58].collision =  4.000;
 		asali_->transport_[58].MW = 18.015;
 		
-		asali_->transport_[59].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[59].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[59].name,"H2O2");
 		asali_->transport_[59].geometry = 2;
 		asali_->transport_[59].LJpotential = 107.400;
@@ -643,7 +643,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[59].collision =  3.800;
 		asali_->transport_[59].MW = 34.015;
 		
-		asali_->transport_[60].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[60].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[60].name,"HE");
 		asali_->transport_[60].geometry = 0;
 		asali_->transport_[60].LJpotential = 10.200;
@@ -653,7 +653,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[60].collision =  0.000;
 		asali_->transport_[60].MW =  4.003;
 		
-		asali_->transport_[61].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[61].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[61].name,"IC4H8");
 		asali_->transport_[61].geometry = 2;
 		asali_->transport_[61].LJpotential = 355.000;
@@ -663,7 +663,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[61].collision =  1.000;
 		asali_->transport_[61].MW = 56.107;
 		
-		asali_->transport_[62].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[62].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[62].name,"IC3H7CHO");
 		asali_->transport_[62].geometry = 2;
 		asali_->transport_[62].LJpotential = 455.000;
@@ -673,7 +673,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[62].collision =  1.000;
 		asali_->transport_[62].MW = 72.107;
 		
-		asali_->transport_[63].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[63].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[63].name,"IC4H10");
 		asali_->transport_[63].geometry = 2;
 		asali_->transport_[63].LJpotential = 352.000;
@@ -683,7 +683,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[63].collision =  1.000;
 		asali_->transport_[63].MW = 58.123;
 		
-		asali_->transport_[64].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[64].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[64].name,"IC8H18");
 		asali_->transport_[64].geometry = 2;
 		asali_->transport_[64].LJpotential = 494.000;
@@ -693,7 +693,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[64].collision =  1.000;
 		asali_->transport_[64].MW = 114.231;
 		
-		asali_->transport_[65].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[65].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[65].name,"INDENE");
 		asali_->transport_[65].geometry = 2;
 		asali_->transport_[65].LJpotential = 588.600;
@@ -703,7 +703,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[65].collision =  1.000;
 		asali_->transport_[65].MW = 116.163;
 		
-		asali_->transport_[66].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[66].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[66].name,"IC3H7OH");
 		asali_->transport_[66].geometry = 2;
 		asali_->transport_[66].LJpotential = 482.147;
@@ -713,7 +713,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[66].collision =  1.000;
 		asali_->transport_[66].MW = 60.096;
 		
-		asali_->transport_[67].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[67].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[67].name,"IC5H10");
 		asali_->transport_[67].geometry = 2;
 		asali_->transport_[67].LJpotential = 408.000;
@@ -723,7 +723,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[67].collision =  1.000;
 		asali_->transport_[67].MW = 70.134;
 		
-		asali_->transport_[68].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[68].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[68].name,"IC3H5CHO");
 		asali_->transport_[68].geometry = 2;
 		asali_->transport_[68].LJpotential = 357.000;
@@ -733,7 +733,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[68].collision =  1.000;
 		asali_->transport_[68].MW = 70.091;
 		
-		asali_->transport_[69].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[69].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[69].name,"MCYC6");
 		asali_->transport_[69].geometry = 2;
 		asali_->transport_[69].LJpotential = 495.300;
@@ -743,7 +743,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[69].collision =  1.000;
 		asali_->transport_[69].MW = 98.188;
 		
-		asali_->transport_[70].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[70].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[70].name,"CH3CHO");
 		asali_->transport_[70].geometry = 2;
 		asali_->transport_[70].LJpotential = 436.000;
@@ -753,7 +753,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[70].collision =  2.000;
 		asali_->transport_[70].MW = 44.053;
 		
-		asali_->transport_[71].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[71].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[71].name,"C10H7CH3");
 		asali_->transport_[71].geometry = 2;
 		asali_->transport_[71].LJpotential = 660.000;
@@ -763,7 +763,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[71].collision =  1.000;
 		asali_->transport_[71].MW = 142.200;
 		
-		asali_->transport_[72].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[72].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[72].name,"CH3OOH");
 		asali_->transport_[72].geometry = 2;
 		asali_->transport_[72].LJpotential = 481.800;
@@ -773,7 +773,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[72].collision =  1.000;
 		asali_->transport_[72].MW = 48.042;
 		
-		asali_->transport_[73].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[73].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[73].name,"MTBE");
 		asali_->transport_[73].geometry = 2;
 		asali_->transport_[73].LJpotential = 392.000;
@@ -783,7 +783,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[73].collision =  1.000;
 		asali_->transport_[73].MW = 88.150;
 		
-		asali_->transport_[74].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[74].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[74].name,"N2");
 		asali_->transport_[74].geometry = 1;
 		asali_->transport_[74].LJpotential = 97.530;
@@ -793,7 +793,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[74].collision =  4.000;
 		asali_->transport_[74].MW = 28.014;
 		
-		asali_->transport_[75].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[75].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[75].name,"C10H7OH");
 		asali_->transport_[75].geometry = 2;
 		asali_->transport_[75].LJpotential = 663.450;
@@ -803,7 +803,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[75].collision =  1.000;
 		asali_->transport_[75].MW = 144.173;
 		
-		asali_->transport_[76].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[76].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[76].name,"C10H7CHO");
 		asali_->transport_[76].geometry = 2;
 		asali_->transport_[76].LJpotential = 663.450;
@@ -813,7 +813,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[76].collision =  1.000;
 		asali_->transport_[76].MW = 156.184;
 		
-		asali_->transport_[77].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[77].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[77].name,"NC4H10");
 		asali_->transport_[77].geometry = 2;
 		asali_->transport_[77].LJpotential = 352.000;
@@ -823,7 +823,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[77].collision =  1.000;
 		asali_->transport_[77].MW = 58.123;
 		
-		asali_->transport_[78].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[78].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[78].name,"NC10H22");
 		asali_->transport_[78].geometry = 2;
 		asali_->transport_[78].LJpotential = 540.980;
@@ -833,7 +833,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[78].collision =  1.000;
 		asali_->transport_[78].MW = 142.285;
 		
-		asali_->transport_[79].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[79].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[79].name,"NC12H26");
 		asali_->transport_[79].geometry = 2;
 		asali_->transport_[79].LJpotential = 580.000;
@@ -843,7 +843,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[79].collision =  1.000;
 		asali_->transport_[79].MW = 170.338;
 		
-		asali_->transport_[80].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[80].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[80].name,"NC5H12");
 		asali_->transport_[80].geometry = 2;
 		asali_->transport_[80].LJpotential = 392.000;
@@ -853,7 +853,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[80].collision =  1.000;
 		asali_->transport_[80].MW = 72.150;
 		
-		asali_->transport_[81].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[81].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[81].name,"NC7H16");
 		asali_->transport_[81].geometry = 2;
 		asali_->transport_[81].LJpotential = 459.980;
@@ -863,7 +863,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[81].collision =  1.000;
 		asali_->transport_[81].MW = 100.204;
 		
-		asali_->transport_[82].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[82].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[82].name,"NEOC5H12");
 		asali_->transport_[82].geometry = 2;
 		asali_->transport_[82].LJpotential = 392.000;
@@ -873,7 +873,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[82].collision =  1.000;
 		asali_->transport_[82].MW = 72.150;
 		
-		asali_->transport_[83].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[83].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[83].name,"O2");
 		asali_->transport_[83].geometry = 1;
 		asali_->transport_[83].LJpotential = 107.400;
@@ -883,7 +883,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[83].collision =  3.800;
 		asali_->transport_[83].MW = 31.999;
 		
-		asali_->transport_[84].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[84].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[84].name,"IC8H16");
 		asali_->transport_[84].geometry = 2;
 		asali_->transport_[84].LJpotential = 494.000;
@@ -893,7 +893,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[84].collision =  1.000;
 		asali_->transport_[84].MW = 112.215;
 		
-		asali_->transport_[85].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[85].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[85].name,"NC5H10");
 		asali_->transport_[85].geometry = 2;
 		asali_->transport_[85].LJpotential = 408.000;
@@ -903,7 +903,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[85].collision =  1.000;
 		asali_->transport_[85].MW = 70.134;
 		
-		asali_->transport_[86].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[86].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[86].name,"PC3H4");
 		asali_->transport_[86].geometry = 1;
 		asali_->transport_[86].LJpotential = 252.000;
@@ -913,7 +913,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[86].collision =  1.000;
 		asali_->transport_[86].MW = 40.065;
 		
-		asali_->transport_[87].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[87].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[87].name,"CH3CO3H");
 		asali_->transport_[87].geometry = 2;
 		asali_->transport_[87].LJpotential = 443.200;
@@ -923,7 +923,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[87].collision =  1.000;
 		asali_->transport_[87].MW = 76.052;
 		
-		asali_->transport_[88].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[88].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[88].name,"HCO3H");
 		asali_->transport_[88].geometry = 2;
 		asali_->transport_[88].LJpotential = 443.200;
@@ -933,7 +933,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[88].collision =  1.000;
 		asali_->transport_[88].MW = 62.025;
 		
-		asali_->transport_[89].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[89].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[89].name,"C3H6O");
 		asali_->transport_[89].geometry = 2;
 		asali_->transport_[89].LJpotential = 411.000;
@@ -943,7 +943,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[89].collision =  1.000;
 		asali_->transport_[89].MW = 58.080;
 		
-		asali_->transport_[90].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[90].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[90].name,"C5H8");
 		asali_->transport_[90].geometry = 2;
 		asali_->transport_[90].LJpotential = 408.000;
@@ -953,7 +953,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[90].collision =  1.000;
 		asali_->transport_[90].MW = 68.118;
 		
-		asali_->transport_[91].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[91].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[91].name,"C16H10");
 		asali_->transport_[91].geometry = 2;
 		asali_->transport_[91].LJpotential = 834.900;
@@ -963,7 +963,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[91].collision =  1.000;
 		asali_->transport_[91].MW = 202.255;
 		
-		asali_->transport_[92].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[92].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[92].name,"C6H5C2H3");
 		asali_->transport_[92].geometry = 2;
 		asali_->transport_[92].LJpotential = 546.200;
@@ -973,7 +973,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[92].collision =  1.000;
 		asali_->transport_[92].MW = 104.152;
 		
-		asali_->transport_[93].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[93].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[93].name,"TAME");
 		asali_->transport_[93].geometry = 2;
 		asali_->transport_[93].LJpotential = 432.000;
@@ -983,7 +983,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[93].collision =  1.000;
 		asali_->transport_[93].MW = 102.177;
 		
-		asali_->transport_[94].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[94].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[94].name,"TETRALIN");
 		asali_->transport_[94].geometry = 2;
 		asali_->transport_[94].LJpotential = 630.400;
@@ -993,7 +993,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[94].collision =  1.000;
 		asali_->transport_[94].MW = 132.205;
 		
-		asali_->transport_[95].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[95].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[95].name,"DECALIN");
 		asali_->transport_[95].geometry = 2;
 		asali_->transport_[95].LJpotential = 630.400;
@@ -1003,7 +1003,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[95].collision =  1.000;
 		asali_->transport_[95].MW = 138.253;
 		
-		asali_->transport_[96].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[96].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[96].name,"C7H8");
 		asali_->transport_[96].geometry = 2;
 		asali_->transport_[96].LJpotential = 495.300;
@@ -1013,7 +1013,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[96].collision =  1.000;
 		asali_->transport_[96].MW = 92.141;
 		
-		asali_->transport_[97].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[97].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[97].name,"XYLENE");
 		asali_->transport_[97].geometry = 2;
 		asali_->transport_[97].LJpotential = 523.600;
@@ -1023,7 +1023,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[97].collision =  1.000;
 		asali_->transport_[97].MW = 106.167;
 		
-		asali_->transport_[98].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[98].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[98].name,"NC16H34");
 		asali_->transport_[98].geometry = 2;
 		asali_->transport_[98].LJpotential = 650.000;
@@ -1033,7 +1033,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[98].collision =  1.000;
 		asali_->transport_[98].MW = 226.446;
 		
-		asali_->transport_[99].name = (char*) malloc(4 * sizeof(char));
+		asali_->transport_[99].name = (char*) malloc(4 * sizeof(char*));
 		strcpy(asali_->transport_[99].name,"N2H4");
 		asali_->transport_[99].geometry = 2;
 		asali_->transport_[99].LJpotential = 205.000;
@@ -1043,7 +1043,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[99].collision =  1.500;
 		asali_->transport_[99].MW = 32.045;
 		
-		asali_->transport_[100].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[100].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[100].name,"N2O");
 		asali_->transport_[100].geometry = 1;
 		asali_->transport_[100].LJpotential = 232.400;
@@ -1053,7 +1053,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[100].collision =  1.000;
 		asali_->transport_[100].MW = 44.013;
 		
-		asali_->transport_[101].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[101].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[101].name,"NH3");
 		asali_->transport_[101].geometry = 2;
 		asali_->transport_[101].LJpotential = 481.000;
@@ -1063,7 +1063,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[101].collision = 10.000;
 		asali_->transport_[101].MW = 17.031;
 		
-		asali_->transport_[102].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[102].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[102].name,"NO");
 		asali_->transport_[102].geometry = 1;
 		asali_->transport_[102].LJpotential = 97.500;
@@ -1073,7 +1073,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[102].collision =  4.000;
 		asali_->transport_[102].MW = 30.006;
 		
-		asali_->transport_[103].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[103].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[103].name,"NO2");
 		asali_->transport_[103].geometry = 2;
 		asali_->transport_[103].LJpotential = 200.000;
@@ -1083,7 +1083,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[103].collision =  1.000;
 		asali_->transport_[103].MW = 46.006;
 		
-		asali_->transport_[104].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[104].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[104].name,"C3H5OOH");
 		asali_->transport_[104].geometry = 2;
 		asali_->transport_[104].LJpotential = 407.800;
@@ -1093,7 +1093,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[104].collision =  1.000;
 		asali_->transport_[104].MW = 74.079;
 		
-		asali_->transport_[105].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[105].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[105].name,"NC3H7OH");
 		asali_->transport_[105].geometry = 2;
 		asali_->transport_[105].LJpotential = 482.147;
@@ -1103,7 +1103,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[105].collision =  1.000;
 		asali_->transport_[105].MW = 60.096;
 		
-		asali_->transport_[106].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[106].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[106].name,"N1C4H9OH");
 		asali_->transport_[106].geometry = 2;
 		asali_->transport_[106].LJpotential = 503.072;
@@ -1113,7 +1113,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[106].collision =  1.000;
 		asali_->transport_[106].MW = 74.123;
 		
-		asali_->transport_[107].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[107].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[107].name,"N2C4H9OH");
 		asali_->transport_[107].geometry = 2;
 		asali_->transport_[107].LJpotential = 503.072;
@@ -1123,7 +1123,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[107].collision =  1.000;
 		asali_->transport_[107].MW = 74.123;
 		
-		asali_->transport_[108].name = (char*) malloc(3 * sizeof(char));
+		asali_->transport_[108].name = (char*) malloc(3 * sizeof(char*));
 		strcpy(asali_->transport_[108].name,"MEK");
 		asali_->transport_[108].geometry = 2;
 		asali_->transport_[108].LJpotential = 454.000;
@@ -1133,7 +1133,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[108].collision =  1.000;
 		asali_->transport_[108].MW = 72.107;
 		
-		asali_->transport_[109].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[109].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[109].name,"TC4H9OH");
 		asali_->transport_[109].geometry = 2;
 		asali_->transport_[109].LJpotential = 503.072;
@@ -1143,7 +1143,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[109].collision =  1.000;
 		asali_->transport_[109].MW = 74.123;
 		
-		asali_->transport_[110].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[110].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[110].name,"IC4H9OH");
 		asali_->transport_[110].geometry = 2;
 		asali_->transport_[110].LJpotential = 503.072;
@@ -1153,7 +1153,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[110].collision =  1.000;
 		asali_->transport_[110].MW = 74.123;
 		
-		asali_->transport_[111].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[111].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[111].name,"C4H7OH");
 		asali_->transport_[111].geometry = 2;
 		asali_->transport_[111].LJpotential = 503.072;
@@ -1163,7 +1163,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[111].collision =  1.000;
 		asali_->transport_[111].MW = 72.107;
 		
-		asali_->transport_[112].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[112].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[112].name,"C3H5OH");
 		asali_->transport_[112].geometry = 2;
 		asali_->transport_[112].LJpotential = 411.000;
@@ -1173,7 +1173,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[112].collision =  1.000;
 		asali_->transport_[112].MW = 58.080;
 		
-		asali_->transport_[113].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[113].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[113].name,"C10H10");
 		asali_->transport_[113].geometry = 2;
 		asali_->transport_[113].LJpotential = 630.400;
@@ -1183,7 +1183,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[113].collision =  1.000;
 		asali_->transport_[113].MW = 130.189;
 		
-		asali_->transport_[114].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[114].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[114].name,"BZFUR");
 		asali_->transport_[114].geometry = 2;
 		asali_->transport_[114].LJpotential = 630.400;
@@ -1193,7 +1193,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[114].collision =  1.000;
 		asali_->transport_[114].MW = 118.135;
 		
-		asali_->transport_[115].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[115].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[115].name,"TMBENZ");
 		asali_->transport_[115].geometry = 2;
 		asali_->transport_[115].LJpotential = 523.600;
@@ -1203,7 +1203,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[115].collision =  1.000;
 		asali_->transport_[115].MW = 120.194;
 		
-		asali_->transport_[116].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[116].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[116].name,"NPBENZ");
 		asali_->transport_[116].geometry = 2;
 		asali_->transport_[116].LJpotential = 495.300;
@@ -1213,7 +1213,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[116].collision =  1.000;
 		asali_->transport_[116].MW = 120.194;
 		
-		asali_->transport_[117].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[117].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[117].name,"C6H5OCH3");
 		asali_->transport_[117].geometry = 2;
 		asali_->transport_[117].LJpotential = 450.000;
@@ -1223,7 +1223,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[117].collision =  1.000;
 		asali_->transport_[117].MW = 108.140;
 		
-		asali_->transport_[118].name = (char*) malloc(2 * sizeof(char));
+		asali_->transport_[118].name = (char*) malloc(2 * sizeof(char*));
 		strcpy(asali_->transport_[118].name,"MB");
 		asali_->transport_[118].geometry = 2;
 		asali_->transport_[118].LJpotential = 468.000;
@@ -1233,7 +1233,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[118].collision =  0.000;
 		asali_->transport_[118].MW = 102.133;
 		
-		asali_->transport_[119].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[119].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[119].name,"MCROT");
 		asali_->transport_[119].geometry = 2;
 		asali_->transport_[119].LJpotential = 468.500;
@@ -1243,7 +1243,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[119].collision =  1.000;
 		asali_->transport_[119].MW = 100.117;
 		
-		asali_->transport_[120].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[120].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[120].name,"MACRIL");
 		asali_->transport_[120].geometry = 2;
 		asali_->transport_[120].LJpotential = 430.100;
@@ -1253,7 +1253,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[120].collision =  1.000;
 		asali_->transport_[120].MW = 86.090;
 		
-		asali_->transport_[121].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[121].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[121].name,"DIBZFUR");
 		asali_->transport_[121].geometry = 2;
 		asali_->transport_[121].LJpotential = 676.500;
@@ -1263,7 +1263,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[121].collision =  1.000;
 		asali_->transport_[121].MW = 168.195;
 		
-		asali_->transport_[122].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[122].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[122].name,"DIFENET");
 		asali_->transport_[122].geometry = 2;
 		asali_->transport_[122].LJpotential = 676.500;
@@ -1273,7 +1273,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[122].collision =  1.000;
 		asali_->transport_[122].MW = 170.211;
 		
-		asali_->transport_[123].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[123].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[123].name,"C12H22");
 		asali_->transport_[123].geometry = 2;
 		asali_->transport_[123].LJpotential = 580.000;
@@ -1283,7 +1283,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[123].collision =  1.000;
 		asali_->transport_[123].MW = 166.307;
 		
-		asali_->transport_[124].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[124].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[124].name,"BENZYNE");
 		asali_->transport_[124].geometry = 2;
 		asali_->transport_[124].LJpotential = 468.500;
@@ -1293,7 +1293,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[124].collision =  1.000;
 		asali_->transport_[124].MW = 76.098;
 		
-		asali_->transport_[125].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[125].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[125].name,"C2H2O2");
 		asali_->transport_[125].geometry = 2;
 		asali_->transport_[125].LJpotential = 470.600;
@@ -1303,7 +1303,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[125].collision =  1.500;
 		asali_->transport_[125].MW = 58.037;
 		
-		asali_->transport_[126].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[126].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[126].name,"C4H6O2");
 		asali_->transport_[126].geometry = 2;
 		asali_->transport_[126].LJpotential = 496.000;
@@ -1313,7 +1313,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[126].collision =  1.000;
 		asali_->transport_[126].MW = 86.090;
 		
-		asali_->transport_[127].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[127].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[127].name,"C5H4O2");
 		asali_->transport_[127].geometry = 2;
 		asali_->transport_[127].LJpotential = 524.690;
@@ -1323,7 +1323,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[127].collision =  1.000;
 		asali_->transport_[127].MW = 96.086;
 		
-		asali_->transport_[128].name = (char*) malloc(6 * sizeof(char));
+		asali_->transport_[128].name = (char*) malloc(6 * sizeof(char*));
 		strcpy(asali_->transport_[128].name,"C5H8O4");
 		asali_->transport_[128].geometry = 2;
 		asali_->transport_[128].LJpotential = 568.500;
@@ -1333,7 +1333,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[128].collision =  1.000;
 		asali_->transport_[128].MW = 132.116;
 		
-		asali_->transport_[129].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[129].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[129].name,"C6H10O5");
 		asali_->transport_[129].geometry = 2;
 		asali_->transport_[129].LJpotential = 568.500;
@@ -1343,7 +1343,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[129].collision =  1.000;
 		asali_->transport_[129].MW = 162.142;
 		
-		asali_->transport_[130].name = (char*) malloc(7 * sizeof(char));
+		asali_->transport_[130].name = (char*) malloc(7 * sizeof(char*));
 		strcpy(asali_->transport_[130].name,"C8H10O3");
 		asali_->transport_[130].geometry = 2;
 		asali_->transport_[130].LJpotential = 621.100;
@@ -1353,7 +1353,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[130].collision =  1.000;
 		asali_->transport_[130].MW = 154.166;
 		
-		asali_->transport_[131].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[131].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[131].name,"HCOOH");
 		asali_->transport_[131].geometry = 2;
 		asali_->transport_[131].LJpotential = 470.600;
@@ -1363,7 +1363,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[131].collision =  1.000;
 		asali_->transport_[131].MW = 46.026;
 		
-		asali_->transport_[132].name = (char*) malloc(8 * sizeof(char));
+		asali_->transport_[132].name = (char*) malloc(8 * sizeof(char*));
 		strcpy(asali_->transport_[132].name,"GLYCEROL");
 		asali_->transport_[132].geometry = 2;
 		asali_->transport_[132].LJpotential = 748.365;
@@ -1373,7 +1373,7 @@ void transport_update(Asali* asali_)
 		asali_->transport_[132].collision =  1.000;
 		asali_->transport_[132].MW = 92.095;
 		
-		asali_->transport_[133].name = (char*) malloc(5 * sizeof(char));
+		asali_->transport_[133].name = (char*) malloc(5 * sizeof(char*));
 		strcpy(asali_->transport_[133].name,"C4H4O");
 		asali_->transport_[133].geometry = 2;
 		asali_->transport_[133].LJpotential = 429.630;

@@ -138,12 +138,12 @@ int main()
     //Read transport.asali
     {
         geometry    = (int*) malloc(NC * sizeof(int));
-        LJpotential = (float*) malloc(NC * sizeof(float));
-        LJdiameter  = (float*) malloc(NC * sizeof(float));
-        dipole      = (float*) malloc(NC * sizeof(float));
-        polar       = (float*) malloc(NC * sizeof(float));
-        collision   = (float*) malloc(NC * sizeof(float));
-        MW          = (float*) malloc(NC * sizeof(float));
+        LJpotential = (float*) malloc(NC * sizeof(float*));
+        LJdiameter  = (float*) malloc(NC * sizeof(float*));
+        dipole      = (float*) malloc(NC * sizeof(float*));
+        polar       = (float*) malloc(NC * sizeof(float*));
+        collision   = (float*) malloc(NC * sizeof(float*));
+        MW          = (float*) malloc(NC * sizeof(float*));
 
         FILE *fp;
         fp = open_file("../database/transport.asali", "r");
@@ -162,7 +162,7 @@ int main()
                 dummyValue = strtok (NULL, "\t");
             }
 
-            names[i] = (char*) malloc( strlen(dummyArray[0]) * sizeof(char));
+            names[i] = (char*) malloc( strlen(dummyArray[0]) * sizeof(char*));
             strcpy(names[i],dummyArray[0]);
             geometry[i]    = atoi(dummyArray[1]);
             LJpotential[i] = atof(dummyArray[2]);
@@ -227,7 +227,7 @@ int main()
         for (unsigned int i=0;i<NC;i++)
         {
             fprintf(fp,"\t\t\n");
-            fprintf(fp,"\t\tasali_->transport_[%d].name = (char*) malloc(%d * sizeof(char));\n",i,(int)strlen(names[i]));
+            fprintf(fp,"\t\tasali_->transport_[%d].name = (char*) malloc(%d * sizeof(char*));\n",i,(int)strlen(names[i]));
             fprintf(fp,"\t\tstrcpy(asali_->transport_[%d].name,\"%s\");\n",i,names[i]);
             fprintf(fp,"\t\tasali_->transport_[%d].geometry = %d;\n",i,geometry[i]);
             fprintf(fp,"\t\tasali_->transport_[%d].LJpotential = %6.3f;\n",i,LJpotential[i]);
@@ -244,20 +244,20 @@ int main()
 
     //Read thermo.asali
     {
-        highA = (float*) malloc(NC * sizeof(float));
-        highB = (float*) malloc(NC * sizeof(float));
-        highC = (float*) malloc(NC * sizeof(float));
-        highD = (float*) malloc(NC * sizeof(float));
-        highE = (float*) malloc(NC * sizeof(float));
-        highF = (float*) malloc(NC * sizeof(float));
-        highG = (float*) malloc(NC * sizeof(float));
-        lowA  = (float*) malloc(NC * sizeof(float));
-        lowB  = (float*) malloc(NC * sizeof(float));
-        lowC  = (float*) malloc(NC * sizeof(float));
-        lowD  = (float*) malloc(NC * sizeof(float));
-        lowE  = (float*) malloc(NC * sizeof(float));
-        lowF  = (float*) malloc(NC * sizeof(float));
-        lowG  = (float*) malloc(NC * sizeof(float));
+        highA = (float*) malloc(NC * sizeof(float*));
+        highB = (float*) malloc(NC * sizeof(float*));
+        highC = (float*) malloc(NC * sizeof(float*));
+        highD = (float*) malloc(NC * sizeof(float*));
+        highE = (float*) malloc(NC * sizeof(float*));
+        highF = (float*) malloc(NC * sizeof(float*));
+        highG = (float*) malloc(NC * sizeof(float*));
+        lowA  = (float*) malloc(NC * sizeof(float*));
+        lowB  = (float*) malloc(NC * sizeof(float*));
+        lowC  = (float*) malloc(NC * sizeof(float*));
+        lowD  = (float*) malloc(NC * sizeof(float*));
+        lowE  = (float*) malloc(NC * sizeof(float*));
+        lowF  = (float*) malloc(NC * sizeof(float*));
+        lowG  = (float*) malloc(NC * sizeof(float*));
         
         int nl = get_number_of_lines_in_file("../database/thermo.asali");
 
@@ -270,7 +270,7 @@ int main()
             {
                 fgets(stringValue, sizeof(stringValue), fp);
                 strip_string(stringValue);
-                names_in_thermo[k] = (char*) malloc(strlen(stringValue) * sizeof(char));
+                names_in_thermo[k] = (char*) malloc(strlen(stringValue) * sizeof(char*));
                 strcpy(names_in_thermo[k],stringValue);
 
                 fgets(stringValue, sizeof(stringValue), fp);
@@ -355,10 +355,10 @@ int main()
             {
                 if ( strcmp(names_in_thermo[j], names[i]) == 0)
                 {
-                    fprintf(fp,"\t\tasali_->thermo_[%d].name = (char*) malloc(%d * sizeof(char));\n",i,(int)strlen(names[i]));
+                    fprintf(fp,"\t\tasali_->thermo_[%d].name = (char*) malloc(%d * sizeof(char*));\n",i,(int)strlen(names[i]));
                     fprintf(fp,"\t\tstrcpy(asali_->thermo_[%d].name,\"%s\");\n\n",i,names[i]);
                     
-                    fprintf(fp,"\t\tasali_->thermo_[%d].high = (float*) malloc(7 * sizeof(float));\n",i);
+                    fprintf(fp,"\t\tasali_->thermo_[%d].high = (float*) malloc(7 * sizeof(float*));\n",i);
                     fprintf(fp,"\t\tasali_->thermo_[%d].high[%d] = %.10e;\n",i,0,highA[j]);
                     fprintf(fp,"\t\tasali_->thermo_[%d].high[%d] = %.10e;\n",i,1,highB[j]);
                     fprintf(fp,"\t\tasali_->thermo_[%d].high[%d] = %.10e;\n",i,2,highC[j]);
@@ -367,7 +367,7 @@ int main()
                     fprintf(fp,"\t\tasali_->thermo_[%d].high[%d] = %.10e;\n",i,5,highF[j]);
                     fprintf(fp,"\t\tasali_->thermo_[%d].high[%d] = %.10e;\n\n",i,6,highG[j]);
 
-                    fprintf(fp,"\t\tasali_->thermo_[%d].low = (float*) malloc(7 * sizeof(float));\n",i);
+                    fprintf(fp,"\t\tasali_->thermo_[%d].low = (float*) malloc(7 * sizeof(float*));\n",i);
                     fprintf(fp,"\t\tasali_->thermo_[%d].low[%d] = %.10e;\n",i,0,lowA[j]);
                     fprintf(fp,"\t\tasali_->thermo_[%d].low[%d] = %.10e;\n",i,1,lowB[j]);
                     fprintf(fp,"\t\tasali_->thermo_[%d].low[%d] = %.10e;\n",i,2,lowC[j]);
@@ -388,12 +388,12 @@ int main()
     {
         int nl = get_number_of_lines_in_file("../database/omega22.asali");
         nT22 = nl-1;
-        Tsigma22      = (float*) malloc(nT22 * sizeof(float));
+        Tsigma22      = (float*) malloc(nT22 * sizeof(float*));
         sigmaMatrix22 = (float**) malloc(nT22 * sizeof(float*)); 
         
         for (int i=0;i<nT22;i++)
         {
-            sigmaMatrix22[i] = (float*) malloc( 8 * sizeof(float)); 
+            sigmaMatrix22[i] = (float*) malloc( 8 * sizeof(float*)); 
         }
 
         FILE *fp;
@@ -428,12 +428,12 @@ int main()
     {
         int nl = get_number_of_lines_in_file("../database/astar.asali");
         nT11 = nl-1;
-        Tsigma11      = (float*) malloc(nT11 * sizeof(float));
+        Tsigma11      = (float*) malloc(nT11 * sizeof(float*));
         sigmaMatrix11 = (float**) malloc(nT11 * sizeof(float*)); 
 
         for (int i=0;i<nT11;i++)
         {
-            sigmaMatrix11[i] = (float*) malloc( 8 * sizeof(float)); 
+            sigmaMatrix11[i] = (float*) malloc( 8 * sizeof(float*)); 
         }
 
         FILE *fp;
@@ -511,24 +511,24 @@ int main()
         fprintf(fp,"\tif ( !asali_->omega11_updated_ )\n");
         fprintf(fp,"\t{\n");
         fprintf(fp,"\t\tasali_->omega11_.size = %d;\n",nT11);
-        fprintf(fp,"\t\tasali_->omega11_.d = (float*) malloc(%d * sizeof(float));\n",8);
+        fprintf(fp,"\t\tasali_->omega11_.d = (float*) malloc(%d * sizeof(float*));\n",8);
         for (int i=0;i<8;i++)
         {
             fprintf(fp,"\t\tasali_->omega11_.d[%d] = %3.2f;\n",i,dsigma11[i]);
         }
         fprintf(fp,"\n");
-        fprintf(fp,"\t\tasali_->omega11_.T = (float*) malloc(%i * sizeof(float));\n",nT11);
+        fprintf(fp,"\t\tasali_->omega11_.T = (float*) malloc(%i * sizeof(float*));\n",nT11);
         for (int i=0;i<nT11;i++)
         {
             fprintf(fp,"\t\tasali_->omega11_.T[%d] = %3.2f;\n",i,Tsigma11[i]);
         }
 
         fprintf(fp,"\n");
-        fprintf(fp,"\t\tasali_->omega11_.sigma = (float**) malloc(%i * sizeof(int));\n",nT11);
+        fprintf(fp,"\t\tasali_->omega11_.sigma = (float**) malloc(%i * sizeof(float*));\n",nT11);
         for (int i=0;i<nT11;i++)
         {
             fprintf(fp,"\n");
-            fprintf(fp,"\t\tasali_->omega11_.sigma[%d] = (float*) malloc(%d * sizeof(int));\n",i,8);
+            fprintf(fp,"\t\tasali_->omega11_.sigma[%d] = (float*) malloc(%d * sizeof(float*));\n",i,8);
             for (int j=0;j<8;j++)
             {
                 fprintf(fp,"\t\tasali_->omega11_.sigma[%d][%d] = %5.4f;\n",i,j,sigmaMatrix22[i][j]/sigmaMatrix11[i][j]);
@@ -540,23 +540,23 @@ int main()
         fprintf(fp,"\tif ( !asali_->omega22_updated_ )\n");
         fprintf(fp,"\t{\n");
         fprintf(fp,"\t\tasali_->omega22_.size = %d;\n",nT22);
-        fprintf(fp,"\t\tasali_->omega22_.d = (float*) malloc(%d * sizeof(float));\n",8);
+        fprintf(fp,"\t\tasali_->omega22_.d = (float*) malloc(%d * sizeof(float*));\n",8);
         for (int i=0;i<8;i++)
         {
             fprintf(fp,"\t\tasali_->omega22_.d[%d] = %3.2f;\n",i,dsigma22[i]);
         }
         fprintf(fp,"\n");
-        fprintf(fp,"\t\tasali_->omega22_.T = (float*) malloc(%i * sizeof(float));\n",nT22);
+        fprintf(fp,"\t\tasali_->omega22_.T = (float*) malloc(%i * sizeof(float*));\n",nT22);
         for (int i=0;i<nT22;i++)
         {
             fprintf(fp,"\t\tasali_->omega22_.T[%d] = %3.2f;\n",i,Tsigma22[i]);
         }
         fprintf(fp,"\n");
-        fprintf(fp,"\t\tasali_->omega22_.sigma = (float**) malloc(%i * sizeof(float));\n",nT22);
+        fprintf(fp,"\t\tasali_->omega22_.sigma = (float**) malloc(%i * sizeof(float*));\n",nT22);
         for (int i=0;i<nT11;i++)
         {
             fprintf(fp,"\n");
-            fprintf(fp,"\t\tasali_->omega22_.sigma[%d] = (float*) malloc(%d * sizeof(int));\n",i,8);
+            fprintf(fp,"\t\tasali_->omega22_.sigma[%d] = (float*) malloc(%d * sizeof(float*));\n",i,8);
             for (int j=0;j<8;j++)
             {
                 fprintf(fp,"\t\tasali_->omega22_.sigma[%d][%d] = %5.4f;\n",i,j,sigmaMatrix22[i][j]);
