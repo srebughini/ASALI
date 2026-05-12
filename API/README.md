@@ -255,7 +255,6 @@ To convert the Asali database into Rust code run `cargo run --bin databasegenera
 ## **10. Julia version**
 This version can be included in your code as follow:  
 ```julia
-using Printf
 include("asali.jl")
 
 species = String["H2","O2","N2"]
