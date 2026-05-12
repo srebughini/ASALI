@@ -1,10 +1,10 @@
 # **ASALI: Modeling and beyond**  
 ## **APIs elapsed time comparison**  
-These results are obtained with a *AMD Athlon(tm) II P320 Dual-Core Processor* with *Ubuntu 22.04.3 LTS*.  
+These results are obtained with a *Intel(R) Core(TM) i7-10700K CPU @ 3.80GHz* with *Windows*.  
 If you download ASALI, you can run the same test on your own computer using the following commands:  
 ```bash  
 cd API/elapsedTimeComparison/  
-./run.sh -n 2000 -f test.md --compile  
+./run.sh -n 10000 -f test.md --compile  
 ```  
 ## Assumptions and operating conditions  
 The gas mixture operating conditions are reported in the following table:  
@@ -23,16 +23,17 @@ The gas mixture operating conditions are reported in the following table:
 |NH<sub>3</sub>|0.2|Molar fraction|  
  
 The performance comparison has the following assumptions:  
-* Number of runs: **2000**  
+* Number of runs: **10000**  
 * Elapsed time to initialize **output variables** is **not considered**  
 ## Results  
 The table reports the compatutational time required to **estimate all thermodynamic and transport properties** and the computational time required to **initialize ASALI**.  
 |Language|Initialization (s)|Calculation (s)|  
 |--------|----------------|-------------------|  
-|C++|7.588e-04|1.006e-05| 
-|C|7.030e-05|1.197e-04| 
-|Fortran|n.a.|2.863e-06| 
-|Java|9.980e-05|1.603e-05| 
-|Rust|1.102e-4|7.897e-4| 
-|Octave|6.782e-03|8.205e-01| 
-|Python|2.900e-05|1.433e-02|
+|C++ |  3.523e-04|     3.300e-06|
+|C |  4.040e-05|     2.340e-05|
+|Fortran |  n.a.|         2.444e-07|
+|Java |  1.332e-05|     1.183e-06|
+|Rust |  4.995e-5|     2.806e-4|
+|Octave |  1.522e-02|     3.752e-01|
+|Python |  6.823e-06|     2.972e-03|
+|Julia |  n.a.|     8.018e-04|

@@ -66,7 +66,7 @@ int main()
     s = get_species_mass_entropy(&asali);
     cond = get_species_thermal_conductivity(&asali);
     diff_mix = get_mixture_diffusion(&asali);
-    v = get_aritmetic_mean_gas_velocity(&asali);
+    v = get_arithmetic_mean_gas_velocity(&asali);
     l = get_mean_free_path(&asali);
 
     printf("Mixture molecular weight:     %.3e  [kmol/kg]\n",get_mixture_molecular_weight(&asali));

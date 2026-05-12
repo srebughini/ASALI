@@ -521,6 +521,7 @@ module asali
         real :: R       = 8314 ![J/Kmol/K]
         real :: F_T     = 0.
         real :: F_298   = 0.
+        real :: rho     = 0.
 
         call species_viscosity_()
         call binary_diffusion_()
@@ -535,7 +536,7 @@ module asali
                     cvvib   = 0.
                 else if (transport_(index_(i))%geometry .EQ. 1 ) then !linear
                     cvtrans = 3.*R*0.5
-                    cvrot   = R*0.5
+                    cvrot   = R
                     cvvib   = cpmole_(i) - R - 5.*R*0.5
                 else !non linear
                     cvtrans = 3.*R*0.5
@@ -543,7 +544,9 @@ module asali
                     cvvib   = cpmole_(i) - R - 3.*R
                 end if
 
-                A = (5./2.) - rho_*diff_(i,i)/mu_(i)
+                rho = P_*MW_(i)/(R*T_)
+
+                A = (5./2.) - rho*diff_(i,i)/mu_(i)
 
                 F_T   = 1. + 0.5*sqrt((pi_**3.)*transport_(index_(i))%LJpotential/T_) &
                       + (0.25*(pi_**2.) + 2.)*(transport_(index_(i))%LJpotential/T_)  &
@@ -554,11 +557,11 @@ module asali
                  
                 Zrot = transport_(index_(i))%collision*F_298/F_T
 
-                B = Zrot + (2./pi_)*((5./3.)*(cvrot/R) + rho_*diff_(i,i)/mu_(i))
+                B = Zrot + (2./pi_)*((5./3.)*(cvrot/R) + rho*diff_(i,i)/mu_(i))
                 
                 ftrans = (5./2.)*(1. - 2.*cvrot*A/(pi_*cvtrans*B))
-                frot   = (rho_*diff_(i,i)/mu_(i))*(1. + 2.*A/(pi_*B))
-                fvib   = rho_*diff_(i,i)/mu_(i)
+                frot   = (rho*diff_(i,i)/mu_(i))*(1. + 2.*A/(pi_*B))
+                fvib   = rho*diff_(i,i)/mu_(i)
 
                 cond_(i) = mu_(i)*(ftrans*cvtrans + frot*cvrot + fvib*cvvib)/MW_(i)
             end do
@@ -594,7 +597,7 @@ module asali
     end function get_mixture_thermal_conductivity
 
     function get_mixture_viscosity()     ![Pa*s]
-        real    :: mumix, somma, get_mixture_viscosity, phi
+        real    :: somma, get_mixture_viscosity, phi
         integer :: k,j
         if (mu_mix_update_ .EQV. .FALSE. ) then
             call species_viscosity_()
@@ -782,7 +785,7 @@ module asali
         real, dimension(4) :: b, x
         real, dimension(4,4) :: A
 
-        integer :: Ta, Tb, da, db, ok, pivot(4), j
+        integer :: Ta, Tb, da, db, j
 
         Ta = -1;
         Tb = -1;
@@ -864,7 +867,7 @@ module asali
         real, dimension(4) :: b, x
         real, dimension(4,4) :: A
 
-        integer :: Ta, Tb, da, db, ok, pivot(4), j
+        integer :: Ta, Tb, da, db,j
 
         Ta = -1;
         Tb = -1;
