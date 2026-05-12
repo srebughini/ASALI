@@ -80,9 +80,9 @@ program example
     !Properties evaluation
     cp = get_species_mass_specific_heat()
 ```
-Example and database generator can be compiled by typing `./compile.sh`
+Example and database generator can be compiled by typing `./compile.sh` on Linux OS or `compile.bat` on Windows OS.
 
-To convert the Asali database into Fortran code run `./database-generator`
+To convert the Asali database into Fortran code run `./database-generator` on Linux OS or `database-generator.exe` on Windows OS.
 
 ## **6. C version**
 This version can be included in your code as follow:  
@@ -122,9 +122,9 @@ int main()
     return 0;
 }
 ```
-Example and database generator can be compiled by typing `./compile.sh`
+Example and database generator can be compiled by typing `./compile.sh` on Linux OS or `compile.bat` on Windows OS.
 
-To convert the Asali database into C code run `./database-generator`
+To convert the Asali database into C code run `./database-generator` on Linux OS or `database-generator.exe` on Windows OS.
 
 ## **7. C++ version**
 This version can be included in your code as follow:  
@@ -162,9 +162,9 @@ int main()
     return 0;
 }
 ```
-Example and database generator can be compiled by typing `./compile.sh`
+Example and database generator can be compiled by typing `./compile.sh` on Linux OS or `compile.bat` on Windows OS.
 
-To convert the Asali database into C++ code run `./database-generator`
+To convert the Asali database into C++ code run `./database-generator` on Linux OS or `database-generator.exe` on Windows OS.
 
 ## **8. Java version**
 This version can be included in your code as follow:  
@@ -212,7 +212,7 @@ class AsaliJava
     }
 }
 ```
-Example can be compiled by typing `./compile.sh`
+Example and database generator can be compiled by typing `./compile.sh` on Linux OS or `compile.bat` on Windows OS.
 
 ## **9. Rust version**
 This version can be included in your code as follow:  
@@ -252,4 +252,20 @@ Example can be compiled by typing `cargo build`
 
 To convert the Asali database into Rust code run `cargo run --bin databasegenerator`
 
+## **10. Julia version**
+This version can be included in your code as follow:  
+```julia
+include("asali.jl")
 
+species = String["H2","O2","N2"]
+x = Float64[0.1,0.2,0.7]
+asali.set_temperature(393.15)
+asali.set_pressure(4e05)
+asali.set_number_of_species(3)
+asali.set_species_names(species)
+asali.set_mole_fraction(x)
+
+diff = asali.get_binary_diffusion()
+cp = asali.get_species_mass_specific_heat()
+```
+Example can be compiled by typing `julia example.jl`

@@ -91,69 +91,69 @@ program example
     v = get_aritmetic_mean_gas_velocity()
     l = get_mean_free_path()
     
-    print '(A30,ES9.3,A10)' ,'Mixture molecular weight:     ', MWmix,     ' [kg/kmol]'
-    print '(A30,ES9.3,A8)'  ,'Density:                      ', rho,       ' [kg/m3]'
-    print '(A30,ES9.3,A6)'  ,'Mixture viscosity:            ', mumix,     ' [Pas]'
-    print '(A30,ES9.3,A9)'  ,'Mixture specific heat:        ', cpmassmix, ' [J/kg/K]'
-    print '(A30,ES9.3,A11)' ,'Mixture specific heat:        ', cpmolemix, ' [J/kmol/K]'
-    print '(A30,ES9.3,A8)'  ,'Mixture thermal conductivity: ', condmix,   ' [W/m/K]'
-    print '(A30,ES9.3,A7)'  ,'Mixture enthalpy:             ', hmassmix,  ' [J/kg]'
-    print '(A30,ES9.3,A9)'  ,'Mixture enthalpy:             ', hmolemix,  ' [J/kmol]'
-    print '(A30,ES9.3,A9)'  ,'Mixture entropy:              ', smassmix, ' [J/kg/K]'
-    print '(A30,ES9.3,A11)' ,'Mixture entropy:              ', smolemix, ' [J/kmol/K]'
+    print '(A30,ES13.3,A10)' ,'Mixture molecular weight:     ', MWmix,     ' [kg/kmol]'
+    print '(A30,ES13.3,A8)'  ,'Density:                      ', rho,       ' [kg/m3]'
+    print '(A30,ES13.3,A6)'  ,'Mixture viscosity:            ', mumix,     ' [Pas]'
+    print '(A30,ES13.3,A9)'  ,'Mixture specific heat:        ', cpmassmix, ' [J/kg/K]'
+    print '(A30,ES13.3,A11)' ,'Mixture specific heat:        ', cpmolemix, ' [J/kmol/K]'
+    print '(A30,ES13.3,A8)'  ,'Mixture thermal conductivity: ', condmix,   ' [W/m/K]'
+    print '(A30,ES13.3,A7)'  ,'Mixture enthalpy:             ', hmassmix,  ' [J/kg]'
+    print '(A30,ES13.3,A9)'  ,'Mixture enthalpy:             ', hmolemix,  ' [J/kmol]'
+    print '(A30,ES13.3,A9)'  ,'Mixture entropy:              ', smassmix, ' [J/kg/K]'
+    print '(A30,ES13.3,A11)' ,'Mixture entropy:              ', smolemix, ' [J/kmol/K]'
 
     print *,' '
     print *,'Species viscosity [Pas]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',mu(i)
+        print '(A2,A2,ES13.3)', names(i),': ',mu(i)
     end do
     
     print *,' '
     print *,'Species binary diffusion coefficient [m2/s]'
     do i=1,3
-        print '(A2,A2,ES9.3,A1,ES9.3,A1,ES9.3)', names(i),': ', diff(i,1),',',diff(i,2),',',diff(i,3)
+        print '(A2,A2,ES13.3,A1,ES13.3,A1,ES13.3)', names(i),': ', diff(i,1),',',diff(i,2),',',diff(i,3)
     end do
 
     print *,' '
     print *,'Species specific heat [J/kg/K]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',cp(i)
+        print '(A2,A2,ES13.3)', names(i),': ',cp(i)
     end do
 
     print *,' '
     print *,'Species enthalpy [J/kg]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',h(i)
+        print '(A2,A2,ES13.3)', names(i),': ',h(i)
     end do
 
     print *,' '
     print *,'Species entropy [J/kg/K]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',s(i)
+        print '(A2,A2,ES13.3)', names(i),': ',s(i)
     end do
 
     print *,' '
     print *,'Species thermal conductiviy [W/m/K]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',cond(i)
+        print '(A2,A2,ES13.3)', names(i),': ',cond(i)
     end do
 
     print *,' '
     print *,'Mixture diffusion coefficient [m2/s]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',diffmix(i)
+        print '(A2,A2,ES13.3)', names(i),': ',diffmix(i)
     end do
 
     print *,' '
     print *,'Mean gas velocity [m/s]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',v(i)
+        print '(A2,A2,ES13.3)', names(i),': ',v(i)
     end do
 
     print *,' '
     print *,'Mean free path [m]'
     do i=1,3
-        print '(A2,A2,ES9.3)', names(i),': ',l(i)
+        print '(A2,A2,ES13.3)', names(i),': ',l(i)
     end do
 
 end program example
