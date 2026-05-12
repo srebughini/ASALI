@@ -1,4 +1,4 @@
-(() => {
+var jasali = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -7,6 +7,10 @@
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __commonJS = (cb, mod2) => function __require() {
     return mod2 || (0, cb[__getOwnPropNames(cb)[0]])((mod2 = { exports: {} }).exports, mod2), mod2.exports;
+  };
+  var __export = (target, all) => {
+    for (var name86 in all)
+      __defProp(target, name86, { get: all[name86], enumerable: true });
   };
   var __copyProps = (to, from, except, desc) => {
     if (from && typeof from === "object" || typeof from === "function") {
@@ -24,6 +28,7 @@
     isNodeMode || !mod2 || !mod2.__esModule ? __defProp(target, "default", { value: mod2, enumerable: true }) : target,
     mod2
   ));
+  var __toCommonJS = (mod2) => __copyProps(__defProp({}, "__esModule", { value: true }), mod2);
 
   // node_modules/object-keys/isArguments.js
   var require_isArguments = __commonJS({
@@ -2824,6 +2829,16 @@
         }]);
       }));
     }
+  });
+
+  // src/jasali.js
+  var jasali_exports = {};
+  __export(jasali_exports, {
+    Fractions: () => Fractions,
+    GasMixture: () => GasMixture,
+    GasSpecie: () => GasSpecie,
+    GasState: () => GasState,
+    Molecule: () => Molecule
   });
 
   // src/utils.js
@@ -33695,6 +33710,7 @@
       calculateChemicalEquilibriumTP
     };
   }
+  return __toCommonJS(jasali_exports);
 })();
 /*! Bundled license information:
 
