@@ -33574,7 +33574,7 @@ var jasali = (() => {
           for (let j = 0; j < _numberOfSpecies; j++) {
             if (j != i) {
               A = A + _moleFraction[j] * _speciesMolecularWeight[j];
-              B = B + _moleFraction[j] / _diff[j][i];
+              B = B + Math.max(1e-16, _moleFraction[j]) / _diff[j][i];
             }
           }
           _diffMix[i] = A / (_molecularWeight * B);
