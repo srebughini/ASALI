@@ -749,7 +749,9 @@ class Asali:
         if not self._diff_mix_update_:
             self._binary_diffusion()
             a = np.sum(self._x * self._mw) - self._x * self._mw
-            b = np.sum(self._x[:, None] / self._diff, axis=0) - self._x / self._diff.diagonal()
+
+            x = np.maximum(self._x, 1e-16)
+            b = np.sum(x[:, None] / self._diff, axis=0) - x / self._diff.diagonal()
             self._diff_mix = a / (self._mw_mix * b)
             self._diff_mix_update_ = True
 

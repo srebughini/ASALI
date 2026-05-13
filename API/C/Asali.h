@@ -186,5 +186,7 @@ AsaliMatrix get_binary_diffusion(Asali* asali_);
 double collisionIntegrals22(Asali* asali_,double Tr,double dr);
 double collisionIntegrals11(Asali* asali_,double Tr,double dr);
 
+double max_double(double a, double b);
+
 #endif // ASALI_H_
 

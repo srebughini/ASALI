@@ -628,7 +628,7 @@ module asali
                 do j=1,NC_
                     if ( j .NE. k ) then
                         A = A + x_(j)*MW_(j);
-                        B = B + x_(j)/diff_(j,k);
+                        B = B + max(1.0e-16,x_(j))/diff_(j,k);
                     end if
                 end do
                 diff_mix_(k) = A/(MWmix_*B)

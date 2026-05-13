@@ -42,6 +42,10 @@
 #include "thermo.H"
 #include "omega.H"
 
+double max_double(double a, double b) {
+    return a > b ? a : b;
+}
+
 void set_temperature(Asali* asali_, double T)
 {
     if ( asali_->T_ != T )
@@ -594,7 +598,7 @@ AsaliVector get_mixture_diffusion(Asali* asali_) //[m2/s]
                 if ( j != i )
                 {
                     A = A + get_vector_element_as_double(&asali_->x_,j)*get_vector_element_as_double(&asali_->MW_,j);
-                    B = B + get_vector_element_as_double(&asali_->x_,j)/get_matrix_element_as_double(&asali_->diff_,j,i);
+                    B = B + max_double(1.e-16,get_vector_element_as_double(&asali_->x_,j))/get_matrix_element_as_double(&asali_->diff_,j,i);
                 }
             }
             set_vector_element_from_double(&asali_->diff_mix_,i,A/(asali_->MWmix_*B));

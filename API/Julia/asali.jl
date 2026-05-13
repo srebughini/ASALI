@@ -659,7 +659,7 @@ module asali
                 for j in 1:NC_
                     if j != k
                         A = A + x_[j]*MW_[j];
-                        B = B + x_[j]/diff_[j,k];
+                        B = B + max(1e-16,x_[j])/diff_[j,k];
                     end
                 end
                 diff_mix_[k] = A/(MWmix_*B)

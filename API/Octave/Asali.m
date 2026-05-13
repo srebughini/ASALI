@@ -495,7 +495,7 @@ classdef Asali
                     for j=1:length(obj.index)
                         if j ~= i
                             A = A + X(j)*obj.MW(j);
-                            B = B + X(j)/diffs(j,i);
+                            B = B + max(X(j),1e-16)/diffs(j,i);
                         end
                     end
                     diff(i) = A/(obj.MWmix*B);

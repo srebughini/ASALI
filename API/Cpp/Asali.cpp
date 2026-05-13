@@ -703,7 +703,7 @@ namespace ASALI
                     if (j != k)
                     {
                         A = A + x_[j] * MW_[j];
-                        B = B + x_[j] / diff_[j][k];
+                        B = B + std::max(x_[j],1e-16) / diff_[j][k];
                     }
                 }
                 diff_mix_[k] = A / (MWmix_ * B);

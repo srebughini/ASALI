@@ -365,7 +365,7 @@ public class Asali
                     if ( j != k )
                     {
                         A = A + x_[j]*MW_[j];
-                        B = B + x_[j]/diff_[j][k];
+                        B = B + Math.max(1e-16,x_[j])/diff_[j][k];
                     }
                 }
                 diff_mix_[k] = A/(MWmix_*B);

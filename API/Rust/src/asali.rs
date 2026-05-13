@@ -457,10 +457,12 @@ impl Asali{
             for i in 0..self.nc_ as usize {
                 let mut a: f64 = 0.0;
                 let mut b: f64 = 0.0;
+                let mut x: f64 = 0.0;
                 for j in 0..self.nc_ as usize {
                     if j != i {
                         a = a + self.x_[j]*self.mw_[j];
-                        b = b + self.x_[j]/self.diff_[j][i];
+                        x = self.x_[j].max(1e-16);
+                        b = b + x/self.diff_[j][i];
                     }
                 }
                 self.diff_mix_[i] = a/(self.mw_mix_*b);
