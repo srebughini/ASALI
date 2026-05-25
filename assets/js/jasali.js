@@ -33695,6 +33695,7 @@ function GasMixture({
   };
 }
 export {
+  Fractions,
   GasMixture,
   GasSpecie,
   GasState,
