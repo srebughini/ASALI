@@ -67,7 +67,7 @@ fn main() {
     let v = asali_obj.get_arithmetic_mean_gas_velocity();
     let l = asali_obj.get_mean_free_path();
 
-    println!("Mixture molecular weight:     {:.3e}  [kmol/kg]",asali_obj.get_mixture_molecular_weight());
+    println!("Mixture molecular weight:     {:.3e}  [kg/kmol]",asali_obj.get_mixture_molecular_weight());
     println!("Density:                      {:.3e}  [kg/m3]",asali_obj.get_density());
     println!("Mixture viscosity:            {:.3e}  [Pas]",asali_obj.get_mixture_viscosity());
     println!("Mixture specific heat:        {:.3e}  [J/kg/K]",asali_obj.get_mixture_mass_specific_heat());

@@ -61,8 +61,8 @@ if __name__ == "__main__":
     print("Mixture enthalpy:             ", asali.mixture_mass_enthalpy, "[J/kg]")
     print("Mixture enthalpy:             ", asali.mixture_molar_enthalpy, "[J/kmol]")
     print("Mixture thermal conductivity: ", asali.mixture_thermal_conductivity, "[W/m/K]")
-    print("Mixture entropy:              ", asali.mixture_molar_entropy, "[J/kg/K]")
-    print("Mixture entropy:              ", asali.mixture_mass_entropy, "[J/kmol/K]")
+    print("Mixture entropy:              ", asali.mixture_molar_entropy, "[J/kmol/K]")
+    print("Mixture entropy:              ", asali.mixture_mass_entropy, "[J/kg/K]")
 
     print("\nSpecies viscosity [Pas]")
     for i in range(0, asali.number_of_species):

@@ -130,7 +130,7 @@ To convert the Asali database into C code run `./database-generator` on Linux OS
 This version can be included in your code as follow:  
 ```cpp
 //Include library
-#include "Asali.h"
+#include "Asali.hpp"
 
 //Main
 int main()
