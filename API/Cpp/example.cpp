@@ -95,7 +95,7 @@ int main()
         std::cout << names[i] << ": " << asali.speciesMassEnthalpy()[i] << std::endl;
     }
 
-    std::cout << "\nSpecies entropy [J/kg]" << std::endl;
+    std::cout << "\nSpecies entropy [J/kg/K]" << std::endl;
     for (unsigned int i=0;i<3;i++)
     {
         std::cout << names[i] << ": " << asali.speciesMassEntropy()[i] << std::endl;

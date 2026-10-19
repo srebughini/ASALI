@@ -69,7 +69,7 @@ int main()
     v = get_arithmetic_mean_gas_velocity(&asali);
     l = get_mean_free_path(&asali);
 
-    printf("Mixture molecular weight:     %.3e  [kmol/kg]\n",get_mixture_molecular_weight(&asali));
+    printf("Mixture molecular weight:     %.3e  [kg/kmol]\n",get_mixture_molecular_weight(&asali));
     printf("Density:                      %.3e  [kg/m3]\n",get_density(&asali));
     printf("Mixture viscosity:            %.3e  [Pas]\n",get_mixture_viscosity(&asali));
     printf("Mixture specific heat:        %.3e  [J/kg/K]\n",get_mixture_mass_specific_heat(&asali));
