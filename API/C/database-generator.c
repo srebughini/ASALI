@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <errno.h>
 
 FILE* open_file(const char* filename, const char* mode)
 {

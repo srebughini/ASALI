@@ -1,3 +1,6 @@
+#!/bin/sh
+set -e
+
 rm -f database-generator
 gcc database-generator.c -o database-generator
 

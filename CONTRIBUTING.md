@@ -29,7 +29,7 @@ Run these commands from the folder shown. They were tested on Ubuntu 24.04. The 
 | Part | Requirements | Build and run | Tested |
 |---|---|---|---|
 | C++ (`API/Cpp`) | `g++` | `./compile.sh && ./example` | Yes |
-| C (`API/C`) | `gcc` | `./compile.sh && ./example` | Yes. On GCC 13, `database-generator.c` currently does not compile; `example` is still built. |
+| C (`API/C`) | `gcc` | `./compile.sh && ./example` | Yes (GCC 14.2). The script stops if either build command fails. |
 | Fortran (`API/Fortran`) | `gfortran` (provides the `f95` and `f77` commands the script calls) | `./compile.sh && ./example` | Yes |
 | Java (`API/Java`) | JDK (tested with 21) | `./compile.sh && java Example` | Yes |
 | Rust (`API/Rust`) | `cargo` (tested with 1.75) | `cargo build`, then `cargo run --bin asali` | Yes |
@@ -44,7 +44,7 @@ On Windows, `compile.bat` is documented in `API/README.md`.
 
 ## Tests
 
-There is no automated test suite for the code in `API/`, and no continuous integration for this repository yet. The JavaScript version (JASALI) and ASALIPY have their own tests. Because of this, the examples in each `API/<language>` folder are currently the main way to check a change.
+Run `sh API/C/test_compile.sh` from the repository root to check the C build script's success and failure paths without a compiler or database files. There is no comprehensive automated API test suite or continuous integration for this repository yet. The JavaScript version (JASALI) and ASALIPY have their own tests. Because of this, the examples in each `API/<language>` folder are currently the main way to check a change.
 
 What we ask for in a pull request:
 
