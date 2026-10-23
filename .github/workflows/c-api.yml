@@ -1,0 +1,28 @@
+name: C API compile and fail-fast regression
+
+on:
+  pull_request:
+    paths:
+      - 'API/C/**'
+      - '.github/workflows/c-api.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'API/C/**'
+      - '.github/workflows/c-api.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  c-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Build real C API with GCC
+        working-directory: API/C
+        run: sh ./compile.sh
+      - name: Verify fail-fast regressions after compilation
+        run: sh API/C/test_compile.sh
