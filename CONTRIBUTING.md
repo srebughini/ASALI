@@ -44,7 +44,7 @@ On Windows, `compile.bat` is documented in `API/README.md`.
 
 ## Tests
 
-Run `sh API/C/test_compile.sh` from the repository root to check the C build script's success and failure paths without a compiler or database files. There is no comprehensive automated API test suite or continuous integration for this repository yet. The JavaScript version (JASALI) and ASALIPY have their own tests. Because of this, the examples in each `API/<language>` folder are currently the main way to check a change.
+For C changes, `.github/workflows/c-api.yml` runs the actual C compilation with GCC from a full checkout first, then checks the five fail-fast regression scenarios in `API/C/test_compile.sh` automatically. Contributors do not need to run a separate test command for CI. Other API languages do not yet have comprehensive automated CI; the JavaScript version (JASALI) and ASALIPY have their own tests. The examples in each `API/<language>` folder remain useful for checking changes.
 
 What we ask for in a pull request:
 
