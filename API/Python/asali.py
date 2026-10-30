@@ -828,6 +828,8 @@ class Asali:
         :return: Mixture thermal conductivity [W/m/K]
         """
         if not self._cond_mix_update_:
+            self._species_cond()
             self._cond_mix = 0.5 * (np.sum(self._x * self._cond) + 1. / np.sum(self._x / self._cond))
+            self._cond_mix_update_ = True
 
         return self._cond_mix
