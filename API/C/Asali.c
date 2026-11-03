@@ -177,7 +177,7 @@ void set_mass_fraction(Asali* asali_,AsaliVector y)
             set_vector_element_from_double(&asali_->y_,j,get_vector_element_as_double(&y,j));
             asali_->MWmix_ = asali_->MWmix_ + get_vector_element_as_double(&y,j)/get_vector_element_as_double(&asali_->MW_,j);
         }
-        
+
         for (int j=0;j<asali_->NC_;j++)
         {
             set_vector_element_from_double(&asali_->x_,j,(get_vector_element_as_double(&y,j)/get_vector_element_as_double(&asali_->MW_,j))/asali_->MWmix_);
@@ -217,7 +217,7 @@ void set_mole_fraction(Asali* asali_,AsaliVector x)
             set_vector_element_from_double(&asali_->x_,j,get_vector_element_as_double(&x,j));
             asali_->MWmix_ = asali_->MWmix_ + get_vector_element_as_double(&x,j)*get_vector_element_as_double(&asali_->MW_,j);
         }
-        
+
         for (int j=0;j<asali_->NC_;j++)
         {
             set_vector_element_from_double(&asali_->y_,j,get_vector_element_as_double(&x,j)*get_vector_element_as_double(&asali_->MW_,j)/asali_->MWmix_);
@@ -301,13 +301,13 @@ void binary_diffusion_(Asali* asali_)
         for (int i=0;i<asali_->NC_;i++)
         {
             int i_idx = get_vector_element_as_int(&asali_->index_,i);
-            
+
             for (int j=i;j<asali_->NC_;j++)
             {
                 int j_idx = get_vector_element_as_int(&asali_->index_,j);
 
                 MWmix = get_vector_element_as_double(&asali_->MW_,i)*get_vector_element_as_double(&asali_->MW_,j)/(get_vector_element_as_double(&asali_->MW_,i) + get_vector_element_as_double(&asali_->MW_,j));
-                
+
                 if ( asali_->transport_[i_idx].polar == 0 & asali_->transport_[j_idx].polar == 0 )
                 {
                     LJpotentialmix = sqrt(asali_->transport_[i_idx].LJpotential*asali_->transport_[j_idx].LJpotential);
@@ -324,7 +324,7 @@ void binary_diffusion_(Asali* asali_)
                 {
                     polarn  = 0.;
                     dipolep = 0.;
-                    
+
                     if ( asali_->transport_[i_idx].polar == 0 )
                     {
                         polarn  = asali_->transport_[i_idx].polar/pow(asali_->transport_[i_idx].LJdiameter,3.);
@@ -383,7 +383,7 @@ void species_thermal_conductivity_(Asali* asali_)  //[W/m/K]
         binary_diffusion_(asali_);
         density_(asali_);
         species_cp_(asali_);
-        
+
         for (int i=0;i<asali_->NC_;i++)
         {
             int idx = get_vector_element_as_int(&asali_->index_,i);
@@ -405,11 +405,11 @@ void species_thermal_conductivity_(Asali* asali_)  //[W/m/K]
                 cvrot   = 3.*R*0.5;
                 cvvib   = get_vector_element_as_double(&asali_->cp_mole_,i) - R - 3.*R;
             }
-            
+
             double rho  = asali_->P_*get_vector_element_as_double(&asali_->MW_,i)/(R*asali_->T_);
             double diff = get_matrix_element_as_double(&asali_->diff_,i,i);
             double mu   = get_vector_element_as_double(&asali_->mu_,i);
-            
+
             A = (5./2.) - rho*diff/mu;
 
             F_T   = 1. + 0.5*sqrt(pow(asali_->pi_,3.)*asali_->transport_[idx].LJpotential/asali_->T_) 
@@ -418,15 +418,15 @@ void species_thermal_conductivity_(Asali* asali_)  //[W/m/K]
             F_298 = 1. + 0.5*sqrt(pow(asali_->pi_,3.)*asali_->transport_[idx].LJpotential/298.) 
                   + (0.25*pow(asali_->pi_,2.) + 2.)*(asali_->transport_[idx].LJpotential/298.)
                   + sqrt(pow((asali_->pi_*asali_->transport_[idx].LJpotential/298.),3.));
-            
+
             Zrot = asali_->transport_[idx].collision*F_298/F_T;
-            
+
             B = Zrot + (2./asali_->pi_)*((5./3.)*(cvrot/R) + rho*diff/mu);
-            
+
             ftrans = (5./2.)*(1. - 2.*cvrot*A/(asali_->pi_*cvtrans*B));
             frot   = (rho*diff/mu)*(1. + 2.*A/(asali_->pi_*B));
             fvib   = rho*diff/mu;
-            
+
             double cond = mu*(ftrans*cvtrans + frot*cvrot + fvib*cvvib)/get_vector_element_as_double(&asali_->MW_,i);
 
             set_vector_element_from_double(&asali_->cond_,i,cond);
@@ -552,7 +552,7 @@ double get_mixture_thermal_conductivity(Asali* asali_) //[W/m/K]
         asali_->cond_mix_ = 0.5*(A + 1./B);
         asali_->cond_mix_updated_ = true;
     }
-    
+
     return asali_->cond_mix_;
 }
 
@@ -561,6 +561,7 @@ double get_mixture_viscosity(Asali* asali_) //[Pa*s]
     if ( !asali_->mu_mix_updated_ )
     {
         species_viscosity_(asali_);
+        asali_->mu_mix_ = 0.;
         double somma, phi;
         for (int i=0;i<asali_->NC_;i++)
         {
@@ -601,7 +602,7 @@ AsaliVector get_mixture_diffusion(Asali* asali_) //[m2/s]
         }
         asali_->diff_mix_updated_ = true;
     }
-    
+
     return asali_->diff_mix_;
 }
 
@@ -723,9 +724,9 @@ double get_mixture_mass_entropy(Asali* asali_)
 void resize(Asali* asali_,int NC)
 {
     empty_vector_of_char(&asali_->name_,NC);
-    
+
     vector_from_int(&asali_->index_,NC,-1);
-    
+
     empty_vector_of_double(&asali_->MW_,NC);
     empty_vector_of_double(&asali_->x_,NC);
     empty_vector_of_double(&asali_->y_,NC);
@@ -740,9 +741,9 @@ void resize(Asali* asali_,int NC)
     empty_vector_of_double(&asali_->diff_mix_,NC);
     empty_vector_of_double(&asali_->v_,NC);
     empty_vector_of_double(&asali_->l_,NC);
-    
+
     empty_matrix_of_double(&asali_->diff_,NC,NC);
-    
+
     asali_->cond_mix_   = 0.;
     asali_->mu_mix_     = 0.;
     asali_->cpmole_mix_ = 0.;
@@ -781,7 +782,7 @@ void initialize(Asali* asali_)
     asali_->NC_ = 0;
     asali_->T_  = 0.;
     asali_->P_  = 0.;
-    
+
     thermo_update(asali_);
     transport_update(asali_);
     omega_update(asali_);
@@ -926,11 +927,11 @@ double collisionIntegrals22(Asali* asali_, const double Tr,const double dr)
     b[3] = asali_->omega22_.sigma[Tb][db];
 
     x[3] = (b[0] - b[1]- b[2] + b[3])/(asali_->omega22_.T[Ta]*asali_->omega22_.d[da] - asali_->omega22_.T[Ta]*asali_->omega22_.d[db] - asali_->omega22_.T[Tb]*asali_->omega22_.d[da] + asali_->omega22_.T[Tb]*asali_->omega22_.d[db]);
-    
+
     x[2] = (-x[3]*(asali_->omega22_.T[Ta]*asali_->omega22_.d[da] - asali_->omega22_.T[Ta]*asali_->omega22_.d[db]) - b[1] + b[0])/(asali_->omega22_.d[da] - asali_->omega22_.d[db]);
-    
+
     x[1] = (-x[3]*(asali_->omega22_.T[Ta]*asali_->omega22_.d[da] - asali_->omega22_.T[Tb]*asali_->omega22_.d[da]) - b[2] + b[0])/(asali_->omega22_.T[Ta] - asali_->omega22_.T[Tb]);
-    
+
     x[0] = -x[1]*asali_->omega22_.T[Ta] - x[2]*asali_->omega22_.d[da] - x[3]*asali_->omega22_.T[Ta]*asali_->omega22_.d[da] + b[0];
 
     return x[0] + x[1]*Tr + x[2]*dr + x[3]*Tr*dr;
@@ -997,13 +998,13 @@ double collisionIntegrals11(Asali* asali_, const double Tr,const double dr)
     b[1] = asali_->omega11_.sigma[Ta][db];
     b[2] = asali_->omega11_.sigma[Tb][da];
     b[3] = asali_->omega11_.sigma[Tb][db];
-    
+
     x[3] = (b[0] - b[1]- b[2] + b[3])/(asali_->omega11_.T[Ta]*asali_->omega11_.d[da] - asali_->omega11_.T[Ta]*asali_->omega11_.d[db] - asali_->omega11_.T[Tb]*asali_->omega11_.d[da] + asali_->omega11_.T[Tb]*asali_->omega11_.d[db]);
-    
+
     x[2] = (-x[3]*(asali_->omega11_.T[Ta]*asali_->omega11_.d[da] - asali_->omega11_.T[Ta]*asali_->omega11_.d[db]) - b[1] + b[0])/(asali_->omega11_.d[da] - asali_->omega11_.d[db]);
-    
+
     x[1] = (-x[3]*(asali_->omega11_.T[Ta]*asali_->omega11_.d[da] - asali_->omega11_.T[Tb]*asali_->omega11_.d[da]) - b[2] + b[0])/(asali_->omega11_.T[Ta] - asali_->omega11_.T[Tb]);
-    
+
     x[0] = -x[1]*asali_->omega11_.T[Ta] - x[2]*asali_->omega11_.d[da] - x[3]*asali_->omega11_.T[Ta]*asali_->omega11_.d[da] + b[0];
 
     return x[0] + x[1]*Tr + x[2]*dr + x[3]*Tr*dr;
