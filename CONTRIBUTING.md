@@ -30,7 +30,7 @@ Run these commands from the folder shown. They were tested on Ubuntu 24.04. The 
 |---|---|---|---|
 | C++ (`API/Cpp`) | `g++` | `./compile.sh && ./example` | Yes |
 | C (`API/C`) | `gcc` | `./compile.sh && ./example` | Yes (GCC 14.2). The script stops if either build command fails. |
-| Fortran (`API/Fortran`) | `gfortran` (provides the `f95` and `f77` commands the script calls) | `./compile.sh && ./example` | Yes |
+| Fortran (`API/Fortran`) | `gfortran` (provides the `f95` and `f77` commands the script calls) | `./compile.sh && ./example` | Yes. The script stops if either build command fails. |
 | Java (`API/Java`) | JDK (tested with 21) | `./compile.sh && java Example` | Yes |
 | Rust (`API/Rust`) | `cargo` (tested with 1.75) | `cargo build`, then `cargo run --bin asali` | Yes |
 | Python (`API/Python`) | Python 3 and NumPy | `python3 example.py` | Yes |
@@ -44,7 +44,7 @@ On Windows, `compile.bat` is documented in `API/README.md`.
 
 ## Tests
 
-For C changes, `.github/workflows/c-api.yml` runs the actual C compilation with GCC from a full checkout first, then checks the five fail-fast regression scenarios in `API/C/test_compile.sh` automatically. Contributors do not need to run a separate test command for CI. Other API languages do not yet have comprehensive automated CI; the JavaScript version (JASALI) and ASALIPY have their own tests. The examples in each `API/<language>` folder remain useful for checking changes.
+For C changes, `.github/workflows/c-api.yml` runs the actual C compilation with GCC from a full checkout first, then checks the five fail-fast regression scenarios in `API/C/test_compile.sh` automatically. Contributors do not need to run a separate test command for CI. For Fortran changes, `.github/workflows/fortran-api.yml` builds the Fortran API with `gfortran` and runs the five fail-fast regression scenarios in `API/Fortran/test_compile.sh`. Other API languages do not yet have comprehensive automated CI; the JavaScript version (JASALI) and ASALIPY have their own tests. The examples in each `API/<language>` folder remain useful for checking changes.
 
 What we ask for in a pull request:
 
