@@ -1,0 +1,38 @@
+name: Fortran API compile and fail-fast regression
+
+on:
+  pull_request:
+    paths:
+      - 'API/Fortran/**'
+      - 'API/database/**'
+      - '.github/workflows/fortran-api.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'API/Fortran/**'
+      - 'API/database/**'
+      - '.github/workflows/fortran-api.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  fortran-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          command -v f95 f77
+      - name: Build real Fortran API with gfortran
+        working-directory: API/Fortran
+        run: sh ./compile.sh
+      - name: Verify fail-fast regressions after compilation
+        run: sh API/Fortran/test_compile.sh
+      - name: Run Fortran Example
+        working-directory: API/Fortran
+        run: ./example
